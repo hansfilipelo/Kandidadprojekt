@@ -1,6 +1,0 @@
-\select@language {swedish}
-\contentsline {section}{\numberline {1}Saker som kan vara bra att ha!}{1}
-\contentsline {subsection}{\numberline {1.1}Punktlista}{1}
-\contentsline {subsection}{\numberline {1.2}Ekvationer}{1}
-\contentsline {subsection}{\numberline {1.3}Bilder}{1}
-\contentsline {subsection}{\numberline {1.4}Kod}{1}
