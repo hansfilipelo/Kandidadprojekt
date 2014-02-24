@@ -10,11 +10,9 @@
 DIR=$( cd "$( dirname "$0" )" && pwd )
 cd $DIR
 
-FILE=$1
-
 while [ true ]
 do
     /usr/bin/git pull --commit
-    /usr/texbin/pdflatex -halt-on-error $FILE
+    /usr/texbin/pdflatex -halt-on-error *.tex
     sleep 15
 done
