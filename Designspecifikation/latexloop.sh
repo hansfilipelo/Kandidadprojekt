@@ -12,7 +12,12 @@ cd $DIR
 
 while [ true ]
 do
-    /usr/bin/git pull --commit
-    /usr/texbin/pdflatex -halt-on-error *.tex
-    sleep 15
+    /usr/bin/git pull --commit | grep "Already up-to-date."
+
+    if [ $? -ne 0 ]
+    then
+        /usr/texbin/pdflatex -halt-on-error *.tex
+    fi
+
+    sleep 5
 done
