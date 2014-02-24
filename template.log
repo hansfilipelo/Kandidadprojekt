@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2014.2.21)  24 FEB 2014 13:04
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2014.2.21)  24 FEB 2014 15:48
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -714,41 +714,96 @@ LaTeX Font Info:    Try loading font information for T1+kurier on input line 10
 (/usr/local/texlive/2013/texmf-dist/tex/latex/kurier/t1kurier.fd
 File: t1kurier.fd 2008/07/22 v0.995 font definition file for T1/kurier (MW)
 ))
+(/usr/local/texlive/2013/texmf-dist/tex/latex/listings/listings.sty
+\lst@mode=\count112
+\lst@gtempboxa=\box31
+\lst@token=\toks26
+\lst@length=\count113
+\lst@currlwidth=\dimen138
+\lst@column=\count114
+\lst@pos=\count115
+\lst@lostspace=\dimen139
+\lst@width=\dimen140
+\lst@newlines=\count116
+\lst@lineno=\count117
+\lst@maxwidth=\dimen141
+
+(/usr/local/texlive/2013/texmf-dist/tex/latex/listings/lstmisc.sty
+File: lstmisc.sty 2007/02/22 1.4 (Carsten Heinz)
+\c@lstnumber=\count118
+\lst@skipnumbers=\count119
+\lst@framebox=\box32
+)
+(/usr/local/texlive/2013/texmf-dist/tex/latex/listings/listings.cfg
+File: listings.cfg 2007/02/22 1.4 listings configuration
+))
+Package: listings 2007/02/22 1.4 (Carsten Heinz)
+
+(/usr/local/texlive/2013/texmf-dist/tex/latex/xcolor/xcolor.sty
+Package: xcolor 2007/01/21 v2.11 LaTeX color extensions (UK)
+
+(/usr/local/texlive/2013/texmf-dist/tex/latex/latexconfig/color.cfg
+File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
+)
+Package xcolor Info: Driver file: pdftex.def on input line 225.
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1337.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1341.
+Package xcolor Info: Model `RGB' extended on input line 1353.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1355.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1356.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1357.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1358.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1359.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1360.
+)
+(/usr/local/texlive/2013/texmf-dist/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2004/09/05 1.3 listings language file
+)
+(/usr/local/texlive/2013/texmf-dist/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2004/09/05 1.3 listings language file
+)
+(/usr/local/texlive/2013/texmf-dist/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2004/09/05 1.3 listings language file
+)
+(/usr/local/texlive/2013/texmf-dist/tex/latex/listings/lstmisc.sty
+File: lstmisc.sty 2007/02/22 1.4 (Carsten Heinz)
+)
 (./template.aux)
 \openout1 = `template.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 57.
-LaTeX Font Info:    ... okay on input line 57.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 57.
-LaTeX Font Info:    ... okay on input line 57.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 57.
-LaTeX Font Info:    ... okay on input line 57.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 57.
-LaTeX Font Info:    ... okay on input line 57.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 57.
-LaTeX Font Info:    ... okay on input line 57.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 57.
-LaTeX Font Info:    ... okay on input line 57.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 57.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 57.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 103.
+LaTeX Font Info:    ... okay on input line 103.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 103.
+LaTeX Font Info:    ... okay on input line 103.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 103.
+LaTeX Font Info:    ... okay on input line 103.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 103.
+LaTeX Font Info:    ... okay on input line 103.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 103.
+LaTeX Font Info:    ... okay on input line 103.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 103.
+LaTeX Font Info:    ... okay on input line 103.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 103.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 103.
+
  (/usr/local/texlive/2013/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 57.
+LaTeX Font Info:    ... okay on input line 103.
 
 (/usr/local/texlive/2013/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count112
-\scratchdimen=\dimen138
-\scratchbox=\box31
-\nofMPsegments=\count113
-\nofMParguments=\count114
-\everyMPshowfont=\toks26
-\MPscratchCnt=\count115
-\MPscratchDim=\dimen139
-\MPnumerator=\count116
-\makeMPintoPDFobject=\count117
-\everyMPtoPDFconversion=\toks27
+\scratchcounter=\count120
+\scratchdimen=\dimen142
+\scratchbox=\box33
+\nofMPsegments=\count121
+\nofMParguments=\count122
+\everyMPshowfont=\toks27
+\MPscratchCnt=\count123
+\MPscratchDim=\dimen143
+\MPnumerator=\count124
+\makeMPintoPDFobject=\count125
+\everyMPtoPDFconversion=\toks28
 ) (/usr/local/texlive/2013/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
 Package: pdftexcmds 2011/11/29 v0.20 Utility functions of pdfTeX for LuaTeX (HO
 )
@@ -851,35 +906,36 @@ LaTeX Info: Redefining \selectfont on input line 126.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
+\c@lstlisting=\count126
 LaTeX Font Info:    Try loading font information for OT1+kurierm on input line 
-78.
+124.
 (/usr/local/texlive/2013/texmf-dist/tex/latex/kurier/ot1kurierm.fd
 File: ot1kurierm.fd 2005/10/03 v1.2 font definition file for OT1/kurierm (MW)
 )
-LaTeX Font Info:    Try loading font information for OML+kurier on input line 7
-8.
+LaTeX Font Info:    Try loading font information for OML+kurier on input line 1
+24.
 
 (/usr/local/texlive/2013/texmf-dist/tex/latex/kurier/omlkurier.fd
 File: omlkurier.fd 2008/07/22 v0.995 font definition file for OML/kurier (MW)
 )
-LaTeX Font Info:    Try loading font information for OMS+kurier on input line 7
-8.
+LaTeX Font Info:    Try loading font information for OMS+kurier on input line 1
+24.
 
 (/usr/local/texlive/2013/texmf-dist/tex/latex/kurier/omskurier.fd
 File: omskurier.fd 2008/07/22 v0.995 font definition file for OMS/kurier (MW)
 )
-LaTeX Font Info:    Try loading font information for OMX+kurier on input line 7
-8.
+LaTeX Font Info:    Try loading font information for OMX+kurier on input line 1
+24.
 
 (/usr/local/texlive/2013/texmf-dist/tex/latex/kurier/omxkurier.fd
 File: omxkurier.fd 2008/07/22 v0.995 font definition file for OMX/kurier (MW)
 )
-LaTeX Font Info:    Try loading font information for U+msa on input line 78.
+LaTeX Font Info:    Try loading font information for U+msa on input line 124.
 
 (/usr/local/texlive/2013/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 78.
+LaTeX Font Info:    Try loading font information for U+msb on input line 124.
 
 (/usr/local/texlive/2013/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
@@ -887,18 +943,18 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 <logotyp.png, id=1, 72.27pt x 72.27pt>
 File: logotyp.png Graphic file (type png)
  <use logotyp.png>
-Package pdftex.def Info: logotyp.png used on input line 86.
+Package pdftex.def Info: logotyp.png used on input line 132.
 (pdftex.def)             Requested size: 72.2698pt x 72.2698pt.
  [1{/usr/local/texlive/2013/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
 
  <./logotyp.png>]
-Overfull \hbox (0.7592pt too wide) in paragraph at lines 104--104
+Overfull \hbox (0.7592pt too wide) in paragraph at lines 150--150
 []\T1/kurier/m/n/10 davha227@student.liu.se| 
  []
 
 File: logotyp.png Graphic file (type png)
 <use logotyp.png>
-Package pdftex.def Info: logotyp.png used on input line 127.
+Package pdftex.def Info: logotyp.png used on input line 173.
 (pdftex.def)             Requested size: 72.2698pt x 72.2698pt.
  [2] (./template.toc)
 \tf@toc=\write3
@@ -906,11 +962,11 @@ Package pdftex.def Info: logotyp.png used on input line 127.
 
 File: logotyp.png Graphic file (type png)
  <use logotyp.png>
-Package pdftex.def Info: logotyp.png used on input line 133.
+Package pdftex.def Info: logotyp.png used on input line 179.
 (pdftex.def)             Requested size: 72.2698pt x 72.2698pt.
  [3]
 LaTeX Font Info:    Try loading font information for TS1+kurier on input line 1
-40.
+86.
 
 (/usr/local/texlive/2013/texmf-dist/tex/latex/kurier/ts1kurier.fd
 File: ts1kurier.fd 2008/07/22 v0.995 font definition file for TS1/kurier (MW)
@@ -918,33 +974,46 @@ File: ts1kurier.fd 2008/07/22 v0.995 font definition file for TS1/kurier (MW)
 File: logotyp.png Graphic file (type png)
 
 <use logotyp.png>
-Package pdftex.def Info: logotyp.png used on input line 158.
+Package pdftex.def Info: logotyp.png used on input line 204.
 (pdftex.def)             Requested size: 57.81606pt x 57.81606pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 210--212
+
+ []
+
+LaTeX Font Info:    Try loading font information for T1+cmtt on input line 214.
+
+(/usr/local/texlive/2013/texmf-dist/tex/latex/base/t1cmtt.fd
+File: t1cmtt.fd 1999/05/25 v2.5h Standard LaTeX font definitions
+)
 File: logotyp.png Graphic file (type png)
- <use logotyp.png>
-Package pdftex.def Info: logotyp.png used on input line 167.
+
+<use logotyp.png>
+Package pdftex.def Info: logotyp.png used on input line 222.
 (pdftex.def)             Requested size: 72.2698pt x 72.2698pt.
  [1] (./template.aux) ) 
 Here is how much of TeX's memory you used:
- 5948 strings out of 493315
- 82464 string characters out of 6137904
- 148093 words of memory out of 5000000
- 9232 multiletter control sequences out of 15000+600000
- 71219 words of font info for 65 fonts, out of 8000000 for 9000
+ 7973 strings out of 493315
+ 110281 string characters out of 6137904
+ 201913 words of memory out of 5000000
+ 11225 multiletter control sequences out of 15000+600000
+ 74662 words of font info for 67 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
- 38i,16n,43p,240b,380s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/local/texlive/2013/texmf-dist/fonts/enc/dvips/kuri
-er/rm-kurier.enc}{/usr/local/texlive/2013/texmf-dist/fonts/enc/dvips/kurier/sy-
-kurier.enc}{/usr/local/texlive/2013/texmf-dist/fonts/enc/dvips/kurier/mi-kurier
-.enc}{/usr/local/texlive/2013/texmf-dist/fonts/enc/dvips/kurier/ts1-kurier.enc}
-{/usr/local/texlive/2013/texmf-dist/fonts/enc/dvips/kurier/ec-kurier.enc}</usr/
-local/texlive/2013/texmf-dist/fonts/type1/nowacki/kurier/kurierb.pfb></usr/loca
-l/texlive/2013/texmf-dist/fonts/type1/nowacki/kurier/kurierr.pfb></usr/local/te
-xlive/2013/texmf-dist/fonts/type1/nowacki/kurier/kurierri.pfb>
-Output written on template.pdf (4 pages, 78295 bytes).
+ 59i,17n,122p,240b,859s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/local/texlive/2013/texmf-dist/fonts/enc/dvips/cm-s
+uper/cm-super-t1.enc}{/usr/local/texlive/2013/texmf-dist/fonts/enc/dvips/kurier
+/rm-kurier.enc}{/usr/local/texlive/2013/texmf-dist/fonts/enc/dvips/kurier/sy-ku
+rier.enc}{/usr/local/texlive/2013/texmf-dist/fonts/enc/dvips/kurier/mi-kurier.e
+nc}{/usr/local/texlive/2013/texmf-dist/fonts/enc/dvips/kurier/ts1-kurier.enc}{/
+usr/local/texlive/2013/texmf-dist/fonts/enc/dvips/kurier/ec-kurier.enc}</usr/lo
+cal/texlive/2013/texmf-dist/fonts/type1/nowacki/kurier/kurierb.pfb></usr/local/
+texlive/2013/texmf-dist/fonts/type1/nowacki/kurier/kurierr.pfb></usr/local/texl
+ive/2013/texmf-dist/fonts/type1/nowacki/kurier/kurierri.pfb></usr/local/texlive
+/2013/texmf-dist/fonts/type1/public/cm-super/sftt1000.pfb>
+Output written on template.pdf (4 pages, 98880 bytes).
 PDF statistics:
- 43 PDF objects out of 1000 (max. 8388607)
- 31 compressed objects within 1 object stream
+ 48 PDF objects out of 1000 (max. 8388607)
+ 35 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  6 words of extra memory for PDF output out of 10000 (max. 10000000)
 

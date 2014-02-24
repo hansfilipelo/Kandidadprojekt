@@ -16,12 +16,58 @@
 \usepackage{textcomp}
 \usepackage[math]{kurier}
 \usepackage[T1]{fontenc}
+\usepackage{listings}
+\usepackage{xcolor}
 
 \addto\captionsswedish{
   \renewcommand{\contentsname}%
     {Innehållsförteckning}%
 }
-
+\definecolor{listinggray}{gray}{0.9}
+\definecolor{lbcolor}{rgb}{0.9,0.9,0.9}
+\lstset{
+backgroundcolor=\color{lbcolor},
+    tabsize=4,    
+%   rulecolor=,
+    language=[GNU]C++,
+        basicstyle=\scriptsize,
+        upquote=true,
+        aboveskip={1.5\baselineskip},
+        columns=fixed,
+        showstringspaces=false,
+        extendedchars=false,
+        breaklines=true,
+        prebreak = \raisebox{0ex}[0ex][0ex]{\ensuremath{\hookleftarrow}},
+        frame=single,
+        numbers=left,
+        showtabs=false,
+        showspaces=false,
+        showstringspaces=false,
+        identifierstyle=\ttfamily,
+        keywordstyle=\color[rgb]{0,0,1},
+        commentstyle=\color[rgb]{0.026,0.112,0.095},
+        stringstyle=\color[rgb]{0.627,0.126,0.941},
+        numberstyle=\color[rgb]{0.205, 0.142, 0.73},
+%        \lstdefinestyle{C++}{language=C++,style=numbers}’.
+}
+\lstset{
+    backgroundcolor=\color{lbcolor},
+    tabsize=4,
+  language=C++,
+  captionpos=b,
+  tabsize=3,
+  frame=lines,
+  numbers=left,
+  numberstyle=\tiny,
+  numbersep=5pt,
+  breaklines=true,
+  showstringspaces=false,
+  basicstyle=\footnotesize,
+%  identifierstyle=\color{magenta},
+  keywordstyle=\color[rgb]{0,0,1},
+  commentstyle=\color{Darkgreen},
+  stringstyle=\color{red}
+  }
 
 \renewcommand{\abstractnamefont}{\normalfont\normalsize\bfseries}
 \renewcommand{\abstracttextfont}{\normalfont\small}
@@ -160,7 +206,16 @@ F(s)= K\frac{\tau_D+1}{\beta\tau+1}\frac{\tau_I+1}{\tau_I+\gamma}
   \caption{Våran logotyp} %figurtext.
 \end{figure}
 
+\subsection{Kod}
+Ibland vill man skriva kod, då kan man skriva i annan font. Förslagsvis:
+\\ % <--- detta betyder ny rad btw.  
 
+\begin{lstlisting}
+for (int i=0; i<iterations;i++)
+{
+do something
+}
+\end{lstlisting}
 
 
 
