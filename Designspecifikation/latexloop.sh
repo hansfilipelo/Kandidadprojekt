@@ -15,6 +15,6 @@ FILE=$1
 while [ true ]
 do
     /usr/bin/git pull --commit
-    /usr/texbin/pdflatex $FILE
+    /usr/texbin/pdflatex -halt-on-error $FILE
     sleep 15
 done
