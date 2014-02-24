@@ -1,6 +1,6 @@
 # Compiled files
 *.aux
 *.log
-template.pdf'
+Designspecifikation/*.pdf
 *.toc
 

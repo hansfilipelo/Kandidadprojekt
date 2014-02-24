@@ -17,4 +17,4 @@ do
     /usr/bin/git pull --commit
     /usr/texbin/pdflatex $FILE
     sleep 15
-fi
+done
