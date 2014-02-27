@@ -14,61 +14,12 @@
 \usepackage{tocloft}
 \usepackage{adjustbox}
 \usepackage{textcomp}
-\usepackage[math]{kurier}
 \usepackage[T1]{fontenc}
 \usepackage{listings}
 \usepackage{xcolor}
-\usepackage{wrapfig}
 
-\addto\captionsswedish{
-  \renewcommand{\contentsname}%
-    {Innehållsförteckning}%
-}
-\definecolor{listinggray}{gray}{0.9}
-\definecolor{lbcolor}{rgb}{0.9,0.9,0.9}
-\lstset{
-backgroundcolor=\color{lbcolor},
-    tabsize=4,    
-%   rulecolor=,
-    language=[GNU]C++,
-        basicstyle=\scriptsize,
-        upquote=true,
-        aboveskip={1.5\baselineskip},
-        columns=fixed,
-        showstringspaces=false,
-        extendedchars=false,
-        breaklines=true,
-        prebreak = \raisebox{0ex}[0ex][0ex]{\ensuremath{\hookleftarrow}},
-        frame=single,
-        numbers=left,
-        showtabs=false,
-        showspaces=false,
-        showstringspaces=false,
-        identifierstyle=\ttfamily,
-        keywordstyle=\color[rgb]{0,0,1},
-        commentstyle=\color[rgb]{0.026,0.112,0.095},
-        stringstyle=\color[rgb]{0.627,0.126,0.941},
-        numberstyle=\color[rgb]{0.205, 0.142, 0.73},
-%        \lstdefinestyle{C++}{language=C++,style=numbers}’.
-}
-\lstset{
-    backgroundcolor=\color{lbcolor},
-    tabsize=4,
-  language=C++,
-  captionpos=b,
-  tabsize=3,
-  frame=lines,
-  numbers=left,
-  numberstyle=\tiny,
-  numbersep=5pt,
-  breaklines=true,
-  showstringspaces=false,
-  basicstyle=\footnotesize,
-%  identifierstyle=\color{magenta},
-  keywordstyle=\color[rgb]{0,0,1},
-  commentstyle=\color{Darkgreen},
-  stringstyle=\color{red}
-  }
+%-----------------------------------------------------------------
+%marginaler
 
 \renewcommand{\abstractnamefont}{\normalfont\normalsize\bfseries}
 \renewcommand{\abstracttextfont}{\normalfont\small}
@@ -83,7 +34,8 @@ backgroundcolor=\color{lbcolor},
 	\addtolength{\textwidth}{1in}
 
 
-
+%-----------------------------------------------------------------
+%header and footer
 
 \pagestyle{fancy}
 \lhead{
@@ -99,7 +51,8 @@ backgroundcolor=\color{lbcolor},
 
 \renewcommand{\contentsname}{Innehållsförteckning}
 
-
+%-----------------------------------------------------------------
+%Första sidan
 
 \begin{document}
 	\pagestyle{fancy}
@@ -131,6 +84,8 @@ backgroundcolor=\color{lbcolor},
 	\end{center}
 	\vspace{2cm}
 	\newpage
+%-----------------------------------------------------------------
+%Projektidentitet
 	
 	\vspace*{\fill}
 		\begingroup
@@ -166,47 +121,24 @@ backgroundcolor=\color{lbcolor},
 		\\[0.5cm]
 		\textbf{Handledare}: Peter Johansson, 013-28 1345 peter.a.johansson@liu.se
 
-		
-
 				\end{center}
 		\endgroup
 	\vspace*{\fill}
 \newpage
 
+%-----------------------------------------------------------------
+%Innehållsföreteckning
 
+\addto\captionsswedish{
+  \renewcommand{\contentsname}%
+    {Innehållsförteckning}%
 	
+	
+}
+
 \tableofcontents
 \thispagestyle{fancy}
 \newpage
-
-\pagenumbering{arabic}
-\section{Saker som kan vara bra att ha!}
-
-\subsection{Punktlista}
-\begin{itemize}
-  \item Detta är en punktlista! 
-  \item Punktlistor kan innehålla matte. $T_R \leq 10\%$
-\end{itemize}
-
-\subsection{Ekvationer}
-
-som vi ser i ekvation~\ref{eq:test} %såhär refererar man till ekvationer och bilder.
-
-\begin{equation}
-F(s)= K\frac{\tau_D+1}{\beta\tau+1}\frac{\tau_I+1}{\tau_I+\gamma}	
-	\label{eq:test} % glöm inte att ge eran ekvation en label för att kunna referera till den
-\end{equation} 
-
-\subsection{Bilder}
-
-
-\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
-  \begin{center}
-  \includegraphics[keepaspectratio=true,scale=0.8]{logotyp}  %skala och filnamn. 
-  \end{center}
-  \caption{Våran logotyp} %figurtext.
-\end{figure}
-
 
 
 \section{Kommunikationsmodul}
@@ -234,10 +166,12 @@ Fall 4: PC signalerar nödstop, se figur~\ref{fig:case4flow}. \\
 \end{figure}
 
 \subsection{Komponenter}
-AVR processor av typen ATMega1284. \\
-Blåtandsdongel, Firefly, BlueSmirf Gold. \\ 
-LCD-Display. \\
-Två stycken knappar. \\
+\begin{itemize}
+  \item AVR processor av typen ATMega1284
+  \item Blåtandsdongel, Firefly, BlueSmirf Gold
+  \item LCD-Display
+  \item Två stycken knappar
+\end{itemize}
 
 \subsection{Buss}
 Mellan processorerna kommer SPI-kommunikation att användas. Kommunikationsmodulen agerar master medan styr- och sensormodul agerar slave. 
@@ -343,6 +277,80 @@ do something hej hej
 }
 \end{lstlisting}
 
+%---------------------------------------------------------------
+\section{Saker som kan vara bra att ha!}
 
+\subsection{Punktlista}
+\begin{itemize}
+  \item Detta är en punktlista! 
+  \item Punktlistor kan innehålla matte. $T_R \leq 10\%$
+\end{itemize}
+
+\subsection{Ekvationer}
+
+som vi ser i ekvation~\ref{eq:test} %såhär refererar man till ekvationer och bilder.
+
+\begin{equation}
+F(s)= K\frac{\tau_D+1}{\beta\tau+1}\frac{\tau_I+1}{\tau_I+\gamma}	
+	\label{eq:test} % glöm inte att ge eran ekvation en label för att kunna referera till den
+\end{equation} 
+
+\subsection{Bilder}
+
+
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,scale=0.8]{logotyp}  %skala och filnamn. 
+  \end{center}
+  \caption{Våran logotyp} %figurtext.
+\end{figure}
+%----------------------------------------------------------------
+%C-kod formatering
+
+\definecolor{listinggray}{gray}{0.9}
+\definecolor{lbcolor}{rgb}{0.9,0.9,0.9}
+\lstset{
+backgroundcolor=\color{lbcolor},
+    tabsize=4,    
+%   rulecolor=,
+    language=[GNU]C++,
+        basicstyle=\scriptsize,
+        upquote=true,
+        aboveskip={1.5\baselineskip},
+        columns=fixed,
+        showstringspaces=false,
+        extendedchars=false,
+        breaklines=true,
+        prebreak = \raisebox{0ex}[0ex][0ex]{\ensuremath{\hookleftarrow}},
+        frame=single,
+        numbers=left,
+        showtabs=false,
+        showspaces=false,
+        showstringspaces=false,
+        identifierstyle=\ttfamily,
+        keywordstyle=\color[rgb]{0,0,1},
+        commentstyle=\color[rgb]{0.026,0.112,0.095},
+        stringstyle=\color[rgb]{0.627,0.126,0.941},
+        numberstyle=\color[rgb]{0.205, 0.142, 0.73},
+%        \lstdefinestyle{C++}{language=C++,style=numbers}’.
+}
+\lstset{
+    backgroundcolor=\color{lbcolor},
+    tabsize=4,
+  language=C++,
+  captionpos=b,
+  tabsize=3,
+  frame=lines,
+  numbers=left,
+  numberstyle=\tiny,
+  numbersep=5pt,
+  breaklines=true,
+  showstringspaces=false,
+  basicstyle=\footnotesize,
+%  identifierstyle=\color{magenta},
+  keywordstyle=\color[rgb]{0,0,1},
+  commentstyle=\color{Darkgreen},
+  stringstyle=\color{red}
+  }
 
 \end{document}
