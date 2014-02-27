@@ -18,6 +18,7 @@
 \usepackage[T1]{fontenc}
 \usepackage{listings}
 \usepackage{xcolor}
+\usepackage{wrapfig}
 
 \addto\captionsswedish{
   \renewcommand{\contentsname}%
@@ -206,9 +207,6 @@ F(s)= K\frac{\tau_D+1}{\beta\tau+1}\frac{\tau_I+1}{\tau_I+\gamma}
   \caption{Våran logotyp} %figurtext.
 \end{figure}
 
-\subsection{Kod}
-Ibland vill man skriva kod, då kan man skriva i annan font. Förslagsvis:
-\\ % <--- detta betyder ny rad btw.  
 
 
 \section{Kommunikationsmodul}
@@ -218,19 +216,125 @@ Kommunikationsmodulen kommer alltså att leverera sensordata mellan roboten och 
 \subsection{Kommunikationsfall}
 Ett par exempel på kommunikationsfall. \\
 
-Kommunikationsmodulen skickar data mellan de olika enheterna. Ett par olika kommunikationsfall demonstreras nedan i flödesdiagrammet i figur~\ref{fig:flowcase1}. \\
+Kommunikationsmodulen skickar data mellan de olika enheterna. Ett par olika kommunikationsfall demonstreras nedan i flödesdiagrammet i respektive figurer.
 
-Fall 1: Kommunikationsmodulen skickar manuella styrkommandon till styrmodulen\\
-Fall 2: Sensormodulen signalerar att ny sensordata är redo.\\
-Fall 3: Kartdata skickas från kommunikationsmodulen till PC. \\
-Fall 4: PC signalerar nödstop \\
+Fall 1: Kommunikationsmodulen skickar manuella styrkommandon till styrmodulen,% se figur~\ref{fig:case1flow}.
+Fall 2: Sensormodulen signalerar att ny sensordata är redo, se % figur~\ref{fig:case2flow}.\\
+Fall 3: Kartdata skickas från kommunikationsmodulen till PC, se % figur~\ref{fig:case3flow}. \\
+Fall 4: PC signalerar nödstop, se figur~\ref{fig:case4flow}. \\
+
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
-  \includegraphics[keepaspectratio=true,scale=0.8]{logotyp}  %skala och filnamn. 
+  \includegraphics[keepaspectratio=true,scale=0.4]{SPIbild002.jpg}  %skala och filnamn. 
   \end{center}
-  \caption{Våran logotyp} %figurtext.
+  \caption{Flödesdiagram för Fall 1.} %figurtext.
+  \label{fig:case4flow}
+  
 \end{figure}
+
+\subsection{Komponenter}
+AVR processor av typen ATMega1284. \\
+Blåtandsdongel, Firefly, BlueSmirf Gold. \\ 
+LCD-Display. \\
+Två stycken knappar. \\
+
+\subsection{Buss}
+Mellan processorerna kommer SPI-kommunikation att användas. Kommunikationsmodulen agerar master medan styr- och sensormodul agerar slave. 
+
+\subsubsection{Styrord}
+Kommunikation kommer starta med att ett styrord skickas. Ett styrord kommer bestå av ett 8-bitars paket (xxxxyyyy). De fyra mest signifikanta bitarna står för kommandot medan de 4 minst signifikanta bitarna står för antalet byte som kommer att följa som argument till kommandot. I tabellerna nedan visas detta mer utförligt. \\
+
+ \begin{tabular}{| p{3cm} | p{3.5cm} |}
+	    \hline
+		\textbf{xxxx} & \textbf{Kommandonr.} \\ \hline
+		0000 & 1 \\ \hline
+		0001 & 2 \\ \hline
+		... & ... \\ \hline
+		1111 & 17 \\ \hline
+	    \end{tabular}
+		\\
+
+ \begin{tabular}{| p{3cm} | p{3.5cm} |}
+	    \hline
+		\textbf{yyyy} & \textbf{Antal bytes data} \\ \hline
+		0000 & 1 \\ \hline
+		0001 & 2 \\ \hline
+		... & ... \\ \hline
+		1111 & 17 \\ \hline
+	    \end{tabular}
+		\vspace{0.5cm}
+		
+		Detta betyder alltså att master kan skicka 16 unika kommandon till respektive slave och varje slave kan skicka 16 unika kommandon till master. Kommandon kan följas av ett upp till och med 17 bytes av data. I händelsen att ett meddelande inte behöver skicka data så skickas en byte nollor.
+
+
+		Kommandon kommer att kunna betyda olika på de olika processorerna. 0001 kan t ex på slave1 betyda åk rakt längs väggen, på slave2 betyda läs av sensor 3, och på master uppdatera kartabstraktion med följande värden. Om likadana kommandon finns på flera processorer så ska de ha samma kodord på alla processorer som delar kommandot. Ett kommando är reserverat på båda slaves för ett kommando från master som säger du kan skicka information nu. En slave kommer också att kunna skicka ett avbrott till Master för att be om kommunikation. En lista av de olika kodorden finns i appendix. 
+		
+		På både mottagar- och sändarsida kommer en buffer i form av en länkad lista finnas. Denna lista fylls med data som tas emot och läses från när data ska skickas. 
+
+\subsubsection{Ack-paketets struktur}
+Ett sista paket som följer direkt efter datapaketen kommer att skickas. Detta paket är ack-paketet och kommer vara additionen av samtliga datapaketets lägsta bit. Detta ger mottagarsidan en möjlighet att kontrollera att datapaketen mottogs korrekt.
+Både sändaren och mottagaren skickar ett sådant ack-paket samtidigt, detta ger oss möjlighet att göra om sändningen direkt, utan att lämna ett eventuellt avbrott. Försök att skicka data utförs tre gånger, om det fortfarande inte lyckats skicka korrekt data, avbryts försöken och lämnas över till felhantering. 
+
+\subsection{LCD-Display}
+Sensordata och annan information från roboten kommer att visas på en alfanumerisk-display, närmare bestämt  LCD JM162A. Displayen kommer att kunna visa 2 rader × 16 tecken.
+Displayen kommer anslutas till processorn enligt kretschemat i appendix ?. 
+Vid varje uppstart kommer initiering av LCD-display göras och då följa nedanstående flödesschema. Varje steg startas med att processorn skickar ett kommando till ingångarna på LCD-displayen. Kommandon finns specificerade i databladet, se (fotnot https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/jm162a.pdf). 
+
+\subsubsection{Uppstart}
+	
+Vid uppstart av systemet kommer LCD-displayen att initieras enligt flödesschemat~\ref{fig:flowlcdstart}
+
+\begin{itemize}
+  \item Power ON - sätter på strömförsörjningen
+  \item Function set - Sätter överförsdatalängden till 8 bitar och displayläget till 2-rader.
+  \item Display ON - slår på displayen och slår på markören. 
+  \item Entry mode set - sätter markörens riktning vid skrivning
+  \item End - Slut på initieringen
+\end{itemize}
+
+\begin{figure}[htp]
+	  \begin{center}
+	  \includegraphics[keepaspectratio=true,scale=0.4]{startup}  %skala och filnamn. 
+	  \end{center}
+	  \caption{Uppstart av LCD-display} %figurtext.
+	  \label{fig:flowlcdstart}
+	\end{figure}
+
+\newpage
+
+
+\subsubsection{Skrivning}
+
+Vid skrivning till LCD-displayen kommer detta ske enligt flödesschemat~\ref{fig:flowlcdwrite}
+\begin{itemize}
+  \item Start write procedure - Startar skrivning till LCD-displayen
+  \item Clear - Rensar hela displayen
+  \item Set DDRAM - gör DDRAMet tillgängligt
+  \item Write data to RAM - Skrivning av data in till RAM ifrån DDRAM
+\end{itemize}
+
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,scale=0.4]{write}  %skala och filnamn. 
+  \end{center}
+  \caption{Skrivning till LCD-display} %figurtext.
+  \label{fig:flowlcdwrite}
+\end{figure}
+
+\subsection{Blåtand}
+Blåtandskommunikationen kommer att utföras av ett Firefly-Bluesmirf gold (FBG) modem som parkopplas mot en persondator.
+FBG kommer att skicka information till persondator via protokollet RS232 enligt vad som är angivet på Vanheden. 
+Se schema i appendixet Scheman för anslutning av TxD och RxD, vilka sköter sändning och mottagning av data.
+\subsection{Switchar}
+En switch ska styra om roboten exekverar programkod för autonom styrning eller manuell styrning. Ett avbrott signalerar till processorn att den ska byta programkod, avbrottet ligger på pin16 (INT0) se appendix A. 
+Av/På-knappen styr strömförsörjningen till samtliga moduler. 
+
+
+\subsection{Kod}
+Ibland vill man skriva kod, då kan man skriva i annan font. Förslagsvis:
+\\ % <--- detta betyder ny rad btw.  
+
 \begin {lstlisting}
 
 for (int i=0; i<iterations;i++)
