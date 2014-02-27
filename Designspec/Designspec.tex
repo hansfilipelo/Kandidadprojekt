@@ -233,13 +233,71 @@ Av/På-knappen styr strömförsörjningen till samtliga moduler.
 
 %-----------------------------------------------------------------
 %Styrmodul
-\section{Styrmodul}
 
+\newpage
+\section{Styrmodul}
+Styrmodulens (slave) huvudkomponent kommer  att bestå av en AVR-processor, Atmel ATmega1284p som får instruktioner från kommunikationsmodulen (master) via bussen. Processorn kommunicerar även med drivkretsen på chassit. Chassit är av typen Terminator som drivs av en NiMH- eller NiCd-ackumulator på 7.2V. Det har även fyra stycken växlade DC-motorer som är kopplade till varsitt drivhjul. 
+
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,scale=0.4]{styrmodul}  %skala och filnamn. 
+  \end{center}
+  \caption{Översikt styrmodul} %figurtext.
+  \label{fig:flowlcdwrite}
+\end{figure}
 
 \subsection{Komponenter}
+\begin{itemize}
+	\item Chassi
+	\item Systemchip - Atmel ATmega1284p
+	\item Tryckknappar för debugging av styrfunktionalitet
+	\item Batteri, 7.2 V
+	\item Resetknapp
+\end{itemize}
+\newpage
+Motorerna kommer att styras parvis med två signaler per sida:
+\begin{itemize}
+	\item DIRL - Styr den vänstra motorns rotationsriktning
+	\item DIRR - Styr den högra motorns rotationsriktning
+	\item PWML - Pulsbreddmodulerad signal som styr den vänstra motorns hastighet
+	\item PWMR - Pulsbreddmodulerad signal som styr den högra motorns hastighet.
+\end{itemize}
+
+Dessa kopplas direkt från processorn till chassits drivkrets enligt bild.
+Styrmodulen kommer att vara ansluten till bussen med hjälp av MISO- och MOSI-pinnarna.
+
+\begin{itemize}
+	\item MISO - Master Input Slave Output, data skickas till master
+	\item MOSI - Master Output Slave Input, data skickas till slave
+	\item MASTERINT - Skickar avbrott till master
+	\item SLAVESELECT - Väljer denna processor som aktiv slav
+	\item SCK - Serial Clock, klocka från master
+\end{itemize}
+
+Utöver detta kommer en tryckknapp anslutas till RESET för att förhindra att felaktig programmering av processorn. 
+
+För fullständigt kopplingsschema - se Appendix. 
+
 \subsection{Reglering}
 \subsubsection{styralgoritmer}
+Det ska implementeras två olika avsökningsalgoritmer. De kommer användas beroende på vilket uppdrag roboten ska genomföra. Algoritmerna kommer att skrivas med hjälp av C++ och köras från processorns interna minne. 
+
 \subsubsection{PD-reglering av styrning}
+Styrmodulen kommer att få sensordata skickad till sig från sensormodulen. Denna sensordata kommer att användas till att PD-reglera riktningen då man följer en vägg. 
+
+Den proportionella delen av regleringen kommer fås från avståndet till vägg vid sidan av roboten. 
+
+$ep = Konstant*avståndssensordata$
+
+Den deriverande delen av regleringen kommer ges av linjär uppskattning av derivatan utefter de senaste mätvärdena. Derivatan ges alltså av: 
+
+$ed = Konstant*(data/antal sampels)$
+
+Totala felet ges då av: 
+
+$e = ed + ep$
+
+
 \subsubsection{kartabstraktion}
 \subsection{kartläggninsalgoritm}
 \subsection{Brandhärdssökning}
