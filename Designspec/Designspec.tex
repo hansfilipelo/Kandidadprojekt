@@ -16,7 +16,7 @@
 \usepackage{textcomp}
 \usepackage[T1]{fontenc}
 \usepackage{listings}
-\usepackage{xcolor}
+\usepackage{xcolor,colortbl}
 \usepackage{hyperref}
 
 \include{pagestyle}
@@ -47,8 +47,8 @@
 		\vspace{3pt} %Whitespace 3 pts
 	    \begin{tabular}{| p{3cm} | p{3cm} | p{3cm} |} %tabell, 4 horizontella |, 3 cm emellan dem.
 	    \hline %översta horizontella linjen.
-	    Granskad & Av vem & Datum \\ \hline % & -tecken för att "gå till nästa ruta" 
-		Godkänd & Av vem & Datum \\ \hline % avslutas med \\ och \hline.
+	    Granskad & Av vem & \today \\ \hline % & -tecken för att "gå till nästa ruta" 
+		Godkänd & Av vem & \today \\ \hline % avslutas med \\ och \hline.
 
 	    \end{tabular}
 	\end{center}
@@ -127,24 +127,31 @@ Fall 3: Kartdata skickas från kommunikationsmodulen till PC, se figur~\ref{fig:
 
 Fall 4: PC signalerar nödstop, se figur~\ref{fig:case4flow}. 
 
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,scale=0.5]{SPIbild002.jpg}  %skala och filnamn. 
+  \end{center}
+  \caption{Flödesdiagram för Fall 1.} %figurtext.
+  \label{fig:case1flow}
+\end{figure}
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
-  \includegraphics[keepaspectratio=true,scale=0.3]{SPIbild003.jpg}  %skala och filnamn. 
+  \includegraphics[keepaspectratio=true,scale=0.5]{SPIbild003.jpg}  %skala och filnamn. 
   \end{center}
   \caption{Flödesdiagram för Fall 2.} %figurtext.
   \label{fig:case2flow}
 \end{figure}
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
-  \includegraphics[keepaspectratio=true,scale=0.3]{SPIbild004.jpg}  %skala och filnamn. 
+  \includegraphics[keepaspectratio=true,scale=0.5]{SPIbild004.jpg}  %skala och filnamn. 
   \end{center}
   \caption{Flödesdiagram för Fall 3.} %figurtext.
   \label{fig:case3flow}
 \end{figure}
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
-  \includegraphics[keepaspectratio=true,scale=0.3]{SPIbild005.jpg}  %skala och filnamn. 
+  \includegraphics[keepaspectratio=true,scale=0.5]{SPIbild005.jpg}  %skala och filnamn. 
   \end{center}
   \caption{Flödesdiagram för Fall 4.} %figurtext.
   \label{fig:case4flow}
@@ -297,33 +304,94 @@ Utöver detta kommer en tryckknapp anslutas till RESET för att förhindra att f
 
 För fullständigt kopplingsschema - se Appendix. 
 
-\subsection{Reglering}
-\subsubsection{styralgoritmer}
+% ------------------- Reglering -----------------------
+
+\subsection{Styrning och kartläggning}
 Det ska implementeras två olika avsökningsalgoritmer. De kommer användas beroende på vilket uppdrag roboten ska genomföra. Algoritmerna kommer att skrivas med hjälp av C++ och köras från processorns interna minne. 
+
+\subsubsection{Kartläggninsalgoritm}
+
+Kartläggningsalgoritmen utformas så att roboten börjar med att placera sig så att en vägg går att finna på höger sida. Roboten kommer sedan följa väggen till dess att den kan rita upp ett slutet område att arbeta utifrån. Nästa steg blir att kartlägga områden som ännu ej är kartlagda. Om en köksö upptäcks kommer roboten se till att rita upp hela köksön innan den går vidare. På detta sätt fortsätter algoritmen till dess att alla delar av rummet är kartlagda. 
+
+\subsubsection{Brandhärdssökning}
+
+Brandhärdssökningen kommer att gå till på liknande sätt som kartläggningsalgoritmen, dock kommer den vara långsammare på grund av att varje ruta i området måste besökas. Efter att området slutits använder roboten sig av radavsökning för att systematiskt besöka alla rutor. Om en RFID-tag upptäcks ska detta noteras.
+
+\begin{itemize}
+\item{Vägg på höger sida}
+\item{Slut hela ytterväggen}
+\item{Radavsökning, måste besöka alla rutor i nätet}
+\item{Leta efter RFID-tag i varje ruta.}
+\end{itemize}
+
+\subsubsection{Kartabstraktion}
+Kartan kommer att abstraheras som en matris där objekt sparas. Objektklasserna kommer att ha en moderklass med namn MapSection de sedan ärver från. Tillgängliga underklasser kommer att vara:
+
+\begin{itemize}
+\item{EmptySection}
+\item{UnexploredSection}
+\item{Robot}
+\item{UnreachableSection}
+\item{Fire}
+\end{itemize}
+
+I Appendix finns fullständig objektdesign för dessa klasser. 
+
+\paragraph{EmptySection} 
+~\\
+EmptySection kommer att representera en tom sektion av kartan. Objektet EmptySection kan svara på frågan om huruvida den eller andra EmptySection som angränsar till ojektet i fråga i sin tur angränsar till outforskat område. 
+
+\paragraph{UnexploredSection} 
+~\\
+UnexploredSection kommer att representera en outforskad sektion av kartan. 
+
+\paragraph{Robot} 
+~\\
+Robot kommer att representera robotens position på kartan. 
+
+\paragraph{UnreachableSection} 
+~\\
+Unreachable section kommer att representera ett block på kartan som är inringat av väggar. Dessa block kommer kunna svara på om de representerar ett slutet område och även om de angränsar till outforskat område. 
+
+\paragraph{Fire} 
+~\\
+Fire kommer att representera plats där det finns eldhärd. 
+
+\subsection{Reglering}
 
 \subsubsection{PD-reglering av styrning}
 Styrmodulen kommer att få sensordata skickad till sig från sensormodulen. Denna sensordata kommer att användas till att PD-reglera riktningen då man följer en vägg. 
 
 Den proportionella delen av regleringen kommer fås från avståndet till vägg vid sidan av roboten. 
 
-$ep = \text{Konstant*avståndssensordata}$
+$ e_p = K*avst\text{\it{å}}ndssensordata $
 
-Den deriverande delen av regleringen kommer ges av linjär uppskattning av derivatan utefter de senaste mätvärdena. Derivatan ges alltså av: 
+Där K är en konstant- Den deriverande delen av regleringen kommer ges av linjär uppskattning av derivatan utefter de senaste mätvärdena. Derivatan ges alltså av: 
 
-$ed = \text{Konstant*(data/antal sampels)}$
+$ e_d = K*(data/antal_sampels) $
 
 Totala felet ges då av: 
 
-$e = ed + ep$
+$e = e_d + e_p$
 
-
-\subsubsection{kartabstraktion}
-\subsection{kartläggninsalgoritm}
-\subsection{Brandhärdssökning}
 \subsection{Kommunikation}
 
+\begin{tabular}{| p{0.25\textwidth} | p{0.1\textwidth} | p{0.1\textwidth} | p{0.1\textwidth} | p{0.35\textwidth} |}
+	\hline
+	\rowcolor{listinggray}
+	\textbf{Funktion} & \textbf{Kommando} & \textbf{Från} & \textbf{Till} & \textbf{Förklaring} \\ \hline
+	Nödstopp & 0x00 & Komm & Styr & Stanna alla motorer \\ \hline
+	Autonom styrning & 0x001 & Komm & Styr & Aktivera PD-reglering och styralgoritmer \\ \hline
+	Manuell styrning & 0x002 & Komm & Styr & Avaktivera PD-reglering och styralgoritmer \\ \hline
+	Framåt & 0x003 & Komm & Styr & Kör framåt \\ \hline
+	Bakåt & 0x004 & Komm & Styr & Kör bakåt \\ \hline
+	Vänster & 0x005 & Komm & Styr & Sväng vänster \\ \hline
+	Höger & 0x006 & Komm & Styr & Sväng höger \\ \hline
+	Sensordata & 0x007 & Styr & Komm & Ta emot sensordata från master \\ \hline
+\end{tabular}
+
 %-----------------------------------------------------------------
-%Styrmodul
+%Sensormodul
 \section{Sensormodul}
 Sensor modulen kommer ha till uppgift att hantera sensordata från robotens 8 sensorer och sända detta vidare till com-delen i ett hanterbart format. Sensormmdulen är byggd kring AVR-processorn ATMEL 1284p.
 
