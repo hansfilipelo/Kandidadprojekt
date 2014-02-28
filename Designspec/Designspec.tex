@@ -117,21 +117,38 @@ Ett par exempel på kommunikationsfall. \\
 
 Kommunikationsmodulen skickar data mellan de olika enheterna. Ett par olika kommunikationsfall demonstreras nedan i flödesdiagrammet i respektive figurer.
 
-Fall 1: Kommunikationsmodulen skickar manuella styrkommandon till styrmodulen,% se figur~\ref{fig:case1flow}.
-Fall 2: Sensormodulen signalerar att ny sensordata är redo, se % figur~\ref{fig:case2flow}.\\
-Fall 3: Kartdata skickas från kommunikationsmodulen till PC, se % figur~\ref{fig:case3flow}. \\
-Fall 4: PC signalerar nödstop, se figur~\ref{fig:case4flow}. \\
+Fall 1: Kommunikationsmodulen skickar manuella styrkommandon till styrmodulen, se figur~\ref{fig:case1flow}.
+
+Fall 2: Sensormodulen signalerar att ny sensordata är redo, se  figur~\ref{fig:case2flow}.
+
+Fall 3: Kartdata skickas från kommunikationsmodulen till PC, se figur~\ref{fig:case3flow}. 
+
+Fall 4: PC signalerar nödstop, se figur~\ref{fig:case4flow}. 
 
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
-  \includegraphics[keepaspectratio=true,scale=0.4]{SPIbild002.jpg}  %skala och filnamn. 
+  \includegraphics[keepaspectratio=true,scale=0.3]{SPIbild003.jpg}  %skala och filnamn. 
   \end{center}
-  \caption{Flödesdiagram för Fall 1.} %figurtext.
+  \caption{Flödesdiagram för Fall 2.} %figurtext.
+  \label{fig:case2flow}
+\end{figure}
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,scale=0.3]{SPIbild004.jpg}  %skala och filnamn. 
+  \end{center}
+  \caption{Flödesdiagram för Fall 3.} %figurtext.
+  \label{fig:case3flow}
+\end{figure}
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,scale=0.3]{SPIbild005.jpg}  %skala och filnamn. 
+  \end{center}
+  \caption{Flödesdiagram för Fall 4.} %figurtext.
   \label{fig:case4flow}
-  
 \end{figure}
 
+ 
 \subsection{Komponenter}
 \begin{itemize}
   \item AVR processor av typen ATMega1284
@@ -243,7 +260,7 @@ Styrmodulens (slave) huvudkomponent kommer  att bestå av en AVR-processor, Atme
   \includegraphics[keepaspectratio=true,scale=0.4]{styrmodul}  %skala och filnamn. 
   \end{center}
   \caption{Översikt styrmodul} %figurtext.
-  \label{fig:flowlcdwrite}
+  \label{fig:styr} %glöm inte att uppdatera era labels
 \end{figure}
 
 \subsection{Komponenter}
@@ -287,11 +304,11 @@ Styrmodulen kommer att få sensordata skickad till sig från sensormodulen. Denn
 
 Den proportionella delen av regleringen kommer fås från avståndet till vägg vid sidan av roboten. 
 
-$ep = Konstant*avståndssensordata$
+$ep = \text{Konstant*avståndssensordata}$
 
 Den deriverande delen av regleringen kommer ges av linjär uppskattning av derivatan utefter de senaste mätvärdena. Derivatan ges alltså av: 
 
-$ed = Konstant*(data/antal sampels)$
+$ed = \text{Konstant*(data/antal sampels)}$
 
 Totala felet ges då av: 
 
@@ -334,7 +351,7 @@ do something hej hej
 
 \subsection{Ekvationer}
 
-som vi ser i ekvation~\ref{eq:test} %såhär refererar man till ekvationer och bilder.
+som vi ser i ekvation ~\ref{eq:test} %såhär refererar man till ekvationer och bilder.
 
 \begin{equation}
 F(s)= K\frac{\tau_D+1}{\beta\tau+1}\frac{\tau_I+1}{\tau_I+\gamma}	
