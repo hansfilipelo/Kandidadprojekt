@@ -452,10 +452,10 @@ Sensormodulens uppgift är att A/D-omvandla signaler från robotens avståndssen
 I detta avsnitt beskrivs de olika komponenter som behövs i sensormodulen.
 
 \subsubsection{Systemchip}
-Modulens processor är Atmel ATmega1284p http://www.atmel.com/ja/jp/Images/doc8059.pdf. Processorn kommer kontinuerligt att ta in data från alla sensorer. Denna är programmerbar och kommer att innehålla de program som behövs för att konvertera signalerna till avstånd, tillryggalagd sträcka, positionering och detektion av RFID-tagg. På begäran av master, kommunikationsmodulen, kan data skickas från processorn till master via en buss.
+Modulens processor är Atmel ATmega1284p\footnote{http://www.atmel.com/ja/jp/Images/doc8059.pdf}. Processorn kommer kontinuerligt att ta in data från alla sensorer. Denna är programmerbar och kommer att innehålla de program som behövs för att konvertera signalerna till avstånd, tillryggalagd sträcka, positionering och detektion av RFID-tagg. På begäran av master, kommunikationsmodulen, kan data skickas från processorn till master via en buss.
 
 \subsubsection{RFID-sensor}
-För att kunna detektera RFID-taggen så krävs en sensor. Vi kommer att använda Parallax-Reader https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/rfid-reader-v21.pdf. 
+För att kunna detektera RFID-taggen så krävs en sensor. Vi kommer att använda Parallax-Reader\footnote{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/rfid-reader-v21.pdf}. 
 SOUT på RFID-sensorn, PIN 3, kopplas till port C, PIN 23, på processon. RFID-taggen skickar alltså sin data till processorn för behandling.
 
 Brus kan ge upphov en falsk RFID-läsning. För att ungå detta problem accepteras läsningen endast om två på varandra följande läsningar ger samma utslag på RFID-läsaren. Det är väldigt otroligt att brus skulle ge upphov till exakt samma signal under två på varandra följande läsningar.
