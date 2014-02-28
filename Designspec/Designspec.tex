@@ -107,6 +107,12 @@
 
 \pagenumbering{arabic}
 %-----------------------------------------------------------------
+%K
+
+
+
+
+%-----------------------------------------------------------------
 %Kommunikationsmodul
 
 
@@ -197,7 +203,24 @@ Kommunikation kommer starta med att ett styrord skickas. Ett styrord kommer best
 
 		Kommandon kommer att kunna betyda olika på de olika processorerna. 0001 kan t ex på slave1 betyda åk rakt längs väggen, på slave2 betyda läs av sensor 3, och på master uppdatera kartabstraktion med följande värden. Om likadana kommandon finns på flera processorer så ska de ha samma kodord på alla processorer som delar kommandot. Ett kommando är reserverat på båda slaves för ett kommando från master som säger du kan skicka information nu. En slave kommer också att kunna skicka ett avbrott till Master för att be om kommunikation. En lista av de olika kodorden finns i appendix. 
 		
-		På både mottagar- och sändarsida kommer en buffer i form av en länkad lista finnas. Denna lista fylls med data som tas emot och läses från när data ska skickas. 
+På både mottagar- och sändarsida kommer en buffer i form av en länkad lista finnas. Denna lista fylls med data som tas emot och läses från när data ska skickas. 
+
+
+\subsubsection{Busstrafik}
+På bussen kommer följande data att skickas.
+\paragraph{Styrkommandon från PC}
+~\\
+När styrkommandona skickas från PC, kommer kommunikationsmodulen skicka datat vidare till styrmodulen som utför kommandot.
+\paragraph{Konverterat sensordata}
+~\\
+Sensordata kommer att behandlas i sensormodulen och därefter kommer modulen att skicka ett avbrott till master om att data finns tillgängligt. Mastern svarar och startar bussöverföringen.
+\paragraph{Kartabstraktion så styrenheten kan välja färdväg}
+~\\
+Kartabstraktionen och robotens position kommer att uppdateras allt eftersom ny sensordata kommer in. Efter att ny sensordata har  mottagits av masters, skickar mastern ut sensordata till styrenheten.
+\paragraph{Kommandon för inställning av reglerparametrar.}
+~\\
+Kommandon mottags via blåtand från PC på mastern, som skickar detta vidare till styrenheten. 
+
 
 \subsubsection{Ack-paketets struktur}
 Ett sista paket som följer direkt efter datapaketen kommer att skickas. Detta paket är ack-paketet och kommer vara additionen av samtliga datapaketets lägsta bit. Detta ger mottagarsidan en möjlighet att kontrollera att datapaketen mottogs korrekt.
@@ -271,6 +294,9 @@ Styrmodulens (slave) huvudkomponent kommer  att bestå av en AVR-processor, Atme
   \caption{Översikt styrmodul} %figurtext.
   \label{fig:styr} %glöm inte att uppdatera era labels
 \end{figure}
+\newpage
+
+% ----------- Komponenter ------------------
 
 \subsection{Komponenter}
 \begin{itemize}
@@ -280,7 +306,7 @@ Styrmodulens (slave) huvudkomponent kommer  att bestå av en AVR-processor, Atme
 	\item Batteri, 7.2 V
 	\item Resetknapp
 \end{itemize}
-\newpage
+~\\
 Motorerna kommer att styras parvis med två signaler per sida:
 \begin{itemize}
 	\item DIRL - Styr den vänstra motorns rotationsriktning
@@ -288,7 +314,7 @@ Motorerna kommer att styras parvis med två signaler per sida:
 	\item PWML - Pulsbreddmodulerad signal som styr den vänstra motorns hastighet
 	\item PWMR - Pulsbreddmodulerad signal som styr den högra motorns hastighet.
 \end{itemize}
-
+~\\
 Dessa kopplas direkt från processorn till chassits drivkrets enligt bild.
 Styrmodulen kommer att vara ansluten till bussen med hjälp av MISO- och MOSI-pinnarna.
 
@@ -299,12 +325,13 @@ Styrmodulen kommer att vara ansluten till bussen med hjälp av MISO- och MOSI-pi
 	\item SLAVESELECT - Väljer denna processor som aktiv slav
 	\item SCK - Serial Clock, klocka från master
 \end{itemize}
-
+~\\
 Utöver detta kommer en tryckknapp anslutas till RESET för att förhindra att felaktig programmering av processorn. 
 
 För fullständigt kopplingsschema - se Appendix. 
 
-% ------------------- Reglering -----------------------
+\newpage
+% ------------------- Styrning och kartläggning -----------------------
 
 \subsection{Styrning och kartläggning}
 Det ska implementeras två olika avsökningsalgoritmer. De kommer användas beroende på vilket uppdrag roboten ska genomföra. Algoritmerna kommer att skrivas med hjälp av C++ och köras från processorns interna minne. 
@@ -375,7 +402,14 @@ Totala felet ges då av:
 $e = e_d + e_p$
 \newpage
 
+
+% ----------- Kommunikation ------------------
+
 \subsection{Kommunikation}
+
+Styrmodulen kommunicerar med kommunikationsmodulen (master) över en SPI-buss. Bussen kopplas in på dedikerade pinnar för SPI-bussen på ATmega1284p-processorn. Kommunikationsmodulen kommer att agera master på bussen. 
+
+De kommandon styrmodulen kommer att kunna hantera beskrivs i tabellen nedan. 
 
 \begin{tabular}{| p{0.25\textwidth} | p{0.1\textwidth} | p{0.1\textwidth} | p{0.1\textwidth} | p{0.35\textwidth} |}
 	\hline
@@ -388,9 +422,12 @@ $e = e_d + e_p$
 	Bakåt & 0x004 & Komm & Styr & Kör bakåt \\ \hline
 	Vänster & 0x005 & Komm & Styr & Sväng vänster \\ \hline
 	Höger & 0x006 & Komm & Styr & Sväng höger \\ \hline
-	Sensordata & 0x007 & Styr & Komm & Ta emot sensordata från master \\ \hline
+	Sensordata & 0x007 & Komm & Styr & Ta emot sensordata från master \\ \hline
 	Sätt regleringskonstanter & 0x007 & Komm & Styr & Sätter värden för konstanter till PD-reglering \\ \hline
 \end{tabular}
+
+\newpage
+
 
 %-----------------------------------------------------------------
 %Sensormodul
