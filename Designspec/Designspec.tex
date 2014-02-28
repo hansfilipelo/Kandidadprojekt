@@ -115,7 +115,7 @@
   \includegraphics[keepaspectratio=true,width=\linewidth]{overview}  %skala och filnamn. 
   \end{center}
   \caption{Översiktsbild av systemet} %figurtext.
-  \label{fig:case1flow}
+  \label{fig:overview}
 \end{figure}
 
 \subsection{Ingående delsystem}
@@ -139,7 +139,7 @@ De följande 4 anger hur många cykler, dvs. hela Bytes som datat som skickas i 
   \includegraphics[keepaspectratio=true,width=\linewidth]{bussprotokoll}  %skala och filnamn. 
   \end{center}
   \caption{Översiktsbild av bussprotokollet} %figurtext.
-  \label{fig:case1flow}
+  \label{fig:bussprotocol}
 \end{figure}
 
 
@@ -477,10 +477,10 @@ Sensormodulens uppgift är att A/D-omvandla signaler från robotens avståndssen
 I detta avsnitt beskrivs de olika komponenter som behövs i sensormodulen.
 
 \subsubsection{Systemchip}
-Modulens processor är Atmel ATmega1284p http://www.atmel.com/ja/jp/Images/doc8059.pdf. Processorn kommer kontinuerligt att ta in data från alla sensorer. Denna är programmerbar och kommer att innehålla de program som behövs för att konvertera signalerna till avstånd, tillryggalagd sträcka, positionering och detektion av RFID-tagg. På begäran av master, kommunikationsmodulen, kan data skickas från processorn till master via en buss.
+Modulens processor är Atmel ATmega1284p\footnote{http://www.atmel.com/ja/jp/Images/doc8059.pdf}. Processorn kommer kontinuerligt att ta in data från alla sensorer. Denna är programmerbar och kommer att innehålla de program som behövs för att konvertera signalerna till avstånd, tillryggalagd sträcka, positionering och detektion av RFID-tagg. På begäran av master, kommunikationsmodulen, kan data skickas från processorn till master via en buss.
 
 \subsubsection{RFID-sensor}
-För att kunna detektera RFID-taggen så krävs en sensor. Vi kommer att använda Parallax-Reader https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/rfid-reader-v21.pdf. 
+För att kunna detektera RFID-taggen så krävs en sensor. Vi kommer att använda Parallax-Reader\footnote{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/rfid-reader-v21.pdf}. 
 SOUT på RFID-sensorn, PIN 3, kopplas till port C, PIN 23, på processon. RFID-taggen skickar alltså sin data till processorn för behandling.
 
 Brus kan ge upphov en falsk RFID-läsning. För att ungå detta problem accepteras läsningen endast om två på varandra följande läsningar ger samma utslag på RFID-läsaren. Det är väldigt otroligt att brus skulle ge upphov till exakt samma signal under två på varandra följande läsningar.
@@ -522,7 +522,7 @@ Sensorerna kommer att vara placerade engligt bilden nedan.
   \includegraphics[keepaspectratio=true,scale=0.4]{kopplingsschema_styrmodul.png}  %skala och filnamn. 
   \end{center}
   \caption{Kopplingsschema styrmodul} %figurtext.
-  \label{fig:styr} %glöm inte att uppdatera era labels
+  \label{fig:kopplingstyr} %glöm inte att uppdatera era labels
 \end{figure}
 
 
