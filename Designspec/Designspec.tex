@@ -371,6 +371,7 @@ $ e_d = K*(data/antal_sampels) $
 Totala felet ges då av: 
 
 $e = e_d + e_p$
+\newpage
 
 \subsection{Kommunikation}
 
@@ -386,6 +387,7 @@ $e = e_d + e_p$
 	Vänster & 0x005 & Komm & Styr & Sväng vänster \\ \hline
 	Höger & 0x006 & Komm & Styr & Sväng höger \\ \hline
 	Sensordata & 0x007 & Styr & Komm & Ta emot sensordata från master \\ \hline
+	Sätt regleringskonstanter & 0x007 & Komm & Styr & Sätter värden för konstanter till PD-reglering \\ \hline
 \end{tabular}
 
 %-----------------------------------------------------------------
