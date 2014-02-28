@@ -435,7 +435,8 @@ De kommandon styrmodulen kommer att kunna hantera beskrivs i tabellen nedan.
 Sensor modulen kommer ha till uppgift att hantera sensordata från robotens 8 sensorer och sända detta vidare till com-delen i ett hanterbart format. Sensormmdulen är byggd kring AVR-processorn ATMEL 1284p.
 
 \subsection{Kopplingsschema}
-En bild på kopplingsschema finns bifogad.
+
+En beskrivande bild av kopplingsschemat finns i appendix A.
 
 Port A användas som en A/D-omvandlare. PIN 39-40 kopplas till avståndssensorer för långdistans, GP2Y3A003K0F, PIN 35-38 kopplas till avståndssensorer för kortdistans, GP2Y0A21YK, och PIN 34 kopplas till ett gyro för vinkelhastighetsmätning, MLX90609.
 
@@ -446,7 +447,15 @@ Till port C PIN 23 kopplas en RFID-läsare, Parallax-Reader. Port D används int
 PIN 31 och 11 kopplas till jord, PIN 13 kopplas till klocka från master, PIN 12 används inte i denna modul, PIN 9 kopplas till en avstudsad manuell switch, en resetknapp, PIN 32 kopplas till en spänningskälla på 5 V som används som referensspänning, PIN 10 kopplas också den till en spänningskälla på 5 V och PIN 30 kopplas genom ett LP-filter till samma externa spänningskälla.
 
 \subsection{Uppgift}
-Sensormodulens uppgift är att A/D-omvandla signaler från robotens avståndssensorer, RFID-sensor och gyro för att sedan utnyttja dessa digitala värden för att uppskatta avstånd, tillryggalagd sträcka och positionering.
+Sensormodulens uppgift är att A/D-omvandla signaler från robotens avståndssensorer, RFID-sensor och gyro för att sedan utnyttja dessa digitala värden för att uppskatta avstånd, tillryggalagd sträcka och positionering. I figur~\ref{fig:sensorflow} beskriver hanteringen av sensordata.
+
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,width=\linewidth]{sensorflode}  %skala och filnamn. 
+  \end{center}
+  \caption{Flödesdiagram för sensorhantering} %figurtext.
+  \label{fig:sensorflow}
+\end{figure}
 
 \subsection{Komponenter}
 I detta avsnitt beskrivs de olika komponenter som behövs i sensormodulen.
