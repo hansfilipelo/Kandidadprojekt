@@ -271,6 +271,9 @@ Styrmodulens (slave) huvudkomponent kommer  att bestå av en AVR-processor, Atme
   \caption{Översikt styrmodul} %figurtext.
   \label{fig:styr} %glöm inte att uppdatera era labels
 \end{figure}
+\newpage
+
+% ----------- Komponenter ------------------
 
 \subsection{Komponenter}
 \begin{itemize}
@@ -280,7 +283,7 @@ Styrmodulens (slave) huvudkomponent kommer  att bestå av en AVR-processor, Atme
 	\item Batteri, 7.2 V
 	\item Resetknapp
 \end{itemize}
-\newpage
+~\\
 Motorerna kommer att styras parvis med två signaler per sida:
 \begin{itemize}
 	\item DIRL - Styr den vänstra motorns rotationsriktning
@@ -288,7 +291,7 @@ Motorerna kommer att styras parvis med två signaler per sida:
 	\item PWML - Pulsbreddmodulerad signal som styr den vänstra motorns hastighet
 	\item PWMR - Pulsbreddmodulerad signal som styr den högra motorns hastighet.
 \end{itemize}
-
+~\\
 Dessa kopplas direkt från processorn till chassits drivkrets enligt bild.
 Styrmodulen kommer att vara ansluten till bussen med hjälp av MISO- och MOSI-pinnarna.
 
@@ -299,12 +302,13 @@ Styrmodulen kommer att vara ansluten till bussen med hjälp av MISO- och MOSI-pi
 	\item SLAVESELECT - Väljer denna processor som aktiv slav
 	\item SCK - Serial Clock, klocka från master
 \end{itemize}
-
+~\\
 Utöver detta kommer en tryckknapp anslutas till RESET för att förhindra att felaktig programmering av processorn. 
 
 För fullständigt kopplingsschema - se Appendix. 
 
-% ------------------- Reglering -----------------------
+\newpage
+% ------------------- Styrning och kartläggning -----------------------
 
 \subsection{Styrning och kartläggning}
 Det ska implementeras två olika avsökningsalgoritmer. De kommer användas beroende på vilket uppdrag roboten ska genomföra. Algoritmerna kommer att skrivas med hjälp av C++ och köras från processorns interna minne. 
@@ -375,7 +379,14 @@ Totala felet ges då av:
 $e = e_d + e_p$
 \newpage
 
+
+% ----------- Kommunikation ------------------
+
 \subsection{Kommunikation}
+
+Styrmodulen kommunicerar med kommunikationsmodulen (master) över en SPI-buss. Bussen kopplas in på dedikerade pinnar för SPI-bussen på ATmega1284p-processorn. Kommunikationsmodulen kommer att agera master på bussen. 
+
+De kommandon styrmodulen kommer att kunna hantera beskrivs i tabellen nedan. 
 
 \begin{tabular}{| p{0.25\textwidth} | p{0.1\textwidth} | p{0.1\textwidth} | p{0.1\textwidth} | p{0.35\textwidth} |}
 	\hline
@@ -388,9 +399,12 @@ $e = e_d + e_p$
 	Bakåt & 0x004 & Komm & Styr & Kör bakåt \\ \hline
 	Vänster & 0x005 & Komm & Styr & Sväng vänster \\ \hline
 	Höger & 0x006 & Komm & Styr & Sväng höger \\ \hline
-	Sensordata & 0x007 & Styr & Komm & Ta emot sensordata från master \\ \hline
+	Sensordata & 0x007 & Komm & Styr & Ta emot sensordata från master \\ \hline
 	Sätt regleringskonstanter & 0x007 & Komm & Styr & Sätter värden för konstanter till PD-reglering \\ \hline
 \end{tabular}
+
+\newpage
+
 
 %-----------------------------------------------------------------
 %Sensormodul
