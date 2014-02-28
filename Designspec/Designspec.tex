@@ -438,7 +438,15 @@ De kommandon styrmodulen kommer att kunna hantera beskrivs i tabellen nedan.
 %-----------------------------------------------------------------
 %Sensormodul
 \section{Sensormodul}
-Sensor modulen kommer ha till uppgift att hantera sensordata från robotens 8 sensorer och sända detta vidare till com-delen i ett hanterbart format. Sensormmdulen är byggd kring AVR-processorn ATMEL 1284p.
+Sensor modulen kommer ha till uppgift att hantera sensordata från robotens 8 sensorer och sända detta vidare till com-delen i ett hanterbart format. Sensormmdulen är byggd kring AVR-processorn ATMEL 1284p. En överblick av systemet visas i figur~\ref{fig:sensoroverview}.
+
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,width=\linewidth]{overblicksensor}  %skala och filnamn. 
+  \end{center}
+  \caption{Överblick av sensormodulen} %figurtext.
+  \label{fig:sensoroverview}
+\end{figure}
 
 \subsection{Kopplingsschema}
 
