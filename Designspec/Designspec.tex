@@ -144,7 +144,7 @@ Fall 4: PC signalerar nödstop, se figur~\ref{fig:case4flow}.
 \end{figure}
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
-  \includegraphics[keepaspectratio=true,width=\linewidth]{SPIbild004.jpg}  %skala och filnamn. 
+  \includegraphics[keepaspectratio=true,width=0.9\linewidth]{SPIbild004.jpg}  %skala och filnamn. 
   \end{center}
   \caption{Flödesdiagram för Fall 3.} %figurtext.
   \label{fig:case3flow}
@@ -424,7 +424,7 @@ SOUT på RFID-sensorn, PIN 3, kopplas till port C, PIN 23, på processon. RFID-t
 Brus kan ge upphov en falsk RFID-läsning. För att ungå detta problem accepteras läsningen endast om två på varandra följande läsningar ger samma utslag på RFID-läsaren. Det är väldigt otroligt att brus skulle ge upphov till exakt samma signal under två på varandra följande läsningar.
 
 \subsubsection{Avståndssensorer}
-Roboten kommer att ha sex stycken avståndssensorer varav två är för långdistans, GP2Y3A003K0F 40-300 cm https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/gp2y3a003k0f.pdf, och resterande 4 är för kortdistans, GP2Y0A21YK 10-80 cm https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/gp2y0a21.pdf. En av långdistanssensorerna placeras fram på roboten och den andra bak. De fyra kortdistanssensorerna placeras två stycken på vardera sida.
+Roboten kommer att ha sex stycken avståndssensorer varav två är för långdistans, GP2Y3A003K0F 40-300 cm som går att läsa om på Vanheden\footnote{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/gp2y3a003k0f.pdf}  och resterande 4 är för kortdistans, GP2Y0A21YK 10-80 cm som finns på Vanheden\footnote{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/gp2y0a21.pdf}. En av långdistanssensorerna placeras fram på roboten och den andra bak. De fyra kortdistanssensorerna placeras två stycken på vardera sida.
 
 PIN 6 på långdistanssensorerna och PIN 1 på kortdistanssenorerna kopplas till port A, PIN 39-40, respektive port A, PIN 35-38, på processorn. Sensorerna skickar alltså sin data till processorn för A/D-omvandling och tolkning.
 
@@ -433,7 +433,7 @@ GND på sensorerna sätts till jord, Vcc och Vin sätts till hög och PIN 3 på 
 Data från sensorerna behövs för att detektera väggar och skapa en kartabstraktion. Data från sensorerna för långdistans används dessutom för att beräkna tillryggalagd sträcka medans sensorerna på sidan används för att reglera körriktningen.
 
 \subsubsection{Vinkelhastighetssensor (gyro)}
-För att underlätta beräkningar av körriktningar och hålla koll på hur mycket roboten svängt används en vinkelhastighetssensor eller gyro, MLX90609 \hyperref{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/MLX90609_datasheet.pdf}. OUTAR på gyron, PIN 24, kopplas till port A, PIN 34, på processorn Gyron skickar alltså sin data till processorn för A/D-omvandling och tolkning. Gryot skickar en spänning mellan 0.5 och 4.5 V där 2.5 V motsvarar vinkelhatsighet noll.
+För att underlätta beräkningar av körriktningar och hålla koll på hur mycket roboten svängt används en vinkelhastighetssensor eller gyro, MLX90609 på Vanheden \footnote{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/MLX90609\_datasheet.pdf}. OUTAR på gyron, PIN 24, kopplas till port A, PIN 34, på processorn Gyron skickar alltså sin data till processorn för A/D-omvandling och tolkning. Gryot skickar en spänning mellan 0.5 och 4.5 V där 2.5 V motsvarar vinkelhatsighet noll.
 
 Körvinkel efter sväng kommer att beräknas med följande formel: \newline
 $ a(k) = a(k-1)+0.5T(\delta a(k)+\delta a(k-1))$ \\
