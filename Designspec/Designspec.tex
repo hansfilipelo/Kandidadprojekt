@@ -361,7 +361,12 @@ Unreachable section kommer att representera ett block på kartan som är inringa
 ~\\
 Fire kommer att representera plats där det finns eldhärd. 
 
+\newpage
+% ------------------- Reglering -----------------------
+
 \subsection{Reglering}
+
+Roboten kommer kunna styras dels autonomt men också manuellt via PC-mjukvara. 
 
 \subsubsection{PD-reglering av styrning}
 Styrmodulen kommer att få sensordata skickad till sig från sensormodulen. Denna sensordata kommer att användas till att PD-reglera riktningen då man följer en vägg. 
@@ -387,6 +392,7 @@ $e = e_d + e_p$
 Styrmodulen kommunicerar med kommunikationsmodulen (master) över en SPI-buss. Bussen kopplas in på dedikerade pinnar för SPI-bussen på ATmega1284p-processorn. Kommunikationsmodulen kommer att agera master på bussen. 
 
 De kommandon styrmodulen kommer att kunna hantera beskrivs i tabellen nedan. 
+~\\
 
 \begin{tabular}{| p{0.25\textwidth} | p{0.1\textwidth} | p{0.1\textwidth} | p{0.1\textwidth} | p{0.35\textwidth} |}
 	\hline
@@ -459,10 +465,25 @@ Där a(k) är ny körvinkel, da(k) är vinkelhastighet i svängen, a(k-1) är k�
 \subsection{Övergripande design}
 Sensorerna kommer att vara placerade engligt bilden nedan.
 
+% ----------------------------- Appendix -----------------------------------------
+% --------------------------------------------------------------------------------
+
 \newpage
 \appendix
 \newgeometry{left=2cm,right=2cm,bottom=2cm,top=2cm}
-\section{Appendix A}
+\section{Appendix A - Kopplingsscheman}
+
+\subsection{Kopplingsschema för styrmodul}
+
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,scale=0.4]{kopplingsschema_styrmodul.png}  %skala och filnamn. 
+  \end{center}
+  \caption{Kopplingsschema styrmodul} %figurtext.
+  \label{fig:styr} %glöm inte att uppdatera era labels
+\end{figure}
+
+
 \thispagestyle{empty}
 
 \newpage
