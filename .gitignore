@@ -3,4 +3,6 @@
 *.log
 *.pdf
 *.toc
+*.out
+*.gz
 

@@ -143,8 +143,8 @@ De följande 4 anger hur många cykler, dvs. hela Bytes som datat som skickas i 
 \end{figure}
 
 
-%-----------------------------------------------------------------
-%Kommunikationsmodul
+% ----------------------------- Kommunikationsmodul ------------------------------
+% --------------------------------------------------------------------------------
 
 
 \section{Kommunikationsmodul}
@@ -181,7 +181,7 @@ Fall 4: PC signalerar nödstop, se figur~\ref{fig:case4flow}.
 \end{figure}
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
-  \includegraphics[keepaspectratio=true,width=\linewidth]{SPIbild004.jpg}  %skala och filnamn. 
+  \includegraphics[keepaspectratio=true,width=0.9\linewidth]{SPIbild004.jpg}  %skala och filnamn. 
   \end{center}
   \caption{Flödesdiagram för Fall 3.} %figurtext.
   \label{fig:case3flow}
@@ -311,8 +311,8 @@ Se schema i appendixet Scheman för anslutning av TxD och RxD, vilka sköter sä
 En switch ska styra om roboten exekverar programkod för autonom styrning eller manuell styrning. Ett avbrott signalerar till processorn att den ska byta programkod, avbrottet ligger på pin16 (INT0) se appendix A. 
 Av/På-knappen styr strömförsörjningen till samtliga moduler. 
 
-%-----------------------------------------------------------------
-%Styrmodul
+% ----------------------------- Styrmodul --------------------------------------
+% --------------------------------------------------------------------------------
 
 \newpage
 \section{Styrmodul}
@@ -415,7 +415,12 @@ Unreachable section kommer att representera ett block på kartan som är inringa
 ~\\
 Fire kommer att representera plats där det finns eldhärd. 
 
+\newpage
+% ------------------- Reglering -----------------------
+
 \subsection{Reglering}
+
+Roboten kommer kunna styras dels autonomt men också manuellt via PC-mjukvara. 
 
 \subsubsection{PD-reglering av styrning}
 Styrmodulen kommer att få sensordata skickad till sig från sensormodulen. Denna sensordata kommer att användas till att PD-reglera riktningen då man följer en vägg. 
@@ -441,6 +446,7 @@ $e = e_d + e_p$
 Styrmodulen kommunicerar med kommunikationsmodulen (master) över en SPI-buss. Bussen kopplas in på dedikerade pinnar för SPI-bussen på ATmega1284p-processorn. Kommunikationsmodulen kommer att agera master på bussen. 
 
 De kommandon styrmodulen kommer att kunna hantera beskrivs i tabellen nedan. 
+~\\
 
 \begin{tabular}{| p{0.25\textwidth} | p{0.1\textwidth} | p{0.1\textwidth} | p{0.1\textwidth} | p{0.35\textwidth} |}
 	\hline
@@ -460,13 +466,23 @@ De kommandon styrmodulen kommer att kunna hantera beskrivs i tabellen nedan.
 \newpage
 
 
-%-----------------------------------------------------------------
-%Sensormodul
+% ----------------------------- Sensormodul --------------------------------------
+% --------------------------------------------------------------------------------
+
 \section{Sensormodul}
-Sensor modulen kommer ha till uppgift att hantera sensordata från robotens 8 sensorer och sända detta vidare till com-delen i ett hanterbart format. Sensormmdulen är byggd kring AVR-processorn ATMEL 1284p.
+Sensor modulen kommer ha till uppgift att hantera sensordata från robotens 8 sensorer och sända detta vidare till com-delen i ett hanterbart format. Sensormmdulen är byggd kring AVR-processorn ATMEL 1284p. En överblick av systemet visas i figur~\ref{fig:sensoroverview}.
+
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,width=\linewidth]{overblicksensor}  %skala och filnamn. 
+  \end{center}
+  \caption{Överblick av sensormodulen} %figurtext.
+  \label{fig:sensoroverview}
+\end{figure}
 
 \subsection{Kopplingsschema}
-En bild på kopplingsschema finns bifogad.
+
+En beskrivande bild av kopplingsschemat finns i appendix A.
 
 Port A användas som en A/D-omvandlare. PIN 39-40 kopplas till avståndssensorer för långdistans, GP2Y3A003K0F, PIN 35-38 kopplas till avståndssensorer för kortdistans, GP2Y0A21YK, och PIN 34 kopplas till ett gyro för vinkelhastighetsmätning, MLX90609.
 
@@ -477,7 +493,15 @@ Till port C PIN 23 kopplas en RFID-läsare, Parallax-Reader. Port D används int
 PIN 31 och 11 kopplas till jord, PIN 13 kopplas till klocka från master, PIN 12 används inte i denna modul, PIN 9 kopplas till en avstudsad manuell switch, en resetknapp, PIN 32 kopplas till en spänningskälla på 5 V som används som referensspänning, PIN 10 kopplas också den till en spänningskälla på 5 V och PIN 30 kopplas genom ett LP-filter till samma externa spänningskälla.
 
 \subsection{Uppgift}
-Sensormodulens uppgift är att A/D-omvandla signaler från robotens avståndssensorer, RFID-sensor och gyro för att sedan utnyttja dessa digitala värden för att uppskatta avstånd, tillryggalagd sträcka och positionering.
+Sensormodulens uppgift är att A/D-omvandla signaler från robotens avståndssensorer, RFID-sensor och gyro för att sedan utnyttja dessa digitala värden för att uppskatta avstånd, tillryggalagd sträcka och positionering. I figur~\ref{fig:sensorflow} beskriver hanteringen av sensordata.
+
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,width=\linewidth]{sensorflode}  %skala och filnamn. 
+  \end{center}
+  \caption{Flödesdiagram för sensorhantering} %figurtext.
+  \label{fig:sensorflow}
+\end{figure}
 
 \subsection{Komponenter}
 I detta avsnitt beskrivs de olika komponenter som behövs i sensormodulen.
@@ -492,7 +516,7 @@ SOUT på RFID-sensorn, PIN 3, kopplas till port C, PIN 23, på processon. RFID-t
 Brus kan ge upphov en falsk RFID-läsning. För att ungå detta problem accepteras läsningen endast om två på varandra följande läsningar ger samma utslag på RFID-läsaren. Det är väldigt otroligt att brus skulle ge upphov till exakt samma signal under två på varandra följande läsningar.
 
 \subsubsection{Avståndssensorer}
-Roboten kommer att ha sex stycken avståndssensorer varav två är för långdistans, GP2Y3A003K0F 40-300 cm https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/gp2y3a003k0f.pdf, och resterande 4 är för kortdistans, GP2Y0A21YK 10-80 cm https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/gp2y0a21.pdf. En av långdistanssensorerna placeras fram på roboten och den andra bak. De fyra kortdistanssensorerna placeras två stycken på vardera sida.
+Roboten kommer att ha sex stycken avståndssensorer varav två är för långdistans, GP2Y3A003K0F 40-300 cm som går att läsa om på Vanheden\footnote{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/gp2y3a003k0f.pdf}  och resterande 4 är för kortdistans, GP2Y0A21YK 10-80 cm som finns på Vanheden\footnote{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/gp2y0a21.pdf}. En av långdistanssensorerna placeras fram på roboten och den andra bak. De fyra kortdistanssensorerna placeras två stycken på vardera sida.
 
 PIN 6 på långdistanssensorerna och PIN 1 på kortdistanssenorerna kopplas till port A, PIN 39-40, respektive port A, PIN 35-38, på processorn. Sensorerna skickar alltså sin data till processorn för A/D-omvandling och tolkning.
 
@@ -501,7 +525,7 @@ GND på sensorerna sätts till jord, Vcc och Vin sätts till hög och PIN 3 på 
 Data från sensorerna behövs för att detektera väggar och skapa en kartabstraktion. Data från sensorerna för långdistans används dessutom för att beräkna tillryggalagd sträcka medans sensorerna på sidan används för att reglera körriktningen.
 
 \subsubsection{Vinkelhastighetssensor (gyro)}
-För att underlätta beräkningar av körriktningar och hålla koll på hur mycket roboten svängt används en vinkelhastighetssensor eller gyro, MLX90609 \hyperref{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/MLX90609_datasheet.pdf}. OUTAR på gyron, PIN 24, kopplas till port A, PIN 34, på processorn Gyron skickar alltså sin data till processorn för A/D-omvandling och tolkning. Gryot skickar en spänning mellan 0.5 och 4.5 V där 2.5 V motsvarar vinkelhatsighet noll.
+För att underlätta beräkningar av körriktningar och hålla koll på hur mycket roboten svängt används en vinkelhastighetssensor eller gyro, MLX90609 på Vanheden \footnote{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/MLX90609\_datasheet.pdf}. OUTAR på gyron, PIN 24, kopplas till port A, PIN 34, på processorn Gyron skickar alltså sin data till processorn för A/D-omvandling och tolkning. Gryot skickar en spänning mellan 0.5 och 4.5 V där 2.5 V motsvarar vinkelhatsighet noll.
 
 Körvinkel efter sväng kommer att beräknas med följande formel: \newline
 $ a(k) = a(k-1)+0.5T(\delta a(k)+\delta a(k-1))$ \\
@@ -513,10 +537,25 @@ Där a(k) är ny körvinkel, da(k) är vinkelhastighet i svängen, a(k-1) är k�
 \subsection{Övergripande design}
 Sensorerna kommer att vara placerade engligt bilden nedan.
 
+% ----------------------------- Appendix -----------------------------------------
+% --------------------------------------------------------------------------------
+
 \newpage
 \appendix
 \newgeometry{left=2cm,right=2cm,bottom=2cm,top=2cm}
-\section{Appendix A}
+\section{Appendix A - Kopplingsscheman}
+
+\subsection{Kopplingsschema för styrmodul}
+
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,scale=0.4]{kopplingsschema_styrmodul.png}  %skala och filnamn. 
+  \end{center}
+  \caption{Kopplingsschema styrmodul} %figurtext.
+  \label{fig:styr} %glöm inte att uppdatera era labels
+\end{figure}
+
+
 \thispagestyle{empty}
 
 \newpage
