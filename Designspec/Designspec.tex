@@ -17,6 +17,8 @@
 \usepackage[T1]{fontenc}
 \usepackage{listings}
 \usepackage{xcolor,colortbl}
+\usepackage{hyperref}
+
 \include{pagestyle}
 
 %-------------------------------------------------------------------
@@ -391,16 +393,54 @@ $e = e_d + e_p$
 %-----------------------------------------------------------------
 %Sensormodul
 \section{Sensormodul}
+Sensor modulen kommer ha till uppgift att hantera sensordata från robotens 8 sensorer och sända detta vidare till com-delen i ett hanterbart format. Sensormmdulen är byggd kring AVR-processorn ATMEL 1284p.
+
+\subsection{Kopplingsschema}
+En bild på kopplingsschema finns bifogad.
+
+Port A användas som en A/D-omvandlare. PIN 39-40 kopplas till avståndssensorer för långdistans, GP2Y3A003K0F, PIN 35-38 kopplas till avståndssensorer för kortdistans, GP2Y0A21YK, och PIN 34 kopplas till ett gyro för vinkelhastighetsmätning, MLX90609.
+
+Port B används för busskommunikation. PIN 3 skickar avbrott till master, PIN 5 används till slave select master, PIN 6 tar emot data från bussen, PIN7 skickar data till bussen och till PIN 8 kopplas klockan från master.
+
+Till port C PIN 23 kopplas en RFID-läsare, Parallax-Reader. Port D används inte i denna modul. 
+
+PIN 31 och 11 kopplas till jord, PIN 13 kopplas till klocka från master, PIN 12 används inte i denna modul, PIN 9 kopplas till en avstudsad manuell switch, en resetknapp, PIN 32 kopplas till en spänningskälla på 5 V som används som referensspänning, PIN 10 kopplas också den till en spänningskälla på 5 V och PIN 30 kopplas genom ett LP-filter till samma externa spänningskälla.
+
+\subsection{Uppgift}
+Sensormodulens uppgift är att A/D-omvandla signaler från robotens avståndssensorer, RFID-sensor och gyro för att sedan utnyttja dessa digitala värden för att uppskatta avstånd, tillryggalagd sträcka och positionering.
 
 \subsection{Komponenter}
+I detta avsnitt beskrivs de olika komponenter som behövs i sensormodulen.
 
-\newpage
-\appendix
-\section{Appendix A}
+\subsubsection{Systemchip}
+Modulens processor är Atmel ATmega1284p http://www.atmel.com/ja/jp/Images/doc8059.pdf. Processorn kommer kontinuerligt att ta in data från alla sensorer. Denna är programmerbar och kommer att innehålla de program som behövs för att konvertera signalerna till avstånd, tillryggalagd sträcka, positionering och detektion av RFID-tagg. På begäran av master, kommunikationsmodulen, kan data skickas från processorn till master via en buss.
 
+\subsubsection{RFID-sensor}
+För att kunna detektera RFID-taggen så krävs en sensor. Vi kommer att använda Parallax-Reader https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/rfid-reader-v21.pdf. 
+SOUT på RFID-sensorn, PIN 3, kopplas till port C, PIN 23, på processon. RFID-taggen skickar alltså sin data till processorn för behandling.
 
-\newpage
-\section{Appendix B}
+Brus kan ge upphov en falsk RFID-läsning. För att ungå detta problem accepteras läsningen endast om två på varandra följande läsningar ger samma utslag på RFID-läsaren. Det är väldigt otroligt att brus skulle ge upphov till exakt samma signal under två på varandra följande läsningar.
 
+\subsubsection{Avståndssensorer}
+Roboten kommer att ha sex stycken avståndssensorer varav två är för långdistans, GP2Y3A003K0F 40-300 cm https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/gp2y3a003k0f.pdf, och resterande 4 är för kortdistans, GP2Y0A21YK 10-80 cm https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/gp2y0a21.pdf. En av långdistanssensorerna placeras fram på roboten och den andra bak. De fyra kortdistanssensorerna placeras två stycken på vardera sida.
+
+PIN 6 på långdistanssensorerna och PIN 1 på kortdistanssenorerna kopplas till port A, PIN 39-40, respektive port A, PIN 35-38, på processorn. Sensorerna skickar alltså sin data till processorn för A/D-omvandling och tolkning.
+
+GND på sensorerna sätts till jord, Vcc och Vin sätts till hög och PIN 3 på långdistanssensorerna sätts till hög.
+ 
+Data från sensorerna behövs för att detektera väggar och skapa en kartabstraktion. Data från sensorerna för långdistans används dessutom för att beräkna tillryggalagd sträcka medans sensorerna på sidan används för att reglera körriktningen.
+
+\subsubsection{Vinkelhastighetssensor (gyro)}
+För att underlätta beräkningar av körriktningar och hålla koll på hur mycket roboten svängt används en vinkelhastighetssensor eller gyro, MLX90609 \hyperref{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/MLX90609_datasheet.pdf}. OUTAR på gyron, PIN 24, kopplas till port A, PIN 34, på processorn Gyron skickar alltså sin data till processorn för A/D-omvandling och tolkning. Gryot skickar en spänning mellan 0.5 och 4.5 V där 2.5 V motsvarar vinkelhatsighet noll.
+
+Körvinkel efter sväng kommer att beräknas med följande formel: \newline
+$ a(k) = a(k-1)+0.5T(\delta a(k)+\delta a(k-1))$ \\
+Där a(k) är ny körvinkel, da(k) är vinkelhastighet i svängen, a(k-1) är körvinkel innan sväng, da(k-1) är vinkelhastigheten i förra svängen och T är samplingstiden.
+
+\subsubsection{Övriga komponenter}
+Övriga komponenter så som ett batteri på 7.2 V och en resetknapp kommer att användas till denna modul.
+
+\subsection{Övergripande design}
+Sensorerna kommer att vara placerade engligt bilden nedan.
 
 \end{document}
