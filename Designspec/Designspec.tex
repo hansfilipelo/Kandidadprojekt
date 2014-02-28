@@ -107,6 +107,12 @@
 
 \pagenumbering{arabic}
 %-----------------------------------------------------------------
+%K
+
+
+
+
+%-----------------------------------------------------------------
 %Kommunikationsmodul
 
 
@@ -144,7 +150,7 @@ Fall 4: PC signalerar nödstop, se figur~\ref{fig:case4flow}.
 \end{figure}
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
-  \includegraphics[keepaspectratio=true,width=\linewidth]{SPIbild004.jpg}  %skala och filnamn. 
+  \includegraphics[keepaspectratio=true,width=0.9\linewidth]{SPIbild004.jpg}  %skala och filnamn. 
   \end{center}
   \caption{Flödesdiagram för Fall 3.} %figurtext.
   \label{fig:case3flow}
@@ -197,7 +203,24 @@ Kommunikation kommer starta med att ett styrord skickas. Ett styrord kommer best
 
 		Kommandon kommer att kunna betyda olika på de olika processorerna. 0001 kan t ex på slave1 betyda åk rakt längs väggen, på slave2 betyda läs av sensor 3, och på master uppdatera kartabstraktion med följande värden. Om likadana kommandon finns på flera processorer så ska de ha samma kodord på alla processorer som delar kommandot. Ett kommando är reserverat på båda slaves för ett kommando från master som säger du kan skicka information nu. En slave kommer också att kunna skicka ett avbrott till Master för att be om kommunikation. En lista av de olika kodorden finns i appendix. 
 		
-		På både mottagar- och sändarsida kommer en buffer i form av en länkad lista finnas. Denna lista fylls med data som tas emot och läses från när data ska skickas. 
+På både mottagar- och sändarsida kommer en buffer i form av en länkad lista finnas. Denna lista fylls med data som tas emot och läses från när data ska skickas. 
+
+
+\subsubsection{Busstrafik}
+På bussen kommer följande data att skickas.
+\paragraph{Styrkommandon från PC}
+~\\
+När styrkommandona skickas från PC, kommer kommunikationsmodulen skicka datat vidare till styrmodulen som utför kommandot.
+\paragraph{Konverterat sensordata}
+~\\
+Sensordata kommer att behandlas i sensormodulen och därefter kommer modulen att skicka ett avbrott till master om att data finns tillgängligt. Mastern svarar och startar bussöverföringen.
+\paragraph{Kartabstraktion så styrenheten kan välja färdväg}
+~\\
+Kartabstraktionen och robotens position kommer att uppdateras allt eftersom ny sensordata kommer in. Efter att ny sensordata har  mottagits av masters, skickar mastern ut sensordata till styrenheten.
+\paragraph{Kommandon för inställning av reglerparametrar.}
+~\\
+Kommandon mottags via blåtand från PC på mastern, som skickar detta vidare till styrenheten. 
+
 
 \subsubsection{Ack-paketets struktur}
 Ett sista paket som följer direkt efter datapaketen kommer att skickas. Detta paket är ack-paketet och kommer vara additionen av samtliga datapaketets lägsta bit. Detta ger mottagarsidan en möjlighet att kontrollera att datapaketen mottogs korrekt.
@@ -418,7 +441,8 @@ De kommandon styrmodulen kommer att kunna hantera beskrivs i tabellen nedan.
 Sensor modulen kommer ha till uppgift att hantera sensordata från robotens 8 sensorer och sända detta vidare till com-delen i ett hanterbart format. Sensormmdulen är byggd kring AVR-processorn ATMEL 1284p.
 
 \subsection{Kopplingsschema}
-En bild på kopplingsschema finns bifogad.
+
+En beskrivande bild av kopplingsschemat finns i appendix A.
 
 Port A användas som en A/D-omvandlare. PIN 39-40 kopplas till avståndssensorer för långdistans, GP2Y3A003K0F, PIN 35-38 kopplas till avståndssensorer för kortdistans, GP2Y0A21YK, och PIN 34 kopplas till ett gyro för vinkelhastighetsmätning, MLX90609.
 
@@ -429,7 +453,15 @@ Till port C PIN 23 kopplas en RFID-läsare, Parallax-Reader. Port D används int
 PIN 31 och 11 kopplas till jord, PIN 13 kopplas till klocka från master, PIN 12 används inte i denna modul, PIN 9 kopplas till en avstudsad manuell switch, en resetknapp, PIN 32 kopplas till en spänningskälla på 5 V som används som referensspänning, PIN 10 kopplas också den till en spänningskälla på 5 V och PIN 30 kopplas genom ett LP-filter till samma externa spänningskälla.
 
 \subsection{Uppgift}
-Sensormodulens uppgift är att A/D-omvandla signaler från robotens avståndssensorer, RFID-sensor och gyro för att sedan utnyttja dessa digitala värden för att uppskatta avstånd, tillryggalagd sträcka och positionering.
+Sensormodulens uppgift är att A/D-omvandla signaler från robotens avståndssensorer, RFID-sensor och gyro för att sedan utnyttja dessa digitala värden för att uppskatta avstånd, tillryggalagd sträcka och positionering. I figur~\ref{fig:sensorflow} beskriver hanteringen av sensordata.
+
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,width=\linewidth]{sensorflode}  %skala och filnamn. 
+  \end{center}
+  \caption{Flödesdiagram för sensorhantering} %figurtext.
+  \label{fig:sensorflow}
+\end{figure}
 
 \subsection{Komponenter}
 I detta avsnitt beskrivs de olika komponenter som behövs i sensormodulen.
@@ -444,7 +476,7 @@ SOUT på RFID-sensorn, PIN 3, kopplas till port C, PIN 23, på processon. RFID-t
 Brus kan ge upphov en falsk RFID-läsning. För att ungå detta problem accepteras läsningen endast om två på varandra följande läsningar ger samma utslag på RFID-läsaren. Det är väldigt otroligt att brus skulle ge upphov till exakt samma signal under två på varandra följande läsningar.
 
 \subsubsection{Avståndssensorer}
-Roboten kommer att ha sex stycken avståndssensorer varav två är för långdistans, GP2Y3A003K0F 40-300 cm https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/gp2y3a003k0f.pdf, och resterande 4 är för kortdistans, GP2Y0A21YK 10-80 cm https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/gp2y0a21.pdf. En av långdistanssensorerna placeras fram på roboten och den andra bak. De fyra kortdistanssensorerna placeras två stycken på vardera sida.
+Roboten kommer att ha sex stycken avståndssensorer varav två är för långdistans, GP2Y3A003K0F 40-300 cm som går att läsa om på Vanheden\footnote{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/gp2y3a003k0f.pdf}  och resterande 4 är för kortdistans, GP2Y0A21YK 10-80 cm som finns på Vanheden\footnote{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/gp2y0a21.pdf}. En av långdistanssensorerna placeras fram på roboten och den andra bak. De fyra kortdistanssensorerna placeras två stycken på vardera sida.
 
 PIN 6 på långdistanssensorerna och PIN 1 på kortdistanssenorerna kopplas till port A, PIN 39-40, respektive port A, PIN 35-38, på processorn. Sensorerna skickar alltså sin data till processorn för A/D-omvandling och tolkning.
 
@@ -453,7 +485,7 @@ GND på sensorerna sätts till jord, Vcc och Vin sätts till hög och PIN 3 på 
 Data från sensorerna behövs för att detektera väggar och skapa en kartabstraktion. Data från sensorerna för långdistans används dessutom för att beräkna tillryggalagd sträcka medans sensorerna på sidan används för att reglera körriktningen.
 
 \subsubsection{Vinkelhastighetssensor (gyro)}
-För att underlätta beräkningar av körriktningar och hålla koll på hur mycket roboten svängt används en vinkelhastighetssensor eller gyro, MLX90609 \hyperref{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/MLX90609_datasheet.pdf}. OUTAR på gyron, PIN 24, kopplas till port A, PIN 34, på processorn Gyron skickar alltså sin data till processorn för A/D-omvandling och tolkning. Gryot skickar en spänning mellan 0.5 och 4.5 V där 2.5 V motsvarar vinkelhatsighet noll.
+För att underlätta beräkningar av körriktningar och hålla koll på hur mycket roboten svängt används en vinkelhastighetssensor eller gyro, MLX90609 på Vanheden \footnote{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/MLX90609\_datasheet.pdf}. OUTAR på gyron, PIN 24, kopplas till port A, PIN 34, på processorn Gyron skickar alltså sin data till processorn för A/D-omvandling och tolkning. Gryot skickar en spänning mellan 0.5 och 4.5 V där 2.5 V motsvarar vinkelhatsighet noll.
 
 Körvinkel efter sväng kommer att beräknas med följande formel: \newline
 $ a(k) = a(k-1)+0.5T(\delta a(k)+\delta a(k-1))$ \\
