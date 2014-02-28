@@ -107,6 +107,12 @@
 
 \pagenumbering{arabic}
 %-----------------------------------------------------------------
+%K
+
+
+
+
+%-----------------------------------------------------------------
 %Kommunikationsmodul
 
 
@@ -197,7 +203,24 @@ Kommunikation kommer starta med att ett styrord skickas. Ett styrord kommer best
 
 		Kommandon kommer att kunna betyda olika på de olika processorerna. 0001 kan t ex på slave1 betyda åk rakt längs väggen, på slave2 betyda läs av sensor 3, och på master uppdatera kartabstraktion med följande värden. Om likadana kommandon finns på flera processorer så ska de ha samma kodord på alla processorer som delar kommandot. Ett kommando är reserverat på båda slaves för ett kommando från master som säger du kan skicka information nu. En slave kommer också att kunna skicka ett avbrott till Master för att be om kommunikation. En lista av de olika kodorden finns i appendix. 
 		
-		På både mottagar- och sändarsida kommer en buffer i form av en länkad lista finnas. Denna lista fylls med data som tas emot och läses från när data ska skickas. 
+På både mottagar- och sändarsida kommer en buffer i form av en länkad lista finnas. Denna lista fylls med data som tas emot och läses från när data ska skickas. 
+
+
+\subsubsection{Busstrafik}
+På bussen kommer följande data att skickas.
+\paragraph{Styrkommandon från PC}
+~\\
+När styrkommandona skickas från PC, kommer kommunikationsmodulen skicka datat vidare till styrmodulen som utför kommandot.
+\paragraph{Konverterat sensordata}
+~\\
+Sensordata kommer att behandlas i sensormodulen och därefter kommer modulen att skicka ett avbrott till master om att data finns tillgängligt. Mastern svarar och startar bussöverföringen.
+\paragraph{Kartabstraktion så styrenheten kan välja färdväg}
+~\\
+Kartabstraktionen och robotens position kommer att uppdateras allt eftersom ny sensordata kommer in. Efter att ny sensordata har  mottagits av masters, skickar mastern ut sensordata till styrenheten.
+\paragraph{Kommandon för inställning av reglerparametrar.}
+~\\
+Kommandon mottags via blåtand från PC på mastern, som skickar detta vidare till styrenheten. 
+
 
 \subsubsection{Ack-paketets struktur}
 Ett sista paket som följer direkt efter datapaketen kommer att skickas. Detta paket är ack-paketet och kommer vara additionen av samtliga datapaketets lägsta bit. Detta ger mottagarsidan en möjlighet att kontrollera att datapaketen mottogs korrekt.
