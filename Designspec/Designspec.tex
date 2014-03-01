@@ -453,11 +453,7 @@ Sensor modulen kommer ha till uppgift att hantera sensordata från robotens 8 se
 
 En beskrivande bild av kopplingsschemat finns i appendix A.
 
-Port A användas som en A/D-omvandlare. PIN 39-40 kopplas till avståndssensorer för långdistans, GP\-2Y\-3A\-00\-3K\-0F, PIN 35-38 kopplas till avståndssensorer för kortdistans, GP\-2Y\-0A\-21\-YK, och PIN 34 kopplas till ett gyro för vinkelhastighetsmätning, ML\-X9\-06\-09.
-
-Port B används för busskommunikation. PIN 3 skickar avbrott till master, PIN 5 används till slave select master, PIN 6 tar emot data från bussen, PIN7 skickar data till bussen och till PIN 8 kopplas klockan från master.
-
-Till port C PIN 23 kopplas en RFID-läsare, Parallax-Reader. Port D används inte i denna modul. 
+Port A användas som en A/D-omvandlare. PIN 39-40 kopplas till avståndssensorer för långdistans, GP\-2Y\-3A\-00\-3K\-0F, PIN 35-38 kopplas till avståndssensorer för kortdistans, GP\-2Y\-0A\-21\-YK, och PIN 34 kopplas till ett gyro för vinkelhastighetsmätning, ML\-X9\-06\-09. Port B används för busskommunikation. PIN 3 skickar avbrott till master, PIN 5 används till slave select master, PIN 6 tar emot data från bussen, PIN7 skickar data till bussen och till PIN 8 kopplas klockan från master. Till port C PIN 23 kopplas en RFID-läsare, Parallax-Reader. Port D används inte i denna modul. 
 
 PIN 31 och 11 kopplas till jord, PIN 13 kopplas till klocka från master, PIN 12 används inte i denna modul, PIN 9 kopplas till en avstudsad manuell switch, en resetknapp, PIN 32 kopplas till en spänningskälla på 5 V som används som referensspänning, PIN 10 kopplas också den till en spänningskälla på 5 V och PIN 30 kopplas genom ett LP-filter till samma externa spänningskälla.
 
@@ -538,11 +534,11 @@ Sensorerna kommer att vara placerade engligt bilden nedan.
  \clearpage %flushes picture cache to place now
  
 
-\subsection{Kopplingsschema för styrmodul}
+\subsection{Kopplingsschema för sensormodull}
 
 \begin{figure}[ht] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
-  \includegraphics[keepaspectratio=true,width=\linewidth]{kopplingsschema_styrmodul.png}  %skala och filnamn. 
+  \includegraphics[keepaspectratio=true,width=\linewidth]{sensormodulkoppling.jpg}  %skala och filnamn. 
   \end{center}
   \caption{Kopplingsschema sensormodul} %figurtext.
   \label{fig:kopplingsensor} %glöm inte att uppdatera era labels
