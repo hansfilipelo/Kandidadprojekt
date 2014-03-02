@@ -407,11 +407,11 @@ Styrmodulen kommer att få sensordata skickad till sig från sensormodulen. Denn
 
 Den proportionella delen av regleringen kommer fås från avståndet till vägg vid sidan av roboten. 
 
-$ e_p = K*avst\text{\it{å}}ndssensordata $
+$ e_p = K_{p}*avst\text{\it{å}}ndssensordata $
 
 Där K är en konstant- Den deriverande delen av regleringen kommer ges av linjär uppskattning av derivatan utefter de senaste mätvärdena. Derivatan ges alltså av: 
 
-$ e_d = K*(data/antal_sampels) $
+$ e_d = K_{D}*(data/antal_sampels) $
 
 Totala felet ges då av: 
 
