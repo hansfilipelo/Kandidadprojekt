@@ -290,7 +290,7 @@ Styrmodulens (slave) huvudkomponent kommer  att bestå av en AVR-processor, Atme
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
-  \includegraphics[keepaspectratio=true,scale=0.4]{styrmodul}  %skala och filnamn. 
+  \includegraphics[keepaspectratio=true,scale=0.5]{styrmodul}  %skala och filnamn. 
   \end{center}
   \caption{Översikt styrmodul} %figurtext.
   \label{fig:styr} %glöm inte att uppdatera era labels
@@ -341,16 +341,26 @@ Det ska implementeras två olika avsökningsalgoritmer. De kommer användas bero
 
 Kartläggningsalgoritmen utformas så att roboten börjar med att placera sig så att en vägg går att finna på höger sida. Roboten kommer sedan följa väggen till dess att den kan rita upp ett slutet område att arbeta utifrån. Nästa steg blir att kartlägga områden som ännu ej är kartlagda. Om en köksö upptäcks kommer roboten se till att rita upp hela köksön innan den går vidare. På detta sätt fortsätter algoritmen till dess att alla delar av rummet är kartlagda. 
 
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,scale=0.5]{flode_brandhard.jpg}  %skala och filnamn. 
+  \end{center}
+  \caption{Flödesschema kartläggningsalgoritm} %figurtext.
+  \label{fig:styr} %glöm inte att uppdatera era labels
+\end{figure}
+\newpage
+
 \subsubsection{Brandhärdssökning}
 
 Brandhärdssökningen kommer att gå till på liknande sätt som kartläggningsalgoritmen, dock kommer den vara långsammare på grund av att varje ruta i området måste besökas. Efter att området slutits använder roboten sig av radavsökning för att systematiskt besöka alla rutor. Om en RFID-tag upptäcks ska detta noteras.
 
-\begin{itemize}
-\item{Vägg på höger sida}
-\item{Slut hela ytterväggen}
-\item{Radavsökning, måste besöka alla rutor i nätet}
-\item{Leta efter RFID-tag i varje ruta.}
-\end{itemize}
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,scale=0.5]{Flode_kartritning.jpg}  %skala och filnamn. 
+  \end{center}
+  \caption{Flödesschema brandhärdssökning} %figurtext.
+  \label{fig:styr} %glöm inte att uppdatera era labels
+\end{figure}
 
 \subsubsection{Kartabstraktion}
 Kartan kommer att abstraheras som en matris där objekt sparas. Objektklasserna kommer att ha en moderklass med namn MapSection de sedan ärver från. Tillgängliga underklasser kommer att vara:
@@ -397,11 +407,11 @@ Styrmodulen kommer att få sensordata skickad till sig från sensormodulen. Denn
 
 Den proportionella delen av regleringen kommer fås från avståndet till vägg vid sidan av roboten. 
 
-$ e_p = K*avst\text{\it{å}}ndssensordata $
+$ e_p = K_{p}*avst\text{\it{å}}ndssensordata $
 
 Där K är en konstant- Den deriverande delen av regleringen kommer ges av linjär uppskattning av derivatan utefter de senaste mätvärdena. Derivatan ges alltså av: 
 
-$ e_d = K*(data/antal_sampels) $
+$ e_d = K_{D}*(data/antal_sampels) $
 
 Totala felet ges då av: 
 
@@ -422,14 +432,14 @@ De kommandon styrmodulen kommer att kunna hantera beskrivs i tabellen nedan. \ne
 	\rowcolor{listinggray}
 	\textbf{Funktion} & \textbf{Kommando} & \textbf{Från} & \textbf{Till} & \textbf{Förklaring} \\ \hline
 	Nödstopp & 0x00 & Komm & Styr & Stanna alla motorer \\ \hline
-	Autonom styrning & 0x001 & Komm & Styr & Aktivera PD-reglering och styralgoritmer \\ \hline
-	Manuell styrning & 0x002 & Komm & Styr & Avaktivera PD-reglering och styralgoritmer \\ \hline
-	Framåt & 0x003 & Komm & Styr & Kör framåt \\ \hline
-	Bakåt & 0x004 & Komm & Styr & Kör bakåt \\ \hline
-	Vänster & 0x005 & Komm & Styr & Sväng vänster \\ \hline
-	Höger & 0x006 & Komm & Styr & Sväng höger \\ \hline
-	Sensordata & 0x007 & Komm & Styr & Ta emot sensordata från master \\ \hline
-	Sätt reglerkonstanter & 0x007 & Komm & Styr & Sätter värden för konstanter till PD-reglering \\ \hline
+	Autonom styrning & 0x01 & Komm & Styr & Aktivera PD-reglering och styralgoritmer \\ \hline
+	Manuell styrning & 0x02 & Komm & Styr & Avaktivera PD-reglering och styralgoritmer \\ \hline
+	Framåt & 0x03 & Komm & Styr & Kör framåt \\ \hline
+	Bakåt & 0x04 & Komm & Styr & Kör bakåt \\ \hline
+	Vänster & 0x05 & Komm & Styr & Sväng vänster \\ \hline
+	Höger & 0x06 & Komm & Styr & Sväng höger \\ \hline
+	Sensordata & 0x07 & Komm & Styr & Ta emot sensordata från master \\ \hline
+	Sätt reglerkonstanter & 0x08 & Komm & Styr & Sätter värden för konstanter till PD-reglering \\ \hline
 \end{tabular}
 
 \newpage
@@ -453,11 +463,7 @@ Sensor modulen kommer ha till uppgift att hantera sensordata från robotens 8 se
 
 En beskrivande bild av kopplingsschemat finns i appendix A.
 
-Port A användas som en A/D-omvandlare. PIN 39-40 kopplas till avståndssensorer för långdistans, GP\-2Y\-3A\-00\-3K\-0F, PIN 35-38 kopplas till avståndssensorer för kortdistans, GP\-2Y\-0A\-21\-YK, och PIN 34 kopplas till ett gyro för vinkelhastighetsmätning, ML\-X9\-06\-09.
-
-Port B används för busskommunikation. PIN 3 skickar avbrott till master, PIN 5 används till slave select master, PIN 6 tar emot data från bussen, PIN7 skickar data till bussen och till PIN 8 kopplas klockan från master.
-
-Till port C PIN 23 kopplas en RFID-läsare, Parallax-Reader. Port D används inte i denna modul. 
+Port A användas som en A/D-omvandlare. PIN 39-40 kopplas till avståndssensorer för långdistans, GP\-2Y\-3A\-00\-3K\-0F, PIN 35-38 kopplas till avståndssensorer för kortdistans, GP\-2Y\-0A\-21\-YK, och PIN 34 kopplas till ett gyro för vinkelhastighetsmätning, ML\-X9\-06\-09. Port B används för busskommunikation. PIN 3 skickar avbrott till master, PIN 5 används till slave select master, PIN 6 tar emot data från bussen, PIN7 skickar data till bussen och till PIN 8 kopplas klockan från master. Till port C PIN 23 kopplas en RFID-läsare, Parallax-Reader. Port D används inte i denna modul. 
 
 PIN 31 och 11 kopplas till jord, PIN 13 kopplas till klocka från master, PIN 12 används inte i denna modul, PIN 9 kopplas till en avstudsad manuell switch, en resetknapp, PIN 32 kopplas till en spänningskälla på 5 V som används som referensspänning, PIN 10 kopplas också den till en spänningskälla på 5 V och PIN 30 kopplas genom ett LP-filter till samma externa spänningskälla.
 
@@ -538,11 +544,11 @@ Sensorerna kommer att vara placerade engligt bilden nedan.
  \clearpage %flushes picture cache to place now
  
 
-\subsection{Kopplingsschema för styrmodul}
+\subsection{Kopplingsschema för sensormodull}
 
 \begin{figure}[ht] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
-  \includegraphics[keepaspectratio=true,width=\linewidth]{kopplingsschema_styrmodul.png}  %skala och filnamn. 
+  \includegraphics[keepaspectratio=true,width=\linewidth]{sensormodulkoppling.jpg}  %skala och filnamn. 
   \end{center}
   \caption{Kopplingsschema sensormodul} %figurtext.
   \label{fig:kopplingsensor} %glöm inte att uppdatera era labels
