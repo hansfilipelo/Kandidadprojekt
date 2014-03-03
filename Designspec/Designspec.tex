@@ -47,8 +47,8 @@
 		\vspace{3pt} %Whitespace 3 pts
 	    \begin{tabular}{| p{3cm} | p{3cm} | p{3cm} |} %tabell, 4 horizontella |, 3 cm emellan dem.
 	    \hline %översta horizontella linjen.
-	    Granskad & Av vem & \today \\ \hline % & -tecken för att "gå till nästa ruta" 
-		Godkänd & Av vem & \today \\ \hline % avslutas med \\ och \hline.
+	    Granskad & NE & \today \\ \hline % & -tecken för att "gå till nästa ruta" 
+		Godkänd & - & - \\ \hline % avslutas med \\ och \hline.
 
 	    \end{tabular}
 	\end{center}
@@ -151,6 +151,14 @@ De följande 4 anger hur många cykler, dvs. hela Bytes som datat som skickas i 
 Modul för att hantera kommunikation mellan robotens olika delkomponenter samt med persondatorn via Blåtand. Kommunikationsmodulen som syns i figur 3, kommer att agera master på robotens interna buss. Vid kommunikation mellan övriga moduler, dvs. sensor- och styrmodulen, kommer denna gå via kommunikationsmodulen.
 Kommunikationsmodulen kommer alltså att leverera sensordata mellan roboten och mjukvaran som körs på persondatorn.
 
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,width=\linewidth]{komoverview}  %skala och filnamn. 
+  \end{center}
+  \caption{Översiktsbild av kommunikationsdelen av systemet} %figurtext.
+  \label{fig:overview}
+\end{figure}
+
 \subsection{Kommunikationsfall}
 Ett par exempel på kom\-mun\-ikations\-fall.
 
@@ -229,7 +237,7 @@ Både sändaren och mottagaren skickar ett sådant ack-paket samtidigt, detta ge
 
 \subsection{LCD-Display}
 Sensordata och annan information från roboten kommer att visas på en alfanumerisk-display, närmare bestämt  LCD JM162A. Displayen kommer att kunna visa 2 rader × 16 tecken.
-Displayen kommer anslutas till processorn enligt kretschemat i appendix ?. 
+Displayen kommer anslutas till processorn enligt kretschemat i appendix A. 
 Vid varje uppstart kommer initiering av LCD-display göras och då följa nedanstående flödesschema. Varje steg startas med att processorn skickar ett kommando till ingångarna på LCD-displayen. Kommandon finns specificerade i databladet, se (fotnot https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/jm162a.pdf). 
 
 \subsubsection{Uppstart}
@@ -348,7 +356,6 @@ Kartläggningsalgoritmen utformas så att roboten börjar med att placera sig s�
   \caption{Flödesschema kartläggningsalgoritm} %figurtext.
   \label{fig:map} %glöm inte att uppdatera era labels
 \end{figure}
-\newpage
 
 \subsubsection{Brandhärdssökning}
 
@@ -394,7 +401,6 @@ Unreachable section kommer att representera ett block på kartan som är inringa
 \paragraph{Fire} 
 ~\\
 Fire kommer att representera plats där det finns eldhärd. 
-
 \newpage
 % ------------------- Reglering -----------------------
 
@@ -416,7 +422,6 @@ $ e_d = K_{D}*(data/antal_sampels) $
 Totala felet ges då av: 
 
 $e = e_d + e_p$
-\newpage
 
 
 % ----------- Kommunikation ------------------
