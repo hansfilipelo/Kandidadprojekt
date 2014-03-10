@@ -179,6 +179,7 @@ Fall 4: PC signalerar nödstop, se figur~\ref{fig:case4flow}.
   \item Blåtandsdongel, Firefly, BlueSmirf Gold
   \item LCD-Display
   \item Två stycken knappar
+  \item Kristalloscillator EXO-3, 14.745 MHz
 \end{itemize}
 
 \subsection{Buss}
@@ -505,7 +506,7 @@ GND på sensorerna sätts till jord, Vcc och Vin sätts till hög och PIN 3 på 
 Data från sensorerna behövs för att detektera väggar och skapa en kartabstraktion. Data från sensorerna för långdistans används dessutom för att beräkna tillryggalagd sträcka medans sensorerna på sidan används för att reglera roboten under färd.
 
 \subsubsection{Vinkelhastighetssensor (gyro)}
-För att underlätta beräkningar av körriktningar och hålla koll på hur mycket roboten svängt används en vinkelhastighetssensor eller gyro, MLX\-90\-609 på Vanheden \footnote{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/MLX90609\_datasheet.pdf}. OUTAR på gyron, PIN 24, kopplas till port A, PIN 34, på processorn Gyron skickar alltså sin data till processorn för A/D-omvandling och tolkning. Gryot skickar en spänning mellan 0.5 och 4.5 V där 2.5 V motsvarar vinkelhatsighet noll.
+För att underlätta beräkningar av körriktningar och hålla koll på hur mycket roboten svängt används en vinkelhastighetssensor eller gyro, MLX\-90\-609 på Vanheden \footnote{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/MLX90609\_datasheet.pdf}. OUTAR på gyron, PIN 24, kopplas direkt till bussen för att minska brus. Gryot skickar en spänning mellan 0.5 och 4.5 V där 2.5 V motsvarar vinkelhatsighet noll.
 
 Vinkelberäkning kommer ske med följande formel: \newline
 $ a(k) = a(k-1)+0.5T(\delta a(k)+\delta a(k-1))$ \\
@@ -529,7 +530,7 @@ Sensorerna kommer att vara placerade engligt bilden i figur~\ref{fig:sensoroverv
 
 \begin{figure}[ht] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
-  \includegraphics[keepaspectratio=true,width=\linewidth]{komschema.jpg}  %skala och filnamn. 
+  \includegraphics[keepaspectratio=true,width=\linewidth]{komschema.png}  %skala och filnamn. 
   \end{center}
   \caption{Kopplingsschema kommunikationsmodul} %figurtext.
   \label{fig:kopplingkom} %glöm inte att uppdatera era labels
@@ -553,7 +554,7 @@ Sensorerna kommer att vara placerade engligt bilden i figur~\ref{fig:sensoroverv
 
 \begin{figure}[ht] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
-  \includegraphics[keepaspectratio=true,width=\linewidth]{sensormodulkoppling.jpg}  %skala och filnamn. 
+  \includegraphics[keepaspectratio=true,width=\linewidth]{sensormodulkoppling.png}  %skala och filnamn. 
   \end{center}
   \caption{Kopplingsschema sensormodul} %figurtext.
   \label{fig:kopplingsensor} %glöm inte att uppdatera era labels
