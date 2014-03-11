@@ -358,6 +358,8 @@ Kartläggningsalgoritmen utformas så att roboten börjar med att placera sig s�
   \label{fig:map} %glöm inte att uppdatera era labels
 \end{figure}
 
+\newpage
+
 \subsubsection{Brandhärdssökning}
 
 Brandhärdssökningen kommer att gå till på liknande sätt som kartläggningsalgoritmen, dock kommer den vara långsammare på grund av att varje ruta i området måste besökas. Efter att området slutits använder roboten sig av radavsökning för att systematiskt besöka alla rutor. Om en RFID-tag upptäcks ska detta noteras.
@@ -370,6 +372,7 @@ Brandhärdssökningen kommer att gå till på liknande sätt som kartläggningsa
   \label{fig:fire} %glöm inte att uppdatera era labels
 \end{figure}
 
+
 \subsubsection{Kartabstraktion}
 Kartan kommer att abstraheras som en matris där objekt sparas. Objektklasserna kommer att ha en moderklass med namn MapSection de sedan ärver från. Tillgängliga underklasser kommer att vara:
 
@@ -380,8 +383,6 @@ Kartan kommer att abstraheras som en matris där objekt sparas. Objektklasserna 
 \item{UnreachableSection}
 \item{Fire}
 \end{itemize}
-
-I Appendix finns fullständig objektdesign för dessa klasser. 
 
 \paragraph{EmptySection} 
 ~\\
