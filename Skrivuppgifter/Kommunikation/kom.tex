@@ -185,14 +185,19 @@ Säkerhet i IR-kommunikationsfallet vid kortdistans fallet faller mer eller mind
 ZigBee är en standard för trådlös styrning och övervakning som används i hem och industrier men även andra övervaknings och styrningsapplikationer där låg strömförbrukning och hög tillgänglighet är i fokus. Zigbee-standarden erbjuder näverks-, säkerhets- och applikationssupport ovanpå IEEE 802.15.4 standarden. Platformen har stöd för stjärnnät och trädstruktur men mesh-arkitektur är den absolut populäraste. 
 
 \subsubsection{IEEE 802.15}
-Standarden definierar protokoll och sammankoppling av enheter i ett wireless personal area network (WPAN). IEEE 802.15.4 (LR-WPAN) som ZigBee använder sig av är en undergrupp till denna standard och har egenskaper som låg datahastighet men med lång batteritid. Datahastigheten kommer maximalt att kunna uppnå 250 kb/s men räcker gott och väl till dess användningsområde. Det kan också skalas ner till 20kb/s för att kunna hantera sensorer och dylikt.\footnote{Part 15.4 Wireless Medium Access Control (MAC) and Physical Layer (PHY) Specifications for Low-Rate Wireless Personal Area Networks (LR\text{-}WPANs). The Institute of Electrical and Electronics Engineers, Inc. (2003)}
+Standarden definierar protokoll och sammankoppling av enheter i ett wireless personal area network (WPAN). IEEE 802.15.4 (LR-WPAN) som ZigBee använder sig av är en undergrupp till denna standard och har egenskaper som låg datahastighet men med lång batteritid. Datahastigheten kommer maximalt att kunna uppnå 250 kb/s men räcker gott och väl till dess användningsområde. Det kan också skalas ner till 20kb/s för att kunna hantera sensorer och dylikt.\footnote{\label{IEEE} Part 15.4 Wireless Medium Access Control (MAC) and Physical Layer (PHY) Specifications for Low-Rate Wireless Personal Area Networks (LR-WPANs). The Institute of Electrical and Electronics Engineers, Inc. (2003)}
 
 
 Standarden definierar det fysiska lagret samt datalänklagret i OSI-modellen.\footnote{Zimmermann, Hubert (April 1980). OSI Reference Model — The ISO Model of Architecture for Open Systems Interconnection. IEEE Transactions on Communications 28 (4): 425–432. doi:10.1109/TCOM.1980.1094702} 
 
 
 \subsubsection{Mesh-arkitektur}
-Mesh-arkitekturen är en nätstruktur där alla noder i nätet har kontakt med minst 2 noder samtidigt. Detta ger i sin tur ger i sin tur hög redundans vilket leder till högre säkerhet på kommunikationen. Strukturen är således tillförlitlig och erbjuder bra skydd mot varianser i signalstyrka som kan skapas av interferens eller multipla signaler.\footnote{Wheeler, Andy. Krama saften ur Zigbee. Elektronik Tidningen (2005).(Hämtad 2014-03-24)}
+Mesh-arkitekturen är en nätstruktur där alla noder i nätet har kontakt med minst 2 noder samtidigt. Detta ger i sin tur ger i sin tur hög redundans vilket leder till högre säkerhet på kommunikationen. Strukturen är således tillförlitlig och erbjuder bra skydd mot varianser i signalstyrka som kan skapas av interferens eller multipla signaler.\footnote{\label{eltidning} Wheeler, Andy. Krama saften ur Zigbee. Elektronik Tidningen (2005).(Hämtad 2014-03-24)}
+
+\subsubsection{Säkerhet}
+Säkerhetsåtgärderna i denna standard är baserade på symmetrisk kryptering även kallad delad-nyckel-kryptering. Denna metod använder samma nyckel vid kryptering som vid dekryptering och detta innebär givetvis en svaghet i säkerheten, men en tillräckligt stor nyckel ger oftast fullt tillräcklig säkerhet. 
+Standarden använder sig även av kontroll av vilka noder som är tillåtna, alltså vilka som får skicka data. Varje nod har en access control list (ACL), en lista över noder som är godkända att kommunicera med som noden har för att kunna jämföra med inkommande förfrågningar från andra noder.$^{\ref{IEEE}}$ 
+Med ZigBee följer även ett kocept som heter ''Trust Center'' som möjliggör för noder att ansluta till nätverket, distribuera nycklar och ge möjligheten att kontrollera säkerheten hela vägen mellan två enheter. Det finns två olika säkerhetsnivåer, en gjord för hemma- och kommersiell applikation. Den största skillnaden mellan de båda nivåerna är att den sistnämnda skapar och underhåller säkerhetsnycklar.$^{\ref{eltidning}}$ 
 
 
 \subsection{Radiostyrning}
