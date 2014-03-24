@@ -121,7 +121,10 @@ Alla komponenter i ett WLAN utgörs av antingen stationer som kan vara noder ell
 
 \subsubsection{IEEE 802.11}
 IEEE 802.11 familjen består av en serie halv-duplex (kommunikationen kan ske i båda riktningarna men bara en riktning i taget) modulationstekniker som använder sig av samma MAC-protokoll. MAC-protokollet eller MAC-lagret är ett sublager i datalänklagret. Detta lager fungerar som en mellanhand mellan logical link control (LLC) och nätverkets fysiska lager och styr alltså hur nätverksnoderna får åtkomst till det fysiska skiktet (signal och binär överföring).
-IEEE 802.11 kräver att nod \emph{x} konstant lyssnar för att vara redo om en nod \emph{y} möjligen skulle försöka skicka data. 
+IEEE 802.11 kräver att nod \emph{x} konstant lyssnar för att vara redo om en nod \emph{y} möjligen skulle försöka skicka data. Detta drar givetvis mycket ström men kan reduceras med hjälp av en Network Allocatoin Vector (NAV), som enkelt sett fungerar som en räknare. När räknaren är nollskild är systemet i vila, när räknaren är noll så lyssnar systemet. Trådlösa stationer som har batteridrift kan därför spara ström genom att gå i vila och sen vakna till när räknaren är noll och då vara redo att ta emot data. 
+
+\subsubsection{Säkerhet}
+Användning av WLAN har ökat radikalt och blivit väldigt populärt på grund av dess flexibilitet och användarvänlighet, dock kommer dessa typer av nätverk alltid med lite säkerhetsrisker. IEEE 802.11 innehåller både kryptering och autentiserings metoder med hjälp av wired equivalent privacy (WEP).\footnote{Lopez-Aguilera, Elena. Study on the influence of transmission errors on RSNA authentication mechanisms in IEEE 802.11 WLAN. Computer Communications Volume: 41 Issue: 5 (2014-01-01) p. 76-93} Detta är en av de mest simpla metoder och har idag ersatts av  Wi-Fi Protected Access (WPA) som använder sig av en mer avancerad krypteringsmetod än WEP. 
 
 \subsection{Bluetooth}
 
@@ -190,6 +193,9 @@ Disposition:
 \appendix
 \pagestyle{empty}
 \newgeometry{left=2cm,right=2cm,bottom=2cm,top=2cm}
-\section{Appendix A}
+\section{Referenser}
+Protocols and Architectures for Wireless Sensor Networks, Holger Karl, Andreas Willig
+https://katalog.bibl.liu.se/uhtbin/cgisirsi.exe/?ps=WORwBX7nCM/HB/52940101/9
+
 
 \end{document}
