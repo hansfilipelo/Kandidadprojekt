@@ -131,11 +131,12 @@ IEEE 802.11 familjen består av en serie halv-duplex (kommunikationen kan ske i 
 IEEE 802.11 kräver att nod \emph{x} konstant lyssnar för att vara redo om en nod \emph{y} möjligen skulle försöka skicka data. Detta drar givetvis mycket ström men kan reduceras med hjälp av en Network Allocatoin Vector (NAV), som enkelt sett fungerar som en räknare. När räknaren är nollskild är systemet i vila, när räknaren är noll så lyssnar systemet. Trådlösa stationer som har batteridrift kan därför spara ström genom att gå i vila och sen vakna till när räknaren är noll och då vara redo att ta emot data.\footnote{Holger Karl, Andreas Willig. Protocols and Architectures for Wireless Sensor Networks, Wiley, 2005}
 
 \subsubsection{Säkerhet}
-Användning av WLAN har ökat radikalt och blivit väldigt populärt på grund av dess flexibilitet och användarvänlighet, dock kommer dessa typer av nätverk alltid med lite säkerhetsrisker. IEEE 802.11 innehåller både kryptering och autentiserings metoder med hjälp av wired equivalent privacy (WEP).\footnote{Lopez-Aguilera, Elena. Study on the influence of transmission errors on RSNA authentication mechanisms in IEEE 802.11 WLAN. Computer Communications Volume: 41 Issue: 5 (2014-01-01) p. 76-93} Detta är en av de mest simpla metoder och har idag ersatts av  Wi-Fi Protected Access (WPA) som använder sig av en mer avancerad krypteringsmetod än WEP. 
+Användning av WLAN har ökat radikalt och blivit väldigt populärt på grund av dess flexibilitet och användarvänlighet, dock kommer dessa typer av nätverk alltid med lite säkerhetsrisker. IEEE 802.11 innehåller både kryptering och autentiserings metoder med hjälp av wired equivalent privacy (WEP).\footnote{Lopez-Aguilera, Elena. Study on the influence of transmission errors on RSNA authentication mechanisms in IEEE 802.11 WLAN. Computer Communications Volume: 41 Issue: 5 (2014-01-01) p. 76-93} Detta är en av de mest simpla metoder och har idag ersatts av  Wi-Fi Protected Access (WPA) som använder sig av en mer avancerad krypteringsmetod än WEP.
+\newpage 
 
 \subsection{Bluetooth}
 
-Bluetooth är en global standard för trådlöskommunikation på korta avstånd och utvecklades av Ericsson 1994. Bluetooth utnyttjades till en början primärt som en ersättning för serielkommunikationskablar mellan enheter.\footnote{\label{BTweb}Bluetooth SI. Fast Facts http://www.bluetooth.com/Pages/Fast-Facts.asp (Hämtad 2014-03-24)}
+Bluetooth är en global standard för trådlöskommunikation på korta avstånd och utvecklades av Ericsson 1994. Bluetooth utnyttjades till en början primärt som en ersättning för serielkommunikationskablar mellan enheter.\footnote{\label{BTweb}Bluetooth SIG. Fast Facts http://www.bluetooth.com/Pages/Fast-Facts.asp (Hämtad 2014-03-24)}
 Bluetooth är fullt duplex och kan alltså skicka information i båda riktningar samtidigt. Dessutom kan Bluetooth sättas upp utan en tidigare existerande trådlös arkitektur och blir därför väldigt attraktiv för att para ihop enheter. Så som Bluetooth protokollet fungerar är det just parning mellan två enheter som är aktuellt. Bluetooth har fler aspekter som gör det särdeles bra för små mobila enheter.\footnote{\label{Gupta}Gupta, Naresh. Inside BLUETOOTH LOW ENERGY. Artech House, 2013}
 \begin{itemize}
 \item Låg strömförbrukning 
@@ -176,10 +177,11 @@ Infrared Data Association Standards (IrDA) är en assosciation bestående av ung
 Boston University, 2002, http://iss.bu.edu/jbc/Publications/jbc-bc1.pdf (Hämtad 2014-03-24)}  
 
 \subsubsection{Långdistans IR kommunikation}
-Flera hinder finns för konstruktion för långdistans kommunikation via IR. Dessa enheter behöver fri sikt och lider av signalstyrke förlust genom atmosfären. Vid byggnad till byggnad kommunikation med IR får man även problemet med att byggnader svajar något vilket kan leda till att direkt länken bryts.$^{\ref{Carruthers}}$ 
+Flera hinder finns för konstruktion för långdistans kommunikation via IR. Dessa enheter behöver fri sikt och lider av signalstyrke förlust genom atmosfären. Vid byggnad till byggnad kommunikation med IR får man även problemet med att byggnader svajar något vilket kan leda till att direkt länken bryts.\footnote{\label{Carruthers2}Carruthers, Jeffrey B. Wireless Infrared Communications,Department of Electrical and Computer Engineering
+Boston University, 2002, http://iss.bu.edu/jbc/Publications/jbc-bc1.pdf (Hämtad 2014-03-24)}
 
 \subsubsection{Säkerhet}
-Säkerhet i IR-kommunikationsfallet vid kortdistans fallet faller mer eller mindre under det faktum att avstånden för överföring är såpass små att hackningförsök blir inaktuella.$^{\ref{Carruthers}}$
+Säkerhet i IR-kommunikationsfallet vid kortdistans fallet faller mer eller mindre under det faktum att avstånden för överföring är såpass små att hackningförsök blir inaktuella.$^{\ref{Carruthers2}}$
 
 \subsection{ZigBee}
 ZigBee är en standard för trådlös styrning och övervakning som används i hem och industrier men även andra övervaknings och styrningsapplikationer där låg strömförbrukning och hög tillgänglighet är i fokus. Zigbee-standarden erbjuder näverks-, säkerhets- och applikationssupport ovanpå IEEE 802.15.4 standarden. Platformen har stöd för stjärnnät och trädstruktur men mesh-arkitektur är den absolut populäraste. 
@@ -197,21 +199,34 @@ Mesh-arkitekturen är en nätstruktur där alla noder i nätet har kontakt med m
 
 \subsection{Radiostyrning}
 \section{Resultat}
+Utifrån fördjupningen kan vi sluta oss till att IR-kommunikation inte är ett alternativ för ett mobilt robotfordon. IR kräver antingen relativt stillastående föremål eller korta avstånd. Dessutom krävs sändar-mottagarstruktur på båda sidor då ett mobilt robotfordon rimligen ska kunna både skicka och ta emot data. 
+IEEE802.11 är ett starkt alternativ tack vare sin höga överföringshastighet och långa räckvidd, men en oro är störningar som kan uppstå då många signaler populerar IEEE802.11 bandet, samt att en existerande nätverksstruktur behövs användas.
+Bluetooth och IEEE802.11 klarar båda kommunikation i båda riktningar, har tillräcklig säkerhet och stabilitet. Bluetooths användarvänlighet och det faktum att den är Point-to-Point får avgöra i detta fall.
+
 \subsection{Diskussion}
 
 
-
-
-
-% ----------------------------- Appendix -----------------------------------------
-
-\newpage
-\appendix
-Författare:Gupta, Naresh C. (Naresh Chand), Titel Inside Bluetooth Low Energy Utgivare:Artech House,Utgivningsdatum:cop. 2013Sidor:xxvi, 395 pages :ISBN:9781608075799
-\pagestyle{empty}
-\newgeometry{left=2cm,right=2cm,bottom=2cm,top=2cm}
+\newpage 
 \section{Referenser}
-%http://etn.se/index.php?option=com_content&task=view&id=18463&Itemid=66
-%http://www.engineering.uiowa.edu/~mcover/lab4/802.15.4-2003.pdf
+
+Holger Karl, Andreas Willig. Protocols and Architectures for Wireless Sensor Networks, Wiley, 2005
+
+Lopez-Aguilera, Elena. Study on the influence of transmission errors on RSNA authentication mechanisms in IEEE 802.11 WLAN. Computer Communications Volume: 41 Issue: 5 (2014-01-01) p. 76-93
+
+Bluetooth SIG. Fast Facts http://www.bluetooth.com/Pages/Fast-Facts.asp (Hämtad 2014-03-24)
+
+Gupta, Naresh. Inside BLUETOOTH LOW ENERGY. Artech House, 2013
+
+Carruthers, Jeffrey B. Wireless Infrared Communications,Department of Electrical and Computer Engineering
+Boston University, 2002, http://iss.bu.edu/jbc/Publications/jbc-bc1.pdf (Hämtad 2014-03-24)
+
+Part 15.4 Wireless Medium Access Control (MAC) and Physical Layer (PHY) Specifications for Low-Rate Wireless Personal Area Networks (LR\text{-}WPANs). The Institute of Electrical and Electronics Engineers, Inc. (2003) \\ http://www.engineering.uiowa.edu/~mcover/lab4/802.15.4-2003.pdf (Hämtad 2014-03-24)
+
+Zimmermann, Hubert (April 1980). OSI Reference Model — The ISO Model of Architecture for Open Systems Interconnection. IEEE Transactions on Communications 28 (4): 425–432. doi:10.1109/TCOM.1980.1094702
+
+Wheeler, Andy. Krama saften ur Zigbee. Elektronik Tidningen (2005). \\ http://etn.se/index.php?option=com\_content\&task=view\&id=18463\&Itemid=66 (Hämtad 2014-03-24)
+
+
+
 
 \end{document}
