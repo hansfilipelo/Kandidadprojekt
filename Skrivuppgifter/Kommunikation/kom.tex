@@ -117,14 +117,14 @@
 \section{Problemformulering}
 \section{Principer för trådlös kommunikation}
 \subsection{WLAN}
-Ett wireless local area network (WLAN) kopplar ihop två eller flera noder med hjälp av någon form av trådlös distributionsmetod. Ett exempel på en sådan distributionsmetod är Orthogonal frequency-division multiplexing (OFDM) som utnyttjar olika bärvågfrekvenser får att koda om signalen. WLAN använder sig oftast av en accesspunkt så att noderna/användarna kan förflytta sig inom räckvidden för denna accesspunkt. Idag används mestadels WLAN som är baserade på standarden IEEE 802.11 som i vardagligt språk brukar kallas Wi-Fi. Standarden är skapat av Institute of Electrical and Electronics Engineers, (IEEE) och använder frekvensband på 2.4, 3.6, 5 och 60Hz.
+Ett wireless local area network (WLAN) kopplar ihop två eller flera noder med hjälp av någon form av trådlös distributionsmetod. Ett exempel på en sådan distributionsmetod är Orthogonal frequency-division multiplexing (OFDM) som utnyttjar olika bärvågfrekvenser får att koda om signalen. WLAN använder sig oftast av en accesspunkt så att noderna/användarna kan förflytta sig inom räckvidden för denna accesspunkt. Idag används mestadels WLAN som är baserade på standarden IEEE 802.11 som i vardagligt språk brukar kallas Wi-Fi. Standarden är skapat av Institute of Electrical and Electronics Engineers, (IEEE).
 
 \subsubsection{Stationer}
-Alla komponenter i ett WLAN utgörs av antingen stationer som kan vara noder eller accesspunkter. Alla stationerna har ett nätverkskort, wireless network interface controller (WNIC), som jobbar på samma lager som MAC-lagret (Se rubrik IEEE 802.11). Nätverkskortet använder antenn för att kommunicera med hjälp av radiovågor. En accesspunkt utgörs oftast av en router eller en switch medan en nod kan vara en PC eller mobiltelefon. 
+Alla komponenter i ett WLAN utgörs av antingen stationer som kan vara noder eller accesspunkter. Alla stationerna har ett nätverkskort, wireless network interface controller (WNIC), som jobbar på samma lager som MAC-lagret (Se rubrik IEEE 802.11). Nätverkskortet använder antenn för att kommunicera med hjälp av radiovågor. En accesspunkt utgörs oftast av en router eller en switch medan en nod kan vara en PC eller mobiltelefon.
 
 \subsubsection{IEEE 802.11}
 IEEE 802.11 familjen består av en serie halv-duplex (kommunikationen kan ske i båda riktningarna men bara en riktning i taget) modulationstekniker som använder sig av samma MAC-protokoll. MAC-protokollet eller MAC-lagret är ett sublager i datalänklagret. Detta lager fungerar som en mellanhand mellan logical link control (LLC) och nätverkets fysiska lager och styr alltså hur nätverksnoderna får åtkomst till det fysiska skiktet (signal och binär överföring).
-IEEE 802.11 kräver att nod \emph{x} konstant lyssnar för att vara redo om en nod \emph{y} möjligen skulle försöka skicka data. Detta drar givetvis mycket ström men kan reduceras med hjälp av en Network Allocatoin Vector (NAV), som enkelt sett fungerar som en räknare. När räknaren är nollskild är systemet i vila, när räknaren är noll så lyssnar systemet. Trådlösa stationer som har batteridrift kan därför spara ström genom att gå i vila och sen vakna till när räknaren är noll och då vara redo att ta emot data. 
+IEEE 802.11 kräver att nod \emph{x} konstant lyssnar för att vara redo om en nod \emph{y} möjligen skulle försöka skicka data. Detta drar givetvis mycket ström men kan reduceras med hjälp av en Network Allocatoin Vector (NAV), som enkelt sett fungerar som en räknare. När räknaren är nollskild är systemet i vila, när räknaren är noll så lyssnar systemet. Trådlösa stationer som har batteridrift kan därför spara ström genom att gå i vila och sen vakna till när räknaren är noll och då vara redo att ta emot data.\footnote{Holger Karl, Andreas Willig. Protocols and Architectures for Wireless Sensor Networks, Wiley, 2005}
 
 \subsubsection{Säkerhet}
 Användning av WLAN har ökat radikalt och blivit väldigt populärt på grund av dess flexibilitet och användarvänlighet, dock kommer dessa typer av nätverk alltid med lite säkerhetsrisker. IEEE 802.11 innehåller både kryptering och autentiserings metoder med hjälp av wired equivalent privacy (WEP).\footnote{Lopez-Aguilera, Elena. Study on the influence of transmission errors on RSNA authentication mechanisms in IEEE 802.11 WLAN. Computer Communications Volume: 41 Issue: 5 (2014-01-01) p. 76-93} Detta är en av de mest simpla metoder och har idag ersatts av  Wi-Fi Protected Access (WPA) som använder sig av en mer avancerad krypteringsmetod än WEP. 
@@ -170,6 +170,16 @@ Passiv avlyssning så försöker man endast lyssna av kommunikationen mellan tv�
 IR kommunikation är en form av trådlös kommunikation där informationen skickas i form av IR-ljus och kräver därför direkt siktlinje mellan sändare och mottagare. En vanlig implementering av denna form av kommunikation är fjärrkontroller till TV-apparater.
 
 \subsection{ZigBee}
+ZigBee är en standard för trådlös styrning och övervakning som används i hem och industrier men även andra övervaknings och styrningsapplikationer där låg strömförbrukning och hög tillgänglighet är i fokus. Zigbee-standarden erbjuder näverks-, säkerhets- och applikationssupport ovanpå IEEE 802.15.4 standarden. Platformen har stöd för stjärnnät och trädstruktur men mesh-arkitektur är den absolut populäraste. 
+
+\subsubsection{IEEE 802.15.4}
+
+
+\subsubsection{Mesh-arkitektur}
+Mesh-arkitekturen är en nätstruktur där alla noder i nätet har kontakt med minst 2 noder samtidigt. Detta ger i sin tur ger i sin tur hög redundans vilket leder till högre säkerhet på kommunikationen. Strukturen är således tillförlitlig och erbjuder bra skydd mot varianser i signalstyrka som kan skapas av interferens eller multipla signaler.\footnote{Wheeler, Andy. Krama saften ur Zigbee. Elektronik Tidningen (2005).
+http://etn.se/index.php?option=com_content&task=view&id=18463&Itemid=66 (Hämtad 2014-03-24)}
+
+
 \subsection{Radiostyrning}
 \section{Resultat}
 \subsection{Diskussion}
@@ -198,8 +208,6 @@ Författare:Gupta, Naresh C. (Naresh Chand), Titel Inside Bluetooth Low Energy U
 \pagestyle{empty}
 \newgeometry{left=2cm,right=2cm,bottom=2cm,top=2cm}
 \section{Referenser}
-Protocols and Architectures for Wireless Sensor Networks, Holger Karl, Andreas Willig
-https://katalog.bibl.liu.se/uhtbin/cgisirsi.exe/?ps=WORwBX7nCM/HB/52940101/9
 
 
 \end{document}
