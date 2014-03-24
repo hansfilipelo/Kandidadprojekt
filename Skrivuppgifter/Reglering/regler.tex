@@ -146,17 +146,20 @@ De allra flesta robotar nyttjar förmågan att optiskt mäta objekt i sin omgivn
 
 Med optisk avläsning av omvärlden finns alltid möjligheten att korrigera tidigare felaktiga mätvärden genom att samla in fler mätdata för att mer korrekt kunna beskriva sin omgivning. 
 
-\section{Typer av SLAM}
+\subsection{Kalmanfilter - KF-SLAM}
+Ett Kalmanfilter är en typ av algoritm som med hjälp av 
+tidigare mätdata från sensorer som kan innehålla brus och störningar uppskattar okända variabler. Ett Kalmanfilter arbetar på linjära och oberoende tillståndsvariabler och är ett essentiellt verktyg för vägval och positionsuppskattningen i ett SLAM-system. 
 
 \subsection{EKF-SLAM} 
 EKF-SLAM är en förkortning för Extended Kalman Filter for Simultaneous 
-Localization And Mapping. Ett Kalmanfilter är en typ av algoritm som med hjälp av 
-tidigare mätdata från sensorer som kan innehålla brus och störningar uppskattar okända variabler. 
-Det utökade Kalmanfiltret (extended) skiljer sig från det ursprungliga på så vis att den används vid icke-linjära förhållanden 
-och istället linjäriserar variablerna kring ett medelvärde och deras kovarians. Med kovarians menas då hur de olika variablerna beror på varandra.
+Localization And Mapping. Det utökade Kalmanfiltret (extended) skiljer sig från det ursprungliga på så vis att den används vid icke-linjära förhållanden och istället linjäriserar variablerna kring ett medelvärde och deras kovarians. Med kovarians menas då hur de olika variablerna beror på varandra.
 
 Algoritmen arbetar oftast i två steg; först skattas variablerna sedan vid nästa mätning 
 kommer de skattade variablerna viktas, där de med mest säkerhet är av störst vikt.
+
+\section{Typer av SLAM}
+
+Det finns olika typer av SLAM för olika typer av tillämpningar och med olika egenskaper. Vissa är bra på större avstånd medan andra är mer precis och bra på kortare avstånd. 
 
 \subsection{VSLAM}
 
