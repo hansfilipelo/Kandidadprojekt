@@ -156,22 +156,26 @@ Bluetooth 4.0 ökar inte hastigheten från 3.0 utan fokuserar istället på att 
 
 
 \subsubsection{Koppling av enheter}
-En parkoppling mellan två Bluetooth-enheter, A och B, fungerar enligt principen att ena enheten, låt oss säga enhet B, måsta vara upptäckbar och måste alltså sända ut en form av identifikation, ofta i form av ett namn. Enhet A söker av vilka enheter den kan detektera och ger ofta en komplett lista till användaren över enheter som den detekterade. Nästa steg är att enhet A begär en koppling till enhet B. När kopplingen lyckas blir enhet A master och enhet B slave. Tvåvägskommunikation är nu möjlig mellan enheterna.\footnote{Gupta, Naresh. Inside BLUETOOTH LOW ENERGY. Artech House, 2013}
+En parkoppling mellan två Bluetooth-enheter, A och B, fungerar enligt principen att ena enheten, låt oss säga enhet B, måsta vara upptäckbar och måste alltså sända ut en form av identifikation, ofta i form av ett namn. Enhet A söker av vilka enheter den kan detektera och ger ofta en komplett lista till användaren över enheter som den detekterade. Nästa steg är att enhet A begär en koppling till enhet B. När kopplingen lyckas blir enhet A master och enhet B slave. Tvåvägskommunikation är nu möjlig mellan enheterna.\footnote{\label{Gupta2}Gupta, Naresh. Inside BLUETOOTH LOW ENERGY. Artech House, 2013}
 
 \subsubsection{Säkerhet}
 Bluetooth är en förhållandevis säker kommunikationsform, men är självklart inte helt säker. En begränsning i säkerheten är att Bluetooth-enheterna ofta saknar inmatningsmöjligheter och display. Detta leder till att lösenord inte kan fyllas i eller ens genereras på enheterna. I fallet av att båda enheter har display och inmatningsmöjligheter kan en 16 siffror lång PIN-kod genereras som sedan måste fyllas i på den enhet som begär kopplingen. Detta skyddar mot de flesta former av avlyssning.
-För enheter som saknar antingen display eller inmatningsmöjligheter finns andra möjliga lösningar. NFC alltså Near-Field Communication, kan användas för parning och då måste enheterna i princip röra varandra i parningsfasen men kan därefter utnyttja fulla räckvidden på Bluetooth. Detta kallas Out-of-Band Pairing.$^1$
+För enheter som saknar antingen display eller inmatningsmöjligheter finns andra möjliga lösningar. NFC alltså Near-Field Communication, kan användas för parning och då måste enheterna i princip röra varandra i parningsfasen men kan därefter utnyttja fulla räckvidden på Bluetooth. Detta kallas Out-of-Band Pairing.$^{\ref{Gupta2}}$
 
 En annan typ av säkerhet som används är "Just Works", som utnyttjas när enheterna saknar både inmatningsmöjligheter och display. Ett exempel på detta är Bluetooth headsets till mobiltelefoner. Denna säkerhetsmetod kräver inte att användare utför någonting förutom själva kopplingen. Denna metod skyddar mot passiv avlyssning, men ej mot aktiv avlyssning. 
 Aktiv avlyssning är när en enhet lägger sig mellan de två enheterna och vidarebefodrar kommunikationen emellan dem och kan vara väldigt svår att upptäcka.
-Passiv avlyssning så försöker man endast lyssna av kommunikationen mellan två enheter.$^1$
+Passiv avlyssning så försöker man endast lyssna av kommunikationen mellan två enheter.$^{\ref{Gupta2}}$
  
 \subsection{Infrared (IR)}
 IR kommunikation är en form av trådlös kommunikation där informationen skickas i form av IR-ljus och kräver därför direkt siktlinje mellan sändare och mottagare. En vanlig implementering av denna form av kommunikation är fjärrkontroller till TV-apparater.
-Infrared Data Association Standards (IrDA) är en assosciation bestående av ungefär 100 medlemsföretag. IrDA protokollen är ett såkallat Point-to-Point protokoll och skickar alltså kommunikation mellan två enheter. IrDA har överföringshastighet på 2.4 kb/s upp till 4 Mb/s på upp till 1 meters avstånd. Vid länkning av två enheter kommer dessa alltid att kommunicera med 9.6 kb/s för att sedan komma överens om vilken hastighet som ska köras under dataöverföring.  
+Infrared Data Association Standards (IrDA) är en assosciation bestående av ungefär 100 medlemsföretag. IrDA protokollen är ett såkallat Point-to-Point protokoll och skickar alltså kommunikation mellan två enheter. IrDA har överföringshastighet på 2.4 kb/s upp till 4 Mb/s på upp till 1 meters avstånd. Vid länkning av två enheter kommer dessa alltid att kommunicera med 9.6 kb/s för att sedan komma överens om vilken hastighet som ska köras under dataöverföring.\footnote{\label{Carruthers}Carruthers, Jeffrey B. Wireless Infrared Communications,Department of Electrical and Computer Engineering
+Boston University, 2002, http://iss.bu.edu/jbc/Publications/jbc-bc1.pdf (Hämtad 2014-03-24)}  
+
+\subsubsection{Långdistans IR kommunikation}
+Flera hinder finns för konstruktion för långdistans kommunikation via IR. Dessa enheter behöver fri sikt och lider av signalstyrke förlust genom atmosfären.$^{\ref{Carruthers}}$ 
 
 \subsubsection{Säkerhet}
-Säkerhet i IR-kommunikationsfallet faller mer under det faktum att avstånden för överföring är väldigt låg och 
+Säkerhet i IR-kommunikationsfallet vid kortdistans fallet faller mer eller mindre under det faktum att avstånden för överföring är såpass små att hackningförsök blir inaktuella.$^{\ref{Carruthers}}$
 
 \subsection{ZigBee}
 ZigBee är en standard för trådlös styrning och övervakning som används i hem och industrier men även andra övervaknings och styrningsapplikationer där låg strömförbrukning och hög tillgänglighet är i fokus. Zigbee-standarden erbjuder näverks-, säkerhets- och applikationssupport ovanpå IEEE 802.15.4 standarden. Platformen har stöd för stjärnnät och trädstruktur men mesh-arkitektur är den absolut populäraste. 
