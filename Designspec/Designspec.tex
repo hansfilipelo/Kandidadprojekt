@@ -148,7 +148,7 @@ De följande 4 anger hur många cykler, dvs. hela Bytes som datat som skickas i 
 
 
 \section{Kommunikationsmodul}
-Modul för att hantera kommunikation mellan robotens olika delkomponenter samt med persondatorn via Blåtand. Kommunikationsmodulen som syns i figur 3, kommer att agera master på robotens interna buss. Vid kommunikation mellan övriga moduler, dvs. sensor- och styrmodulen, kommer denna gå via kommunikationsmodulen.
+Modul för att hantera kommunikation mellan robotens olika delkomponenter samt med persondatorn via Blåtand. Kommunikationsmodulen som syns i figur 3, kommer att agera master på robotens interna buss. Vid kommunikation mellan övriga moduler, dvs. sensor- och 'en, kommer denna gå via kommunikationsmodulen.
 Kommunikationsmodulen kommer alltså att leverera sensordata mellan roboten och mjukvaran som körs på persondatorn.
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
@@ -486,7 +486,14 @@ Sensormodulens uppgift är att A/D-omvandla signaler från robotens avståndssen
 \end{figure}
 
 \subsection{Komponenter}
-I detta avsnitt beskrivs de olika komponenter som behövs i sensormodulen.
+\begin{itemize}
+	\item Systemchip - Atmel ATmega1284p
+	\item RFID-sensor - Par\-all\-ax-Read\-er\
+	\item 2 st avståndssensorer för längre avstånd - GP\-2Y3A\-00\-3K\-0F
+	\item 4 st avståndssensorer för kortare avstånd - GP\-2Y\-0A\-21\-YK
+	\item Vinkelhastighetssensor - MLX\-90\-609
+\end{itemize}
+~\\
 
 \subsubsection{Systemchip}
 Modulens processor är av typen Atmel ATmega1284p\footnote{http://www.atmel.com/ja/jp/Images/doc8059.pdf}. Processorn kommer kontinuerligt att ta in data från alla sensorer. Denna är programmerbar och kommer att innehålla de program som behövs för att konvertera signalerna till avstånd, tillryggalagd sträcka, positionering och detektion av RFID-tagg. På begäran av master, kommunikationsmodulen, kan data skickas från processorn till master via en SPI-buss.
