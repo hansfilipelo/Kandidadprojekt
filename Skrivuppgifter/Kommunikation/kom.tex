@@ -115,13 +115,30 @@
 \section{Principer för trådlös kommunikation}
 \subsection{WLAN IEEE 802.11}
 \subsection{Bluetooth}
-Bluetooth är en global standard för trådlöskommunikation på korta avstånd. Bluetooth kan sättas upp utan en tidigare existerande trådlös arkitektur och blir därför väldigt attraktiv för att para ihop enheter. Så som Bluetooth protokollet fungerar är det just parning mellan två enheter är aktuellt. Bluetooth har fler aspekter som gör det särdeles bra för små mobila enheter. 
+
+Bluetooth är en global standard för trådlöskommunikation på korta avstånd och utvecklades av Ericsson 1994\footnote{http://www.bluetooth.com/Pages/Fast-Facts.aspx}. Bluetooth utnyttjades till en början primärt som en ersättning för serielkommunikationskablar mellan enheter.
+Bluetooth är fullt duplex och kan alltså skicka information i båda riktningar samtidigt. Dessutom kan Bluetooth sättas upp utan en tidigare existerande trådlös arkitektur och blir därför väldigt attraktiv för att para ihop enheter. Så som Bluetooth protokollet fungerar är det just parning mellan två enheter som är aktuellt. Bluetooth har fler aspekter som gör det särdeles bra för små mobila enheter. 
 \begin{itemize}
 \item Låg strömförbrukning 
 \item Låg kostnad
 \item Liten formfaktor
 \item Behöver ej fri sikt mellan enheterna
 \end{itemize}
+
+Bluetooth utnyttjar högfrekventa radio vågor mellan 2.4 GHz till 2.485 GHz. 
+
+\subsubsection{Standarder för Bluetooth}
+Hastighet för olika Bluetooth standarder:
+\begin{itemize}
+\item Bluetooth 1.2 - 1 Mbit/s 
+\item Bluetooth 2.0 - 3 Mbit/s
+\item Bluetooth 3.0 - 24 Mbit/s
+\item Bluetooth 4.0 - 24 Mbit/s
+\end{itemize}
+
+Intressant att notera här är att Bluetooth 3.0 har en teoretisk överföringshastighet på 24 Mbit/s, men att denna överföring inte sker via Bluetooth, utan via den snabbare teknologin 802.11. 
+Bluetooth 4.0 ökar inte hastigheten från 3.0 utan fokuserar istället på att spara in på strömförbrukning. 
+
 
 \subsubsection{Koppling av enheter}
 En parkoppling mellan två Bluetooth-enheter, A och B, fungerar enligt principen att ena enheten, låt oss säga enhet B, måsta vara upptäckbar och måste alltså sända ut en form av identifikation, ofta i form av ett namn. Enhet A söker av vilka enheter den kan detektera och ger ofta en komplett lista till användaren över enheter som den detekterade. Nästa steg är att enhet A begär en koppling till enhet B. När kopplingen lyckas blir enhet A master och enhet B slave. Tvåvägskommunikation är nu möjlig mellan enheterna.
