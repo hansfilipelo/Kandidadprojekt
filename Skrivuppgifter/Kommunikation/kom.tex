@@ -18,11 +18,14 @@
 \usepackage{listings}
 \usepackage{xcolor,colortbl}
 \usepackage{hyperref}
+\usepackage{perpage} %the perpage packag
 
 \include{pagestyle}
 
 %-------------------------------------------------------------------
 %Första sidan
+
+\MakePerPage{footnote} %the perpage package command footnotes need to restart on new sides
 
 \begin{document}
 	\pagestyle{fancy}
@@ -128,8 +131,8 @@ Användning av WLAN har ökat radikalt och blivit väldigt populärt på grund a
 
 \subsection{Bluetooth}
 
-Bluetooth är en global standard för trådlöskommunikation på korta avstånd och utvecklades av Ericsson 1994\footnote{http://www.bluetooth.com/Pages/Fast-Facts.aspx}. Bluetooth utnyttjades till en början primärt som en ersättning för serielkommunikationskablar mellan enheter.
-Bluetooth är fullt duplex och kan alltså skicka information i båda riktningar samtidigt. Dessutom kan Bluetooth sättas upp utan en tidigare existerande trådlös arkitektur och blir därför väldigt attraktiv för att para ihop enheter. Så som Bluetooth protokollet fungerar är det just parning mellan två enheter som är aktuellt. Bluetooth har fler aspekter som gör det särdeles bra för små mobila enheter. 
+Bluetooth är en global standard för trådlöskommunikation på korta avstånd och utvecklades av Ericsson 1994. Bluetooth utnyttjades till en början primärt som en ersättning för serielkommunikationskablar mellan enheter.\footnote{Bluetooth SI. Fast Facts http://www.bluetooth.com/Pages/Fast-Facts.asp (Hämtad 2014-03-24)}
+Bluetooth är fullt duplex och kan alltså skicka information i båda riktningar samtidigt. Dessutom kan Bluetooth sättas upp utan en tidigare existerande trådlös arkitektur och blir därför väldigt attraktiv för att para ihop enheter. Så som Bluetooth protokollet fungerar är det just parning mellan två enheter som är aktuellt. Bluetooth har fler aspekter som gör det särdeles bra för små mobila enheter.\footnote{Gupta, Naresh. Inside BLUETOOTH LOW ENERGY. Artech House, 2013}
 \begin{itemize}
 \item Låg strömförbrukning 
 \item Låg kostnad
@@ -137,7 +140,7 @@ Bluetooth är fullt duplex och kan alltså skicka information i båda riktningar
 \item Behöver ej fri sikt mellan enheterna
 \end{itemize}
 
-Bluetooth utnyttjar högfrekventa radio vågor mellan 2.4 GHz till 2.485 GHz. 
+Bluetooth utnyttjar högfrekventa radio vågor mellan 2.4 GHz till 2.485 GHz för att sända information.$^1$
 
 \subsubsection{Standarder för Bluetooth}
 Hastighet för olika Bluetooth standarder:
@@ -148,24 +151,24 @@ Hastighet för olika Bluetooth standarder:
 \item Bluetooth 4.0 - 24 Mbit/s
 \end{itemize}
 
-Intressant att notera här är att Bluetooth 3.0 har en teoretisk överföringshastighet på 24 Mbit/s, men att denna överföring inte sker via Bluetooth, utan via den snabbare teknologin 802.11. 
-Bluetooth 4.0 ökar inte hastigheten från 3.0 utan fokuserar istället på att spara in på strömförbrukning. 
+Intressant att notera här är att Bluetooth 3.0 har en teoretisk överföringshastighet på 24 Mbit/s, men att denna överföring inte sker via Bluetooth, utan via den snabbare teknologin IEEE 802.11. 
+Bluetooth 4.0 ökar inte hastigheten från 3.0 utan fokuserar istället på att spara in på strömförbrukning.$^2$
 
 
 \subsubsection{Koppling av enheter}
-En parkoppling mellan två Bluetooth-enheter, A och B, fungerar enligt principen att ena enheten, låt oss säga enhet B, måsta vara upptäckbar och måste alltså sända ut en form av identifikation, ofta i form av ett namn. Enhet A söker av vilka enheter den kan detektera och ger ofta en komplett lista till användaren över enheter som den detekterade. Nästa steg är att enhet A begär en koppling till enhet B. När kopplingen lyckas blir enhet A master och enhet B slave. Tvåvägskommunikation är nu möjlig mellan enheterna.
+En parkoppling mellan två Bluetooth-enheter, A och B, fungerar enligt principen att ena enheten, låt oss säga enhet B, måsta vara upptäckbar och måste alltså sända ut en form av identifikation, ofta i form av ett namn. Enhet A söker av vilka enheter den kan detektera och ger ofta en komplett lista till användaren över enheter som den detekterade. Nästa steg är att enhet A begär en koppling till enhet B. När kopplingen lyckas blir enhet A master och enhet B slave. Tvåvägskommunikation är nu möjlig mellan enheterna.\footnote{Gupta, Naresh. Inside BLUETOOTH LOW ENERGY. Artech House, 2013}
 
 \subsubsection{Säkerhet}
 Bluetooth är en förhållandevis säker kommunikationsform, men är självklart inte helt säker. En begränsning i säkerheten är att Bluetooth-enheterna ofta saknar inmatningsmöjligheter och display. Detta leder till att lösenord inte kan fyllas i eller ens genereras på enheterna. I fallet av att båda enheter har display och inmatningsmöjligheter kan en 16 siffror lång PIN-kod genereras som sedan måste fyllas i på den enhet som begär kopplingen. Detta skyddar mot de flesta former av avlyssning.
-För enheter som saknar antingen display eller inmatningsmöjligheter finns andra möjliga lösningar. NFC alltså Near-Field Communication, kan användas för parning och då måste enheterna i princip röra varandra i parningsfasen men kan därefter utnyttja fulla räckvidden på Bluetooth. Detta kallas Out-of-Band Pairing.
+För enheter som saknar antingen display eller inmatningsmöjligheter finns andra möjliga lösningar. NFC alltså Near-Field Communication, kan användas för parning och då måste enheterna i princip röra varandra i parningsfasen men kan därefter utnyttja fulla räckvidden på Bluetooth. Detta kallas Out-of-Band Pairing.$^1$
 
 En annan typ av säkerhet som används är "Just Works", som utnyttjas när enheterna saknar både inmatningsmöjligheter och display. Ett exempel på detta är Bluetooth headsets till mobiltelefoner. Denna säkerhetsmetod kräver inte att användare utför någonting förutom själva kopplingen. Denna metod skyddar mot passiv avlyssning, men ej mot aktiv avlyssning. 
 Aktiv avlyssning är när en enhet lägger sig mellan de två enheterna och vidarebefodrar kommunikationen emellan dem och kan vara väldigt svår att upptäcka.
-Passiv avlyssning så försöker man endast lyssna av kommunikationen mellan två enheter. 
-
-
+Passiv avlyssning så försöker man endast lyssna av kommunikationen mellan två enheter.$^1$
  
 \subsection{Infrared (IR)}
+IR kommunikation är en form av trådlös kommunikation där informationen skickas i form av IR-ljus och kräver därför direkt siktlinje mellan sändare och mottagare. En vanlig implementering av denna form av kommunikation är fjärrkontroller till TV-apparater.
+
 \subsection{ZigBee}
 \subsection{Radiostyrning}
 \section{Resultat}
@@ -191,6 +194,7 @@ Disposition:
 
 \newpage
 \appendix
+Författare:Gupta, Naresh C. (Naresh Chand), Titel Inside Bluetooth Low Energy Utgivare:Artech House,Utgivningsdatum:cop. 2013Sidor:xxvi, 395 pages :ISBN:9781608075799
 \pagestyle{empty}
 \newgeometry{left=2cm,right=2cm,bottom=2cm,top=2cm}
 \section{Referenser}
