@@ -112,12 +112,8 @@
 
 Simultan positionering och kartläggning (SLAM) är ett problem som kan liknas vid ''Hönan och ägget''-problemet. Utan att veta var vi är - hur kartlägger vi då vår omgivining? Åt andra hållet får man ställa sig frågan - hur kartlägger vi vår omgivning utan att veta var vi är? 
 
-Det är inte helt enkelt att lösa dessa frågor, men det finns
-approximativa på problemet SLAM. Gemensamt för alla lösningar är att de
-bygger på möjligheten att läsa av sin omgivning i kombination med
-sannolikhetsteori. Då sensordata aldrig kan antas vara exakt använder
-sannolikhetsteori för att göra rimlighetsbedömningar i de stickprov av
-sensordata som sensorerna ger oss.
+Det är inte helt enkelt att lösa dessa frågor, men det finns approximativa lösningar på problemet SLAM. Gemensamt för alla lösningar är att de bygger på möjligheten att läsa av sin omgivning i kombination med
+sannolikhetsteori. Då sensordata aldrig kan antas vara exakt använder man sannolikhetsteori för att göra rimlighetsbedömningar i de stickprov av sensordata som sensorerna ger oss.
 
 Själva problemet är alltså inte entydigt löst rent matematiskt, utan
 bygger på sannolikhetsteori i kombination med att moderna processorer
@@ -182,9 +178,6 @@ Tactile SLAM är en metod som provats för robotar vid kartläggning av ett mör
 \subsection{WiFi-SLAM}
 Denna metod använder sig av styrkan på WiFi-signaler i närheten för att avgöra positionen. Detta är något som använts på t.ex. mobiltelefoner för att avgöra var personer befinner sig.
 
-
-
-% ------------------------- Slutsats --------------------------
 % ------------------------- Implementeringar --------------------------
 
 \section{Implementeringar}
@@ -195,6 +188,17 @@ Det här är ett väldigt bra exempel på hur moderna, små mikrokontrollers kan
 
 SLAM används, och har används under längre tid, till exempel också i rymdexpeditioner där robotar skickas upp i rymden för att upptäcka och kartlägga ställen som vi människor inte har möjlighet att besöka. 
 
+% -------------------------Fördjupning
+\newpage
+\section{Fördjupning och kodexempel}
+
+KOMMER!
+
+% ------------------------- Reflektion --------------------------
+
+\section{Reflektion}
+
+Till slut kan vi konstatera att SLAM används i många tillämpningar man kanske inte tänker på. Man kan också konstatera att algoritmerna, filtren och mjukvaran som används för att implementera SLAM relativt komplicerade. Vi inser att vi gjort ett klokt beslut att fördjupa oss i just SLAM, då vi är väldigt beroende av detta i vårt projekt att konstruera en kartritande robot. 
 
 % --------------- Källförteckning ---------------------
 \newpage \section{Källförteckning} Smith, R.C.; Cheeseman, P. (1986).
