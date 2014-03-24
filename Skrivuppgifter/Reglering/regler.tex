@@ -165,11 +165,11 @@ Det finns olika typer av SLAM för olika typer av tillämpningar och med olika e
 
 VSLAM står för visuell SLAM, vilket betyder att lokaliseringen sker med hjälp av kameror. Kamerorna används för att finna landmärken i området som kartläggs och sedan använda dessa som referenser när roboten fortsätter att utforska för att t.ex. se hur långt och i vilken riktning förflyttning sker relativt landmärket.
 
- 
-Tactile SLAM (sensing by local touch only), Radar
-SLAM, 
-Wifi-SLAM 
-fastSLAM
+\subsection{TSLAM}
+Tactile SLAM är en metod som provats för robotar vid kartläggning av ett mörklagt område. Metoden använder sig av känselsensorer för att hitta avgränsningar i området och med hjälp av detta rita upp kartan. Denna metod ger dock inte så bra resultat med den teknik som existerar i dag.
+
+\subsection{fastSLAM}
+
 
 % --------------- Källförteckning ---------------------
 \newpage \section{Källförteckning} Smith, R.C.; Cheeseman, P. (1986).
@@ -181,6 +181,10 @@ International Journal of Robotics Research, 5(4), sida 56–68. Hämtad
 
 \url{http://ocw.mit.edu/courses/aeronautics-and-astronautics/16-412j-cognitive-robotics-spring-2005/projects/1aslam_blas_repo.pdf}
 \url{http://www.vision.caltech.edu/mariomu/research/papers/vSLAM-krs.pdf}
+
+\url{http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6224813}
+
+\url{http://www.openslam.org/}
 
 % ----------------------------- Appendix
 % -----------------------------------------
