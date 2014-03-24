@@ -131,8 +131,8 @@ Användning av WLAN har ökat radikalt och blivit väldigt populärt på grund a
 
 \subsection{Bluetooth}
 
-Bluetooth är en global standard för trådlöskommunikation på korta avstånd och utvecklades av Ericsson 1994. Bluetooth utnyttjades till en början primärt som en ersättning för serielkommunikationskablar mellan enheter.\footnote{Bluetooth SI. Fast Facts http://www.bluetooth.com/Pages/Fast-Facts.asp (Hämtad 2014-03-24)}
-Bluetooth är fullt duplex och kan alltså skicka information i båda riktningar samtidigt. Dessutom kan Bluetooth sättas upp utan en tidigare existerande trådlös arkitektur och blir därför väldigt attraktiv för att para ihop enheter. Så som Bluetooth protokollet fungerar är det just parning mellan två enheter som är aktuellt. Bluetooth har fler aspekter som gör det särdeles bra för små mobila enheter.\footnote{Gupta, Naresh. Inside BLUETOOTH LOW ENERGY. Artech House, 2013}
+Bluetooth är en global standard för trådlöskommunikation på korta avstånd och utvecklades av Ericsson 1994. Bluetooth utnyttjades till en början primärt som en ersättning för serielkommunikationskablar mellan enheter.\footnote{\label{BTweb}Bluetooth SI. Fast Facts http://www.bluetooth.com/Pages/Fast-Facts.asp (Hämtad 2014-03-24)}
+Bluetooth är fullt duplex och kan alltså skicka information i båda riktningar samtidigt. Dessutom kan Bluetooth sättas upp utan en tidigare existerande trådlös arkitektur och blir därför väldigt attraktiv för att para ihop enheter. Så som Bluetooth protokollet fungerar är det just parning mellan två enheter som är aktuellt. Bluetooth har fler aspekter som gör det särdeles bra för små mobila enheter.\footnote{\label{Gupta}Gupta, Naresh. Inside BLUETOOTH LOW ENERGY. Artech House, 2013}
 \begin{itemize}
 \item Låg strömförbrukning 
 \item Låg kostnad
@@ -140,7 +140,7 @@ Bluetooth är fullt duplex och kan alltså skicka information i båda riktningar
 \item Behöver ej fri sikt mellan enheterna
 \end{itemize}
 
-Bluetooth utnyttjar högfrekventa radio vågor mellan 2.4 GHz till 2.485 GHz för att sända information.$^1$
+Bluetooth utnyttjar högfrekventa radio vågor mellan 2.4 GHz till 2.485 GHz för att sända information.$^{\ref{BTweb}}$
 
 \subsubsection{Standarder för Bluetooth}
 Hastighet för olika Bluetooth standarder:
@@ -152,7 +152,7 @@ Hastighet för olika Bluetooth standarder:
 \end{itemize}
 
 Intressant att notera här är att Bluetooth 3.0 har en teoretisk överföringshastighet på 24 Mbit/s, men att denna överföring inte sker via Bluetooth, utan via den snabbare teknologin IEEE 802.11. 
-Bluetooth 4.0 ökar inte hastigheten från 3.0 utan fokuserar istället på att spara in på strömförbrukning.$^2$
+Bluetooth 4.0 ökar inte hastigheten från 3.0 utan fokuserar istället på att spara in på strömförbrukning.$^{\ref{Gupta}}$
 
 
 \subsubsection{Koppling av enheter}
@@ -168,6 +168,10 @@ Passiv avlyssning så försöker man endast lyssna av kommunikationen mellan tv�
  
 \subsection{Infrared (IR)}
 IR kommunikation är en form av trådlös kommunikation där informationen skickas i form av IR-ljus och kräver därför direkt siktlinje mellan sändare och mottagare. En vanlig implementering av denna form av kommunikation är fjärrkontroller till TV-apparater.
+Infrared Data Association Standards (IrDA) är en assosciation bestående av ungefär 100 medlemsföretag. IrDA protokollen är ett såkallat Point-to-Point protokoll och skickar alltså kommunikation mellan två enheter. IrDA har överföringshastighet på 2.4 kb/s upp till 4 Mb/s på upp till 1 meters avstånd. Vid länkning av två enheter kommer dessa alltid att kommunicera med 9.6 kb/s för att sedan komma överens om vilken hastighet som ska köras under dataöverföring.  
+
+\subsubsection{Säkerhet}
+Säkerhet i IR-kommunikationsfallet faller mer under det faktum att avstånden för överföring är väldigt låg och 
 
 \subsection{ZigBee}
 ZigBee är en standard för trådlös styrning och övervakning som används i hem och industrier men även andra övervaknings och styrningsapplikationer där låg strömförbrukning och hög tillgänglighet är i fokus. Zigbee-standarden erbjuder näverks-, säkerhets- och applikationssupport ovanpå IEEE 802.15.4 standarden. Platformen har stöd för stjärnnät och trädstruktur men mesh-arkitektur är den absolut populäraste. 

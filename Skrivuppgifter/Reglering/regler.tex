@@ -1,13 +1,3 @@
-%Laborationsrapport
-%
-\documentclass[a4paper,12pt,fleqn]{article} \usepackage{fixltx2e}
-\usepackage[utf8]{inputenc} \usepackage{graphicx} \usepackage{sidecap}
-\usepackage{fancyhdr} \usepackage{amssymb,amsmath}
-\usepackage[swedish]{babel} \usepackage[margin=1.5in]{geometry}
-\usepackage{abstract} \usepackage[parfill]{parskip} \usepackage{tocloft}
-\usepackage{adjustbox} \usepackage{textcomp} \usepackage[T1]{fontenc}
-\usepackage{listings} \usepackage{xcolor,colortbl} \usepackage{hyperref}
-
 \documentclass[a4paper,12pt,fleqn]{article}
 \usepackage{fixltx2e}
 \usepackage[utf8]{inputenc}
@@ -26,65 +16,94 @@
 \usepackage{listings}
 \usepackage{xcolor,colortbl}
 \usepackage{hyperref}
-\usepackage{perpage} %the perpage package
-\MakePerPage{footnote} %the perpage package command
 
 \include{pagestyle}
 
 %-------------------------------------------------------------------
 %Första sidan
-%
-\begin{document} \pagestyle{fancy} \pagenumbering{roman} \vspace*{\fill}
-\begingroup \begin{center} \huge{\textbf{Simultan positionering och
-kartläggning}} \\ \vspace{10pt} \normalsize Tobias Grundström och
-Hans-Filip Elo \\ Kandidatprojekt Y - Grupp 8 - VT2014 \\ Version 0.1
-\end{center} \endgroup \vspace*{\fill}
 
-	\begin{center} %Börjar centrering Status \\ \vspace{3pt} %Whitespace
-	3 pts \begin{tabular}{| p{3cm} | p{3cm} | p{3cm} |} %tabell, 4
-	horizontella |, 3 cm emellan dem. \hline %översta horizontella
-	linjen. Granskad & - & \today \\ \hline % & -tecken för att "gå till
-	nästa ruta" Godkänd & - & - \\ \hline % avslutas med \\ och \hline.
+\begin{document}
+	\pagestyle{fancy}
+\pagenumbering{roman}
+	\vspace*{\fill}
+		\begingroup
+			\begin{center}
+				\huge{\textbf{Simultan positionering och kartläggning}}
+				\\
+				\vspace{10pt}
+				\normalsize
+				Tobias Grundström och Hans-Filip Elo
+				\\
+				Kandidatprojekt Y - Grupp 8 - VT2014
+				\\
+				Version 0.1
+				\end{center}
+		\endgroup
+	\vspace*{\fill}
 
-	    \end{tabular} \end{center} \vspace{2cm} \newpage
+	\begin{center} %Börjar centrering 
+		Status
+		\\
+		\vspace{3pt} %Whitespace 3 pts
+	    \begin{tabular}{| p{3cm} | p{3cm} | p{3cm} |} %tabell, 4 horizontella |, 3 cm emellan dem.
+	    \hline %översta horizontella linjen.
+	    Granskad & - & \today \\ \hline % & -tecken för att "gå till nästa ruta" 
+		Godkänd & - & - \\ \hline % avslutas med \\ och \hline.
+
+	    \end{tabular}
+	\end{center}
+	\vspace{2cm}
+	\newpage
 %-----------------------------------------------------------------
 %Projektidentitet
-%
-	\vspace*{\fill} \begingroup \begin{center}
-	\LARGE{\textbf{PROJEKTIDENTITET}} \\ \footnotesize Grupp 8, 2014/VT,
-	MapMaster2001 \\ Linköpings tekniska högskola, ISY \\ \vspace{1cm}
-	\begin{tabular}{| p{3cm} | p{4.3cm} | p{2.4cm} | p{3.8cm} |} \hline
-	\textbf{Namn} & \textbf{Ansvar} & \textbf{Telefon} & \textbf{E-post}
-	\\ \hline Jens Edhammer & Dokumentanvsvarig (DOK) & 076-030 67 80 &
-	jened502@student.liu.se \\ \hline Erik Ekelund & Designansvarig
-	(DES) & 073-682 43 06 & eriek984@student.liu.se \\ \hline David
-	Habrman &  & 976-017 71 15 & davha227@student.liu.se \\ \hline
-	Tobias Grundström & Testansvarig (TES) & 073-830 44 45 &
-	tobgr602@student.liu.se \\ \hline Hans-Filip Elo &   & 073-385 22 32
-	& hanel742@student.liu.se \\ \hline Niklas Ericson & Projektledare
-	(PL) & 073-052 27 05 & niker917@student.liu.se \\ \hline
-	\end{tabular}
 
-		\vspace{1cm} \textbf{E-postlista för hela gruppen:}
-		mapmaster2001@cyd.liu.se \\[0.5cm]
+	\vspace*{\fill}
+		\begingroup
+			\begin{center}
+				\LARGE{\textbf{PROJEKTIDENTITET}}
+				\\
+				\footnotesize
+				Grupp 8, 2014/VT, MapMaster2001
+				\\
+				Linköpings tekniska högskola, ISY
+				\\
+				\vspace{1cm}
+	  \begin{tabular}{| p{3cm} | p{4.3cm} | p{2.4cm} | p{3.8cm} |}
+	    \hline
+		\textbf{Namn} & \textbf{Ansvar} & \textbf{Telefon} & \textbf{E-post} \\ \hline
+	    Jens Edhammer & Dokumentanvsvarig (DOK) & 076-030 67 80 & jened502@student.liu.se \\ \hline
+		Erik Ekelund & Designansvarig (DES) & 073-682 43 06 & eriek984@student.liu.se \\ \hline
+		David Habrman &  & 976-017 71 15 & davha227@student.liu.se \\ \hline 
+		Tobias Grundström & Testansvarig (TES) & 073-830 44 45 & tobgr602@student.liu.se \\ \hline 
+		Hans-Filip Elo &   & 073-385 22 32 & hanel742@student.liu.se \\ \hline 
+		Niklas Ericson & Projektledare (PL) & 073-052 27 05 & niker917@student.liu.se \\ \hline
+	    \end{tabular}
 
-		\textbf{Kund}: Mattias Krysander, Linköpings Universitet, 581 83
-		LINKÖPING, \\ 013-28 21 98, matkr@isy.liu.se \\
-		\textbf{Kontaktperson hos kund}: Mattias Krysander, 013-28 21
-		98,matkr@isy.liu.se \\ \textbf{Kursansvarig}: Tomas Svensson,
-		3B:528,013 28 21 59,tomass@isy.liu.se \\[0.5cm]
-		\textbf{Handledare}: Peter Johansson, 013-28 1345
-		peter.a.johansson@liu.se
+		\vspace{1cm}
+		\textbf{E-postlista för hela gruppen:} mapmaster2001@cyd.liu.se
+		\\[0.5cm]
 
-				\end{center} \endgroup \vspace*{\fill} \newpage
+		\textbf{Kund}: Mattias Krysander, Linköpings Universitet, 581 83  LINKÖPING, \\
+		013-28 21 98, matkr@isy.liu.se \\
+		\textbf{Kontaktperson hos kund}: Mattias Krysander, 013-28 21 98,matkr@isy.liu.se 
+		\\
+		\textbf{Kursansvarig}: Tomas Svensson, 3B:528,013 28 21 59,tomass@isy.liu.se
+		\\[0.5cm]
+		\textbf{Handledare}: Peter Johansson, 013-28 1345 peter.a.johansson@liu.se
+
+				\end{center}
+		\endgroup
+	\vspace*{\fill}
+\newpage
 
 %-----------------------------------------------------------------
 %Innehållsföreteckning
-%
-\addto\captionsswedish{\renewcommand{\contentsname}{Innehållsförteckning
-}}
-}}
-\tableofcontents \thispagestyle{fancy} \newpage
+
+\addto\captionsswedish{\renewcommand{\contentsname}{Innehållsförteckning}}
+
+\tableofcontents
+\thispagestyle{fancy}
+\newpage
 
 \pagenumbering{arabic}
 %-----------------------------------------------------------------
@@ -127,29 +146,30 @@ De allra flesta robotar nyttjar förmågan att optiskt mäta objekt i sin omgivn
 
 Med optisk avläsning av omvärlden finns alltid möjligheten att korrigera tidigare felaktiga mätvärden genom att samla in fler mätdata för att mer korrekt kunna beskriva sin omgivning. 
 
-\section{Typer av SLAM}
+\subsection{Kalmanfilter - KF-SLAM}
+Ett Kalmanfilter är en typ av algoritm som med hjälp av 
+tidigare mätdata från sensorer som kan innehålla brus och störningar uppskattar okända variabler. Ett Kalmanfilter arbetar på linjära och oberoende tillståndsvariabler och är ett essentiellt verktyg för vägval och positionsuppskattningen i ett SLAM-system. 
 
 \subsection{EKF-SLAM} 
 EKF-SLAM är en förkortning för Extended Kalman Filter for Simultaneous 
-Localization And Mapping. Ett Kalmanfilter är en typ av algoritm som med hjälp av 
-tidigare mätdata från sensorer som kan innehålla brus och störningar uppskattar okända variabler. 
-Det utökade Kalmanfiltret (extended) skiljer sig från det ursprungliga på så vis att den används vid icke-linjära förhållanden 
-och istället linjäriserar variablerna kring ett medelvärde och deras kovarians. Med kovarians menas då hur de olika variablerna beror på varandra.
+Localization And Mapping. Det utökade Kalmanfiltret (extended) skiljer sig från det ursprungliga på så vis att den används vid icke-linjära förhållanden och istället linjäriserar variablerna kring ett medelvärde och deras kovarians. Med kovarians menas då hur de olika variablerna beror på varandra.
 
 Algoritmen arbetar oftast i två steg; först skattas variablerna sedan vid nästa mätning 
 kommer de skattade variablerna viktas, där de med mest säkerhet är av störst vikt.
 
+\section{Typer av SLAM}
+
+Det finns olika typer av SLAM för olika typer av tillämpningar och med olika egenskaper. Vissa är bra på större avstånd medan andra är mer precis och bra på kortare avstånd. 
+
 \subsection{VSLAM}
 
-VSLAM står för visuell SLAM, vilket betyder att lokaliseringen sker med hjälp av kameror. Kamerorna används
-för att finna landmärken i området som kartläggs och sedan använda dessa som referenser när roboten fortsätter att utforska
-för att t.ex. se hur lång och i vilken riktning förflyttning sker.
+VSLAM står för visuell SLAM, vilket betyder att lokaliseringen sker med hjälp av kameror. Kamerorna används för att finna landmärken i området som kartläggs och sedan använda dessa som referenser när roboten fortsätter att utforska för att t.ex. se hur långt och i vilken riktning förflyttning sker relativt landmärket.
 
- 
-Tactile SLAM (sensing by local touch only), Radar
-SLAM, 
-Wifi-SLAM 
-fastSLAM
+\subsection{TSLAM}
+Tactile SLAM är en metod som provats för robotar vid kartläggning av ett mörklagt område. Metoden använder sig av känselsensorer för att hitta avgränsningar i området och med hjälp av detta rita upp kartan. Denna metod ger dock inte så bra resultat med den teknik som existerar i dag.
+
+\subsection{fastSLAM}
+
 
 % --------------- Källförteckning ---------------------
 \newpage \section{Källförteckning} Smith, R.C.; Cheeseman, P. (1986).
@@ -161,6 +181,10 @@ International Journal of Robotics Research, 5(4), sida 56–68. Hämtad
 
 \url{http://ocw.mit.edu/courses/aeronautics-and-astronautics/16-412j-cognitive-robotics-spring-2005/projects/1aslam_blas_repo.pdf}
 \url{http://www.vision.caltech.edu/mariomu/research/papers/vSLAM-krs.pdf}
+
+\url{http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6224813}
+
+\url{http://www.openslam.org/}
 
 % ----------------------------- Appendix
 % -----------------------------------------
