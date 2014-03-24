@@ -1,4 +1,12 @@
 %Laborationsrapport
+%
+\documentclass[a4paper,12pt,fleqn]{article} \usepackage{fixltx2e}
+\usepackage[utf8]{inputenc} \usepackage{graphicx} \usepackage{sidecap}
+\usepackage{fancyhdr} \usepackage{amssymb,amsmath}
+\usepackage[swedish]{babel} \usepackage[margin=1.5in]{geometry}
+\usepackage{abstract} \usepackage[parfill]{parskip} \usepackage{tocloft}
+\usepackage{adjustbox} \usepackage{textcomp} \usepackage[T1]{fontenc}
+\usepackage{listings} \usepackage{xcolor,colortbl} \usepackage{hyperref}
 
 \documentclass[a4paper,12pt,fleqn]{article}
 \usepackage{fixltx2e}
@@ -25,89 +33,58 @@
 
 %-------------------------------------------------------------------
 %Första sidan
+%
+\begin{document} \pagestyle{fancy} \pagenumbering{roman} \vspace*{\fill}
+\begingroup \begin{center} \huge{\textbf{Simultan positionering och
+kartläggning}} \\ \vspace{10pt} \normalsize Tobias Grundström och
+Hans-Filip Elo \\ Kandidatprojekt Y - Grupp 8 - VT2014 \\ Version 0.1
+\end{center} \endgroup \vspace*{\fill}
 
-\begin{document}
-	\pagestyle{fancy}
-\pagenumbering{roman}
-	\vspace*{\fill}
-		\begingroup
-			\begin{center}
-				\huge{\textbf{Simultan positionering och kartläggning}}
-				\\
-				\vspace{10pt}
-				\normalsize
-				Tobias Grundström och Hans-Filip Elo
-				\\
-				Kandidatprojekt Y - Grupp 8 - VT2014
-				\\
-				Version 0.1
-				\end{center}
-		\endgroup
-	\vspace*{\fill}
-	
-	\begin{center} %Börjar centrering 
-		Status
-		\\
-		\vspace{3pt} %Whitespace 3 pts
-	    \begin{tabular}{| p{3cm} | p{3cm} | p{3cm} |} %tabell, 4 horizontella |, 3 cm emellan dem.
-	    \hline %översta horizontella linjen.
-	    Granskad & - & \today \\ \hline % & -tecken för att "gå till nästa ruta" 
-		Godkänd & - & - \\ \hline % avslutas med \\ och \hline.
+	\begin{center} %Börjar centrering Status \\ \vspace{3pt} %Whitespace
+	3 pts \begin{tabular}{| p{3cm} | p{3cm} | p{3cm} |} %tabell, 4
+	horizontella |, 3 cm emellan dem. \hline %översta horizontella
+	linjen. Granskad & - & \today \\ \hline % & -tecken för att "gå till
+	nästa ruta" Godkänd & - & - \\ \hline % avslutas med \\ och \hline.
 
-	    \end{tabular}
-	\end{center}
-	\vspace{2cm}
-	\newpage
+	    \end{tabular} \end{center} \vspace{2cm} \newpage
 %-----------------------------------------------------------------
 %Projektidentitet
-	
-	\vspace*{\fill}
-		\begingroup
-			\begin{center}
-				\LARGE{\textbf{PROJEKTIDENTITET}}
-				\\
-				\footnotesize
-				Grupp 8, 2014/VT, MapMaster2001
-				\\
-				Linköpings tekniska högskola, ISY
-				\\
-				\vspace{1cm}
-	  \begin{tabular}{| p{3cm} | p{4.3cm} | p{2.4cm} | p{3.8cm} |}
-	    \hline
-		\textbf{Namn} & \textbf{Ansvar} & \textbf{Telefon} & \textbf{E-post} \\ \hline
-	    Jens Edhammer & Dokumentanvsvarig (DOK) & 076-030 67 80 & jened502@student.liu.se \\ \hline
-		Erik Ekelund & Designansvarig (DES) & 073-682 43 06 & eriek984@student.liu.se \\ \hline
-		David Habrman &  & 976-017 71 15 & davha227@student.liu.se \\ \hline 
-		Tobias Grundström & Testansvarig (TES) & 073-830 44 45 & tobgr602@student.liu.se \\ \hline 
-		Hans-Filip Elo &   & 073-385 22 32 & hanel742@student.liu.se \\ \hline 
-		Niklas Ericson & Projektledare (PL) & 073-052 27 05 & niker917@student.liu.se \\ \hline
-	    \end{tabular}
-		
-		\vspace{1cm}
-		\textbf{E-postlista för hela gruppen:} mapmaster2001@cyd.liu.se
-		\\[0.5cm]
-		
-		\textbf{Kund}: Mattias Krysander, Linköpings Universitet, 581 83  LINKÖPING, \\
-		013-28 21 98, matkr@isy.liu.se \\
-		\textbf{Kontaktperson hos kund}: Mattias Krysander, 013-28 21 98,matkr@isy.liu.se 
-		\\
-		\textbf{Kursansvarig}: Tomas Svensson, 3B:528,013 28 21 59,tomass@isy.liu.se
-		\\[0.5cm]
-		\textbf{Handledare}: Peter Johansson, 013-28 1345 peter.a.johansson@liu.se
+%
+	\vspace*{\fill} \begingroup \begin{center}
+	\LARGE{\textbf{PROJEKTIDENTITET}} \\ \footnotesize Grupp 8, 2014/VT,
+	MapMaster2001 \\ Linköpings tekniska högskola, ISY \\ \vspace{1cm}
+	\begin{tabular}{| p{3cm} | p{4.3cm} | p{2.4cm} | p{3.8cm} |} \hline
+	\textbf{Namn} & \textbf{Ansvar} & \textbf{Telefon} & \textbf{E-post}
+	\\ \hline Jens Edhammer & Dokumentanvsvarig (DOK) & 076-030 67 80 &
+	jened502@student.liu.se \\ \hline Erik Ekelund & Designansvarig
+	(DES) & 073-682 43 06 & eriek984@student.liu.se \\ \hline David
+	Habrman &  & 976-017 71 15 & davha227@student.liu.se \\ \hline
+	Tobias Grundström & Testansvarig (TES) & 073-830 44 45 &
+	tobgr602@student.liu.se \\ \hline Hans-Filip Elo &   & 073-385 22 32
+	& hanel742@student.liu.se \\ \hline Niklas Ericson & Projektledare
+	(PL) & 073-052 27 05 & niker917@student.liu.se \\ \hline
+	\end{tabular}
 
-				\end{center}
-		\endgroup
-	\vspace*{\fill}
-\newpage
+		\vspace{1cm} \textbf{E-postlista för hela gruppen:}
+		mapmaster2001@cyd.liu.se \\[0.5cm]
+
+		\textbf{Kund}: Mattias Krysander, Linköpings Universitet, 581 83
+		LINKÖPING, \\ 013-28 21 98, matkr@isy.liu.se \\
+		\textbf{Kontaktperson hos kund}: Mattias Krysander, 013-28 21
+		98,matkr@isy.liu.se \\ \textbf{Kursansvarig}: Tomas Svensson,
+		3B:528,013 28 21 59,tomass@isy.liu.se \\[0.5cm]
+		\textbf{Handledare}: Peter Johansson, 013-28 1345
+		peter.a.johansson@liu.se
+
+				\end{center} \endgroup \vspace*{\fill} \newpage
 
 %-----------------------------------------------------------------
 %Innehållsföreteckning
-
-\addto\captionsswedish{\renewcommand{\contentsname}{Innehållsförteckning}}
-
-\tableofcontents
-\thispagestyle{fancy}
-\newpage
+%
+\addto\captionsswedish{\renewcommand{\contentsname}{Innehållsförteckning
+}}
+}}
+\tableofcontents \thispagestyle{fancy} \newpage
 
 \pagenumbering{arabic}
 %-----------------------------------------------------------------
@@ -116,15 +93,26 @@
 
 Simultan positionering och kartläggning (SLAM) är ett problem som kan liknas vid ''Hönan och ägget''-problemet. Utan att veta var vi är - hur kartlägger vi då vår omgivining? Åt andra hållet får man ställa sig frågan - hur kartlägger vi vår omgivning utan att veta var vi är? 
 
-Det är inte helt enkelt att lösa dessa frågor, men det finns approximativa på problemet SLAM. Gemensamt för alla lösningar är att de bygger på möjligheten att läsa av sin omgivning i kombination med sannolikhetsteori. Då sensordata aldrig kan antas vara exakt använder sannolikhetsteori för att göra rimlighetsbedömningar i de stickprov av sensordata som sensorerna ger oss. 
+Det är inte helt enkelt att lösa dessa frågor, men det finns
+approximativa på problemet SLAM. Gemensamt för alla lösningar är att de
+bygger på möjligheten att läsa av sin omgivning i kombination med
+sannolikhetsteori. Då sensordata aldrig kan antas vara exakt använder
+sannolikhetsteori för att göra rimlighetsbedömningar i de stickprov av
+sensordata som sensorerna ger oss.
 
-Själva problemet är alltså inte entydigt löst rent matematiskt, utan bygger på sannolikhetsteori i kombination med att moderna processorer och minnen kan hantera en stor mängd data. Moderna processorer möjliggör alltså ett stort stickprov vilket leder till en liten osäkerhet. 
+Själva problemet är alltså inte entydigt löst rent matematiskt, utan
+bygger på sannolikhetsteori i kombination med att moderna processorer
+och minnen kan hantera en stor mängd data. Moderna processorer möjliggör
+alltså ett stort stickprov vilket leder till en liten osäkerhet.
 
 \subsection{Historia}
 
 Principerna för SLAM formulerades för första gången 1986\footnote{Smith, R.C.; Cheeseman, P. (1986). ''On the Representation and Estimation of Spatial Uncertainty''. The International Journal of Robotics Research 5, nummer 4, sida 56–68. Hämtad 2014-03-24: \url{http://www.frc.ri.cmu.edu/~hpm/project.archive/reference.file/Smith&Cheeseman.pdf}}. Redan vid formuleringen av problemet menar man på att SLAM är en inexakt vetenskap. SLAM handlar om att skaffa sig en approximativ uppfattning av sin omgivning och position som är tillräckligt bra för att fatta ett beslut kring färdväg och/eller kartläggning. 
 
-Utvecklingen på området har sedan dess accelererats kraftigt tack vare mikrokontrollers förmåga att hantera mer data - då sannolikhetsberäkningarna SLAM innefattar gynnas kraftigt av att arbeta med stora stickprov. 
+Utvecklingen på området har sedan dess accelererats kraftigt tack vare
+mikrokontrollers förmåga att hantera mer data - då
+sannolikhetsberäkningarna SLAM innefattar gynnas kraftigt av att arbeta
+med stora stickprov.
 
 På senare år har man, precis som inom många andra vetenskapliga områden, sett utvecklingen ta ytterligare ett kliv tack vare internet och öppen källkodsprojekt som Github och OpenSLAM. Att göra en sökning på ''SLAM'' på Github resulterar i en mängd aktiva projekt på området. Eftersom att källkoden där också finns tillgänglig är detta ett utmärkt exempel för de som vill lära sig om SLAM, undertecknade inkluderade. 
 
@@ -139,17 +127,45 @@ De allra flesta robotar nyttjar förmågan att optiskt mäta objekt i sin omgivn
 
 Med optisk avläsning av omvärlden finns alltid möjligheten att korrigera tidigare felaktiga mätvärden genom att samla in fler mätdata för att mer korrekt kunna beskriva sin omgivning. 
 
+\section{Typer av SLAM}
+
+\subsection{EKF-SLAM} 
+EKF-SLAM är en förkortning för Extended Kalman Filter for Simultaneous 
+Localization And Mapping. Ett Kalmanfilter är en typ av algoritm som med hjälp av 
+tidigare mätdata från sensorer som kan innehålla brus och störningar uppskattar okända variabler. 
+Det utökade Kalmanfiltret (extended) skiljer sig från det ursprungliga på så vis att den används vid icke-linjära förhållanden 
+och istället linjäriserar variablerna kring ett medelvärde och deras kovarians. Med kovarians menas då hur de olika variablerna beror på varandra.
+
+Algoritmen arbetar oftast i två steg; först skattas variablerna sedan vid nästa mätning 
+kommer de skattade variablerna viktas, där de med mest säkerhet är av störst vikt.
+
+\subsection{VSLAM}
+
+VSLAM står för visuell SLAM, vilket betyder att lokaliseringen sker med hjälp av kameror. Kamerorna används
+för att finna landmärken i området som kartläggs och sedan använda dessa som referenser när roboten fortsätter att utforska
+för att t.ex. se hur lång och i vilken riktning förflyttning sker.
+
+ 
+Tactile SLAM (sensing by local touch only), Radar
+SLAM, 
+Wifi-SLAM 
+fastSLAM
+
 % --------------- Källförteckning ---------------------
-\newpage
-\section{Källförteckning}
-Smith, R.C.; Cheeseman, P. (1986). ''On the Representation and Estimation of Spatial Uncertainty''. The International Journal of Robotics Research 5, nummer 4, sida 56–68. Hämtad 2014-03-24: \url{http://www.frc.ri.cmu.edu/~hpm/project.archive/reference.file/Smith&Cheeseman.pdf}
+\newpage \section{Källförteckning} Smith, R.C.; Cheeseman, P. (1986).
+"On the Representation and Estimation of Spatial Uncertainty". The
+International Journal of Robotics Research, 5(4), sida 56–68. Hämtad
+2014-03-24:
+\url{http://www.frc.ri.cmu.edu/~hpm/project.archive/reference.file/Smith
+&Cheeseman.pdf}
 
-% ----------------------------- Appendix -----------------------------------------
+\url{http://ocw.mit.edu/courses/aeronautics-and-astronautics/16-412j-cognitive-robotics-spring-2005/projects/1aslam_blas_repo.pdf}
+\url{http://www.vision.caltech.edu/mariomu/research/papers/vSLAM-krs.pdf}
 
-\newpage
-\appendix
-\pagestyle{empty}
-\newgeometry{left=2cm,right=2cm,bottom=2cm,top=2cm}
-\section{Appendix A}
+% ----------------------------- Appendix
+% -----------------------------------------
+% 
+\newpage \appendix \pagestyle{empty}
+\newgeometry{left=2cm,right=2cm,bottom=2cm,top=2cm} \section{Appendix A}
 
 \end{document}
