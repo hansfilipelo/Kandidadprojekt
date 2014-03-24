@@ -121,7 +121,7 @@ och minnen kan hantera en stor mängd data. Moderna processorer möjliggör
 alltså ett stort stickprov vilket leder till en liten osäkerhet.
 
 \subsection{Syfte}
-Syftet med denna rapport är att fördjupa oss i de algoritmer och tekniker som används för kartläggning och positionsbestämning hos ett icke-medvetande system. Då undertecknade, tillammans med övriga gruppmedlemmar i grupp 8, senare kommer att konstruera en robot som ska kunna kartlägga ett rum. 
+Syftet med denna rapport är att fördjupa oss i de algoritmer och tekniker som används för kartläggning och positionsbestämning hos ett icke-medvetande system. Det underlättar vårt framtida arbete eftersom undertecknade, tillammans med övriga gruppmedlemmar i grupp 8, kommer att konstruera en robot som ska kunna kartlägga ett rum. 
 
 \subsection{Historia}
 
@@ -142,17 +142,17 @@ Uppskattandet av färdvägen är aldrig en exakt lära. Det finns alltid en viss
 
 De allra flesta robotar nyttjar förmågan att optiskt mäta objekt i sin omgivning. Anledningen till detta är att man då kan kompensera för tidigare mätfel vid framtida mätningar. Om man enbart förlitar sig på interna mätningar finns risken att tidiga mätfel görs, vilket fortplantar sig och leder till än större felskattningar senare under kartläggningen. 
 
-Med optisk avläsning av omvärlden finns alltid möjligheten att korrigera tidigare felaktiga mätvärden genom att samla in fler mätdata för att mer korrekt kunna beskriva sin omgivning. Av den anledningen är all typ av SLAM beroende av att på något sätt granska sin omgivning. 
+Med optisk avläsning av omvärlden finns alltid möjligheten att korrigera tidigare felaktiga mätvärden genom att samla in mer mätdata för att mer korrekt kunna beskriva sin omgivning. Av den anledningen är all typ av SLAM beroende av att på något sätt granska sin omgivning. 
 
 \subsection{Filtrering av sensordata}
 
-Inom Odometri finns det några olika tekniker för att filtrera sensordata från sin omgivning och besluta om var inom given inertialram sin nuvarande position är. Gemensamt för samtliga tekniker är att de är filter som arbetar mot oberoende tillståndsvariabler. 
+Inom odometri finns det några olika tekniker för att filtrera sensordata från sin omgivning och besluta om var inom given inertialram sin nuvarande position är. Gemensamt för samtliga tekniker är att de är filter som arbetar mot oberoende tillståndsvariabler. 
 
 \subsubsection{Kalmanfilter (KF-SLAM)}
 Ett Kalmanfilter är en typ av algoritm som med hjälp av tidigare mätdata från sensorer som kan innehålla brus och störningar uppskattar okända variabler. Ett Kalmanfilter arbetar på linjära och oberoende tillståndsvariabler och är ett essentiellt verktyg för vägval samt positionsuppskattningen i ett SLAM-system. 
 
 \subsubsection{EKF-SLAM} 
-EKF-SLAM är en förkortning för Extended Kalman Filter for Simultaneous Localization And Mapping. Det utökade Kalmanfiltret (extended) skiljer sig från det ursprungliga på så vis att den används vid icke-linjära förhållanden och istället linjäriserar variablerna kring ett medelvärde och deras kovarians. Med kovarians menas då hur de olika variablerna beror på varandra.
+EKF-SLAM är en förkortning för Extended Kalman Filter for Simultaneous Localization And Mapping. Det utökade Kalmanfiltret (extended) skiljer sig från det ursprungliga på så vis att den används vid icke-linjära förhållanden och istället linjäriserar variablerna kring ett medelvärde och deras kovarians. Med kovarians menas då hur de olika variablerna beror av varandra.
 
 Algoritmen arbetar oftast i två steg; först skattas variablerna sedan vid nästa mätning 
 kommer de skattade variablerna viktas, där de med mest säkerhet är av störst vikt.
