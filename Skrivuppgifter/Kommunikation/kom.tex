@@ -115,6 +115,27 @@
 \section{Principer för trådlös kommunikation}
 \subsection{WLAN IEEE 802.11}
 \subsection{Bluetooth}
+Bluetooth är en global standard för trådlöskommunikation på korta avstånd. Bluetooth kan sättas upp utan en tidigare existerande trådlös arkitektur och blir därför väldigt attraktiv för att para ihop enheter. Så som Bluetooth protokollet fungerar är det just parning mellan två enheter är aktuellt. Bluetooth har fler aspekter som gör det särdeles bra för små mobila enheter. 
+\begin{itemize}
+\item Låg strömförbrukning 
+\item Låg kostnad
+\item Liten formfaktor
+\item Behöver ej fri sikt mellan enheterna
+\end{itemize}
+
+\subsubsection{Koppling av enheter}
+En parkoppling mellan två Bluetooth-enheter, A och B, fungerar enligt principen att ena enheten, låt oss säga enhet B, måsta vara upptäckbar och måste alltså sända ut en form av identifikation, ofta i form av ett namn. Enhet A söker av vilka enheter den kan detektera och ger ofta en komplett lista till användaren över enheter som den detekterade. Nästa steg är att enhet A begär en koppling till enhet B. När kopplingen lyckas blir enhet A master och enhet B slave. Tvåvägskommunikation är nu möjlig mellan enheterna.
+
+\subsubsection{Säkerhet}
+Bluetooth är en förhållandevis säker kommunikationsform, men är självklart inte helt säker. En begränsning i säkerheten är att Bluetooth-enheterna ofta saknar inmatningsmöjligheter och display. Detta leder till att lösenord inte kan fyllas i eller ens genereras på enheterna. I fallet av att båda enheter har display och inmatningsmöjligheter kan en 16 siffror lång PIN-kod genereras som sedan måste fyllas i på den enhet som begär kopplingen. Detta skyddar mot de flesta former av avlyssning.
+För enheter som saknar antingen display eller inmatningsmöjligheter finns andra möjliga lösningar. NFC alltså Near-Field Communication, kan användas för parning och då måste enheterna i princip röra varandra i parningsfasen men kan därefter utnyttja fulla räckvidden på Bluetooth. Detta kallas Out-of-Band Pairing.
+
+En annan typ av säkerhet som används är "Just Works", som utnyttjas när enheterna saknar både inmatningsmöjligheter och display. Ett exempel på detta är Bluetooth headsets till mobiltelefoner. Denna säkerhetsmetod kräver inte att användare utför någonting förutom själva kopplingen. Denna metod skyddar mot passiv avlyssning, men ej mot aktiv avlyssning. 
+Aktiv avlyssning är när en enhet lägger sig mellan de två enheterna och vidarebefodrar kommunikationen emellan dem och kan vara väldigt svår att upptäcka.
+Passiv avlyssning så försöker man endast lyssna av kommunikationen mellan två enheter. 
+
+
+ 
 \subsection{Infrared (IR)}
 \subsection{ZigBee}
 \subsection{Radiostyrning}
