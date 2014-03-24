@@ -115,6 +115,8 @@
 %Översikt
 \section{Inledning}
 \section{Problemformulering}
+Trådlöskommunikation med ett mobilt fordon ställer vissa krav på kommunikationslänken. I denna fördjupning kommer olika kommunikationsmetoder att undersökas. I fördjupningen tas väsentliga aspekter för trådlös kommunikation hos de olika teknikerna upp och granskas. Dessa är framförallt säkerhet, avstånd, överföringshastigheter och stabilitet hos de olika teknikerna.
+
 \section{Principer för trådlös kommunikation}
 \subsection{WLAN}
 Ett wireless local area network (WLAN) kopplar ihop två eller flera noder med hjälp av någon form av trådlös distributionsmetod. Ett exempel på en sådan distributionsmetod är Orthogonal frequency-division multiplexing (OFDM) som utnyttjar olika bärvågfrekvenser får att koda om signalen. WLAN använder sig oftast av en accesspunkt så att noderna/användarna kan förflytta sig inom räckvidden för denna accesspunkt. Idag används mestadels WLAN som är baserade på standarden IEEE 802.11 som i vardagligt språk brukar kallas Wi-Fi. Standarden är skapat av Institute of Electrical and Electronics Engineers, (IEEE).
@@ -162,7 +164,7 @@ En parkoppling mellan två Bluetooth-enheter, A och B, fungerar enligt principen
 Bluetooth är en förhållandevis säker kommunikationsform, men är självklart inte helt säker. En begränsning i säkerheten är att Bluetooth-enheterna ofta saknar inmatningsmöjligheter och display. Detta leder till att lösenord inte kan fyllas i eller ens genereras på enheterna. I fallet av att båda enheter har display och inmatningsmöjligheter kan en 16 siffror lång PIN-kod genereras som sedan måste fyllas i på den enhet som begär kopplingen. Detta skyddar mot de flesta former av avlyssning.
 För enheter som saknar antingen display eller inmatningsmöjligheter finns andra möjliga lösningar. NFC alltså Near-Field Communication, kan användas för parning och då måste enheterna i princip röra varandra i parningsfasen men kan därefter utnyttja fulla räckvidden på Bluetooth. Detta kallas Out-of-Band Pairing.$^{\ref{Gupta2}}$
 
-En annan typ av säkerhet som används är "Just Works", som utnyttjas när enheterna saknar både inmatningsmöjligheter och display. Ett exempel på detta är Bluetooth headsets till mobiltelefoner. Denna säkerhetsmetod kräver inte att användare utför någonting förutom själva kopplingen. Denna metod skyddar mot passiv avlyssning, men ej mot aktiv avlyssning. 
+En annan typ av säkerhet som används är ''Just Work'', som utnyttjas när enheterna saknar både inmatningsmöjligheter och display. Ett exempel på detta är Bluetooth headsets till mobiltelefoner. Denna säkerhetsmetod kräver inte att användare utför någonting förutom själva kopplingen. Denna metod skyddar mot passiv avlyssning, men ej mot aktiv avlyssning. 
 Aktiv avlyssning är när en enhet lägger sig mellan de två enheterna och vidarebefodrar kommunikationen emellan dem och kan vara väldigt svår att upptäcka.
 Passiv avlyssning så försöker man endast lyssna av kommunikationen mellan två enheter.$^{\ref{Gupta2}}$
  
@@ -172,7 +174,7 @@ Infrared Data Association Standards (IrDA) är en assosciation bestående av ung
 Boston University, 2002, http://iss.bu.edu/jbc/Publications/jbc-bc1.pdf (Hämtad 2014-03-24)}  
 
 \subsubsection{Långdistans IR kommunikation}
-Flera hinder finns för konstruktion för långdistans kommunikation via IR. Dessa enheter behöver fri sikt och lider av signalstyrke förlust genom atmosfären.$^{\ref{Carruthers}}$ 
+Flera hinder finns för konstruktion för långdistans kommunikation via IR. Dessa enheter behöver fri sikt och lider av signalstyrke förlust genom atmosfären. Vid byggnad till byggnad kommunikation med IR får man även problemet med att byggnader svajar något vilket kan leda till att direkt länken bryts.$^{\ref{Carruthers}}$ 
 
 \subsubsection{Säkerhet}
 Säkerhet i IR-kommunikationsfallet vid kortdistans fallet faller mer eller mindre under det faktum att avstånden för överföring är såpass små att hackningförsök blir inaktuella.$^{\ref{Carruthers}}$
