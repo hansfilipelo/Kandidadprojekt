@@ -113,7 +113,16 @@
 \section{Inledning}
 \section{Problemformulering}
 \section{Principer för trådlös kommunikation}
-\subsection{WLAN IEEE 802.11}
+\subsection{WLAN}
+Ett wireless local area network (WLAN) kopplar ihop två eller flera noder med hjälp av någon form av trådlös distributionsmetod. Ett exempel på en sådan distributionsmetod är Orthogonal frequency-division multiplexing (OFDM) som utnyttjar olika bärvågfrekvenser får att koda om signalen. WLAN använder sig oftast av en accesspunkt så att noderna/användarna kan förflytta sig inom räckvidden för denna accesspunkt. Idag används mestadels WLAN som är baserade på standarden IEEE 802.11 som i vardagligt språk brukar kallas Wi-Fi. Standarden är skapat av Institute of Electrical and Electronics Engineers, (IEEE) och använder frekvensband på 2.4, 3.6, 5 och 60Hz.
+
+\subsubsection{Stationer}
+Alla komponenter i ett WLAN utgörs av antingen stationer som kan vara noder eller accesspunkter. Alla stationerna har ett nätverkskort, wireless network interface controller (WNIC), som jobbar på samma lager som MAC-lagret (Se rubrik IEEE 802.11). Nätverkskortet använder antenn för att kommunicera med hjälp av radiovågor. En accesspunkt utgörs oftast av en router eller en switch medan en nod kan vara en PC eller mobiltelefon. 
+
+\subsubsection{IEEE 802.11}
+IEEE 802.11 familjen består av en serie halv-duplex (kommunikationen kan ske i båda riktningarna men bara en riktning i taget) modulationstekniker som använder sig av samma MAC-protokoll. MAC-protokollet eller MAC-lagret är ett sublager i datalänklagret. Detta lager fungerar som en mellanhand mellan logical link control (LLC) och nätverkets fysiska lager och styr alltså hur nätverksnoderna får åtkomst till det fysiska skiktet (signal och binär överföring).
+IEEE 802.11 kräver att nod \it(x) konstant lyssnar för att vara redo om en nod \it{y} möjligen skulle försöka skicka data. 
+
 \subsection{Bluetooth}
 
 Bluetooth är en global standard för trådlöskommunikation på korta avstånd och utvecklades av Ericsson 1994\footnote{http://www.bluetooth.com/Pages/Fast-Facts.aspx}. Bluetooth utnyttjades till en början primärt som en ersättning för serielkommunikationskablar mellan enheter.
