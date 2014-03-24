@@ -116,16 +116,20 @@ Simultan positionering och kartläggning (SLAM) är ett problem som kan liknas v
 
 Det är inte helt enkelt att lösa dessa frågor, men det finns approximativa på problemet SLAM. Gemensamt för alla lösningar är att de bygger på möjligheten att läsa av sin omgivning i kombination med sannolikhetsteori. Då sensordata aldrig kan antas vara exakt använder sannolikhetsteori för att göra rimlighetsbedömningar i de stickprov av sensordata som sensorerna ger oss. 
 
-Själva problemet är alltså inte entydigt löst rent matematiskt, utan bygger på sannolikhetsteori i kombination med att moderna processorer och minnen kan hantera en stor mängd data - alltså är det möjligt att få ett stort stickprov och en liten osäkerhet. 
+Själva problemet är alltså inte entydigt löst rent matematiskt, utan bygger på sannolikhetsteori i kombination med att moderna processorer och minnen kan hantera en stor mängd data. Moderna processorer möjliggör alltså ett stort stickprov vilket leder till en liten osäkerhet. 
 
 \section{Historia}
 
+Principerna för SLAM formulerades för första gången i sin helhet av Smith och Cheeseman (1986). Redan vid formuleringen av problemet menar man på att SLAM är en inexakt vetenskap. SLAM handlar om att skaffa sig en approximativ uppfattning av sin omgivning och position som är tillräckligt bra för att fatta ett beslut kring färdväg och/eller kartläggning. 
 
+Utvecklingen på området har sedan dess accelererats kraftigt tack vare mikrokontrollers förmåga att hantera mer data - då sannolikhetsberäkningarna SLAM innefattar gynnas kraftigt av att arbeta med stora stickprov. 
+
+På senare år har man, precis som inom många andra vetenskapliga områden, sett utvecklingen ta ytterligare ett kliv tack vare internet och öppen källkodsprojekt som Github och OpenSLAM. Att göra en sökning på "SLAM" på Github resulterar i en mängd aktiva projekt på området. Eftersom att källkoden där också finns tillgänglig är detta ett utmärkt exempel för de som vill lära sig om SLAM, undertecknade inkluderade. 
 
 % --------------- Källförteckning ---------------------
 \newpage
 \section{Källförteckning}
-http://www.frc.ri.cmu.edu/~hpm/project.archive/reference.file/Smith\&Cheeseman.pdf
+Smith, R.C.; Cheeseman, P. (1986). "On the Representation and Estimation of Spatial Uncertainty". The International Journal of Robotics Research, 5(4), sida 56–68. Hämtad 2014-03-24: \url{http://www.frc.ri.cmu.edu/~hpm/project.archive/reference.file/Smith&Cheeseman.pdf}
 
 % ----------------------------- Appendix -----------------------------------------
 
