@@ -150,12 +150,13 @@ Med optisk avläsning av omvärlden finns alltid möjligheten att korrigera tidi
 Ett Kalmanfilter är en typ av algoritm som med hjälp av 
 tidigare mätdata från sensorer som kan innehålla brus och störningar uppskattar okända variabler. Ett Kalmanfilter arbetar på linjära och oberoende tillståndsvariabler och är ett essentiellt verktyg för vägval och positionsuppskattningen i ett SLAM-system. 
 
+Algoritmen arbetar oftast i två steg; först skattas variablerna sedan vid nästa mätning 
+kommer de skattade variablerna viktas, där de med mest säkerhet är av störst vikt.
+
 \subsection{EKF-SLAM} 
 EKF-SLAM är en förkortning för Extended Kalman Filter for Simultaneous 
 Localization And Mapping. Det utökade Kalmanfiltret (extended) skiljer sig från det ursprungliga på så vis att den används vid icke-linjära förhållanden och istället linjäriserar variablerna kring ett medelvärde och deras kovarians. Med kovarians menas då hur de olika variablerna beror på varandra.
 
-Algoritmen arbetar oftast i två steg; först skattas variablerna sedan vid nästa mätning 
-kommer de skattade variablerna viktas, där de med mest säkerhet är av störst vikt.
 
 \section{Typer av SLAM}
 
@@ -171,19 +172,34 @@ Tactile SLAM är en metod som provats för robotar vid kartläggning av ett mör
 \subsection{fastSLAM}
 
 
+
+
 % --------------- Källförteckning ---------------------
 \newpage \section{Källförteckning} Smith, R.C.; Cheeseman, P. (1986).
-"On the Representation and Estimation of Spatial Uncertainty". The
+''On the Representation and Estimation of Spatial Uncertainty''. The
 International Journal of Robotics Research, 5(4), sida 56–68. Hämtad
 2014-03-24:
 \url{http://www.frc.ri.cmu.edu/~hpm/project.archive/reference.file/Smith
 &Cheeseman.pdf}
 
+Risgaard, S; Blas, M.R (2005).
+''SLAM for Dummies, A Tutorial Approach to Simultaneous Localization and Mapping''. 
+Hämtad 2014-03-24:
 \url{http://ocw.mit.edu/courses/aeronautics-and-astronautics/16-412j-cognitive-robotics-spring-2005/projects/1aslam_blas_repo.pdf}
+
+Karlsson, N.; Goncalves, L.; Munich, M.E.; Pirjanian, P.
+''The vSLAM Algorithm for Navigation in Natural Environments''. Evolution Robotics, Inc. Hämtad 2014-03-24:
 \url{http://www.vision.caltech.edu/mariomu/research/papers/vSLAM-krs.pdf}
 
+Fox, C.; Evans, M.; Pearson, M.; Prescott, T. (2012)
+''Tactile SLAM with a biomimetic whiskered robot''. 2012 IEEE International Conference on Robotics and Automation. Hämtad 2014-03-24.
 \url{http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6224813}
 
+FastSLAM: A Factored Solution to the Simultaneous
+Localization and Mapping Problem, Stanford University. Hämtad 2014-03-24.
+\url{http://robots.stanford.edu/papers/montemerlo.fastslam-tr.pdf}
+
+Openslam.org
 \url{http://www.openslam.org/}
 
 % ----------------------------- Appendix
