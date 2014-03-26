@@ -133,7 +133,7 @@ Sensorerna som kommer undersökas är av de typer som finns tillgängliga på Li
 
 
 %-----------------------------------------------------------------
-\subsection{Problemformulering}
+\section{Problemformulering}
 Autonoma robotar blir allt vanligare och påträffas i allt från konstruktionsrobotar i industrimiljö till självgående gräsklippare för privatpersoner.
 Vid konstruktion av en autonom robot finns det i nuläget  en uppsjö av tekniker att använda för att navigera. Det vi söker att besvara är hur dessa olika tekniker fungerar samt hur de kan tillämpas för att på ett effektivt sätt hjälpa självgående robot att utföra sitt uppdrag.
 Vidare söks även nackdelar med de olika teknikerna, hur dessa kan undvikas och vilka styrkor de olika teknikerna har gentemot varandra.
@@ -161,8 +161,8 @@ Frågorna som rapporten kommer att behandla är:
 \end{itemize}
 
 %-----------------------------------------------------------------
-\subsection{Kunskapsbas}
-\subsection{Hur fungerar en optisk avståndsmätare?}
+\section{Fördjupningstext}
+\subsection{Avståndsmätare}
 En optisk sensor är ett typ av instrument som används för att med hjälp av ljus mäta avstånd till en yta.
 
 Sensorn som beskrivs nedan är av single-baseline optiksensor, vilket betyder att den opererar med endast ett sändar- och mottagarpar, och bedömer avstånd med hjälp av en typ av triangulering.
@@ -177,7 +177,7 @@ Strax under ljuskällan sitter en svagt vinklad sensor som tar emot den reflekte
 För att beräkna avståndet till reflektionskällan krävs kunskap om tre saker.
 Det lodräta avståndet mellan ljuskällan, även kallat måttstocken, vinklarna i de två trianglar som ljuskälla, lins, sensor och måttstockens startpunkt bildar. Slutligen krävs positionen på sensorn där det reflekterade ljustets intensitet är störst. Sensorn placerad så att linsens fokalpunkt, det lodräta avstånd till den punkt där parallella ljusstrålar sammanfaller i ett maximum, ligger precis i djup med sensorn. Denna placering är logisk då detta får de infallande ljustrålarna att sammanfalla perfekt då de når sensorytan, vilket i sin tur ger högst intensitet.
 
-\subsection{Hur fungerar triangulering?}
+\subsection{Triangulering}
 Triangulering är en avståndsbetämingsmetod som använder kända vinklar och simpel geometri för att bestämma det lodräta avståndet till ett föremål.
 Om det horisontella avståndet, \begin{math}\delta\end{math} är känt så fås det lodräta avståndet till punkten P av:
 \begin{equation}
@@ -246,21 +246,25 @@ Ljus kan riktas mycket mer precis med tekniker som t.ex laser vilket till stor d
 
 
 
-\subsection{Hur fungerar en ultraljudsavståndsmätare?}
+\subsection{Ultraljudsavståndsmätare}
 Ultraljudssensorer använder sig av samma princip som fladdermöss och radar som uppsakattar avståndet till ett objekt genom att tolka dess eko från ljudsvågor. Med en högtalare genererar ultraljudssensorer högfrekvent ljud som studsar mot olika objekt. Ekot mottas och detekteras sedan av en ljudsensor. Ultraljudssensorn beräknar sedan tiden mellan utskick av ljud till mottagning av ekot. Eftersom ljudhastigheten i olika medium är känd kan avståndet till ett objekt beräknas med enkel matematik. En ultraljudssensor använder sig ofta av en transducer som omvandlar elektrisk energi till högfrekventa ultraljudsvågor och en för att omvandla ljudvågor till elektrisk energi som kan mätas.
 
 En transducer är en komponent som konverterar energi till ultraljudsvågor. En hundvissla är ett exempel på en transducer, den omvandlar mekanisk energi från lufttryck till ljudvågor men de som används i avståndssensorer är betydligt mer komplicerade. Dessa konverterar elektrisk energi till ultraljudsvågor och består av piezoelektriska kristaller. Piezoelektriska kristaller ändrar storlek när man tillsätter en spänning. Genom att applicera en växelpänning över kristallerna kan man få dem att oscillera i väldigt höga frekvenser och på så sätt skapa högfrekventa ljudvågor. Efterson dessa kristaller genererar en spänning när en kraft verkar på dem så kan de kristaller som används för att skapa ljudvågorna även användas för att ta emot ekot.
+\footnote{http://sv.wikipedia.org/wiki/Piezoelektricitet}
 
 Fördelar med avståndsmätare som använder sig av ultraljud är att de inte är känsliga för färg, och transparens på det objekt man vill mäta avståndet till. De är heller inte känsliga för miljön, t.ex. dimma, ljusförhållanden, damm och smuts.
 
 En nackdel med ultraljudmätaren vi har tillgång till (Devantech SRF04 Utrasonic Range Finder) är att den mäter avståndet till det närmaste objektet i en kon. Om man vill mäta avståndet till en vägg rakt framför roboten kan det, om konen är för bred, hända att roboten istället mäter avståndet till väggen på sidan av roboten. En annan nackdel är att den inte kan mäta avståndet till ljuddämpande material.
-
+\footnote{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/srf04.pdf}
 
 
 \subsection{Gyroskop}
 Ett gyroskop är en sensor som används för att mäta vinkelhastigheten. För att göra detta använder man sig av corioliseffekten. Därför måste vi, för att förstå hur ett gyro fungerar, alltså först förstå corioliseffekten. Corioliseffekten beskriver hur rörliga objekts rörelseriktningar förändras när de betraktas av en observatör i en roterande referensram. Corioliskraften är den kraft som hör samman med effekten och är proportionell på rotationshastigheten. Kraften är liten men påverkar stora luftmassor då de rör sig över stora avstånd och långa tidsperioder. T.ex. så är det corioloskraften som får orkaner att rotera. Ett gyro är känsligt för corioliskraften och använder sig av den för att mäta vinkelhastighet.
 
 Figur \ref{fig:jord} visar ett exempel på corioliseffekten. Vi tänker oss att den röda pricken är ett objekt i rörelse och den gröna pricken är en observatör som står stilla på den roterande jorden. Jorden blir då den roterande referensramen. Objektet rör sig söder ut sett från en inertialram, säg rymden. Observatören, som befinner sig öster om objektet, rör sig längsmed jorden och uppfattar därför inte objektets bana på samma sätt. Han ser en bana som är krökt åt väster.
+\footnote{http://sv.wikipedia.org/wiki/Corioliseffekten}
+
+
 \begin{figure}[h]
 \label{fig:jord}
 \caption{}
@@ -291,7 +295,7 @@ MEMS-gyroskop tar idén från gyroskopen ovan men använder sig av MEMS iställe
 \end{figure}
 
 
-När massan m rör sig med hastigheten v längs x-axeln och med vinkelhastihteten (ohmtecknet) runt z-axeln så uppstår en corioliskraft (den gula pilen). Den fysiska förflyttningen som orsakas av corioliskraften kan läsas av med den kapacitiva MEMS-sensorn. De flesta MEMS-gyroskopen använder sig av två massor som oscillerar konstant i motsatta riktningar, detta illustreras i figur \ref{fig:angular}. När man roterar massorna verkar då även corioliskraften åt olika håll vilket resulterar i att kapacitansen ändrar sig. Skillnaden i kapacitans är proportionell på vinkelhastigheten och konverteras sedan till en analog eller digital utsignal. F
+När massan m rör sig med hastigheten v längs x-axeln och med vinkelhastihteten (ohmtecknet) runt z-axeln så uppstår en corioliskraft (den gula pilen). Den fysiska förflyttningen som orsakas av corioliskraften kan läsas av med den kapacitiva MEMS-sensorn. De flesta MEMS-gyroskopen använder sig av två massor som oscillerar konstant i motsatta riktningar, detta illustreras i figur \ref{fig:angular}. När man roterar massorna verkar då även corioliskraften åt olika håll vilket resulterar i att kapacitansen ändrar sig. Skillnaden i kapacitans är proportionell på vinkelhastigheten och konverteras sedan till en analog eller digital utsignal.
 
 \begin{figure}[h]
 \label{fig:angular}
@@ -301,33 +305,59 @@ När massan m rör sig med hastigheten v längs x-axeln och med vinkelhastihtete
 \end{figure}
 
 När man applicerar en linjär acceleration på massorna så rör de sig i samma riktning och det blir därför ingen ändring i kapacitans. Gyroskopet känner alltså inte av denna acceleration vilket gör att MEMS-gyroskop inte är känsliga för linjär acceleration så som stötar och vibration. De mäter alltså bara rotation.
+\footnote{http://electroiq.com/blog/2010/11/introduction-to-mems-gyroscopes/}
+
 
 MEMS-gyroskop mäter vinkelhastighet och har fler applikationsområden. Dessa används t.ex. i bildstabilisatorer. Gyrot detekterar då kamerans rotation och kameran kan då kompensera för rotationen och ge en skarp bild. De används också i mobiler, t.ex. för att rotera bilden, bilar, för att utlösa airbags, flygplan o.s.v.
 
-MEMS-gyroskops mätområde anges i dps, grader per sekund (degrees per second). Den talar alltså om hur snabbt gyrot kan röra sig varje sekund och fortfarande ge en korrekt utsignal. Gyroskopen har också en form av upplösning som ofta anges i mV/dps, alltså hur mycket spänning som läggs på utsignalen per dps. 
+MEMS-gyroskops mätområde anges i dps, grader per sekund (degrees per second). Den talar alltså om hur snabbt gyrot kan röra sig varje sekund och fortfarande ge en korrekt utsignal. Gyroskopen har också en form av upplösning som ofta anges i mV/dps, alltså hur mycket spänning som läggs på utsignalen per dps.
 
 \subsubsection{Fördelar och nackdelar}
 MEMS-gyroskop är billiga att masstillverka, de är små och de är strömsnåla. Detta har lett till att de blivit väldigt populära och används i mängder av handhållen teknik.
 Gyron kan användas för att bestämma vinkel, men detta kräver en integrering eller en summering över tiden. Detta kan leda till problem i vissa system då samplat data behöver lagras.
+\footnote{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/MLX90609_datasheet.pdf}
 
 \subsection{RFID}
 RFID står för radio-frequency identification och används för att läsa information från objekt, så kallade taggar, trådlöst via radiovågor. RFID kan delas in i flera olika grupper. Den billigaste, och den vi har tillgång till i kursen, kallas passiv RFID. I den passiva tekniken består taggarna av ett unikt nummer som endast kan läsas inom korta avstånd, ofta någon decimeter. Detta nummer kan sedan användas för att peka ut en plats i en databas med ytterligare information om taggen. Taggen består av ett microchip med en antenn men ingen egen strömkälla. Även läsaren har en antenn som skickar ut radiofrekvent energi. Energin från läsaren kan sedan tas upp av taggens antenn och konverteras till elektricitet. Microchippet i taggen får ström, kan modulera vågorna och skickar tillbaka dem till läsaren. Läsaren tar emot vågorna och omvandlar dem till digitalt data som motsvarar taggens nummer.
+\footnote{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/rfid-reader-v21.pdf}
 
 Aktiva RFID-raggar har, till skillnad från passiva taggar, sina egna strömkällor och även en sändare.
 
 RFID kan användas på många sätt, t.ex. kan man sätta en tagg på en matvara, när en RFID-läsare läser av taggen kan den hämta information om varan i en databas. Taggarna fyller då ungefär samma funktion som streckkoder och man får då ett system med tre delar. Del ett är taggar, del två en läsare och del tre en databas med information om varje tagg. Taggarna kan göras väldigt små och tekniken används i bl.a. passerkort.
 
-\subsection{Fördelar och nackdelar}
-Tack vare den egna strömkällan i aktiv RFID kan läsavståndet göras betydligt mycket större än för den passiva tekniken. Aktiva taggar är dock större, dyrare och kräver mer underhåll än passiva taggar. Passiv RFID reflekterar dock bara en modulerad signal från läsaren. Det är därför läsavståndet inte är så långt. 
+\subsubsection{Fördelar och nackdelar}
+Tack vare den egna strömkällan i aktiv RFID kan läsavståndet göras betydligt mycket större än för den passiva tekniken. Aktiva taggar är dock större, dyrare och kräver mer underhåll än passiva taggar. Passiv RFID reflekterar dock bara en modulerad signal från läsaren. Det är därför läsavståndet inte är så långt.
+\footnote{http://electronics.howstuffworks.com/gadgets/high-tech-gadgets/rfid3.htm}
 
 
+\section{Resultat och slutsatser}
 
-% ----------------------------- Appendix -----------------------------------------
+I våra undersökningar kom vi fram till att avståndsmätning med ultraljud inte är något för oss. Ultraljudsmätaren mäter avståndet i en kon och detekterar anståndet till närmaste objektet innanför konen. Detta kan göra att roboten detekterar avståndet till en sidovägg när man egentligen vill mäta avståndet till en vägg rakt framför roboten.
 
-\newpage
-\appendix
-\pagestyle{empty}
-\newgeometry{left=2cm,right=2cm,bottom=2cm,top=2cm}
-\section{Appendix A}
+Gyrosop kommer att vara väldigt användbart för oss. Det kommer att underlätta beräkningar av robotens svängar. Då gyrot inte är känsligt för linjära accelerationer utan bara för rotationer så blir den användbar vid beräkningar av robotens svängar och körriktning.
+
+Eftersom att en brandhärd kommer att representeras av en RFID-tagg i tävlingen så är RFID-läsaren en komponent som självklart kommer att vara en del av vår robot. Det finns ingen möjlighet för oss att välja mellan aktiv eller passiv teknik då de komponenter vi har tillgång till endast är för passiv RFID. Man skulle kunna tänka sig att använda aktiv för kunna detektera taggen från längre avstånd men då förändras tävlingsförutsättningarna och det skulle alltså bli en helt annorlunda tävling.
+
+\section{Källförteckning}
+
+Piezoelektricitet, wikipedia.org. Hämtad \today:
+http://sv.wikipedia.org/wiki/Piezoelektricitet
+
+Datablad för SRF04, Institutionen för systemteknik vid Linköpings Universitet. Hämtad \today:
+https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/srf04.pdf
+
+Corioliseffekten, wikipedia.org. Hämtad \today:
+http://sv.wikipedia.org/wiki/Corioliseffekten
+
+Introduction to MEMS gyroscopes, electroiq.com. Hämtad \today:
+http://electroiq.com/blog/2010/11/introduction-to-mems-gyroscopes/
+
+Datablad för MLX90609, Institutionen för systemteknik vid Linköpings Universitet. Hämtad \today: https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/MLX90609_datasheet.pdf
+
+Datablad för Parallax-Reader, Institutionen för systemteknik vid Linköpings Universitet. Hämtad \today:
+https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/rfid-reader-v21.pdf
+
+How RFID Works, electronics.howstuffworks.com. Hämtad \today:
+http://electronics.howstuffworks.com/gadgets/high-tech-gadgets/rfid3.htm
 
 \end{document}
