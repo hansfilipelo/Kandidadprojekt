@@ -57,7 +57,7 @@ ISR(INT1_vect){
 	int speed = 50;
 	int output = speed * 255 / 100;
 	
-	while (PORTD2 == 1)
+	while (PIND2 == 1)
 	{
 		OCR2A = output;
 		OCR2B = output;
