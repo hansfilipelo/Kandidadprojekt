@@ -12,22 +12,13 @@
 
 void pwm_init()
 {
-	cli();
-	// initialize TCCRX for fast PWM
-	TCCR2A |= (1<<WGM21)| (0<<WGM20) | (1<<COM2A1) | (0<<COM2A0) | (1<<COM2B1) | (0<<COM2B0);
-	
 	// Set Port 20 and 21 as outputs (for PWM)
-	DDRD |= (1<<DDRD6) | (1<<DDRD7);
-	
 	// Set port 18 and 19 as outputs (for choosing direction)
-	DDRD |= (1<<DDRD5) | (1<<DDRD4);
-	
 	// Set port 16 and 17 as inputs (for manual controllers)
-	DDRD |= (0<<DDRD3) | (0<<DDRD2);
+	DDRD = 0xF0;
 	
 	// Initiate gear as 00
 	PORTD |= (0<<PORTD4) | (0<<PORTD5);
-	sei();
 }
 
 // Chooses direction
@@ -77,8 +68,19 @@ ISR(INT1_vect){
 
 int main(void)
 {	
+	cli();
+	// Set up interrupts
+	MCUCR = 0b00000000;
+	EIMSK = 0b00000011;
+	EICRA = 0b00001111;
+	SMCR = 0x01;
 	pwm_init();
-	sleep();
+	sei();
+	
+	while(1){
+	sleep_enable();
+	sleep_cpu();
+	}
 	
 	return 0;
 }
