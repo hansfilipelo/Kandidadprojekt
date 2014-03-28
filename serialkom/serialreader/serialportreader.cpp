@@ -52,9 +52,6 @@ SerialPortReader::SerialPortReader(QSerialPort *serialPort, QObject *parent)
 {
     connect(m_serialPort, SIGNAL(readyRead()), SLOT(handleReadyRead()));
     connect(m_serialPort, SIGNAL(error(QSerialPort::SerialPortError)), SLOT(handleError(QSerialPort::SerialPortError)));
-    connect(&m_timer, SIGNAL(timeout()), SLOT(handleTimeout()));
-
-    m_timer.start(5000);
 }
 
 SerialPortReader::~SerialPortReader()
@@ -63,22 +60,27 @@ SerialPortReader::~SerialPortReader()
 
 void SerialPortReader::handleReadyRead()
 {
-    m_readData.append(m_serialPort->readAll());
-
-    if (!m_timer.isActive())
-        m_timer.start(5000);
-}
-
-void SerialPortReader::handleTimeout()
-{
-    if (m_readData.isEmpty()) {
-        m_standardOutput << QObject::tr("No data was currently available for reading from port %1").arg(m_serialPort->portName()) << endl;
-    } else {
-        m_standardOutput << QObject::tr("Data successfully received from port %1").arg(m_serialPort->portName()) << endl;
-        m_standardOutput << m_readData << endl;
+    
+    /*
+     Create protocol with startsign, DATA, stopsign. 
+     If the stopsign hasn't arrived in the readyread, save data in the unfinished 
+     data collection variable.
+     If the stopsign has arrived, append unfinished data with this data and move 
+     data to finished data for processing. 
+     Computer should be faster on processing than AVR can send to us. 
+     Will there be conflicts if sending to AVR while data is coming to processor.
+     */
+    
+    
+    
+    
+    while (!m_serialPort->atEnd()) {
+        QByteArray data = m_serialPort->read(100);
+        m_readData.append(data);
     }
+    m_standardOutput << m_readData << endl;
 
-    QCoreApplication::quit();
+    m_readData = "";
 }
 
 void SerialPortReader::handleError(QSerialPort::SerialPortError serialPortError)

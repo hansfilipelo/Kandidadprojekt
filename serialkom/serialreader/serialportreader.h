@@ -62,14 +62,12 @@ public:
 
 private slots:
     void handleReadyRead();
-    void handleTimeout();
     void handleError(QSerialPort::SerialPortError error);
 
 private:
     QSerialPort *m_serialPort;
     QByteArray  m_readData;
     QTextStream m_standardOutput;
-    QTimer      m_timer;
 };
 
 #endif

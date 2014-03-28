@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
     QString serialPortName = argumentList.at(1);
     serialPort.setPortName(serialPortName);
 
-    if (!serialPort.open(QIODevice::ReadOnly)) {
+    if (!serialPort.open(QIODevice::ReadWrite)) {
         standardOutput << QObject::tr("Failed to open port %1, error: %2").arg(serialPortName).arg(serialPort.errorString()) << endl;
         return 1;
     }
@@ -97,8 +97,13 @@ int main(int argc, char *argv[])
         standardOutput << QObject::tr("Failed to set no flow control for port %1, error: %2").arg(serialPortName).arg(serialPort.errorString()) << endl;
         return 1;
     }
+    
+    standardOutput << "Sending: A " << endl;
+    
+    serialPort.write("A",1);
 
     SerialPortReader serialPortReader(&serialPort);
 
+    standardOutput << "Hopefully recieving: [A]" << endl;
     return coreApplication.exec();
 }
