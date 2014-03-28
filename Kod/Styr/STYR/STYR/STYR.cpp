@@ -62,7 +62,7 @@ ISR(INT0_vect){
 // Drive, port 16
 ISR(INT1_vect){
 	cli();
-	int speed = 10;
+	int speed = 50;
 	int output = floor(speed * 255 / 100);
 	
 	OCR2A = output;
