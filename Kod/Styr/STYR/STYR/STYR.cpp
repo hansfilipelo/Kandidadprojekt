@@ -11,11 +11,15 @@
 #include <avr/interrupt.h>
 
 void pwm_init()
-{
-	// initialize TCCRX for fast PWM
-	TCCR2A |= (1<<WGM21)| (0<<WGM20) | (1<<COM2A1) | (0<<COM2A0) | (1<<COM2B1) | (0<<COM2B0);
-	TCCR2B |= (1<<WGM22) | (0<<WGM21)  | (1<<WGM20) | (0<<CS22) | (1<<CS21) | (1<<CS20);
+{	
+	OCR2A = 0;
+	OCR2B = 0;
 	
+	TCCR2A |= (1<<WGM21)| (1<<WGM20) | (1<<COM2A1) | (0<<COM2A0) | (1<<COM2B1) | (0<<COM2B0);
+	TCCR2B |= (0<<WGM22) | (0<<CS22) | (1<<CS21) | (1<<CS20);
+	
+	OCR2A = 0;
+	OCR2B = 0;
 	// Set Port 20 and 21 as outputs (for PWM)
 	// Set port 18 and 19 as outputs (for choosing direction)
 	// Set port 16 and 17 as inputs (for manual controllers)
@@ -58,14 +62,12 @@ ISR(INT0_vect){
 // Drive, port 16
 ISR(INT1_vect){
 	cli();
-	int speed = 50;
-	int output = speed * 255 / 100;
+	int speed = 10;
+	int output = floor(speed * 255 / 100);
 	
-	for (int i = 0; i < 300; i++)
-	{
-		OCR2A = output;
-		OCR2B = output;
-	}
+	OCR2A = output;
+	OCR2B = output;
+	
 	sei();
 }
 
@@ -78,6 +80,7 @@ int main(void)
 	EIMSK = 0b00000011;
 	EICRA = 0b00001111;
 	SMCR = 0x01;
+	
 	pwm_init();
 	sei();
 	
