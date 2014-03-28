@@ -2,7 +2,7 @@
  * STYR.c
  *
  * Created: 3/27/2014 11:58:55 AM
- *  Author: fille
+ *  Author: hanel742 och tobgr602
  */ 
 
 
@@ -12,6 +12,10 @@
 
 void pwm_init()
 {
+	// initialize TCCRX for fast PWM
+	TCCR2A |= (1<<WGM21)| (0<<WGM20) | (1<<COM2A1) | (0<<COM2A0) | (1<<COM2B1) | (0<<COM2B0);
+	TCCR2B |= (1<<WGM22) | (0<<WGM21)  | (1<<WGM20) | (0<<CS22) | (1<<CS21) | (1<<CS20);
+	
 	// Set Port 20 and 21 as outputs (for PWM)
 	// Set port 18 and 19 as outputs (for choosing direction)
 	// Set port 16 and 17 as inputs (for manual controllers)
@@ -57,7 +61,7 @@ ISR(INT1_vect){
 	int speed = 50;
 	int output = speed * 255 / 100;
 	
-	while (PIND2 == 1)
+	for (int i = 0; i < 300; i++)
 	{
 		OCR2A = output;
 		OCR2B = output;
@@ -78,8 +82,6 @@ int main(void)
 	sei();
 	
 	while(1){
-	sleep_enable();
-	sleep_cpu();
 	}
 	
 	return 0;
