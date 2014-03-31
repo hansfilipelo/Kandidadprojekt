@@ -42,7 +42,14 @@
 #include "serialportreader.h"
 
 #include <QtSerialPort/QSerialPort>
-
+#include <QtCore>
+#include <stdlib.h>
+#include <iostream>
+#include <iomanip>
+#include <fstream>
+#include <string>
+#include <vector>
+#include <QString>
 #include <QTextStream>
 #include <QCoreApplication>
 #include <QFile>
@@ -57,6 +64,7 @@ int main(int argc, char *argv[])
     QStringList argumentList = QCoreApplication::arguments();
 
     QTextStream standardOutput(stdout);
+     QTextStream standardInput(stdin);
 
     if (argumentCount == 1) {
         standardOutput << QObject::tr("Usage: %1 <serialportname> [baudrate]").arg(argumentList.first()) << endl;
@@ -98,12 +106,32 @@ int main(int argc, char *argv[])
         return 1;
     }
     
-    standardOutput << "Sending: A " << endl;
-    
-    serialPort.write("A",1);
-
     SerialPortReader serialPortReader(&serialPort);
+    serialPort.write("S");
+    serialPort.waitForBytesWritten(200);
+    serialPort.write("S");
+    serialPort.waitForBytesWritten(200);
+    serialPort.write("S");
+    serialPort.waitForBytesWritten(200);
+    serialPort.write("S");
+    serialPort.waitForBytesWritten(200);
+    serialPort.write("S");
+    serialPort.waitForBytesWritten(200);
+    serialPort.write("S");
+    serialPort.waitForBytesWritten(200);
+    serialPort.write("S");
+    serialPort.waitForBytesWritten(200);
+    serialPort.write("S");
+    serialPort.waitForBytesWritten(200);
+    serialPort.write("S");
+    serialPort.waitForBytesWritten(200);
+    serialPort.write("S");
+    serialPort.waitForBytesWritten(200);
+    serialPort.write("S");
+    serialPort.waitForBytesWritten(200);
+    serialPort.write("S");
 
-    standardOutput << "Hopefully recieving: [A]" << endl;
+    
+
     return coreApplication.exec();
 }

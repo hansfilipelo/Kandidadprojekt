@@ -1,0 +1,25 @@
+From the help menu in AVR Studio please choose the online AVR Tools User Guide and then under the Content tab of the HTML Help choose AVR Assembler --> User Guide --> Expressions. Here you can learn more about arithmetic operations used with AVR microcontrollers for assembler language.
+
+Here is some examples of simple and regular used arithmetic operations. The examples alter or check the bit value on the PB6 and PB4 pin in PORTB of an AVR microcontroller.
+
+Set PB6 and PB4, and leave the other pins unchanged:
+
+PORTB |= (1<<PB6) | (1<<PB4);
+
+Clear PB6 and PB4, and leave the other pins unchanged:
+
+PORTB &= ~((1<<PB6) | (1<<PB4));
+
+Check if the PB6 pin is set:
+
+if (PORTB &= (1<<PB6))
+{
+//Do something, for instance set a value in a variable
+}
+
+Check if PB6 and PB4 is set:
+
+if ((PORTB &= ((1<<PB6) | (1<<PB4))) == ((1<<PB6) | (1<<PB4)))
+{
+//Do something, for instance set a value in a variable
+}
