@@ -31,38 +31,44 @@ void pwm_init()
 
 // Chooses direction
 int gear = 0;
+int speed = 0;
 
 // Gearbox, port 17
 ISR(INT0_vect){
 	cli();
-	if (gear == 3)
-	{
-		PORTD |= (0<<PORTD4) | (0<<PORTD5);
-		gear = 0x00;
-	}
-	else{
-		if (gear == 0)
-		{
-			PORTD |= (1<<PORTD4) | (0<<PORTD5);
-		}
-		else if (gear == 1)
-		{
-			PORTD |= (0<<PORTD4) | (1<<PORTD5);
-		}
-		else if (gear == 2)
-		{
-			PORTD |= (1<<PORTD4) | (1<<PORTD5);
-		}
+	if (gear == 0){
+		PORTD |= 0x10;
+		PORTD &= ~0x20;
 		gear = gear + 1;
-		
 	}
+	else if (gear == 1){
+		PORTD &= ~0x10;
+		PORTD |= 0x20;
+		gear = gear + 1;
+	}
+	else if (gear == 2){
+		PORTD |= 0x10;
+		PORTD |= 0x20;
+		gear = gear + 1;
+	}
+	else {
+		PORTD &= ~0x10;
+		PORTD &= ~0x20;
+		gear = 0;
+	}
+		
 	sei();
 }
 
 // Drive, port 16
 ISR(INT1_vect){
 	cli();
-	int speed = 50;
+	if (speed == 0){
+		speed = 25;
+	}
+	else{
+		speed = 0;
+	}
 	int output = floor(speed * 255 / 100);
 	
 	OCR2A = output;
