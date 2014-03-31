@@ -19,7 +19,9 @@
 \usepackage{xcolor,colortbl}
 \usepackage{hyperref}
 \usepackage{amsmath}
-
+\usepackage{footnote}
+\usepackage{caption}
+\usepackage{subcaption}
 \include{pagestyle}
 
 %-------------------------------------------------------------------
@@ -112,20 +114,6 @@
 %-----------------------------------------------------------------
 %Översikt
 \section{Inledning}
-
-Disposition: 
-\\
-1. Inledning 
-\\
-2. Problemformulering (frågeställningar som rapporten ska behandla) 
-\\
-3. Kunskapsbas (litteratur, datablad, dokumentation, etc.) 
-\\
-4. Fördjupningstext (modeller, beräkningar, analyser och eventuella experiment) 
-\\
-5. Resultat och slutsatser 
-%-----------------------------------------------------------------
-
 Syftet med denna rapport är att belysa och undersöka olika optiska-, ljud- och accelerationssensorers användbarhet för autonom navigering.
 Rapporten kommer att belysa olika fördelar med de olika teknikerna samt vilka sensortyper som är att föredra i olika situationer.
 Rapporten kommer även att granska hur sensorerna presterar, hur känsliga de är för störningar samt om det finns variationer av teknikerna.
@@ -141,10 +129,8 @@ Vidare söks även nackdelar med de olika teknikerna, hur dessa kan undvikas och
 Frågorna som rapporten kommer att behandla är:
 \begin{itemize}
 
-\item Hur fungerar en optisk sensor? 
-\item Hur noggrann är en optisk sensor?
-\item Hur känslig är den för störningar?
-\item Vad är nackdelarna respektive fördelarna med en optisk sensor?
+\item Hur fungerar en trianguleringssensor? 
+\item Vad är nackdelarna respektive fördelarna med triangulering?
 
 \item Hur fungerar Time of flight sensorer?
 \item Vilka typer finns det?
@@ -168,7 +154,7 @@ En optisk sensor är ett typ av instrument som används för att med hjälp av l
 Sensorn som beskrivs nedan är av single-baseline optiksensor, vilket betyder att den opererar med endast ett sändar- och mottagarpar, och bedömer avstånd med hjälp av en typ av triangulering.
 En typisk single-baseline optisk sensor kräver fyra grundkomponenter för att fungera.
 En ljuskälla i form av t.ex. en laser, en lins för att fokusera det reflekterade ljuset på 
-en optisk sensor, samt en yta att reflektera ljuset mot, dvs ytan som avståndet skall mätas till.
+en optisk sensor, samt en yta att reflektera ljuset mot, dvs ytan som avståndet skall mätas till.\footnote{http://www.altheris.com/products/laser-triangulation-technology-.htm}
 
 Ljuskällan riktas rakt mot den yta som avståndet ska mätas till och en ljuspuls avfyras. Ojämnheter i ytan gör att ljuspulsen reflekteras åt flera håll. Några av dessa ljusreflektioner kommer med största sannolikhet att studsa tillbaka mot sändaren.
 Strax under ljuskällan sitter en svagt vinklad sensor som tar emot den reflekterade ljuspulsen.  Vart på sensorn som det reflekterade ljusets högsta koncentration uppmäts bestämmer medhjälp av trigonometri på vilket avstånd som avståndsmätaren uppfattar att reflektorn ligger.
@@ -184,17 +170,38 @@ Om det horisontella avståndet, \begin{math}\delta\end{math} är känt så fås 
 \label{eq:angle}
 \frac{P}{\delta}=tan(\beta)
 \end{equation}
-Denna ekvation kan vara missledande då den ger intrycket av att det inte finns maximal och minimal uppmätbar distans vilket tyvärr är fallet för optiska triangulationssensorer.
-Det finns nämligen ett antal faktorer som tillsammans bestämmer sensorns egenskaper.
+Denna ekvation kan vara missledande då den ger intrycket av att det inte finns maximal och minimal uppmätbar distans vilket tyvärr inte stämmer för optiska triangulationssensorer.
+Det finns nämligen ett antal faktorer som tillsammans bestämmer sensorns egenskaper\footnote{\label{Pears}N. E. Pears, 1994}.
 
-I fallet med optisk sensor bestäms vinkeln \begin{math}\beta\end{math} med hjälp av de kända avstånden D och f. D ges av den optiska sensorn medans f är känt som linsens fokallängd. Om ett infallande ljusknippe infaller på sensorn kan \begin{math}\beta\end{math} bestämmas och därmed P, men om  infallsvinkeln blir tillräckligt stor så kommer det reflekterade ljusknippet att missa sensorn vilket kommer leda till att vinkeln inte kan bestämmas.
+I fallet med optisk sensor bestäms vinkeln \begin{math}\beta\end{math} med hjälp av de kända avstånden D och f. D ges av den optiska sensorn medans f är känt som linsens fokallängd. Om ett infallande ljusknippe infaller på sensorn kan \begin{math}\beta\end{math} bestämmas och därmed avståndet till P, men om  infallsvinkeln blir tillräckligt stor så kommer det reflekterade ljusknippet att missa sensorn vilket kommer leda till att \begin{math}\beta\end{math} inte kan bestämmas.$^{\ref{Pears}}$ Se figur \ref{fig:sub1} respektive figur \ref{fig:sub2} för en illustration.
+
+
+\begin{figure}
+\centering
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=.5\linewidth]{Traingulering001.jpg}
+  \caption{Mätprincip}
+  \label{fig:sub1}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=.5\linewidth]{Traingulering002.jpg}
+  \caption{Intern sensorstruktur}
+  \label{fig:sub2}
+\end{subfigure}
+\caption{Triangulering}
+\label{fig:sub}
+\end{figure}
+
+
 
 Sensorns effektiva mätområde är alltså beroende på sensorns bredd, linsens fokallängd och avståndet mellan sensor och sändare.
-En ökad sensorstorlek ger ett större omfång medans ett minskat avstånd mellan sensor och sändare förskjuter omfånget så att sensorns maximala räckvidd ökar. Att minska avståndet medför dock att systemet blir mindre och mindre linjärt, dvs att ett inkrement i P inte linjärt ökar vinkelutslaget.
+En ökad sensorstorlek ger ett större omfång medans ett minskat avstånd mellan sensor och sändare förskjuter omfånget så att sensorns maximala räckvidd ökar. Att minska avståndet medför dock att systemet blir mindre och mindre linjärt, dvs att ett inkrement i P inte linjärt ökar vinkelutslaget.$^{\ref{Pears}}$
 
 \subsection{Time-Of-Flight sensorer}
 En typ av sensor som används för avståndsbestämning är typen time-of-flight även känt som TOF sensorn. Dessa typer av sensorer bestämmer avståndet till ett objekt genom att betrakta en reflekterad vågs egenskaper. 
-En våg skickas ut från en emitter mot ett objekt. Vågen som sedan studsar tillbaka uppfattas av en mottagare som är gjord för att uppfatta vågor av samma typ som emittern skickar. Vågtypens hastighet i det aktuella mediet v, tillsammans med tidsfördröjnignen T för ekot samt vågens fasskifte används för att bestämma avståndet.
+En våg skickas ut från en emitter mot ett objekt. Vågen som sedan studsar tillbaka uppfattas av en mottagare som är gjord för att uppfatta vågor av samma typ som emittern skickar. Vågtypens hastighet i det aktuella mediet v, tillsammans med tidsfördröjnignen T för ekot samt vågens fasskifte används för att bestämma avståndet.\footnote{\label{sharam}Shahram Mohammad Nejad, Saeed Olyaee, 2006}
 
 
 
@@ -202,22 +209,21 @@ En våg skickas ut från en emitter mot ett objekt. Vågen som sedan studsar til
 
 \subsubsection{Pulse modulation}
 Den finns flera olika typer av TOF-sensorer som inriktar sig på att mäta andra vågengenskaper och en av dem är pulsmodulation.
-TOF-typen pulse modulation skickar iväg en puls med en känd längd \begin{math}T_{0}\end{math}. Tiden från start på den utgående pulsen tills dess att mottagaren registrerar en reflekterad våg \begin{math}T_{D}\end{math} uppmäts och används tillsammans med vågtypens hastighet i mediet för att beräkna avståndet till föremålet som orsakat ekot. Formeln för detta ses i ekvation \ref{eq:distance}
+TOF-typen pulse modulation skickar iväg en puls med en känd längd \begin{math}T_{0}\end{math}. Tiden från start på den utgående pulsen tills dess att mottagaren registrerar en reflekterad våg \begin{math}T_{D}\end{math} uppmäts och används tillsammans med vågtypens hastighet i mediet för att beräkna avståndet till föremålet som orsakat ekot.\footnote{Ari Kilpelä}\footnote{http://www.eng.yale.edu/ee-labs/morse/other/pos96ch4.pdf} Formeln för detta ses i ekvation \ref{eq:distance}.
 \begin{equation}
 \label{eq:distance}
 d = \frac{1}{2}*v_{medium} \cdot T_D
 \end{equation}
 
 \subsubsection{Sinusmodulation}
-TOF-tekniken sine wave modulation bestämmer avstånd med hjälp av att mäta fasskiftet \begin{math}\delta\phi\end{math} mellan sinusmodulerad utsignal och dess reflektion. Avståndet d, beräknas med hjälp av ekvation \ref{eq:distance2} där \begin{math}f_1\end{math} är modulationsfrekvensen. 
-%http://www.srttu.edu/Teacher_Article/178.pdf
+TOF-tekniken sine wave modulation bestämmer avstånd med hjälp av att mäta fasskiftet \begin{math}\delta\phi\end{math} mellan sinusmodulerad utsignal och dess reflektion. Avståndet d, beräknas med hjälp av ekvation \ref{eq:distance2} där \begin{math}f_1\end{math} är modulationsfrekvensen. $^{\ref{sharam}}$
 \begin{equation}
 \label{eq:distance2}
 \delta\phi = 2\pi \cdot \frac{2d}{v_{medie}}
 \end{equation}
 
 
-\subsubsection{Ljud- vs ljusvågor}
+\subsection{Ljud- vs ljusvågor}
 Då alla typer av vågor fungerar för att använda TOF-sensorer är det intressant att betrakta fördelarna och nackdelarna mellan att använda elektromagnetiska vågor och ljudvågor.
 Då en elektromagnetisk våg rör sig otroligt snabbt kommer en extremt snabb intern klocka krävas för att uppskatta små förändringar i avståndet. Om mottagaren som minst kan uppmäta en tidsdifferens, \begin{math}\delta t\end{math} , på en mikrosekund ges den minimala avståndsskilnaden som kan uppskattas av ekvation \ref{eq:diff}.
 
@@ -286,7 +292,7 @@ I figur \ref{fig:gyro} nedan visas ett simpelt gyroskop. Det byggs upp av ett sn
 
 De gyroskop som används mest idag, i t.ex. mobiler, är MEMS-gyroskop. MEMS kombinerar elektroniska och mekaniska system på micronivå. MEMS-systemen som används i gyroskop består av ett element som börjar vibrera när gyrot rör sig. Styrkan på dessa vibrationer kan mästas och för att göra det använder man sig av kapacitans.
 
-MEMS-gyroskop tar idén från gyroskopen ovan men använder sig av MEMS istället för ett balanserat hjul på en axel. MEMS gyroskop använder sig av corioliseffekten för att mäta vinkelhastigheten. Figur \ref{fig:corilois} visar hur en massa påverkas av effekten.
+MEMS-gyroskop tar idén från gyroskopen ovan men använder sig av MEMS istället för ett balanserat hjul på en axel. MEMS gyroskop använder sig av corioliseffekten för att mäta vinkelhastigheten. Figur \ref{fig:coriolis} visar hur en massa påverkas av effekten.
 \begin{figure}[h]
 \label{fig:coriolis}
 \caption{}
@@ -295,7 +301,7 @@ MEMS-gyroskop tar idén från gyroskopen ovan men använder sig av MEMS iställe
 \end{figure}
 
 
-När massan m rör sig med hastigheten v längs x-axeln och med vinkelhastihteten (ohmtecknet) runt z-axeln så uppstår en corioliskraft (den gula pilen). Den fysiska förflyttningen som orsakas av corioliskraften kan läsas av med den kapacitiva MEMS-sensorn. De flesta MEMS-gyroskopen använder sig av två massor som oscillerar konstant i motsatta riktningar, detta illustreras i figur \ref{fig:angular}. När man roterar massorna verkar då även corioliskraften åt olika håll vilket resulterar i att kapacitansen ändrar sig. Skillnaden i kapacitans är proportionell på vinkelhastigheten och konverteras sedan till en analog eller digital utsignal.
+När massan m rör sig med hastigheten v längs x-axeln och med vinkelhastihteten (ohmtecknet) runt z-axeln så uppstår en corioliskraft (den gula pilen). Den fysiska förflyttningen som orsakas av corioliskraften kan läsas av med den kapacitiva-sensorn. De flesta MEMS-gyroskopen använder sig av två massor som oscillerar konstant i motsatta riktningar, detta illustreras i figur \ref{fig:angular}. När man roterar massorna verkar då även corioliskraften åt olika håll vilket resulterar i att kapacitansen ändrar sig. Skillnaden i kapacitans är proportionell på vinkelhastigheten och konverteras sedan till en analog eller digital utsignal.
 
 \begin{figure}[h]
 \label{fig:angular}
@@ -338,26 +344,39 @@ Gyrosop kommer att vara väldigt användbart för oss. Det kommer att underlätt
 
 Eftersom att en brandhärd kommer att representeras av en RFID-tagg i tävlingen så är RFID-läsaren en komponent som självklart kommer att vara en del av vår robot. Det finns ingen möjlighet för oss att välja mellan aktiv eller passiv teknik då de komponenter vi har tillgång till endast är för passiv RFID. Man skulle kunna tänka sig att använda aktiv för kunna detektera taggen från längre avstånd men då förändras tävlingsförutsättningarna och det skulle alltså bli en helt annorlunda tävling.
 
+
 \section{Källförteckning}
 
-Piezoelektricitet, wikipedia.org. Hämtad \today:
+Piezoelektricitet, wikipedia.org. Hämtad \today:\newline
 http://sv.wikipedia.org/wiki/Piezoelektricitet
 
-Datablad för SRF04, Institutionen för systemteknik vid Linköpings Universitet. Hämtad \today:
+Datablad för SRF04, Institutionen för systemteknik vid Linköpings Universitet. Hämtad \today:\newline
 https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/srf04.pdf
 
-Corioliseffekten, wikipedia.org. Hämtad \today:
+Corioliseffekten, wikipedia.org. Hämtad \today:\newline
 http://sv.wikipedia.org/wiki/Corioliseffekten
 
-Introduction to MEMS gyroscopes, electroiq.com. Hämtad \today:
+Introduction to MEMS gyroscopes, electroiq.com. Hämtad \today:\newline
 http://electroiq.com/blog/2010/11/introduction-to-mems-gyroscopes/
 
-Datablad för MLX90609, Institutionen för systemteknik vid Linköpings Universitet. Hämtad \today: https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/MLX90609_datasheet.pdf
+Datablad för MLX90609, Institutionen för systemteknik vid Linköpings Universitet. Hämtad \today:\newline https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/MLX90609_datasheet.pdf
 
-Datablad för Parallax-Reader, Institutionen för systemteknik vid Linköpings Universitet. Hämtad \today:
+Datablad för Parallax-Reader, Institutionen för systemteknik vid Linköpings Universitet. Hämtad \today:\newline
 https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/rfid-reader-v21.pdf
 
-How RFID Works, electronics.howstuffworks.com. Hämtad \today:
+How RFID Works, electronics.howstuffworks.com. Hämtad \today:\newline
 http://electronics.howstuffworks.com/gadgets/high-tech-gadgets/rfid3.htm
 
+Quartarly Journal of Technology & Education Vol.1, 
+Shahram Mohammad Nejad, Saeed Olyaee, 2006
+http://www.srttu.edu/Teacher_Article/178.pdf
+
+Laser Triangulation Sensors:Technology Hämtad \today:\newline
+http://www.altheris.com/products/laser-triangulation-technology-.htm
+
+Chapter 4 Sensors for Map-Based Positioning Hämtad \today:\newline
+http://www.eng.yale.edu/ee-labs/morse/other/pos96ch4.pdf
+
+Chapter 6 Optical Triangulation Range Sensors, N.E Pears, Hämtad \today:\newline 
+http://www-users.cs.york.ac.uk/nep/research/papers/agvChapterPears1994.pdf
 \end{document}
