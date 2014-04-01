@@ -107,30 +107,18 @@ int main(int argc, char *argv[])
     }
     
     SerialPortReader serialPortReader(&serialPort);
-    serialPort.write("S");
+    serialPort.write("M");
     serialPort.waitForBytesWritten(200);
-    serialPort.write("S");
+    serialPort.write("K");
     serialPort.waitForBytesWritten(200);
-    serialPort.write("S");
+    serialPort.write("A");
     serialPort.waitForBytesWritten(200);
-    serialPort.write("S");
+    serialPort.write("R");
     serialPort.waitForBytesWritten(200);
-    serialPort.write("S");
+    serialPort.write("T");
     serialPort.waitForBytesWritten(200);
-    serialPort.write("S");
+    serialPort.write("A");
     serialPort.waitForBytesWritten(200);
-    serialPort.write("S");
-    serialPort.waitForBytesWritten(200);
-    serialPort.write("S");
-    serialPort.waitForBytesWritten(200);
-    serialPort.write("S");
-    serialPort.waitForBytesWritten(200);
-    serialPort.write("S");
-    serialPort.waitForBytesWritten(200);
-    serialPort.write("S");
-    serialPort.waitForBytesWritten(200);
-    serialPort.write("S");
-
     
 
     return coreApplication.exec();

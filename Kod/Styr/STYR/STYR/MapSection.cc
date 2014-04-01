@@ -1,5 +1,19 @@
 #include "MapSection.h"
+#include "Map.h"
+
 using namespace std;
+
+MapSection::MapSection(int x,int y){
+    xCoord=x;
+    yCoord=y;
+    type="unexplored";
+}
+
+MapSection::MapSection(int x,int y,string createType){
+    xCoord=x;
+    yCoord=y;
+    type=createType;
+}
 
 void MapSection::setX(int coord){
 	xCoord=coord;
@@ -30,10 +44,6 @@ string MapSection::getType(){
 	return type;
 }
 
-int MapSection::getSize(){
-	return size;
-}
-
 bool MapSection::isRobot(){
 	return containsRobot;
 }
@@ -41,82 +51,68 @@ bool MapSection::isRobot(){
 //---------------------------------------------------------
 
 MapSection* MapSection::getTop(){
-	return top;
+	return mom->getPos(xCoord, yCoord + 1);
 }
 
 MapSection* MapSection::getBottom(){
-	return bottom;
+	return mom->getPos(xCoord, yCoord - 1);
 }
 
 MapSection* MapSection::getLeft(){
-	return left;
+	return mom->getPos(xCoord - 1, yCoord);
 }
 
 MapSection* MapSection::getRight(){
-	return right;
+	return mom->getPos(xCoord + 1, yCoord);
 }
 
 //-----------------------------------------------------------
 
-void setTop(MapSection* ptr){
-	top = ptr;
-}
 
-void setBottom(MapSection* ptr){
-	bottom = ptr;
-}
-
-void setLeft(MapSection* ptr){
-	left = ptr;
-}
-
-void setRight(MapSection* ptr){
-	right = ptr;
-}
 
 //----------------------------------------------------------
 
-bool isUnexplored(){
+bool MapSection::isUnexplored(){
 	if (type == "unexplored") {
 		return true;
 	}
 	else{
-		return false
+		return false;
 	}
 }
 
-int findUnexplored(){
+int MapSection::findUnexplored(){
 	int topCounter;
 	int botCounter;
 	int leftCounter;
 	int rightCounter;
 	
-	if (top->isUnexplored()){
+	if (getTop()->isUnexplored()){
 		topCounter=1;
 	}
 	else{
-		topCounter= top->findUnexplored()+1;
+		topCounter= getTop()->findUnexplored()+1;
 	}
 	
-	if (bottom->isUnexplored()){
+	if (getBottom()->isUnexplored()){
 		botCounter=1;
 	}
 	else{
-		botCounter= bottom->findUnexplored()+1;
+		botCounter= getBottom()->findUnexplored()+1;
 	}
 	
-	if (left->isUnexplored()){
+	if (getLeft()->isUnexplored()){
 		leftCounter=1;
 	}
 	else{
-		leftCounter= left->findUnexplored()+1;
+		leftCounter= getLeft()->findUnexplored()+1;
 	}
 	
-	if (right->isUnexplored()){
+	if (getRight()->isUnexplored()){
 		rightCounter=1;
 	}
 	else{
-		rightCounter= right->findUnexplored()+1;
+		rightCounter= getRight()->findUnexplored()+1;
 	}
 	
 	if(topCounter < botCounter || topCounter < leftCounter || topCounter < rightCounter){

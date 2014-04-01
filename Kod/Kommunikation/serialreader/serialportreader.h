@@ -48,6 +48,7 @@
 #include <QTimer>
 #include <QByteArray>
 #include <QObject>
+#include <QDebug>
 
 QT_USE_NAMESPACE
 
@@ -59,15 +60,18 @@ class SerialPortReader : public QObject
 public:
     SerialPortReader(QSerialPort *serialPort, QObject *parent = 0);
     ~SerialPortReader();
+    void printData(const QByteArray);
 
 private slots:
     void handleReadyRead();
     void handleError(QSerialPort::SerialPortError error);
-
+    void handleMap(const QByteArray);
 private:
     QSerialPort *m_serialPort;
     QByteArray  m_readData;
+	QByteArray 	temporary_readData;
     QTextStream m_standardOutput;
+	
 };
 
 #endif

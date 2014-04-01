@@ -9,10 +9,10 @@ public:
     Map();
     ~Map();
     
-    setSection(int, int, MapSection*);
+    void setSection(int, int, MapSection*);
     
-    getPos(int,int);
+    MapSection* getPos(int,int);
     
 protected:
-    mapArea std::vector<std::vector<MapSection*>>;
+    std::vector<std::vector<MapSection*>> mapArea;
 };
