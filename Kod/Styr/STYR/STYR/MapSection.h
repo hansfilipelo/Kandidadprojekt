@@ -1,16 +1,21 @@
 #include <string>
 
+using namespace std;
+
+class Map;
+
 class MapSection{
 public:
-	void setX(coord);
-	void setY(coord);
-	void setType(newType);
-	void setRobot(status);
+    MapSection(int x,int y);
+    MapSection(int x,int y, string createType);
+	void setX(int coord);
+	void setY(int coord);
+	void setType(string newType);
+	void setRobot(bool status);
 	
 	int getX();
 	int getY();
 	string getType();
-	int getSize();
 	bool isRobot();
 	
 	MapSection* getTop();
@@ -24,19 +29,15 @@ public:
 	void setRight(MapSection*);
 	
 	bool isUnexplored();
-	void findUnexplored();
+	int findUnexplored();
 	
 private:
 	int xCoord;
 	int yCoord;
-	int size=40;
 	int step;
 	string type="undefined";
-	containsRobot = false;
-	MapSection* top = nullptr;
-	MapSection* bottom = nullptr;
-	MapSection* left = nullptr;
-	MapSection* right = nullptr;
+	bool containsRobot = false;
+	Map* mom = nullptr;
 	string next;
 	
 

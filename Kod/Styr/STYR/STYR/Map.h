@@ -1,6 +1,7 @@
 #include <vector>
 #include <string>
-#include "MapSection.h"
+
+class MapSection;
 
 class Map 
 {
@@ -8,8 +9,10 @@ public:
     Map();
     ~Map();
     
-    setSection(int, int, MapSection*);
+    void setSection(int, int, MapSection*);
+    
+    MapSection* getPos(int,int);
     
 protected:
-    mapArea std::vector<std::vector<MapSection*>>;
+    std::vector<std::vector<MapSection*>> mapArea;
 };
