@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_SerialPortReader_t {
-    QByteArrayData data[7];
-    char stringdata[92];
+    QByteArrayData data[12];
+    char stringdata[183];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -35,11 +35,18 @@ QT_MOC_LITERAL(2, 33, 0),
 QT_MOC_LITERAL(3, 34, 11),
 QT_MOC_LITERAL(4, 46, 28),
 QT_MOC_LITERAL(5, 75, 5),
-QT_MOC_LITERAL(6, 81, 9)
+QT_MOC_LITERAL(6, 81, 13),
+QT_MOC_LITERAL(7, 95, 14),
+QT_MOC_LITERAL(8, 110, 14),
+QT_MOC_LITERAL(9, 125, 19),
+QT_MOC_LITERAL(10, 145, 20),
+QT_MOC_LITERAL(11, 166, 15)
     },
     "SerialPortReader\0handleReadyRead\0\0"
     "handleError\0QSerialPort::SerialPortError\0"
-    "error\0handleMap\0"
+    "error\0handleMapData\0handleRFIDData\0"
+    "handleGyroData\0handleLongRangeData\0"
+    "handleShortRangeData\0handleMotorData\0"
 };
 #undef QT_MOC_LITERAL
 
@@ -49,7 +56,7 @@ static const uint qt_meta_data_SerialPortReader[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-       3,   14, // methods
+       8,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -57,14 +64,24 @@ static const uint qt_meta_data_SerialPortReader[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,   29,    2, 0x08,
-       3,    1,   30,    2, 0x08,
-       6,    1,   33,    2, 0x08,
+       1,    0,   54,    2, 0x08,
+       3,    1,   55,    2, 0x08,
+       6,    1,   58,    2, 0x08,
+       7,    1,   61,    2, 0x08,
+       8,    1,   64,    2, 0x08,
+       9,    2,   67,    2, 0x08,
+      10,    2,   72,    2, 0x08,
+      11,    2,   77,    2, 0x08,
 
  // slots: parameters
     QMetaType::Void,
     QMetaType::Void, 0x80000000 | 4,    5,
     QMetaType::Void, QMetaType::QByteArray,    2,
+    QMetaType::Void, QMetaType::QByteArray,    2,
+    QMetaType::Void, QMetaType::QByteArray,    2,
+    QMetaType::Void, QMetaType::QByteArray, QMetaType::UInt,    2,    2,
+    QMetaType::Void, QMetaType::QByteArray, QMetaType::UInt,    2,    2,
+    QMetaType::Void, QMetaType::QByteArray, QMetaType::UInt,    2,    2,
 
        0        // eod
 };
@@ -76,7 +93,12 @@ void SerialPortReader::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int
         switch (_id) {
         case 0: _t->handleReadyRead(); break;
         case 1: _t->handleError((*reinterpret_cast< QSerialPort::SerialPortError(*)>(_a[1]))); break;
-        case 2: _t->handleMap((*reinterpret_cast< const QByteArray(*)>(_a[1]))); break;
+        case 2: _t->handleMapData((*reinterpret_cast< const QByteArray(*)>(_a[1]))); break;
+        case 3: _t->handleRFIDData((*reinterpret_cast< const QByteArray(*)>(_a[1]))); break;
+        case 4: _t->handleGyroData((*reinterpret_cast< const QByteArray(*)>(_a[1]))); break;
+        case 5: _t->handleLongRangeData((*reinterpret_cast< const QByteArray(*)>(_a[1])),(*reinterpret_cast< uint(*)>(_a[2]))); break;
+        case 6: _t->handleShortRangeData((*reinterpret_cast< const QByteArray(*)>(_a[1])),(*reinterpret_cast< uint(*)>(_a[2]))); break;
+        case 7: _t->handleMotorData((*reinterpret_cast< const QByteArray(*)>(_a[1])),(*reinterpret_cast< uint(*)>(_a[2]))); break;
         default: ;
         }
     }
@@ -107,13 +129,13 @@ int SerialPortReader::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 3)
+        if (_id < 8)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 3;
+        _id -= 8;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 3)
+        if (_id < 8)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 3;
+        _id -= 8;
     }
     return _id;
 }

@@ -65,7 +65,13 @@ public:
 private slots:
     void handleReadyRead();
     void handleError(QSerialPort::SerialPortError error);
-    void handleMap(const QByteArray);
+    void handleMapData(const QByteArray);
+    void handleRFIDData(const QByteArray);
+    void handleGyroData(const QByteArray);
+    void handleLongRangeData(const QByteArray, unsigned int);
+    void handleShortRangeData(const QByteArray, unsigned int);
+    void handleMotorData(const QByteArray, unsigned int);
+    
 private:
     QSerialPort *m_serialPort;
     QByteArray  m_readData;

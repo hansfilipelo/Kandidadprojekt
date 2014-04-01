@@ -76,12 +76,27 @@ void SerialPortReader::handleReadyRead()
     }
     
     QByteArray data = m_serialPort->read(24);
-    QString commandName = data.left(1);
+    QString commandName = data.left(2);
     QByteArray inData = data.mid(1);
     
     // Check which command that's supposed to run
-    if (commandName == "M") {
-        handleMap(inData);
+    if (commandName == "MP"){
+        handleMapData(inData);
+    }
+    else if(commandName =="GY"){
+        handleGyroData(inData);
+    }
+    else if(commandName =="RF"){
+        handleRFIDData(inData);
+    }
+    else if(commandName.left(1) =="L"){
+        handleLongRangeData(inData,commandName.right(1).toInt());
+    }
+    else if(commandName.left(1) =="S"){
+        handleShortRangeData(inData,commandName.right(1).toInt());
+    }
+    else if(commandName.left(1) =="M"){
+        handleMotorData(inData,commandName.right(1).toInt());
     }
     else {
         qDebug() << "Unknown command: ";
@@ -94,10 +109,30 @@ void SerialPortReader::printData(QByteArray data)
 	m_standardOutput << data << endl;
 }
 
-void SerialPortReader::handleMap(QByteArray inData)
+void SerialPortReader::handleMapData(QByteArray inData)
 {
     qDebug() << "Handeling map!";
     this->printData(inData);
+}
+void SerialPortReader::handleGyroData(QByteArray inData)
+{
+
+}
+void SerialPortReader::handleRFIDData(QByteArray inData)
+{
+
+}
+void SerialPortReader::handleShortRangeData(QByteArray inData, unsigned int nr)
+{
+
+}
+void SerialPortReader::handleLongRangeData(QByteArray inData, unsigned int nr)
+{
+
+}
+void SerialPortReader::handleMotorData(QByteArray inData, unsigned int nr)
+{
+
 }
 
 
