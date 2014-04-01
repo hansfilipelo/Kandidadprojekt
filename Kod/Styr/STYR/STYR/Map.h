@@ -1,5 +1,4 @@
-#include <vector>
-#include <string>
+#include <string.h>
 
 class MapSection;
 
@@ -14,5 +13,5 @@ public:
     MapSection* getPos(int,int);
     
 protected:
-    std::vector<std::vector<MapSection*>> mapArea;
+     MapSection* mapArea [32][17];
 };

@@ -6,13 +6,9 @@ using namespace std;
 // ------------- Construct -----------------
 
 Map::Map(){
-    mapArea = new vector<vector>;
-    
     for (i = 0; i < 32; i++) {
-        mapArea.push_back(new vector<MapSection*>);
-        
         for (it = 0; it < 17; i++) {
-            mapArea.push_back(new MapSection(it,i));
+            mapArea[i][it] = new MapSection(it,i);
         }
     }
 }
