@@ -34,3 +34,7 @@ MapSection* getPos(int x, int y){
 }
 
 // ------------------------------------------
+
+void setSection(int xPos, int yPos, MapSection* inSection){
+    mapArea.at(yPos).at(xPos) = inSection;
+}
