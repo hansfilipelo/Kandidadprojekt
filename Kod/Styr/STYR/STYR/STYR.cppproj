@@ -160,9 +160,29 @@
     </PreBuildEvent>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Map.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="MapSection.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="STYR.cpp">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="UnexploredSection.h">
+      <SubType>compile</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Map.cc">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="MapSection.cc">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="UnexploredSection.cc">
+      <SubType>compile</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
 </Project>
