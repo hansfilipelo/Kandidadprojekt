@@ -7,3 +7,24 @@
 *.gz
 .DS_Store
 
+# Executables #
+###############
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+*.app
+*.user
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehtthumbs.db
+Thumbs.db
+
