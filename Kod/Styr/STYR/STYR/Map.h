@@ -1,4 +1,5 @@
 #include <string.h>
+#include <stdio.h>
 
 class MapSection;
 
@@ -10,10 +11,10 @@ public:
     
     void setSection(int, int, MapSection*);
 	MapSection* getSectionType(int, int);
-	char getRowAsChar(int);
+	char* getRowAsChar(int);
     
     MapSection* getPos(int,int);
     
 protected:
-     MapSection* mapArea [32][17];
+     MapSection* mapArea[32][17];
 };
