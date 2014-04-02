@@ -10,7 +10,6 @@ public:
     ~Map();
     
     void setSection(int, int, MapSection*);
-	MapSection* getSectionType(int, int);
 	char* getRowAsChar(int);
     
     MapSection* getPos(int,int);
