@@ -1,7 +1,7 @@
 #ifndef _MapSection_h
 #define _MapSection_h
 
-#include <string>
+#include <string.h>
 
 class Map;
 
@@ -54,7 +54,7 @@ protected:
 // ------------------------------------------------
 // Subclass Robot
 
-class Robot : public MapSection
+class Robot : protected MapSection
 {
 public:
     Robot(int xPos, int yPos, Map* inMom);

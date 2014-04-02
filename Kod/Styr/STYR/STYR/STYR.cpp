@@ -89,6 +89,8 @@ int main(void)
 	SMCR = 0x01;
 	
 	pwm_init();
+
+	// Create map
 	sei();
 	
 	while(1){

@@ -2,23 +2,23 @@
 #define _MapSection_h
 
 #include <string.h>
-#include <stdio.h>
+#include <avr/stdio.h>
 
 class MapSection;
 
-class Map 
+class Map
 {
-public:
-    Map();
-    ~Map();
-    
-    void setSection(int, int, MapSection*);
+	public:
+	Map();
+	~Map();
+	
+	void setSection(int, int, MapSection*);
 	char* getRowAsChar(int);
-    
-    MapSection* getPos(int,int);
-    
-protected:
-     MapSection* mapArea[32][17];
+	
+	MapSection* getPos(int,int);
+	
+	protected:
+	MapSection* mapArea[32][17];
 };
 
 #endif

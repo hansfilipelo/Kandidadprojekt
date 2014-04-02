@@ -166,20 +166,23 @@
     <Compile Include="MapSection.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="Robot.cpp">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="STYR.cpp">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="UnexploredSection.h">
+    <None Include="UnexploredSection.h">
       <SubType>compile</SubType>
-    </Compile>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Map.cc">
+    <Compile Include="Map.cc">
       <SubType>compile</SubType>
-    </None>
-    <None Include="MapSection.cc">
+    </Compile>
+    <Compile Include="MapSection.cc">
       <SubType>compile</SubType>
-    </None>
+    </Compile>
     <None Include="UnexploredSection.cc">
       <SubType>compile</SubType>
     </None>
