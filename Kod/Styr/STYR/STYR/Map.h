@@ -1,3 +1,6 @@
+#ifndef _MapSection_h
+#define _MapSection_h
+
 #include <string.h>
 #include <stdio.h>
 
@@ -17,3 +20,5 @@ public:
 protected:
      MapSection* mapArea[32][17];
 };
+
+#endif

@@ -3,17 +3,28 @@
 
 using namespace std;
 
-MapSection::MapSection(int x,int y){
+// Construct -------------------
+
+MapSection::MapSection(int x,int y, Map* inMom){
     xCoord=x;
     yCoord=y;
+    mom = inMom;
     type="unexplored";
 }
 
-MapSection::MapSection(int x,int y,string createType){
+MapSection::MapSection(int x,int y, Map* inMom, string createType){
     xCoord=x;
     yCoord=y;
+    mom = inMom;
     type=createType;
 }
+
+// Destruct
+
+MapSection::~MapSection(){};
+
+// ----------------------------
+// Set stuff
 
 void MapSection::setX(int coord){
 	xCoord=coord;
@@ -27,9 +38,6 @@ void MapSection::setType(string newType){
 	type=newType;
 }
 
-void MapSection::setRobot(bool status){
-	containsRobot = status;
-}
 
 //---------------------------------------------------------
 int MapSection::getX(){
@@ -42,10 +50,6 @@ int MapSection::getY(){
 
 string MapSection::getType(){
 	return type;
-}
-
-bool MapSection::isRobot(){
-	return containsRobot;
 }
 
 //---------------------------------------------------------
@@ -80,6 +84,8 @@ bool MapSection::isUnexplored(){
 		return false;
 	}
 }
+
+// SLAM algorithms -------------------------------------
 
 int MapSection::findUnexplored(){
 	int topCounter;

@@ -6,14 +6,23 @@
 //
 //
 
-#include "Robot.h"
+#include <string.h>
+#include "MapSection.h"
 
-Robot::Robot(int xPos, int yPos){
-    xCoord=xPos;
-    yCoord=yPos;
+using namespace std;
+
+// Construct ---------------------------
+// Since this is a subclass - the MapSection constructor runs first.
+// All we need to do is change type.
+
+Robot::Robot(int xPos, int yPos, Map* inMom) : MapSection(xPos, yPos, inMom){
+    type="robot";
 }
 
-Robot:changeDirection(string direction){
+// -------------------------------------
+// Sets direction to travel
+
+void Robot::changeDirection(string direction){
     if (direction == "backwards"){
 		PORTD |= 0x10;
 		PORTD &= ~0x20;
@@ -33,7 +42,10 @@ Robot:changeDirection(string direction){
     
 }
 
-Robot:drive(int speed){
+// ------------------------------------
+// Drives
+
+void Robot::drive(int speed){
     if (speed == 0){
 		speed = 25;
 	}

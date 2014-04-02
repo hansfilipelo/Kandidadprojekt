@@ -8,7 +8,7 @@ using namespace std;
 Map::Map(){
     for (int i = 0; i < 32; i++) {
         for (int it = 0; it < 17; it++) {
-            mapArea[i][it] = new MapSection(it,i);
+            mapArea[i][it] = new MapSection(it,i,this);
         }
     }
 }
