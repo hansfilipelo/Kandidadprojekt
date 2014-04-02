@@ -6,8 +6,8 @@ using namespace std;
 // ------------- Construct -----------------
 
 Map::Map(){
-    for (i = 0; i < 32; i++) {
-        for (it = 0; it < 17; i++) {
+    for (int i = 0; i < 32; i++) {
+        for (int it = 0; it < 17; it++) {
             mapArea[i][it] = new MapSection(it,i);
         }
     }
@@ -16,21 +16,62 @@ Map::Map(){
 // -----------------------------------------
 
 Map::~Map(){
-    for (i = 0; i < 32; i++) {
-        for (it = 0; it < 17; i++) {
-            delete mapArea.at(it).at(i);
+    for (int i = 0; i < 32; i++) {
+        for (int it = 0; it < 17; it++) {
+            delete mapArea[i][it];
         }
     }
 }
 
 // ------------------------------------------
 
-MapSection* getPos(int x, int y){
-    return mapArea.at(y).at(x);
+MapSection* Map::getPos(int x, int y){
+    return mapArea[y][x];
 }
 
 // ------------------------------------------
 
-void setSection(int xPos, int yPos, MapSection* inSection){
-    mapArea.at(yPos).at(xPos) = inSection;
+void Map::setSection(int xPos, int yPos, MapSection* inSection){
+    mapArea[yPos][xPos] = inSection;
+}
+
+// ---------------- getRowAsChar ------------
+
+char* Map::getRowAsChar(int row)
+{
+	// Char sent to communications unit
+	char* output = new char[17];
+	// Appending to output
+	char temp;
+	// String telling type of the object we are interested in.
+	string currentType;
+
+	for (int it = 0; it < 17; it++)
+	{
+        // Type of the block we are looking at
+        currentType = this->getPos(it,row)->getType();
+        
+		if (currentType == "unexplored")
+		{
+            strcat(output, "u");
+		}
+		else if (currentType == "empty")
+		{
+			strcat(output, "e");
+		}
+		else if (currentType == "closed")
+		{
+			strcat(output   , "c");
+		}
+		else if (currentType == "robot")
+		{
+			strcat(output, "r");
+		}
+		else if (currentType == "fire")
+		{
+			strcat(output, "f");
+		}
+	}
+    
+    return output;
 }

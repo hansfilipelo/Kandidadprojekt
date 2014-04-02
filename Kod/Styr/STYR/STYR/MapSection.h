@@ -36,6 +36,14 @@ private:
 	int yCoord;
 	int step;
 	string type="undefined";
+	    /* Availables types are:
+     unexplored
+     closed
+	 robot
+	 emptysection
+	 emptysection
+	 fire
+    */
 	bool containsRobot = false;
 	Map* mom = nullptr;
 	string next;
