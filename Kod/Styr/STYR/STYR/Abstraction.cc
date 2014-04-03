@@ -1,5 +1,15 @@
-// File with abstractions for use in AVR project.
+#ifndef _Abstraction_cc
+#define _Abstraction_cc
 
+/* 
+	File with abstractions for use in AVR project. Mainly related to improving the use of Arrays since we can't use Vectors or Strings.
+	Created by: hansfilipelo
+*/
+
+
+// -----------------------------
+// Usage: 
+//		ArrayPointer = pushBackChar(inArray, char);
 
 char* pushBackChar(char* inArray, char inChar){
     
@@ -28,9 +38,9 @@ int* pushBackInt(int* inArray, int inChar){
     int size = sizeof(inArray) / sizeof(inArray[0]);
     
     // Create a bigger array
-    int* outArray = new char[size + 1];
+    int* outArray = new int[size + 1];
     
-    // Add char in the beginning and then add the rest
+    // Add int in the beginning and then add the rest
     outArray[0] = inChar;
     
     for (int i = 0; i <= size; i++) {
@@ -40,3 +50,6 @@ int* pushBackInt(int* inArray, int inChar){
 	delete inArray;
     return outArray;
 }
+
+// -----------
+#endif

@@ -9,7 +9,7 @@ MapSection::MapSection(int x,int y, Map* inMom){
     xCoord=x;
     yCoord=y;
     mom = inMom;
-    type="unexplored";
+    type='u';
 }
 
 MapSection::MapSection(int x,int y, Map* inMom, char createType){
@@ -34,7 +34,7 @@ void MapSection::setY(int coord){
 	yCoord=coord;
 }
 
-void MapSection::setType(string newType){
+void MapSection::setType(char newType){
 	type=newType;
 }
 
@@ -48,7 +48,7 @@ int MapSection::getY(){
 	return yCoord;
 }
 
-string MapSection::getType(){
+char MapSection::getType(){
 	return type;
 }
 
@@ -77,7 +77,7 @@ MapSection* MapSection::getRight(){
 //----------------------------------------------------------
 
 bool MapSection::isUnexplored(){
-	if (type == "unexplored") {
+	if (type == 'u') {
 		return true;
 	}
 	else{
@@ -122,19 +122,19 @@ int MapSection::findUnexplored(){
 	}
 	
 	if(topCounter < botCounter || topCounter < leftCounter || topCounter < rightCounter){
-		next = "top";
+		next = 't';
 		return topCounter;
 	}
 	else if (botCounter < leftCounter || botCounter < rightCounter){
-		next = "bottom";
+		next = 'b';
 		return botCounter;
 	}
 	else if (leftCounter < rightCounter){
-		next = "left";
+		next = 'l';
 		return leftCounter;
 	}
 	else {
-		next = "right";
+		next = 'r';
 		return rightCounter;
 	}
 }

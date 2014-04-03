@@ -2,6 +2,7 @@
 #define _MapSection_h
 
 #include <string.h>
+#include "Abstraction.cc"
 
 class Map;
 
@@ -62,17 +63,27 @@ public:
     void changeDirection(char direction);
     void drive(int speed);
     void moveTo(int xPos, int yPos);
+	
+	// Putting sensordata in array
+	void fwdValueIn(int);
+	void bwdValueIn(int);
+	void leftValueIn(int);
+	void rightValueIn(int);
+	void phiDotValueIn(int);
     
 	// SLAM (mapping, positioning)
-	void sensorValuesIn(double fwd, double bwd, double left, double leftLong, double right, double phiDot);
+	void setFwdClosed();
+	void setBwdClosed();
     
     
 protected:
-    int fwdSensor[100];
-    int bwdSensor[100];
-    int leftSensor[100];
-    int rightSensor[100];
-    int phiDot[100];
+    int* fwdSensor = new int[100];
+    int* bwdSensor = new int[100];
+    int* leftSensor = new int[100];
+    int* rightSensor = new int[100];
+    int* phiDotSensor = new int[100];
+	
+	char direction;
     
     };
 
