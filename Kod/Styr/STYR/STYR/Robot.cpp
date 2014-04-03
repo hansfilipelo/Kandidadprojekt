@@ -59,3 +59,18 @@ void Robot::drive(int speed){
 	OCR2A = output;
 	OCR2B = output;
 }
+
+// ------------------------------------
+// Gets sensorvalues and activates SLAM functions
+
+void Robot::sensorValuesIn(double fwd, double bwd, double left, double leftLong, double right, double phiDot)
+{
+	
+}
+
+
+
+
+
+
+

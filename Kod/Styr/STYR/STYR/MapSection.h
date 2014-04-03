@@ -58,18 +58,21 @@ class Robot : protected MapSection
 public:
     Robot(int xPos, int yPos, Map* inMom);
     
+	// Driving
     void changeDirection(char direction);
     void drive(int speed);
     void moveTo(int xPos, int yPos);
-    void sensorValuesIn(double fwd, double bwd, double left, double leftLong, double right, double phiDot);
+    
+	// SLAM (mapping, positioning)
+	void sensorValuesIn(double fwd, double bwd, double left, double leftLong, double right, double phiDot);
     
     
 protected:
-    double fwdSensor[10];
-    double bwdSensor[10];
-    double leftSensor[10];
-    double rightSensor[10];
-    double phiDot[10];
+    double fwdSensor[100];
+    double bwdSensor[100];
+    double leftSensor[100];
+    double rightSensor[100];
+    double phiDot[100];
     
     };
 
