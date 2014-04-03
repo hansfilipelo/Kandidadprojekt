@@ -22,20 +22,20 @@ Robot::Robot(int xPos, int yPos, Map* inMom) : MapSection(xPos, yPos, inMom){
 // -------------------------------------
 // Sets direction to travel
 
-void Robot::changeDirection(string direction){
-    if (direction == "backwards"){
+void Robot::changeDirection(char direction){
+    if (direction == "b"){
 		PORTD |= 0x10;
 		PORTD &= ~0x20;
 	}
-	else if (direction == "right"){
+	else if (direction == "r"){
 		PORTD &= ~0x10;
 		PORTD |= 0x20;
 	}
-	else if (direction == "left"){
+	else if (direction == "l"){
 		PORTD |= 0x10;
 		PORTD |= 0x20;
 	}
-	else if (direction "forward"){
+	else if (direction "f"){
 		PORTD &= ~0x10;
 		PORTD &= ~0x20;
 	}

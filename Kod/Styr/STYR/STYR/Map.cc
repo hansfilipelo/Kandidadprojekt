@@ -40,11 +40,19 @@ void Map::setSection(int xPos, int yPos, MapSection* inSection){
 char* Map::getRowAsChar(int row)
 {
 	// Char sent to communications unit
-	char* output = new char[17];
+	char* output = new char[25];
 	// Appending to output
 	char temp;
 	// String telling type of the object we are interested in.
-	string currentType;
+	char currentType;
+    
+    // Abstraction for buss communications
+    // Sending 19 (0x13) positions of interest
+    strcat(output, 0x13);
+    // Sending Map data
+    strcat(output, "M");
+    // Sending row
+    strcat(output, row);
 
 	for (int it = 0; it < 17; it++)
 	{

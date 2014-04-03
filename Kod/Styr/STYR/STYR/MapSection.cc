@@ -12,7 +12,7 @@ MapSection::MapSection(int x,int y, Map* inMom){
     type="unexplored";
 }
 
-MapSection::MapSection(int x,int y, Map* inMom, string createType){
+MapSection::MapSection(int x,int y, Map* inMom, char createType){
     xCoord=x;
     yCoord=y;
     mom = inMom;
