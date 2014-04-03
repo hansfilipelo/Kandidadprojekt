@@ -160,15 +160,12 @@
     </PreBuildEvent>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Map.h">
+    <None Include="Map.h">
       <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="MapSection.h">
+    </None>
+    <None Include="MapSection.h">
       <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="Robot.cpp">
-      <SubType>compile</SubType>
-    </Compile>
+    </None>
     <Compile Include="STYR.cpp">
       <SubType>compile</SubType>
     </Compile>
