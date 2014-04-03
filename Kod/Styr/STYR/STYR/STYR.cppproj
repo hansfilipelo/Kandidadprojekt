@@ -166,6 +166,9 @@
     <None Include="MapSection.h">
       <SubType>compile</SubType>
     </None>
+    <Compile Include="MapSection.cpp">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="STYR.cpp">
       <SubType>compile</SubType>
     </Compile>
@@ -178,9 +181,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Map.cc">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="MapSection.cc">
       <SubType>compile</SubType>
     </Compile>
     <None Include="UnexploredSection.cc">
