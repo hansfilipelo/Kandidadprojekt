@@ -5,7 +5,9 @@
 //  Created by Tobias Grundström on 2014-04-02.
 //
 //
-
+#include <avr/io.h>
+#include <util/delay.h>
+#include <avr/interrupt.h>
 #include <string.h>
 #include "MapSection.h"
 
@@ -16,26 +18,26 @@ using namespace std;
 // All we need to do is change type.
 
 Robot::Robot(int xPos, int yPos, Map* inMom) : MapSection(xPos, yPos, inMom){
-    type="robot";
+    type='r';
 }
 
 // -------------------------------------
 // Sets direction to travel
 
 void Robot::changeDirection(char direction){
-    if (direction == "b"){
+    if (direction == 'b'){
 		PORTD |= 0x10;
 		PORTD &= ~0x20;
 	}
-	else if (direction == "r"){
+	else if (direction == 'r'){
 		PORTD &= ~0x10;
 		PORTD |= 0x20;
 	}
-	else if (direction == "l"){
+	else if (direction == 'l'){
 		PORTD |= 0x10;
 		PORTD |= 0x20;
 	}
-	else if (direction "f"){
+	else if (direction == 'f'){
 		PORTD &= ~0x10;
 		PORTD &= ~0x20;
 	}

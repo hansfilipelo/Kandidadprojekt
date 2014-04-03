@@ -2,7 +2,7 @@
 #define _MapSection_h
 
 #include <string.h>
-#include <avr/stdio.h>
+#include <stdio.h>
 
 class MapSection;
 

@@ -37,16 +37,15 @@ protected:
 	int xCoord;
 	int yCoord;
 	int step;
-    char type="undefined";
+    char type='u';
 /* Availables types are:
-     unexplored
-     closed
-	 robot
-	 emptysection
-	 emptysection
-	 fire
+     u = unexplored
+     c = closed
+	 r = robot
+	 e = emptysection
+	 f = fire
 */
-	Map* mom = nullptr;
+	Map* mom = NULL;
     char next;
 };
 
