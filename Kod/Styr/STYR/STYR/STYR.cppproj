@@ -172,6 +172,9 @@
     <Compile Include="STYR.cpp">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="Abstraction.cc">
+      <SubType>compile</SubType>
+    </Compile>
     <None Include="UnexploredSection.h">
       <SubType>compile</SubType>
     </None>

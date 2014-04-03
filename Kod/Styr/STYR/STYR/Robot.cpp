@@ -63,9 +63,12 @@ void Robot::drive(int speed){
 // ------------------------------------
 // Gets sensorvalues and activates SLAM functions
 
-void Robot::sensorValuesIn(double fwd, double bwd, double left, double leftLong, double right, double phiDot)
+void Robot::sensorValuesIn(int fwd, int bwd, int left, int leftLong, int right, int phiDot)
 {
-	
+	fwdSensor = pushBackInt(fwdSensor, fwd);
+	bwdSensor = pushBackInt(bwdSensor, bwd);
+	leftSensor = pushBackInt(leftSensor, left);
+	rightSensor = pushBackInt(rightSensor, right);
 }
 
 

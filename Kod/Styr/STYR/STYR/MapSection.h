@@ -68,11 +68,11 @@ public:
     
     
 protected:
-    double fwdSensor[100];
-    double bwdSensor[100];
-    double leftSensor[100];
-    double rightSensor[100];
-    double phiDot[100];
+    int fwdSensor[100];
+    int bwdSensor[100];
+    int leftSensor[100];
+    int rightSensor[100];
+    int phiDot[100];
     
     };
 
