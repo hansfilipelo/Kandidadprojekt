@@ -10,6 +10,7 @@
 #include <util/delay.h>
 #include <avr/interrupt.h>
 #include "Map.h"
+#include "Abstraction.cc"
 
 void pwm_init()
 {	

@@ -172,12 +172,6 @@
     <Compile Include="STYR.cpp">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="Vector.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="Vector.h">
-      <SubType>compile</SubType>
-    </Compile>
     <None Include="UnexploredSection.h">
       <SubType>compile</SubType>
     </None>
