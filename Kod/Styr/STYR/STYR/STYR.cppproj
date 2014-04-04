@@ -166,13 +166,13 @@
     <None Include="MapSection.h">
       <SubType>compile</SubType>
     </None>
+    <Compile Include="Abstraction.cpp">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="MapSection.cpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="STYR.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="Abstraction.cc">
       <SubType>compile</SubType>
     </Compile>
     <None Include="UnexploredSection.h">

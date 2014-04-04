@@ -5,7 +5,7 @@
 #include <avr/io.h>
 #include <util/delay.h>
 #include <avr/interrupt.h>
-#include "Abstraction.cc"
+#include "Abstraction.cpp"
 
 class Map;
 

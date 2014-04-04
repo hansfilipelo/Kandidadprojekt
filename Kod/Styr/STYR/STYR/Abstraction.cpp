@@ -1,5 +1,5 @@
-#ifndef _Abstraction_cc
-#define _Abstraction_cc
+#ifndef _Abstraction_cpp
+#define _Abstraction_cpp
 
 /* 
 	File with abstractions for use in AVR project. Mainly related to improving the use of Arrays since we can't use Vectors or Strings.

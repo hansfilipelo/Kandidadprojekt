@@ -1,7 +1,7 @@
-#ifndef _MapSection_h
-#define _MapSection_h
+#ifndef _Map_h
+#define _Map_h
 
-#include "Abstraction.cc"
+#include "Abstraction.cpp"
 #include <string.h>
 #include <stdio.h>
 
