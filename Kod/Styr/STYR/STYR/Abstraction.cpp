@@ -53,3 +53,34 @@ int* pushBackInt(int* inArray, int inChar){
 
 // -----------
 
+// Takes int and takes number by number and then converts to char
+
+char* intToChar(int inInt){
+	char* output;
+	int temp = inInt;
+	int nrOfDigits = 0;
+	
+	// Get number of digits in int
+	while (pow(10,nrOfDigits) <= inInt){
+		nrOfDigits++;
+	}
+	nrOfDigits = nrOfDigits - 1;
+	
+	// Create char array as output
+	output = new char[nrOfDigits];
+	int temp2;
+	int i = 0;
+	
+	// Get number as char
+	while (temp > 0){
+		temp2 = temp / pow(10,nrOfDigits);
+		
+		output[i] = temp2;
+		
+		temp = temp - (pow(10,nrOfDigits) * temp2);
+		i++;
+		nrOfDigits = nrOfDigits - 1;
+	}
+	
+	return output;
+}
