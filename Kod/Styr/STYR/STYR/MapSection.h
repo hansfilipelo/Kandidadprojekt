@@ -1,11 +1,12 @@
 #ifndef _MapSection_h
 #define _MapSection_h
 
+#include <stdio.h>
 #include <string.h>
 #include <avr/io.h>
 #include <util/delay.h>
 #include <avr/interrupt.h>
-#include "Abstraction.cpp"
+#include "Abstraction.h"
 
 class Map;
 

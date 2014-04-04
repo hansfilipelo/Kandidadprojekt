@@ -169,6 +169,9 @@
     <Compile Include="Abstraction.cpp">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="Abstraction.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="MapSection.cpp">
       <SubType>compile</SubType>
     </Compile>

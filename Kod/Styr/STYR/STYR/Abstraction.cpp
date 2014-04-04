@@ -1,11 +1,11 @@
-#ifndef _Abstraction_cpp
-#define _Abstraction_cpp
-
 /* 
 	File with abstractions for use in AVR project. Mainly related to improving the use of Arrays since we can't use Vectors or Strings.
 	Created by: hansfilipelo
 */
 
+#include "Abstraction.h"
+
+using namespace std;
 
 // -----------------------------
 // Usage: 
@@ -52,4 +52,4 @@ int* pushBackInt(int* inArray, int inChar){
 }
 
 // -----------
-#endif
+

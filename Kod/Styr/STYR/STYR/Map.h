@@ -1,7 +1,7 @@
 #ifndef _Map_h
 #define _Map_h
 
-#include "Abstraction.cpp"
+#include "Abstraction.h"
 #include <string.h>
 #include <stdio.h>
 

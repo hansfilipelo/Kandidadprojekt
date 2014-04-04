@@ -9,8 +9,9 @@
 #include <avr/io.h>
 #include <util/delay.h>
 #include <avr/interrupt.h>
+#include <stdio.h>
 #include "Map.h"
-#include "Abstraction.cpp"
+#include "Abstraction.h"
 
 void pwm_init()
 {	
