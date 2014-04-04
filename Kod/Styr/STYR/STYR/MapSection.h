@@ -2,6 +2,9 @@
 #define _MapSection_h
 
 #include <string.h>
+#include <avr/io.h>
+#include <util/delay.h>
+#include <avr/interrupt.h>
 #include "Abstraction.cc"
 
 class Map;
@@ -63,6 +66,9 @@ public:
     void changeDirection(char direction);
     void drive(int speed);
     void moveTo(int xPos, int yPos);
+	void rotateLeft();
+	void rotateRight();
+	void stopRotation();
 	
 	// Putting sensordata in array
 	void fwdValueIn(int);
@@ -82,6 +88,11 @@ protected:
     int* leftSensor = new int[100];
     int* rightSensor = new int[100];
     int* phiDotSensor = new int[100];
+	
+	int fwdDiff;
+	int bwdDiff;
+	
+	bool rotateActive;
 	
 	char direction;
     

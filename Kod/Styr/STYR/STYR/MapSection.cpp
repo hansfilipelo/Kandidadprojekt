@@ -185,14 +185,75 @@ void Robot::drive(int speed){
 	int output = floor(speed * 255 / 100);
 	
 	OCR2A = output;
-	OCR2B = output;
+	OCR2B = output;	
+}
+
+// ------------------------------------
+// Rotates robot
+
+void Robot::rotateLeft(){
+	// Rotate mode
+	rotateActive = true;
+	// Seft diffs to 0
+	fwdDiff = 0;
+	bwdDiff = 0;
+	//---------
+	// First send stuff to sensor module
+	// When we have rotated 90 degrees sensor module will send a signal which will deactivate rotate
+	//---------
+	
+	// Turns
+	while (rotateActive)
+	{
+		changeDirection('l');
+		drive(25);
+	}
+	
+	// Stop rotation and set gear to forward
+	drive(0);
+	changeDirection('f');
+}
+
+// ------------------------------------
+
+void Robot::rotateRight(){
+	// Rotate mode
+	rotateActive = true;
+	// Seft diffs to 0
+	fwdDiff = 0;
+	bwdDiff = 0;
+	//---------
+	// First send stuff to sensor module
+	// When we have rotated 90 degrees sensor module will send a signal which will deactivate rotate
+	//---------
+	
+	// Turns
+	while (rotateActive)
+	{
+		changeDirection('r');
+		drive(25);
+	}
+	
+	// Stop rotation and set gear to forward
+	drive(0);
+	changeDirection('f');
 }
 
 // ------------------------------------
 // Gets sensorvalues and will probably later activate SLAM functions
 
 void Robot::fwdValueIn(int fwd){
+	// Determine how far we've traveled since last read
+	int diff = fwd - fwdSensor[0];
+	fwdDiff = fwdDiff + diff;
 	fwdSensor = pushBackInt(fwdSensor, fwd);
+	
+	// If next to a wall - stop!
+	if (fwd < 10)
+	{
+		drive(0);
+		rotateLeft();
+	}
 }
 
 void Robot::bwdValueIn(int bwd){
@@ -211,7 +272,7 @@ void Robot::phiDotValueIn(int phiDot){
 	phiDotSensor = pushBackInt(phiDotSensor, phiDot);
 }
 
-// ------------------------------------
+// --------------------------------------------
 // Sets walls in Map
 
 void Robot::setFwdClosed(){
