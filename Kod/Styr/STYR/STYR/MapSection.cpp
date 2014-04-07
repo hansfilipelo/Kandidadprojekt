@@ -230,7 +230,7 @@ void Robot::rotateLeft(){
 }
 
 // Stops rotation
-void stopRotation(){
+void Robot::stopRotation(){
     rotateActive = false;
 }
 
