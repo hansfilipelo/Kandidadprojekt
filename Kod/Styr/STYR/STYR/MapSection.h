@@ -39,10 +39,12 @@ public:
     virtual MapSection* getLeft();
     virtual MapSection* getRight();
     
+    /*
     virtual void setTop(MapSection*);
     virtual void setBottom(MapSection*);
     virtual void setLeft(MapSection*);
     virtual void setRight(MapSection*);
+     */
     
     virtual bool isUnexplored();
     virtual int findUnexplored();

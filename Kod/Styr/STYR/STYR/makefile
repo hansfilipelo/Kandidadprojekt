@@ -1,22 +1,22 @@
 
 	CCC = g++
 	CCFLAGS = -g -std=c++11 -pedantic -Wall -Wextra 
-	OBJECTS = styrtest.o Abstraction.o MapSection.o Map.o
+	OBJECTS = Map.o MapSection.o Abstraction.o styrtest.o
 	BUILDDIR = BUILD
 
 styrtest: $(OBJECTS)
-	$(CCC) $(CCFLAGS) styrtest.o -o styrtest
+	$(CCC) $(CCFLAGS) $(OBJECTS) -o styrtest
 
-styrtest.o: styrtest.cpp
+styrtest.o: styrtest.cpp Abstraction.o
 	$(CCC) $(CCFLAGS) -c styrtest.cpp
 
-Abstraction.o: Abstraction.cpp
+Abstraction.o: Abstraction.cpp MapSection.o
 	$(CCC) $(CCFLAGS) -c Abstraction.cpp
 
 Map.o: Map.cpp
 	$(CCC) $(CCFLAGS) -c Map.cpp
 
-MapSection.o: MapSection.cpp
+MapSection.o: MapSection.cpp Map.o
 	$(CCC) $(CCFLAGS) -c MapSection.cpp
 
 clean:
