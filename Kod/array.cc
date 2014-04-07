@@ -15,7 +15,7 @@ int main () {
     memcpy(a,b,sizeof(a));
     
     
-    cout << "Max storlek på array: " << sizeof(data)<< endl;
+    cout << "Max storlek på array: " << sizeof(data) << endl;
     
     return 0;
 }

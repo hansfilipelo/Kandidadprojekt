@@ -1,11 +1,20 @@
 #ifndef _MapSection_h
 #define _MapSection_h
 
-#include <stdio.h>
-#include <string.h>
+#ifdef __APPLE__
+#define DEBUG 1
+#endif
+
+#ifndef DEBUG
+
 #include <avr/io.h>
 #include <util/delay.h>
 #include <avr/interrupt.h>
+
+#endif
+
+#include <stdio.h>
+#include <string.h>
 #include "Abstraction.h"
 
 class Map;
@@ -17,26 +26,26 @@ public:
     
     virtual ~MapSection();
     
-	virtual void setX(int coord);
-	virtual void setY(int coord);
-	virtual void setType(char newType);
-	
-	virtual int getX();
-	virtual int getY();
-	virtual char getType();
-	
-	virtual MapSection* getTop();
-	virtual MapSection* getBottom();
-	virtual MapSection* getLeft();
-	virtual MapSection* getRight();
-	
-	virtual void setTop(MapSection*);
-	virtual void setBottom(MapSection*);
-	virtual void setLeft(MapSection*);
-	virtual void setRight(MapSection*);
-	
-	virtual bool isUnexplored();
-	virtual int findUnexplored();
+    virtual void setX(int coord);
+    virtual void setY(int coord);
+    virtual void setType(char newType);
+    
+    virtual int getX();
+    virtual int getY();
+    virtual char getType();
+    
+    virtual MapSection* getTop();
+    virtual MapSection* getBottom();
+    virtual MapSection* getLeft();
+    virtual MapSection* getRight();
+    
+    virtual void setTop(MapSection*);
+    virtual void setBottom(MapSection*);
+    virtual void setLeft(MapSection*);
+    virtual void setRight(MapSection*);
+    
+    virtual bool isUnexplored();
+    virtual int findUnexplored();
 	
 protected:
 	int xCoord;

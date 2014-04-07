@@ -49,41 +49,40 @@ char* Map::getRowAsChar(int row)
 {
 	// Char sent to communications unit
 	char* output = new char[25];
-	// Appending to output
-	char temp;
 	// String telling type of the object we are interested in.
 	char currentType;
     
     // Abstraction for buss communications
     // Sending 34 (0x22) positions of interest
-    strcat(output, 0x22);
+    int crap = 34;
+    strcat(output, intToChar(crap));
     // Sending Map data
     strcat(output, "M");
     // Sending row
-    strcat(output, row);
+    strcat(output, intToChar(row));
 
 	for (int it = 0; it < 32; it++)
 	{
         // Type of the block we are looking at
         currentType = this->getPos(it,row)->getType();
         
-		if (currentType == "unexplored")
+		if (currentType == 'u')
 		{
             strcat(output, "u");
 		}
-		else if (currentType == "empty")
+		else if (currentType == 'e')
 		{
 			strcat(output, "e");
 		}
-		else if (currentType == "closed")
+		else if (currentType == 'c')
 		{
 			strcat(output   , "c");
 		}
-		else if (currentType == "robot")
+		else if (currentType == 'r')
 		{
 			strcat(output, "r");
 		}
-		else if (currentType == "fire")
+		else if (currentType == 'f')
 		{
 			strcat(output, "f");
 		}
