@@ -159,23 +159,24 @@ Robot::Robot(int xPos, int yPos, Map* inMom) : MapSection(xPos, yPos, inMom){
 // Sets direction to travel
 
 void Robot::changeDirection(char direction){
-	if (direction == 'b'){
-		PORTD |= 0x10;
-		PORTD &= ~0x20;
-	}
-	else if (direction == 'r'){
-		PORTD &= ~0x10;
-		PORTD |= 0x20;
-	}
-	else if (direction == 'l'){
-		PORTD |= 0x10;
-		PORTD |= 0x20;
-	}
-	else if (direction == 'f'){
-		PORTD &= ~0x10;
-		PORTD &= ~0x20;
-	}
-	
+	#ifndef DEBUG
+		if (direction == 'b'){
+			PORTD |= 0x10;
+			PORTD &= ~0x20;
+		}
+		else if (direction == 'r'){
+			PORTD &= ~0x10;
+			PORTD |= 0x20;
+		}
+		else if (direction == 'l'){
+			PORTD |= 0x10;
+			PORTD |= 0x20;
+		}
+		else if (direction == 'f'){
+			PORTD &= ~0x10;
+			PORTD &= ~0x20;
+		}
+	#endif
 }
 
 // ------------------------------------
@@ -184,8 +185,10 @@ void Robot::changeDirection(char direction){
 void Robot::drive(int speed){
 	int output = floor(speed * 255 / 100);
 	
-	OCR2A = output;
-	OCR2B = output;	
+	#ifndef DEBUG
+		OCR2A = output;
+		OCR2B = output;
+	#endif	
 }
 
 // ------------------------------------
