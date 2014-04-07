@@ -15,6 +15,7 @@ char* pushBackChar(char* inArray, char inChar){
     
     // Get size of Array
     int size = sizeof(inArray) / sizeof(inArray[0]);
+    //Går att skriva mindre generellt just för vårt fall, då vet vi hur stor      //    arrayen är (Tobias)
     
     // Create a bigger array
     char* outArray = new char[size + 1];
