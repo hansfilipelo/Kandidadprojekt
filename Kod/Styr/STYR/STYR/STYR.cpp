@@ -13,6 +13,8 @@
 #include "Map.h"
 #include "Abstraction.h"
 
+#ifndef DEBUG
+
 void pwm_init()
 {	
 	OCR2A = 0;
@@ -80,17 +82,21 @@ ISR(INT1_vect){
 	sei();
 }
 
+#endif
 
 int main(void)
 {	
 	cli();
 	// Set up interrupts
+	#ifndef DEBUG
 	MCUCR = 0b00000000;
 	EIMSK = 0b00000011;
 	EICRA = 0b00001111;
 	SMCR = 0x01;
 	
 	pwm_init();
+	
+	#endif
 
 	// Create map
 	sei();

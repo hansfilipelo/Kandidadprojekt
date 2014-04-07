@@ -17,26 +17,26 @@ public:
     
     virtual ~MapSection();
     
-	virtual void setX(int coord);
-	virtual void setY(int coord);
-	virtual void setType(char newType);
-	
-	virtual int getX();
-	virtual int getY();
-	virtual char getType();
-	
-	virtual MapSection* getTop();
-	virtual MapSection* getBottom();
-	virtual MapSection* getLeft();
-	virtual MapSection* getRight();
-	
-	virtual void setTop(MapSection*);
-	virtual void setBottom(MapSection*);
-	virtual void setLeft(MapSection*);
-	virtual void setRight(MapSection*);
-	
-	virtual bool isUnexplored();
-	virtual int findUnexplored();
+    virtual void setX(int coord);
+    virtual void setY(int coord);
+    virtual void setType(char newType);
+    
+    virtual int getX();
+    virtual int getY();
+    virtual char getType();
+    
+    virtual MapSection* getTop();
+    virtual MapSection* getBottom();
+    virtual MapSection* getLeft();
+    virtual MapSection* getRight();
+    
+    virtual void setTop(MapSection*);
+    virtual void setBottom(MapSection*);
+    virtual void setLeft(MapSection*);
+    virtual void setRight(MapSection*);
+    
+    virtual bool isUnexplored();
+    virtual int findUnexplored();
 	
 protected:
 	int xCoord;
