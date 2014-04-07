@@ -80,8 +80,8 @@ public:
     void moveTo(int xPos, int yPos);
 	void rotateLeft();
 	void rotateRight();
-    void turnLeft();
-    void turnRight();
+    void turnLeft(int speed);
+    void turnRight(int speed);
 	void stopRotation();
 	
 	// Putting sensordata in array

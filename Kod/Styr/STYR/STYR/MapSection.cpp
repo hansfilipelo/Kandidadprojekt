@@ -256,7 +256,7 @@ void Robot::rotateRight(){
 
 //-----------------------------------------
 
-void Robot::turnLeft(){
+void Robot::turnLeft(int speed){
     int output = floor(speed * 255 / 100);
 	
 #ifndef DEBUG
@@ -266,7 +266,7 @@ void Robot::turnLeft(){
     
 }
 
-void Robot::turnRight(){
+void Robot::turnRight(int speed){
     int output = floor(speed * 255 / 100);
 	
 #ifndef DEBUG
@@ -420,7 +420,7 @@ void Robot::updateRobotPosition(){
 }
 
 
-void adjustPosition(){
+void Robot::adjustPosition(){
     if (meanValueArray(leftSensor,3)>90) {
         leftReference=80;
     }
@@ -436,13 +436,13 @@ void adjustPosition(){
     }
     
     while (rightReference<15){
-        turnLeft();
+        turnLeft(25);
         rightReference = meanValueArray(rightSensor,3);
         
     }
     
     while (leftReference<15){
-        turnRight();
+        turnRight(25);
         leftReference = meanValueArray(leftSensor,3);
     }
     
