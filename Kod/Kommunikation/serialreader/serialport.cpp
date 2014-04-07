@@ -22,14 +22,13 @@ void SerialPort::sendChar(const char * inChar){
     
     port->write(inChar);
     port->waitForBytesWritten(150);
-    char temp = *inChar;
-    
-    std::cout << static_cast<int>(temp) << std::endl;
 }
 
 void SerialPort::sendArray(const char inArray[25]){
     for(unsigned int i= 0; i < 25; i++){
         sendChar(&inArray[i]);
+        
+        std::cout << "Sending: " << inArray[i] << std::endl;
     }
 }
 

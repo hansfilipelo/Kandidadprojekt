@@ -12,6 +12,8 @@ int main () {
     int s = strlen((char*)data);
     cout << "Antal använda tecken: " << s << endl;
     
+    memcpy(a,b,sizeof(a));
+    
     
     cout << "Max storlek på array: " << sizeof(data) << endl;
     

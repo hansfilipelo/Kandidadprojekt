@@ -93,6 +93,10 @@ public:
 	void setFwdClosed();
 	void setBwdClosed();
     
+    int meanValueArray(int* inputArray, int iterations);
+    void updateRobotPosition;
+    
+    
     
 protected:
     int* fwdSensor = new int[100];
@@ -107,6 +111,8 @@ protected:
 	bool rotateActive;
 	
 	char direction;
+    
+    int fwdReference;
     
     };
 
