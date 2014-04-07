@@ -1,11 +1,20 @@
 #ifndef _MapSection_h
 #define _MapSection_h
 
-#include <stdio.h>
-#include <string.h>
+#ifdef __APPLE__
+#define DEBUG 1
+#endif
+
+#ifndef DEBUG
+
 #include <avr/io.h>
 #include <util/delay.h>
 #include <avr/interrupt.h>
+
+#endif
+
+#include <stdio.h>
+#include <string.h>
 #include "Abstraction.h"
 
 class Map;

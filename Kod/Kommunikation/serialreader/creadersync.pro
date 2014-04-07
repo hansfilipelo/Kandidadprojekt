@@ -13,8 +13,8 @@ TARGET = creaderasync
 TEMPLATE = app
 
 HEADERS += \
-    serialportreader.h
+    serialport.h
 
 SOURCES += \
     main.cpp \
-    serialportreader.cpp
+    serialport.cpp
