@@ -18,6 +18,8 @@
 *.app
 *.user
 
+Kod/Styr/STYR/STYR/styrtest
+
 # OS generated files #
 ######################
 .DS_Store
