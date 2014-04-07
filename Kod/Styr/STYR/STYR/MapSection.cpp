@@ -340,9 +340,6 @@ void Robot::setFwdClosed(){
 
 void Robot::setBwdClosed(){
 	
-
-	
-
 	// A block is 40x40
 	int output = meanValueArray(bwdSensor,3)/40;
 	
@@ -378,6 +375,8 @@ int Robot::meanValueArray(int* inputArray, int iterations) {
 	return total / iter;
 }
 
+
+// -----------------------------------------
 //Sets reference values and moves robot in map abstraction if robot has moved one square
 void Robot::updateRobotPosition(){
     if (meanValueArray(fwdSensor,3) > 340 && meanValueArray(bwdSensor,3) > 340) {
@@ -419,6 +418,8 @@ void Robot::updateRobotPosition(){
 
 }
 
+
+// -----------------------------------------
 
 void Robot::adjustPosition(){
     if (meanValueArray(leftSensor,3)>90) {
