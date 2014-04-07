@@ -13,7 +13,7 @@ int main () {
     cout << "Antal använda tecken: " << s << endl;
     
     
-    cout << "Max storlek på array: " << sizeof(data)<< endl;
+    cout << "Max storlek på array: " << sizeof(data) << endl;
     
     return 0;
 }
