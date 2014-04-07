@@ -80,6 +80,8 @@ public:
     void moveTo(int xPos, int yPos);
 	void rotateLeft();
 	void rotateRight();
+    void turnLeft();
+    void turnRight();
 	void stopRotation();
 	
 	// Putting sensordata in array
@@ -94,7 +96,11 @@ public:
 	void setBwdClosed();
     
     int meanValueArray(int* inputArray, int iterations);
-    void updateRobotPosition;
+    void updateRobotPosition();
+    
+    //Regulator
+    
+    void adjustPosition();
     
     
     
@@ -113,6 +119,9 @@ protected:
 	char direction;
     
     int fwdReference;
+    int bwdReference;
+    int leftReference;
+    int rightReference;
     
     };
 

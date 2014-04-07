@@ -254,6 +254,28 @@ void Robot::rotateRight(){
 	changeDirection('f');
 }
 
+//-----------------------------------------
+
+void Robot::turnLeft(){
+    int output = floor(speed * 255 / 100);
+	
+#ifndef DEBUG
+    OCR2A = output/2;
+    OCR2B = output;
+#endif
+    
+}
+
+void Robot::turnRight(){
+    int output = floor(speed * 255 / 100);
+	
+#ifndef DEBUG
+    OCR2A = output;
+    OCR2B = output/2;
+#endif
+    
+}
+
 // ------------------------------------
 // Gets sensorvalues and will probably later activate SLAM functions
 
@@ -292,7 +314,7 @@ void Robot::phiDotValueIn(int phiDot){
 
 void Robot::setFwdClosed(){
 	
-	int output = meanValueArray(fwdSensor,3))/40;
+	int output = meanValueArray(fwdSensor,3)/40;
 	
 	// Set closed section output + 1 steps away from robot.
 	// Direction 0->y->17, "fwd"
@@ -322,7 +344,7 @@ void Robot::setBwdClosed(){
 	
 
 	// A block is 40x40
-	int output = meanValueArray(bwdSensor,3))/40
+	int output = meanValueArray(bwdSensor,3)/40;
 	
 	// Set closed section output + 1 steps away from robot.
 	// Direction 0->y->17, "fwd"
@@ -363,7 +385,7 @@ void Robot::updateRobotPosition(){
         bwdReference = 300;
     }
     if (fwdReference-meanValueArray(fwdSensor,3)<=40){
-        distanceReference=meanValueArray(fwdSensor,3);
+        fwdReference=meanValueArray(fwdSensor,3);
         if (direction == 'f'){
             mom->setSection(xCoord,yCoord + 1, this);
         }
@@ -377,7 +399,8 @@ void Robot::updateRobotPosition(){
             mom->setSection(xCoord - 1,yCoord, this);
         }
     }
-    else if (meanValueArray(bwdSensor,3)-bwdReference <=40{
+    else if (meanValueArray(bwdSensor,3)-bwdReference <=40){
+        bwdReference=meanValueArray(bwdSensor,3);
         if (direction == 'f'){
             mom->setSection(xCoord,yCoord + 1, this);
         }
@@ -394,5 +417,35 @@ void Robot::updateRobotPosition(){
     }
      
 
+}
+
+
+void adjustPosition(){
+    if (meanValueArray(leftSensor,3)>90) {
+        leftReference=80;
+    }
+    
+    // undefined sensorvalues will be set to 80//
+    
+    else if (meanValueArray(rightSensor,3)>90) {
+        rightReference=80;
+    }
+    else{
+        rightReference = meanValueArray(rightSensor,3);
+        leftReference = meanValueArray(leftSensor,3);
+    }
+    
+    while (rightReference<15){
+        turnLeft();
+        rightReference = meanValueArray(rightSensor,3);
+        
+    }
+    
+    while (leftReference<15){
+        turnRight();
+        leftReference = meanValueArray(leftSensor,3);
+    }
+    
+    
 }
 
