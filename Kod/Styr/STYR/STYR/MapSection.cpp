@@ -280,17 +280,7 @@ void Robot::phiDotValueIn(int phiDot){
 
 void Robot::setFwdClosed(){
 	
-	// Create reasonable valid data from latest reads.
-	int total = 0;
-	int iterations = 3;
-	
-	for (int i = 0; i < iterations; i++){
-		total = total + fwdSensor[i];
-	}
-	
-	int mean = total / iterations;
-	// A block is 40x40
-	int output = mean / 40;
+	int output = meanValueArray(fwdSensor,3))/40;
 	
 	// Set closed section output + 1 steps away from robot.
 	// Direction 0->y->17, "fwd"
@@ -316,17 +306,11 @@ void Robot::setFwdClosed(){
 
 void Robot::setBwdClosed(){
 	
-	// Create reasonable valid data from latest reads.
-	int total = 0;
-	int iterations = 3;
+
 	
-	for (int i = 0; i < iterations; i++){
-		total = total + fwdSensor[i];
-	}
-	
-	int mean = total / iterations;
+
 	// A block is 40x40
-	int output = mean / 40;
+	int output = meanValueArray(bwdSensor,3))/40
 	
 	// Set closed section output + 1 steps away from robot.
 	// Direction 0->y->17, "fwd"
@@ -347,3 +331,56 @@ void Robot::setBwdClosed(){
 	}
 	
 }
+
+int Robot::meanValueArray(int* inputArray, int iterations) {
+    // Create reasonable valid data from latest reads.
+    int total = 0;
+	int iter = iterations;
+	
+	for (int i = 0; i < iter; i++){
+		total = total + inputArray[i];
+	}
+	
+	return total / iter;
+}
+
+//Sets reference values and moves robot in map abstraction if robot has moved one square
+void Robot::updateRobotPosition(){
+    if (meanValueArray(fwdSensor,3) > 340 && meanValueArray(bwdSensor,3) > 340) {
+        fwdReference = 300;
+        bwdReference = 300;
+    }
+    if (fwdReference-meanValueArray(fwdSensor,3)<=40){
+        distanceReference=meanValueArray(fwdSensor,3);
+        if (direction == 'f'){
+            mom->setSection(xCoord,yCoord + 1, this);
+        }
+        else if (direction == 'b'){
+            mom->setSection(xCoord,yCoord - 1, this);
+        }
+        else if (direction == 'r'){
+            mom->setSection(xCoord + 1,yCoord, this);
+        }
+        else if (direction == 'l'){
+            mom->setSection(xCoord - 1,yCoord, this);
+        }
+    }
+    else if (meanValueArray(bwdSensor,3)-bwdReference <=40{
+        if (direction == 'f'){
+            mom->setSection(xCoord,yCoord + 1, this);
+        }
+        else if (direction == 'b'){
+            mom->setSection(xCoord,yCoord - 1, this);
+        }
+        else if (direction == 'r'){
+            mom->setSection(xCoord + 1,yCoord, this);
+        }
+        else if (direction == 'l'){
+            mom->setSection(xCoord - 1,yCoord, this);
+        }
+
+    }
+     
+
+}
+
