@@ -1,7 +1,9 @@
 #ifndef _MapSection_h
 #define _MapSection_h
 
+#ifdef __APPLE__
 #define DEBUG 1
+#endif
 
 #ifndef DEBUG
 

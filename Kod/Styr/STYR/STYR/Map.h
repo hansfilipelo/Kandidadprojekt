@@ -10,9 +10,10 @@ class Robot;
 
 class Map
 {
-	public:
-	Map();
-	~Map();
+public:
+    // Construct
+    Map();
+    ~Map();
 	
 	void setSection(int, int, MapSection*);
 	void convertSection(int,int,char);
@@ -20,7 +21,7 @@ class Map
 	
 	MapSection* getPos(int,int);
 	
-	protected:
+protected:
 	MapSection* mapArea[32][17];
 };
 

@@ -1,4 +1,6 @@
+#ifdef __APPLE__
 #define DEBUG 1
+#endif
 
 #include <stdio.h>
 #include "MapSection.h"
@@ -12,7 +14,7 @@ int main(){
     Robot* testis = new Robot(10,10,mom);
     
     // Test code
-        
+    
     
     delete testis;
     delete mom;

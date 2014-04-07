@@ -17,6 +17,8 @@ MapSection::MapSection(int x,int y, Map* inMom, char createType){
     yCoord=y;
     mom = inMom;
     type=createType;
+    
+    
 }
 
 // Destruct
