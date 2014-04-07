@@ -9,9 +9,10 @@ int main(){
     
     //Initiate
     Map* mom = new Map();
-    
     Robot* testis = new Robot(10,10,mom);
     
+    // Test code
+        
     
     delete testis;
     delete mom;
