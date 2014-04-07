@@ -14,7 +14,7 @@ int main(){
     Robot* testis = new Robot(10,10,mom);
     
     // Test code
-    
+    mom->printMap();
     
     delete testis;
     delete mom;

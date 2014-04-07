@@ -90,3 +90,15 @@ char* Map::getRowAsChar(int row)
     
     return output;
 }
+
+#ifdef DEBUG
+void Map::printMap(){
+    for (int i = 0; i < 32; i++) {
+        cout << endl;
+        for (int it = 0; it < 17; it++) {
+            cout << mapArea[i][it]->getType() << " ";
+        }
+    }
+    cout << endl;
+}
+#endif
