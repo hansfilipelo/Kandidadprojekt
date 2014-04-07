@@ -86,9 +86,9 @@ ISR(INT1_vect){
 
 int main(void)
 {	
-	cli();
 	// Set up interrupts
 	#ifndef DEBUG
+	cli();
 	MCUCR = 0b00000000;
 	EIMSK = 0b00000011;
 	EICRA = 0b00001111;
@@ -96,10 +96,10 @@ int main(void)
 	
 	pwm_init();
 	
-	#endif
-
 	// Create map
 	sei();
+	
+	#endif
 	
 	while(1){
 	}

@@ -178,17 +178,11 @@
     <Compile Include="STYR.cpp">
       <SubType>compile</SubType>
     </Compile>
-    <None Include="UnexploredSection.h">
-      <SubType>compile</SubType>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Map.cc">
       <SubType>compile</SubType>
     </Compile>
-    <None Include="UnexploredSection.cc">
-      <SubType>compile</SubType>
-    </None>
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
 </Project>
