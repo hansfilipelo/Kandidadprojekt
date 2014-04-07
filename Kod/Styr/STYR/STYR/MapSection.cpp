@@ -229,6 +229,11 @@ void Robot::rotateLeft(){
 	changeDirection('f');
 }
 
+// Stops rotation
+void stopRotation(){
+    rotateActive = false;
+}
+
 // ------------------------------------
 
 void Robot::rotateRight(){
