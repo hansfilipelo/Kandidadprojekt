@@ -6,9 +6,9 @@
 QT_USE_NAMESPACE
 
 SerialPort::SerialPort(QSerialPort *serialPort, QObject *parent)
-    : QObject(parent)
-    , port(serialPort)
-    , m_standardOutput(stdout)
+: QObject(parent)
+, port(serialPort)
+, m_standardOutput(stdout)
 {
     connect(port, SIGNAL(readyRead()), SLOT(handleReadyRead()));
     connect(port, SIGNAL(error(QSerialPort::SerialPortError)), SLOT(handleError(QSerialPort::SerialPortError)));
@@ -32,9 +32,36 @@ void SerialPort::sendArray(const char inArray[25]){
     }
 }
 
-void SerialPort::handleReadyRead()
+void SerialPort::handleReadyRead() //untested readyread 
 {
-   
+    QString inData = "";
+    inData = port->readAll();
+    
+    if(inData.length() == 25){
+        //handleData(inData);
+        inData ="";
+        tempData ="";
+        return;
+    }else if(inData.length() < 25 & tempData = ""){
+        tempData = inData;
+        return;
+    }else if(inData.length() < 25){
+        tempData.append(inData);
+        if (tempData < 25){
+            return;
+        }
+        if(tempData == 25){
+            //handleData(inData);
+            inData = "";
+            tempData = "";
+            return;
+        }
+        if(tempData > 25){
+            std::cout << "Fatal error too long data from BT" << std::endl;
+        }else if(inData.length > 25){
+            std::cout << "Fatal error too long data from BT" << std::endl;
+        }
+    }
 }
 
 void SerialPort::handleError(QSerialPort::SerialPortError serialPortError)

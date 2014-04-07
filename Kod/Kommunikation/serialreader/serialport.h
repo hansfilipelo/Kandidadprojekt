@@ -8,7 +8,7 @@
 #define SERIALPORT_H
 
 #include <QtSerialPort/QSerialPort>
-
+#include <QString>
 #include <QTextStream>
 #include <QTimer>
 #include <QByteArray>
@@ -35,6 +35,7 @@ private:
     QSerialPort *port;
     QByteArray  m_readData;
     QTextStream m_standardOutput;
+    QString tempData;
 };
 
 #endif
