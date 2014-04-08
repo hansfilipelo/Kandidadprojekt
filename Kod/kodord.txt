@@ -1,0 +1,13 @@
+Beskrivning     // Datalängd    //  KodOrd      // Arg      //  Data
+
+rotera vänster  //  fix 2       //  r   //  0   // 'DNC'
+rotera höger    //  fix 2       //  r   //  1   // 'DNC'
+halt            //  fix 1       //  h   // 'DNC'// 'DNC'
+framåt          //  fix 1       //  f   // 'DNC'// 'DNC'
+bakåt           //  fix 1       //  b   // 'DNC'// 'DNC'
+
+PIDVarSet       // Varierande   //  P   //  0   // [Var1,var2,var3 ... ]
+
+sensor 0-9      //  fix 5       //  S   //  0-9 //  [100tal, 10tal, 1tal]
+gyro            //  fix 1       //  G   // 'DNC'// 'DNC'
+RFID            //  fix 1       //  R   // 'DNC'// 'DNC'
