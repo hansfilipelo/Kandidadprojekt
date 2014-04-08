@@ -14,13 +14,20 @@ int main(){
     
     //Initiate
     Map* mom = new Map();
-    Robot* testis = new Robot(16,0,mom);
+    Robot* testRobot = new Robot(16,1,mom);
     
-    // Test code
+    // Map testing
     cout << "--------" << " Printing map " << "--------" << endl;
     mom->printMap();
+    cout << endl;
+    
+    mom->getPos(16,16)->setType('c');
+    mom->printMap();
+    
     cout << "----------" << endl;
     cout << endl;
+    
+    // Abstraction function testing
     cout << "--------" << " Testing intToChar " << "--------" <<  endl;
     char* testChar = intToChar(1234);
     for (int i = 0; i < 4; i++) {
@@ -36,7 +43,7 @@ int main(){
     
     
     
-    delete testis;
+    delete testRobot;
     delete mom;
     
 	return 0;
