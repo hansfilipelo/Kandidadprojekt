@@ -29,29 +29,28 @@ Map::~Map(){
 // ------------------------------------------
 
 MapSection* Map::getPos(int x, int y){
-    return mapArea[x][16 - y];
+    return mapArea[x][y];
 }
 
 // ------------------------------------------
 
 void Map::setSection(int xPos, int yPos, MapSection* inSection){
-    mapArea[xPos][16 - yPos] = inSection;
+    mapArea[xPos][yPos] = inSection;
 }
 
 // ------------------------------------------
 
 void Map::convertSection(int xPos, int yPos, char inType){
-	mapArea[xPos][16 - yPos]->setType(inType);
+	this->getPos(xPos,yPos)->setType(inType);
 }
 
-// ---------------- getRowAsChar ------------
+// ---------------- getColAsChar ------------
 
-char* Map::getColAsChar(int row)
+char* Map::getColAsChar(int col)
 {
 	// Char sent to communications unit
 	char* output = new char[25];
 	// String telling type of the object we are interested in.
-	char currentType;
     
     // Abstraction for buss communications
     // Sending 17 positions of interest
@@ -59,34 +58,13 @@ char* Map::getColAsChar(int row)
     strcat(output, intToChar(crap));
     // Sending Map data
     strcat(output, "M");
-    // Sending row
-    strcat(output, intToChar(row));
+    // Sending column number
+    strcat(output, intToChar(col));
 
-	for (int it = 17; it > 0; it--)
+	for (int it = 0; it < 17; it++)
 	{
         // Type of the block we are looking at
-        currentType = this->getPos(it,row)->getType();
-        
-		if (currentType == 'u')
-		{
-            strcat(output, "u");
-		}
-		else if (currentType == 'e')
-		{
-			strcat(output, "e");
-		}
-		else if (currentType == 'c')
-		{
-			strcat(output   , "c");
-		}
-		else if (currentType == 'r')
-		{
-			strcat(output, "r");
-		}
-		else if (currentType == 'f')
-		{
-			strcat(output, "f");
-		}
+        output[it+3] = this->getPos(col,it)->getType();
 	}
     
     return output;
@@ -96,7 +74,7 @@ char* Map::getColAsChar(int row)
 void Map::printMap(){    
     for (int it = 0; it < 17; it++) {
         for (int i = 0; i < 32; i++) {
-            cout << mapArea[i][it]->getType() << " ";
+            cout << this->getPos(i,it)->getType() << " ";
         }
         cout << endl;
     }

@@ -21,9 +21,17 @@ int main(){
     mom->printMap();
     cout << endl;
     
-    mom->getPos(16,16)->setType('c');
+    mom->getPos(16,15)->setType('c');
     mom->printMap();
     
+    cout << "----------" << endl;
+    cout << endl;
+    
+    // Testing to get column as char array for communications
+    cout << "--------" << " getColAsChar" << "--------" << endl;
+    for (int i = 0; i < 25; i++) {
+        cout << mom->getColAsChar(16)[i] << endl;
+    }
     cout << "----------" << endl;
     cout << endl;
     
