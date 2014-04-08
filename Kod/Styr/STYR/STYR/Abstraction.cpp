@@ -80,3 +80,22 @@ int charToInt(char* inArray){
     
     return output;
 }
+
+// -------------------
+
+int getValueFromArray(char* inArray, int valueNr){
+    char* outArray = new char[3];
+    
+    int start = valueNr*3;
+    for (int i = start; i < start + 3; i++) {
+        outArray[i - start] = inArray[i];
+    }
+    
+    return charToInt(outArray);
+}
+
+
+
+
+
+

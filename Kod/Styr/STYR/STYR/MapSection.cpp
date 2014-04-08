@@ -383,7 +383,7 @@ int Robot::meanValueArray(char* inputArray, int iterations) {
 	int iter = iterations;
 	
 	for (int i = 0; i < iter; i++){
-		total = total + (int)inputArray[i];
+		total = total + getValueFromArray(inputArray,i);
 	}
 	
 	return total / iter;
