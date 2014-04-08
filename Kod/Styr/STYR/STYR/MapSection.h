@@ -1,11 +1,13 @@
 #ifndef _MapSection_h
 #define _MapSection_h
 
-#ifdef __APPLE__
+#ifndef __AVR_ATmega1284P__
 #define DEBUG 1
+#else
+#define DEBUG 0
 #endif
 
-#ifndef DEBUG
+#if DEBUG == 0
 
 #include <avr/io.h>
 #include <util/delay.h>
@@ -73,6 +75,7 @@ class Robot : protected MapSection
 {
 public:
     Robot(int xPos, int yPos, Map* inMom);
+    ~Robot();
     
 	// Driving
     void changeDirection(char direction);
@@ -80,9 +83,7 @@ public:
     void moveTo(int xPos, int yPos);
 	void rotateLeft();
 	void rotateRight();
-    void turnLeft();
-    void turnRight();
-	void stopRotation();
+    void stopRotation();
 	
 	// Putting sensordata in array
 	void fwdValueIn(int);
@@ -98,8 +99,9 @@ public:
     int meanValueArray(int* inputArray, int iterations);
     void updateRobotPosition();
     
-    //Regulator
-    
+    // Automatic control
+    void turnLeft(int speed);
+    void turnRight(int speed);
     void adjustPosition();
     
     

@@ -8,8 +8,8 @@ using namespace std;
 Map::Map(){
 	
 	// Create 32 X by 17 Y
-    for (int i = 0; i < 32; i++) {
-        for (int it = 0; it < 17; it++) {
+    for (int it = 0; it < 17; it++) {
+        for (int i = 0; i < 32; i++) {
             mapArea[i][it] = new MapSection(it,i,this);
         }
     }
@@ -18,8 +18,9 @@ Map::Map(){
 // -----------------------------------------
 
 Map::~Map(){
-    for (int i = 0; i < 32; i++) {
-        for (int it = 0; it < 17; it++) {
+    
+    for (int it = 0; it < 17; it++) {
+        for (int i = 0; i < 32; i++) {
             delete mapArea[i][it];
         }
     }
@@ -28,24 +29,24 @@ Map::~Map(){
 // ------------------------------------------
 
 MapSection* Map::getPos(int x, int y){
-    return mapArea[x][y];
+    return mapArea[x][16 - y];
 }
 
 // ------------------------------------------
 
 void Map::setSection(int xPos, int yPos, MapSection* inSection){
-    mapArea[xPos][yPos] = inSection;
+    mapArea[xPos][16 - yPos] = inSection;
 }
 
 // ------------------------------------------
 
 void Map::convertSection(int xPos, int yPos, char inType){
-	mapArea[xPos][yPos]->setType(inType);
+	mapArea[xPos][16 - yPos]->setType(inType);
 }
 
 // ---------------- getRowAsChar ------------
 
-char* Map::getRowAsChar(int row)
+char* Map::getColAsChar(int row)
 {
 	// Char sent to communications unit
 	char* output = new char[25];
@@ -53,15 +54,15 @@ char* Map::getRowAsChar(int row)
 	char currentType;
     
     // Abstraction for buss communications
-    // Sending 34 (0x22) positions of interest
-    int crap = 34;
+    // Sending 17 positions of interest
+    int crap = 17;
     strcat(output, intToChar(crap));
     // Sending Map data
     strcat(output, "M");
     // Sending row
     strcat(output, intToChar(row));
 
-	for (int it = 0; it < 32; it++)
+	for (int it = 17; it > 0; it--)
 	{
         // Type of the block we are looking at
         currentType = this->getPos(it,row)->getType();
@@ -90,3 +91,14 @@ char* Map::getRowAsChar(int row)
     
     return output;
 }
+
+#if DEBUG == 1
+void Map::printMap(){    
+    for (int it = 0; it < 17; it++) {
+        for (int i = 0; i < 32; i++) {
+            cout << mapArea[i][it]->getType() << " ";
+        }
+        cout << endl;
+    }
+}
+#endif

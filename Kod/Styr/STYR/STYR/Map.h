@@ -1,6 +1,16 @@
 #ifndef _Map_h
 #define _Map_h
 
+#ifndef __AVR_ATmega1284P__
+#define DEBUG 1
+#else
+#define DEBUG 0
+#endif
+
+#if DEBUG == 1
+#include <iostream>
+#endif
+
 #include "Abstraction.h"
 #include <string.h>
 #include <stdio.h>
@@ -17,9 +27,13 @@ public:
 	
 	void setSection(int, int, MapSection*);
 	void convertSection(int,int,char);
-	char* getRowAsChar(int);
+	char* getColAsChar(int);
 	
 	MapSection* getPos(int,int);
+    
+#if DEBUG == 1
+    void printMap();
+#endif
 	
 protected:
 	MapSection* mapArea[32][17];

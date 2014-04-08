@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <math.h>
+#include <string.h>
 
 char* pushBackChar(char* inArray, char inChar);
 int* pushBackInt(int* inArray, int inChar);

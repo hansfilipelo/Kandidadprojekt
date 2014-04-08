@@ -150,11 +150,17 @@ int MapSection::findUnexplored(){
 
 // Construct ---------------------------
 // Since this is a subclass - the MapSection constructor runs first.
-// All we need to do is change type.
+// All we need to do is change type and set ourselves on map
 
 Robot::Robot(int xPos, int yPos, Map* inMom) : MapSection(xPos, yPos, inMom){
 	type = 'r';
 	direction = 'f';
+    
+    mom->setSection(xPos,yPos,this);
+}
+
+Robot::~Robot(){
+    mom->setSection(xCoord,yCoord,new MapSection(xCoord,yCoord,mom));
 }
 
 // -------------------------------------
@@ -163,28 +169,28 @@ Robot::Robot(int xPos, int yPos, Map* inMom) : MapSection(xPos, yPos, inMom){
 void Robot::changeDirection(char direction){
 		if (direction == 'b'){
             
-            #ifndef DEBUG
+            #if DEBUG == 0
 			PORTD |= 0x10;
 			PORTD &= ~0x20;
             #endif
 		}
 		else if (direction == 'r'){
             
-            #ifndef DEBUG
+            #if DEBUG == 0
 			PORTD &= ~0x10;
 			PORTD |= 0x20;
             #endif
 		}
 		else if (direction == 'l'){
             
-            #ifndef DEBUG
+            #if DEBUG == 0
 			PORTD |= 0x10;
 			PORTD |= 0x20;
             #endif
 		}
 		else if (direction == 'f'){
             
-            #ifndef DEBUG
+            #if DEBUG == 0
 			PORTD &= ~0x10;
 			PORTD &= ~0x20;
             #endif
@@ -197,7 +203,7 @@ void Robot::changeDirection(char direction){
 void Robot::drive(int speed){
 	int output = floor(speed * 255 / 100);
 	
-	#ifndef DEBUG
+	#if DEBUG == 0
 		OCR2A = output;
 		OCR2B = output;
 	#endif	
@@ -229,6 +235,11 @@ void Robot::rotateLeft(){
 	changeDirection('f');
 }
 
+// Stops rotation
+void Robot::stopRotation(){
+    rotateActive = false;
+}
+
 // ------------------------------------
 
 void Robot::rotateRight(){
@@ -256,24 +267,24 @@ void Robot::rotateRight(){
 
 //-----------------------------------------
 
-void Robot::turnLeft(){
+void Robot::turnLeft(int speed){
     int output = floor(speed * 255 / 100);
 	
-#ifndef DEBUG
+#if DEBUG == 0
     OCR2A = output/2;
     OCR2B = output;
 #endif
     
 }
 
-void Robot::turnRight(){
+void Robot::turnRight(int speed){
     int output = floor(speed * 255 / 100);
 	
-#ifndef DEBUG
+#if DEBUG == 0
     OCR2A = output;
     OCR2B = output/2;
 #endif
-    
+	
 }
 
 // ------------------------------------
@@ -336,13 +347,10 @@ void Robot::setFwdClosed(){
 	
 }
 
-// ----------
+// ------------------------------------------------
 
 void Robot::setBwdClosed(){
 	
-
-	
-
 	// A block is 40x40
 	int output = meanValueArray(bwdSensor,3)/40;
 	
@@ -366,6 +374,8 @@ void Robot::setBwdClosed(){
 	
 }
 
+//------------------------------------------------------
+
 int Robot::meanValueArray(int* inputArray, int iterations) {
     // Create reasonable valid data from latest reads.
     int total = 0;
@@ -378,6 +388,8 @@ int Robot::meanValueArray(int* inputArray, int iterations) {
 	return total / iter;
 }
 
+
+// -----------------------------------------
 //Sets reference values and moves robot in map abstraction if robot has moved one square
 void Robot::updateRobotPosition(){
     if (meanValueArray(fwdSensor,3) > 340 && meanValueArray(bwdSensor,3) > 340) {
@@ -420,7 +432,9 @@ void Robot::updateRobotPosition(){
 }
 
 
-void adjustPosition(){
+// -----------------------------------------
+
+void Robot::adjustPosition(){
     if (meanValueArray(leftSensor,3)>90) {
         leftReference=80;
     }
@@ -433,16 +447,18 @@ void adjustPosition(){
     else{
         rightReference = meanValueArray(rightSensor,3);
         leftReference = meanValueArray(leftSensor,3);
+        //Changes the references on the side sensors to help position adjustment
     }
     
     while (rightReference<15){
-        turnLeft();
+        turnLeft(25);
         rightReference = meanValueArray(rightSensor,3);
+        //Not sure if new sensor values will be acquired during loop.
         
     }
     
     while (leftReference<15){
-        turnRight();
+        turnRight(25);
         leftReference = meanValueArray(leftSensor,3);
     }
     
