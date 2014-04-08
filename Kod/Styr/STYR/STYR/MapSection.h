@@ -125,6 +125,8 @@ protected:
     int leftReference;
     int rightReference;
     
+    MapSection* previousSection = NULL;
+    
     };
 
 #endif
