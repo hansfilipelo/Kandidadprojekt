@@ -75,6 +75,7 @@ class Robot : protected MapSection
 {
 public:
     Robot(int xPos, int yPos, Map* inMom);
+    ~Robot();
     
 	// Driving
     void changeDirection(char direction);

@@ -93,14 +93,17 @@ char* intToChar(int inInt){
 int charToInt(char* inArray){
 	
 	 // Get size of Array
-	 int size = sizeof(inArray) / sizeof(inArray[0]);
-	 int powerNr = size - 1;
-	 
-	 int output = 0;
-	 
-	 for (int i = 0; powerNr >= 0; i++){
-		 output = inArray[i] * pow(10,powerNr);
-		 
-		 powerNr = powerNr - 1;
+	 //int size = sizeof(inArray) / sizeof(inArray[0]);
+    int size = strlen(inArray);
+    int powerNr = size - 1;
+	
+	int output = 0;
+	
+	for (int i = 0; powerNr >= 0; i++){
+        output = inArray[i] * pow(10,powerNr);
+        
+        powerNr = powerNr - 1;
 	 }
+    
+    return output;
 }

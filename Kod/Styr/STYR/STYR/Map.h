@@ -27,11 +27,11 @@ public:
 	
 	void setSection(int, int, MapSection*);
 	void convertSection(int,int,char);
-	char* getRowAsChar(int);
+	char* getColAsChar(int);
 	
 	MapSection* getPos(int,int);
     
-#ifdef DEBUG
+#if DEBUG == 1
     void printMap();
 #endif
 	

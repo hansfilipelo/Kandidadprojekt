@@ -150,11 +150,17 @@ int MapSection::findUnexplored(){
 
 // Construct ---------------------------
 // Since this is a subclass - the MapSection constructor runs first.
-// All we need to do is change type.
+// All we need to do is change type and set ourselves on map
 
 Robot::Robot(int xPos, int yPos, Map* inMom) : MapSection(xPos, yPos, inMom){
 	type = 'r';
 	direction = 'f';
+    
+    mom->setSection(xPos,yPos,this);
+}
+
+Robot::~Robot(){
+    mom->setSection(xCoord,yCoord,new MapSection(xCoord,yCoord,mom));
 }
 
 // -------------------------------------

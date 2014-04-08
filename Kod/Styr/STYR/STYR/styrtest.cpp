@@ -3,18 +3,34 @@
 #endif
 
 #include <stdio.h>
+#include <iostream>
 #include "MapSection.h"
 #include "Map.h"
 #include "Abstraction.h"
+
+using namespace std;
 
 int main(){
     
     //Initiate
     Map* mom = new Map();
-    Robot* testis = new Robot(10,10,mom);
+    Robot* testis = new Robot(16,0,mom);
     
     // Test code
+    cout << "--------" << " Printing map " << "--------" << endl;
     mom->printMap();
+    cout << "----------" << endl;
+    cout << endl;
+    cout << "Testing intToChar" << endl;
+    char* testChar = intToChar(1234);
+    for (int i = 0; i < 4; i++) {
+        cout << (int)testChar[i] << " ";
+    }
+    cout << endl;
+    cout << endl;
+    cout << "Testing XX" << endl;
+    
+    
     
     delete testis;
     delete mom;
