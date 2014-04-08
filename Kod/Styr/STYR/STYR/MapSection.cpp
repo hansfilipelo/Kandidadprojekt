@@ -436,7 +436,7 @@ void Robot::updateRobotPosition(){
         fwdReference = 300;
         bwdReference = 300;
     }
-    if (fwdReference-meanValueArray(fwdSensor,3)<=40){
+    if (fwdReference - meanValueArray(fwdSensor,3) >= 40){
         fwdReference=meanValueArray(fwdSensor,3);
         if (direction == 'f'){
             mom->setSection(xCoord,yCoord + 1, this);
@@ -451,7 +451,7 @@ void Robot::updateRobotPosition(){
             mom->setSection(xCoord - 1,yCoord, this);
         }
     }
-    else if (meanValueArray(bwdSensor,3)-bwdReference <=40){
+    else if (meanValueArray(bwdSensor,3)-bwdReference >= 40){
         bwdReference=meanValueArray(bwdSensor,3);
         if (direction == 'f'){
             mom->setSection(xCoord,yCoord + 1, this);
