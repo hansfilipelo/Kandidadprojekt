@@ -347,7 +347,7 @@ void Robot::setFwdClosed(){
 	
 }
 
-// ----------
+// ------------------------------------------------
 
 void Robot::setBwdClosed(){
 	
@@ -373,6 +373,8 @@ void Robot::setBwdClosed(){
 	}
 	
 }
+
+//------------------------------------------------------
 
 int Robot::meanValueArray(int* inputArray, int iterations) {
     // Create reasonable valid data from latest reads.
@@ -445,11 +447,13 @@ void Robot::adjustPosition(){
     else{
         rightReference = meanValueArray(rightSensor,3);
         leftReference = meanValueArray(leftSensor,3);
+        //Changes the references on the side sensors to help position adjustment
     }
     
     while (rightReference<15){
         turnLeft(25);
         rightReference = meanValueArray(rightSensor,3);
+        //Not sure if new sensor values will be acquired during loop.
         
     }
     
