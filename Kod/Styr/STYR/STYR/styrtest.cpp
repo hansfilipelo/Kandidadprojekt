@@ -7,6 +7,7 @@
 #include "MapSection.h"
 #include "Map.h"
 #include "Abstraction.h"
+#include "Communcation.h"
 
 using namespace std;
 

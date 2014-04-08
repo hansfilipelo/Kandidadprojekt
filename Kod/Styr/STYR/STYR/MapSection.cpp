@@ -443,7 +443,6 @@ void Robot::setBwdClosed(){
             mom->convertSection(xCoord + i + 1,yCoord, 'e');
         }
 	}
-	
 }
 
 //------------------------------------------------------
