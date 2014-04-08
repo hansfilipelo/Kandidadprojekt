@@ -57,6 +57,25 @@ int main(){
     cout << "----------" << endl;
     cout << endl;
     
+    // Push back
+    // --------------------------------
+    
+    cout << "--------" << " Testing pushBackChar " << "--------" <<  endl;
+    char* testPushBack = new char[10];
+    
+    pushBackChar(testPushBack,'K');
+    pushBackChar(testPushBack,'U');
+    pushBackChar(testPushBack,'K');
+    
+    int size = strlen(testPushBack);
+    
+    cout << "Nr of chars: " << size << endl;
+    
+    for (int i = 0; i < size; i++) {
+        cout << testPushBack[i] << endl;
+    }
+    
+    
     // Delete
     delete testRobot;
     delete mom;

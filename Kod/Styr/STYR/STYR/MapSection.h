@@ -86,17 +86,17 @@ public:
     void stopRotation();
 	
 	// Putting sensordata in array
-	void fwdValueIn(int);
-	void bwdValueIn(int);
-	void leftValueIn(int);
-	void rightValueIn(int);
-	void phiDotValueIn(int);
+	void fwdValueIn(char*);
+	void bwdValueIn(char*);
+	void leftValueIn(char*);
+	void rightValueIn(char*);
+	void phiDotValueIn(char*);
     
 	// SLAM (mapping, positioning)
 	void setFwdClosed();
 	void setBwdClosed();
     
-    int meanValueArray(int* inputArray, int iterations);
+    int meanValueArray(char* inputArray, int iterations);
     void updateRobotPosition();
     
     // Automatic control
@@ -107,11 +107,11 @@ public:
     
     
 protected:
-    int* fwdSensor = new int[100];
-    int* bwdSensor = new int[100];
-    int* leftSensor = new int[100];
-    int* rightSensor = new int[100];
-    int* phiDotSensor = new int[100];
+    char* fwdSensor = new char[100];
+    char* bwdSensor = new char[100];
+    char* leftSensor = new char[100];
+    char* rightSensor = new char[100];
+    char* phiDotSensor = new char[100];
 	
 	int fwdDiff;
 	int bwdDiff;

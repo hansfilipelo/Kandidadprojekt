@@ -290,34 +290,35 @@ void Robot::turnRight(int speed){
 // ------------------------------------
 // Gets sensorvalues and will probably later activate SLAM functions
 
-void Robot::fwdValueIn(int fwd){
-	// Determine how far we've traveled since last read
-	int diff = fwd - fwdSensor[0];
-	fwdDiff = fwdDiff + diff;
-	fwdSensor = pushBackInt(fwdSensor, fwd);
+void Robot::fwdValueIn(char* fwd){
 	
-	// If next to a wall - stop!
-	if (fwd < 10)
-	{
-		drive(0);
-		rotateLeft();
-	}
+    for (int i = 0; i < 3; i++) {
+        pushBackChar(fwdSensor, fwd[i]);
+    }
 }
 
-void Robot::bwdValueIn(int bwd){
-	bwdSensor = pushBackInt(bwdSensor, bwd);
+void Robot::bwdValueIn(char* bwd){
+	for (int i = 0; i < 3; i++) {
+        pushBackChar(bwdSensor, bwd[i]);
+    }
 }
 
-void Robot::leftValueIn(int left){
-	leftSensor = pushBackInt(leftSensor, left);
+void Robot::leftValueIn(char* left){
+	for (int i = 0; i < 3; i++) {
+        pushBackChar(leftSensor, left[i]);
+    }
 }
 
-void Robot::rightValueIn(int right){
-	rightSensor = pushBackInt(rightSensor, right);
+void Robot::rightValueIn(char* right){
+	for (int i = 0; i < 3; i++) {
+        pushBackChar(rightSensor, right[i]);
+    }
 }
 
-void Robot::phiDotValueIn(int phiDot){
-	phiDotSensor = pushBackInt(phiDotSensor, phiDot);
+void Robot::phiDotValueIn(char* phiDot){
+	for (int i = 0; i < 3; i++) {
+        pushBackChar(phiDotSensor, phiDot[i]);
+    }
 }
 
 // --------------------------------------------
@@ -376,13 +377,13 @@ void Robot::setBwdClosed(){
 
 //------------------------------------------------------
 
-int Robot::meanValueArray(int* inputArray, int iterations) {
+int Robot::meanValueArray(char* inputArray, int iterations) {
     // Create reasonable valid data from latest reads.
     int total = 0;
 	int iter = iterations;
 	
 	for (int i = 0; i < iter; i++){
-		total = total + inputArray[i];
+		total = total + (int)inputArray[i];
 	}
 	
 	return total / iter;
