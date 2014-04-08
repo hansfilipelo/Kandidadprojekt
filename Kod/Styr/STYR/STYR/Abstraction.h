@@ -17,7 +17,7 @@
 
 #endif
 
-char* pushBackChar(char* inArray, char inChar);
+void pushBackChar(char* inArray, char inChar);
 char* intToChar(int inInt);
 int charToInt(char* inArray);
 int getValueFromArray(char* inArray, int valueNr);
