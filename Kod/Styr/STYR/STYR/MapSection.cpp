@@ -477,19 +477,48 @@ void Robot::updateRobotPosition(){
             xCoord--;
         }
     }
-    else if (meanValueArray(bwdSensor,3)-bwdReference >= 40){
+    else if (meanValueArray(bwdSensor,3)-bwdReference <= 40){
         bwdReference=meanValueArray(bwdSensor,3);
         if (direction == 'f'){
+            // Place back the section we stand in
+            mom->setSection(previousSection->getX(), previousSection->getY(), previousSection);
+            // Get a new prev section
+            previousSection = mom->getPos(xCoord, yCoord + 1);
+            // Put robot in place
             mom->setSection(xCoord,yCoord + 1, this);
+            // Update robot info about position
+            yCoord++;
         }
         else if (direction == 'b'){
+            // Place back the section we stand in
+            mom->setSection(previousSection->getX(), previousSection->getY(), previousSection);
+            // Get a new prev section
+            previousSection = mom->getPos(xCoord, yCoord - 1);
+            // Put robot in place
             mom->setSection(xCoord,yCoord - 1, this);
+            // Update robot info about position
+            yCoord--;
+
         }
         else if (direction == 'r'){
+            // Place back the section we stand in
+            mom->setSection(previousSection->getX(), previousSection->getY(), previousSection);
+            // Get a new prev section
+            previousSection = mom->getPos(xCoord + 1, yCoord);
+            // Put robot in place
             mom->setSection(xCoord + 1,yCoord, this);
+            // Update robot info about position
+            xCoord++;
         }
         else if (direction == 'l'){
+            // Place back the section we stand in
+            mom->setSection(previousSection->getX(), previousSection->getY(), previousSection);
+            // Get a new prev section
+            previousSection = mom->getPos(xCoord - 1, yCoord);
+            // Put robot in place
             mom->setSection(xCoord - 1,yCoord, this);
+            // Update robot info about position
+            xCoord--;
         }
 
     }
