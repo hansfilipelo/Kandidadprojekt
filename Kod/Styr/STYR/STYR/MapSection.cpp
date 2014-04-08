@@ -164,29 +164,34 @@ Robot::~Robot(){
 // -------------------------------------
 // Sets direction to travel
 
-void Robot::changeDirection(char direction){
-		if (direction == 'b'){
+void Robot::changeGear(char inGear){
+		if (inGear == 'b'){
+            
+            gear = inGear;
             
             #if DEBUG == 0
 			PORTD |= 0x10;
 			PORTD &= ~0x20;
             #endif
 		}
-		else if (direction == 'r'){
+		else if (inGear == 'r'){
+            gear = inGear;
             
             #if DEBUG == 0
 			PORTD &= ~0x10;
 			PORTD |= 0x20;
             #endif
 		}
-		else if (direction == 'l'){
+		else if (inGear == 'l'){
+            gear = inGear;
             
             #if DEBUG == 0
 			PORTD |= 0x10;
 			PORTD |= 0x20;
             #endif
 		}
-		else if (direction == 'f'){
+		else if (inGear == 'f'){
+            gear = inGear;
             
             #if DEBUG == 0
 			PORTD &= ~0x10;
@@ -221,16 +226,31 @@ void Robot::rotateLeft(){
 	// When we have rotated 90 degrees sensor module will send a signal which will deactivate rotate
 	//---------
 	
-	// Turns
+    // Turns
+    changeDirection('l');
+	
 	while (rotateActive)
 	{
-		changeDirection('l');
 		drive(25);
 	}
 	
 	// Stop rotation and set gear to forward
 	drive(0);
-	changeDirection('f');
+	changeGear('f');
+    
+    // Update direction
+    if (direction == 'f') {
+        changeDirection('l');
+    }
+    else if (direction == 'l') {
+        changeDirection('b');
+    }
+    else if (direction == 'b') {
+        changeDirection('r');
+    }
+    else if (direction == 'r') {
+        changeDirection('f');
+    }
 }
 
 // Stops rotation
@@ -251,16 +271,30 @@ void Robot::rotateRight(){
 	// When we have rotated 90 degrees sensor module will send a signal which will deactivate rotate
 	//---------
 	
-	// Turns
+    // Turns
+    changeGear('r');
 	while (rotateActive)
 	{
-		changeDirection('r');
 		drive(25);
 	}
 	
 	// Stop rotation and set gear to forward
 	drive(0);
-	changeDirection('f');
+	changeGear('f');
+    
+    // Update direction
+    if (direction == 'f') {
+        changeDirection('r');
+    }
+    else if (direction == 'r') {
+        changeDirection('b');
+    }
+    else if (direction == 'b') {
+        changeDirection('l');
+    }
+    else if (direction == 'l') {
+        changeDirection('f');
+    }
 }
 
 //-----------------------------------------
@@ -522,8 +556,6 @@ void Robot::updateRobotPosition(){
         }
 
     }
-     
-
 }
 
 
@@ -559,4 +591,26 @@ void Robot::adjustPosition(){
     
     
 }
+
+
+// ---------------------------------------
+// Sets direction
+
+void Robot::changeDirection(char inDirection){
+    direction = inDirection;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
