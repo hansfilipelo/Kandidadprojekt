@@ -91,7 +91,7 @@ char* Map::getRowAsChar(int row)
     return output;
 }
 
-#ifdef DEBUG
+#if DEBUG == 1
 void Map::printMap(){
     for (int i = 0; i < 32; i++) {
         cout << endl;

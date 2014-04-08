@@ -1,12 +1,14 @@
 #ifndef _Map_h
 #define _Map_h
 
-#ifdef __APPLE__
+#ifndef __AVR_ATmega1284P__
 #define DEBUG 1
+#else
+#define DEBUG 0
 #endif
 
-#ifdef DEBUG
-//#include <iostream>
+#if DEBUG == 1
+#include <iostream>
 #endif
 
 #include "Abstraction.h"

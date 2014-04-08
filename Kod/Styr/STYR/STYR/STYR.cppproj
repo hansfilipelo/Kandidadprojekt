@@ -172,15 +172,13 @@
     <Compile Include="Abstraction.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="Map.cpp">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="MapSection.cpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="STYR.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Map.cc">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>

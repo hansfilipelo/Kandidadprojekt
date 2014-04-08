@@ -1,11 +1,13 @@
 #ifndef _MapSection_h
 #define _MapSection_h
 
-#ifdef __APPLE__
+#ifndef __AVR_ATmega1284P__
 #define DEBUG 1
+#else
+#define DEBUG 0
 #endif
 
-#ifndef DEBUG
+#if DEBUG == 0
 
 #include <avr/io.h>
 #include <util/delay.h>
