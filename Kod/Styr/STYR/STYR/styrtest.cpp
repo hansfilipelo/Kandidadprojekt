@@ -17,17 +17,29 @@ int main(){
     Robot* testRobot = new Robot(16,1,mom);
     
     // Map testing
+    // -----------------------------
     cout << "--------" << " Printing map " << "--------" << endl;
     mom->printMap();
     cout << endl;
     
-    mom->getPos(16,16)->setType('c');
+    mom->getPos(16,15)->setType('c');
     mom->printMap();
     
     cout << "----------" << endl;
     cout << endl;
     
+    // Testing to get column as char array for communications
+    // -----------------------------
+    cout << "--------" << " getColAsChar" << "--------" << endl;
+    for (int i = 0; i < 25; i++) {
+        cout << mom->getColAsChar(16)[i] << endl;
+    }
+    cout << "----------" << endl;
+    cout << endl;
+    
     // Abstraction function testing
+    // -----------------------------
+    
     cout << "--------" << " Testing intToChar " << "--------" <<  endl;
     char* testChar = intToChar(1234);
     for (int i = 0; i < 4; i++) {
@@ -38,11 +50,14 @@ int main(){
     cout << "Items in array: " << strlen(testChar) << endl;
     cout << "----------" << endl;
     cout << endl;
-    cout << "Testing XX" << endl;
     
+    cout << "--------" << " Testing charToInt " << "--------" <<  endl;
+    int testInt = charToInt(testChar);
+    cout << testInt << endl;
+    cout << "----------" << endl;
+    cout << endl;
     
-    
-    
+    // Delete
     delete testRobot;
     delete mom;
     
