@@ -21,14 +21,18 @@ int main(){
     mom->printMap();
     cout << "----------" << endl;
     cout << endl;
-    cout << "Testing intToChar" << endl;
+    cout << "--------" << " Testing intToChar " << "--------" <<  endl;
     char* testChar = intToChar(1234);
     for (int i = 0; i < 4; i++) {
         cout << (int)testChar[i] << " ";
     }
     cout << endl;
+    cout << "Size of Array: " << sizeof(testChar) / sizeof(testChar[0]) << endl;
+    cout << "Items in array: " << strlen(testChar) << endl;
+    cout << "----------" << endl;
     cout << endl;
     cout << "Testing XX" << endl;
+    
     
     
     
