@@ -32,7 +32,7 @@ void SerialPort::sendArray(const char inArray[25]){
     }
 }
 
-void SerialPort::handleReadyRead() //untested readyread 
+void SerialPort::handleReadyRead() //untested readyread
 {
     QString inData = "";
     inData = port->readAll();
@@ -42,23 +42,23 @@ void SerialPort::handleReadyRead() //untested readyread
         inData ="";
         tempData ="";
         return;
-    }else if(inData.length() < 25 & tempData = ""){
+    }else if((inData.length() < 25) & (tempData == "")){
         tempData = inData;
         return;
     }else if(inData.length() < 25){
         tempData.append(inData);
-        if (tempData < 25){
+        if (tempData.length() < 25){
             return;
         }
-        if(tempData == 25){
+        if(tempData.length() == 25){
             //handleData(inData);
             inData = "";
             tempData = "";
             return;
         }
-        if(tempData > 25){
+        if(tempData.length() > 25){
             std::cout << "Fatal error too long data from BT" << std::endl;
-        }else if(inData.length > 25){
+        }else if(inData.length() > 25){
             std::cout << "Fatal error too long data from BT" << std::endl;
         }
     }

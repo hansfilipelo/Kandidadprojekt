@@ -102,8 +102,6 @@ public:
     // Automatic control
     void turnLeft(int speed);
     void turnRight(int speed);
-    
-    //Regulator
     void adjustPosition();
     
     
