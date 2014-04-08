@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QVector>
+#include <QTimer>
 
 namespace Ui {
 class Gui;
@@ -32,6 +33,10 @@ private slots:
 
     void on_rightButton_pressed();
 
+    void on_speedSlider_sliderReleased();
+
+    void updateTimeVector();
+
 private:
     Ui::Gui *ui;
     QVector<int> sensorVector1;
@@ -40,7 +45,10 @@ private:
     QVector<int> sensorVector4;
     QVector<int> sensorVector5;
     QVector<int> sensorVector6;
-
+    QVector<double> timeVector;
+    QTimer *timer = new QTimer(this);
+    QVector<double> testVector;
+    int i = 0;
 };
 
 #endif // UI_H
