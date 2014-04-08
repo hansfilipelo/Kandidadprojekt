@@ -1,4 +1,5 @@
 #include "serialport.h"
+#include "order.h"
 
 #include <QtSerialPort/QSerialPort>
 #include <QtCore>
@@ -29,6 +30,7 @@ int main(int argc, char *argv[])
         standardOutput << QObject::tr("Usage: %1 <serialportname> [baudrate]").arg(argumentList.first()) << endl;
         return 1;
     }
+    
     
     QSerialPort serialPort;
     QString serialPortName = argumentList.at(1);
@@ -69,6 +71,7 @@ int main(int argc, char *argv[])
     char data[25] = {4,'B','3','2','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','1'};
     
     port.sendArray(data);
+    Order order(&port);
     
     return coreApplication.exec();
 

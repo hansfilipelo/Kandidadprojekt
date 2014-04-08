@@ -7,8 +7,11 @@
 styrtest: $(OBJECTS)
 	$(CCC) $(CCFLAGS) $(OBJECTS) -o styrtest
 
-styrtest.o: styrtest.cpp Abstraction.o
+styrtest.o: styrtest.cpp Abstraction.o Communication.o
 	$(CCC) $(CCFLAGS) -c styrtest.cpp
+
+Communication.o: Communication.cpp
+	$(CCC) $(CCFLAGS) -c Communication.cpp
 
 Abstraction.o: Abstraction.cpp MapSection.o
 	$(CCC) $(CCFLAGS) -c Abstraction.cpp

@@ -11,7 +11,7 @@ using namespace std;
 // Usage: 
 //		ArrayPointer = pushBackChar(inArray, char);
 
-char* pushBackChar(char* inArray, char inChar){
+void pushBackChar(char* inArray, char inChar){
     
     // Get size of Array
     int size = strlen(inArray);
@@ -80,3 +80,22 @@ int charToInt(char* inArray){
     
     return output;
 }
+
+// -------------------
+
+int getValueFromArray(char* inArray, int valueNr){
+    char* outArray = new char[3];
+    
+    int start = valueNr*3;
+    for (int i = start; i < start + 3; i++) {
+        outArray[i - start] = inArray[i];
+    }
+    
+    return charToInt(outArray);
+}
+
+
+
+
+
+
