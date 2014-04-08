@@ -1,4 +1,4 @@
-Beskrivning     // Datalängd    //  KodOrd      // Arg      //  Data
+Beskrivning     // Datalängd (dec)//  KodOrd (char) // Arg (dec)  //  Data (dec/char)
 
 rotera vänster  //  fix 2       //  r   //  0   // 'DNC'
 rotera höger    //  fix 2       //  r   //  1   // 'DNC'

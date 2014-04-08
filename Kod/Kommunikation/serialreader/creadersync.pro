@@ -13,8 +13,10 @@ TARGET = creaderasync
 TEMPLATE = app
 
 HEADERS += \
-    serialport.h
+    serialport.h \
+    order.h
 
 SOURCES += \
     main.cpp \
-    serialport.cpp
+    serialport.cpp \
+    order.cpp
