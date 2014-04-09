@@ -114,16 +114,21 @@ ISR(INT1_vect){
 // Main
 
 int main(void)
-{	
-	// Set up interrupts
+{
 	#if DEBUG == 0
+    // Set up interrupts
 	cli();
 	MCUCR = 0b00000000;
 	EIMSK = 0b00000011;
 	EICRA = 0b00001111;
 	SMCR = 0x01;
 	
+    // Initiates PWM
 	pwm_init();
+    
+    // Set up bus comm
+    steerModuleSlave.SPI_Init();
+    
 	sei();
 	
 	#endif
