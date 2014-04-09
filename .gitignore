@@ -27,6 +27,7 @@
 *.srec
 
 Kod/Styr/STYR/STYR/styrtest
+*/Debug/*
 
 # OS generated files #
 ######################
