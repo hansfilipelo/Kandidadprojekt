@@ -43,9 +43,10 @@ void Slave::SPI_Init()
 
 void Slave::SPI_Send(){
 	position=0;
-	SPDR = outDataArray[0];
-    
+	
 #if DEBUG == 0
+    SPDR = outDataArray[0];
+    
 	PORTB |= (1<<PORTB2);	//interrupt to master
 	PORTB &= ~(1<<PORTB2);	//clear interrupt to master
 #endif

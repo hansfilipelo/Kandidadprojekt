@@ -18,6 +18,7 @@ int main(){
     Map* mom = new Map();
     Communication* testComm = new Communication();
     Robot* testRobot = new Robot(16,1,mom, testComm);
+    testComm->setRobot(testRobot);
     
     // Map testing
     // -----------------------------

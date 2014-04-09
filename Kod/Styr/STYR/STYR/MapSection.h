@@ -18,6 +18,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "Abstraction.h"
+#include "Communication.h"
 
 class Map;
 class Communication;
