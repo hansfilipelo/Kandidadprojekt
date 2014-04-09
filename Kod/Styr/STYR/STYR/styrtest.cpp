@@ -16,7 +16,8 @@ int main(){
     
     //Initiate
     Map* mom = new Map();
-    Robot* testRobot = new Robot(16,1,mom);
+    Communication* testComm = new Communication();
+    Robot* testRobot = new Robot(16,1,mom, testComm);
     
     // Map testing
     // -----------------------------

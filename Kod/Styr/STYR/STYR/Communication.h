@@ -1,18 +1,19 @@
 #ifndef _Communication_h
 #define _Communication_h
 
+#include <stdio.h>
 
-#include "MapSection.h"
-
-
+class Robot;
 
 class Communication {
 public:
-    void handleData();
     
+    
+    void handleData();
+    void setRobot(Robot*);
     
 protected:
-    
+    Robot* robot = NULL;
 };
 
 #endif

@@ -20,6 +20,7 @@
 #include "Abstraction.h"
 
 class Map;
+class Communication;
 
 class MapSection{
 public:
@@ -74,7 +75,7 @@ protected:
 class Robot : protected MapSection
 {
 public:
-    Robot(int xPos, int yPos, Map* inMom);
+    Robot(int xPos, int yPos, Map* inMom, Communication* inComm);
     ~Robot();
     
 	// Driving
@@ -128,6 +129,7 @@ protected:
     int rightReference;
     
     MapSection* previousSection = NULL;
+    Communication* commObj = NULL;
     
     };
 
