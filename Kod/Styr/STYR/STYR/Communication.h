@@ -7,6 +7,10 @@
 #include "MapSection.h"
 #include "Abstraction.h"
 
+class MapSection;
+class Robot;
+class Slave;
+
 class Communication {
 public:
     Communication(Slave*);
