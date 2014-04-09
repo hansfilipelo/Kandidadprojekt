@@ -1,4 +1,4 @@
-Beskrivning     // Datalängd (dec)//  KodOrd (char) // Arg (dec)  //  Data (dec/char)
+Beskrivning     // Datalängd (dec)//  KodOrd (char) // ev Arg (dec)  //  Data (dec/char)
 
 rotera vänster  //  fix 2       //  r   //  0   // 'DNC'
 rotera höger    //  fix 2       //  r   //  1   // 'DNC'
@@ -8,8 +8,10 @@ bakåt           //  fix 1       //  b   // 'DNC'// 'DNC'
 
 PIDVarSet       // Varierande   //  P   //  0   // [Var1,var2,var3 ... ]
 
-styr-sensor-gyro//  fix 1	//  g	//  ’DNC’//  ’DNC’
-pc-sensor-gyrokonstant // fix 7	//  k	//  [100 000-tal, 10 000-tal, 1000-tal, 100tal, 10tal, 1tal]
+styr-sensor-gyro//  fix 1       //  g	//  ’DNC’//  ’DNC’
+pc-sensor-gyrokonstant // fix 8	//  k	//  'DNC'//  [100 000-tal, 10 000-tal, 1000-tal, 100tal, 10tal, 1tal]
 sensor 0-9      //  fix 5       //  S   //  0-9 //  [100tal, 10tal, 1tal]
 gyro-sensor-styr//  fix 1       //  G   // 'DNC'// 'DNC'
 RFID            //  fix 1       //  R   // 'DNC'// 'DNC'
+
+Kartkolumn      //  fix 19      //  M   //  RAD // CHARS

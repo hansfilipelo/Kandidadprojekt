@@ -600,9 +600,12 @@ void Robot::changeDirection(char inDirection){
     direction = inDirection;
 }
 
+// ----------------------------------------
+// Get column from Map and send to Comm
 
-
-
+char* Robot::getColAsChar(int col){
+    return mom->getColAsChar(col);
+}
 
 
 

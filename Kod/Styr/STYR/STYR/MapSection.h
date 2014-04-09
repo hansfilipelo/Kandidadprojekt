@@ -98,6 +98,7 @@ public:
 	void setFwdClosed();
 	void setBwdClosed();
     void changeDirection(char);
+    char* getColAsChar(int col);
     
     int meanValueArray(char* inputArray, int iterations);
     void updateRobotPosition();

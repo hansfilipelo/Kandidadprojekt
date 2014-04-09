@@ -22,16 +22,16 @@
 // Chooses direction
 int gear = 0;
 int speed = 0;
-Slave steerModuleSlave;
-Communication abstractionObject;
+Slave* steerModuleSlave = new Slave();
+Communication abstractionObject(steerModuleSlave);
 
 // Interreupt for bus comm
 // -----------------------------
 
 ISR(SPI_STC_vect){
 	steerModuleSlave.position++;
-	SPDR = steerModuleSlave.outDataArray[steerModuleSlave.position];
-	steerModuleSlave.inDataArray[steerModuleSlave.position-1] = SPDR;
+	SPDR = steerModuleSlave->outDataArray[steerModuleSlave->position];
+	steerModuleSlave->inDataArray[steerModuleSlave->position-1] = SPDR;
 	
 	if ((steerModuleSlave.position == (steerModuleSlave.inDataArray[0]+1))&(steerModuleSlave.inDataArray[0]!= 0)){
 		PORTC |= (1<<PORTC0);

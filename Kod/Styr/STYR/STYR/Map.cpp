@@ -53,13 +53,13 @@ char* Map::getColAsChar(int col)
 	// String telling type of the object we are interested in.
     
     // Abstraction for buss communications
-    // Sending 17 positions of interest
-    int crap = 17;
-    strcat(output, intToChar(crap));
-    // Sending Map data
-    strcat(output, "M");
+    // Sending 19 positions of interest
+    int crap = 19;
+    output[0] = crap;
+    // Sending Map data command
+    output[1] = 'M';
     // Sending column number
-    strcat(output, intToChar(col));
+    output[2] = col;
 
 	for (int it = 0; it < 17; it++)
 	{
