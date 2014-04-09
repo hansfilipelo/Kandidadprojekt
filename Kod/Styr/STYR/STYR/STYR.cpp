@@ -11,6 +11,7 @@
 #include <avr/interrupt.h>
 #include <stdio.h>
 #include "Map.h"
+#include "MapSection.h"
 #include "Abstraction.h"
 #include "../../../sensormodul/sensormodul/slave.h"
 #include "Communication.h"
@@ -22,16 +23,19 @@
 // Chooses direction
 int gear = 0;
 int speed = 0;
-Slave* steerModuleSlave = new Slave();
-Communication abstractionObject(steerModuleSlave);
+Slave steerModuleSlave;
+Slave* slavePointer = &steerModuleSlave;
+Communication* abstractionObject = new Communication(slavePointer);
+Map* mapPointer = new Map();
+Robot* robotPointer = new Robot(16,1,mapPointer,abstractionObject);
 
 // Interreupt for bus comm
 // -----------------------------
 
 ISR(SPI_STC_vect){
 	steerModuleSlave.position++;
-	SPDR = steerModuleSlave->outDataArray[steerModuleSlave->position];
-	steerModuleSlave->inDataArray[steerModuleSlave->position-1] = SPDR;
+	SPDR = steerModuleSlave.outDataArray[steerModuleSlave.position];
+	steerModuleSlave.inDataArray[steerModuleSlave.position-1] = SPDR;
 	
 	if ((steerModuleSlave.position == (steerModuleSlave.inDataArray[0]+1))&(steerModuleSlave.inDataArray[0]!= 0)){
 		PORTC |= (1<<PORTC0);
@@ -40,7 +44,7 @@ ISR(SPI_STC_vect){
 
 
 ISR(PCINT2_vect){
-	abstractionObject.handleData();
+	abstractionObject->handleData();
 }
 
 // ---------------------------------
