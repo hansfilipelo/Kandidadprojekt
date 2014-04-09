@@ -1,19 +1,20 @@
 #ifndef _Communication_h
 #define _Communication_h
 
+#include <stdio.h>
+#include "../../../sensormodul/sensormodul/slave.h"
 
 #include "MapSection.h"
 #include "Abstraction.h"
 
-class Slave;
-class Robot;
-
-
 class Communication {
 public:
-    Communication(Slave* pointer1,Robot* pointer2 );
-    void handleData();
+    Communication(Slave*);
     
+    void handleData();
+    void setRobot(Robot*);
+    
+    void sendMap();
     
 protected:
     int dataLength;

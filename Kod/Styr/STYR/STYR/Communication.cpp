@@ -1,9 +1,9 @@
 #include "Communication.h"
 #include "../../../sensormodul/sensormodul/slave.h
+#include "MapSection.h"
 
 Communication::Communication(Slave* pointer){
-    slavePointer=pointer1;
-    robotPointer=pointer2;
+    slavePointer=pointer;
 }
 
 void Communication::handleData(){
@@ -26,4 +26,23 @@ void Communication::handleData(){
         robotPointer->driveBackward(speed);
     }
     
+    // Do stuff
+}
+
+// -------------------
+
+void Communication::setRobot(Robot* inRobot){
+    robotPointer = inRobot;
+}
+
+// -------------------
+
+void Communication::sendMap(){
+    for (int i = 0; i < 32; i++) {
+        char* sendData = robotPointer->getColAsChar(i);
+        
+        for (int i = 0; i < 20; i++) {
+            slavePointer->outDataArray[i] = sendData[i];
+        }
+    }
 }

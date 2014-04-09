@@ -150,10 +150,11 @@ int MapSection::findUnexplored(){
 // Since this is a subclass - the MapSection constructor runs first.
 // All we need to do is change type and set ourselves on map
 
-Robot::Robot(int xPos, int yPos, Map* inMom) : MapSection(xPos, yPos, inMom){
+Robot::Robot(int xPos, int yPos, Map* inMom, Communication* inComm) : MapSection(xPos, yPos, inMom){
 	type = 'r';
 	direction = 'f';
     
+    commObj = inComm;
     mom->setSection(xPos,yPos,this);
 }
 
@@ -610,9 +611,12 @@ void Robot::changeDirection(char inDirection){
     direction = inDirection;
 }
 
+// ----------------------------------------
+// Get column from Map and send to Comm
 
-
-
+char* Robot::getColAsChar(int col){
+    return mom->getColAsChar(col);
+}
 
 
 

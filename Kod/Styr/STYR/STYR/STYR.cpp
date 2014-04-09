@@ -11,6 +11,7 @@
 #include <avr/interrupt.h>
 #include <stdio.h>
 #include "Map.h"
+#include "MapSection.h"
 #include "Abstraction.h"
 #include "../../../sensormodul/sensormodul/slave.h"
 #include "Communication.h"
@@ -23,7 +24,10 @@
 int gear = 0;
 int speed = 0;
 Slave steerModuleSlave;
-Communication abstractionObject; //Måste även skicka in pekare
+Slave* slavePointer = &steerModuleSlave;
+Communication* abstractionObject = new Communication(slavePointer);
+Map* mapPointer = new Map();
+Robot* robotPointer = new Robot(16,1,mapPointer,abstractionObject);
 
 // Interreupt for bus comm
 // -----------------------------
@@ -40,7 +44,7 @@ ISR(SPI_STC_vect){
 
 
 ISR(PCINT2_vect){
-	abstractionObject.handleData();
+	abstractionObject->handleData();
 }
 
 // ---------------------------------
