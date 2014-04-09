@@ -17,6 +17,14 @@
 *.so
 *.app
 *.user
+*.hex
+*.elf
+*.mk
+*.d
+*.eep
+*.lss
+*.map
+*.srec
 
 Kod/Styr/STYR/STYR/styrtest
 
