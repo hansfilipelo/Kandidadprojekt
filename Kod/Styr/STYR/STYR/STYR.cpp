@@ -10,11 +10,25 @@
 #include <util/delay.h>
 #include <avr/interrupt.h>
 #include <stdio.h>
-#include "Map.h"
+#include <stdlib.h>
 #include "MapSection.h"
+#include "Map.h"
 #include "Abstraction.h"
-#include "../../../sensormodul/sensormodul/slave.h"
 #include "Communication.h"
+#include "../../../sensormodul/sensormodul/slave.h"
+
+// Operators for creating and destroying objects (not included in AVR C++)
+// ------------------------------------
+
+void* operator new(size_t objsize) {
+	return malloc(objsize);
+}
+
+void operator delete(void* obj) {
+	free(obj);
+}
+
+// ------------------------------------
 
 #if DEBUG == 0
 
