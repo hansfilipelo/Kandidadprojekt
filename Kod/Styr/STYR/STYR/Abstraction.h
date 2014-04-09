@@ -23,6 +23,8 @@
 // Operators new and delete does not exist in AVR version of C++
 void* operator new(size_t objsize);
 void operator delete(void* obj);
+void* operator new[](unsigned int x);
+void operator delete[](void *);
 
 #endif
 
