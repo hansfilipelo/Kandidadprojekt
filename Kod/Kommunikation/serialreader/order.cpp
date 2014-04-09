@@ -55,3 +55,19 @@ void Order::backward(){
     outData[1] = 'b';
     serport->sendArray(outData);
 }
+
+void Order::test(){
+    char outData[25] = {0};
+    outData[0] = 1;
+    outData[1] = 't';
+    outData[2] = 'A';
+    outData[3] = 'B';
+    outData[4] = 'C';
+    outData[5] = 'D';
+    outData[6] = 'E';
+    outData[7] = 'F';
+    outData[24] = 'Z';
+    
+    serport->sendArray(outData);
+}
+

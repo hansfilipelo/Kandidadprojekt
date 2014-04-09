@@ -30,6 +30,7 @@ public:
 private slots:
     void handleReadyRead();
     void handleError(QSerialPort::SerialPortError error);
+    void handleData(QString);
 
 private:
     QSerialPort *port;

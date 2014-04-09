@@ -2,6 +2,7 @@
 
 #include <QCoreApplication>
 #include <iostream>
+#include <QDebug>
 
 QT_USE_NAMESPACE
 
@@ -21,7 +22,7 @@ SerialPort::~SerialPort()
 void SerialPort::sendChar(const char * inChar){
     
     port->write(inChar);
-    port->waitForBytesWritten(150);
+    port->waitForBytesWritten(1000);
 }
 
 void SerialPort::sendArray(const char inArray[25]){
@@ -51,7 +52,7 @@ void SerialPort::handleReadyRead() //untested readyread
             return;
         }
         if(tempData.length() == 25){
-            //handleData(inData);
+            handleData(tempData);
             inData = "";
             tempData = "";
             return;
@@ -70,4 +71,14 @@ void SerialPort::handleError(QSerialPort::SerialPortError serialPortError)
         m_standardOutput << QObject::tr("An I/O error occurred while reading the data from port %1, error: %2").arg(port->portName()).arg(port->errorString()) << endl;
         QCoreApplication::exit(1);
     }
+}
+
+void SerialPort::handleData(QString inData){
+    for (int i = 0; i< inData.length(); i++){
+        std::cout << inData.toStdString() << std::endl;
+        
+    }
+    
+    return;
+    
 }

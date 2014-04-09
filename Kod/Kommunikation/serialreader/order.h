@@ -26,6 +26,7 @@ public:
     void halt();
     void forward();
     void backward();
+    void test();
     
 protected:
     
