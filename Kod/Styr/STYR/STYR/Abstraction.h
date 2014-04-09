@@ -16,6 +16,11 @@
 
 #include <iostream>
 
+#endif
+
+#if DEBUG == 0
+
+// Operators new and delete does not exist in AVR version of C++
 void* operator new(size_t objsize);
 void operator delete(void* obj);
 
