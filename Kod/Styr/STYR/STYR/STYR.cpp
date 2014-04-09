@@ -12,8 +12,38 @@
 #include <stdio.h>
 #include "Map.h"
 #include "Abstraction.h"
+#include "../../../sensormodul/sensormodul/slave.h"
+#include "Communication.h"
 
 #if DEBUG == 0
+
+// Intiating global variables
+// -----------------------------
+// Chooses direction
+int gear = 0;
+int speed = 0;
+Slave* steerModuleSlave = new Slave();
+Communication abstractionObject(steerModuleSlave);
+
+// Interreupt for bus comm
+// -----------------------------
+
+ISR(SPI_STC_vect){
+	steerModuleSlave.position++;
+	SPDR = steerModuleSlave->outDataArray[steerModuleSlave->position];
+	steerModuleSlave->inDataArray[steerModuleSlave->position-1] = SPDR;
+	
+	if ((steerModuleSlave.position == (steerModuleSlave.inDataArray[0]+1))&(steerModuleSlave.inDataArray[0]!= 0)){
+		PORTC |= (1<<PORTC0);
+	}
+}
+
+
+ISR(PCINT2_vect){
+	abstractionObject.handleData();
+}
+
+// ---------------------------------
 
 void pwm_init()
 {	
@@ -33,10 +63,6 @@ void pwm_init()
 	// Initiate gear as 00
 	PORTD |= (0<<PORTD4) | (0<<PORTD5);
 }
-
-// Chooses direction
-int gear = 0;
-int speed = 0;
 
 // Gearbox, port 17
 ISR(INT0_vect){
@@ -84,17 +110,25 @@ ISR(INT1_vect){
 
 #endif
 
+// ----------------------------------------
+// Main
+
 int main(void)
-{	
-	// Set up interrupts
+{
 	#if DEBUG == 0
+    // Set up interrupts
 	cli();
 	MCUCR = 0b00000000;
 	EIMSK = 0b00000011;
 	EICRA = 0b00001111;
 	SMCR = 0x01;
 	
+    // Initiates PWM
 	pwm_init();
+    
+    // Set up bus comm
+    steerModuleSlave.SPI_Init();
+    
 	sei();
 	
 	#endif

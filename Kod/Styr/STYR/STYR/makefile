@@ -1,7 +1,7 @@
 
 	CCC = g++
 	CCFLAGS = -g -std=c++11 -pedantic -Wall -Wextra 
-	OBJECTS = Map.o MapSection.o Abstraction.o styrtest.o
+	OBJECTS = Map.o MapSection.o Abstraction.o styrtest.o slave.o Communication.o
 	BUILDDIR = BUILD
 
 styrtest: $(OBJECTS)
@@ -21,6 +21,9 @@ Map.o: Map.cpp
 
 MapSection.o: MapSection.cpp Map.o
 	$(CCC) $(CCFLAGS) -c MapSection.cpp
+
+slave.o: ../../../sensormodul/sensormodul/slave.cpp
+	$(CCC) $(CCFLAGS) -c ../../../sensormodul/sensormodul/slave.cpp
 
 clean:
 	@ \rm -f ./*.o

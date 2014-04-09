@@ -1,14 +1,23 @@
-#include "MapSection.h"
+#ifndef _Communication_h
+#define _Communication_h
 
+#include <stdio.h>
+#include "../../../sensormodul/sensormodul/slave.h"
 
-
+class Robot;
 
 class Communication {
 public:
-    void handleData();
+    Communication(Slave*);
     
+    void handleData();
+    void setRobot(Robot*);
+    
+    void sendMap();
     
 protected:
-    
-    char *
+    Robot* robot = NULL;
+    Slave* slave;
 };
+
+#endif
