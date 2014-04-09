@@ -243,11 +243,11 @@ void Robot::rotateLeft(){
 	
 	while (rotateActive)
 	{
-		drive(25);
+		driveForward(25);
 	}
 	
 	// Stop rotation and set gear to forward
-	drive(0);
+	driveForward(0);
 	changeGear('f');
     
     // Update direction
@@ -287,11 +287,11 @@ void Robot::rotateRight(){
     changeGear('r');
 	while (rotateActive)
 	{
-		drive(25);
+		driveForward(25);
 	}
 	
 	// Stop rotation and set gear to forward
-	drive(0);
+	driveForward(0);
 	changeGear('f');
     
     // Update direction

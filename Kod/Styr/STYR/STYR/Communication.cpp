@@ -1,5 +1,5 @@
 #include "Communication.h"
-#include "../../../sensormodul/sensormodul/slave.h
+#include "../../../sensormodul/sensormodul/slave.h"
 #include "MapSection.h"
 
 Communication::Communication(Slave* pointer){
@@ -26,7 +26,7 @@ void Communication::handleData(){
         robotPointer->driveBackward(speed);
     }
     
-    // Do stuff
+    // Do stuff with sensor values
 }
 
 // -------------------
