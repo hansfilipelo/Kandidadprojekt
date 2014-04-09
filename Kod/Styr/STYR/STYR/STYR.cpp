@@ -12,8 +12,35 @@
 #include <stdio.h>
 #include "Map.h"
 #include "Abstraction.h"
+#include "../../../sensormodul/sensormodul/slave.h"
 
 #if DEBUG == 0
+
+// Intiating global variables
+// -----------------------------
+// Chooses direction
+int gear = 0;
+int speed = 0;
+
+// Interreupt for bus comm
+// -----------------------------
+
+ISR(SPI_STC_vect){
+	sensormodul.position++;
+	SPDR = sensormodul.outDataArray[sensormodul.position];
+	sensormodul.inDataArray[sensormodul.position-1] = SPDR;
+	
+	if ((sensormodul.position == (sensormodul.inDataArray[0]+1))&(sensormodul.inDataArray[0]!= 0)){
+		PORTC |= (1<<PORTC0);
+	}
+}
+
+
+ISR(PCINT2_vect){
+	handleInDataArray();
+}
+
+// ---------------------------------
 
 void pwm_init()
 {	
@@ -33,10 +60,6 @@ void pwm_init()
 	// Initiate gear as 00
 	PORTD |= (0<<PORTD4) | (0<<PORTD5);
 }
-
-// Chooses direction
-int gear = 0;
-int speed = 0;
 
 // Gearbox, port 17
 ISR(INT0_vect){
@@ -83,6 +106,9 @@ ISR(INT1_vect){
 }
 
 #endif
+
+// ----------------------------------------
+// Main
 
 int main(void)
 {	

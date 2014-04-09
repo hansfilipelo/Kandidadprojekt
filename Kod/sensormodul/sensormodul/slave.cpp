@@ -9,6 +9,9 @@
 
 void Slave::SPI_Init()
 {
+    
+#if DEBUG == 0
+    
 	/* Set MISO output, all others input */
 	DDRB = (1<<DDB6);
 	/* Enable SPI */
@@ -32,6 +35,7 @@ void Slave::SPI_Init()
 	PCMSK2 |= (1<<PCINT16);
 	PCICR |= (1<<PCIE2);	
 	DDRC |= (1<<DDC0);
+#endif
 	
 	position = 0;
 	return;
@@ -40,8 +44,12 @@ void Slave::SPI_Init()
 void Slave::SPI_Send(){
 	position=0;
 	SPDR = outDataArray[0];
+    
+#if DEBUG == 0
 	PORTB |= (1<<PORTB2);	//interrupt to master
 	PORTB &= ~(1<<PORTB2);	//clear interrupt to master
+#endif
+    
 	return;
 }
 

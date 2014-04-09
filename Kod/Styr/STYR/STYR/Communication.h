@@ -1,5 +1,8 @@
-#include "MapSection.h"
+#ifndef _Communication_h
+#define _Communication_h
 
+
+#include "MapSection.h"
 
 
 
@@ -10,5 +13,6 @@ public:
     
 protected:
     
-    char *
 };
+
+#endif
