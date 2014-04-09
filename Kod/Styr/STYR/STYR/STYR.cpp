@@ -23,7 +23,7 @@
 int gear = 0;
 int speed = 0;
 Slave steerModuleSlave;
-Communication abstractionObject;
+Communication abstractionObject; //Måste även skicka in pekare
 
 // Interreupt for bus comm
 // -----------------------------

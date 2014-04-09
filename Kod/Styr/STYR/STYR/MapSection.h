@@ -79,7 +79,8 @@ public:
     
 	// Driving
     void changeGear(char direction);
-    void drive(int speed);
+    void driveForward(int speed);
+    void driveBackward(int speed);
     void moveTo(int xPos, int yPos);
 	void rotateLeft();
 	void rotateRight();
