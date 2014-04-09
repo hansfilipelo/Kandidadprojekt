@@ -57,7 +57,7 @@ void Order::backward(){
 }
 
 void Order::test(){
-    char outData[25] = {0};
+    char outData[25] = {'0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0'};
     outData[0] = 1;
     outData[1] = 't';
     outData[2] = 'A';

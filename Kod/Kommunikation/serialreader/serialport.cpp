@@ -21,6 +21,7 @@ SerialPort::~SerialPort()
 
 void SerialPort::sendChar(const char * inChar){
     
+    std::cout << sizeof(inChar) << std::endl;
     port->write(inChar);
     port->waitForBytesWritten(1000);
 }
