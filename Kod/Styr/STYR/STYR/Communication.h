@@ -4,7 +4,12 @@
 #include <stdio.h>
 #include "../../../sensormodul/sensormodul/slave.h"
 
+#include "MapSection.h"
+#include "Abstraction.h"
+
+class MapSection;
 class Robot;
+class Slave;
 
 class Communication {
 public:
@@ -16,8 +21,12 @@ public:
     void sendMap();
     
 protected:
-    Robot* robot = NULL;
-    Slave* slave;
+    int dataLength;
+    Slave* slavePointer;
+    Robot* robotPointer;
+    unsigned char inData[25];
+    unsigned char outData[25];
+    
 };
 
 #endif

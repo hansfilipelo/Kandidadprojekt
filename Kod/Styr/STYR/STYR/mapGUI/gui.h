@@ -4,7 +4,11 @@
 #include <QMainWindow>
 #include <QVector>
 #include <QTimer>
-
+#include<algorithm>
+#include<string.h>
+#include<iostream>
+#include<QGraphicsScene>
+#include <QtAlgorithms>
 namespace Ui {
 class Gui;
 }
@@ -19,7 +23,8 @@ public:
     void setupPlots();
     void updateSensorValues(int value1, int value2, int value3, int value4, int value5, int value6);
     void updatePlots();
-
+    void updateMap(char inMap[10][17]);
+    void insertRow(char inArray[25], char inMap[10][17]);
 
 
 private slots:
@@ -48,7 +53,19 @@ private:
     QVector<double> timeVector;
     QTimer *timer = new QTimer(this);
     QVector<double> testVector;
-    int i = 0;
+    QGraphicsScene* scene = new QGraphicsScene();
+    //testvariabler
+    char map[10][17]={{'U','U','U','U','U','U','U','F','U','E','E','R','E','E','E','E','U'},
+                      {'U','U','U','E','U','U','U','F','U','E','E','R','E','E','E','E','U'},
+                      {'U','U','E','E','U','U','U','F','U','E','E','R','E','E','E','E','U'},
+                      {'U','U','U','E','U','U','U','F','U','E','E','R','E','E','E','E','U'},
+                      {'F','U','U','E','U','U','U','F','U','E','E','R','E','E','E','E','U'},
+                      {'U','U','U','E','U','U','U','F','U','E','E','R','E','E','E','E','U'},
+                      {'U','R','U','E','E','U','U','F','U','E','E','R','E','E','E','E','U'},
+                      {'U','U','U','U','E','U','U','F','U','E','E','R','E','E','E','E','U'},
+                      {'U','U','U','U','U','U','U','F','U','E','E','R','E','E','E','E','U'},
+                      {'U','U','U','U','U','U','U','F','U','E','E','R','E','E','E','E','U'}};
+    char testArray[25] = {24,'M',9,'F','F','F','F','F','F','F','F','F','F','F','F','F','F','F','F','F',0,0,0,0,0};
 };
 
 #endif // UI_H
