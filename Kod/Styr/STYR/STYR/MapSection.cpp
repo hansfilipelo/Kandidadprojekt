@@ -17,8 +17,6 @@ MapSection::MapSection(int x,int y, Map* inMom, char createType){
     yCoord=y;
     mom = inMom;
     type=createType;
-    
-    
 }
 
 // Destruct
@@ -166,29 +164,34 @@ Robot::~Robot(){
 // -------------------------------------
 // Sets direction to travel
 
-void Robot::changeDirection(char direction){
-		if (direction == 'b'){
+void Robot::changeGear(char inGear){
+		if (inGear == 'b'){
+            
+            gear = inGear;
             
             #if DEBUG == 0
 			PORTD |= 0x10;
 			PORTD &= ~0x20;
             #endif
 		}
-		else if (direction == 'r'){
+		else if (inGear == 'r'){
+            gear = inGear;
             
             #if DEBUG == 0
 			PORTD &= ~0x10;
 			PORTD |= 0x20;
             #endif
 		}
-		else if (direction == 'l'){
+		else if (inGear == 'l'){
+            gear = inGear;
             
             #if DEBUG == 0
 			PORTD |= 0x10;
 			PORTD |= 0x20;
             #endif
 		}
-		else if (direction == 'f'){
+		else if (inGear == 'f'){
+            gear = inGear;
             
             #if DEBUG == 0
 			PORTD &= ~0x10;
@@ -223,16 +226,31 @@ void Robot::rotateLeft(){
 	// When we have rotated 90 degrees sensor module will send a signal which will deactivate rotate
 	//---------
 	
-	// Turns
+    // Turns
+    changeDirection('l');
+	
 	while (rotateActive)
 	{
-		changeDirection('l');
 		drive(25);
 	}
 	
 	// Stop rotation and set gear to forward
 	drive(0);
-	changeDirection('f');
+	changeGear('f');
+    
+    // Update direction
+    if (direction == 'f') {
+        changeDirection('l');
+    }
+    else if (direction == 'l') {
+        changeDirection('b');
+    }
+    else if (direction == 'b') {
+        changeDirection('r');
+    }
+    else if (direction == 'r') {
+        changeDirection('f');
+    }
 }
 
 // Stops rotation
@@ -253,16 +271,30 @@ void Robot::rotateRight(){
 	// When we have rotated 90 degrees sensor module will send a signal which will deactivate rotate
 	//---------
 	
-	// Turns
+    // Turns
+    changeGear('r');
 	while (rotateActive)
 	{
-		changeDirection('r');
 		drive(25);
 	}
 	
 	// Stop rotation and set gear to forward
 	drive(0);
-	changeDirection('f');
+	changeGear('f');
+    
+    // Update direction
+    if (direction == 'f') {
+        changeDirection('r');
+    }
+    else if (direction == 'r') {
+        changeDirection('b');
+    }
+    else if (direction == 'b') {
+        changeDirection('l');
+    }
+    else if (direction == 'l') {
+        changeDirection('f');
+    }
 }
 
 //-----------------------------------------
@@ -332,20 +364,39 @@ void Robot::setFwdClosed(){
 	// Direction 0->y->17, "fwd"
 	if (direction == 'f'){
 		mom->convertSection(xCoord,yCoord + output + 1, 'c');
+        
+        // Set every section between robot and wall as empty
+        for (int i = 0; i < output; i++) {
+            mom->convertSection(xCoord,yCoord + i + 1, 'e');
+        }
 	}
 	// Direction 17->y->0, "bwd"
 	else if (direction == 'b'){
 		mom->convertSection(xCoord,yCoord - output - 1, 'c');
+        
+        // Set every section between robot and wall as empty
+        for (int i = 0; i < output; i++) {
+            mom->convertSection(xCoord,yCoord - i - 1, 'e');
+        }
 	}
 	// Direction 0->x->32, "right"
 	else if (direction == 'r'){
 		mom->convertSection(xCoord + output + 1,yCoord, 'c');
+        
+        // Set every section between robot and wall as empty
+        for (int i = 0; i < output; i++) {
+            mom->convertSection(xCoord + i + 1,yCoord, 'e');
+        }
 	}
 	// Direction 32->x->0, "left"
 	else if (direction == 'l'){
 		mom->convertSection(xCoord - output - 1,yCoord, 'c');
-	}
-	
+        
+        // Set every section between robot and wall as empty
+        for (int i = 0; i < output; i++) {
+            mom->convertSection(xCoord - i - 1,yCoord, 'e');
+        }
+	}	
 }
 
 // ------------------------------------------------
@@ -359,20 +410,39 @@ void Robot::setBwdClosed(){
 	// Direction 0->y->17, "fwd"
 	if (direction == 'f'){
 		mom->convertSection(xCoord,yCoord - output - 1, 'c');
+        
+        // Set every section between robot and wall as empty
+        for (int i = 0; i < output; i++) {
+            mom->convertSection(xCoord,yCoord - i - 1, 'e');
+        }
 	}
 	// Direction 17->y->0, "bwd"
 	else if (direction == 'b'){
 		mom->convertSection(xCoord,yCoord + output + 1, 'c');
+        
+        // Set every section between robot and wall as empty
+        for (int i = 0; i < output; i++) {
+            mom->convertSection(xCoord,yCoord + i + 1, 'e');
+        }
 	}
 	// Direction 0->x->32, "right"
 	else if (direction == 'r'){
 		mom->convertSection(xCoord - output - 1,yCoord, 'c');
+        
+        // Set every section between robot and wall as empty
+        for (int i = 0; i < output; i++) {
+            mom->convertSection(xCoord - i - 1,yCoord, 'e');
+        }
 	}
 	// Direction 32->x->0, "left"
 	else if (direction == 'l'){
 		mom->convertSection(xCoord + output + 1,yCoord, 'c');
+        
+        // Set every section between robot and wall as empty
+        for (int i = 0; i < output; i++) {
+            mom->convertSection(xCoord + i + 1,yCoord, 'e');
+        }
 	}
-	
 }
 
 //------------------------------------------------------
@@ -397,39 +467,94 @@ void Robot::updateRobotPosition(){
         fwdReference = 300;
         bwdReference = 300;
     }
-    if (fwdReference-meanValueArray(fwdSensor,3)<=40){
+    if (fwdReference - meanValueArray(fwdSensor,3) >= 40){
         fwdReference=meanValueArray(fwdSensor,3);
         if (direction == 'f'){
+            // Place back the section we stand in
+            mom->setSection(previousSection->getX(), previousSection->getY(), previousSection);
+            // Get a new prev section
+            previousSection = mom->getPos(xCoord, yCoord + 1);
+            // Put robot in place
             mom->setSection(xCoord,yCoord + 1, this);
+            // Update robot info about position
+            yCoord++;
         }
         else if (direction == 'b'){
+            // Place back the section we stand in
+            mom->setSection(previousSection->getX(), previousSection->getY(), previousSection);
+            // Get a new prev section
+            previousSection = mom->getPos(xCoord, yCoord - 1);
+            // Put robot in place
             mom->setSection(xCoord,yCoord - 1, this);
+            // Update robot info about position
+            yCoord--;
         }
         else if (direction == 'r'){
+            // Place back the section we stand in
+            mom->setSection(previousSection->getX(), previousSection->getY(), previousSection);
+            // Get a new prev section
+            previousSection = mom->getPos(xCoord + 1, yCoord);
+            // Put robot in place
             mom->setSection(xCoord + 1,yCoord, this);
+            // Update robot info about position
+            xCoord++;
         }
         else if (direction == 'l'){
+            // Place back the section we stand in
+            mom->setSection(previousSection->getX(), previousSection->getY(), previousSection);
+            // Get a new prev section
+            previousSection = mom->getPos(xCoord - 1, yCoord);
+            // Put robot in place
             mom->setSection(xCoord - 1,yCoord, this);
+            // Update robot info about position
+            xCoord--;
         }
     }
-    else if (meanValueArray(bwdSensor,3)-bwdReference <=40){
+    else if (meanValueArray(bwdSensor,3)-bwdReference <= 40){
         bwdReference=meanValueArray(bwdSensor,3);
         if (direction == 'f'){
+            // Place back the section we stand in
+            mom->setSection(previousSection->getX(), previousSection->getY(), previousSection);
+            // Get a new prev section
+            previousSection = mom->getPos(xCoord, yCoord + 1);
+            // Put robot in place
             mom->setSection(xCoord,yCoord + 1, this);
+            // Update robot info about position
+            yCoord++;
         }
         else if (direction == 'b'){
+            // Place back the section we stand in
+            mom->setSection(previousSection->getX(), previousSection->getY(), previousSection);
+            // Get a new prev section
+            previousSection = mom->getPos(xCoord, yCoord - 1);
+            // Put robot in place
             mom->setSection(xCoord,yCoord - 1, this);
+            // Update robot info about position
+            yCoord--;
+
         }
         else if (direction == 'r'){
+            // Place back the section we stand in
+            mom->setSection(previousSection->getX(), previousSection->getY(), previousSection);
+            // Get a new prev section
+            previousSection = mom->getPos(xCoord + 1, yCoord);
+            // Put robot in place
             mom->setSection(xCoord + 1,yCoord, this);
+            // Update robot info about position
+            xCoord++;
         }
         else if (direction == 'l'){
+            // Place back the section we stand in
+            mom->setSection(previousSection->getX(), previousSection->getY(), previousSection);
+            // Get a new prev section
+            previousSection = mom->getPos(xCoord - 1, yCoord);
+            // Put robot in place
             mom->setSection(xCoord - 1,yCoord, this);
+            // Update robot info about position
+            xCoord--;
         }
 
     }
-     
-
 }
 
 
@@ -465,4 +590,26 @@ void Robot::adjustPosition(){
     
     
 }
+
+
+// ---------------------------------------
+// Sets direction
+
+void Robot::changeDirection(char inDirection){
+    direction = inDirection;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

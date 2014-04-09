@@ -78,7 +78,7 @@ public:
     ~Robot();
     
 	// Driving
-    void changeDirection(char direction);
+    void changeGear(char direction);
     void drive(int speed);
     void moveTo(int xPos, int yPos);
 	void rotateLeft();
@@ -95,6 +95,7 @@ public:
 	// SLAM (mapping, positioning)
 	void setFwdClosed();
 	void setBwdClosed();
+    void changeDirection(char);
     
     int meanValueArray(char* inputArray, int iterations);
     void updateRobotPosition();
@@ -118,12 +119,15 @@ protected:
 	
 	bool rotateActive;
 	
-	char direction;
+	char direction = 'f';
+    char gear = 'f';
     
     int fwdReference;
     int bwdReference;
     int leftReference;
     int rightReference;
+    
+    MapSection* previousSection = NULL;
     
     };
 
