@@ -15,8 +15,7 @@
 #include <util/delay.h>
 
 
-//unsigned int timer;
-int sensordata[7]={};
+int sensordata[8]={};
 int savepos = 0;		//counter for the storage array
 double decadc=0;
 double spanning = 0;
@@ -43,9 +42,18 @@ void USART_Init( unsigned int baud )
 
 
 void handleInDataArray(){
-sensormodul.outDataArray[0]=0;
-sensormodul.outDataArray[0]=1;
-
+	if(sensormodul.inDataArray[1] == 'g'){
+		gyromode = true;
+	}
+	else if(sensormodul.inDataArray[1] == 'k'){
+		int hundratusen = sensormodul.inDataArray[3];
+		int tiotusen = sensormodul.inDataArray[4];
+		int tusen = sensormodul.inDataArray[5];
+		int hundra = sensormodul.inDataArray[6];
+		int tio = sensormodul.inDataArray[7];
+		int en = sensormodul.inDataArray[8];
+		konstant = hundratusen * 100000 + tiotusen * 10000 + tusen * 10000 + hundra * 100 + tio * 10 + en;
+	}
 }
 
 //Extremt känslig för tillägg av kod
@@ -76,19 +84,18 @@ ISR(USART0_RX_vect){
 	indata=UDR0;
 		
 	if(indata==startbit){
-		sensormodul.outDataArray[0] = 3;
-		sensormodul.outDataArray[1] = 'r';
-		sensormodul.outDataArray[2] = '0';
-		sensormodul.outDataArray[3] = '1';
-		//skicka RFID
+		sensormodul.outDataArray[0] = 1;
+		sensormodul.outDataArray[1] = 'R';
+		sensormodul.SPI_Send();				//skicka RFID detekterad
+		//skicka detekterad till styrmodul ->stänga av RFID läsning -> vänta på ruta lämnad från styrmodul ->tillåt RFID-läsning igen?
 	}
 }
 
 int main(void)
 {	
-	
 	sensormodul.SPI_Init();
 	USART_Init(383);
+	
 	
 	DDRA = 0x00;			// Configure PortA as input
 							// PA0 is ADC0 input
@@ -117,20 +124,13 @@ int main(void)
 		
 		else if(ADMUX == 0x27){ //gyro
 			vinkelv = (spanning)*150-370+0.859375;
-			//timer = TCNT0;
-			sensordata[7] = sensordata[7] + vinkelv; //sensordata[7] = sensordata[7] + vinkelv(timer*8/14000000.0);
-			
+			sensordata[7] = sensordata[7] + vinkelv;
 			if ((sensordata[7] > konstant) or (sensordata[7] < -1*konstant)){ // mindre än 90 gradersvärdet
 				gyromode = false;
-				/*
-				outDataArray[0] = 3;
-				outDataArray[1] = 'g';
-				outDataArray[2] = '0';
-				outDataArray[3] = '1';
-				//skicka att 90grader är klar
-				*/
+				sensormodul.outDataArray[0] = 1;
+				sensormodul.outDataArray[1] = 'G';
+				sensormodul.SPI_Send();				//skicka att 90grader är klar
 			}
-			//TCNT0 = 0;
 		}
 		else if(ADMUX == 0x22 || 0x23 || 0x24 || 0x25){	//konvertering av A2-A5 (kortdistanssensorer)
 			sensordata[savepos]	= round(12.5*pow(spanning,4)-100.7*pow(spanning,3)+291.4*pow(spanning,2)-367.2*spanning+189.6);
@@ -138,6 +138,7 @@ int main(void)
 		
 		if (gyromode){
 			ADMUX = 0x27;
+			TCNT0 = 0;
 		}
 		
 		if(ADMUX == 0x26 or (!gyromode and ADMUX == 0x27)){
@@ -148,14 +149,14 @@ int main(void)
 		{
 			
 			sensormodul.outDataArray[0] = 5;
-			sensormodul.outDataArray[1] = 'a';
+			sensormodul.outDataArray[1] = 'S';
 			sensormodul.outDataArray[2] =  savepos + 48;
 			sensormodul.outDataArray[3] = (sensordata[savepos]/100) + 48; //plats 4
 			sensormodul.outDataArray[4] = ((sensordata[savepos]/10) %10) + 48; // plats 5
 			sensormodul.outDataArray[5] = (sensordata[savepos] % 10) + 48; // plats 6
 				
-			//ADMUX = ADMUX + 1;
-			//savepos++;
+			ADMUX = ADMUX + 1;
+			savepos++;
 		}
 		
 		if ((PIND==0x80)){
