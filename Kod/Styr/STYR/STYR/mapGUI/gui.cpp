@@ -11,6 +11,7 @@ Gui::Gui(QWidget *parent) :
     connect(timer, SIGNAL(timeout()), this, SLOT(updateTimeVector()));
     timeVector.insert(0,0);
     timer->start(1000);
+    ui->mapView->setScene(scene);
 
 }
 
@@ -138,18 +139,59 @@ void Gui::updateSensorValues(int value1, int value2, int value3, int value4, int
 }
 
 void Gui::updatePlots(){
-
-
-
     ui->sensor1data->setText(QString::number(timeVector.at(0)));
     ui->sensorPlot1->graph(0)->setData(timeVector, testVector);
     ui->sensorPlot1->xAxis->setRange(timeVector.at(timeVector.size()-1),timeVector.at(0));
     ui->sensorPlot1->replot();
 }
+void Gui::insertRow(char inArray[25], char inMap[10][17])
+{
+    int row = inArray[2];
+    for(int i=0; i < 17; i++ ){
+        inMap[row][i] = inArray[i+3];
+        std::cout << inMap[row][i] << std::endl;
+    }
+
+}
+void Gui::updateMap(char inMap[10][17]){
+    qDeleteAll( scene->items());
+    for (int rad = 0; rad < 10; rad++){
+        for(int kol = 0; kol < 17; kol ++){
+            QGraphicsRectItem*   temp = new QGraphicsRectItem(kol*20,rad*20,20,20);
+            if(inMap[rad][kol]=='E'){
+                temp->setBrush(Qt::green);
+               scene->addItem(temp);
+            }
+            else if(inMap[rad][kol]=='U'){
+                temp->setBrush(Qt::green);
+                scene->addItem(temp);
+            }
+
+            else if(inMap[rad][kol]=='F'){
+                temp->setBrush(Qt::red);
+                scene->addItem(temp);
+            }
+            else if(inMap[rad][kol]=='R'){
+                QGraphicsEllipseItem* robot = new QGraphicsEllipseItem(kol*20,rad*20,20,20);
+                robot->setBrush(Qt::black);
+                temp->setBrush(Qt::green);
+                scene->addItem(temp);
+                scene->addItem(robot);
+            }
+        }
+
+    }
+}
+
+
 
 
 void Gui::on_upButton_pressed()
 {
+    //testar min fkn
+    insertRow(testArray,map);
+    updateMap(map);
+
     //Bluetooth->sendUp();
 }
 
