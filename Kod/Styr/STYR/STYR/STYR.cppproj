@@ -172,10 +172,22 @@
     <Compile Include="Abstraction.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="Communication.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Communication.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="Map.cpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="MapSection.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="slave.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="slave.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="STYR.cpp">

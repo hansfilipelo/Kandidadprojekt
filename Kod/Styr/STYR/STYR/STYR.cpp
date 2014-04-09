@@ -13,6 +13,7 @@
 #include "Map.h"
 #include "Abstraction.h"
 #include "../../../sensormodul/sensormodul/slave.h"
+#include "Communication.h"
 
 #if DEBUG == 0
 
@@ -21,23 +22,25 @@
 // Chooses direction
 int gear = 0;
 int speed = 0;
+Slave steerModuleSlave;
+Communication abstractionObject;
 
 // Interreupt for bus comm
 // -----------------------------
 
 ISR(SPI_STC_vect){
-	sensormodul.position++;
-	SPDR = sensormodul.outDataArray[sensormodul.position];
-	sensormodul.inDataArray[sensormodul.position-1] = SPDR;
+	steerModuleSlave.position++;
+	SPDR = steerModuleSlave.outDataArray[steerModuleSlave.position];
+	steerModuleSlave.inDataArray[steerModuleSlave.position-1] = SPDR;
 	
-	if ((sensormodul.position == (sensormodul.inDataArray[0]+1))&(sensormodul.inDataArray[0]!= 0)){
+	if ((steerModuleSlave.position == (steerModuleSlave.inDataArray[0]+1))&(steerModuleSlave.inDataArray[0]!= 0)){
 		PORTC |= (1<<PORTC0);
 	}
 }
 
 
 ISR(PCINT2_vect){
-	handleInDataArray();
+	abstractionObject.handleData();
 }
 
 // ---------------------------------
