@@ -94,8 +94,20 @@ int getValueFromArray(char* inArray, int valueNr){
     return charToInt(outArray);
 }
 
+#if DEBUG == 0
+
+// Operators for creating and destroying objects (not included in AVR C++)
+// ------------------------------------
+
+void* operator new(size_t objsize){
+	return malloc(objsize);
+}
+
+void operator delete(void* obj){
+	free(obj);
+}
 
 
+// ------------------------------------
 
-
-
+#endif

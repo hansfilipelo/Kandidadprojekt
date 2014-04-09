@@ -17,19 +17,6 @@
 #include "Communication.h"
 #include "../../../sensormodul/sensormodul/slave.h"
 
-// Operators for creating and destroying objects (not included in AVR C++)
-// ------------------------------------
-
-void* operator new(size_t objsize) {
-	return malloc(objsize);
-}
-
-void operator delete(void* obj) {
-	free(obj);
-}
-
-// ------------------------------------
-
 #if DEBUG == 0
 
 // Intiating global variables

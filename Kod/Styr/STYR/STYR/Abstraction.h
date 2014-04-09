@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
+#include <stdlib.h>
 
 #ifndef __AVR_ATmega1284P__
 #define DEBUG 1
@@ -14,6 +15,9 @@
 #if DEBUG == 1
 
 #include <iostream>
+
+void* operator new(size_t objsize);
+void operator delete(void* obj);
 
 #endif
 
