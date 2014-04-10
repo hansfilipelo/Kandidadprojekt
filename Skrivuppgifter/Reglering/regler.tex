@@ -24,7 +24,7 @@
 
 \begin{document}
 	\pagestyle{fancy}
-\pagenumbering{roman}
+	 \pagenumbering{gobble}
 	\vspace*{\fill}
 		\begingroup
 			\begin{center}
@@ -57,9 +57,11 @@
 %-----------------------------------------------------------------
 %Projektidentitet
 
+
 	\vspace*{\fill}
 		\begingroup
 			\begin{center}
+				\pagenumbering{roman}
 				\LARGE{\textbf{PROJEKTIDENTITET}}
 				\\
 				\footnotesize
@@ -83,7 +85,7 @@
 		\textbf{E-postlista för hela gruppen:} mapmaster2001@cyd.liu.se
 		\\[0.5cm]
 
-		\textbf{Kund}: Mattias Krysander, Linköpings Universitet, 581 83  LINKÖPING, \\
+		\textbf{Kund}: Mattias Krysander, Linköpings universitet, 581 83  LINKÖPING, \\
 		013-28 21 98, matkr@isy.liu.se \\
 		\textbf{Kontaktperson hos kund}: Mattias Krysander, 013-28 21 98,matkr@isy.liu.se 
 		\\
@@ -103,6 +105,7 @@
 
 \tableofcontents
 \thispagestyle{fancy}
+
 \newpage
 
 \pagenumbering{arabic}
@@ -129,22 +132,22 @@ Syftet med denna rapport är att fördjupa läsaren i de algoritmer och tekniker
 
 \subsection{Historia}
 
-Principerna för SLAM formulerades för första gången 1986\footnote{Smith, R.C.; Cheeseman, P}. Redan vid formuleringen av problemet menar man på att SLAM är en inexakt vetenskap. SLAM handlar om att skaffa sig en approximativ uppfattning av sin omgivning och position som är tillräckligt bra för att fatta ett beslut kring färdväg och/eller kartläggning. 
+Principerna för SLAM formulerades för första gången 1986\footnote{Smith, R.C.; Cheeseman, P. (1986).
+''On the Representation and Estimation of Spatial Uncertainty''. The
+International Journal of Robotics Research, 5(4), sida 56–68. Hämtad 28 mars 2014}. Redan vid formuleringen av problemet beskrevs SLAM som en inexakt vetenskap. SLAM handlar om att skaffa sig en approximativ uppfattning av sin omgivning och position som är tillräckligt bra för att fatta ett beslut kring färdväg och/eller kartläggning. 
 
-Utvecklingen på området har sedan dess accelererats kraftigt tack vare
-mikrokontrollers förmåga att hantera mer data - då
+Utvecklingen på området har sedan dess accelererat kraftigt tack vare
+mikrokontrollers förmåga att hantera mer data - eftersom
 sannolikhetsberäkningarna SLAM innefattar gynnas kraftigt av att arbeta
 med stora stickprov.
 
-På senare år har man, precis som inom många andra vetenskapliga områden, sett utvecklingen ta ytterligare ett kliv tack vare internet och öppen källkodsprojekt som Github och OpenSLAM. Att göra en sökning på ''SLAM'' på Github resulterar i en mängd aktiva projekt på området. Eftersom att källkoden där också finns tillgänglig är detta ett utmärkt exempel för de som vill lära sig om SLAM. 
+På senare år har man, precis som inom många andra vetenskapliga områden, sett utvecklingen ta ytterligare ett kliv tack vare internet och öppna källkodsprojekt som Github och OpenSLAM. Att göra en sökning på ''SLAM'' på Github resulterar i en mängd aktiva projekt på området. Eftersom källkoden där också finns tillgänglig är detta ett utmärkt exempel för de som vill lära sig om SLAM. 
 
 %------------------------------------------------
 %-------------Problemformulering-----------------
 %------------------------------------------------
 
 \section{Problemformulering}
-
-Det problem som ska lösas är uppbyggt på följande sätt:
 
 En robot med tillgång till ett antal avståndssensorer, ett gyro och en RFID-sensor placeras i ett stängt område med dimension 6x6 meter och som är uppdelad i 40x40 centimeters segment. Den ska, med en vägg som startpunkt, helt autonomt kartlägga området genom att markera ut var väggar finns och var det finns områden som inte går att nå. Den ska även markera ut var det går att finna RFID-taggar. Om inte hela det slutna området är kartlagt ska den upptäcka vilka segment som är oupptäckta, färdas dit och lägga till det i kartan. När området är kartlagt ska roboten ta sig tillbaka till startpunkten och avsluta arbetet.
 
@@ -181,10 +184,10 @@ EKF-SLAM är en förkortning för Extended Kalman Filter for Simultaneous Locali
 Algoritmen arbetar oftast i två steg; först skattas variablerna sedan vid nästa mätning 
 kommer de skattade variablerna viktas, där de med mest säkerhet är av störst vikt.
 
-\subsubsection{fastSLAM}
-fastSlam är en teknik där systemet visuellt kan uppfatta landmärken. Landmärkenas position i förhållande till roboten noteras och uppmäts med regelbundna samplingar. Genom att positionsbestämma dessa landmärken kan roboten snabbare bestämma sin position. 
+\subsubsection{FastSLAM}
+FastSlam är en teknik där systemet visuellt kan uppfatta landmärken. Landmärkenas position i förhållande till roboten noteras och uppmäts med regelbundna samplingar. Genom att positionsbestämma dessa landmärken kan roboten snabbare bestämma sin position. 
 
-fastSLAM är snabbare på att bestämma sin position än KF-SLAM men är däremot inte genomförbar då miljön systemet rör sig i är så pass homogen att inga landmärken går att utfinna. Om vi tar den bana vår robot ska kartlägga som referens är den väldigt homogen\footnote{Tävlingsregler: \url{https://drive.google.com/file/d/0B758zzcy4ZrTeG1wRTY4WG9lTDQ/edit?usp=sharing}}. fastSLAM är antagligen inte den bästa tekniken för positionsbestämning och kartläggning av den typen av ''rum''. 
+FastSLAM är snabbare på att bestämma sin position än KF-SLAM men är däremot inte genomförbar då miljön systemet rör sig i är så pass homogen att inga landmärken går att utfinna. Om vi tar den bana vår robot ska kartlägga som referens är den väldigt homogen\footnote{Tävlingsregler: \url{https://drive.google.com/file/d/0B758zzcy4ZrTeG1wRTY4WG9lTDQ/edit?usp=sharing, Hämtad 28 mars 2014}}. fastSLAM är antagligen inte den bästa tekniken för positionsbestämning och kartläggning av den typen av ''rum''. 
 
 
 
@@ -206,9 +209,9 @@ För att WiFi-SLAM ska fungera krävs att accesspunkten har information om posit
 
 \subsection{Implementeringar}
 
-Det finns väldigt många exempel på implementeringar av SLAM. Robotdammsugare är ett bra exempel på en modern tillämpning av SLAM. Det är en liten enhet som kan använda sig av en modifierad version av VSLAM som kallas CV-SLAM. Detta står för Ceiling Visual SLAM, det vill säga att roboten har kameror som är riktade uppåt och använder landmärken i taket för att rita upp en karta över rummet den städar, så att den dammsuger alla platser i rummet istället för att städa samma punkt flera gånger. 
+Det finns många exempel på implementeringar av SLAM. Robotdammsugare är ett bra exempel på en modern tillämpning av SLAM. Det är en liten enhet som kan använda sig av en modifierad version av VSLAM som kallas CV-SLAM. Detta står för Ceiling Visual SLAM, det vill säga att roboten har kameror som är riktade uppåt och använder landmärken i taket för att rita upp en karta över rummet den städar, så att den dammsuger alla platser i rummet istället för att städa samma punkt flera gånger. 
 
-Det här är ett väldigt bra exempel på hur moderna, små mikrokontrollers kan möjliggöra SLAM att användas för att förenkla vår vardag.  
+Det här är ett bra exempel på hur moderna, små mikrokontrollers kan möjliggöra SLAM att användas för att förenkla vår vardag.  
 
 SLAM används, och har används under längre tid, till exempel också i rymdexpeditioner där robotar skickas upp i rymden för att upptäcka och kartlägga ställen som vi människor inte har möjlighet att besöka. 
 
@@ -218,7 +221,19 @@ SLAM används, och har används under längre tid, till exempel också i rymdexp
 \newpage
 \section{Fördjupning och kodexempel}
 
-KOMMER!
+
+
+\subsection{Skattning av parametrar}
+
+I just detta problem, som är begränsat kommer positionen att skattas med hjälp av sensorvärden i form av vinkel och avstånd i kombination med enkla algoritmer.
+
+\subsection{Positionsskattning}
+
+Hur uppskattas positionen? Algoritmer?
+
+\subsection{Kartabstraktion}
+
+Hur uppdateras kartan (Algoritm?)
 
 %------------------------------------------------
 %------------Resultat och slutsatser-------------
@@ -226,37 +241,36 @@ KOMMER!
 
 \section{Resultat och slutsatser}
 
-Till slut kan vi konstatera att SLAM används i många tillämpningar man kanske inte tänker på. Man kan också konstatera att algoritmerna, filtren och mjukvaran som används för att implementera SLAM relativt komplicerade. Vi inser att vi gjort ett klokt beslut att fördjupa oss i just SLAM, då vi är väldigt beroende av detta i vårt projekt att konstruera en kartritande robot. 
+Till slut kan vi konstatera att SLAM används i många tillämpningar man kanske inte tänker på. Man kan också konstatera att algoritmerna, filtren och mjukvaran som används för att implementera SLAM är relativt komplicerade. Vi inser att vi gjort ett klokt beslut att fördjupa oss i just SLAM, då vi är beroende av detta i vårt projekt att konstruera en kartritande robot. 
 
 % --------------- Källförteckning ---------------------
 \newpage \section{Källförteckning} Smith, R.C.; Cheeseman, P. (1986).
 ''On the Representation and Estimation of Spatial Uncertainty''. The
 International Journal of Robotics Research, 5(4), sida 56–68. Hämtad
-\today:
-\url{http://www.frc.ri.cmu.edu/~hpm/project.archive/reference.file/Smith
-&Cheeseman.pdf}
+28 mars 2014:
+\url{http://www.frc.ri.cmu.edu/~hpm/project.archive/reference.file/Smith&Cheeseman.pdf}
 
 Risgaard, S; Blas, M.R (2005).
 ''SLAM for Dummies, A Tutorial Approach to Simultaneous Localization and Mapping''. 
-Hämtad \today:
+Hämtad 28 mars 2014:
 \url{http://ocw.mit.edu/courses/aeronautics-and-astronautics/16-412j-cognitive-robotics-spring-2005/projects/1aslam_blas_repo.pdf}
 
 Karlsson, N.; Goncalves, L.; Munich, M.E.; Pirjanian, P.
-''The vSLAM Algorithm for Navigation in Natural Environments''. Evolution Robotics, Inc. Hämtad \today:
+''The vSLAM Algorithm for Navigation in Natural Environments''. Evolution Robotics, Inc. Hämtad 28 mars 2014:
 \url{http://www.vision.caltech.edu/mariomu/research/papers/vSLAM-krs.pdf}
 
 Fox, C.; Evans, M.; Pearson, M.; Prescott, T. (2012)
-''Tactile SLAM with a biomimetic whiskered robot''. 2012 IEEE International Conference on Robotics and Automation. Hämtad \today.
+''Tactile SLAM with a biomimetic whiskered robot''. 2012 IEEE International Conference on Robotics and Automation. Hämtad 28 mars 2014.
 \url{http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6224813}
 
 FastSLAM: A Factored Solution to the Simultaneous
-Localization and Mapping Problem, Stanford University. Hämtad \today.
+Localization and Mapping Problem, Stanford University. Hämtad 28 mars 2014.
 \url{http://robots.stanford.edu/papers/montemerlo.fastslam-tr.pdf}
 
 Openslam.org
 \url{http://www.openslam.org/}
 
-Kandidatprojekt Y: Elektronikprojekt, Tävlingsregler för katläggningsrobot. Hämtad \today.  \url{https://drive.google.com/file/d/0B758zzcy4ZrTeG1wRTY4WG9lTDQ/edit?usp=sharing}
+Kandidatprojekt Y: Elektronikprojekt, Tävlingsregler för katläggningsrobot. Hämtad 28 mars 2014.  \url{https://drive.google.com/file/d/0B758zzcy4ZrTeG1wRTY4WG9lTDQ/edit?usp=sharing}
 
 % ----------------------------- Appendix
 % -----------------------------------------
