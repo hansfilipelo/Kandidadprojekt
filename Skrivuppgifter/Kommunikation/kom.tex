@@ -24,12 +24,9 @@
 
 %-------------------------------------------------------------------
 %Första sidan
-
-\MakePerPage{footnote} %the perpage package command footnotes need to restart on new sides
-
 \begin{document}
 	\pagestyle{fancy}
-\pagenumbering{roman}
+	\pagenumbering{gobble}
 	\vspace*{\fill}
 		\begingroup
 			\begin{center}
@@ -70,7 +67,7 @@
 				\footnotesize
 				Grupp 8, 2014/VT, MapMaster2001
 				\\
-				Linköpings tekniska högskola, ISY
+				Tekniska högskolan vid Linköpings universitet, ISY
 				\\
 				\vspace{1cm}
 	  \begin{tabular}{| p{3cm} | p{4.3cm} | p{2.4cm} | p{3.8cm} |}
@@ -88,7 +85,7 @@
 		\textbf{E-postlista för hela gruppen:} mapmaster2001@cyd.liu.se
 		\\[0.5cm]
 		
-		\textbf{Kund}: Mattias Krysander, Linköpings Universitet, 581 83  LINKÖPING, \\
+		\textbf{Kund}: Mattias Krysander, Linköpings universitet, 581 83  LINKÖPING, \\
 		013-28 21 98, matkr@isy.liu.se \\
 		\textbf{Kontaktperson hos kund}: Mattias Krysander, 013-28 21 98,matkr@isy.liu.se 
 		\\
@@ -114,31 +111,31 @@
 %-----------------------------------------------------------------
 %Översikt
 \section{Inledning}
-I kursen TSEA56 utförs ett projekt i elektronik. Projektet avser att konstruera en mobil robot, som autonomt kartlägger en bana. Roboten ska kommunicera med en persondator via trådlös kommunikationslänk. I projektet skall även en fördjuning skrivas med anknytning till projektet. Denna fördjupning avser att redovisa olika typer av trådlös kommunikation. I avslutande del av dokumentet kommer även kommunikationsprinciperna att jämföras utifrån hastighet, säkerhet och applicerbarhet. 
+I kursen TSEA56 utförs ett projekt i elektronik. Projektet avser att konstruera en mobil robot, som autonomt kartlägger en bana. Roboten ska kommunicera med en persondator via trådlös kommunikationslänk. I projektet skall även en fördjuning skrivas med anknytning till projektet. Denna fördjupning avser att redovisa olika typer av trådlös kommunikation. I avslutande del av dokumentet kommer även kommunikationsprinciperna att jämföras utifrån hastighet, säkerhet och applicerbarhet för vårat projekt. 
 
 \section{Problemformulering}
-Trådlöskommunikation med ett mobilt fordon ställer vissa krav på kommunikationslänken. I denna fördjupning kommer olika kommunikationsmetoder att undersökas. I fördjupningen tas väsentliga aspekter för trådlös kommunikation hos de olika teknikerna upp och granskas. Dessa är framförallt säkerhet, avstånd, överföringshastigheter och stabilitet hos de olika teknikerna. Vilka trådlösa kommunikationstekniker passar ett mobilt robotfordon?
+Trådlös kommunikation med ett mobilt fordon ställer vissa krav på kommunikationslänken. I denna fördjupning kommer olika kommunikationsmetoder att undersökas. I fördjupningen tas väsentliga aspekter för trådlös kommunikation hos de olika teknikerna upp och granskas. Dessa är framförallt säkerhet, avstånd, överföringshastigheter och stabilitet hos de olika teknikerna. Vilka trådlösa kommunikationstekniker passar ett mobilt robotfordon?
 
 \section{Principer för trådlös kommunikation}
 \subsection{WLAN}
 Ett wireless local area network (WLAN) kopplar ihop två eller flera noder med hjälp av någon form av trådlös distributionsmetod. Ett exempel på en sådan distributionsmetod är orthogonal frequency-division multiplexing (OFDM) som utnyttjar olika bärvågfrekvenser får att koda om signalen. WLAN använder sig oftast av en accesspunkt så att noderna/användarna kan förflytta sig inom räckvidden för denna accesspunkt. Idag används mestadels WLAN som är baserade på standarden IEEE 802.11 som i vardagligt språk brukar kallas Wi-Fi. Standarden är skapat av Institute of Electrical and Electronics Engineers, (IEEE).
 
 \subsubsection{Stationer}
-Alla komponenter i ett WLAN utgörs av antingen stationer som kan vara noder eller accesspunkter. Alla stationerna har ett nätverkskort, wireless network interface controller (WNIC), som jobbar på samma lager som MAC-lagret (Se rubrik IEEE 802.11). Nätverkskortet använder antenn för att kommunicera med hjälp av radiovågor. En accesspunkt utgörs oftast av en router eller en switch medan en nod utgörs av en PC eller mobiltelefon.
+Alla komponenter i ett WLAN utgörs av antingen stationer som kan vara noder eller accesspunkter. Alla stationerna har ett nätverkskort, wireless network interface controller (WNIC), som arbetar på samma lager som MAC-lagret (Se rubrik IEEE 802.11). Nätverkskortet använder antenn för att kommunicera med hjälp av radiovågor. En accesspunkt utgörs oftast av en router eller en switch medan en nod utgörs av en PC eller mobiltelefon.
 
 \subsubsection{IEEE 802.11}
-IEEE 802.11 familjen består av en serie halv-duplex (kommunikationen kan ske i båda riktningarna men bara en riktning i taget) modulationstekniker som använder sig av samma MAC-protokoll. MAC-protokollet eller MAC-lagret är ett sublager i datalänklagret. Detta lager fungerar som en mellanhand mellan logical link control (LLC) och nätverkets fysiska lager och styr alltså hur nätverksnoderna får åtkomst till det fysiska skiktet (signal och binär överföring). 
+IEEE 802.11-familjen består av en serie halv-duplex (kommunikationen kan ske i båda riktningarna men bara en riktning i taget) modulationstekniker som använder sig av samma MAC-protokoll. MAC-protokollet eller MAC-lagret är ett sublager i datalänklagret. Detta lager fungerar som en mellanhand mellan logical link control (LLC) och nätverkets fysiska lager och styr alltså hur nätverksnoderna får åtkomst till det fysiska skiktet (signal och binär överföring). 
 \\
 \newline
-Standarden finns i flertalet versioner som använder sig av olika frekvensband och hastigheter. De vanligaste frekvensbanden är 2,4 och 5 GHz och hastigheten kan vara allt från 2 Mbit/s till 1 Gbit/s.IEEE 802.11 kräver att nod \emph{x} konstant lyssnar för att vara redo om en nod \emph{y} skulle försöka skicka data. Detta drar givetvis mycket ström men kan reduceras med hjälp av en Network Allocatoin Vector (NAV), som enkelt sett fungerar som en räknare. När räknaren är nollskild är systemet i vila, när räknaren är noll så lyssnar systemet. Trådlösa stationer som har batteridrift kan därför spara ström genom att gå i vila och sen vakna till när räknaren är noll och då vara redo att ta emot data.\footnote{Holger Karl, Andreas Willig. Protocols and Architectures for Wireless Sensor Networks, Wiley, 2005}
+Standarden finns i flertalet versioner som använder sig av olika frekvensband och hastigheter. De vanligaste frekvensbanden är 2,4 och 5 GHz och hastigheten kan vara allt från 2 Mbit/s till 1 Gbit/s.IEEE 802.11 kräver att nod \emph{x} konstant lyssnar för att vara redo om en nod \emph{y} skulle försöka skicka data. Detta drar givetvis mycket ström men kan reduceras med hjälp av en Network Allocation Vector (NAV), som enkelt sett fungerar som en räknare. När räknaren är nollskild är systemet i vila, när räknaren är noll lyssnar systemet. Trådlösa stationer som har batteridrift kan därför spara ström genom att gå i vila och sen vakna till när räknaren är noll och då vara redo att ta emot data.\footnote{Holger Karl, Andreas Willig. Protocols and Architectures for Wireless Sensor Networks, Wiley, 2005}
 
 \subsubsection{Säkerhet}
-Användning av WLAN har ökat radikalt och blivit väldigt populärt på grund av dess flexibilitet och användarvänlighet, dock kommer dessa typer av nätverk alltid med lite säkerhetsrisker. IEEE 802.11 innehåller både kryptering och autentiserings metoder med hjälp av wired equivalent privacy (WEP).\footnote{Lopez-Aguilera, Elena. Study on the influence of transmission errors on RSNA authentication mechanisms in IEEE 802.11 WLAN. Computer Communications Volume: 41 Issue: 5 (2014-01-01) p. 76-93} Detta är en av de mest simpla metoder och har idag ersatts av  Wi-Fi Protected Access (WPA) som använder sig av en mer avancerad krypteringsmetod än WEP.
+Användning av WLAN har ökat radikalt och blivit populärt på grund av dess flexibilitet och användarvänlighet; dock kommer dessa typer av nätverk alltid med lite säkerhetsrisker. IEEE 802.11 innehåller både kryptering och autentiseringsmetoder med hjälp av wired equivalent privacy (WEP).\footnote{Lopez-Aguilera, Elena. Study on the influence of transmission errors on RSNA authentication mechanisms in IEEE 802.11 WLAN. Computer Communications Volume: 41 Issue: 5 (2014-01-01) p. 76-93} Detta är en av de enklare  metoder och har idag ersatts av  Wi-Fi Protected Access (WPA) som använder sig av en mer avancerad krypteringsmetod än WEP.
 \newpage 
 
 \subsection{Bluetooth}
 
-Bluetooth är en global standard för trådlöskommunikation på korta avstånd och utvecklades av Ericsson 1994. Bluetooth utnyttjades till en början primärt som en ersättning för serielkommunikationskablar mellan enheter.\footnote{\label{BTweb}Bluetooth SIG. Fast Facts http://www.bluetooth.com/Pages/Fast-Facts.asp (Hämtad 2014-03-24)}
+Bluetooth är en global standard för trådlös kommunikation på korta avstånd och utvecklades av Ericsson 1994. Bluetooth utnyttjades till en början primärt som en ersättning för serielkommunikationskablar mellan enheter.\footnote{\label{BTweb}Bluetooth SIG. Fast Facts http://www.bluetooth.com/Pages/Fast-Facts.asp (Hämtad 2014-03-24)}
 Bluetooth är fullt duplex och kan alltså skicka information i båda riktningar samtidigt. Dessutom kan Bluetooth sättas upp utan en tidigare existerande trådlös arkitektur och blir därför väldigt attraktiv för att para ihop enheter. Så som Bluetooth protokollet fungerar är det just parning mellan två enheter som är aktuellt. Bluetooth har fler aspekter som gör det särdeles bra för små mobila enheter.\footnote{\label{Gupta}Gupta, Naresh. Inside BLUETOOTH LOW ENERGY. Artech House, 2013}
 \begin{itemize}
 \item Låg strömförbrukning 
@@ -147,7 +144,7 @@ Bluetooth är fullt duplex och kan alltså skicka information i båda riktningar
 \item Behöver ej fri sikt mellan enheterna
 \end{itemize}
 
-Bluetooth utnyttjar högfrekventa radio vågor mellan 2.4 GHz till 2.485 GHz för att sända information.$^{\ref{BTweb}}$
+Bluetooth utnyttjar högfrekventa radiovågor mellan 2,4 GHz till 2,485 GHz för att sända information.$^{\ref{BTweb}}$
 
 \subsubsection{Standarder för Bluetooth}
 Hastighet för olika Bluetooth standarder:
@@ -166,16 +163,20 @@ Bluetooth 4.0 ökar inte hastigheten från 3.0 utan fokuserar istället på att 
 En parkoppling mellan två Bluetooth-enheter, A och B, fungerar enligt principen att ena enheten, låt oss säga enhet B, måsta vara upptäckbar och måste alltså sända ut en form av identifikation, ofta i form av ett namn. Enhet A söker av vilka enheter den kan detektera och ger ofta en komplett lista till användaren över enheter som den detekterade. Nästa steg är att enhet A begär en koppling till enhet B. När kopplingen lyckas blir enhet A master och enhet B slave. Tvåvägskommunikation är nu möjlig mellan enheterna.\footnote{\label{Gupta2}Gupta, Naresh. Inside BLUETOOTH LOW ENERGY. Artech House, 2013}
 
 \subsubsection{Säkerhet}
-Bluetooth är en förhållandevis säker kommunikationsform, men är självklart inte helt säker. En begränsning i säkerheten är att Bluetooth-enheterna ofta saknar inmatningsmöjligheter och display. Detta leder till att lösenord inte kan fyllas i eller ens genereras på enheterna. I fallet av att båda enheter har display och inmatningsmöjligheter kan en 16 siffror lång PIN-kod genereras som sedan måste fyllas i på den enhet som begär kopplingen. Detta skyddar mot de flesta former av avlyssning.
-För enheter som saknar antingen display eller inmatningsmöjligheter finns andra möjliga lösningar. NFC alltså Near-Field Communication, kan användas för parning och då måste enheterna i princip röra varandra i parningsfasen men kan därefter utnyttja fulla räckvidden på Bluetooth. Detta kallas Out-of-Band Pairing.$^{\ref{Gupta2}}$
+Bluetooth är en förhållandevis säker kommunikationsform, men är självklart inte helt säker. En begränsning är att Bluetooth-enheterna ofta saknar inmatningsmöjligheter och display. Detta leder till att lösenord inte kan fyllas i eller ens genereras på enheterna. Om båda enheter har display och inmatningsmöjligheter kan en 16 siffror lång PIN-kod genereras som sedan måste fyllas i på den enhet som begär kopplingen. Detta skyddar mot de flesta former av avlyssning.
+För enheter som saknar antingen display eller inmatningsmöjligheter finns andra möjliga lösningar. NFC, Near-Field Communication, kan användas för parning och då måste enheterna i princip röra varandra i parningsfasen men kan därefter utnyttja fulla räckvidden på Bluetooth. Detta kallas Out-of-Band Pairing.$^{\ref{Gupta2}}$
 
 En annan typ av säkerhet som används är ''Just Work'', som utnyttjas när enheterna saknar både inmatningsmöjligheter och display. Ett exempel på detta är Bluetooth headsets till mobiltelefoner. Denna säkerhetsmetod kräver inte att användare utför någonting förutom själva kopplingen. Denna metod skyddar mot passiv avlyssning, men ej mot aktiv avlyssning. 
 Aktiv avlyssning är när en enhet lägger sig mellan de två enheterna och vidarebefodrar kommunikationen mellan dem och kan vara väldigt svår att upptäcka.
-Passiv avlyssning så försöker man endast lyssna av kommunikationen mellan två enheter.$^{\ref{Gupta2}}$
+Vid passiv avlyssning så försöker man endast lyssna av kommunikationen mellan två enheter.$^{\ref{Gupta2}}$
+
+\subsubsection{RS232}
+När den trådlösa delen av Bluetooth fungerar kan de vara intressant att diskutera vilken form av kommunikation själva hårdvaruenheterna som ska kommunicera med varandra får för typ av information. På en persondator, en vanlig mottagare av Bluetoothkommunikation, kommer den inbyggda Bluetooth mottagaren alternativt Bluetooth dongel att virtualiseras som en seriellport. Att kommunikationen blir seriell innebär att all information behöver konverteras till en följd av höga och låga bitar. RS232 är ett protokoll för sändning av just sådana paket. RS232 har stöd för asynkron kommunikation vilket blir eftertraktat när vi talar om trådlös kommunikation och information ofta kommer i små strömmer kontra en enda kontinuerlig ström. Vid programmering av mottagning och sändning via RS232 på en persondator finns oftast väl etablerade standardbibliotek att använda.
+På enklare hårdvara t.ex. en ATmega1284p med ett FireFly BlueSMiRF GOLD modem, kommer man att variera spänningen på ett antal pinnar direkt för att styra diverse kommunikationssignaler samt för sändningen och mottagningen. 
  
 \subsection{Infrared (IR)}
 IR kommunikation är en form av trådlös kommunikation där informationen skickas i form av IR-ljus och kräver därför direkt siktlinje mellan sändare och mottagare. En vanlig implementering av denna form av kommunikation är fjärrkontroller till TV-apparater.
-Infrared Data Association Standards (IrDA) är en assosciation bestående av ungefär 100 medlemsföretag. IrDA protokollen är ett såkallat Point-to-Point protokoll och skickar alltså kommunikation mellan två enheter. IrDA har överföringshastighet på 2.4 kb/s upp till 4 Mb/s på upp till 1 meters avstånd. Vid länkning av två enheter kommer dessa alltid att kommunicera med 9.6 kb/s för att sedan komma överens om vilken hastighet som ska köras under dataöverföring.\footnote{\label{Carruthers}Carruthers, Jeffrey B. Wireless Infrared Communications,Department of Electrical and Computer Engineering
+Infrared Data Association Standards (IrDA) är en association bestående av ungefär 100 medlemsföretag. IrDA protokollen är ett såkallat Point-to-Point-protokoll och skickar alltså kommunikation mellan två enheter. IrDA har överföringshastighet på 2,4 kb/s upp till 4 Mb/s på upp till 1 meters avstånd. Vid länkning av två enheter kommer dessa alltid att kommunicera med 9,6 kb/s för att sedan komma överens om vilken hastighet som ska köras under dataöverföring.\footnote{\label{Carruthers}Carruthers, Jeffrey B. Wireless Infrared Communications,Department of Electrical and Computer Engineering
 Boston University, 2002, http://iss.bu.edu/jbc/Publications/jbc-bc1.pdf (Hämtad 2014-03-24)}  
 
 \subsubsection{Långdistans IR kommunikation}
@@ -183,52 +184,50 @@ Flera hinder finns för konstruktion för långdistans kommunikation via IR. Des
 Boston University, 2002, http://iss.bu.edu/jbc/Publications/jbc-bc1.pdf (Hämtad 2014-03-24)}
 
 \subsubsection{Säkerhet}
-Säkerhet i IR-kommunikationsfallet vid kortdistans fallet faller mer eller mindre under det faktum att avstånden för överföring är såpass små att hackningförsök blir inaktuella.$^{\ref{Carruthers2}}$
+Säkerhet i IR-kommunikationsfallet vid kortdistans, handlar mer eller mindre om det faktum att avstånden för överföring är såpass små att hackningförsök blir inaktuella, men kryptering av data på mottagar- och sändarsida är självklart möjligt.$^{\ref{Carruthers2}}$
 
 \subsection{ZigBee}
-ZigBee är en standard för trådlös styrning och övervakning som används i hem och industrier men även andra övervaknings och styrningsapplikationer där låg strömförbrukning och hög tillgänglighet är i fokus. Zigbee-standarden erbjuder näverks-, säkerhets- och applikationssupport ovanpå IEEE 802.15.4 standarden. Platformen har stöd för stjärnnät och trädstruktur men mesh-arkitektur är den absolut populäraste. 
+ZigBee är en standard för trådlös styrning och övervakning som används i hem och industrier men även i andra övervaknings- och styrningsapplikationer där låg strömförbrukning och hög tillgänglighet är i fokus. Zigbee-standarden erbjuder näverks-, säkerhets- och applikationssupport ovanpå IEEE 802.15.4 standarden. Plattformen har stöd för stjärnnät och trädstruktur men mesh-arkitektur är mest populär.
 
 \subsubsection{IEEE 802.15}
-Standarden definierar protokoll och sammankoppling av enheter i ett wireless personal area network (WPAN). IEEE 802.15.4 (LR-WPAN) som ZigBee använder sig av är en undergrupp till denna standard och har egenskaper som låg datahastighet men med lång batteritid. Datahastigheten kommer maximalt att kunna uppnå 250 kb/s men räcker gott och väl till dess användningsområde. Det kan också skalas ner till 20kb/s för att kunna hantera sensorer och dylikt.\footnote{\label{IEEE} Part 15.4 Wireless Medium Access Control (MAC) and Physical Layer (PHY) Specifications for Low-Rate Wireless Personal Area Networks (LR-WPANs). The Institute of Electrical and Electronics Engineers, Inc. (2003)}
+Standarden definierar protokoll och sammankoppling av enheter i ett wireless personal area network (WPAN). IEEE 802.15.4 (LR-WPAN) som ZigBee använder sig av är en undergrupp till denna standard och har egenskaper som låg datahastighet men med lång batteritid. Datahastigheten kommer maximalt att kunna uppnå 250 kb/s men räcker gott och väl till dess användningsområde. Det kan också skalas ner till 20 kb/s för att kunna hantera sensorer och dylikt.\footnote{\label{IEEE} Part 15.4 Wireless Medium Access Control (MAC) and Physical Layer (PHY) Specifications for Low-Rate Wireless Personal Area Networks (LR-WPANs). The Institute of Electrical and Electronics Engineers, Inc. (2003)}
 
 
 Standarden definierar det fysiska lagret samt datalänklagret i OSI-modellen.\footnote{Zimmermann, Hubert (April 1980). OSI Reference Model — The ISO Model of Architecture for Open Systems Interconnection. IEEE Transactions on Communications 28 (4): 425–432. doi:10.1109/TCOM.1980.1094702} 
 
 
 \subsubsection{Mesh-arkitektur}
-Mesh-arkitekturen är en nätstruktur där alla noder i nätet har kontakt med minst 2 noder samtidigt. Detta ger i sin tur ger i sin tur hög redundans vilket leder till högre säkerhet på kommunikationen. Strukturen är således tillförlitlig och erbjuder bra skydd mot varianser i signalstyrka som kan skapas av interferens eller multipla signaler.\footnote{\label{eltidning} Wheeler, Andy. Krama saften ur Zigbee. Elektronik Tidningen (2005).(Hämtad 2014-03-24)}
+Mesh-arkitekturen är en nätstruktur där alla noder i nätet har kontakt med minst 2 noder samtidigt. Detta ger i sin tur hög redundans vilket leder till högre säkerhet på kommunikationen. Strukturen är således tillförlitlig och erbjuder bra skydd mot varianser i signalstyrka som kan skapas av interferens eller multipla signaler.\footnote{\label{eltidning} Wheeler, Andy. Krama saften ur Zigbee. Elektronik Tidningen (2005).(Hämtad 2014-03-24)}
 
 \subsubsection{Säkerhet}
 Säkerhetsåtgärderna i denna standard är baserade på symmetrisk kryptering även kallad delad-nyckel-kryptering. Denna metod använder samma nyckel vid kryptering som vid dekryptering och detta innebär givetvis en svaghet i säkerheten, men en tillräckligt stor nyckel ger oftast fullt tillräcklig säkerhet. 
 Standarden använder sig även av kontroll av vilka noder som är tillåtna, alltså vilka som får skicka data. Varje nod har en access control list (ACL), en lista över noder som är godkända att kommunicera med som noden har för att kunna jämföra med inkommande förfrågningar från andra noder.$^{\ref{IEEE}}$ 
-Med ZigBee följer även ett kocept som heter ''Trust Center'' som möjliggör för noder att ansluta till nätverket, distribuera nycklar och ge möjligheten att kontrollera säkerheten hela vägen mellan två enheter. Det finns två olika säkerhetsnivåer, en gjord för hemma- och kommersiell applikation. Den största skillnaden mellan de båda nivåerna är att den sistnämnda skapar och underhåller säkerhetsnycklar.$^{\ref{eltidning}}$ 
+Med ZigBee följer även ett kocept som heter ''Trust Center'' som möjliggör för noder att ansluta till nätverket, distribuera nycklar och ge möjligheten att kontrollera säkerheten hela vägen mellan två enheter. Det finns två olika säkerhetsnivåer, en gjord för hemmabruk och en för kommersiella applikationer. Den största skillnaden mellan de båda nivåerna är att den sistnämnda skapar och underhåller säkerhetsnycklar.$^{\ref{eltidning}}$ 
 
 \section{Resultat}
 Utifrån fördjupningen kan vi sluta oss till att IR-kommunikation inte är ett alternativ för ett mobilt robotfordon. IR kräver antingen relativt stillastående föremål eller korta avstånd. Dessutom krävs sändar-mottagarstruktur på båda sidor då ett mobilt robotfordon rimligen ska kunna både skicka och ta emot data. 
 IEEE802.11 är ett starkt alternativ tack vare sin höga överföringshastighet och långa räckvidd, men en oro är störningar som kan uppstå då många signaler populerar IEEE802.11 bandet, samt att en existerande nätverksstruktur behövs användas.
-Bluetooth och IEEE802.11 klarar båda kommunikation i båda riktningar, har tillräcklig säkerhet och stabilitet. Bluetooths användarvänlighet och det faktum att den är Point-to-Point får avgöra i detta fall.
-
-\subsection{Diskussion}
+Bluetooth och IEEE802.11 klarar båda två kommunikation i båda riktningar, har tillräcklig säkerhet och stabilitet. Bluetooths användarvänlighet och det faktum att den är Point-to-Point får avgöra i detta fall.
 
 \newpage 
-\section{Referenser}
+\section*{Referenser}
 
-Holger Karl, Andreas Willig. Protocols and Architectures for Wireless Sensor Networks, Wiley, 2005
+Holger Karl, Andreas Willig. \emph{Protocols and Architectures for Wireless Sensor Networks}, Wiley, 2005
 
-Lopez-Aguilera, Elena. Study on the influence of transmission errors on RSNA authentication mechanisms in IEEE 802.11 WLAN. Computer Communications Volume: 41 Issue: 5 (2014-01-01) p. 76-93
+Lopez-Aguilera, Elena. \emph{Study on the influence of transmission errors on RSNA authentication mechanisms in IEEE 802.11 WLAN.}, Computer Communications Volume: 41 Issue: 5 (2014-01-01) p. 76-93
 
 Bluetooth SIG. Fast Facts http://www.bluetooth.com/Pages/Fast-Facts.asp (Hämtad 2014-03-24)
 
-Gupta, Naresh. Inside BLUETOOTH LOW ENERGY. Artech House, 2013
+Gupta, Naresh. \emph{Inside BLUETOOTH LOW ENERGY.} Artech House, 2013
 
-Carruthers, Jeffrey B. Wireless Infrared Communications,Department of Electrical and Computer Engineering
+Carruthers, Jeffrey B. \emph{Wireless Infrared Communications,Department of Electrical and Computer Engineering}
 Boston University, 2002, http://iss.bu.edu/jbc/Publications/jbc-bc1.pdf (Hämtad 2014-03-24)
 
 Part 15.4 Wireless Medium Access Control (MAC) and Physical Layer (PHY) Specifications for Low-Rate Wireless Personal Area Networks (LR\text{-}WPANs). The Institute of Electrical and Electronics Engineers, Inc. (2003) \\ http://www.engineering.uiowa.edu/~mcover/lab4/802.15.4-2003.pdf (Hämtad 2014-03-24)
 
-Zimmermann, Hubert (April 1980). OSI Reference Model — The ISO Model of Architecture for Open Systems Interconnection. IEEE Transactions on Communications 28 (4): 425–432. doi:10.1109/TCOM.1980.1094702
+Zimmermann, Hubert (April 1980).\emph{ OSI Reference Model — The ISO Model of Architecture for Open Systems Interconnection.} IEEE Transactions on Communications 28 (4): 425–432. doi:10.1109/TCOM.1980.1094702
 
-Wheeler, Andy. Krama saften ur Zigbee. Elektronik Tidningen (2005). \\ http://etn.se/index.php?option=com\_content\&task=view\&id=18463\&Itemid=66 (Hämtad 2014-03-24)
+Wheeler, Andy. Krama saften ur Zigbee. \emph{Elektronik Tidningen (2005).} \\ http://etn.se/index.php?option=com\_content\&task=view\&id=18463\&Itemid=66 (Hämtad 2014-03-24)
 
 
 
