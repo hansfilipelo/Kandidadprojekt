@@ -10,16 +10,18 @@
 #define F_CPU 14.7456E6
 #include <util/delay.h>
 #include <avr/interrupt.h>
-#include <stdlib.h>
 #include <string.h>
 
 unsigned char data;
  // Data arrives in order, datalength (data.length + codeword + arg), codeword, arg, data. 
 unsigned char inDataArray[25];
 unsigned char outDataArray[25];
-unsigned char pcInDataArray[25];
-unsigned char pcOutDataArray[25];
-unsigned int  position = 0;
+unsigned char pcInDataArray[25] = {0};
+unsigned char pcOutDataArray[25] = {'0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0'};
+unsigned int  pcPosition = 0;
+unsigned char pcHandle[25];
+
+bool Btrec = false; 
 
 
 /*
@@ -73,6 +75,7 @@ char SPI_MasterTransmit(char outData, unsigned int slave)
 }
 
 
+
 void SPISendArray(unsigned int slave){	
 	
 	unsigned int length = 0;
@@ -82,6 +85,8 @@ void SPISendArray(unsigned int slave){
 		SPI_MasterTransmit(outDataArray[i], slave);
 	}
 }
+
+
 
 void SPIReceiveArray(unsigned int slave){
 	
@@ -100,6 +105,9 @@ void SPIReceiveArray(unsigned int slave){
 
 void USART_Init( unsigned int baud )
 {
+	
+	DDRD |= (1<<PORTD4)|(1<<PORTD3);
+	PORTD &= ~((1<<PORTD4)|(1<<PORTD3));
 	/* Set baud rate */
 	UBRR0H = (unsigned char)(baud>>8);
 	UBRR0L = (unsigned char)baud;
@@ -107,10 +115,6 @@ void USART_Init( unsigned int baud )
 	UCSR0B = (1<<RXEN0)|(1<<TXEN0)|(1<<RXCIE0);
 	/* Set frame format: 8data, 1stop bit */
 	UCSR0C = (0<<USBS0)|(3<<UCSZ00);
-	
-	DDRA = (1<<DDA2);
-	DDRD = (1<<DDD4);
-	PIND = 0x02;
 }
 
 void USART_Transmit( unsigned char data )
@@ -129,19 +133,7 @@ unsigned char USART_Receive(void)
 	/* Get and return received data from buffer */
 	unsigned char readData = UDR0;
 
-	return readData; 
-}
-
-void handleBluetooth(){
-	
-	memcpy(outDataArray,pcInDataArray,25);
-
-	if(pcInDataArray[1]=='G'){
-		SPISendArray(0); //send data to module 0 (sensors)
-	}
-	else{
-		SPISendArray(1); //send data to module 1 (control)
-	}
+	return readData;
 }
 
 void BluetoothSendArray(){
@@ -151,40 +143,50 @@ void BluetoothSendArray(){
 	}
 }
 
-void BluetoothReceiveArray(){
-	//Set CTS and RTS to 1
-	PORTD |= (1<<PORTD4);
-	PORTA |= (1<<PORTA2);
-	pcInDataArray[position] = USART_Receive();
-	position++;
-	if(position==25){
-		position=0;
-		handleBluetooth();
+
+void handleBluetooth(){
+	if(!Btrec){
+		return;
 	}
-	PORTD &= ~(1<<PORTD4);
-	PORTA &= ~(1<<PORTA2);
+	
+	memcpy(pcHandle,pcInDataArray,25);
+	pcOutDataArray[0] = 2;
+	pcOutDataArray[1] = 'r';
+	
+	
+	if(pcInDataArray[1] == 'r'){
+		SPISendArray(1);
+	}
+	else{
+		SPISendArray(1); //send data to module 1 (control)
+	}
 }
 
 
+void BluetoothReceiveArray(){
+	
+	pcInDataArray[pcPosition] = USART_Receive();
+	pcPosition++;
+	if(pcPosition == 25){
+		Btrec = true;
+		pcPosition = 0;
+		handleBluetooth();
+	}
+	PORTD &= ~((1<<PORTD4)|(1<<PORTD3));
+}
 
 /*
 *	INTERUPTS
 */
 //bluetooth interupt
 ISR(USART0_RX_vect)
-{
+{	
+	//Set CTS and RTS to 1
+	PORTD |= (1<<PORTD4)|(1<<PORTD3);
 	BluetoothReceiveArray();	
 }
 
 
-ISR(INT0_vect){
-	cli();
-	outDataArray[0] = 0x02;
-	outDataArray[1] = 'A';
-	outDataArray[2] = 'A';
-	SPISendArray(1);
-	sei();
-}
 //Control module wants to send data
 ISR(INT2_vect){
 	cli();
@@ -198,10 +200,34 @@ ISR(INT1_vect){
 	sei();
 }
 
+ISR(INT0_vect){
+	cli();
+	outDataArray[0] = 2;
+	outDataArray[1] = 3;
+	outDataArray[2] = 4;
+	SPISendArray(1);
+	sei();
+}
+
+
 int main(void)
 {
-	USART_Init(7);
 	SPI_MasterInit();
+	USART_Init(7);
 	sei();
-	while (1);
+	/*
+	while (!Btrec){
+		int dummy = 0;
+		dummy = dummy + 2;
+		dummy = dummy + 3;
+		dummy = dummy + 4;
+		SPI_MasterTransmit('D',1);
+	}
+	
+	*/
+	while(1){
+		int fummy = 0;
+		fummy = fummy + 2; 
+	}
+	
 }
