@@ -1,41 +1,58 @@
 %Laborationsrapport
 %
-\documentclass[a4paper,12pt,fleqn]{article} \usepackage{fixltx2e}
-\usepackage[utf8]{inputenc} \usepackage{graphicx} \usepackage{sidecap}
-\usepackage{fancyhdr} \usepackage{amssymb,amsmath}
-\usepackage[swedish]{babel} \usepackage[margin=1.5in]{geometry}
-\usepackage{abstract} \usepackage[parfill]{parskip} \usepackage{tocloft}
-\usepackage{adjustbox} \usepackage{textcomp} \usepackage[T1]{fontenc}
-\usepackage{listings} \usepackage{xcolor,colortbl} \usepackage{hyperref}
-
-\documentclass[a4paper,12pt,fleqn]{article} \usepackage{fixltx2e}
-\usepackage[utf8]{inputenc} \usepackage{graphicx} \usepackage{sidecap}
-\usepackage{fancyhdr} \usepackage{amssymb,amsmath}
-\usepackage[swedish]{babel} \usepackage[margin=1.5in]{geometry}
-\usepackage{abstract} \usepackage[parfill]{parskip} \usepackage{tocloft}
-\usepackage{adjustbox} \usepackage{textcomp} \usepackage[T1]{fontenc}
-\usepackage{listings} \usepackage{xcolor,colortbl} \usepackage{hyperref}
-\usepackage{perpage} %the perpage package \MakePerPage{footnote} %the
-perpage package command
+\documentclass[a4paper,12pt,fleqn]{article}
+\usepackage{fixltx2e}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{sidecap}
+\usepackage{fancyhdr}
+\usepackage{amssymb,amsmath}
+\usepackage[swedish]{babel}
+\usepackage[margin=1.5in]{geometry}
+\usepackage{abstract}
+\usepackage[parfill]{parskip}
+\usepackage{tocloft}
+\usepackage{adjustbox}
+\usepackage{textcomp}
+\usepackage[T1]{fontenc}
+\usepackage{listings}
+\usepackage{xcolor,colortbl}
+\usepackage{hyperref}
+\usepackage{perpage} %the perpage packag
 
 \include{pagestyle}
+
 
 %-------------------------------------------------------------------
 %Första sidan
 %
-\begin{document} \pagestyle{fancy} \pagenumbering{roman} \vspace*{\fill}
-\begingroup \begin{center} \huge{\textbf{Simultan positionering och
-kartläggning}} \\ \vspace{10pt} \normalsize Tobias Grundström och
+\begin{document} 
+	\pagestyle{fancy} 
+	\pagenumbering{roman} 
+	\vspace*{\fill}
+\begingroup \begin{center} 
+\huge{\textbf{Simultan positionering och
+kartläggning}} \\ 
+\vspace{10pt} 
+\normalsize Tobias Grundström och
 Hans-Filip Elo \\ Kandidatprojekt Y - Grupp 8 - VT2014 \\ Version 0.1
-\end{center} \endgroup \vspace*{\fill}
+\end{center} 
+\endgroup 
+\vspace*{\fill}
 
-	\begin{center} %Börjar centrering Status \\ \vspace{3pt} %Whitespace
-	3 pts \begin{tabular}{| p{3cm} | p{3cm} | p{3cm} |} %tabell, 4
-	horizontella |, 3 cm emellan dem. \hline %översta horizontella
-	linjen. Granskad & - & \today \\ \hline % & -tecken för att "gå till
-	nästa ruta" Godkänd & - & - \\ \hline % avslutas med \\ och \hline.
+	\begin{center} %Börjar centrering 
+		Status
+		\\
+		\vspace{3pt} %Whitespace 3 pts
+	    \begin{tabular}{| p{3cm} | p{3cm} | p{3cm} |} %tabell, 4 horizontella |, 3 cm emellan dem.
+	    \hline %översta horizontella linjen.
+	    Granskad & - & \today \\ \hline % & -tecken för att "gå till nästa ruta" 
+		Godkänd & - & - \\ \hline % avslutas med \\ och \hline.
 
-	    \end{tabular} \end{center} \vspace{2cm} \newpage
+	    \end{tabular}
+	\end{center}
+	\vspace{2cm}
+	\newpage
 %-----------------------------------------------------------------
 %Projektidentitet
 %
@@ -70,10 +87,10 @@ Hans-Filip Elo \\ Kandidatprojekt Y - Grupp 8 - VT2014 \\ Version 0.1
 %-----------------------------------------------------------------
 %Innehållsföreteckning
 %
-\addto\captionsswedish{\renewcommand{\contentsname}{Innehållsförteckning
-}}
-}}}}
-\tableofcontents \thispagestyle{fancy} \newpage
+\addto\captionsswedish{\renewcommand{\contentsname}{Innehållsförteckning}}
+\tableofcontents 
+\thispagestyle{fancy} 
+\newpage
 
 \pagenumbering{arabic}
 %-----------------------------------------------------------------
