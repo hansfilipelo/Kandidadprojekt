@@ -111,7 +111,7 @@
 %-----------------------------------------------------------------
 %Översikt
 \section{Inledning}
-I kursen TSEA56 utförs ett projekt i elektronik. Projektet avser att konstruera en mobil robot, som autonomt kartlägger en bana. Roboten ska kommunicera med en persondator via trådlös kommunikationslänk. I projektet skall även en fördjuning skrivas med anknytning till projektet. Denna fördjupning avser att redovisa olika typer av trådlös kommunikation. I avslutande del av dokumentet kommer även kommunikationsprinciperna att jämföras utifrån hastighet, säkerhet och applicerbarhet för vårat projekt. 
+I kursen TSEA56 utförs ett projekt i elektronik. Projektet avser att konstruera en mobil robot som autonomt kartlägger en bana. Roboten ska kommunicera med en persondator via trådlös kommunikationslänk. I projektet skall även en fördjuning skrivas med anknytning till projektet. Denna fördjupning avser att redovisa olika typer av trådlös kommunikation. I avslutande del av dokumentet kommer även kommunikationsprinciperna att jämföras utifrån hastighet, säkerhet och applicerbarhet för vårat projekt. 
 
 \section{Problemformulering}
 Trådlös kommunikation med ett mobilt fordon ställer vissa krav på kommunikationslänken. I denna fördjupning kommer olika kommunikationsmetoder att undersökas. I fördjupningen tas väsentliga aspekter för trådlös kommunikation hos de olika teknikerna upp och granskas. Dessa är framförallt säkerhet, avstånd, överföringshastigheter och stabilitet hos de olika teknikerna. Vilka trådlösa kommunikationstekniker passar ett mobilt robotfordon?
@@ -139,8 +139,8 @@ Lind, Mikael. Affärsprocessinriktad förändringsanalys: utveckling och tilläm
 \begin{figure}[htp]
   \begin{center}
   \includegraphics[keepaspectratio=true,width=0.5\linewidth]{WEP}  %skala och filnamn. 
-  \end{center}
   \caption{Översiktsbild WEP$^{\ref{RC4}}$} %figurtext.
+  \end{center}
   \label{fig:overview}
 \end{figure}
 
@@ -191,7 +191,18 @@ Vid passiv avlyssning så försöker man endast lyssna av kommunikationen mellan
 \subsubsection{RS232}
 När den trådlösa delen av Bluetooth fungerar kan de vara intressant att diskutera vilken form av kommunikation själva hårdvaruenheterna som ska kommunicera med varandra får för typ av information. På en persondator, en vanlig mottagare av Bluetoothkommunikation, kommer den inbyggda Bluetooth mottagaren alternativt Bluetooth dongel att virtualiseras som en seriellport. Att kommunikationen blir seriell innebär att all information behöver konverteras till en följd av höga och låga bitar. RS232 är ett protokoll för sändning av just sådana paket. RS232 har stöd för asynkron kommunikation vilket blir eftertraktat när vi talar om trådlös kommunikation och information ofta kommer i små strömmer kontra en enda kontinuerlig ström. Vid programmering av mottagning och sändning via RS232 på en persondator finns oftast väl etablerade standardbibliotek att använda.
 På enklare hårdvara t.ex. en ATmega1284p med ett FireFly BlueSMiRF GOLD modem, kommer man att variera spänningen på ett antal pinnar direkt för att styra diverse kommunikationssignaler samt för sändningen och mottagningen. 
- 
+\newpage
+Protokollet specificerar upp hur många databitar och stoppbitar man har i varje paketström och vilken typ av paritetsbit som ska användas. Dessutom har den stöd för kommunikationssignaler som kan reglera flödet av information. Två vanliga signaler är CTS och RTS. CTS, Clear To Send, berättar för motparten att denna enhet är redo att ta emot data. RTS,Request To Send, ber om tillåtelse att skicka. Dataströmmen av ett paket kan ses övergrippande i figur~\ref{fig:rs232}
+En viktig sak att beakta vid asynkron kommunikation är att båda enheterna i förväg måste veta vilken hastighet som protokollet utnyttjar. 
+
+\begin{figure}[htp]
+  \begin{center}
+  \includegraphics[keepaspectratio=true,width=0.5\linewidth]{RS232}  %skala och filnamn. 
+  \caption{En RS232 sändning\label{fig:rs232}} %figurtext.
+  \end{center}
+\end{figure}
+
+
 \subsection{Infrared (IR)}
 IR kommunikation är en form av trådlös kommunikation där informationen skickas i form av IR-ljus och kräver därför direkt siktlinje mellan sändare och mottagare. En vanlig implementering av denna form av kommunikation är fjärrkontroller till TV-apparater.
 Infrared Data Association Standards (IrDA) är en association bestående av ungefär 100 medlemsföretag. IrDA protokollen är ett såkallat Point-to-Point-protokoll och skickar alltså kommunikation mellan två enheter. IrDA har överföringshastighet på 2,4 kb/s upp till 4 Mb/s på upp till 1 meters avstånd. Vid länkning av två enheter kommer dessa alltid att kommunicera med 9,6 kb/s för att sedan komma överens om vilken hastighet som ska köras under dataöverföring.\footnote{\label{Carruthers}Carruthers, Jeffrey B. Wireless Infrared Communications,Department of Electrical and Computer Engineering
