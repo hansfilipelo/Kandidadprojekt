@@ -249,11 +249,30 @@ SLAM används, och har används under längre tid, till exempel också i rymdexp
 
 \subsection{Skattning av parametrar}
 
-I just detta problem, som är begränsat kommer positionen att skattas med hjälp av sensorvärden i form av vinkel och avstånd i kombination med enkla algoritmer.
+I just detta problem, som är begränsat kommer positionen att skattas med hjälp av sensorvärden i form av vinkel och avstånd i kombination med enkla algoritmer. Eftersom en del parametrar är kända blir skattningen något lättare än om det hade varit t ex ett godtyckligt stort område. Det kommer att finnas två stycken tre-meters avståndssensorer som är riktade framåt och bakåt, här kallade $S_{front}$ \& $S_{back}$. Om båda sensorerna ger utslag på över tre meter kommer antagandet göras att de har gått utanför sitt mätområde och kommer då skattas som nedan. Mätvärdena kommer i största möjliga mån plockas ut som medelvärdet av den senaste mätdatan.
+
+\begin{equation}
+	S_{front}=3,00 m
+\end{equation}
+\begin{equation}
+	S_{back}=3,00 m
+\end{equation}
+
+Om endast den ena av sensorerna, i detta exempel $S_{back}$, befinner sig utanför sitt mätområde kommer den att skattas med hjälp av nedanstående ekvation. Om istället $S_{front}$ är okänd kommer den skattas på samma sätt. 
+
+\begin{equation}
+	S_{back}=6,00-S_{front}
+\end{equation}
+
+Där 6,00 m är den maximala längden som kan uppstå i området. Dessa sensorvärden kommer sedan användas för att skatta robotens position.
 
 \subsection{Positionsskattning}
 
-Hur uppskattas positionen? Algoritmer?
+För att uppskatta hur långt roboten har färdats kommer referensvärden på sensorerna sparas undan innan roboten rör sig. Dessa värden kommer sedan uppdateras varje gång roboten har färdats 40 cm (ett segment av området). För att veta när roboten färdats 40 cm kommer ett nuvarande sensorvärde jämföras med referensen t ex om roboten färdas framåt kommer differensen mellan $S_{front}$ \& $S_{frontref}$ beräknas. Förflyttningen har åstadkommits då ekvationen nedan är uppfylld. 
+
+\begin{equation}
+	S_{frontref} - S_{front} = 40
+\end{equation}
 
 \subsection{Kartabstraktion}
 
