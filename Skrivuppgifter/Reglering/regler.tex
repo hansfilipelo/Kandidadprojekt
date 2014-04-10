@@ -4,7 +4,7 @@
 \usepackage{graphicx}
 \usepackage{sidecap}
 \usepackage{fancyhdr}
-\usepackage{amssymb,amsmath}
+\usepackage{amssymb,mathtools}
 \usepackage[swedish]{babel}
 \usepackage[margin=1.5in]{geometry}
 \usepackage{abstract}
@@ -164,9 +164,32 @@ De allra flesta robotar nyttjar förmågan att optiskt mäta objekt i sin omgivn
 
 Med optisk avläsning av omvärlden finns alltid möjligheten att korrigera tidigare felaktiga mätvärden genom att samla in mer mätdata för att mer korrekt kunna beskriva sin omgivning. Av den anledningen är all typ av SLAM beroende av att på något sätt granska sin omgivning. 
 
+\subsubsection{Tillståndsrepresentation av reglersystem}
+
+Inom reglerteknik kan linjära system beskrivas på så kallad tillståndsformel så som Glad, Torkel och Ljung, Lennart (2006) beskriver i \textit{Reglerteknik - Grundläggande teori}. I fallet med SLAM använder man lämpligen sensorernas värden som tillstånd, tecknat $\vec{x}$. Tillstånden mäts med diskreta värden då datorer endast hanterar diskreta mätningar och ej kontinuerliga. En diskret tillståndsbeskrivning av ett linjärt reglersystem beskrivs av: 
+
+\begin{gather}
+\vec{x}[n+1] = A\vec{x}[n] + B\vec{u}[n] \\
+\vec{y}[n] = C\vec{x[n]} + D\vec{u[n]}
+\end{gather}
+\\
+Där A, B, C och D är insignaler, u är insignaler och $\vec{y}$ exempelvis är kringliggande objekts position i förhållande till till roboten, alternativt robotens position. 
+
+I ett realiserbart system nyttjas sensorer med en viss osäkerhet. Man kan därmed enbart skatta systemets tillstånd och inte exakt beräkna dem. 
+
+\paragraph{Skattning av tillståndsvariabler}
+
+Tillståndsvariablerna kan skattas med flera metoder. 
+
+
+
 \subsubsection{Filtrering av sensordata}
 
 Inom odometri finns det några olika tekniker för att filtrera sensordata från sin omgivning och besluta om var inom given inertialram sin nuvarande position är. Gemensamt för samtliga tekniker är att de är filter som arbetar mot oberoende tillståndsvariabler. 
+
+
+
+
 
 %-------------------------------Typer av SLAM--------------------------------------------------------------------------------
 \subsection{Typer av SLAM}
@@ -174,6 +197,8 @@ Det finns olika typer av SLAM för olika typer av tillämpningar och med olika e
 
 \subsubsection{Kalmanfilter (KF-SLAM)}
 Ett Kalmanfilter är en typ av algoritm som med hjälp av tidigare mätdata från sensorer som kan innehålla brus och störningar uppskattar okända variabler. Ett Kalmanfilter arbetar på linjära och oberoende tillståndsvariabler och är ett essentiellt verktyg för vägval samt positionsuppskattningen i ett SLAM-system. 
+
+Kalmnafilter är en lösning
 
 \subsubsection{EKF-SLAM} 
 EKF-SLAM är en förkortning för Extended Kalman Filter for Simultaneous Localization And Mapping. Det utökade Kalmanfiltret (extended) skiljer sig från det ursprungliga på så vis att den används vid icke-linjära förhållanden och istället linjäriserar variablerna kring ett medelvärde och deras kovarians. Med kovarians menas då hur de olika variablerna beror av varandra.
@@ -218,8 +243,6 @@ SLAM används, och har används under längre tid, till exempel också i rymdexp
 \newpage
 \section{Fördjupning och kodexempel}
 
-KOMMER!
-
 %------------------------------------------------
 %------------Resultat och slutsatser-------------
 %------------------------------------------------
@@ -235,6 +258,8 @@ International Journal of Robotics Research, 5(4), sida 56–68. Hämtad
 \today:
 \url{http://www.frc.ri.cmu.edu/~hpm/project.archive/reference.file/Smith
 &Cheeseman.pdf}
+
+Glad, Torkel och Ljung, Lennart. 2006. \textit{Reglerteknik - Grundläggande teori}. Upplaga 4:10. Lund. Studentlitteratur AB.
 
 Risgaard, S; Blas, M.R (2005).
 ''SLAM for Dummies, A Tutorial Approach to Simultaneous Localization and Mapping''. 
