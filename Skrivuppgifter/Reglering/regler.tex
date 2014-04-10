@@ -108,6 +108,10 @@
 \pagenumbering{arabic}
 %-----------------------------------------------------------------
 %Översikt
+
+%------------------------------------------------
+%--------------------Inledning-------------------
+%------------------------------------------------
 \section{Inledning}
 
 Simultan positionering och kartläggning (SLAM) är ett problem som kan liknas vid ''Hönan och ägget''-problemet. Utan att veta var vi är - hur kartlägger vi då vår omgivining? Åt andra hållet får man ställa sig frågan - hur kartlägger vi vår omgivning utan att veta var vi är? 
@@ -121,7 +125,7 @@ och minnen kan hantera en stor mängd data. Moderna processorer möjliggör
 alltså ett stort stickprov vilket leder till en liten osäkerhet.
 
 \subsection{Syfte}
-Syftet med denna rapport är att fördjupa oss i de algoritmer och tekniker som används för kartläggning och positionsbestämning hos ett icke-medvetande system. Det underlättar vårt framtida arbete eftersom undertecknade, tillammans med övriga gruppmedlemmar i grupp 8, kommer att konstruera en robot som ska kunna kartlägga ett rum. 
+Syftet med denna rapport är att fördjupa läsaren i de algoritmer och tekniker som används för kartläggning och positionsbestämning hos ett icke-medvetande system och att lösa ett enklare SLAM-problem.
 
 \subsection{Historia}
 
@@ -132,9 +136,25 @@ mikrokontrollers förmåga att hantera mer data - då
 sannolikhetsberäkningarna SLAM innefattar gynnas kraftigt av att arbeta
 med stora stickprov.
 
-På senare år har man, precis som inom många andra vetenskapliga områden, sett utvecklingen ta ytterligare ett kliv tack vare internet och öppen källkodsprojekt som Github och OpenSLAM. Att göra en sökning på ''SLAM'' på Github resulterar i en mängd aktiva projekt på området. Eftersom att källkoden där också finns tillgänglig är detta ett utmärkt exempel för de som vill lära sig om SLAM, undertecknade inkluderade. 
+På senare år har man, precis som inom många andra vetenskapliga områden, sett utvecklingen ta ytterligare ett kliv tack vare internet och öppen källkodsprojekt som Github och OpenSLAM. Att göra en sökning på ''SLAM'' på Github resulterar i en mängd aktiva projekt på området. Eftersom att källkoden där också finns tillgänglig är detta ett utmärkt exempel för de som vill lära sig om SLAM. 
 
-\section{Odometri}
+%------------------------------------------------
+%-------------Problemformulering-----------------
+%------------------------------------------------
+
+\section{Problemformulering}
+
+Det problem som ska lösas är uppbyggt på följande sätt:
+
+En robot med tillgång till ett antal avståndssensorer, ett gyro och en RFID-sensor placeras i ett stängt område med dimension 6x6 meter och som är uppdelad i 40x40 centimeters segment. Den ska, med en vägg som startpunkt, helt autonomt kartlägga området genom att markera ut var väggar finns och var det finns områden som inte går att nå. Den ska även markera ut var det går att finna RFID-taggar. Om inte hela det slutna området är kartlagt ska den upptäcka vilka segment som är oupptäckta, färdas dit och lägga till det i kartan. När området är kartlagt ska roboten ta sig tillbaka till startpunkten och avsluta arbetet.
+
+%------------------------------------------------
+%--------------------Kunskapsbas-----------------
+%------------------------------------------------
+\section{Kunskapsbas}
+
+%----------------------Odometri------------------
+\subsection{Odometri}
 
 För att kunna utföra SLAM krävs det att man gör odometri, d v s kontinuerligt uppskattar vägen man färdats. Odometri kan göras på olika sätt - exempelvis genom att optiskt mäta avstånd till objekt i sin omgivning, vinkelhastigheter på hjul med känd storlek eller steg med given längd. 
 
@@ -144,9 +164,13 @@ De allra flesta robotar nyttjar förmågan att optiskt mäta objekt i sin omgivn
 
 Med optisk avläsning av omvärlden finns alltid möjligheten att korrigera tidigare felaktiga mätvärden genom att samla in mer mätdata för att mer korrekt kunna beskriva sin omgivning. Av den anledningen är all typ av SLAM beroende av att på något sätt granska sin omgivning. 
 
-\subsection{Filtrering av sensordata}
+\subsubsection{Filtrering av sensordata}
 
 Inom odometri finns det några olika tekniker för att filtrera sensordata från sin omgivning och besluta om var inom given inertialram sin nuvarande position är. Gemensamt för samtliga tekniker är att de är filter som arbetar mot oberoende tillståndsvariabler. 
+
+%-------------------------------Typer av SLAM--------------------------------------------------------------------------------
+\subsection{Typer av SLAM}
+Det finns olika typer av SLAM för olika typer av tillämpningar och med olika egenskaper. Vissa är bra på större avstånd medan andra är mer precisa och bra på kortare avstånd. 
 
 \subsubsection{Kalmanfilter (KF-SLAM)}
 Ett Kalmanfilter är en typ av algoritm som med hjälp av tidigare mätdata från sensorer som kan innehålla brus och störningar uppskattar okända variabler. Ett Kalmanfilter arbetar på linjära och oberoende tillståndsvariabler och är ett essentiellt verktyg för vägval samt positionsuppskattningen i ett SLAM-system. 
@@ -162,13 +186,9 @@ fastSlam är en teknik där systemet visuellt kan uppfatta landmärken. Landmär
 
 fastSLAM är snabbare på att bestämma sin position än KF-SLAM men är däremot inte genomförbar då miljön systemet rör sig i är så pass homogen att inga landmärken går att utfinna. Om vi tar den bana vår robot ska kartlägga som referens är den väldigt homogen\footnote{Tävlingsregler: \url{https://drive.google.com/file/d/0B758zzcy4ZrTeG1wRTY4WG9lTDQ/edit?usp=sharing}}. fastSLAM är antagligen inte den bästa tekniken för positionsbestämning och kartläggning av den typen av ''rum''. 
 
-% ------------------------- Typer av SLAM --------------------------
 
-\section{Typer av SLAM}
 
-Det finns olika typer av SLAM för olika typer av tillämpningar och med olika egenskaper. Vissa är bra på större avstånd medan andra är mer precisa och bra på kortare avstånd. 
-
-\subsection{VSLAM}
+\subsubsection{VSLAM}
 
 VSLAM står för visuell SLAM, vilket betyder att lokaliseringen sker med hjälp av kameror. Kamerorna används för att finna landmärken i området som kartläggs och sedan använda dessa som referenser när roboten fortsätter att utforska för att t ex se hur långt och i vilken riktning förflyttning sker relativt landmärket. Visuell SLAM är en förutsättning för att utnyttja den tidigare nämna fastSLAM-tekniken. 
 
@@ -176,17 +196,15 @@ För att bedöma avstånd till ett objekt mäts vinklar mellan farkost och objek
 
 VSLAM är i de allra flesta fall komplicerat att implementera då man behöver avancerade bildsökningsalgoritmer för att finna lämpliga landmärken. 
 
-\subsection{TSLAM}
+\subsubsection{TSLAM}
 Tactile SLAM är en metod som provats för robotar vid kartläggning av ett mörklagt område. Metoden använder sig av känselsensorer för att hitta avgränsningar i området och med hjälp av detta rita upp kartan. Denna metod ger dock inte så bra resultat med de tekniker som existerar i dag.
 
-\subsection{WiFi-SLAM}
+\subsubsection{WiFi-SLAM}
 Denna metod använder sig av styrkan på WiFi-signaler i närheten för att avgöra positionen. Detta är något som använts på t.ex. mobiltelefoner för att avgöra var personer befinner sig. 
 
 För att WiFi-SLAM ska fungera krävs att accesspunkten har information om positionsdata för sig själv, alternativt att den anslutna enheten har information om var aktuellt WiFi är tillgängligt. I en mobiltelefon används den senare metoden då telefonen kan kontrollera var WiFi-nätverket finns med hjälp av GPS. 
 
-% ------------------------- Implementeringar --------------------------
-
-\section{Implementeringar}
+\subsection{Implementeringar}
 
 Det finns väldigt många exempel på implementeringar av SLAM. Robotdammsugare är ett bra exempel på en modern tillämpning av SLAM. Det är en liten enhet som kan använda sig av en modifierad version av VSLAM som kallas CV-SLAM. Detta står för Ceiling Visual SLAM, det vill säga att roboten har kameror som är riktade uppåt och använder landmärken i taket för att rita upp en karta över rummet den städar, så att den dammsuger alla platser i rummet istället för att städa samma punkt flera gånger. 
 
@@ -194,15 +212,19 @@ Det här är ett väldigt bra exempel på hur moderna, små mikrokontrollers kan
 
 SLAM används, och har används under längre tid, till exempel också i rymdexpeditioner där robotar skickas upp i rymden för att upptäcka och kartlägga ställen som vi människor inte har möjlighet att besöka. 
 
-% -------------------------Fördjupning
+%------------------------------------------------
+%--------------------Fördjupning-----------------
+%------------------------------------------------
 \newpage
 \section{Fördjupning och kodexempel}
 
 KOMMER!
 
-% ------------------------- Reflektion --------------------------
+%------------------------------------------------
+%------------Resultat och slutsatser-------------
+%------------------------------------------------
 
-\section{Reflektion}
+\section{Resultat och slutsatser}
 
 Till slut kan vi konstatera att SLAM används i många tillämpningar man kanske inte tänker på. Man kan också konstatera att algoritmerna, filtren och mjukvaran som används för att implementera SLAM relativt komplicerade. Vi inser att vi gjort ett klokt beslut att fördjupa oss i just SLAM, då vi är väldigt beroende av detta i vårt projekt att konstruera en kartritande robot. 
 
