@@ -70,7 +70,12 @@ int main(int argc, char *argv[])
     SerialPort port(&serialPort);
     Order order(&port);
     
-    order.test();
+   //char data[25] = {4,'B','3','2','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','1'};
+    
+   // serialPort.write(data);
+
+    
+    //order.test();
     
     return coreApplication.exec();
 
