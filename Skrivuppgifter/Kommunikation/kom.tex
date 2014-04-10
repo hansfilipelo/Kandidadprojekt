@@ -118,7 +118,8 @@ Trådlös kommunikation med ett mobilt fordon ställer vissa krav på kommunikat
 
 \section{Principer för trådlös kommunikation}
 \subsection{WLAN}
-Ett wireless local area network (WLAN) kopplar ihop två eller flera noder med hjälp av någon form av trådlös distributionsmetod. Ett exempel på en sådan distributionsmetod är orthogonal frequency-division multiplexing (OFDM) som utnyttjar olika bärvågfrekvenser får att koda om signalen. WLAN använder sig oftast av en accesspunkt så att noderna/användarna kan förflytta sig inom räckvidden för denna accesspunkt. Idag används mestadels WLAN som är baserade på standarden IEEE 802.11 som i vardagligt språk brukar kallas Wi-Fi. Standarden är skapat av Institute of Electrical and Electronics Engineers, (IEEE).
+Ett wireless local area network (WLAN) kopplar ihop två eller flera noder med hjälp av någon form av trådlös distributionsmetod. Ett exempel på en sådan distributionsmetod är orthogonal frequency-division multiplexing (OFDM) som utnyttjar olika bärvågfrekvenser får att koda om signalen. WLAN använder sig oftast av en accesspunkt så att noderna/användarna kan förflytta sig inom räckvidden för denna accesspunkt. Idag används mestadels WLAN som är baserade på standarden IEEE 802.11 som i vardagligt språk brukar kallas Wi-Fi. Standarden är skapat av Institute of Electrical and Electronics Engineers, (IEEE). \\
+Användning av WLAN har ökat radikalt och blivit väldigt populärt på grund av dess flexibilitet och användarvänlighet, dock kommer dessa typer av nätverk alltid med lite säkerhetsrisker. IEEE 802.11 innehåller både kryptering och autentiserings metoder med hjälp av wired equivalent privacy (WEP).\footnote{Lopez-Aguilera, Elena. Study on the influence of transmission errors on RSNA authentication mechanisms in IEEE 802.11 WLAN. Computer Communications Volume: 41 Issue: 5 (2014-01-01) p. 76-93} Detta är en av de mest simpla metoder och har idag ersatts av  Wi-Fi Protected Access (WPA) som använder sig av en mer avancerad krypteringsmetod än WEP.
 
 \subsubsection{Stationer}
 Alla komponenter i ett WLAN utgörs av antingen stationer som kan vara noder eller accesspunkter. Alla stationerna har ett nätverkskort, wireless network interface controller (WNIC), som arbetar på samma lager som MAC-lagret (Se rubrik IEEE 802.11). Nätverkskortet använder antenn för att kommunicera med hjälp av radiovågor. En accesspunkt utgörs oftast av en router eller en switch medan en nod utgörs av en PC eller mobiltelefon.
@@ -129,8 +130,24 @@ IEEE 802.11-familjen består av en serie halv-duplex (kommunikationen kan ske i 
 \newline
 Standarden finns i flertalet versioner som använder sig av olika frekvensband och hastigheter. De vanligaste frekvensbanden är 2,4 och 5 GHz och hastigheten kan vara allt från 2 Mbit/s till 1 Gbit/s.IEEE 802.11 kräver att nod \emph{x} konstant lyssnar för att vara redo om en nod \emph{y} skulle försöka skicka data. Detta drar givetvis mycket ström men kan reduceras med hjälp av en Network Allocation Vector (NAV), som enkelt sett fungerar som en räknare. När räknaren är nollskild är systemet i vila, när räknaren är noll lyssnar systemet. Trådlösa stationer som har batteridrift kan därför spara ström genom att gå i vila och sen vakna till när räknaren är noll och då vara redo att ta emot data.\footnote{Holger Karl, Andreas Willig. Protocols and Architectures for Wireless Sensor Networks, Wiley, 2005}
 
-\subsubsection{Säkerhet}
-Användning av WLAN har ökat radikalt och blivit populärt på grund av dess flexibilitet och användarvänlighet; dock kommer dessa typer av nätverk alltid med lite säkerhetsrisker. IEEE 802.11 innehåller både kryptering och autentiseringsmetoder med hjälp av wired equivalent privacy (WEP).\footnote{Lopez-Aguilera, Elena. Study on the influence of transmission errors on RSNA authentication mechanisms in IEEE 802.11 WLAN. Computer Communications Volume: 41 Issue: 5 (2014-01-01) p. 76-93} Detta är en av de enklare  metoder och har idag ersatts av  Wi-Fi Protected Access (WPA) som använder sig av en mer avancerad krypteringsmetod än WEP.
+\subsubsection{WEP}
+Wired Equivalent Privacy (WEP) är ett system som utvecklats för att göra 802.11 standarden säker. Principiellt går det till så att avsändaren(exempelvis routern) krypterar data och skickar det trådlöst för att mottagaren(exempelvis en smartphone)sedan ska kunna dekryptera det. WEP är ett protokoll som bygger på att både sändare och mottagare har samma nyckel. RC4 chiffret använder sedan nyckeln för att skapa en pseudo-slumpad utsekvens som skickas till mottagaren. Väl på mottagarsidan sker samma sekvens fast i omvändning för att får fram datapaketet.\footnote{\label{RC4}Chaabouni, Rafik. Break WEP Faster with Statistical Analysis, Institute of Technology Lausanne, 2006. http://lasecwww.epfl.ch/pub/lasec/doc/cha06.pdf (hämtad 2014-04-10)}
+
+Lind, Mikael. Affärsprocessinriktad förändringsanalys: utveckling och tillämpning av synsätt och metod. School of Computer and Communication Sciences
+, Linköpings universitet, 1996.
+
+\begin{figure}[htp]
+  \begin{center}
+  \includegraphics[keepaspectratio=true,width=0.5\linewidth]{WEP}  %skala och filnamn. 
+  \end{center}
+  \caption{Översiktsbild WEP$^{\ref{RC4}}$} %figurtext.
+  \label{fig:overview}
+\end{figure}
+
+Problemet med WEP är att den gemensamma nyckeln aldrig eller väldigt sällan byts ut eftersom metoden inte har stöd för att enheter byter krypteringsnyckel dynamiskt. Om samma nyckel används under lång tid kan angripare hitta mönster i paketen och således även nyckeln. Hur lång tid det tar att knäcka en WEP-nyckel beror på hur pass stor dataströmmen är, desto fler paket som skickas från noden till knytpunkten ju mer data med samma nyckel har avlyssnaren att arbeta med. På grund av bristerna i denna krypteringsmetod har en del andra utvecklats och kommit ut på marknaden under senare år.\footnote{\label{WEP}Kryptera mera. WEP, WPA och WPA2. http://www.omwlan.se/artiklar/kryptering-wep-wpa.aspx (hämtad 2014-04-10}
+
+\subsubsection{WPA}
+
 \newpage 
 
 \subsection{Bluetooth}
