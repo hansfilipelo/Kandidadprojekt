@@ -37,7 +37,7 @@ void SerialPort::handleReadyRead() //untested readyread
     QString inData = "";
     inData = port->readAll();
     m_standardOutput << inData << endl;
-    /*if(inData.length() == 25){
+    if(inData.length() == 25){
         handleData(inData);
         inData ="";
         tempData ="";
@@ -66,7 +66,7 @@ void SerialPort::handleReadyRead() //untested readyread
         }else if(inData.length() > 25){
             std::cout << "Fatal error too long data from BT" << std::endl;
         }
-    }*/
+    }
 }
 
 void SerialPort::handleError(QSerialPort::SerialPortError serialPortError)
