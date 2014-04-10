@@ -1,5 +1,7 @@
 #include "gui.h"
 #include "ui_gui.h"
+#include "order.h"
+#include "serialport.h"
 
 Gui::Gui(QWidget *parent) :
     QMainWindow(parent),
@@ -12,12 +14,60 @@ Gui::Gui(QWidget *parent) :
     timeVector.insert(0,0);
     timer->start(1000);
     ui->mapView->setScene(scene);
+    startPort();
 
 }
 
 Gui::~Gui()
 {
     delete ui;
+}
+
+int Gui::startPort(){
+
+        QTextStream standardOutput(stdout);
+        QTextStream standardInput(stdin);
+
+        QSerialPort serialPort;
+        QString serialPortName = "FireFly-AA63-SPP";
+        serialPort.setPortName(serialPortName);
+
+        if (!serialPort.open(QIODevice::ReadWrite)) {
+            standardOutput << QObject::tr("Failed to open port %1, error: %2").arg(serialPortName).arg(serialPort.errorString()) << endl;
+            return 1;
+        }
+
+        int serialPortBaudRate = 115200; // kanske inte fungerar just nu
+        if (!serialPort.setBaudRate(serialPortBaudRate)) {
+            standardOutput << QObject::tr("Failed to set 115200 baud for port %1, error: %2").arg(serialPortName).arg(serialPort.errorString()) << endl;
+            return 1;
+        }
+
+        if (!serialPort.setDataBits(QSerialPort::Data8)) {
+            standardOutput << QObject::tr("Failed to set 8 data bits for port %1, error: %2").arg(serialPortName).arg(serialPort.errorString()) << endl;
+            return 1;
+        }
+
+        if (!serialPort.setParity(QSerialPort::NoParity)) {
+            standardOutput << QObject::tr("Failed to set no parity for port %1, error: %2").arg(serialPortName).arg(serialPort.errorString()) << endl;
+            return 1;
+        }
+
+        if (!serialPort.setStopBits(QSerialPort::OneStop)) {
+            standardOutput << QObject::tr("Failed to set 1 stop bit for port %1, error: %2").arg(serialPortName).arg(serialPort.errorString()) << endl;
+            return 1;
+        }
+
+        if (!serialPort.setFlowControl(QSerialPort::NoFlowControl)) {
+            standardOutput << QObject::tr("Failed to set no flow control for port %1, error: %2").arg(serialPortName).arg(serialPort.errorString()) << endl;
+            return 1;
+        }
+
+        SerialPort port(&serialPort);
+        serPort = &port;
+        Order order(&port);
+        bluetooth = &order;
+        return 0;
 }
 
 void Gui::updateTimeVector(){
@@ -189,28 +239,27 @@ void Gui::updateMap(char inMap[10][17]){
 void Gui::on_upButton_pressed()
 {
     //testar min fkn
-    insertRow(testArray,map);
-    updateMap(map);
+//    insertRow(testArray,map);
+//    updateMap(map);
 
-    //Bluetooth->sendUp();
+    bluetooth->forward();
 }
 
 void Gui::on_downButton_pressed()
 {
-    //Bluetooth->sendDown();
+    bluetooth->backward();
 }
 
 void Gui::on_leftButton_pressed()
 {
-    //Bluetooth->sendLeft();
+    bluetooth->rotateLeft();
 }
 
 void Gui::on_rightButton_pressed()
 {
-    //Bluetooth->sendRight();
+    bluetooth->rotateRight();
 }
 
 void Gui::on_speedSlider_sliderReleased(){
-    int multiplier = 2.5;
-    //Bluetooth->updateSpeed(ui->speedSlider->value()*multiplier);
+   speedMultiplier = ui->speedSlider->value();
 }
