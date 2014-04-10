@@ -1,7 +1,10 @@
 #include "gui.h"
 #include "ui_gui.h"
-#include "order.h"
-#include "serialport.h"
+#include "../../../../kommunikation/serialreader/order.h"
+#include "../../../../kommunikation/serialreader/serialport.h"
+#include <QtSerialPort/QSerialPort>
+#include <QtCore>
+
 
 Gui::Gui(QWidget *parent) :
     QMainWindow(parent),
