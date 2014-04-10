@@ -31,7 +31,11 @@ int Gui::startPort(){
         QTextStream standardOutput(stdout);
         QTextStream standardInput(stdin);
 
-        QSerialPort serialPort;
+        QSerialPort serialPort; // Perhaps new declaring this will make it work? Could it be that the crash is realted
+                                //to this item being released too early? 
+                                // The other issue, might just be an incorrect warning atleast some sources point to that.
+                                // we can determine if this could be the issue by sending a command to order the last
+                                // thing we do in this file.
         QString serialPortName = "FireFly-AA63-SPP";
         serialPort.setPortName(serialPortName);
 
