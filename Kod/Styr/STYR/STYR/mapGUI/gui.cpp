@@ -1,10 +1,11 @@
 #include "gui.h"
 #include "ui_gui.h"
+#include <qiodevice.h>
 #include "../../../../kommunikation/serialreader/order.h"
 #include "../../../../kommunikation/serialreader/serialport.h"
 #include <QtSerialPort/QSerialPort>
 #include <QtCore>
-
+#include <QIODevice>
 
 Gui::Gui(QWidget *parent) :
     QMainWindow(parent),
@@ -17,7 +18,6 @@ Gui::Gui(QWidget *parent) :
     timeVector.insert(0,0);
     timer->start(1000);
     ui->mapView->setScene(scene);
-    startPort();
 
 }
 
@@ -35,9 +35,14 @@ int Gui::startPort(){
         QString serialPortName = "FireFly-AA63-SPP";
         serialPort.setPortName(serialPortName);
 
-        if (!serialPort.open(QIODevice::ReadWrite)) {
-            standardOutput << QObject::tr("Failed to open port %1, error: %2").arg(serialPortName).arg(serialPort.errorString()) << endl;
-            return 1;
+        try{
+
+           if (!serialPort.open(QIODevice::ReadWrite)) {
+               standardOutput << QObject::tr("Failed to open port %1, error: %2").arg(serialPortName).arg(serialPort.errorString()) << endl;
+               return 1;
+           }
+           }catch(...){
+
         }
 
         int serialPortBaudRate = 115200; // kanske inte fungerar just nu
@@ -66,10 +71,10 @@ int Gui::startPort(){
             return 1;
         }
 
-        SerialPort port(&serialPort);
-        serPort = &port;
-        Order order(&port);
-        bluetooth = &order;
+        SerialPort* port = new SerialPort(&serialPort);
+        serPort = port;
+        Order * order = new Order(port);
+        bluetooth = order;
         return 0;
 }
 
