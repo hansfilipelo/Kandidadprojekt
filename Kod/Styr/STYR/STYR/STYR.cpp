@@ -22,8 +22,8 @@
 // Intiating global variables
 // -----------------------------
 // Chooses direction
-int gear = 0;
-int speed = 0;
+static int gear = 0;
+static int speed = 0;
 Slave steerModuleSlave;
 Slave* slavePointer = &steerModuleSlave;
 Communication* abstractionObject = new Communication(slavePointer);
