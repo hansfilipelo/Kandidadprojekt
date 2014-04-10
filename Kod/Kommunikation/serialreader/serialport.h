@@ -26,14 +26,15 @@ public:
     ~SerialPort();
     void sendChar(const char *);
     void sendArray(const char data[25]);
-
+    QSerialPort *port;
+    
 private slots:
     void handleReadyRead();
     void handleError(QSerialPort::SerialPortError error);
     void handleData(QString);
 
 private:
-    QSerialPort *port;
+    
     QByteArray  m_readData;
     QTextStream m_standardOutput;
     QString tempData;

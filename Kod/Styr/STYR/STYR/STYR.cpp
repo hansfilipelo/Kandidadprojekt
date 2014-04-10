@@ -10,19 +10,20 @@
 #include <util/delay.h>
 #include <avr/interrupt.h>
 #include <stdio.h>
-#include "Map.h"
+#include <stdlib.h>
 #include "MapSection.h"
+#include "Map.h"
 #include "Abstraction.h"
-#include "../../../sensormodul/sensormodul/slave.h"
 #include "Communication.h"
+#include "../../../sensormodul/sensormodul/slave.h"
 
 #if DEBUG == 0
 
 // Intiating global variables
 // -----------------------------
 // Chooses direction
-int gear = 0;
-int speed = 0;
+static int gear = 0;
+static int speed = 0;
 Slave steerModuleSlave;
 Slave* slavePointer = &steerModuleSlave;
 Communication* abstractionObject = new Communication(slavePointer);

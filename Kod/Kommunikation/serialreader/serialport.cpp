@@ -3,6 +3,7 @@
 #include <QCoreApplication>
 #include <iostream>
 #include <QDebug>
+#include <QChar>
 
 QT_USE_NAMESPACE
 
@@ -27,32 +28,34 @@ void SerialPort::sendChar(const char * inChar){
 }
 
 void SerialPort::sendArray(const char inArray[25]){
-    for(unsigned int i= 0; i < 25; i++){
-        sendChar(&inArray[i]);
-        
-        std::cout << "Sending: " << inArray[i] << std::endl;
-    }
+    port->write(inArray);
+
 }
 
 void SerialPort::handleReadyRead() //untested readyread
 {
     QString inData = "";
     inData = port->readAll();
-    
-    if(inData.length() == 25){
-        //handleData(inData);
+    m_standardOutput << inData << endl;
+    /*if(inData.length() == 25){
+        handleData(inData);
         inData ="";
         tempData ="";
+        std::cout << "first" << std::endl;
         return;
     }else if((inData.length() < 25) & (tempData == "")){
         tempData = inData;
+        std::cout << "second. " << inData.length()  << std::endl;
         return;
     }else if(inData.length() < 25){
+        std::cout << "third" << inData.length() << std::endl;
         tempData.append(inData);
         if (tempData.length() < 25){
+            std::cout << "fourth" << tempData.length() << std::endl;
             return;
         }
         if(tempData.length() == 25){
+            std::cout << "fifth" << std::endl;
             handleData(tempData);
             inData = "";
             tempData = "";
@@ -63,7 +66,7 @@ void SerialPort::handleReadyRead() //untested readyread
         }else if(inData.length() > 25){
             std::cout << "Fatal error too long data from BT" << std::endl;
         }
-    }
+    }*/
 }
 
 void SerialPort::handleError(QSerialPort::SerialPortError serialPortError)
@@ -75,11 +78,8 @@ void SerialPort::handleError(QSerialPort::SerialPortError serialPortError)
 }
 
 void SerialPort::handleData(QString inData){
-    for (int i = 0; i< inData.length(); i++){
-        std::cout << inData.toStdString() << std::endl;
-        
-    }
-    
+    unsigned int test = inData.toStdString().at(0);
+        std::cout << test << inData.toStdString() << std::endl;
     return;
     
 }

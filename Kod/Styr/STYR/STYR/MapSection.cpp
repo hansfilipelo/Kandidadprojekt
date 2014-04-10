@@ -155,6 +155,7 @@ Robot::Robot(int xPos, int yPos, Map* inMom, Communication* inComm) : MapSection
 	direction = 'f';
     
     commObj = inComm;
+    previousSection = mom->getPos(xPos,yPos);
     mom->setSection(xPos,yPos,this);
 }
 

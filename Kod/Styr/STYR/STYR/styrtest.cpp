@@ -80,6 +80,9 @@ int main(){
         cout << testPushBack[i] << endl;
     }
     
+    while (cin) {
+        
+    }
     
     // Delete
     delete testRobot;
