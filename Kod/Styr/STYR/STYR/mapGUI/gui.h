@@ -10,6 +10,8 @@
 #include<QGraphicsScene>
 #include <QtAlgorithms>
 #include <QtSerialPort/QtSerialPort>
+
+
 class SerialPort;
 class Order;
 namespace Ui {
@@ -60,7 +62,6 @@ private:
     QGraphicsScene* scene = new QGraphicsScene();
     Order* bluetooth;
     SerialPort* serPort;
-    QSerialPort portPointer;
     int speedMultiplier;
     //testvariabler
     char map[10][17]={{'U','U','U','U','U','U','U','F','U','E','E','R','E','E','E','E','U'},
