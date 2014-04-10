@@ -15,11 +15,15 @@ CONFIG		+= c++11
 
 SOURCES += main.cpp \
     gui.cpp \
-    qcustomplot.cpp
+    qcustomplot.cpp \
+    order.cpp \
+    serialport.cpp
 
 HEADERS  += \
     gui.h \
-    qcustomplot.h
+    qcustomplot.h \
+    serialport.h \
+    order.h
 
 FORMS    += \
     gui.ui
