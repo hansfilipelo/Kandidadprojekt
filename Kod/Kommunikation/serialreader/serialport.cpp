@@ -20,13 +20,6 @@ SerialPort::~SerialPort()
 {
 }
 
-void SerialPort::sendChar(const char * inChar){
-    
-    std::cout << sizeof(inChar) << std::endl;
-    port->write(inChar);
-    port->waitForBytesWritten(1000);
-}
-
 void SerialPort::sendArray(const char inArray[25]){
     port->write(inArray,25);
     port->waitForBytesWritten(100);

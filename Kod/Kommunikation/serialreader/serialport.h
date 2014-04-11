@@ -24,7 +24,6 @@ class SerialPort : public QObject
 public:
     SerialPort(QSerialPort *serialPort, QObject *parent = 0);
     ~SerialPort();
-    void sendChar(const char *);
     void sendArray(const char data[25]);
     QSerialPort *port;
     
