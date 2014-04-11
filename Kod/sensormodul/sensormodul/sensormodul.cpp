@@ -25,6 +25,7 @@ double vinkelv = 0;
 bool gyromode = false;
 long int konstant = 458610;
 Slave sensormodul;
+unsigned char one=1;
 
 //Initiera USART
 void USART_Init( unsigned int baud )
@@ -37,9 +38,6 @@ void USART_Init( unsigned int baud )
 	/* Set frame format: 8data, 2stop bit */
 	UCSR0C = (0<<USBS0)|(3<<UCSZ00);
 }
-
-
-
 
 void handleInDataArray(){
 	if(sensormodul.inDataArray[1] == 'g'){
@@ -62,8 +60,9 @@ ISR(SPI_STC_vect){
 	SPDR = sensormodul.outDataArray[sensormodul.position];
 	sensormodul.inDataArray[sensormodul.position-1] = SPDR;
 	
-	if ((sensormodul.position == (sensormodul.inDataArray[0]+1))&(sensormodul.inDataArray[0]!= 0)){
+	if ((sensormodul.position == (sensormodul.inDataArray[0]+one))&(sensormodul.inDataArray[0]!= 0)){
 		PORTC |= (1<<PORTC0);
+		sensormodul.position=0;
 	}
 }
 
@@ -93,7 +92,7 @@ ISR(USART0_RX_vect){
 
 int main(void)
 {	
-	sensormodul.SPI_Init();
+ 	sensormodul.SPI_Init();
 	USART_Init(383);
 	
 	
@@ -159,10 +158,10 @@ int main(void)
 			savepos++;
 		}
 		
-		if ((PIND==0x80)){
+		/*if ((PIND==0x80)){
 			sensormodul.SPI_Send();
-			_delay_ms(5);
-		}	
+			_delay_us(5);
+		}*/	
 		ADCSRA |= 1<<ADSC;	// Start Conversion
 		
 	}
