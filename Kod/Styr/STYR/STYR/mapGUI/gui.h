@@ -48,6 +48,14 @@ private slots:
 
     void updateTimeVector();
 
+    void on_actionForward_triggered();
+
+    void on_actionDown_triggered();
+
+    void on_actionLeft_triggered();
+
+    void on_actionRight_triggered();
+
 private:
     Ui::Gui *ui;
     QVector<int> sensorVector1;

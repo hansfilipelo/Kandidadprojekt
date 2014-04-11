@@ -6,8 +6,12 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     Gui w;
     w.show();
-    w.startPort();
-
+    for(int i=0; i < 5; i++){
+        if(w.startPort() == 1){
+            continue;
+        }
+     break;
+    }
 
     return a.exec();
 }
