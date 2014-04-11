@@ -162,6 +162,24 @@ volatile void handleBluetooth(){
 		SPISendArray(1); //send data to module 1 (control)
 		asm("");
 	}
+	else if(pcInDataArray[1] == 'f'){
+		asm("");
+		outDataArray[0] = pcHandle[0];
+		outDataArray[1] = pcHandle[1];
+		outDataArray[2] = pcHandle[2];
+		asm("");
+		SPISendArray(1); //send data to module 1 (control)
+		asm("");
+	}
+	else if(pcInDataArray[1] == 'b'){
+		asm("");
+		outDataArray[0] = pcHandle[0];
+		outDataArray[1] = pcHandle[1];
+		outDataArray[2] = pcHandle[2];
+		asm("");
+		SPISendArray(1); //send data to module 1 (control)
+		asm("");
+	}	
 }
 
 void BluetoothReceive(){

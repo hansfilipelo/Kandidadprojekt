@@ -19,13 +19,15 @@ public:
     void setRobot(Robot*);
     
     void sendMap();
-    
+//flyttade från protected
+	unsigned char inData[25];
+    unsigned char outData[25];
+	   
 protected:
     int dataLength;
     Slave* slavePointer;
     Robot* robotPointer;
-    unsigned char inData[25];
-    unsigned char outData[25];
+
     
 };
 
