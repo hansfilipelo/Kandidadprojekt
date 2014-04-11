@@ -1,8 +1,8 @@
 #include "gui.h"
 #include "ui_gui.h"
 #include <qiodevice.h>
-#include "../../../../kommunikation/serialreader/order.h"
-#include "../../../../kommunikation/serialreader/serialport.h"
+#include "../../../Kommunikation/serialreader/order.h"
+#include "../../../Kommunikation/serialreader/serialport.h"
 #include <QtSerialPort/QSerialPort>
 #include <QtCore>
 #include <QIODevice>
