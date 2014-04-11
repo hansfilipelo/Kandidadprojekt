@@ -39,8 +39,8 @@ int Gui::startPort(){
                standardOutput << QObject::tr("Failed to open port %1, error: %2").arg(serialPortName).arg(serialPort->errorString()) << endl;
                return 1;
            }
-           //else {ui->label->setText("Connected.");
-         //  }
+           else {ui->label->setText("Connected.");
+           }
 
         int serialPortBaudRate = 115200; // kanske inte fungerar just nu
         if (!serialPort->setBaudRate(serialPortBaudRate)) {
@@ -246,26 +246,23 @@ void Gui::on_upButton_pressed()
     //testar min fkn
 //    insertRow(testArray,map);
 //    updateMap(map);
-    if(connectStatus){
-    bluetooth->forward();}
+
+    bluetooth->forward();
 }
 
 void Gui::on_downButton_pressed()
 {
-    if(connectStatus){
-    bluetooth->backward();}
+    bluetooth->backward();
 }
 
 void Gui::on_leftButton_pressed()
 {
-    if(connectStatus){
-    bluetooth->rotateLeft();}
+    bluetooth->rotateLeft();
 }
 
 void Gui::on_rightButton_pressed()
 {
-    if(connectStatus){
-    bluetooth->rotateRight();}
+    bluetooth->rotateRight();
 }
 
 void Gui::on_speedSlider_sliderReleased(){
@@ -274,24 +271,20 @@ void Gui::on_speedSlider_sliderReleased(){
 
 void Gui::on_actionForward_triggered()
 {
-    if(connectStatus){
-    bluetooth->forward();}
+    bluetooth->forward();
 }
 
 void Gui::on_actionDown_triggered()
 {
-    if(connectStatus){
-    bluetooth->backward();}
+    bluetooth->backward();
 }
 
 void Gui::on_actionLeft_triggered()
 {
-    if(connectStatus){
-    bluetooth->rotateLeft();}
+    bluetooth->rotateLeft();
 }
 
 void Gui::on_actionRight_triggered()
 {
-      if(connectStatus){
-      bluetooth->rotateRight();}
+      bluetooth->rotateRight();
 }
