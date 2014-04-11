@@ -31,7 +31,7 @@ public:
     void updateMap(char inMap[10][17]);
     void insertRow(char inArray[25], char inMap[10][17]);
     int startPort();
-
+    int connectStatus;
 
 private slots:
     void on_speedSlider_valueChanged(int value);
