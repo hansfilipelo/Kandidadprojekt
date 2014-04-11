@@ -120,7 +120,7 @@ ISR(INT1_vect){
 
 int main(void)
 {
-	#if DEBUG == 0
+#if DEBUG == 0
     // Set up interrupts
 	cli();
 	MCUCR = 0b00000000;
@@ -136,7 +136,7 @@ int main(void)
     
 	sei();
 	
-	#endif
+#endif
 	
 	while(1){
 	}
