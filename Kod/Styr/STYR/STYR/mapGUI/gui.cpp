@@ -31,47 +31,42 @@ int Gui::startPort(){
         QTextStream standardOutput(stdout);
         QTextStream standardInput(stdin);
 
-        QSerialPort serialPort;
+        QSerialPort* serialPort = new QSerialPort;
         QString serialPortName = "FireFly-AA63-SPP";
-        serialPort.setPortName(serialPortName);
+        serialPort->setPortName(serialPortName);
 
-        try{
-
-           if (!serialPort.open(QIODevice::ReadWrite)) {
-               standardOutput << QObject::tr("Failed to open port %1, error: %2").arg(serialPortName).arg(serialPort.errorString()) << endl;
+           if (!serialPort->open(QIODevice::ReadWrite)) {
+               standardOutput << QObject::tr("Failed to open port %1, error: %2").arg(serialPortName).arg(serialPort->errorString()) << endl;
                return 1;
            }
-           }catch(...){
-
-        }
 
         int serialPortBaudRate = 115200; // kanske inte fungerar just nu
-        if (!serialPort.setBaudRate(serialPortBaudRate)) {
-            standardOutput << QObject::tr("Failed to set 115200 baud for port %1, error: %2").arg(serialPortName).arg(serialPort.errorString()) << endl;
+        if (!serialPort->setBaudRate(serialPortBaudRate)) {
+            standardOutput << QObject::tr("Failed to set 115200 baud for port %1, error: %2").arg(serialPortName).arg(serialPort->errorString()) << endl;
             return 1;
         }
 
-        if (!serialPort.setDataBits(QSerialPort::Data8)) {
-            standardOutput << QObject::tr("Failed to set 8 data bits for port %1, error: %2").arg(serialPortName).arg(serialPort.errorString()) << endl;
+        if (!serialPort->setDataBits(QSerialPort::Data8)) {
+            standardOutput << QObject::tr("Failed to set 8 data bits for port %1, error: %2").arg(serialPortName).arg(serialPort->errorString()) << endl;
             return 1;
         }
 
-        if (!serialPort.setParity(QSerialPort::NoParity)) {
-            standardOutput << QObject::tr("Failed to set no parity for port %1, error: %2").arg(serialPortName).arg(serialPort.errorString()) << endl;
+        if (!serialPort->setParity(QSerialPort::NoParity)) {
+            standardOutput << QObject::tr("Failed to set no parity for port %1, error: %2").arg(serialPortName).arg(serialPort->errorString()) << endl;
             return 1;
         }
 
-        if (!serialPort.setStopBits(QSerialPort::OneStop)) {
-            standardOutput << QObject::tr("Failed to set 1 stop bit for port %1, error: %2").arg(serialPortName).arg(serialPort.errorString()) << endl;
+        if (!serialPort->setStopBits(QSerialPort::OneStop)) {
+            standardOutput << QObject::tr("Failed to set 1 stop bit for port %1, error: %2").arg(serialPortName).arg(serialPort->errorString()) << endl;
             return 1;
         }
 
-        if (!serialPort.setFlowControl(QSerialPort::NoFlowControl)) {
-            standardOutput << QObject::tr("Failed to set no flow control for port %1, error: %2").arg(serialPortName).arg(serialPort.errorString()) << endl;
+        if (!serialPort->setFlowControl(QSerialPort::NoFlowControl)) {
+            standardOutput << QObject::tr("Failed to set no flow control for port %1, error: %2").arg(serialPortName).arg(serialPort->errorString()) << endl;
             return 1;
         }
 
-        SerialPort* port = new SerialPort(&serialPort);
+        SerialPort* port = new SerialPort(serialPort);
         serPort = port;
         Order * order = new Order(port);
         bluetooth = order;

@@ -28,8 +28,8 @@ void SerialPort::sendChar(const char * inChar){
 }
 
 void SerialPort::sendArray(const char inArray[25]){
-    port->write(inArray);
-
+    port->write(inArray,25);
+    port->waitForBytesWritten(100);
 }
 
 void SerialPort::handleReadyRead() //untested readyread
