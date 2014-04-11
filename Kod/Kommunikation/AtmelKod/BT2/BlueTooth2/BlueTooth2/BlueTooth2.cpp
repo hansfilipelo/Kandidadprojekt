@@ -70,10 +70,12 @@ volatile void handleBluetooth(){
 	pcOutDataArray[1] = 'D';
 	
 	pcOutDataArray[24] = '1';
+	Btrec = false;
+	asm("");
 	
-	
-	if(pcInDataArray[1] == 'B'){
+	if(pcInDataArray[1] == 'r'){
 		BluetoothSendArray(); //send data to module 0 (sensors)
+		asm("");
 	}
 }
 
