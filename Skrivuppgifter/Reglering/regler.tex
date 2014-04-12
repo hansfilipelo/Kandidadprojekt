@@ -179,11 +179,20 @@ Där A, B, C och D är insignaler, u är insignaler och $\vec{y}$ exempelvis är
 
 I ett realiserbart system nyttjas sensorer med en viss osäkerhet. Man kan därmed enbart skatta systemets tillstånd och inte exakt beräkna dem. 
 
-\paragraph{Skattning av tillståndsvariabler}
+Tillståndsvariablerna kan skattas med flera metoder utifrån tillgänglig mätdata. Två exempel på metoder Maximum likelihood-metoden (ML-skattning) och Minstakvadratmetoden. 
 
-Tillståndsvariablerna kan skattas med flera metoder. 
+\paragraph{ML-skattning}
 
+Antag att en sensors (stokastisk variabel) riktiga värde ges av $x_true$, och att $\hat{x} $ är ett givet stickprov (mätdata) med N antal mätningar. Alla tillstånd för $x_true$ antas vara lika sannolika, sensorvärdena är alltså binomialfördelade. 
 
+Sannolikheten att $x = x_true$ ges då av: 
+
+\begin{gather}
+P(x_{true}) = 
+\end{gather}
+\\
+
+\paragraph{Minstakvadratmetoden}
 
 \subsubsection{Filtrering av sensordata}
 

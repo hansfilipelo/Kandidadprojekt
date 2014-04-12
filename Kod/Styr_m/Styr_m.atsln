@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Atmel Studio Solution File, Format Version 11.00
-Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "STYR", "STYR\STYR.cppproj", "{593036E7-52F6-422B-9262-2A35998A34C6}"
+Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "Styr_m", "Styr_m\Styr_m.cppproj", "{89135045-2442-49B1-98E1-331E546A0D99}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,10 +9,10 @@ Global
 		Release|AVR = Release|AVR
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{593036E7-52F6-422B-9262-2A35998A34C6}.Debug|AVR.ActiveCfg = Debug|AVR
-		{593036E7-52F6-422B-9262-2A35998A34C6}.Debug|AVR.Build.0 = Debug|AVR
-		{593036E7-52F6-422B-9262-2A35998A34C6}.Release|AVR.ActiveCfg = Release|AVR
-		{593036E7-52F6-422B-9262-2A35998A34C6}.Release|AVR.Build.0 = Release|AVR
+		{89135045-2442-49B1-98E1-331E546A0D99}.Debug|AVR.ActiveCfg = Debug|AVR
+		{89135045-2442-49B1-98E1-331E546A0D99}.Debug|AVR.Build.0 = Debug|AVR
+		{89135045-2442-49B1-98E1-331E546A0D99}.Release|AVR.ActiveCfg = Release|AVR
+		{89135045-2442-49B1-98E1-331E546A0D99}.Release|AVR.Build.0 = Release|AVR
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

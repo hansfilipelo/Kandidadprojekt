@@ -1,8 +1,8 @@
 #include "gui.h"
 #include "ui_gui.h"
 #include <qiodevice.h>
-#include "../../../../kommunikation/serialreader/order.h"
-#include "../../../../kommunikation/serialreader/serialport.h"
+#include "../../../Kommunikation/serialreader/order.h"
+#include "../../../Kommunikation/serialreader/serialport.h"
 #include <QtSerialPort/QSerialPort>
 #include <QtCore>
 #include <QIODevice>
@@ -26,6 +26,10 @@ Gui::~Gui()
     delete ui;
 }
 
+void Gui::labelSet(QString text){
+    ui->label->setText(text);
+}
+
 int Gui::startPort(){
 
         QTextStream standardOutput(stdout);
@@ -39,8 +43,8 @@ int Gui::startPort(){
                standardOutput << QObject::tr("Failed to open port %1, error: %2").arg(serialPortName).arg(serialPort->errorString()) << endl;
                return 1;
            }
-           else {ui->label->setText("Connected.");
-           }
+           //else {ui->label->setText("Connected.");
+         //  }
 
         int serialPortBaudRate = 115200; // kanske inte fungerar just nu
         if (!serialPort->setBaudRate(serialPortBaudRate)) {
@@ -246,23 +250,32 @@ void Gui::on_upButton_pressed()
     //testar min fkn
 //    insertRow(testArray,map);
 //    updateMap(map);
-
-    bluetooth->forward();
+    if(connectStatus){
+    bluetooth->forward();}
 }
 
 void Gui::on_downButton_pressed()
 {
-    bluetooth->backward();
+    if(connectStatus){
+    bluetooth->backward();}
 }
 
 void Gui::on_leftButton_pressed()
 {
-    bluetooth->rotateLeft();
+    if(connectStatus){
+    bluetooth->rotateLeft();}
 }
 
 void Gui::on_rightButton_pressed()
 {
-    bluetooth->rotateRight();
+    if(connectStatus){
+    bluetooth->rotateRight();}
+}
+
+void Gui::on_stopButton_clicked()
+{
+    if(connectStatus){
+    bluetooth->halt();}
 }
 
 void Gui::on_speedSlider_sliderReleased(){
@@ -271,20 +284,45 @@ void Gui::on_speedSlider_sliderReleased(){
 
 void Gui::on_actionForward_triggered()
 {
-    bluetooth->forward();
+    if(connectStatus){
+    bluetooth->forward();}
 }
 
 void Gui::on_actionDown_triggered()
 {
-    bluetooth->backward();
+    if(connectStatus){
+    bluetooth->backward();}
 }
 
 void Gui::on_actionLeft_triggered()
 {
-    bluetooth->rotateLeft();
+    if(connectStatus){
+    bluetooth->rotateLeft();}
 }
 
 void Gui::on_actionRight_triggered()
 {
-      bluetooth->rotateRight();
+      if(connectStatus){
+      bluetooth->rotateRight();}
+}
+
+void Gui::on_actionStop_triggered()
+{
+    if(connectStatus){
+    bluetooth->halt();}
+}
+
+void Gui::on_actionSpeedUp_triggered()
+{
+    ui->speedSlider->setValue(ui->speedSlider->value()+10);
+}
+
+void Gui::on_actionSlowDown_triggered()
+{
+    ui->speedSlider->setValue(ui->speedSlider->value()-10);
+}
+
+void Gui::on_pushButton_clicked()
+{
+    this->startPort();
 }
