@@ -12,6 +12,7 @@ int main(int argc, char *argv[])
             continue;
         }
      connected = 1;
+     w.labelSet("Connected");
      break;
     }
     w.connectStatus = connected;

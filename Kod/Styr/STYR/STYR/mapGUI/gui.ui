@@ -24,10 +24,10 @@
      </rect>
     </property>
     <property name="verticalScrollBarPolicy">
-     <enum>Qt::ScrollBarAlwaysOn</enum>
+     <enum>Qt::ScrollBarAsNeeded</enum>
     </property>
     <property name="horizontalScrollBarPolicy">
-     <enum>Qt::ScrollBarAlwaysOn</enum>
+     <enum>Qt::ScrollBarAsNeeded</enum>
     </property>
    </widget>
    <widget class="QSlider" name="speedSlider">
@@ -56,7 +56,7 @@
      </rect>
     </property>
     <property name="text">
-     <string/>
+     <string>U</string>
     </property>
    </widget>
    <widget class="QToolButton" name="downButton">
@@ -69,7 +69,7 @@
      </rect>
     </property>
     <property name="text">
-     <string/>
+     <string>D</string>
     </property>
    </widget>
    <widget class="QToolButton" name="leftButton">
@@ -82,7 +82,7 @@
      </rect>
     </property>
     <property name="text">
-     <string/>
+     <string>L</string>
     </property>
    </widget>
    <widget class="QToolButton" name="rightButton">
@@ -95,7 +95,7 @@
      </rect>
     </property>
     <property name="text">
-     <string/>
+     <string>R</string>
     </property>
    </widget>
    <widget class="QLabel" name="sensor1">
@@ -379,7 +379,7 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>180</x>
+      <x>70</x>
       <y>390</y>
       <width>91</width>
       <height>20</height>
@@ -387,6 +387,32 @@
     </property>
     <property name="text">
      <string>Connecting...</string>
+    </property>
+   </widget>
+   <widget class="QToolButton" name="stopButton">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>500</y>
+      <width>26</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>S</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>387</y>
+      <width>115</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Connect</string>
     </property>
    </widget>
   </widget>
@@ -407,6 +433,9 @@
     <addaction name="actionDown"/>
     <addaction name="actionLeft"/>
     <addaction name="actionRight"/>
+    <addaction name="actionStop"/>
+    <addaction name="actionSpeedUp"/>
+    <addaction name="actionSlowDown"/>
    </widget>
    <addaction name="menuCommands"/>
   </widget>
@@ -449,6 +478,30 @@
    </property>
    <property name="shortcut">
     <string>Right</string>
+   </property>
+  </action>
+  <action name="actionStop">
+   <property name="text">
+    <string>Stop</string>
+   </property>
+   <property name="shortcut">
+    <string>S</string>
+   </property>
+  </action>
+  <action name="actionSpeedUp">
+   <property name="text">
+    <string>SpeedUp</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+Up</string>
+   </property>
+  </action>
+  <action name="actionSlowDown">
+   <property name="text">
+    <string>SlowDown</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+Down</string>
    </property>
   </action>
  </widget>

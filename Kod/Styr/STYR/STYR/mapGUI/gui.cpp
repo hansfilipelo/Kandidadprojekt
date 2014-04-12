@@ -26,6 +26,10 @@ Gui::~Gui()
     delete ui;
 }
 
+void Gui::labelSet(QString text){
+    ui->label->setText(text);
+}
+
 int Gui::startPort(){
 
         QTextStream standardOutput(stdout);
@@ -268,6 +272,12 @@ void Gui::on_rightButton_pressed()
     bluetooth->rotateRight();}
 }
 
+void Gui::on_stopButton_clicked()
+{
+    if(connectStatus){
+    bluetooth->halt();}
+}
+
 void Gui::on_speedSlider_sliderReleased(){
    speedMultiplier = ui->speedSlider->value();
 }
@@ -294,4 +304,25 @@ void Gui::on_actionRight_triggered()
 {
       if(connectStatus){
       bluetooth->rotateRight();}
+}
+
+void Gui::on_actionStop_triggered()
+{
+    if(connectStatus){
+    bluetooth->halt();}
+}
+
+void Gui::on_actionSpeedUp_triggered()
+{
+    ui->speedSlider->setValue(ui->speedSlider->value()+10);
+}
+
+void Gui::on_actionSlowDown_triggered()
+{
+    ui->speedSlider->setValue(ui->speedSlider->value()-10);
+}
+
+void Gui::on_pushButton_clicked()
+{
+    this->startPort();
 }
