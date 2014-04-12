@@ -19,7 +19,7 @@ unsigned char pcOutDataArray[25] = {'0','0','0','0','0','0','0','0','0','0','0',
 unsigned int  position = 0;
 unsigned char pcHandle[25];
 
-bool Btrec = false; 
+volatile bool Btrec = false; 
 /*
 *	BLUETOOTH
 */
@@ -90,6 +90,7 @@ volatile void handleBluetooth(){
 	position++;
 	if(position == 25){
 		Btrec = true;
+		asm("");
 		position = 0;
 	}
 	PORTD &= ~((1<<PORTD4)|(1<<PORTD3));

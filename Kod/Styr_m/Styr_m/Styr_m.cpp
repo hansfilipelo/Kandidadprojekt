@@ -15,7 +15,7 @@
 #include "Map.h"
 #include "Abstraction.h"
 #include "Communication.h"
-#include "../../../sensormodul/sensormodul/slave.h"
+#include "../../sensormodul/sensormodul/slave.h"
 
 #if DEBUG == 0
 
@@ -144,5 +144,3 @@ int main(void)
 	
 	return 0;
 }
-
-

@@ -1,5 +1,5 @@
 #include "Communication.h"
-#include "../../../sensormodul/sensormodul/slave.h"
+#include "../../sensormodul/sensormodul/slave.h"
 #include "MapSection.h"
 
 Communication::Communication(Slave* pointer){
@@ -8,20 +8,21 @@ Communication::Communication(Slave* pointer){
 
 void Communication::handleData(){
     for (int i=0;i<25;i++){
-        inData[i]=slavePointer->inDataArray[i];
+        this->inData[i]=slavePointer->inDataArray[i];
     }
+	//pillat med chars '0' och '1'
     dataLength = (int)inData[0];
-    if (inData[1]=='r' && inData[2]==0) {
+    if (this->inData[1]=='r' && inData[2]=='0') {
         robotPointer->rotateLeft();
     }
-    if (inData[1]=='r' && inData[2]==1) {
+    if (this->inData[1]=='r' && inData[2]=='1') {
         robotPointer->rotateRight();
     }
-    if (inData[1]=='f'){
+    if (this->inData[1]=='f'){
         int speed =(int)inData[3];
         robotPointer->driveForward(speed);
     }
-    if (inData[1]=='b'){
+    if (this->inData[1]=='b'){
         int speed =(int)inData[3];
         robotPointer->driveBackward(speed);
     }

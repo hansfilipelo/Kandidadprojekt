@@ -16,14 +16,14 @@ CONFIG		+= c++11
 SOURCES += main.cpp \
     gui.cpp \
     qcustomplot.cpp \
-    ../../../../kommunikation/serialreader/order.cpp \
-    ../../../../kommunikation/serialreader/serialport.cpp
+    ../../../Kommunikation/serialreader/order.cpp \
+    ../../../Kommunikation/serialreader/serialport.cpp
 
 HEADERS  += \
     gui.h \
     qcustomplot.h \
-    ../../../../kommunikation/serialreader/serialport.h \
-    ../../../../kommunikation/serialreader/order.h
+    ../../../Kommunikation/serialreader/serialport.h \
+    ../../../Kommunikation/serialreader/order.h
 
 FORMS    += \
     gui.ui
