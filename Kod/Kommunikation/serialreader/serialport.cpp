@@ -21,11 +21,48 @@ SerialPort::~SerialPort()
 }
 
 void SerialPort::sendArray(const char inArray[25]){
-    port->write(inArray,25);
+    port->write(inArray,25);                           //write exactly 25 bytes of data to port. 
     port->waitForBytesWritten(100);
 }
 
-void SerialPort::handleReadyRead() //untested readyread
+/*
+//Alt. handleReadyRead(), assuming tempData is QByteArray
+void SerialPort::handleReadyRead() {
+    QByteArray inData;
+    int inBytes = port->bytesAvailable();
+    int tempBytes = tempData.length();
+    
+    checkBytes = inBytes + tempBytes;
+    
+    if(checkBytes == 25){
+        inData = port->readAll();
+        tempData.append(inData);
+        handleData(tempData);
+        inData.clear();
+        tempData.clear();
+        return;
+    }
+    if(checkBytes < 25){                //too little data to handle, save data and leave rdyread.
+        inData = port->readAll();
+        tempData.append(inData);
+        inData.clear();
+        return;
+    }
+    if(checkBytes >25){
+        inData = port->read(25-tempBytes); //Read bytes to fill to exact 25 bytes
+        tempData.append(inData);           //put data together.
+        handleData(tempData);               // handle the data and clear the variables.
+        tempData.clear();
+        inData.clear();
+        return;
+ 
+    }
+ }
+ */
+
+
+
+void SerialPort::handleReadyRead() //semitested readyread will fail to handle if alot of data arrives fast with no spaces inbetween.
 {
     QString inData = "";
     inData = port->readAll();
