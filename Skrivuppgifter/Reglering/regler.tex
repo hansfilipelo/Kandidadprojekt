@@ -183,14 +183,15 @@ Tillståndsvariablerna kan skattas med flera metoder utifrån tillgänglig mätd
 
 \paragraph{ML-skattning}
 
-Antag att en sensors (stokastisk variabel) riktiga värde ges av $x_true$, och att $\hat{x} $ är ett givet stickprov (mätdata) med N antal mätningar. Alla tillstånd för $x_true$ antas vara lika sannolika, sensorvärdena är alltså binomialfördelade. 
+Antag att en sensors riktiga värde ges av $x_true$, och att $\hat{x} $ är ett givet stickprov, alltså mätdata, med N antal mätningar. Alla tillstånd för $x_true$ antas vara lika sannolika, sensorvärdena är antas vara binomialfördelade. 
 
 Sannolikheten att $x = x_true$ ges då av: 
 
 \begin{gather}
-P(x_{true}) = 
+P(X = x_{true}) = {n \choose k}p^{x_{true}}(1-p)^{n-x_{true}}
 \end{gather}
 \\
+Där p är sannolikheten att sensorvärdet är $x_true$ och n är antalet mätningar. 
 
 \paragraph{Minstakvadratmetoden}
 
