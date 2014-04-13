@@ -179,21 +179,39 @@ Där A, B, C och D är insignaler, u är insignaler och $\vec{y}$ exempelvis är
 
 I ett realiserbart system nyttjas sensorer med en viss osäkerhet. Man kan därmed enbart skatta systemets tillstånd och inte exakt beräkna dem. 
 
-Tillståndsvariablerna kan skattas med flera metoder utifrån tillgänglig mätdata. Två exempel på metoder Maximum likelihood-metoden (ML-skattning) och Minstakvadratmetoden. 
+Tillståndsvariablerna kan skattas med flera metoder utifrån tillgänglig mätdata. Två exempel på väl använda metoder Maximum likelihood-metoden (ML-skattning) och Minstakvadratmetoden. Minstakvadratmetoden är något precisare - medan implementeringen av ML-skattning är enklare. Då man bygger en robot som implementerar SLAM är det ofta lämpligt att implementera ML-skattning. 
 
 \paragraph{ML-skattning}
 
-Antag att en sensors riktiga värde ges av $x_true$, och att $\hat{x} $ är ett givet stickprov, alltså mätdata, med N antal mätningar. Alla tillstånd för $x_true$ antas vara lika sannolika, sensorvärdena är antas vara binomialfördelade. 
+Antag att en sensors mäter en längd. Längdens korrekta värde ges av $x_true$, och att $\hat{x} $ är ett givet stickprov, alltså mätdata, med N antal mätningar. 
 
-Sannolikheten att $x = x_true$ ges då av: 
+Det mest sannolika värdet fås, för diskreta mätvärden, binomialfördelningen. 
 
 \begin{gather}
-P(X = x_{true}) = {n \choose k}p^{x_{true}}(1-p)^{n-x_{true}}
+P(X = x_{i}) = p^{x_{i}}(1-p)^{n-x_{i}}
 \end{gather}
-\\
-Där p är sannolikheten att sensorvärdet är $x_true$ och n är antalet mätningar. 
 
-\paragraph{Minstakvadratmetoden}
+Där p är sannolikheten att sensorvärdet är $x_i$ och n är antalet mätningar med resultat $x_i$. 
+
+Sannolikhetsfunktionen, L, för hela stickprovet ges sedan av: 
+
+\begin{gather}
+L = \prod\limits_1^i{p^{x_{i}}(1-p)^{n-x_{i}}}
+\end{gather}
+
+Det mest sannolika värdet fås då $\frac{dL}{dp}$ är lika med 0. För att förenkla derivering och beräkningar används $log(L)$. Multiplikationssumman blir då en vanlig summa. 
+
+\begin{gather}
+\log(L) = \sum\limits_1^i{\log{(p)}{\cdot}x_{i}+\log{(1-p)}\cdot{(n-x_{i})}}
+\end{gather}
+
+Derivatan ges sedan av: 
+
+\begin{gather}
+\frac{dL}{dp} = 0 = \sum\limits_1^i{\frac{x_i}{p}+\frac{n-x_i}{1-p}}
+\end{gather}
+
+Vilket efter uträkningar ger $p = \bar{x}$
 
 \subsubsection{Filtrering av sensordata}
 
@@ -261,18 +279,16 @@ SLAM används, och har används under längre tid, till exempel också i rymdexp
 
 I just detta problem, som är begränsat kommer positionen att skattas med hjälp av sensorvärden i form av vinkel och avstånd i kombination med enkla algoritmer. Eftersom en del parametrar är kända blir skattningen något lättare än om det hade varit t ex ett godtyckligt stort område. Det kommer att finnas två stycken tre-meters avståndssensorer som är riktade framåt och bakåt, här kallade $S_{front}$ \& $S_{back}$. Om båda sensorerna ger utslag på över tre meter kommer antagandet göras att de har gått utanför sitt mätområde och kommer då skattas som nedan. Mätvärdena kommer i största möjliga mån plockas ut som medelvärdet av den senaste mätdatan.
 
-\begin{equation}
-	S_{front}=3,00 m
-\end{equation}
-\begin{equation}
+\begin{gather}
+	S_{front}=3,00 m \\
 	S_{back}=3,00 m
-\end{equation}
+\end{gather}
 
 Om endast den ena av sensorerna, i detta exempel $S_{back}$, befinner sig utanför sitt mätområde kommer den att skattas med hjälp av nedanstående ekvation. Om istället $S_{front}$ är okänd kommer den skattas på samma sätt. 
 
-\begin{equation}
+\begin{gather}
 	S_{back}=6,00-S_{front}
-\end{equation}
+\end{gather}
 
 Där 6,00 m är den maximala längden som kan uppstå i området. Dessa sensorvärden kommer sedan användas för att skatta robotens position.
 
@@ -280,9 +296,9 @@ Där 6,00 m är den maximala längden som kan uppstå i området. Dessa sensorv�
 
 För att uppskatta hur långt roboten har färdats kommer referensvärden på sensorerna sparas undan innan roboten rör sig. Dessa värden kommer sedan uppdateras varje gång roboten har färdats 40 cm (ett segment av området). För att veta när roboten färdats 40 cm kommer ett nuvarande sensorvärde jämföras med referensen t ex om roboten färdas framåt kommer differensen mellan $S_{front}$ \& $S_{frontref}$ beräknas. Förflyttningen har åstadkommits då ekvationen nedan är uppfylld. 
 
-\begin{equation}
+\begin{gather}
 	S_{frontref} - S_{front} = 40
-\end{equation}
+\end{gather}
 
 \subsection{Kartabstraktion}
 
