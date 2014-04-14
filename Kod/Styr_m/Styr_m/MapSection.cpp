@@ -172,32 +172,32 @@ void Robot::changeGear(char inGear){
             gear = inGear;
             
             #if DEBUG == 0
-			PORTD |= 0x10;
-			PORTD &= ~0x20;
+			PORTD |= (1<<PORTD4); //0x10;
+			PORTD &= ~(1<<PORTD5); //0x20;
             #endif
 		}
 		else if (inGear == 'r'){
             gear = inGear;
             
             #if DEBUG == 0
-			PORTD &= ~0x10;
-			PORTD |= 0x20;
+			PORTD &= ~(1<<PORTD4);
+			PORTD |= (1<<PORTD5);
             #endif
 		}
 		else if (inGear == 'l'){
             gear = inGear;
             
             #if DEBUG == 0
-			PORTD |= 0x10;
-			PORTD |= 0x20;
+			PORTD |= (1<<PORTD4);
+			PORTD |= (1<<PORTD5);
             #endif
 		}
 		else if (inGear == 'f'){
             gear = inGear;
             
             #if DEBUG == 0
-			PORTD &= ~0x10;
-			PORTD &= ~0x20;
+			PORTD &= ~(1<<PORTD4);
+			PORTD &= ~(1<<PORTD5);
             #endif
 		}
 }
