@@ -21,7 +21,6 @@ void Communication::handleData(){
 		robotPointer->drive(25);
     }
     if (this->inData[1]=='f'){
-        int speed =(int)inData[3];
 		robotPointer->changeGear('f');
         robotPointer->drive(25);
     }

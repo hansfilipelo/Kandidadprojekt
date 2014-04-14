@@ -153,7 +153,7 @@ volatile void handleBluetooth(){
 	Btrec = false;
 	asm("");
 	
-	if(pcInDataArray[1] == 'r'){
+	if(pcInDataArray[1] == 'f' || pcInDataArray[1] == 'r'|| pcInDataArray[1] == 'b' || pcInDataArray[1] == 'h'){
 		asm("");
 		outDataArray[0] = pcHandle[0];
 		outDataArray[1] = pcHandle[1];
@@ -162,24 +162,6 @@ volatile void handleBluetooth(){
 		SPISendArray(1); //send data to module 1 (control)
 		asm("");
 	}
-	else if(pcInDataArray[1] == 'f'){
-		asm("");
-		outDataArray[0] = pcHandle[0];
-		outDataArray[1] = pcHandle[1];
-		outDataArray[2] = pcHandle[2];
-		asm("");
-		SPISendArray(1); //send data to module 1 (control)
-		asm("");
-	}
-	else if(pcInDataArray[1] == 'b'){
-		asm("");
-		outDataArray[0] = pcHandle[0];
-		outDataArray[1] = pcHandle[1];
-		outDataArray[2] = pcHandle[2];
-		asm("");
-		SPISendArray(1); //send data to module 1 (control)
-		asm("");
-	}	
 }
 
 void BluetoothReceive(){
@@ -203,9 +185,7 @@ void BluetoothReceive(){
 //bluetooth interupt
 ISR(USART0_RX_vect)
 {
-	
 	BluetoothReceive();
-	
 }
 
 //Control module wants to send data
@@ -249,7 +229,6 @@ int main(void)
 	SPI_MasterInit();
 	USART_Init(7);
 	sei();
-	
 	
 	while(1){
 		asm("");
