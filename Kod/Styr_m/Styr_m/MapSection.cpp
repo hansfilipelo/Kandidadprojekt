@@ -172,32 +172,32 @@ void Robot::changeGear(char inGear){
             gear = inGear;
             
             #if DEBUG == 0
-			PORTD |= 0x10;
-			PORTD &= ~0x20;
+			PORTD |= (1<<PORTD4); //0x10;
+			PORTD &= ~(1<<PORTD5); //0x20;
             #endif
 		}
 		else if (inGear == 'r'){
             gear = inGear;
             
             #if DEBUG == 0
-			PORTD &= ~0x10;
-			PORTD |= 0x20;
+			PORTD &= ~(1<<PORTD4);
+			PORTD |= (1<<PORTD5);
             #endif
 		}
 		else if (inGear == 'l'){
             gear = inGear;
             
             #if DEBUG == 0
-			PORTD |= 0x10;
-			PORTD |= 0x20;
+			PORTD |= (1<<PORTD4);
+			PORTD |= (1<<PORTD5);
             #endif
 		}
 		else if (inGear == 'f'){
             gear = inGear;
             
             #if DEBUG == 0
-			PORTD &= ~0x10;
-			PORTD &= ~0x20;
+			PORTD &= ~(1<<PORTD4);
+			PORTD &= ~(1<<PORTD5);
             #endif
 		}
 }
@@ -205,8 +205,7 @@ void Robot::changeGear(char inGear){
 // ------------------------------------
 // Drives
 
-void Robot::driveForward(int speed){
-    changeGear('f');
+void Robot::drive(int speed){
 	int output = floor(speed * 255 / 100);
 	
 	#if DEBUG == 0
@@ -244,11 +243,11 @@ void Robot::rotateLeft(){
 	
 	while (rotateActive)
 	{
-		driveForward(25);
+		drive(25);
 	}
 	
 	// Stop rotation and set gear to forward
-	driveForward(0);
+	drive(0);
 	changeGear('f');
     
     // Update direction
@@ -288,11 +287,11 @@ void Robot::rotateRight(){
     changeGear('r');
 	while (rotateActive)
 	{
-		driveForward(25);
+		drive(25);
 	}
 	
 	// Stop rotation and set gear to forward
-	driveForward(0);
+	drive(0);
 	changeGear('f');
     
     // Update direction
