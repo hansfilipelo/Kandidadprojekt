@@ -36,7 +36,7 @@
 				\\
 				Kandidatprojekt Y - Grupp 8 - VT2014
 				\\
-				Version 0.1
+				Version 0.2
 				\end{center}
 		\endgroup
 	\vspace*{\fill}
@@ -47,7 +47,7 @@
 		\vspace{3pt} %Whitespace 3 pts
 	    \begin{tabular}{| p{3cm} | p{3cm} | p{3cm} |} %tabell, 4 horizontella |, 3 cm emellan dem.
 	    \hline %översta horizontella linjen.
-	    Granskad & - & \today \\ \hline % & -tecken för att "gå till nästa ruta" 
+	    Granskad & hanel742 & \today \\ \hline % & -tecken för att "gå till nästa ruta" 
 		Godkänd & - & - \\ \hline % avslutas med \\ och \hline.
 
 	    \end{tabular}
@@ -165,6 +165,7 @@ ISY tillhandahåller följande i sin utvecklingsmiljö:
 %------------------------------------------------
 \newpage
 \section{Fördjupning}
+I denna fördjupande del går vi igenom förkunskaper som krävs för att beskriva en implementering som kan utföra SLAM i en miljö lik den i problemställningen. 
 
 %----------------------Odometri------------------
 \subsection{Odometri}
@@ -179,7 +180,7 @@ Med optisk avläsning av omvärlden finns alltid möjligheten att korrigera tidi
 
 \subsubsection{Tillståndsrepresentation av reglersystem}
 
-Inom reglerteknik kan linjära system beskrivas på så kallad tillståndsformel så som Glad, Torkel och Ljung, Lennart (2006) beskriver i \textit{Reglerteknik - Grundläggande teori}. I fallet med SLAM använder man lämpligen sensorernas värden som tillstånd, tecknat $\vec{x}$. Tillstånden mäts med diskreta värden då datorer endast hanterar diskreta mätningar och ej kontinuerliga. En diskret tillståndsbeskrivning av ett linjärt reglersystem beskrivs av: 
+Inom reglerteknik kan linjära system beskrivas på så kallad tillståndsformel så som Glad och Ljung\footnote{Glad, Torkel och Ljung, (2006) beskriver i \textit{Reglerteknik - Grundläggande teori}.} beskriver. I fallet med SLAM använder man lämpligen sensorernas värden som tillstånd, tecknat $\vec{x}$. Tillstånden mäts med diskreta värden då datorer endast hanterar diskreta mätningar och ej kontinuerliga. En diskret tillståndsbeskrivning av ett linjärt reglersystem beskrivs av: 
 
 \begin{gather}
 \vec{x}[n+1] = A\vec{x}[n] + B\vec{u}[n] \\
@@ -371,39 +372,44 @@ Nedan syns ett flödesschema över hur en tänkt kartläggningsalgoritm skulle k
 \newpage
 \section{Resultat och slutsatser}
 
-Till slut kan vi konstatera att SLAM används i många tillämpningar man kanske inte tänker på. Man kan också konstatera att algoritmerna, filtren och mjukvaran som används för att implementera SLAM är relativt komplicerade. Vi inser att vi gjort ett klokt beslut att fördjupa oss i just SLAM, då vi är beroende av detta i vårt projekt att konstruera en kartritande robot. 
+Till slut kan vi konstatera att SLAM används i många tillämpningar man kanske inte tänker på. Man kan också konstatera att algoritmerna, filtren och mjukvaran som används för att implementera SLAM ibland kan vara väldigt komplexa. I miljöer där sensorerna kan täcka en stor del av banan kan däremot algoritmerna hållas relativt enkla. Detta då variabler med enkelhet kan skattas via avståndssensorernas medelvärde. 
+
+Vi inser att vi gjort ett klokt beslut att fördjupa oss i just SLAM, då vi är beroende av detta i vårt projekt att konstruera en kartritande robot. SLAM var också den delen vi såg, och fortfarande ser, som störst hinder i utvecklingsprocessen. 
+
+Vi har insett att vi tack vare det långa synfältet hos våra optiska sensorer i kombination med det relativt lilla område vi ska kartlägga kommer kunna använda en relativt enkel implementering. En implementering som använder sig av ML-skattning för observatören\footnote{Glad och Ljung (2006)} i systemet. 
 
 % --------------- Källförteckning ---------------------
-\newpage \section{Källförteckning} Smith, R.C.; Cheeseman, P. (1986).
-''On the Representation and Estimation of Spatial Uncertainty''. The
+\newpage 
+\section{Källförteckning} 
+Datablad Atmega 1284p, Vanheden, databladsserver hos Institutionen för Systemteknik vid Linköpings Universitet. Hämtad 14 april 2014. \url{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/atmega1284p.pdf}
+
+FastSLAM: A Factored Solution to the Simultaneous
+Localization and Mapping Problem, Stanford University. Hämtad 28 mars 2014.
+\url{http://robots.stanford.edu/papers/montemerlo.fastslam-tr.pdf}
+
+Kandidatprojekt Y: Elektronikprojekt, Tävlingsregler för katläggningsrobot. Hämtad 28 mars 2014.  \url{https://drive.google.com/file/d/0B758zzcy4ZrTeG1wRTY4WG9lTDQ/edit?usp=sharing}
+
+Openslam.org
+\url{http://www.openslam.org/}
+
+Glad, Torkel och Ljung, Lennart. 2006. \textit{Reglerteknik - Grundläggande teori}. Upplaga 4:10. Lund. Studentlitteratur AB.
+
+Smith, R.C.; Cheeseman, P. (1986). ''On the Representation and Estimation of Spatial Uncertainty''. The
 International Journal of Robotics Research, 5(4), sida 56–68. Hämtad
 28 mars 2014:
 \url{http://www.frc.ri.cmu.edu/~hpm/project.archive/reference.file/Smith&Cheeseman.pdf}
-
-Glad, Torkel och Ljung, Lennart. 2006. \textit{Reglerteknik - Grundläggande teori}. Upplaga 4:10. Lund. Studentlitteratur AB.
 
 Risgaard, S; Blas, M.R (2005).
 ''SLAM for Dummies, A Tutorial Approach to Simultaneous Localization and Mapping''. 
 Hämtad 28 mars 2014:
 \url{http://ocw.mit.edu/courses/aeronautics-and-astronautics/16-412j-cognitive-robotics-spring-2005/projects/1aslam_blas_repo.pdf}
 
-Karlsson, N.; Goncalves, L.; Munich, M.E.; Pirjanian, P.
-''The vSLAM Algorithm for Navigation in Natural Environments''. Evolution Robotics, Inc. Hämtad 28 mars 2014:
-\url{http://www.vision.caltech.edu/mariomu/research/papers/vSLAM-krs.pdf}
-
 Fox, C.; Evans, M.; Pearson, M.; Prescott, T. (2012)
 ''Tactile SLAM with a biomimetic whiskered robot''. 2012 IEEE International Conference on Robotics and Automation. Hämtad 28 mars 2014.
 \url{http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6224813}
 
-FastSLAM: A Factored Solution to the Simultaneous
-Localization and Mapping Problem, Stanford University. Hämtad 28 mars 2014.
-\url{http://robots.stanford.edu/papers/montemerlo.fastslam-tr.pdf}
-
-Openslam.org
-\url{http://www.openslam.org/}
-
-Atmega 1284p, Vanheden, databladsserver hos Institutionen för Systemteknik vid Linköpings Universitet. Hämtad 14 april 2014. \url{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/atmega1284p.pdf}
-
-Kandidatprojekt Y: Elektronikprojekt, Tävlingsregler för katläggningsrobot. Hämtad 28 mars 2014.  \url{https://drive.google.com/file/d/0B758zzcy4ZrTeG1wRTY4WG9lTDQ/edit?usp=sharing}
+Karlsson, N.; Goncalves, L.; Munich, M.E.; Pirjanian, P.
+''The vSLAM Algorithm for Navigation in Natural Environments''. Evolution Robotics, Inc. Hämtad 28 mars 2014:
+\url{http://www.vision.caltech.edu/mariomu/research/papers/vSLAM-krs.pdf}
 
 \end{document}
