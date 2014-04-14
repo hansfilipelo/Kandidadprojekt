@@ -2,7 +2,7 @@
 #define _Communication_h
 
 #include <stdio.h>
-#include "../../sensormodul/sensormodul/slave.h"
+#include "slave.h"
 
 #include "MapSection.h"
 #include "Abstraction.h"

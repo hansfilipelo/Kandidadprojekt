@@ -8,7 +8,7 @@
 #include "Map.h"
 #include "Abstraction.h"
 #include "Communication.h"
-#include "../../sensormodul/sensormodul/slave.h"
+#include "slave.h"
 
 using namespace std;
 
