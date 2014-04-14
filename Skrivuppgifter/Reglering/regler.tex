@@ -124,7 +124,7 @@ sannolikhetsteori. Då sensordata aldrig kan antas vara exakt använder man sann
 Själva problemet är alltså inte entydigt löst rent matematiskt, utan
 bygger på sannolikhetsteori i kombination med att moderna processorer
 och minnen kan hantera en stor mängd data. Moderna processorer möjliggör
-alltså ett stort stickprov vilket leder till en liten osäkerhet.
+alltså ett stort stickprov vilket kan leda till en mindre osäkerhet.
 
 \subsection{Syfte}
 Syftet med denna rapport är att fördjupa läsaren i de algoritmer och tekniker som används för kartläggning och positionsbestämning hos ett icke-medvetande system och att lösa ett enklare SLAM-problem.
@@ -140,7 +140,7 @@ mikrokontrollers förmåga att hantera mer data - eftersom
 sannolikhetsberäkningarna SLAM innefattar gynnas kraftigt av att arbeta
 med stora stickprov.
 
-På senare år har man, precis som inom många andra vetenskapliga områden, sett utvecklingen ta ytterligare ett kliv tack vare internet och öppna källkodsprojekt som Github och OpenSLAM. Att göra en sökning på ''SLAM'' på Github resulterar i en mängd aktiva projekt på området. Eftersom källkoden där också finns tillgänglig är detta ett utmärkt exempel för de som vill lära sig om SLAM. 
+På senare år har man, precis som inom många andra vetenskapliga områden, sett utvecklingen ta ytterligare ett kliv tack vare internet och öppna källkodsprojekt som Github och OpenSLAM. Att göra en sökning på ''SLAM'' på Github resulterar i en mängd aktiva projekt på området. Eftersom källkoden där också finns tillgänglig är detta ett utmärkt exempel för de som vill läsa på om SLAM-algoritmer. 
 
 %------------------------------------------------
 %-------------Problemformulering-----------------
@@ -162,7 +162,7 @@ För att kunna utföra SLAM krävs det att man gör odometri, d v s kontinuerlig
 
 Uppskattandet av färdvägen är aldrig en exakt lära. Det finns alltid en viss osäkerhet i sensorer. Det är av denna anledning som SLAM är en sannolikhetslära mer än en exakt vetenskap. 
 
-De allra flesta robotar nyttjar förmågan att optiskt mäta objekt i sin omgivning. Anledningen till detta är att man då kan kompensera för tidigare mätfel vid framtida mätningar. Om man enbart förlitar sig på interna mätningar finns risken att tidiga mätfel görs, vilket fortplantar sig och leder till än större felskattningar senare under kartläggningen. 
+Många robotar nyttjar förmågan att optiskt mäta objekt i sin omgivning, men det förekommer även implementeringar med radar och sonar. Det finns då möjlighet att kompensera för tidigare mätfel vid framtida mätningar, något som inte bara går att utföra med data från optiska sensorer, men som kan göra större inverkan på dessa. Om man enbart förlitar sig på interna mätningar finns risken att tidiga mätfel görs, vilket fortplantar sig och leder till än större felskattningar senare under kartläggningen. 
 
 Med optisk avläsning av omvärlden finns alltid möjligheten att korrigera tidigare felaktiga mätvärden genom att samla in mer mätdata för att mer korrekt kunna beskriva sin omgivning. Av den anledningen är all typ av SLAM beroende av att på något sätt granska sin omgivning. 
 
@@ -261,7 +261,7 @@ För att WiFi-SLAM ska fungera krävs att accesspunkten har information om posit
 
 \subsection{Implementeringar}
 
-Det finns många exempel på implementeringar av SLAM. Robotdammsugare är ett bra exempel på en modern tillämpning av SLAM. Det är en liten enhet som kan använda sig av en modifierad version av VSLAM som kallas CV-SLAM. Detta står för Ceiling Visual SLAM, det vill säga att roboten har kameror som är riktade uppåt och använder landmärken i taket för att rita upp en karta över rummet den städar, så att den dammsuger alla platser i rummet istället för att städa samma punkt flera gånger. 
+Det finns många exempel på implementeringar av SLAM. Robotdammsugare är ett bra exempel på en modern tillämpning som kan använda sig av SLAM. Det är då en liten enhet som kan använda sig av en modifierad version av VSLAM som kallas CV-SLAM. Detta står för Ceiling Visual SLAM, det vill säga att roboten har kameror som är riktade uppåt och använder landmärken i taket för att rita upp en karta över rummet den städar, så att den dammsuger alla platser i rummet istället för att städa samma punkt flera gånger. 
 
 Det här är ett bra exempel på hur moderna, små mikrokontrollers kan möjliggöra SLAM att användas för att förenkla vår vardag.  
 
@@ -302,7 +302,7 @@ För att uppskatta hur långt roboten har färdats kommer referensvärden på se
 
 \subsection{Kartabstraktion}
 
-Kartan abstraheras i form av en rektangel med ett rutnät med dimensionen 33x17 rutor med koordinaterna (0,0) i det övre vänstra hörnet. Det definierade området i problemformuleringen, d v s det verkliga området skulle med liknande rutnät bli 15x15 rutor, men den utökas något för att underlätta uppritningen. Roboten kommer i början att placeras i punkten (15,0) och rita upp kartan utifrån detta. Det kommer då inte spela någon roll hur roboten är placerad i det verkliga systemet eftersom det finns utrymma för 15 rutor åt båda hållen inklusive marginaler. 
+Kartan abstraheras i form av en rektangel med ett rutnät med dimensionen 33x17 rutor med koordinaterna (0,0) i det övre vänstra hörnet. Det definierade området i problemformuleringen, d v s det verkliga området skulle med liknande rutnät bli 15x15 rutor, men den utökas något för att underlätta uppritningen. Roboten kommer i början att placeras i punkten (15,0) och rita upp kartan utifrån detta. Det kommer då inte spela någon roll hur roboten är placerad i det verkliga systemet eftersom det finns utrymme för 15 rutor åt båda hållen inklusive marginaler. 
 
 Hur uppdateras kartan (Algoritm?)
 
