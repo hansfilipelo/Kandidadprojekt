@@ -172,7 +172,7 @@ void Robot::changeGear(char inGear){
             gear = inGear;
             
             #if DEBUG == 0
-			PORTD |= (1<<PORTD4); //0x10;
+			PORTD &= ~(1<<PORTD4); //0x10;
 			PORTD &= ~(1<<PORTD5); //0x20;
             #endif
 		}
@@ -180,15 +180,15 @@ void Robot::changeGear(char inGear){
             gear = inGear;
             
             #if DEBUG == 0
-			PORTD &= ~(1<<PORTD4);
-			PORTD |= (1<<PORTD5);
+			PORTD &= ~(1<<PORTD5);
+			PORTD |= (1<<PORTD4);
             #endif
 		}
 		else if (inGear == 'l'){
             gear = inGear;
             
             #if DEBUG == 0
-			PORTD |= (1<<PORTD4);
+			PORTD &= ~(1<<PORTD4);
 			PORTD |= (1<<PORTD5);
             #endif
 		}
@@ -196,14 +196,14 @@ void Robot::changeGear(char inGear){
             gear = inGear;
             
             #if DEBUG == 0
-			PORTD &= ~(1<<PORTD4);
-			PORTD &= ~(1<<PORTD5);
+			PORTD |= (1<<PORTD4);
+			PORTD |= (1<<PORTD5);
             #endif
 		}
 }
 
 // ------------------------------------
-// Drives
+// Drives 
 
 void Robot::drive(int speed){
 	int output = floor(speed * 255 / 100);
