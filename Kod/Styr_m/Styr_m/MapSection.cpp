@@ -573,18 +573,27 @@ void Robot::updateRobotPosition(){
 // -----------------------------------------
 
 void Robot::adjustPosition(){
-    if (meanValueArray(leftSensor,3)>90) {
-        leftReference=80;
+    if (meanValueArray(leftBackSensor,3)>90) {
+        leftBackReference=80;
     }
     
     // undefined sensorvalues will be set to 80//
     
-    else if (meanValueArray(rightSensor,3)>90) {
-        rightReference=80;
+    else if (meanValueArray(rightFrontSensor,3)>90) {
+        rightFrontReference=80;
+    }
+    else if (meanValueArray(rightBackSensor,3)>90) {
+        rightBackReference=80;
+    }
+    else if (meanValueArray(leftFrontSensor,3)>90) {
+        leftFrontReference=80;
     }
     else{
-        rightReference = meanValueArray(rightSensor,3);
-        leftReference = meanValueArray(leftSensor,3);
+        rightFrontReference = meanValueArray(rightFrontSensor,3);
+        leftFrontReference = meanValueArray(leftFrontSensor,3);
+        rightBackReference = meanValueArray(rightBackSensor,3);
+        leftBackReference = meanValueArray(leftBackSensor,3);
+
         //Changes the references on the side sensors to help position adjustment
     }
     

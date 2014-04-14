@@ -114,9 +114,12 @@ public:
 protected:
     char* fwdSensor = new char[100];
     char* bwdSensor = new char[100];
-    char* leftSensor = new char[100];
-    char* rightSensor = new char[100];
+    char* leftFrontSensor = new char[100];
+    char* leftBackSensor = new char[100];
+    char* rightFrontSensor = new char[100];
+    char* rightBackSensor = new char[100];
     char* phiDotSensor = new char[100];
+    char* longLeftSensor = new char[100];
 	
 	int fwdDiff;
 	int bwdDiff;
@@ -128,8 +131,10 @@ protected:
     
     int fwdReference;
     int bwdReference;
-    int leftReference;
-    int rightReference;
+    int leftFrontReference;
+    int leftBackReference;
+    int rightFrontReference;
+    int rightBackReference;
     
     MapSection* previousSection = NULL;
     Communication* commObj = NULL;
