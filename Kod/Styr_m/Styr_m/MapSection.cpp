@@ -347,15 +347,33 @@ void Robot::bwdValueIn(char* bwd){
     }
 }
 
-void Robot::leftValueIn(char* left){
+void Robot::leftBackValueIn(char* left){
 	for (int i = 0; i < 3; i++) {
-        pushBackChar(leftSensor, left[i]);
+        pushBackChar(leftBackSensor, left[i]);
     }
 }
 
-void Robot::rightValueIn(char* right){
+void Robot::leftFrontValueIn(char* left){
 	for (int i = 0; i < 3; i++) {
-        pushBackChar(rightSensor, right[i]);
+        pushBackChar(leftFrontSensor, left[i]);
+    }
+}
+
+void Robot::leftLongValueIn(char* left){
+	for (int i = 0; i < 3; i++) {
+        pushBackChar(leftLongSensor, left[i]);
+    }
+}
+
+void Robot::rightBackValueIn(char* right){
+	for (int i = 0; i < 3; i++) {
+        pushBackChar(rightBackSensor, right[i]);
+    }
+}
+
+void Robot::rightFrontValueIn(char* left){
+	for (int i = 0; i < 3; i++) {
+        pushBackChar(rightFrontSensor, left[i]);
     }
 }
 
@@ -417,7 +435,7 @@ void Robot::setBwdClosed(){
 	
 	// A block is 40x40
 	int output = meanValueArray(bwdSensor,3)/40;
-	
+    
 	// Set closed section output + 1 steps away from robot.
 	// Direction 0->y->17, "fwd"
 	if (direction == 'f'){
@@ -453,6 +471,51 @@ void Robot::setBwdClosed(){
         // Set every section between robot and wall as empty
         for (int i = 0; i < output; i++) {
             mom->convertSection(xCoord + i + 1,yCoord, 'e');
+        }
+	}
+}
+
+// -------------- To the left --------------------------
+
+void Robot::setLeftClosed(){
+	
+	int output = meanValueArray(leftLongSensor,3)/40;
+	
+	// Set closed section output + 1 steps away from robot.
+	// Direction 0->y->17, "fwd"
+	if (direction == 'f'){
+		mom->convertSection(xCoord - output - 1,yCoord, 'c');
+        
+        // Set every section between robot and wall as empty
+        for (int i = 0; i < output; i++) {
+            mom->convertSection(xCoord - i - 1,yCoord, 'e');
+        }
+	}
+	// Direction 17->y->0, "bwd"
+	else if (direction == 'b'){
+		mom->convertSection(xCoord + output + 1,yCoord, 'c');
+        
+        // Set every section between robot and wall as empty
+        for (int i = 0; i < output; i++) {
+            mom->convertSection(xCoord + i + 1,yCoord, 'e');
+        }
+	}
+	// Direction 0->x->32, "right"
+	else if (direction == 'r'){
+		mom->convertSection(xCoord,yCoord + output + 1, 'c');
+        
+        // Set every section between robot and wall as empty
+        for (int i = 0; i < output; i++) {
+            mom->convertSection(xCoord,yCoord + i + 1, 'e');
+        }
+	}
+	// Direction 32->x->0, "left"
+	else if (direction == 'l'){
+		mom->convertSection(xCoord,yCoord - output - 1, 'c');
+        
+        // Set every section between robot and wall as empty
+        for (int i = 0; i < output; i++) {
+            mom->convertSection(xCoord,yCoord - i - 1, 'e');
         }
 	}
 }
@@ -571,20 +634,29 @@ void Robot::updateRobotPosition(){
 
 
 // -----------------------------------------
-
+/*
 void Robot::adjustPosition(){
-    if (meanValueArray(leftSensor,3)>90) {
-        leftReference=80;
+    if (meanValueArray(leftBackSensor,3)>90) {
+        leftBackReference=80;
     }
     
     // undefined sensorvalues will be set to 80//
     
-    else if (meanValueArray(rightSensor,3)>90) {
-        rightReference=80;
+    else if (meanValueArray(rightFrontSensor,3)>90) {
+        rightFrontReference=80;
+    }
+    else if (meanValueArray(rightBackSensor,3)>90) {
+        rightBackReference=80;
+    }
+    else if (meanValueArray(leftFrontSensor,3)>90) {
+        leftFrontReference=80;
     }
     else{
-        rightReference = meanValueArray(rightSensor,3);
-        leftReference = meanValueArray(leftSensor,3);
+        rightFrontReference = meanValueArray(rightFrontSensor,3);
+        leftFrontReference = meanValueArray(leftFrontSensor,3);
+        rightBackReference = meanValueArray(rightBackSensor,3);
+        leftBackReference = meanValueArray(leftBackSensor,3);
+
         //Changes the references on the side sensors to help position adjustment
     }
     
@@ -602,7 +674,7 @@ void Robot::adjustPosition(){
     
     
 }
-
+*/
 
 // ---------------------------------------
 // Sets direction
@@ -619,7 +691,15 @@ char* Robot::getColAsChar(int col){
 }
 
 
+// ----------------------------------------
 
+int Robot::getRightDistance(){
+    
+    int output = meanValueArray(rightFrontSensor,3);
+    output = output + meanValueArray(rightBackSensor,3);
+    return output/2;
+    
+}
 
 
 

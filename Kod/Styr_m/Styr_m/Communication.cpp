@@ -1,5 +1,5 @@
 #include "Communication.h"
-#include "../../sensormodul/sensormodul/slave.h"
+#include "slave.h"
 #include "MapSection.h"
 
 Communication::Communication(Slave* pointer){
