@@ -11,6 +11,11 @@ void Communication::handleData(){
         this->inData[i]=slavePointer->inDataArray[i];
     }
     dataLength = (int)inData[0];
+<<<<<<< HEAD
+	int speed =(int)inData[3];
+=======
+	int speed =10*(int)inData[3] + 10;
+>>>>>>> d79cf7405d7f9e43bc905b0ac3c4d14ca1c42600
     if (this->inData[1]=='r' && inData[2]==0) {
         robotPointer->changeGear('l');
 		robotPointer->drive(25);
@@ -20,14 +25,16 @@ void Communication::handleData(){
 		robotPointer->drive(25);
     }
     if (this->inData[1]=='f'){
-        //int speed =(int)inData[3];
 		robotPointer->changeGear('f');
-        robotPointer->drive(25);
+        robotPointer->drive(speed);
     }
     if (this->inData[1]=='b'){
-        //int speed =(int)inData[3];
 		robotPointer->changeGear('b');
-        robotPointer->drive(25);
+<<<<<<< HEAD
+        robotPointer->driveBackward(speed);
+=======
+        robotPointer->drive(speed);
+>>>>>>> d79cf7405d7f9e43bc905b0ac3c4d14ca1c42600
     }
 	if (this->inData[1] == 'h'){
 		robotPointer->drive(0);
