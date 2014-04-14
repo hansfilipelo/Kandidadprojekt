@@ -163,7 +163,8 @@ ISY tillhandahåller följande i sin utvecklingsmiljö:
 %------------------------------------------------
 %--------------------Kunskapsbas-----------------
 %------------------------------------------------
-\section{Kunskapsbas}
+\newpage
+\section{Fördjupning}
 
 %----------------------Odometri------------------
 \subsection{Odometri}
@@ -232,7 +233,7 @@ Det finns olika typer av SLAM för olika typer av tillämpningar och med olika e
 \subsubsection{Kalmanfilter (KF-SLAM)}
 Ett Kalmanfilter är en typ av algoritm som med hjälp av tidigare mätdata från sensorer som kan innehålla brus och störningar uppskattar okända variabler. Ett Kalmanfilter arbetar på linjära och oberoende tillståndsvariabler och är ett essentiellt verktyg för vägval samt positionsuppskattningen i ett SLAM-system. 
 
-Kalmnafilter är en lösning
+Kalmanfilter är en lösning
 
 \subsubsection{EKF-SLAM} 
 EKF-SLAM är en förkortning för Extended Kalman Filter for Simultaneous Localization And Mapping. Det utökade Kalmanfiltret (extended) skiljer sig från det ursprungliga på så vis att den används vid icke-linjära förhållanden och istället linjäriserar variablerna kring ett medelvärde och deras kovarians. Med kovarians menas då hur de olika variablerna beror av varandra.
@@ -263,7 +264,7 @@ Denna metod använder sig av styrkan på WiFi-signaler i närheten för att avg�
 
 För att WiFi-SLAM ska fungera krävs att accesspunkten har information om positionsdata för sig själv, alternativt att den anslutna enheten har information om var aktuellt WiFi är tillgängligt. I en mobiltelefon används den senare metoden då telefonen kan kontrollera var WiFi-nätverket finns med hjälp av GPS. 
 
-\subsection{Implementeringar}
+\subsection{Exempel på implementeringar}
 
 Det finns många exempel på implementeringar av SLAM. Robotdammsugare är ett bra exempel på en modern tillämpning som kan använda sig av SLAM. Det är då en liten enhet som kan använda sig av en modifierad version av VSLAM som kallas CV-SLAM. Detta står för Ceiling Visual SLAM, det vill säga att roboten har kameror som är riktade uppåt och använder landmärken i taket för att rita upp en karta över rummet den städar, så att den dammsuger alla platser i rummet istället för att städa samma punkt flera gånger. 
 
@@ -275,7 +276,7 @@ SLAM används, och har används under längre tid, till exempel också i rymdexp
 %--------------------Fördjupning-----------------
 %------------------------------------------------
 \newpage
-\section{Fördjupning och kodexempel}
+\section{Implementering}
 
 För att rita en karta krävs det att mjukvara och hårdvara sammarbetar. Sensorerna och deras värden behöver översättas till något som kan behandlas av en dator. 
 
@@ -347,6 +348,7 @@ Till en början är alla områden outforskade. I takt med att sensordata kommer 
 
 % --------------------------------------
 
+\newpage
 \subsection{Kartläggningsalgoritmer}
 
 Antag att roboten har en kartabstraktion, kan ta in sensordata och göra en uppskattning av sin omgivning - hur implementerar man sedan en bra och snabb kartläggningsalgoritm? Hur ska man utforska sin omgivning och i vilken ordning? 
@@ -403,11 +405,5 @@ Openslam.org
 Atmega 1284p, Vanheden, databladsserver hos Institutionen för Systemteknik vid Linköpings Universitet. Hämtad 14 april 2014. \url{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/atmega1284p.pdf}
 
 Kandidatprojekt Y: Elektronikprojekt, Tävlingsregler för katläggningsrobot. Hämtad 28 mars 2014.  \url{https://drive.google.com/file/d/0B758zzcy4ZrTeG1wRTY4WG9lTDQ/edit?usp=sharing}
-
-% ----------------------------- Appendix
-% -----------------------------------------
-% 
-\newpage \appendix \pagestyle{empty}
-\newgeometry{left=2cm,right=2cm,bottom=2cm,top=2cm} \section{Appendix A}
 
 \end{document}
