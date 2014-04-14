@@ -134,8 +134,10 @@ protected:
     
     int fwdReference;
     int bwdReference;
-    int leftReference;
-    int rightReference;
+    int leftFrontReference;
+    int leftBackReference;
+    int rightFrontReference;
+    int rightBackReference;
     
     MapSection* previousSection = NULL;
     Communication* commObj = NULL;
