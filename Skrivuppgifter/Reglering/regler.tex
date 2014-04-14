@@ -287,7 +287,7 @@ För att rita en karta krävs det att mjukvara och hårdvara sammarbetar. Sensor
 
 \subsection{Skattning av parametrar}
 
-I just detta problem, som är begränsat kommer positionen att skattas med hjälp av sensorvärden i form av vinkel och avstånd i kombination med enkla algoritmer. Eftersom en del parametrar är kända blir skattningen något lättare än om det hade varit t ex ett godtyckligt stort område. Det kommer att finnas två stycken tre-meters avståndssensorer som är riktade framåt och bakåt, här kallade $S_{front}$ \& $S_{back}$. Om båda sensorerna ger utslag på över tre meter kommer antagandet göras att de har gått utanför sitt mätområde och kommer då skattas som nedan. Mätvärdena kommer i största möjliga mån plockas ut som medelvärdet av den senaste mätdatan.
+I just detta problem, som är begränsat kommer positionen att skattas med hjälp av sensorvärden i form av vinkel och avstånd i kombination med enkla algoritmer. Eftersom en del parametrar är kända blir skattningen något lättare än om det hade varit t ex ett godtyckligt stort område. Det kommer att finnas två stycken tre-meters avståndssensorer som är riktade framåt och bakåt, här kallade $S_{front}$ \& $S_{back}$. Mätvärdena kommer i största möjliga mån plockas ut som medelvärdet, $\bar{S}$, av den senaste mätdatan. Om båda sensorerna ger utslag på över tre meter kommer antagandet göras att de har gått utanför sitt mätområde och kommer då skattas som nedan. 
 
 \begin{gather}
 	S_{front}=3,00 m \\
@@ -304,11 +304,17 @@ Där 6,00 m är den maximala längden som kan uppstå i området. Dessa sensorv�
 
 \subsection{Positionsskattning}
 
-För att uppskatta hur långt roboten har färdats kommer referensvärden på sensorerna sparas undan innan roboten rör sig. Dessa värden kommer sedan uppdateras varje gång roboten har färdats 40 cm (ett segment av området). För att veta när roboten färdats 40 cm kommer ett nuvarande sensorvärde jämföras med referensen t ex om roboten färdas framåt kommer differensen mellan $S_{front}$ \& $S_{frontref}$ beräknas. Förflyttningen har åstadkommits då ekvationen nedan är uppfylld. 
+För att uppskatta hur långt roboten har färdats kommer referensvärden $S_{ref}$ på sensorerna sparas undan innan roboten rör sig. Dessa värden kommer sedan uppdateras varje gång roboten har färdats 40 cm (ett segment av området). För att veta när roboten färdats 40 cm kommer ett nuvarande sensorvärde jämföras med referensen t ex om roboten färdas framåt kommer differensen mellan $S_{front}$ \& $S_{frontref}$ beräknas. Förflyttningen har åstadkommits då ekvationen nedan är uppfylld. 
 
 \begin{gather}
 	S_{frontref} - S_{front} = 40
 \end{gather}
+
+Utöver detta går det att med hjälp av data från gyrot få ut vinkelhastigheten $\omega$. Problemet med vinkelhastigheten är att den inte bidrar till att beskriva robotens positionering utan att omvandlas till robotens vinkel relativt ursprungsriktningen, här kallad $\phi$. Omvandlingen sker utifrån (11) där $n_{clock}$ är antalet klockcykler på processorn sedan roboten börjat rotera och där $f$ är processorns klockfrekvens.
+
+\begin{gather}
+	\phi = \omega \cdot \frac{n_{clock}}{f}
+\end{gather} 
 
 \subsection{Kartabstraktion}
 
