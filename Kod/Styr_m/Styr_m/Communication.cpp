@@ -27,7 +27,8 @@ void Communication::handleData(){
     }
     if (this->inData[1]=='b'){
         int speed =(int)inData[3];
-        robotPointer->driveBackward(speed);
+		robotPointer->changeGear('b');
+        robotPointer->driveBackward(25);
     }
     
     // Do stuff with sensor values

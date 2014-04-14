@@ -41,12 +41,15 @@ ISR(SPI_STC_vect){
 	if ((steerModuleSlave.position == (steerModuleSlave.inDataArray[0]+1))&(steerModuleSlave.inDataArray[0]!= 0)){
 		steerModuleSlave.position = 0;
 		PORTC |= (1<<PORTC0);
+		PORTC &=~(1<<PORTC0);
+		
 	}
 }
 
 
 ISR(PCINT2_vect){
 	abstractionObject->handleData();
+	
 }
 
 // ---------------------------------
