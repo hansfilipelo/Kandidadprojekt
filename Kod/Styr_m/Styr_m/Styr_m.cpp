@@ -42,10 +42,8 @@ ISR(SPI_STC_vect){
 		steerModuleSlave.position = 0;
 		PORTC |= (1<<PORTC0);
 		PORTC &=~(1<<PORTC0);
-		
 	}
 }
-
 
 ISR(PCINT2_vect){
 	abstractionObject->handleData();
