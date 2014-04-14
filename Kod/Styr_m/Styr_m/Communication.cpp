@@ -12,12 +12,16 @@ void Communication::handleData(){
     }
     dataLength = (int)inData[0];
 	int speed = (int)inData[3];
-	
+	//checks manual/auto
 	if (this->inData[1]=='a') {
 		manual = false;
 	}
 	if (this->inData[1]=='q') {
 		manual = true;
+	}
+	//request to send map
+	if (this->inData[1]=='F') {
+		sendMapNow = true;
 	}
 	
 	if (manual){
@@ -54,10 +58,14 @@ void Communication::setRobot(Robot* inRobot){
 
 void Communication::sendMap(){
     for (int i = 0; i < 32; i++) {
-        char* sendData = robotPointer->getColAsChar(i);
-        
-        for (int i = 0; i < 20; i++) {
-            slavePointer->outDataArray[i] = sendData[i];
-        }
-    }
+		
+		slavePointer->outDataArray[0]=3;
+		slavePointer->outDataArray[1]=1;
+		slavePointer->outDataArray[2]=2;
+		slavePointer->outDataArray[3]=3;
+		
+		//memcpy(slavePointer->outDataArray,robotPointer->getColAsChar(i),25);
+       
+		slavePointer->SPI_Send();
+	}
 }

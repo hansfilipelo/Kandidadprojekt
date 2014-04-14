@@ -22,7 +22,8 @@ public:
 //flyttade från protected
 	unsigned char inData[25];
     unsigned char outData[25];
-	   
+	volatile bool sendMapNow = false;	   
+
 protected:
     int dataLength;
     Slave* slavePointer;

@@ -144,6 +144,10 @@ int main(void)
 	#endif
 	
 	while(1){
+		if(abstractionObject->sendMapNow){
+			abstractionObject->sendMapNow=false;
+			abstractionObject->sendMap();
+		}	
 	}
 	
 	return 0;
