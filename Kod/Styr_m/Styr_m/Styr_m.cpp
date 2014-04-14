@@ -23,7 +23,7 @@
 // -----------------------------
 // Chooses direction
 static int gear = 0;
-static int speed = 0;
+//static int speed = 0;
 Slave steerModuleSlave;
 Slave* slavePointer = &steerModuleSlave;
 Communication* abstractionObject = new Communication(slavePointer);
@@ -41,12 +41,15 @@ ISR(SPI_STC_vect){
 	if ((steerModuleSlave.position == (steerModuleSlave.inDataArray[0]+1))&(steerModuleSlave.inDataArray[0]!= 0)){
 		steerModuleSlave.position = 0;
 		PORTC |= (1<<PORTC0);
+		PORTC &=~(1<<PORTC0);
+		
 	}
 }
 
 
 ISR(PCINT2_vect){
 	abstractionObject->handleData();
+	
 }
 
 // ---------------------------------
@@ -70,6 +73,7 @@ void pwm_init()
 	PORTD |= (0<<PORTD4) | (0<<PORTD5);
 }
 
+/*
 // Gearbox, port 17
 ISR(INT0_vect){
 	cli();
@@ -96,7 +100,9 @@ ISR(INT0_vect){
 		
 	sei();
 }
+*/
 
+/*
 // Drive, port 16
 ISR(INT1_vect){
 	cli();
@@ -113,7 +119,7 @@ ISR(INT1_vect){
 	
 	sei();
 }
-
+*/
 #endif
 
 // ----------------------------------------

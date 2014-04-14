@@ -23,13 +23,7 @@ void Slave::SPI_Init()
 	//dummy läsning för att rensa registret
 	SPDR=0x00;
 	
-	
-	EIMSK |= (1<<INT0);
-	EICRA |= (1<<ISC01)|(1<<ISC00);
-	
 	DDRB |= (1<<DDB2);
-	
-	DDRD &= ~(1<<DDD7);
 	
 	//sets interupt on pcint16
 	PCMSK2 |= (1<<PCINT16);

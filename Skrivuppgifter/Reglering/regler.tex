@@ -67,7 +67,7 @@
 				\footnotesize
 				Grupp 8, 2014/VT, MapMaster2001
 				\\
-				Linköpings tekniska högskola, ISY
+				Linköpings tekniska högskola, Institutionen för Systemteknik (ISY)
 				\\
 				\vspace{1cm}
 	  \begin{tabular}{| p{3cm} | p{4.3cm} | p{2.4cm} | p{3.8cm} |}
@@ -148,7 +148,17 @@ På senare år har man, precis som inom många andra vetenskapliga områden, set
 
 \section{Problemformulering}
 
-En robot med tillgång till ett antal avståndssensorer, ett gyro och en RFID-sensor placeras i ett stängt område med dimension 6x6 meter och som är uppdelad i 40x40 centimeters segment. Den ska, med en vägg som startpunkt, helt autonomt kartlägga området genom att markera ut var väggar finns och var det finns områden som inte går att nå. Den ska även markera ut var det går att finna RFID-taggar. Om inte hela det slutna området är kartlagt ska den upptäcka vilka segment som är oupptäckta, färdas dit och lägga till det i kartan. När området är kartlagt ska roboten ta sig tillbaka till startpunkten och avsluta arbetet.
+En robot med tillgång till ett antal avståndssensorer, ett gyro och en RFID-sensor placeras i ett stängt område med dimension 6x6 meter och som är uppdelad i 40x40 centimeters segment. Den ska, med en vägg som startpunkt, helt autonomt kartlägga området genom att markera ut var väggar finns och var det finns områden som inte går att nå. Den ska även markera ut var det går att finna RFID-taggar. Om inte hela det slutna området är kartlagt ska den upptäcka vilka segment som är oupptäckta, färdas dit och lägga till det i kartan. När området är kartlagt ska roboten ta sig tillbaka till startpunkten och avsluta arbetet. 
+
+\subsection{Tillgängligt materiel}
+
+I världen finns ett väldigt stort utbud av hårdvara, mjukvara och kommunikationslänkar. Denna rapport begränsar sig till kod som kan köras på AVR-processorer, och då mer specifikt Atmega 1284p\footnote{ISY, https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/atmega1284p.pdf}
+
+ISY tillhandahåller följande i sin utvecklingsmiljö: 
+\begin{itemize}
+	\item Atmega 1284p-processorer
+	\item Utvecklingsmiljön Atmel Studio med kompilatorn avr-gcc
+\end{itemize}
 
 %------------------------------------------------
 %--------------------Kunskapsbas-----------------
@@ -273,7 +283,7 @@ SLAM används, och har används under längre tid, till exempel också i rymdexp
 \newpage
 \section{Fördjupning och kodexempel}
 
-
+För att rita en karta krävs det att mjukvara och hårdvara sammarbetar. Sensorerna och deras värden behöver översättas till något som kan behandlas av en dator. 
 
 \subsection{Skattning av parametrar}
 
@@ -302,9 +312,29 @@ För att uppskatta hur långt roboten har färdats kommer referensvärden på se
 
 \subsection{Kartabstraktion}
 
-Kartan abstraheras i form av en rektangel med ett rutnät med dimensionen 33x17 rutor med koordinaterna (0,0) i det övre vänstra hörnet. Det definierade området i problemformuleringen, d v s det verkliga området skulle med liknande rutnät bli 15x15 rutor, men den utökas något för att underlätta uppritningen. Roboten kommer i början att placeras i punkten (15,0) och rita upp kartan utifrån detta. Det kommer då inte spela någon roll hur roboten är placerad i det verkliga systemet eftersom det finns utrymme för 15 rutor åt båda hållen inklusive marginaler. 
+En karta kan abstraheras i form av en rektangel med ett rutnät med dimensionen 33x17 rutor med koordinaterna (0,0) i det övre vänstra hörnet. Det definierade området i problemformuleringen, d v s det verkliga området skulle med liknande rutnät bli 15x15 rutor, men den utökas något för att underlätta uppritningen. Felaktigheter i avläsning kan leda till att roboten i abstraktionen tillfälligt är utanför sitt givna område. Roboten kommer i början att placeras i punkten (16,0) och rita upp kartan utifrån detta. Det kommer då inte spela någon roll hur roboten är placerad i det verkliga systemet eftersom det finns utrymma för 15 rutor åt båda hållen inklusive marginaler. 
 
-Hur uppdateras kartan (Algoritm?)
+Hur skapar man då en matris i mjukvara? Beroende på språk, utvecklingsmiljö och abstraktionslager/bilbiotek görs det såklart med olika syntax - men den övergripande designen är densamma oberoende av utvecklingsmiljö. 
+
+En abstraktion av en matris i mjukvara skapas med hjälp utav nästlade arrayer, eller någon modern motsvarighet. I utvecklingsmiljön Atmel Studio finns språket C++ tillgängligt, men däremot ej C++ standardbibliotek med abstraktioner. I den här rapporten kommer vi därför att behandla arrayer istället för vektorer som kanske är vanligare i C++. 
+
+\paragraph{Objektklasser} Kartmatrisen hålls inne i en containerklass med funktioner för att abstrahera acess till matrisen. I modern programmering är objekthantering ett kraftfullt verktyg för abstraktion. Klasser tänkbara att implementera för SLAM följer nedan, med engelska namnet inom parantes. Detta då programmering görs bäst på engelska tack vare att språken härstammar från engelskan. 
+
+\begin{itemize}
+	\item Karta (Map)
+	\item Kartsektion (MapSection)
+	\item Robot (Robot)
+\end{itemize}
+
+I en C++-implementering är Robot en dotterklass till MapSection. Detta då alla objekt i en matris måste vara av samma objekttyp. Roboten ärver då vissa egenskaper från MapSection - men innehåller klart mer logik för att hantera positionering och kartläggning. 
+
+MapSection kan anta ett antal olika tillstånd för att markera vilken typ av område det är. Nedan följer några tänkbara tillstånd att implementera i klassen MapSection: 
+
+\begin{itemize}
+	\item Stängt område (Closed)
+	\item Outforskat område (Unexplored)
+	\item Tomt område (Empty)
+\end{itemize}
 
 %------------------------------------------------
 %------------Resultat och slutsatser-------------
@@ -342,6 +372,8 @@ Localization and Mapping Problem, Stanford University. Hämtad 28 mars 2014.
 
 Openslam.org
 \url{http://www.openslam.org/}
+
+Atmega 1284p, Vanheden, databladsserver hos Institutionen för Systemteknik vid Linköpings Universitet. Hämtad 14 april 2014. \url{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/atmega1284p.pdf}
 
 Kandidatprojekt Y: Elektronikprojekt, Tävlingsregler för katläggningsrobot. Hämtad 28 mars 2014.  \url{https://drive.google.com/file/d/0B758zzcy4ZrTeG1wRTY4WG9lTDQ/edit?usp=sharing}
 
