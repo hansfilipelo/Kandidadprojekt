@@ -61,7 +61,6 @@ void USART_Init( unsigned int baud )
 	UCSR0C = (0<<USBS0)|(3<<UCSZ00);
 }
 
-
 char SPI_MasterTransmit(char outData, unsigned int slave)
 {
 	char inData;
@@ -88,8 +87,6 @@ char SPI_MasterTransmit(char outData, unsigned int slave)
 	return inData;
 }
 
-
-
 void SPISendArray(unsigned int slave){	
 	
 	unsigned int length = 0;
@@ -99,8 +96,6 @@ void SPISendArray(unsigned int slave){
 		SPI_MasterTransmit(outDataArray[i], slave);
 	}
 }
-
-
 
 void SPIReceiveArray(unsigned int slave){
 	
@@ -112,11 +107,9 @@ void SPIReceiveArray(unsigned int slave){
 	}
 }
 
-
 /*
 *	BLUETOOTH
 */
-
 
 void USART_Transmit( unsigned char data )
 {
@@ -143,8 +136,6 @@ void BluetoothSendArray(){
 	}
 }
 
-
-
 volatile void handleBluetooth(){
 	if(!Btrec){
 		return;
@@ -158,6 +149,7 @@ volatile void handleBluetooth(){
 		outDataArray[0] = pcHandle[0];
 		outDataArray[1] = pcHandle[1];
 		outDataArray[2] = pcHandle[2];
+		outDataArray[3] = pcHandle[3];
 		asm("");
 		SPISendArray(1); //send data to module 1 (control)
 		asm("");
