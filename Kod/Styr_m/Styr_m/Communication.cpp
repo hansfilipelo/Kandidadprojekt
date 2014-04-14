@@ -13,14 +13,17 @@ void Communication::handleData(){
 	//pillat med chars '0' och '1'
     dataLength = (int)inData[0];
     if (this->inData[1]=='r' && inData[2]=='0') {
-        robotPointer->rotateLeft();
+        robotPointer->changeGear('l');
+		robotPointer->drive(25);
     }
     if (this->inData[1]=='r' && inData[2]=='1') {
-        robotPointer->rotateRight();
+        robotPointer->changeGear('r');
+		robotPointer->drive(25);
     }
     if (this->inData[1]=='f'){
         int speed =(int)inData[3];
-        robotPointer->driveForward(speed);
+		robotPointer->changeGear('f');
+        robotPointer->drive(25);
     }
     if (this->inData[1]=='b'){
         int speed =(int)inData[3];

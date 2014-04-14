@@ -205,8 +205,7 @@ void Robot::changeGear(char inGear){
 // ------------------------------------
 // Drives
 
-void Robot::driveForward(int speed){
-    changeGear('f');
+void Robot::drive(int speed){
 	int output = floor(speed * 255 / 100);
 	
 	#if DEBUG == 0
@@ -244,11 +243,11 @@ void Robot::rotateLeft(){
 	
 	while (rotateActive)
 	{
-		driveForward(25);
+		drive(25);
 	}
 	
 	// Stop rotation and set gear to forward
-	driveForward(0);
+	drive(0);
 	changeGear('f');
     
     // Update direction
@@ -288,11 +287,11 @@ void Robot::rotateRight(){
     changeGear('r');
 	while (rotateActive)
 	{
-		driveForward(25);
+		drive(25);
 	}
 	
 	// Stop rotation and set gear to forward
-	driveForward(0);
+	drive(0);
 	changeGear('f');
     
     // Update direction
