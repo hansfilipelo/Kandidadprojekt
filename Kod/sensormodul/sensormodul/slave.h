@@ -7,18 +7,8 @@
 #ifndef SLAVE
 #define SLAVE
 
-#ifndef __AVR_ATmega1284P__
-#define DEBUG 1
-#else
-#define DEBUG 0
-#endif
-
-#if DEBUG == 0
-
 #include <avr/io.h>
 #include <avr/interrupt.h>
-
-#endif
 
 class Slave
 {

@@ -21,8 +21,8 @@ SerialPort::~SerialPort()
 }
 
 void SerialPort::sendArray(const char inArray[25]){
-    port->write(inArray,25);                           //write exactly 25 bytes of data to port. 
-    port->waitForBytesWritten(100);
+    port->write(inArray,25);                           //write exactly 25 bytes of data to port.
+    port->waitForBytesWritten(600);
 }
 
 /*

@@ -18,6 +18,9 @@ Gui::Gui(QWidget *parent) :
     timeVector.insert(0,0);
     timer->start(1000);
     ui->mapView->setScene(scene);
+    //alla keys förutom pilarna kräver manuell connection, bör rensas upp då alla slots inte behövs. Har atm flera slots som gör samma saker
+    // via shortcuts samt knappar i UI:n
+    new QShortcut(QKeySequence(Qt::Key_Space), this, SLOT(on_actionStop_triggered()));
 
 }
 
@@ -272,12 +275,6 @@ void Gui::on_rightButton_pressed()
     bluetooth->rotateRight();}
 }
 
-void Gui::on_stopButton_clicked()
-{
-    if(connectStatus){
-    bluetooth->halt();}
-}
-
 void Gui::on_speedSlider_sliderReleased(){
    speedMultiplier = ui->speedSlider->value();
 }
@@ -306,10 +303,18 @@ void Gui::on_actionRight_triggered()
       bluetooth->rotateRight();}
 }
 
+void Gui::on_stopButton_pressed()
+{
+    if(connectStatus){
+        bluetooth->halt();
+    }
+}
+
 void Gui::on_actionStop_triggered()
 {
     if(connectStatus){
-    bluetooth->halt();}
+        bluetooth->halt();
+    }
 }
 
 void Gui::on_actionSpeedUp_triggered()
@@ -326,3 +331,7 @@ void Gui::on_pushButton_clicked()
 {
     this->startPort();
 }
+
+
+
+
