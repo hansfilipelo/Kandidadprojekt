@@ -15,7 +15,7 @@
 #include "Map.h"
 #include "Abstraction.h"
 #include "Communication.h"
-#include "../../../sensormodul/sensormodul/slave.h"
+#include "../../sensormodul/sensormodul/slave.h"
 
 #if DEBUG == 0
 
@@ -36,9 +36,10 @@ Robot* robotPointer = new Robot(16,1,mapPointer,abstractionObject);
 ISR(SPI_STC_vect){
 	steerModuleSlave.position++;
 	SPDR = steerModuleSlave.outDataArray[steerModuleSlave.position];
-	steerModuleSlave.inDataArray[steerModuleSlave.position-1] = SPDR;
+	steerModuleSlave.inDataArray[steerModuleSlave.position - 1] = SPDR;
 	
 	if ((steerModuleSlave.position == (steerModuleSlave.inDataArray[0]+1))&(steerModuleSlave.inDataArray[0]!= 0)){
+		steerModuleSlave.position = 0;
 		PORTC |= (1<<PORTC0);
 	}
 }
@@ -143,5 +144,3 @@ int main(void)
 	
 	return 0;
 }
-
-

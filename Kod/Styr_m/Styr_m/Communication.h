@@ -2,7 +2,7 @@
 #define _Communication_h
 
 #include <stdio.h>
-#include "../../../sensormodul/sensormodul/slave.h"
+#include "../../sensormodul/sensormodul/slave.h"
 
 #include "MapSection.h"
 #include "Abstraction.h"
@@ -19,13 +19,15 @@ public:
     void setRobot(Robot*);
     
     void sendMap();
-    
+//flyttade från protected
+	unsigned char inData[25];
+    unsigned char outData[25];
+	   
 protected:
     int dataLength;
     Slave* slavePointer;
     Robot* robotPointer;
-    unsigned char inData[25];
-    unsigned char outData[25];
+
     
 };
 

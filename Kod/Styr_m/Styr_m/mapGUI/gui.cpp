@@ -1,10 +1,11 @@
 #include "gui.h"
 #include "ui_gui.h"
-#include "../../../../kommunikation/serialreader/order.h"
-#include "../../../../kommunikation/serialreader/serialport.h"
+#include <qiodevice.h>
+#include "../../../Kommunikation/serialreader/order.h"
+#include "../../../Kommunikation/serialreader/serialport.h"
 #include <QtSerialPort/QSerialPort>
 #include <QtCore>
-
+#include <QIODevice>
 
 Gui::Gui(QWidget *parent) :
     QMainWindow(parent),
@@ -17,7 +18,6 @@ Gui::Gui(QWidget *parent) :
     timeVector.insert(0,0);
     timer->start(1000);
     ui->mapView->setScene(scene);
-    startPort();
 
 }
 
@@ -26,50 +26,56 @@ Gui::~Gui()
     delete ui;
 }
 
+void Gui::labelSet(QString text){
+    ui->label->setText(text);
+}
+
 int Gui::startPort(){
 
         QTextStream standardOutput(stdout);
         QTextStream standardInput(stdin);
 
-        QSerialPort serialPort;
+        QSerialPort* serialPort = new QSerialPort;
         QString serialPortName = "FireFly-AA63-SPP";
-        serialPort.setPortName(serialPortName);
+        serialPort->setPortName(serialPortName);
 
-        if (!serialPort.open(QIODevice::ReadWrite)) {
-            standardOutput << QObject::tr("Failed to open port %1, error: %2").arg(serialPortName).arg(serialPort.errorString()) << endl;
-            return 1;
-        }
+           if (!serialPort->open(QIODevice::ReadWrite)) {
+               standardOutput << QObject::tr("Failed to open port %1, error: %2").arg(serialPortName).arg(serialPort->errorString()) << endl;
+               return 1;
+           }
+           //else {ui->label->setText("Connected.");
+         //  }
 
         int serialPortBaudRate = 115200; // kanske inte fungerar just nu
-        if (!serialPort.setBaudRate(serialPortBaudRate)) {
-            standardOutput << QObject::tr("Failed to set 115200 baud for port %1, error: %2").arg(serialPortName).arg(serialPort.errorString()) << endl;
+        if (!serialPort->setBaudRate(serialPortBaudRate)) {
+            standardOutput << QObject::tr("Failed to set 115200 baud for port %1, error: %2").arg(serialPortName).arg(serialPort->errorString()) << endl;
             return 1;
         }
 
-        if (!serialPort.setDataBits(QSerialPort::Data8)) {
-            standardOutput << QObject::tr("Failed to set 8 data bits for port %1, error: %2").arg(serialPortName).arg(serialPort.errorString()) << endl;
+        if (!serialPort->setDataBits(QSerialPort::Data8)) {
+            standardOutput << QObject::tr("Failed to set 8 data bits for port %1, error: %2").arg(serialPortName).arg(serialPort->errorString()) << endl;
             return 1;
         }
 
-        if (!serialPort.setParity(QSerialPort::NoParity)) {
-            standardOutput << QObject::tr("Failed to set no parity for port %1, error: %2").arg(serialPortName).arg(serialPort.errorString()) << endl;
+        if (!serialPort->setParity(QSerialPort::NoParity)) {
+            standardOutput << QObject::tr("Failed to set no parity for port %1, error: %2").arg(serialPortName).arg(serialPort->errorString()) << endl;
             return 1;
         }
 
-        if (!serialPort.setStopBits(QSerialPort::OneStop)) {
-            standardOutput << QObject::tr("Failed to set 1 stop bit for port %1, error: %2").arg(serialPortName).arg(serialPort.errorString()) << endl;
+        if (!serialPort->setStopBits(QSerialPort::OneStop)) {
+            standardOutput << QObject::tr("Failed to set 1 stop bit for port %1, error: %2").arg(serialPortName).arg(serialPort->errorString()) << endl;
             return 1;
         }
 
-        if (!serialPort.setFlowControl(QSerialPort::NoFlowControl)) {
-            standardOutput << QObject::tr("Failed to set no flow control for port %1, error: %2").arg(serialPortName).arg(serialPort.errorString()) << endl;
+        if (!serialPort->setFlowControl(QSerialPort::NoFlowControl)) {
+            standardOutput << QObject::tr("Failed to set no flow control for port %1, error: %2").arg(serialPortName).arg(serialPort->errorString()) << endl;
             return 1;
         }
 
-        SerialPort port(&serialPort);
-        serPort = &port;
-        Order order(&port);
-        bluetooth = &order;
+        SerialPort* port = new SerialPort(serialPort);
+        serPort = port;
+        Order * order = new Order(port);
+        bluetooth = order;
         return 0;
 }
 
@@ -244,25 +250,79 @@ void Gui::on_upButton_pressed()
     //testar min fkn
 //    insertRow(testArray,map);
 //    updateMap(map);
-
-    bluetooth->forward();
+    if(connectStatus){
+    bluetooth->forward();}
 }
 
 void Gui::on_downButton_pressed()
 {
-    bluetooth->backward();
+    if(connectStatus){
+    bluetooth->backward();}
 }
 
 void Gui::on_leftButton_pressed()
 {
-    bluetooth->rotateLeft();
+    if(connectStatus){
+    bluetooth->rotateLeft();}
 }
 
 void Gui::on_rightButton_pressed()
 {
-    bluetooth->rotateRight();
+    if(connectStatus){
+    bluetooth->rotateRight();}
+}
+
+void Gui::on_stopButton_clicked()
+{
+    if(connectStatus){
+    bluetooth->halt();}
 }
 
 void Gui::on_speedSlider_sliderReleased(){
    speedMultiplier = ui->speedSlider->value();
+}
+
+void Gui::on_actionForward_triggered()
+{
+    if(connectStatus){
+    bluetooth->forward();}
+}
+
+void Gui::on_actionDown_triggered()
+{
+    if(connectStatus){
+    bluetooth->backward();}
+}
+
+void Gui::on_actionLeft_triggered()
+{
+    if(connectStatus){
+    bluetooth->rotateLeft();}
+}
+
+void Gui::on_actionRight_triggered()
+{
+      if(connectStatus){
+      bluetooth->rotateRight();}
+}
+
+void Gui::on_actionStop_triggered()
+{
+    if(connectStatus){
+    bluetooth->halt();}
+}
+
+void Gui::on_actionSpeedUp_triggered()
+{
+    ui->speedSlider->setValue(ui->speedSlider->value()+10);
+}
+
+void Gui::on_actionSlowDown_triggered()
+{
+    ui->speedSlider->setValue(ui->speedSlider->value()-10);
+}
+
+void Gui::on_pushButton_clicked()
+{
+    this->startPort();
 }

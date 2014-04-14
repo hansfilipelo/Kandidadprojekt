@@ -31,7 +31,8 @@ public:
     void updateMap(char inMap[10][17]);
     void insertRow(char inArray[25], char inMap[10][17]);
     int startPort();
-
+    int connectStatus;
+    void labelSet(QString);
 
 private slots:
     void on_speedSlider_valueChanged(int value);
@@ -47,6 +48,24 @@ private slots:
     void on_speedSlider_sliderReleased();
 
     void updateTimeVector();
+
+    void on_actionForward_triggered();
+
+    void on_actionDown_triggered();
+
+    void on_actionLeft_triggered();
+
+    void on_actionRight_triggered();
+
+    void on_stopButton_clicked();
+
+    void on_actionStop_triggered();
+
+    void on_actionSpeedUp_triggered();
+
+    void on_actionSlowDown_triggered();
+
+    void on_pushButton_clicked();
 
 private:
     Ui::Gui *ui;
