@@ -221,7 +221,7 @@ Derivatan ges sedan av:
 \frac{dL}{dp} = 0 = \sum\limits_1^i{\frac{x_i}{p}+\frac{n-x_i}{1-p}}
 \end{gather}
 
-Vilket efter uträkningar ger $p = \bar{x}$
+Vilket efter uträkningar ger $p = \bar{x}$. Vid ML-skattning av sensorvärden är alltså medelvärdet av sensordata lämpligt att använda.
 
 \subsubsection{Filtrering av sensordata}
 
@@ -285,6 +285,8 @@ SLAM används, och har används under längre tid, till exempel också i rymdexp
 
 För att rita en karta krävs det att mjukvara och hårdvara sammarbetar. Sensorerna och deras värden behöver översättas till något som kan behandlas av en dator. 
 
+% --------------------------------------
+
 \subsection{Skattning av parametrar}
 
 I just detta problem, som är begränsat kommer positionen att skattas med hjälp av sensorvärden i form av vinkel och avstånd i kombination med enkla algoritmer. Eftersom en del parametrar är kända blir skattningen något lättare än om det hade varit t ex ett godtyckligt stort område. Det kommer att finnas två stycken tre-meters avståndssensorer som är riktade framåt och bakåt, här kallade $S_{front}$ \& $S_{back}$. Mätvärdena kommer i största möjliga mån plockas ut som medelvärdet, $\bar{S}$, av den senaste mätdatan. Om båda sensorerna ger utslag på över tre meter kommer antagandet göras att de har gått utanför sitt mätområde och kommer då skattas som nedan. 
@@ -301,6 +303,9 @@ Om endast den ena av sensorerna, i detta exempel $S_{back}$, befinner sig utanf�
 \end{gather}
 
 Där 6,00 m är den maximala längden som kan uppstå i området. Dessa sensorvärden kommer sedan användas för att skatta robotens position.
+
+
+% --------------------------------------
 
 \subsection{Positionsskattning}
 
@@ -324,7 +329,9 @@ Hur skapar man då en matris i mjukvara? Beroende på språk, utvecklingsmiljö 
 
 En abstraktion av en matris i mjukvara skapas med hjälp utav nästlade arrayer, eller någon modern motsvarighet. I utvecklingsmiljön Atmel Studio finns språket C++ tillgängligt, men däremot ej C++ standardbibliotek med abstraktioner. I den här rapporten kommer vi därför att behandla arrayer istället för vektorer som kanske är vanligare i C++. 
 
-\paragraph{Objektklasser} Kartmatrisen hålls inne i en containerklass med funktioner för att abstrahera acess till matrisen. I modern programmering är objekthantering ett kraftfullt verktyg för abstraktion. Klasser tänkbara att implementera för SLAM följer nedan, med engelska namnet inom parantes. Detta då programmering görs bäst på engelska tack vare att språken härstammar från engelskan. 
+\paragraph{Objektklasser}
+~\\
+Kartmatrisen hålls inne i en containerklass med funktioner för att abstrahera acess till den. I modern programmering är objekthantering ett kraftfullt verktyg för abstraktion. Klasser tänkbara att implementera för SLAM följer nedan, med engelska namnet inom parantes. Detta då programmering görs bäst på engelska tack vare att språken härstammar från engelskan. 
 
 \begin{itemize}
 	\item Karta (Map)
@@ -342,10 +349,30 @@ MapSection kan anta ett antal olika tillstånd för att markera vilken typ av om
 	\item Tomt område (Empty)
 \end{itemize}
 
+Till en början är alla områden outforskade. I takt med att sensordata kommer in och beräknas kan sedan roboten omvandla tillstånden hos objekten i kartan utefter given logik. 
+
+% --------------------------------------
+
+\subsection{Kartläggningsalgoritmer}
+
+Antag att roboten har en kartabstraktion, kan ta in sensordata och göra en uppskattning av sin omgivning - hur implementerar man sedan en bra och snabb kartläggningsalgoritm? Hur ska man utforska sin omgivning och i vilken ordning? 
+
+Beroende på hur omgivningen ser ut finns det olika svar på frågan. Omfattningen för den här rapporten gäller insidan av ett rum i en byggnad, där alla hörn kan antas vara ortogonala. En enkel implementering är då att enbart köra roboten i ett rutnät - med ortogonala sökriktningar. Detta förenklar markant implementeringen då vinklar enbart behöver mätas vid rotationer, alltså riktningsändringar, istället för konstant under körning. En enkel implementering är ofta också en snabb implementering, både att realisera och att optimera. 
+
+Nedan syns ett flödesschema över hur en tänkt kartläggningsalgoritm skulle kunna se ut. Kartläggningalgoritmen utför sina kommandon genom att anropa funktioner i Robotobjektet. Robotobjektet kan ses som operationens hjärna medan algoritmen är den övergripande handen som ser till att roboten arbetar i rätt ordning. 
+
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,scale=0.5]{../../Designspec/Flode_kartritning.jpg}  %skala och filnamn. 
+  \end{center}
+  \caption{Flödesschema kartläggning} %figurtext.
+  \label{fig:fire} %glöm inte att uppdatera era labels
+\end{figure}
+
 %------------------------------------------------
 %------------Resultat och slutsatser-------------
 %------------------------------------------------
-
+\newpage
 \section{Resultat och slutsatser}
 
 Till slut kan vi konstatera att SLAM används i många tillämpningar man kanske inte tänker på. Man kan också konstatera att algoritmerna, filtren och mjukvaran som används för att implementera SLAM är relativt komplicerade. Vi inser att vi gjort ett klokt beslut att fördjupa oss i just SLAM, då vi är beroende av detta i vårt projekt att konstruera en kartritande robot. 
