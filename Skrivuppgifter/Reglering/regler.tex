@@ -318,7 +318,9 @@ Hur skapar man då en matris i mjukvara? Beroende på språk, utvecklingsmiljö 
 
 En abstraktion av en matris i mjukvara skapas med hjälp utav nästlade arrayer, eller någon modern motsvarighet. I utvecklingsmiljön Atmel Studio finns språket C++ tillgängligt, men däremot ej C++ standardbibliotek med abstraktioner. I den här rapporten kommer vi därför att behandla arrayer istället för vektorer som kanske är vanligare i C++. 
 
-\paragraph{Objektklasser} Kartmatrisen hålls inne i en containerklass med funktioner för att abstrahera acess till matrisen. I modern programmering är objekthantering ett kraftfullt verktyg för abstraktion. Klasser tänkbara att implementera för SLAM följer nedan, med engelska namnet inom parantes. Detta då programmering görs bäst på engelska tack vare att språken härstammar från engelskan. 
+\paragraph{Objektklasser}
+~\\
+Kartmatrisen hålls inne i en containerklass med funktioner för att abstrahera acess till den. I modern programmering är objekthantering ett kraftfullt verktyg för abstraktion. Klasser tänkbara att implementera för SLAM följer nedan, med engelska namnet inom parantes. Detta då programmering görs bäst på engelska tack vare att språken härstammar från engelskan. 
 
 \begin{itemize}
 	\item Karta (Map)
@@ -335,6 +337,8 @@ MapSection kan anta ett antal olika tillstånd för att markera vilken typ av om
 	\item Outforskat område (Unexplored)
 	\item Tomt område (Empty)
 \end{itemize}
+
+Till en början är alla områden outforskade. I takt med att sensordata kommer in och beräknas kan sedan roboten omvandla tillstånden hos objekten i kartan utefter given logik. 
 
 %------------------------------------------------
 %------------Resultat och slutsatser-------------
