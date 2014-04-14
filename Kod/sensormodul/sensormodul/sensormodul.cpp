@@ -15,17 +15,18 @@
 #include <util/delay.h>
 
 
-int sensordata[8]={};
+int sensordata[7]={};
+long double gyrodata = 0;
 int savepos = 0;		//counter for the storage array
 double decadc=0;
 double spanning = 0;
+int intspanning = 0;
 unsigned char indata;
 unsigned char startbit = 0x0A;
-double vinkelv = 0;
 bool gyromode = false;
-long int konstant = 458610;
+long int konstantett = 90000;
+long int konstanttwa = 170000;
 Slave sensormodul;
-unsigned char one=1;
 
 //Initiera USART
 void USART_Init( unsigned int baud )
@@ -39,18 +40,45 @@ void USART_Init( unsigned int baud )
 	UCSR0C = (0<<USBS0)|(3<<UCSZ00);
 }
 
+void Sensor_Init()
+{
+	DDRA = 0x00;			// Configure PortA as input
+	
+	ADCSRA = 0x8F;			// Enable the ADC and its interrupt feature
+							// and set the ACD clock pre-scalar to clk/128
+	ADMUX = 0x20;			// Start ADC at port 0, 5v ref
+}
+
+void Timer_Init()
+{
+	TIMSK0 = 0x02;			//enable compare A interrupt
+	OCR0A = 0xFF;			//set COMPA
+	TCNT0 = 0x00;			//set timer to 0
+	TCCR0B = 0x05;			//prescaler 8 på timer
+}
+
+
 void handleInDataArray(){
 	if(sensormodul.inDataArray[1] == 'g'){
 		gyromode = true;
 	}
-	else if(sensormodul.inDataArray[1] == 'k'){
+	else if((sensormodul.inDataArray[1] == 'k') and(sensormodul.inDataArray[2] == '0')){
 		int hundratusen = sensormodul.inDataArray[3];
 		int tiotusen = sensormodul.inDataArray[4];
 		int tusen = sensormodul.inDataArray[5];
 		int hundra = sensormodul.inDataArray[6];
 		int tio = sensormodul.inDataArray[7];
 		int en = sensormodul.inDataArray[8];
-		konstant = hundratusen * 100000 + tiotusen * 10000 + tusen * 10000 + hundra * 100 + tio * 10 + en;
+		konstantett = hundratusen * 100000 + tiotusen * 10000 + tusen * 10000 + hundra * 100 + tio * 10 + en;
+	}
+	else if((sensormodul.inDataArray[1] == 'k') and(sensormodul.inDataArray[2] == '1')){
+		int hundratusen = sensormodul.inDataArray[3];
+		int tiotusen = sensormodul.inDataArray[4];
+		int tusen = sensormodul.inDataArray[5];
+		int hundra = sensormodul.inDataArray[6];
+		int tio = sensormodul.inDataArray[7];
+		int en = sensormodul.inDataArray[8];
+		konstanttwa = hundratusen * 100000 + tiotusen * 10000 + tusen * 10000 + hundra * 100 + tio * 10 + en;
 	}
 }
 
@@ -60,9 +88,9 @@ ISR(SPI_STC_vect){
 	SPDR = sensormodul.outDataArray[sensormodul.position];
 	sensormodul.inDataArray[sensormodul.position-1] = SPDR;
 	
-	if ((sensormodul.position == (sensormodul.inDataArray[0]+one))&(sensormodul.inDataArray[0]!= 0)){
+	if ((sensormodul.position == (sensormodul.inDataArray[0]+1))&(sensormodul.inDataArray[0]!= 0)){
 		PORTC |= (1<<PORTC0);
-		sensormodul.position=0;
+		sensormodul.position = 0;
 	}
 }
 
@@ -90,19 +118,18 @@ ISR(USART0_RX_vect){
 	}
 }
 
+ISR(TIMER0_COMPA_vect){
+	TCNT0 = 0x00;
+	ADCSRA |= 1<<ADSC;		// Start Conversion
+}
+
+
 int main(void)
 {	
- 	sensormodul.SPI_Init();
+	//gyromode = true;
+	sensormodul.SPI_Init();
+	Sensor_Init();
 	USART_Init(383);
-	
-	
-	DDRA = 0x00;			// Configure PortA as input
-							// PA0 is ADC0 input
-							
-	ADCSRA = 0x8F;			// Enable the ADC and its interrupt feature
-							// and set the ACD clock pre-scalar to clk/128
-	ADMUX = 0x20;			// Select 5V as Vref, left justify
-							// data registers and select ADC0 as input channel
 	
 	sei();					// Enable Global Interrupts
 	ADCSRA |= 1<<ADSC;		// Start Conversion
@@ -122,9 +149,15 @@ int main(void)
 		}
 		
 		else if(ADMUX == 0x27){ //gyro
-			vinkelv = (spanning)*150-370+0.859375;
-			sensordata[7] = sensordata[7] + vinkelv;
-			if ((sensordata[7] > konstant) or (sensordata[7] < -1*konstant)){ // mindre än 90 gradersvärdet
+			intspanning = round(spanning*100);
+			if(intspanning < 246){
+				gyrodata = gyrodata - (2.48*2 - intspanning/100);
+			}
+			else if(intspanning > 250){
+				gyrodata = gyrodata + intspanning/100;
+			}
+			if ((gyrodata > konstantett) or (gyrodata < -1*konstanttwa)){ // mindre än 90 gradersvärdet
+				TIMSK0 = 0x00;			//disable compare A interrupt
 				gyromode = false;
 				sensormodul.outDataArray[0] = 1;
 				sensormodul.outDataArray[1] = 'G';
@@ -137,7 +170,7 @@ int main(void)
 		
 		if (gyromode){
 			ADMUX = 0x27;
-			TCNT0 = 0;
+			Timer_Init();
 		}
 		
 		if(ADMUX == 0x26 or (!gyromode and ADMUX == 0x27)){
@@ -146,22 +179,21 @@ int main(void)
 		}
 		else if (ADMUX !=0x27)
 		{
-			
 			sensormodul.outDataArray[0] = 5;
 			sensormodul.outDataArray[1] = 'S';
 			sensormodul.outDataArray[2] =  savepos + 48;
 			sensormodul.outDataArray[3] = (sensordata[savepos]/100) + 48; //plats 4
 			sensormodul.outDataArray[4] = ((sensordata[savepos]/10) %10) + 48; // plats 5
 			sensormodul.outDataArray[5] = (sensordata[savepos] % 10) + 48; // plats 6
-				
+			
 			ADMUX = ADMUX + 1;
 			savepos++;
 		}
 		
-		/*if ((PIND==0x80)){
+		if ((PIND==0x80)){
 			sensormodul.SPI_Send();
-			_delay_us(5);
-		}*/	
+			_delay_ms(5);
+		}	
 		ADCSRA |= 1<<ADSC;	// Start Conversion
 		
 	}
