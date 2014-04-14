@@ -1,10 +1,10 @@
 ﻿Beskrivning     // Datalängd (dec)//  KodOrd (char) // ev Arg (dec)  //  Data (dec/char)
 
-rotera vänster  //  fix 2       //  r   //  0   // 'DNC'
-rotera höger    //  fix 2       //  r   //  1   // 'DNC'
-halt            //  fix 1       //  h   // 'DNC'// 'DNC'
-framåt          //  fix 1       //  f   // 'DNC'// [Var1]
-bakåt           //  fix 1       //  b   // 'DNC'// 'DNC'
+rotera vänster  //  fix 2       //  r   //  0   // [Var1] (speed)
+rotera höger    //  fix 2       //  r   //  1   // [Var1] (speed)
+halt            //  fix 3       //  h   //  0   // [Var1] (speed)
+framåt          //  fix 3       //  f   //  0   // [Var1] (speed)
+bakåt           //  fix 3       //  b   //  0   // [Var1] (speed)
 
 PIDVarSet       // Varierande   //  P   //  0   // [Var1,var2,var3 ... ]
 
