@@ -27,8 +27,8 @@ protected:
     int dataLength;
     Slave* slavePointer;
     Robot* robotPointer;
-
-    
+	bool manual = true;
+	
 };
 
 #endif

@@ -21,7 +21,7 @@ unsigned char pcOutDataArray[25] = {'0','0','0','0','0','0','0','0','0','0','0',
 unsigned int  position = 0;
 unsigned int  pcPosition = 0;
 unsigned char pcHandle[25];
-
+bool toggle = false;
 volatile bool Btrec = false; 
 
 
@@ -192,25 +192,19 @@ ISR(INT1_vect){
 	SPIReceiveArray(0);
 	sei();
 }
-
+//Handle auto/manual button event
 ISR(INT0_vect){
 	cli();
+	if(toggle){
+		outDataArray[1]= 'q';
+		toggle = false;
+	}
+	else{
+		outDataArray[1]= 'a';
+		toggle = true;
+	}
 	outDataArray[0]= 2;
-	outDataArray[1]= 'r';
 	outDataArray[2]= 0;
-	
-	
-	/*
-	outDataArray[1] = 3;
-	outDataArray[2] = 4;
-	SPISendArray(1);
-	
-	_delay_us(10);
-	outDataArray[0] = 2;
-	outDataArray[1] = 5;
-	outDataArray[2] = 6;
-	*/
-	
 	SPISendArray(1);
 	sei();
 }
