@@ -347,15 +347,33 @@ void Robot::bwdValueIn(char* bwd){
     }
 }
 
-void Robot::leftValueIn(char* left){
+void Robot::leftBackValueIn(char* left){
 	for (int i = 0; i < 3; i++) {
-        pushBackChar(leftSensor, left[i]);
+        pushBackChar(leftBackSensor, left[i]);
     }
 }
 
-void Robot::rightValueIn(char* right){
+void Robot::leftFrontValueIn(char* left){
 	for (int i = 0; i < 3; i++) {
-        pushBackChar(rightSensor, right[i]);
+        pushBackChar(leftFrontSensor, left[i]);
+    }
+}
+
+void Robot::leftLongValueIn(char* left){
+	for (int i = 0; i < 3; i++) {
+        pushBackChar(leftLongSensor, left[i]);
+    }
+}
+
+void Robot::rightBackValueIn(char* right){
+	for (int i = 0; i < 3; i++) {
+        pushBackChar(rightBackSensor, right[i]);
+    }
+}
+
+void Robot::rightFrontValueIn(char* left){
+	for (int i = 0; i < 3; i++) {
+        pushBackChar(rightFrontSensor, left[i]);
     }
 }
 
@@ -461,7 +479,7 @@ void Robot::setBwdClosed(){
 
 void Robot::setLeftClosed(){
 	
-	int output = meanValueArray(longLeftSensor,3)/40;
+	int output = meanValueArray(leftLongSensor,3)/40;
 	
 	// Set closed section output + 1 steps away from robot.
 	// Direction 0->y->17, "fwd"
@@ -616,7 +634,7 @@ void Robot::updateRobotPosition(){
 
 
 // -----------------------------------------
-
+/*
 void Robot::adjustPosition(){
     if (meanValueArray(leftBackSensor,3)>90) {
         leftBackReference=80;
@@ -656,7 +674,7 @@ void Robot::adjustPosition(){
     
     
 }
-
+*/
 
 // ---------------------------------------
 // Sets direction
@@ -675,7 +693,7 @@ char* Robot::getColAsChar(int col){
 
 // ----------------------------------------
 
-int getRightDistance(){
+int Robot::getRightDistance(){
     
     int output = meanValueArray(rightFrontSensor,3);
     output = output + meanValueArray(rightBackSensor,3);
