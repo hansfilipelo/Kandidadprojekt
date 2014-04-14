@@ -57,15 +57,15 @@ private slots:
 
     void on_actionRight_triggered();
 
-    void on_stopButton_clicked();
-
-    void on_actionStop_triggered();
-
     void on_actionSpeedUp_triggered();
 
     void on_actionSlowDown_triggered();
 
     void on_pushButton_clicked();
+
+    void on_stopButton_pressed();
+
+    void on_actionStop_triggered();
 
 private:
     Ui::Gui *ui;
