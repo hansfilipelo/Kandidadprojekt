@@ -23,7 +23,7 @@ void Order::rotateLeft(){
 
 
 void Order::rotateRight(){
-    char data[25] = {2,'r',1,0,'Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z'};
+    char data[25] = {2,'r',1,'Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z'};
     
     serport->sendArray(data);
 }
@@ -32,7 +32,7 @@ void Order::rotateRight(){
 void Order::halt(){
     
     char data[25] = {1,'h','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z'};
-    
+    std::cout<<"halt" << std::endl;
     serport->sendArray(data);
 }
 
