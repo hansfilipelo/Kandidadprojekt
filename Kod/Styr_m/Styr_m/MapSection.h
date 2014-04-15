@@ -115,8 +115,10 @@ public:
     void updateRobotPosition();
     
     // Automatic control
-    void turnLeft(int speed);
-    void turnRight(int speed);
+    void turnLeft();
+    void turnRight();
+    int getRightDifference();
+    int getLeftDifference();
     //void adjustPosition();
     
     
@@ -147,6 +149,15 @@ protected:
     int leftBackReference;
     int rightFrontReference;
     int rightBackReference;
+    
+    //Values concerning automatic control
+    
+    int movementSpeed;
+    int Kd;
+    int Kp;
+    int previousRightDifference = 0;
+    int previousLeftDifference = 0;
+    
     
     MapSection* previousSection = NULL;
     Communication* commObj = NULL;
