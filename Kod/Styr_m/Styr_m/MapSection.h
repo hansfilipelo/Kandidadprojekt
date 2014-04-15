@@ -115,8 +115,7 @@ public:
     void updateRobotPosition();
     
     // Automatic control
-    void turnLeft();
-    void turnRight();
+    void turn(int pd) //Positive or negative value will decide left or right
     int getRightDifference();
     int getLeftDifference();
     //void adjustPosition();
@@ -153,10 +152,11 @@ protected:
     //Values concerning automatic control
     
     int movementSpeed;
-    int Kd;
-    int Kp;
-    int previousRightDifference = 0;
-    int previousLeftDifference = 0;
+    int Kd; //Differentiation coeff.
+    int Kp; //Proportional coeff.
+    int Ref=5; //Reference value for control
+    int previousRightError = 0;
+    int previousLeftError = 0;
     
     
     MapSection* previousSection = NULL;
