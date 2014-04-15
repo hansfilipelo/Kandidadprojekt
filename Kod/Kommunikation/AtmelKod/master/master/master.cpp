@@ -104,9 +104,11 @@ void SPIReceiveArray(unsigned int slave){
 	
 	inDataArray[0] = SPI_MasterTransmit(0x00,slave);
 	unsigned int length = inDataArray[0];
+	_delay_us(2);//om data inte kommer fram korrekt, testa då att höja denna.
 	for (unsigned int i=1; i<=length; i++)
 	{
 		inDataArray[i] = SPI_MasterTransmit(0x00, slave);
+		_delay_us(2);
 	}
 }
 
@@ -180,9 +182,9 @@ void BluetoothReceive(){
 void handleDataFromSteer(){
 	ReceiveFromSteer=false;
 	memcpy(pcOutDataArray,inDataArray,25);
-	//if(pcOutDataArray[1]=='M'){
+	if(pcOutDataArray[1]=='M'){
 		BluetoothSendArray();
-	//}
+	}
 }	
 
 void handleDataFromSensor(){

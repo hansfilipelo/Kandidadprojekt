@@ -138,15 +138,18 @@ int main(void)
     
     // Set up bus comm
     steerModuleSlave.SPI_Init();
+	volatile bool watch = abstractionObject->sendMapNow;
     
 	sei();
 	
 	#endif
 	
-	while(1){
+	for(;;){
 		if(abstractionObject->sendMapNow){
+			asm("");
 			abstractionObject->sendMapNow=false;
 			abstractionObject->sendMap();
+			asm("");
 		}	
 	}
 	
