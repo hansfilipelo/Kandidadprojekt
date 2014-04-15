@@ -15,6 +15,10 @@
 
 #endif
 
+#if DEBUG == 1
+#include <iostream>
+#endif
+
 #include <stdio.h>
 #include <string.h>
 #include "Abstraction.h"

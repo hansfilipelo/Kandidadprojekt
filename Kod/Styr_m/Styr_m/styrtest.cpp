@@ -89,6 +89,12 @@ int main(){
     }
     
     testRobot->fwdValueIn(temp);
+    testRobot->bwdValueIn(temp);
+    testRobot->leftLongValueIn(temp);
+    testRobot->leftFrontValueIn(temp);
+    testRobot->leftBackValueIn(temp);
+    testRobot->rightFrontValueIn(temp);
+    testRobot->rightBackValueIn(temp);
     
     // Delete
     delete testRobot;

@@ -16,3 +16,14 @@ gyro-sensor-styr//  fix 1       //  G   // 'DNC'// 'DNC'
 RFID            //  fix 1       //  R   // 'DNC'// 'DNC'
 
 Kartkolumn      //  fix 19      //  M   //  RAD // CHARS
+
+
+Sensorer
+————————
+0	fwd
+1	bwd
+2	leftFront
+3	leftBack
+4	rightFront
+5	rightBack
+6	leftLong

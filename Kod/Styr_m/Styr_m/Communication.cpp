@@ -67,7 +67,7 @@ void Communication::handleData(){
     }
     
     // Left long sensor
-    if (this->inData[1] == 'S' && this->inData[2] == 2) {
+    if (this->inData[1] == 'S' && this->inData[2] == 6) {
         char* temp = new char[3];
         
         for (int it = 0; it < 3; it++) {
@@ -76,14 +76,44 @@ void Communication::handleData(){
         robotPointer->leftLongValueIn(temp);
     }
     
-    // Left long sensor
+    // Left front sensor
     if (this->inData[1] == 'S' && this->inData[2] == 2) {
         char* temp = new char[3];
         
         for (int it = 0; it < 3; it++) {
             temp[it] = inData[it+3];
         }
-        robotPointer->leftLongValueIn(temp);
+        robotPointer->leftFrontValueIn(temp);
+    }
+    
+    // Left back sensor
+    if (this->inData[1] == 'S' && this->inData[2] == 3) {
+        char* temp = new char[3];
+        
+        for (int it = 0; it < 3; it++) {
+            temp[it] = inData[it+3];
+        }
+        robotPointer->leftBackValueIn(temp);
+    }
+    
+    // Right front sensor
+    if (this->inData[1] == 'S' && this->inData[2] == 4) {
+        char* temp = new char[3];
+        
+        for (int it = 0; it < 3; it++) {
+            temp[it] = inData[it+3];
+        }
+        robotPointer->rightFrontValueIn(temp);
+    }
+    
+    // Right back sensor
+    if (this->inData[1] == 'S' && this->inData[2] == 5) {
+        char* temp = new char[3];
+        
+        for (int it = 0; it < 3; it++) {
+            temp[it] = inData[it+3];
+        }
+        robotPointer->rightBackValueIn(temp);
     }
 }
 
