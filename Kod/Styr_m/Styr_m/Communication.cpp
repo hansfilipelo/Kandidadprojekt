@@ -137,8 +137,7 @@ void Communication::sendMap(){
 		memcpy(slavePointer->outDataArray,robotPointer->getColAsChar(i),25);
 		asm("");
 		slavePointer->SPI_Send();
-		asm("");
-		_delay_us(16);
+		_delay_ms(3);
 	}
 }
 
