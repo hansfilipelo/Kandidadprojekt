@@ -206,6 +206,7 @@ void Robot::changeGear(char inGear){
 // Drives 
 
 void Robot::drive(int speed){
+    movementSpeed=speed;
 	int output = floor(speed * 255 / 100);
 	
 	#if DEBUG == 0
@@ -311,7 +312,7 @@ void Robot::rotateRight(){
 //-----------------------------------------
 
 void Robot::turnLeft(int speed){
-    int output = floor(speed * 255 / 100);
+    int output = floor(movementSpeed * 255 / 100);
 	
 #if DEBUG == 0
     OCR2A = output/2;
@@ -321,7 +322,7 @@ void Robot::turnLeft(int speed){
 }
 
 void Robot::turnRight(int speed){
-    int output = floor(speed * 255 / 100);
+    int output = floor(movementSpeed * 255 / 100);
 	
 #if DEBUG == 0
     OCR2A = output;
@@ -727,47 +728,46 @@ void Robot::updateRobotPosition(){
 
 
 // -----------------------------------------
-/*
-void Robot::adjustPosition(){
-    if (meanValueArray(leftBackSensor,3)>90) {
-        leftBackReference=80;
-    }
-    
-    // undefined sensorvalues will be set to 80//
-    
-    else if (meanValueArray(rightFrontSensor,3)>90) {
-        rightFrontReference=80;
-    }
-    else if (meanValueArray(rightBackSensor,3)>90) {
-        rightBackReference=80;
-    }
-    else if (meanValueArray(leftFrontSensor,3)>90) {
-        leftFrontReference=80;
-    }
-    else{
-        rightFrontReference = meanValueArray(rightFrontSensor,3);
-        leftFrontReference = meanValueArray(leftFrontSensor,3);
-        rightBackReference = meanValueArray(rightBackSensor,3);
-        leftBackReference = meanValueArray(leftBackSensor,3);
 
-        //Changes the references on the side sensors to help position adjustment
-    }
+void Robot::adjustPosition(){
+    double dt = 1; //Time between 6 sensor meassurements (not 1)
+    int de = getRightDifference-previousRightDifference;
     
-    while (rightReference<15){
-        turnLeft(25);
-        rightReference = meanValueArray(rightSensor,3);
-        //Not sure if new sensor values will be acquired during loop.
-        
-    }
     
-    while (leftReference<15){
-        turnRight(25);
-        leftReference = meanValueArray(leftSensor,3);
-    }
+
+    
+    
+
+// Will do this last
+    previousRightDifference=getRightDifference();
+    previousLeftDifference=getLeftDifference();
+
+    
+}
+
+
+//----------------------------------
+//Get difference between left and right side sensors
+
+int Robot::getRightDifference(){
+    int front;
+    int back;
+    front = meanValueArray(rightFrontSensor,3);
+    back = meanValueArray(rightBackSensor,3);
+    return front - back;
+
+    
+}
+
+int Robot::getLeftDifference(){
+    int front;
+    int back;
+    front = meanValueArray(leftFrontSensor,3);
+    back = meanValueArray(leftBackSensor,3);
+    return front - back;
     
     
 }
-*/
 
 // ---------------------------------------
 // Sets direction
@@ -780,6 +780,7 @@ void Robot::changeDirection(char inDirection){
 // Get column from Map and send to Comm
 
 char* Robot::getColAsChar(int col){
+	asm("");
     return mom->getColAsChar(col);
 }
 

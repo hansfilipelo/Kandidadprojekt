@@ -135,12 +135,12 @@ void Communication::setRobot(Robot* inRobot){
 void Communication::sendMap(){
     //for (int i = 0; i < 32; i++) {
 		
-		slavePointer->outDataArray[0]=3;
+		/*slavePointer->outDataArray[0]=3;
 		slavePointer->outDataArray[1]='M';
 		slavePointer->outDataArray[2]='U';
 		slavePointer->outDataArray[3]='U';
 		
-		//memcpy(slavePointer->outDataArray,robotPointer->getColAsChar(i),25);
+		memcpy(slavePointer->outDataArray,robotPointer->getColAsChar(i),25);
        
 		slavePointer->SPI_Send();
 //	}
