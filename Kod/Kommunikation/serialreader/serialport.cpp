@@ -55,7 +55,6 @@ void SerialPort::handleReadyRead() {
         tempData.clear();
         inData.clear();
         return;
- 
     }
  }
  */

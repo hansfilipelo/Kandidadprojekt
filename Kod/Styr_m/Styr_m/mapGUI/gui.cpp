@@ -250,29 +250,26 @@ void Gui::updateMap(char inMap[10][17]){
 
 void Gui::on_upButton_pressed()
 {
-    //testar min fkn
-//    insertRow(testArray,map);
-//    updateMap(map);
     if(connectStatus){
-    bluetooth->forward();}
+    bluetooth->forward(speedMultiplier);}
 }
 
 void Gui::on_downButton_pressed()
 {
     if(connectStatus){
-    bluetooth->backward();}
+    bluetooth->backward(speedMultiplier);}
 }
 
 void Gui::on_leftButton_pressed()
 {
     if(connectStatus){
-    bluetooth->rotateLeft();}
+    bluetooth->rotateLeft(speedMultiplier);}
 }
 
 void Gui::on_rightButton_pressed()
 {
     if(connectStatus){
-    bluetooth->rotateRight();}
+    bluetooth->rotateRight(speedMultiplier);}
 }
 
 void Gui::on_speedSlider_sliderReleased(){
@@ -282,25 +279,25 @@ void Gui::on_speedSlider_sliderReleased(){
 void Gui::on_actionForward_triggered()
 {
     if(connectStatus){
-    bluetooth->forward();}
+    bluetooth->forward(speedMultiplier);}
 }
 
 void Gui::on_actionDown_triggered()
 {
     if(connectStatus){
-    bluetooth->backward();}
+    bluetooth->backward(speedMultiplier);}
 }
 
 void Gui::on_actionLeft_triggered()
 {
     if(connectStatus){
-    bluetooth->rotateLeft();}
+    bluetooth->rotateLeft(speedMultiplier);}
 }
 
 void Gui::on_actionRight_triggered()
 {
       if(connectStatus){
-      bluetooth->rotateRight();}
+      bluetooth->rotateRight(speedMultiplier);}
 }
 
 void Gui::on_stopButton_pressed()
@@ -320,11 +317,13 @@ void Gui::on_actionStop_triggered()
 void Gui::on_actionSpeedUp_triggered()
 {
     ui->speedSlider->setValue(ui->speedSlider->value()+10);
+    speedMultiplier = ui->speedSlider->value();
 }
 
 void Gui::on_actionSlowDown_triggered()
 {
     ui->speedSlider->setValue(ui->speedSlider->value()-10);
+    speedMultiplier = ui->speedSlider->value();
 }
 
 void Gui::on_pushButton_clicked()
