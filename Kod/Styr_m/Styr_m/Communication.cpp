@@ -22,6 +22,7 @@ void Communication::handleData(){
 	//request to send map
 	if (this->inData[1]=='F') {
 		sendMapNow = true;
+		asm("");
 	}
 	
 	if (manual){
@@ -132,17 +133,17 @@ void Communication::setRobot(Robot* inRobot){
 // -------------------
 
 void Communication::sendMap(){
-    for (int i = 0; i < 32; i++) {
+    //for (int i = 0; i < 32; i++) {
 		
 		/*slavePointer->outDataArray[0]=3;
-		slavePointer->outDataArray[1]=1;
-		slavePointer->outDataArray[2]=2;
-		slavePointer->outDataArray[3]=3;*/
+		slavePointer->outDataArray[1]='M';
+		slavePointer->outDataArray[2]='U';
+		slavePointer->outDataArray[3]='U';
 		
 		memcpy(slavePointer->outDataArray,robotPointer->getColAsChar(i),25);
        
 		slavePointer->SPI_Send();
-	}
+//	}
 }
 
 // --------------------------

@@ -7,9 +7,10 @@
 
 
 #include <avr/io.h>
+#include <util/delay.h>
 
 #define LCD_data PORTC
-
+/*
 void LCD_busy(){
 	PORTC = 0x80;
 	PORTA |= (1<<PORTA7); //enable
@@ -21,6 +22,7 @@ void LCD_busy(){
 		PORTA |= (1<<PORTA7); //enable
 	}
 }
+*/
 
 void LCD_init()
 {
@@ -28,25 +30,25 @@ void LCD_init()
 	PORTA &= ~(0<<PORTA5)|(0<<PORTA6);
 	PORTA |= (1<<PORTA7); //enable
 	PORTA &= ~(0<<PORTA7); //disable
-	LCD_busy();
+	_delay_us(40);
 	
 	LCD_data = 0x0F; //Display on, Curson blinking command
 	PORTA &= ~(0<<PORTA5)|(0<<PORTA6);
 	PORTA |= (1<<PORTA7); //enable
 	PORTA &= ~(0<<PORTA7); //disable
-	LCD_busy();
+	_delay_us(40);
 	
 	LCD_data = 0x01; //Clear LCD
 	PORTA &= ~(0<<PORTA5)|(0<<PORTA6);
 	PORTA |= (1<<PORTA7); //enable
 	PORTA &= ~(0<<PORTA7); //disable
-	LCD_busy();
+	_delay_ms(1.6);
 	
 	LCD_data = 0x06; //Entry mode, auto increment with no shift
 	PORTA &= ~(0<<PORTA5)|(0<<PORTA6);
 	PORTA |= (1<<PORTA7); //enable
 	PORTA &= ~(0<<PORTA7); //disable, kanske inte måste ha denna
-	LCD_busy();
+	_delay_us(40);
 }
 
 void LCD_command(unsigned char var) // för att uföra olika kommandon
@@ -55,7 +57,7 @@ void LCD_command(unsigned char var) // för att uföra olika kommandon
 	PORTA &= ~(0<<PORTA5)|(0<<PORTA6);
 	PORTA |= (1<<PORTA7); //enable
 	PORTA &= ~(0<<PORTA7); //disable
-	LCD_busy(); //Wait for LCD to process the command
+	_delay_ms(5);
 }
 
 void LCD_senddata(unsigned char var)
@@ -66,7 +68,7 @@ void LCD_senddata(unsigned char var)
 	PORTA |= (1<<PORTA5); //enable
 	PORTA |= (1<<PORTA7); //enable
 	PORTA &= ~(0<<PORTA7); //disable
-	LCD_busy(); //Wait for LCD to process the command
+	_delay_ms(5);
 }
 
 void LCD_sendstring(unsigned char *var)

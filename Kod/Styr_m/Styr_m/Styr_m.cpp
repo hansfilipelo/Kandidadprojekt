@@ -137,19 +137,19 @@ int main(void)
     
     // Set up bus comm
     steerModuleSlave.SPI_Init();
+	volatile bool watch = abstractionObject->sendMapNow;
     
 	sei();
 	
 	#endif
 	
-	Map* mapPointer = new Map();
-	Robot* robotPointer = new Robot(16,1,mapPointer,abstractionObject);
-	
-	while(1){
+	for(;;){
 		if(abstractionObject->sendMapNow){
+			asm("");
 			abstractionObject->sendMapNow=false;
 			abstractionObject->sendMap();
-		}
+			asm("");
+		}	
 	}
 	
 	return 0;
