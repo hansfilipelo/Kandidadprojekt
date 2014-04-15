@@ -725,11 +725,11 @@ void Robot::adjustPosition(){
     int error;
     int derivError;
     if (meanValueArray(rightFrontSensor,3)>80) { //right sensor out of range
-        error=Ref-meanValueArray(leftFrontSensor,3)
+        error=Ref-meanValueArray(leftFrontSensor,3);
         derivError=meanValueArray(leftFrontSensor,3)-previousLeftError;
-        pd= Kp*error + Kd*derivError
-        previousLeftError=error //Saves value for next differentiation
-        if(getLeftDifference < 0){
+        pd= Kp*error + Kd*derivError;
+        previousLeftError=error; //Saves value for next differentiation
+        if(getLeftDifference() < 0){
             turn(pd); //Turn right
         }
         else{
@@ -737,11 +737,11 @@ void Robot::adjustPosition(){
         }
     }
     else { //left Sensor out of range
-        error=Ref-meanValueArray(rightFrontSensor,3)
+        error=Ref-meanValueArray(rightFrontSensor,3);
         derivError=meanValueArray(rightFrontSensor,3)-previousRightError;
         previousRightError=error;
-        pd= Kp*error + Kd*derivError
-        if(getRightDifference < 0){
+        pd= Kp*error + Kd*derivError;
+        if(getRightDifference() < 0){
             turn(-pd); //Turn left
         }
         else{
@@ -750,18 +750,6 @@ void Robot::adjustPosition(){
     }
     
 }
-}
-
-
-    
-
-// Will do this last
-    previousRightDifference=getRightDifference();
-    previousLeftDifference=getLeftDifference();
-
-    
-}
-
 
 //----------------------------------
 //Get difference between left and right side sensors

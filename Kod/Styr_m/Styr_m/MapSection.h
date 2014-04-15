@@ -115,10 +115,10 @@ public:
     void updateRobotPosition();
     
     // Automatic control
-    void turn(int pd) //Positive or negative value will decide left or right
+    void turn(int pd); //Positive or negative value will decide left or right
     int getRightDifference();
     int getLeftDifference();
-    //void adjustPosition();
+    void adjustPosition();
     
     
     
