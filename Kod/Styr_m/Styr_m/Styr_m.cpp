@@ -5,7 +5,7 @@
  *  Author: hanel742 och tobgr602
  */ 
 
-
+#define F_CPU 14745000
 #include <avr/io.h>
 #include <util/delay.h>
 #include <avr/interrupt.h>
@@ -17,18 +17,18 @@
 #include "Communication.h"
 #include "slave.h"
 
-#if DEBUG == 0
-
 // Intiating global variables
 // -----------------------------
 // Chooses direction
-static int gear = 0;
+//static int gear = 0;
 //static int speed = 0;
 Slave steerModuleSlave;
 Slave* slavePointer = &steerModuleSlave;
 Communication* abstractionObject = new Communication(slavePointer);
 Map* mapPointer = new Map();
 Robot* robotPointer = new Robot(16,1,mapPointer,abstractionObject);
+
+#if DEBUG == 0
 
 // Interreupt for bus comm
 // -----------------------------
