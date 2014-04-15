@@ -311,25 +311,16 @@ void Robot::rotateRight(){
 
 //-----------------------------------------
 
-void Robot::turnLeft(int speed){
+void Robot::turn(int pd){
     int output = floor(movementSpeed * 255 / 100);
 	
 #if DEBUG == 0
-    OCR2A = output/2;
-    OCR2B = output;
+    OCR2A = output+pd; //Negative value on pd will turn left, positive right
+    OCR2B = output-pd;
 #endif
     
 }
 
-void Robot::turnRight(int speed){
-    int output = floor(movementSpeed * 255 / 100);
-	
-#if DEBUG == 0
-    OCR2A = output;
-    OCR2B = output/2;
-#endif
-	
-}
 
 // ------------------------------------
 // Gets sensorvalues and will probably later activate SLAM functions
@@ -730,12 +721,38 @@ void Robot::updateRobotPosition(){
 // -----------------------------------------
 
 void Robot::adjustPosition(){
-    double dt = 1; //Time between 6 sensor meassurements (not 1)
-    int de = getRightDifference-previousRightDifference;
+    int pd;
+    int error;
+    int derivError;
+    if (meanValueArray(rightFrontSensor,3)>80) { //right sensor out of range
+        error=Ref-meanValueArray(leftFrontSensor,3)
+        derivError=meanValueArray(leftFrontSensor,3)-previousLeftError;
+        pd= Kp*error + Kd*derivError
+        previousLeftError=error //Saves value for next differentiation
+        if(getLeftDifference < 0){
+            turn(pd); //Turn right
+        }
+        else{
+            turn(-pd); //Turn left
+        }
+    }
+    else { //left Sensor out of range
+        error=Ref-meanValueArray(rightFrontSensor,3)
+        derivError=meanValueArray(rightFrontSensor,3)-previousRightError;
+        previousRightError=error;
+        pd= Kp*error + Kd*derivError
+        if(getRightDifference < 0){
+            turn(-pd); //Turn left
+        }
+        else{
+            turn(pd); //Turn right
+        }
+    }
     
-    
+}
+}
 
-    
+
     
 
 // Will do this last
