@@ -339,6 +339,12 @@ void Robot::fwdValueIn(char* fwd){
     for (int i = 0; i < 3; i++) {
         pushBackChar(fwdSensor, fwd[i]);
     }
+    
+#if DEBUG == 1
+    for (int it = 0; it < strlen(fwdSensor); it++) {
+        cout << fwdSensor[it] << endl;
+    }
+#endif
 }
 
 void Robot::bwdValueIn(char* bwd){

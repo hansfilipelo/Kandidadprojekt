@@ -80,9 +80,15 @@ int main(){
         cout << testPushBack[i] << endl;
     }
     
-    while (cin) {
-        
+    cout << "--------" << " Testing to enter sensordata " << "--------" <<  endl;
+    
+    char* temp = new char[3];
+    
+    for (int i = 0; i < 3; i++) {
+        temp[i] = 50-i;
     }
+    
+    testRobot->fwdValueIn(temp);
     
     // Delete
     delete testRobot;
