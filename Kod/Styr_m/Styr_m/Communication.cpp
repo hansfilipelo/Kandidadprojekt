@@ -115,6 +115,12 @@ void Communication::handleData(){
         }
         robotPointer->rightBackValueIn(temp);
     }
+    
+    // Gyro interrupt
+    if (this->inData[1] == 'G') {
+        robotPointer->stopRotation();
+    }
+    
 }
 
 // -------------------
@@ -138,3 +144,16 @@ void Communication::sendMap(){
 		slavePointer->SPI_Send();
 	}
 }
+
+// --------------------------
+// Asks for measure of angles
+
+void Communication::sendRotateRequest(){
+    slavePointer->outDataArray[0] = 1;
+    slavePointer->outDataArray[1] = 'g';
+    
+    slavePointer->SPI_Send();
+}
+
+
+

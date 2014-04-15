@@ -233,13 +233,12 @@ void Robot::rotateLeft(){
 	// Seft diffs to 0
 	fwdDiff = 0;
 	bwdDiff = 0;
-	//---------
-	// First send stuff to sensor module
-	// When we have rotated 90 degrees sensor module will send a signal which will deactivate rotate
-	//---------
+	
+    // Send request to sensor module to measure angle
+    commObj->sendRotateRequest();
 	
     // Turns
-    changeDirection('l');
+    changeGear('l');
 	
 	while (rotateActive)
 	{

@@ -19,6 +19,8 @@ public:
     void setRobot(Robot*);
     
     void sendMap();
+    void sendRotateRequest();
+    
 //flyttade från protected
 	unsigned char inData[25];
     unsigned char outData[25];
