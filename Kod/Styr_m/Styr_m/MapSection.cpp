@@ -206,6 +206,7 @@ void Robot::changeGear(char inGear){
 // Drives 
 
 void Robot::drive(int speed){
+    movementSpeed=speed;
 	int output = floor(speed * 255 / 100);
 	
 	#if DEBUG == 0
@@ -233,13 +234,12 @@ void Robot::rotateLeft(){
 	// Seft diffs to 0
 	fwdDiff = 0;
 	bwdDiff = 0;
-	//---------
-	// First send stuff to sensor module
-	// When we have rotated 90 degrees sensor module will send a signal which will deactivate rotate
-	//---------
+	
+    // Send request to sensor module to measure angle
+    commObj->sendRotateRequest();
 	
     // Turns
-    changeDirection('l');
+    changeGear('l');
 	
 	while (rotateActive)
 	{
@@ -312,7 +312,7 @@ void Robot::rotateRight(){
 //-----------------------------------------
 
 void Robot::turnLeft(int speed){
-    int output = floor(speed * 255 / 100);
+    int output = floor(movementSpeed * 255 / 100);
 	
 #if DEBUG == 0
     OCR2A = output/2;
@@ -322,7 +322,7 @@ void Robot::turnLeft(int speed){
 }
 
 void Robot::turnRight(int speed){
-    int output = floor(speed * 255 / 100);
+    int output = floor(movementSpeed * 255 / 100);
 	
 #if DEBUG == 0
     OCR2A = output;
@@ -339,24 +339,91 @@ void Robot::fwdValueIn(char* fwd){
     for (int i = 0; i < 3; i++) {
         pushBackChar(fwdSensor, fwd[i]);
     }
+    
+#if DEBUG == 1
+    cout << "fwdValueIn" << endl;
+    for (int it = 0; it < (int)strlen(fwdSensor); it++) {
+        cout << fwdSensor[it] << endl;
+    }
+#endif
 }
 
 void Robot::bwdValueIn(char* bwd){
 	for (int i = 0; i < 3; i++) {
         pushBackChar(bwdSensor, bwd[i]);
     }
+    
+#if DEBUG == 1
+    cout << "bwdValueIn" << endl;
+    for (int it = 0; it < (int)strlen(fwdSensor); it++) {
+        cout << bwdSensor[it] << endl;
+    }
+#endif
 }
 
-void Robot::leftValueIn(char* left){
+void Robot::leftBackValueIn(char* left){
 	for (int i = 0; i < 3; i++) {
-        pushBackChar(leftSensor, left[i]);
+        pushBackChar(leftBackSensor, left[i]);
     }
+    
+#if DEBUG == 1
+    cout << "leftBackValueIn" << endl;
+    for (int it = 0; it < (int)strlen(fwdSensor); it++) {
+        cout << leftBackSensor[it] << endl;
+    }
+#endif
 }
 
-void Robot::rightValueIn(char* right){
+void Robot::leftFrontValueIn(char* left){
 	for (int i = 0; i < 3; i++) {
-        pushBackChar(rightSensor, right[i]);
+        pushBackChar(leftFrontSensor, left[i]);
     }
+    
+#if DEBUG == 1
+    cout << "leftFrontValueIn" << endl;
+    for (int it = 0; it < (int)strlen(fwdSensor); it++) {
+        cout << leftFrontSensor[it] << endl;
+    }
+#endif
+}
+
+void Robot::leftLongValueIn(char* left){
+	for (int i = 0; i < 3; i++) {
+        pushBackChar(leftLongSensor, left[i]);
+    }
+    
+#if DEBUG == 1
+    cout << "leftLongValueIn" << endl;
+    for (int it = 0; it < (int)strlen(fwdSensor); it++) {
+        cout << leftLongSensor[it] << endl;
+    }
+#endif
+}
+
+void Robot::rightBackValueIn(char* right){
+	for (int i = 0; i < 3; i++) {
+        pushBackChar(rightBackSensor, right[i]);
+    }
+    
+#if DEBUG == 1
+    cout << "rightBackValueIn" << endl;
+    for (int it = 0; it < (int)strlen(fwdSensor); it++) {
+        cout << rightBackSensor[it] << endl;
+    }
+#endif
+}
+
+void Robot::rightFrontValueIn(char* left){
+	for (int i = 0; i < 3; i++) {
+        pushBackChar(rightFrontSensor, left[i]);
+    }
+    
+#if DEBUG == 1
+    cout << "rightFrontValueIn" << endl;
+    for (int it = 0; it < (int)strlen(fwdSensor); it++) {
+        cout << rightFrontSensor[it] << endl;
+    }
+#endif
 }
 
 void Robot::phiDotValueIn(char* phiDot){
@@ -417,7 +484,7 @@ void Robot::setBwdClosed(){
 	
 	// A block is 40x40
 	int output = meanValueArray(bwdSensor,3)/40;
-	
+    
 	// Set closed section output + 1 steps away from robot.
 	// Direction 0->y->17, "fwd"
 	if (direction == 'f'){
@@ -453,6 +520,96 @@ void Robot::setBwdClosed(){
         // Set every section between robot and wall as empty
         for (int i = 0; i < output; i++) {
             mom->convertSection(xCoord + i + 1,yCoord, 'e');
+        }
+	}
+}
+
+// -------------- To the left --------------------------
+
+void Robot::setLeftClosed(){
+	
+	int output = meanValueArray(leftLongSensor,3)/40;
+	
+	// Set closed section output + 1 steps away from robot.
+	// Direction 0->y->17, "fwd"
+	if (direction == 'f'){
+		mom->convertSection(xCoord + output + 1,yCoord, 'c');
+        
+        // Set every section between robot and wall as empty
+        for (int i = 0; i < output; i++) {
+            mom->convertSection(xCoord + i + 1,yCoord, 'e');
+        }
+	}
+	// Direction 17->y->0, "bwd"
+	else if (direction == 'b'){
+		mom->convertSection(xCoord - output - 1,yCoord, 'c');
+        
+        // Set every section between robot and wall as empty
+        for (int i = 0; i < output; i++) {
+            mom->convertSection(xCoord - i - 1,yCoord, 'e');
+        }
+	}
+	// Direction 0->x->32, "right"
+	else if (direction == 'r'){
+		mom->convertSection(xCoord,yCoord - output - 1, 'c');
+        
+        // Set every section between robot and wall as empty
+        for (int i = 0; i < output; i++) {
+            mom->convertSection(xCoord,yCoord - i - 1, 'e');
+        }
+	}
+	// Direction 32->x->0, "left"
+	else if (direction == 'l'){
+		mom->convertSection(xCoord,yCoord + output + 1, 'c');
+        
+        // Set every section between robot and wall as empty
+        for (int i = 0; i < output; i++) {
+            mom->convertSection(xCoord,yCoord + i + 1, 'e');
+        }
+	}
+}
+
+// -------------- To the right --------------------------
+
+void Robot::setRightClosed(){
+	
+	int output = getRightDistance()/40;
+	
+	// Set closed section output + 1 steps away from robot.
+	// Direction 0->y->17, "fwd"
+	if (direction == 'f'){
+		mom->convertSection(xCoord - output - 1,yCoord, 'c');
+        
+        // Set every section between robot and wall as empty
+        for (int i = 0; i < output; i++) {
+            mom->convertSection(xCoord - i - 1,yCoord, 'e');
+        }
+	}
+	// Direction 17->y->0, "bwd"
+	else if (direction == 'b'){
+		mom->convertSection(xCoord + output + 1,yCoord, 'c');
+        
+        // Set every section between robot and wall as empty
+        for (int i = 0; i < output; i++) {
+            mom->convertSection(xCoord + i + 1,yCoord, 'e');
+        }
+	}
+	// Direction 0->x->32, "right"
+	else if (direction == 'r'){
+		mom->convertSection(xCoord,yCoord + output + 1, 'c');
+        
+        // Set every section between robot and wall as empty
+        for (int i = 0; i < output; i++) {
+            mom->convertSection(xCoord,yCoord + i + 1, 'e');
+        }
+	}
+	// Direction 32->x->0, "left"
+	else if (direction == 'l'){
+		mom->convertSection(xCoord,yCoord - output - 1, 'c');
+        
+        // Set every section between robot and wall as empty
+        for (int i = 0; i < output; i++) {
+            mom->convertSection(xCoord,yCoord - i - 1, 'e');
         }
 	}
 }
@@ -573,36 +730,44 @@ void Robot::updateRobotPosition(){
 // -----------------------------------------
 
 void Robot::adjustPosition(){
-    if (meanValueArray(leftSensor,3)>90) {
-        leftReference=80;
-    }
+    double dt = 1; //Time between 6 sensor meassurements (not 1)
+    int de = getRightDifference-previousRightDifference;
     
-    // undefined sensorvalues will be set to 80//
     
-    else if (meanValueArray(rightSensor,3)>90) {
-        rightReference=80;
-    }
-    else{
-        rightReference = meanValueArray(rightSensor,3);
-        leftReference = meanValueArray(leftSensor,3);
-        //Changes the references on the side sensors to help position adjustment
-    }
+
     
-    while (rightReference<15){
-        turnLeft(25);
-        rightReference = meanValueArray(rightSensor,3);
-        //Not sure if new sensor values will be acquired during loop.
-        
-    }
     
-    while (leftReference<15){
-        turnRight(25);
-        leftReference = meanValueArray(leftSensor,3);
-    }
-    
+
+// Will do this last
+    previousRightDifference=getRightDifference();
+    previousLeftDifference=getLeftDifference();
+
     
 }
 
+
+//----------------------------------
+//Get difference between left and right side sensors
+
+int Robot::getRightDifference(){
+    int front;
+    int back;
+    front = meanValueArray(rightFrontSensor,3);
+    back = meanValueArray(rightBackSensor,3);
+    return front - back;
+
+    
+}
+
+int Robot::getLeftDifference(){
+    int front;
+    int back;
+    front = meanValueArray(leftFrontSensor,3);
+    back = meanValueArray(leftBackSensor,3);
+    return front - back;
+    
+    
+}
 
 // ---------------------------------------
 // Sets direction
@@ -615,11 +780,20 @@ void Robot::changeDirection(char inDirection){
 // Get column from Map and send to Comm
 
 char* Robot::getColAsChar(int col){
+	asm("");
     return mom->getColAsChar(col);
 }
 
 
+// ----------------------------------------
 
+int Robot::getRightDistance(){
+    
+    int output = meanValueArray(rightFrontSensor,3);
+    output = output + meanValueArray(rightBackSensor,3);
+    return output/2;
+    
+}
 
 
 
