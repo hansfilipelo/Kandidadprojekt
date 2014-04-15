@@ -5,7 +5,7 @@
  *  Author: hanel742 och tobgr602
  */ 
 
-#define F_CPU 14745000
+#define F_CPU 14745600
 #include <avr/io.h>
 #include <util/delay.h>
 #include <avr/interrupt.h>
@@ -25,8 +25,7 @@
 Slave steerModuleSlave;
 Slave* slavePointer = &steerModuleSlave;
 Communication* abstractionObject = new Communication(slavePointer);
-Map* mapPointer = new Map();
-Robot* robotPointer = new Robot(16,1,mapPointer,abstractionObject);
+
 
 #if DEBUG == 0
 
@@ -143,11 +142,14 @@ int main(void)
 	
 	#endif
 	
+	Map* mapPointer = new Map();
+	Robot* robotPointer = new Robot(16,1,mapPointer,abstractionObject);
+	
 	while(1){
 		if(abstractionObject->sendMapNow){
 			abstractionObject->sendMapNow=false;
 			abstractionObject->sendMap();
-		}	
+		}
 	}
 	
 	return 0;
