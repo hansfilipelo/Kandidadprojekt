@@ -30,13 +30,13 @@ public:
 private slots:
     void handleReadyRead();
     void handleError(QSerialPort::SerialPortError error);
-    void handleData(QString);
+    void handleData(QByteArray);
 
 private:
     
     QByteArray  m_readData;
     QTextStream m_standardOutput;
-    QString tempData;
+    QByteArray tempData;
 };
 
 #endif

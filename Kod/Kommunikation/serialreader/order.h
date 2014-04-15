@@ -27,6 +27,7 @@ public:
     void forward(int);
     void backward(int);
     void test();
+    void fetchMap();
     
 protected:
     

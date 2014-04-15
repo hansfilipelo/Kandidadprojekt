@@ -58,3 +58,8 @@ void Order::test(){
     serport->sendArray(data);
 }
 
+void Order::fetchMap(){
+
+    char data[25] = {1,'F','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z'};
+    serport->sendArray(data);
+}

@@ -332,5 +332,9 @@ void Gui::on_pushButton_clicked()
 }
 
 
-
-
+void Gui::on_fetchButton_pressed()
+{
+    if(connectStatus){
+        bluetooth->fetchMap();
+    }
+}

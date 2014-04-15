@@ -25,14 +25,15 @@ void SerialPort::sendArray(const char inArray[25]){
     port->waitForBytesWritten(600);
 }
 
-/*
+
 //Alt. handleReadyRead(), assuming tempData is QByteArray
 void SerialPort::handleReadyRead() {
     QByteArray inData;
+    std::cout << "yo" << std::endl;
     int inBytes = port->bytesAvailable();
     int tempBytes = tempData.length();
     
-    checkBytes = inBytes + tempBytes;
+    int checkBytes = inBytes + tempBytes;
     
     if(checkBytes == 25){
         inData = port->readAll();
@@ -57,10 +58,9 @@ void SerialPort::handleReadyRead() {
         return;
     }
  }
- */
 
 
-
+/*
 void SerialPort::handleReadyRead() //semitested readyread will fail to handle if alot of data arrives fast with no spaces inbetween.
 {
     QString inData = "";
@@ -97,6 +97,7 @@ void SerialPort::handleReadyRead() //semitested readyread will fail to handle if
         }
     }
 }
+*/
 
 void SerialPort::handleError(QSerialPort::SerialPortError serialPortError)
 {
@@ -106,9 +107,11 @@ void SerialPort::handleError(QSerialPort::SerialPortError serialPortError)
     }
 }
 
-void SerialPort::handleData(QString inData){
-    unsigned int test = inData.toStdString().at(0);
-        std::cout << test << inData.toStdString() << std::endl;
+void SerialPort::handleData(QByteArray inData){
+    QString text = inData;
+    std::string temp = text.toStdString();
+    int test = temp.at(0);
+        std::cout << test << temp << std::endl;
     return;
     
 }

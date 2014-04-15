@@ -6,6 +6,8 @@ halt            //  fix 3       //  h   // ’DNC’// ’DNC’
 framåt          //  fix 3       //  f   //  0   // [Var1] (speed)
 bakåt           //  fix 3       //  b   //  0   // [Var1] (speed)
 
+FetchMap	//  fix 1	//  F	// ’DNC’// ’DNC’
+
 PIDVarSet       // Varierande   //  P   //  0   // [Var1,var2,var3 ... ]
 
 styr-sensor-gyro//  fix 1       //  g	//  ’DNC’//  ’DNC’
@@ -16,6 +18,8 @@ gyro-sensor-styr//  fix 1       //  G   // 'DNC'// 'DNC'
 RFID            //  fix 1       //  R   // 'DNC'// 'DNC'
 
 Kartkolumn      //  fix 19      //  M   //  RAD // CHARS
+
+Man/Auto	// fix 1	// a/q	// ’DNC’
 
 
 Sensorer
