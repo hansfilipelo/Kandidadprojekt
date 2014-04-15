@@ -156,7 +156,7 @@ volatile void handleBluetooth(){
 		outDataArray[2] = pcHandle[2];
 		outDataArray[3] = pcHandle[3];
 		asm("");
-		SPISendArray(1); //send data to module 1 (control)
+		SPISendArray(1); //send data to module 1 (steer)
 		asm("");
 	}
 }
@@ -182,6 +182,7 @@ void BluetoothReceive(){
 void handleDataFromSteer(){
 	ReceiveFromSteer=false;
 	memcpy(pcOutDataArray,inDataArray,25);
+	asm("");
 	if(pcOutDataArray[1]=='M'){
 		BluetoothSendArray();
 	}

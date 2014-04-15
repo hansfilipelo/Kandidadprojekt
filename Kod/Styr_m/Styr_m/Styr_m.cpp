@@ -143,6 +143,10 @@ int main(void)
 	
 	#endif
 	
+	Map* mapPointer = new Map();
+	Robot* robotPointer = new Robot(16,1,mapPointer,abstractionObject);
+	abstractionObject->setRobot(robotPointer);
+	
 	for(;;){
 		if(abstractionObject->sendMapNow){
 			asm("");
