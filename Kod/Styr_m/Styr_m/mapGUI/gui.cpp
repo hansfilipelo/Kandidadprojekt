@@ -1,8 +1,8 @@
 #include "gui.h"
 #include "ui_gui.h"
 #include <qiodevice.h>
-#include "../../../../kommunikation/serialreader/order.h"
-#include "../../../../kommunikation/serialreader/serialport.h"
+#include "../../../Kommunikation/serialreader/order.h"
+#include "../../../Kommunikation/serialreader/serialport.h"
 #include <QtSerialPort/QSerialPort>
 #include <QtCore>
 #include <QIODevice>
@@ -18,12 +18,19 @@ Gui::Gui(QWidget *parent) :
     timeVector.insert(0,0);
     timer->start(1000);
     ui->mapView->setScene(scene);
+    //alla keys förutom pilarna kräver manuell connection, bör rensas upp då alla slots inte behövs. Har atm flera slots som gör samma saker
+    // via shortcuts samt knappar i UI:n
+    new QShortcut(QKeySequence(Qt::Key_Space), this, SLOT(on_actionStop_triggered()));
 
 }
 
 Gui::~Gui()
 {
     delete ui;
+}
+
+void Gui::labelSet(QString text){
+    ui->label->setText(text);
 }
 
 int Gui::startPort(){
@@ -295,3 +302,36 @@ void Gui::on_actionRight_triggered()
       if(connectStatus){
       bluetooth->rotateRight();}
 }
+
+void Gui::on_stopButton_pressed()
+{
+    if(connectStatus){
+        bluetooth->halt();
+    }
+}
+
+void Gui::on_actionStop_triggered()
+{
+    if(connectStatus){
+        bluetooth->halt();
+    }
+}
+
+void Gui::on_actionSpeedUp_triggered()
+{
+    ui->speedSlider->setValue(ui->speedSlider->value()+10);
+}
+
+void Gui::on_actionSlowDown_triggered()
+{
+    ui->speedSlider->setValue(ui->speedSlider->value()-10);
+}
+
+void Gui::on_pushButton_clicked()
+{
+    this->startPort();
+}
+
+
+
+

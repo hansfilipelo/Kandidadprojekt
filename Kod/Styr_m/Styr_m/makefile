@@ -22,8 +22,8 @@ Map.o: Map.cpp
 MapSection.o: MapSection.cpp Map.o
 	$(CCC) $(CCFLAGS) -c MapSection.cpp
 
-slave.o: ../../../sensormodul/sensormodul/slave.cpp
-	$(CCC) $(CCFLAGS) -c ../../../sensormodul/sensormodul/slave.cpp
+slave.o: slave.cpp
+	$(CCC) $(CCFLAGS) -c slave.cpp
 
 clean:
 	@ \rm -f ./*.o
