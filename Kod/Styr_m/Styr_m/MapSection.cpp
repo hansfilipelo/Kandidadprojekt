@@ -484,6 +484,51 @@ void Robot::setLeftClosed(){
 	// Set closed section output + 1 steps away from robot.
 	// Direction 0->y->17, "fwd"
 	if (direction == 'f'){
+		mom->convertSection(xCoord + output + 1,yCoord, 'c');
+        
+        // Set every section between robot and wall as empty
+        for (int i = 0; i < output; i++) {
+            mom->convertSection(xCoord + i + 1,yCoord, 'e');
+        }
+	}
+	// Direction 17->y->0, "bwd"
+	else if (direction == 'b'){
+		mom->convertSection(xCoord - output - 1,yCoord, 'c');
+        
+        // Set every section between robot and wall as empty
+        for (int i = 0; i < output; i++) {
+            mom->convertSection(xCoord - i - 1,yCoord, 'e');
+        }
+	}
+	// Direction 0->x->32, "right"
+	else if (direction == 'r'){
+		mom->convertSection(xCoord,yCoord - output - 1, 'c');
+        
+        // Set every section between robot and wall as empty
+        for (int i = 0; i < output; i++) {
+            mom->convertSection(xCoord,yCoord - i - 1, 'e');
+        }
+	}
+	// Direction 32->x->0, "left"
+	else if (direction == 'l'){
+		mom->convertSection(xCoord,yCoord + output + 1, 'c');
+        
+        // Set every section between robot and wall as empty
+        for (int i = 0; i < output; i++) {
+            mom->convertSection(xCoord,yCoord + i + 1, 'e');
+        }
+	}
+}
+
+// -------------- To the right --------------------------
+
+void Robot::setRightClosed(){
+	
+	int output = getRightDistance()/40;
+	
+	// Set closed section output + 1 steps away from robot.
+	// Direction 0->y->17, "fwd"
+	if (direction == 'f'){
 		mom->convertSection(xCoord - output - 1,yCoord, 'c');
         
         // Set every section between robot and wall as empty
