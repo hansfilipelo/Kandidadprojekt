@@ -14,17 +14,18 @@ Order::Order(SerialPort *inPort){
 Order::~Order(){
 }
 
-void Order::rotateLeft(){
+void Order::rotateLeft(int inSpeed){
 
-    char data[25] = {2,'r',0,'Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z'};
-    
+    char speed = inSpeed;
+    char data[25] = {3,'r',0,speed,'Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z'};
     serport->sendArray(data);
 }
 
 
-void Order::rotateRight(){
-    char data[25] = {2,'r',1,'Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z'};
-    
+void Order::rotateRight(int inSpeed){
+
+    char speed = inSpeed;
+    char data[25] = {3,'r',1,speed,'Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z'};
     serport->sendArray(data);
 }
 
@@ -32,29 +33,28 @@ void Order::rotateRight(){
 void Order::halt(){
     
     char data[25] = {1,'h','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z'};
-    std::cout<<"halt" << std::endl;
     serport->sendArray(data);
 }
 
 
-void Order::forward(){
-    char data[25] = {1,'f','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z'};
-    
+void Order::forward(int inSpeed){
+
+    char speed = inSpeed;
+    char data[25] = {3,'f','Z',speed,'Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z'};
     serport->sendArray(data);
 }
 
 
-void Order::backward(){
-    
-    char data[25] = {1,'b','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z'};
-    
+void Order::backward(int inSpeed){
+
+    char speed = inSpeed;
+    char data[25] = {3,'b','Z',speed,'Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z'};
     serport->sendArray(data);
 }
 
 void Order::test(){
     
     char data[25] = {4,'B',3,2,0,'Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z'};
-    
     serport->sendArray(data);
 }
 

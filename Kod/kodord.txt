@@ -1,8 +1,8 @@
-﻿Beskrivning     // Datalängd (dec)//  KodOrd (char) // ev Arg (dec)  //  Data (dec/char)
+Beskrivning     // Datalängd (dec)//  KodOrd (char) // ev Arg (dec)  //  Data (dec/char)
 
 rotera vänster  //  fix 2       //  r   //  0   // [Var1] (speed)
 rotera höger    //  fix 2       //  r   //  1   // [Var1] (speed)
-halt            //  fix 3       //  h   //  0   // [Var1] (speed)
+halt            //  fix 3       //  h   // ’DNC’// ’DNC’
 framåt          //  fix 3       //  f   //  0   // [Var1] (speed)
 bakåt           //  fix 3       //  b   //  0   // [Var1] (speed)
 

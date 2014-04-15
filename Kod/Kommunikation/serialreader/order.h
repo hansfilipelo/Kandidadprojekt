@@ -21,11 +21,11 @@ public:
     Order(SerialPort*);
     ~Order();
 
-    void rotateLeft();
-    void rotateRight();
+    void rotateLeft(int);
+    void rotateRight(int);
     void halt();
-    void forward();
-    void backward();
+    void forward(int);
+    void backward(int);
     void test();
     
 protected:
