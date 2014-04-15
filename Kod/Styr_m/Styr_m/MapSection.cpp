@@ -341,7 +341,7 @@ void Robot::fwdValueIn(char* fwd){
     
 #if DEBUG == 1
     cout << "fwdValueIn" << endl;
-    for (int it = 0; it < strlen(fwdSensor); it++) {
+    for (int it = 0; it < (int)strlen(fwdSensor); it++) {
         cout << fwdSensor[it] << endl;
     }
 #endif
@@ -354,7 +354,7 @@ void Robot::bwdValueIn(char* bwd){
     
 #if DEBUG == 1
     cout << "bwdValueIn" << endl;
-    for (int it = 0; it < strlen(fwdSensor); it++) {
+    for (int it = 0; it < (int)strlen(fwdSensor); it++) {
         cout << bwdSensor[it] << endl;
     }
 #endif
@@ -367,7 +367,7 @@ void Robot::leftBackValueIn(char* left){
     
 #if DEBUG == 1
     cout << "leftBackValueIn" << endl;
-    for (int it = 0; it < strlen(fwdSensor); it++) {
+    for (int it = 0; it < (int)strlen(fwdSensor); it++) {
         cout << leftBackSensor[it] << endl;
     }
 #endif
@@ -380,7 +380,7 @@ void Robot::leftFrontValueIn(char* left){
     
 #if DEBUG == 1
     cout << "leftFrontValueIn" << endl;
-    for (int it = 0; it < strlen(fwdSensor); it++) {
+    for (int it = 0; it < (int)strlen(fwdSensor); it++) {
         cout << leftFrontSensor[it] << endl;
     }
 #endif
@@ -393,7 +393,7 @@ void Robot::leftLongValueIn(char* left){
     
 #if DEBUG == 1
     cout << "leftLongValueIn" << endl;
-    for (int it = 0; it < strlen(fwdSensor); it++) {
+    for (int it = 0; it < (int)strlen(fwdSensor); it++) {
         cout << leftLongSensor[it] << endl;
     }
 #endif
@@ -406,7 +406,7 @@ void Robot::rightBackValueIn(char* right){
     
 #if DEBUG == 1
     cout << "rightBackValueIn" << endl;
-    for (int it = 0; it < strlen(fwdSensor); it++) {
+    for (int it = 0; it < (int)strlen(fwdSensor); it++) {
         cout << rightBackSensor[it] << endl;
     }
 #endif
@@ -419,7 +419,7 @@ void Robot::rightFrontValueIn(char* left){
     
 #if DEBUG == 1
     cout << "rightFrontValueIn" << endl;
-    for (int it = 0; it < strlen(fwdSensor); it++) {
+    for (int it = 0; it < (int)strlen(fwdSensor); it++) {
         cout << rightFrontSensor[it] << endl;
     }
 #endif
