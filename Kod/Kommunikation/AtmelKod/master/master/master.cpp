@@ -104,11 +104,11 @@ void SPIReceiveArray(unsigned int slave){
 	
 	inDataArray[0] = SPI_MasterTransmit(0x00,slave);
 	unsigned int length = inDataArray[0];
-	_delay_us(2);//om data inte kommer fram korrekt, testa då att höja denna.
+	_delay_us(3);//om data inte kommer fram korrekt, testa då att höja denna.
 	for (unsigned int i=1; i<=length; i++)
 	{
 		inDataArray[i] = SPI_MasterTransmit(0x00, slave);
-		_delay_us(2);
+		_delay_us(3);
 	}
 }
 
