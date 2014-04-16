@@ -109,4 +109,7 @@ void SerialPort::handleData(QByteArray inData){
         GUI->insertRow(data);
         delete data;
     }
+    if((int)inData[2] == 31){
+        GUI->updateMap();
+    }
 }

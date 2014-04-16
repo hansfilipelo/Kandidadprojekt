@@ -18,24 +18,20 @@ Order::~Order(){
  */
 
 void Order::setPID(int kp, int kd){
-    char kpC = kp;
-    char kdC = kd;
-    char data[25] = {4,'P',0,kpC,kdC,'Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z'};
+    char data[25] = {4,'P',0,(char)kp,(char)kd,'Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z'};
     serport->sendArray(data);
 }
 
-void Order::rotateLeft(int inSpeed){
+void Order::rotateLeft(int speed){
 
-    char speed = inSpeed;
-    char data[25] = {3,'r',0,speed,'Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z'};
+    char data[25] = {3,'r',0,(char)speed,'Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z'};
     serport->sendArray(data);
 }
 
 
-void Order::rotateRight(int inSpeed){
+void Order::rotateRight(int speed){
 
-    char speed = inSpeed;
-    char data[25] = {3,'r',1,speed,'Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z'};
+    char data[25] = {3,'r',1,(char)speed,'Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z'};
     serport->sendArray(data);
 }
 
@@ -47,18 +43,16 @@ void Order::halt(){
 }
 
 
-void Order::forward(int inSpeed){
+void Order::forward(int speed){
 
-    char speed = inSpeed;
-    char data[25] = {3,'f','Z',speed,'Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z'};
+    char data[25] = {3,'f','Z',(char)speed,'Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z'};
     serport->sendArray(data);
 }
 
 
-void Order::backward(int inSpeed){
+void Order::backward(int speed){
 
-    char speed = inSpeed;
-    char data[25] = {3,'b','Z',speed,'Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z'};
+    char data[25] = {3,'b','Z',(char)speed,'Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z'};
     serport->sendArray(data);
 }
 
