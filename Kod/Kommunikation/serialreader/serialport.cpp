@@ -8,9 +8,9 @@
 QT_USE_NAMESPACE
 
 SerialPort::SerialPort(QSerialPort *serialPort, QObject *parent)
-: QObject(parent)
-, port(serialPort)
-, m_standardOutput(stdout)
+    : QObject(parent)
+    , port(serialPort)
+    , m_standardOutput(stdout)
 {
     connect(port, SIGNAL(readyRead()), SLOT(handleReadyRead()));
     connect(port, SIGNAL(error(QSerialPort::SerialPortError)), SLOT(handleError(QSerialPort::SerialPortError)));
@@ -68,7 +68,7 @@ void SerialPort::handleReadyRead() {
         inData.clear();
         return;
     }
- }
+}
 
 
 /*Function for conversion and deepcopy from QByteArray to char array.
@@ -76,10 +76,10 @@ void SerialPort::handleReadyRead() {
 
 char* SerialPort::QByteToArray(QByteArray inArray)
 {
-int size = inArray.size();
-char *outData = new char(size);
-memcpy(outData, inArray.data(), size);
-return outData;
+    int size = inArray.size();
+    char *outData = new char(size);
+    memcpy(outData, inArray.data(), size);
+    return outData;
 }
 
 /*Pointer to gui neccessary for handleData.
@@ -108,8 +108,34 @@ void SerialPort::handleData(QByteArray inData){
         char* data = QByteToArray(inData);
         GUI->insertRow(data);
         delete data;
+        if((int)inData[2] == 31){
+            GUI->updateMap();
+        }
     }
-    if((int)inData[2] == 31){
-        GUI->updateMap();
+    //sensor 0-9      //  fix 5       //  S   //  0-9 //  [100tal, 10tal, 1tal]
+    if(inData[1] == 'S'){
+        switch((int)inData[2]){
+        case 0 :
+            break;
+        case 1 :
+            break;
+        case 2 :
+            break;
+        case 3 :
+            break;
+        case 4 :
+            break;
+        case 5 :
+            break;
+        case 6 :
+            break;
+        case 7 :
+            break;
+        case 8 :
+            break;
+        case 9 :
+            break;
+        }
     }
+
 }
