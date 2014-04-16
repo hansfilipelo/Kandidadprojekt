@@ -12,28 +12,16 @@ char* Map::getPos(int x, int y){
 
 // ---------------- getColAsChar ------------
 
-char* Map::getColAsChar(int col)
-{
-	// Char sent to computer
-	char* output = new char[25];
-    
-	for (int it = 0; it < 25; it++){
-        // Type of the block we are looking at
-        output[it] = *this->getPos(col,it);
-	}
-    
-    return output;
-}
 
 // --------- SET COL ------------
-
-void Map::setColAsChar(char* inCol){
-    
-    int col = inCol[2];
-    
-    for (int row = 0; row < 25; row++) {
-        setSection(col,row,&inCol[row]);
-    }
+void Map::setColAsChar(char* inCol)
+{
+	int col = inCol[2];
+	for (int row = 0; row < 25; row++) {
+		setSection(col,row,&inCol[row]);
+	}
+	
+	return 0;
 }
 
 // --------- SET POS ------------
@@ -53,4 +41,19 @@ void Map::printMap(){
         cout << endl;
     }
 }
+
 #endif
+
+char* Map::getColAsChar(int col)
+{
+	// Char sent to computer
+	char* output = new char[25];
+	
+	for (int it = 0; it < 25; it++){
+		// Type of the block we are looking at
+		output[it] = *this->getPos(col,it);
+	}
+	
+	return output;
+	
+}

@@ -8,8 +8,9 @@
 #include "spi.h"
 #include "bluetooth.h"
 
-Spi::Spi(Bluetooth* ptr){
+Spi::Spi(Bluetooth* ptr, Map* inMap){
 	bluetoothPointer = ptr;
+	mapPointer = inMap;
     init();
 }
 
@@ -82,4 +83,15 @@ void Spi::receiveArray(unsigned int slave){
 		inDataArray[i] = transfer(0x00, slave);
 		_delay_us(3);
 	}
+}
+
+unsigned char* Spi::getInDataArray()
+{
+	unsigned char* outPtr = new unsigned char;
+	
+	for (int i = 0; i < 25; i++)
+	{
+		outPtr[i] = inDataArray[i];
+	}
+	return outPtr;
 }

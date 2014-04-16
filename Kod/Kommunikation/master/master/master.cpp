@@ -29,8 +29,9 @@ bool toggle = false;
 bool ReceiveFromSteer = false;
 bool ReceiveFromSensor = false;
 
+Map buffer;
 Bluetooth Firefly;
-Spi Bus(&Firefly);
+Spi Bus(&Firefly,&buffer);
 
 /*
 *	Handeling data from modules
@@ -38,10 +39,15 @@ Spi Bus(&Firefly);
 
 void handleDataFromSteer(){
 	ReceiveFromSteer=false;
-	memcpy(Firefly.outDataArray, Bus.inDataArray, 25);
+	//memcpy(Firefly.outDataArray, Bus.inDataArray, 25);
 	asm("");
 	if(Firefly.outDataArray[1]=='M'){
-		Firefly.sendArray();
+		char* temp = (char*)Bus.inDataArray;
+		//buffer.setColAsChar(temp);
+		//int blowMe = buffer.setColAsChar();
+		if((int)Firefly.outDataArray[2]==31){
+			Firefly.sendMap();
+		}
 	}
 }	
 
@@ -94,11 +100,18 @@ ISR(INT0_vect){
 
 int main(void)
 {
+<<<<<<< HEAD
     Firefly.setPointer(&Bus);
 	Lcd Display;
 	
 	Display.drawSensorNames();
     Display.updateS1(1,9,1);
+=======
+    Firefly.setPointer(&Bus,&buffer);
+    Firefly.init();
+    Bus.init();
+    
+>>>>>>> c9f2e6f31372f05a0782551e0856ba3bddf246a4
 	sei();
     
 	for(;;){
@@ -110,6 +123,5 @@ int main(void)
 		if(ReceiveFromSensor){
 			handleDataFromSensor();
 		}
-	}
-	
+	}	
 }

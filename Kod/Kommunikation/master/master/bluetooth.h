@@ -10,14 +10,14 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <string.h>
+#include "Map.h"
 
 class Spi;
 
 class Bluetooth
 {
 public:
-    Bluetooth();
-	void setPointer(Spi*);
+	void setPointer(Spi*,Map*);
 	void init();
 	void transmitByte(unsigned char);
 	unsigned char receiveByte();
@@ -25,6 +25,7 @@ public:
     void receiveArray();
     volatile void handle();
     volatile bool Btrec = false; 
+	void sendMap();
     
     unsigned char pcHandle[25];
      // Data arrives in order, datalength (data.length + codeword + arg), codeword, arg, data.
@@ -35,6 +36,7 @@ private:
     unsigned int position = 0;
 	
 	Spi* spiPointer;
+	Map* mapPointer;
 };
 
 #endif
