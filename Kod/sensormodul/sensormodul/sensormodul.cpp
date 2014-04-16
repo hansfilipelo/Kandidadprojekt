@@ -2,7 +2,8 @@
  * sensormodul.cpp
  *
  * Created: 4/7/2014 3:21:49 PM
- *  Author: jened502
+ *  Author: Erik our conqueror and master!
+ *	All makt åt Erik vår befriare.
  */ 
 
 
@@ -15,13 +16,15 @@
 #include <util/delay.h>
 
 
-int sensordata[6]={};
-int savepos = 0;		//counter for the storage array
-double decadc=0;
+volatile int sensordata[7]={};
+volatile int savepos = 0;		//counter for the storage array
+volatile double decadc=0;
+volatile bool ADCdone = false;
 double spanning = 0;
+
 unsigned char indata;
 unsigned char startbit = 0x0A;
-volatile bool ADCdone = false;
+
 
 bool gyromode = false;
 double gyrodata = 0;
@@ -58,7 +61,6 @@ void Timer_Init()
 	TCNT0 = 0x00;			//set timer to 0
 	TCCR0B = 0x04;			//prescaler 256 på timer
 }
-
 
 void handleInDataArray(){
 	if(sensormodul.inDataArray[1] == 'g'){
@@ -122,7 +124,7 @@ ISR(USART0_RX_vect){
 	}
 }
 
-
+//avbrott för timer
 ISR(TIMER0_COMPA_vect){
 	TIMSK0 = 0x00;			//disable compare A interrupt
 	ADCSRA |= 1<<ADSC;		// Start Conversion
@@ -132,7 +134,7 @@ ISR(TIMER0_COMPA_vect){
 	*/
 }
 
-
+//rutin för gyroutslag
 void gyroberakning(){
 	ADMUX = 0x27;
 	ADCdone = false;		// adc is in progress
@@ -140,12 +142,9 @@ void gyroberakning(){
 	ADCSRA |= 1<<ADSC;		// Start Conversion
 	while(!ADCdone);		// vänta tills adc klar
 	TCNT0 = 0x00;			//set timer to 0
-	if(spanning > 4.98);
-	else if(spanning < 2.46){
-		gyrodata =  gyrodata - (2.48*2 - spanning)*time;
-	}
-	else if(spanning > 2.55){
-		gyrodata =  gyrodata + spanning*time;
+	if((spanning > 4.5)||(spanning<0.5));
+	else if((spanning < 2.46)||(spanning > 2.55)){
+		gyrodata =  gyrodata + ((spanning - 2.5)*150)*time/1000;
 	}
 	if((gyrodata > leftTurnConstant) || (gyrodata < -1*rightTurnConstant))
 	{
@@ -155,7 +154,6 @@ void gyroberakning(){
 
 int main(void)
 {	
-	gyromode = true;
 	sensormodul.SPI_Init();
 	Sensor_Init();
 	USART_Init(7);
@@ -174,24 +172,29 @@ int main(void)
 			sensordata[savepos]	= round(45.64*pow(spanning,4)-320.2*pow(spanning,3)+830.3*pow(spanning,2)-984.9*spanning+524.4);
 		}
 		
-		else if(ADMUX == 0x21){		//konvertering av A1
+		if(ADMUX == 0x21){		//konvertering av A1
 			sensordata[savepos]	= round(1.031*pow(spanning,4)-68*pow(spanning,3)+364.8*pow(spanning,2)-683.2*spanning+492.2);
 		}
 		
-		else if(ADMUX == 0x26){		//konvertering av A7 (mellandistanssensorn)
-			sensordata[savepos]	= round(8.139*pow(spanning,4)-81.21*pow(spanning,3)+282.6*pow(spanning,2)-414.2*spanning+259.7);
+		
+		if( (ADMUX == 0x22) ||(ADMUX == 0x23) || (ADMUX ==0x24) || (ADMUX == 0x25)){	//konvertering av A2-A5 (kortdistanssensorer)
+			asm("");
+			sensordata[savepos]	= round(12.5*pow(spanning,4)-100.7*pow(spanning,3)+291.4*pow(spanning,2)-367.2*spanning+189.6);
 		}
 		
-		else if(ADMUX == 0x22 || 0x23 || 0x24 || 0x25){	//konvertering av A2-A5 (kortdistanssensorer)
-			sensordata[savepos]	= round(12.5*pow(spanning,4)-100.7*pow(spanning,3)+291.4*pow(spanning,2)-367.2*spanning+189.6);
+		if(ADMUX == 0x26){		//konvertering av A7 (mellandistanssensorn)
+			asm("");
+			sensordata[savepos]	= round(8.139*pow(spanning,4)-81.21*pow(spanning,3)+282.6*pow(spanning,2)-414.2*spanning+259.7);
+			
 		}
 		
 		sensormodul.outDataArray[0] = 5;
 		sensormodul.outDataArray[1] = 'S';
-		sensormodul.outDataArray[2] =  savepos + 48;
-		sensormodul.outDataArray[3] = (sensordata[savepos]/100) + 48; //plats 4
-		sensormodul.outDataArray[4] = ((sensordata[savepos]/10) %10) + 48; // plats 5
-		sensormodul.outDataArray[5] = (sensordata[savepos] % 10) + 48; // plats 6
+		sensormodul.outDataArray[2] =  savepos;
+		sensormodul.outDataArray[3] = (sensordata[savepos]/100); //plats 4
+		sensormodul.outDataArray[4] = ((sensordata[savepos]/10) %10); // plats 5
+		sensormodul.outDataArray[5] = (sensordata[savepos] % 10); // plats 6
+		sensormodul.SPI_Send();
 
 		if(ADMUX == 0x26){
 			ADMUX = 0x20;
@@ -201,12 +204,7 @@ int main(void)
 			ADMUX = ADMUX + 1;
 			savepos++;
 		}
-		
-		
-		if ((PIND==0x80)){
-			sensormodul.SPI_Send();
-			_delay_ms(5);
-		}
+
 		ADCdone = false;		
 		ADCSRA |= 1<<ADSC;	// Start Conversion
 		
