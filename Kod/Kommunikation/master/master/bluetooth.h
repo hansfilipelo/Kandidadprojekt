@@ -10,7 +10,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <string.h>
-#include "Map.h"
+#include "masterMap.h"
 
 class Spi;
 
