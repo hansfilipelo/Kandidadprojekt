@@ -5,11 +5,22 @@
  *  Author: jened502
  */ 
 
+// Precompiler flags
+#ifndef __AVR_ATmega1284P__
+#define DEBUG 1
+#else
+#define DEBUG 0
+#endif
+
+#if DEBUG == 0
 
 #include <avr/io.h>
 #define F_CPU 14.7456E6
 #include <util/delay.h>
 #include <avr/interrupt.h>
+
+#endif
+
 #include <string.h>
 
 unsigned char data;
