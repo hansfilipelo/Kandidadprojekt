@@ -155,10 +155,16 @@ void Lcd::senddata(unsigned char var)
 }
 
 void Lcd::draw(unsigned char location, unsigned char sign){
-	_delay_ms(1);
+	location = 0x80;
+	sign = 0x53;
+	if(ready() && moveToggle){
 	command(location);
-	_delay_ms(1);
+	moveToggle = 0;
+	}
+	if(ready() && (!moveToggle)){
 	senddata(sign);
+	moveToggle = 1;
+	}
 }
 
 /*
@@ -172,6 +178,19 @@ void Lcd::draw(unsigned char location, unsigned char sign){
 *	Bit 2 bestämmer vart på raden (0->f)
 */
 void Lcd::drawSensorNames(){
+	
+	/*writeBuffer[0]= 0x53;
+	writeBuffer[1]= 0x31;
+	writeBuffer[2]= 0x4c;
+	writeBuffer[3]= 0x31;
+	writeBuffer[4]= 0x4b;
+	writeBuffer[3]= 0x50;
+	
+	*/
+	
+	
+	
+	
 	//rad 1
 	//prints S1
 	draw(0x80,0x53);
@@ -206,6 +225,12 @@ void Lcd::drawSensorNames(){
 	//prints S4
 	draw(0xd0,0x53);
 	draw(0xd1,0x34);
+}
+
+void Lcd::update(){
+	
+	updateS1(2,0,1);
+	
 }
 
 void Lcd::updateS1(char data1, char data2, char data3){
@@ -277,3 +302,52 @@ void Lcd::updateM1(char data1, char data2, char data3){
 	draw(0x9b,dm);
 	draw(0x9c,cm);
 }
+
+char* Lcd::getBuffer(int sensor){
+	switch (sensor)
+	{
+		case 0 : return bufferL1;
+		break;
+		case 1 : return bufferL2;
+		break;
+		case 2 : return bufferS1;
+		break;
+		case 3 : return bufferS2;
+		break;
+		case 4 : return bufferS3;
+		break;
+		case 5 : return bufferS4;
+		break;
+		case 6 : return bufferM1;
+		break;
+		default : //
+		break;
+	}
+}
+
+bool Lcd::ready(){
+	PORTA |=(1<<PORTA7);
+	asm("nop");
+	asm("nop");
+	asm("nop");
+	asm("nop");
+	PORTA &=~(1<<PORTA7);
+	asm("nop");
+	asm("nop");
+	asm("nop");
+	asm("nop");
+	PORTA |=(1<<PORTA7);
+	PORTA |= (1<<PORTA6); //enable
+	PORTA &= ~(1<<PORTA5);
+	bool temp = PINC & 0x80; 
+	if(!temp){
+		PORTA &= ~(1<<PORTA6);
+		return true;
+	}
+	else{
+		PORTA &= ~(1<<PORTA6);
+		return false;
+	}	
+	
+}
+

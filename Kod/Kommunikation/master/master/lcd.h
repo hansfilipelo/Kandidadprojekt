@@ -28,6 +28,7 @@ public:
     void reset();
     void drawSensorNames();
 	
+	void update();
 	void updateS1(char,char,char);
 	void updateS2(char,char,char);
 	void updateS3(char,char,char);
@@ -35,8 +36,24 @@ public:
 	void updateL1(char,char,char);
 	void updateL2(char,char,char);
 	void updateM1(char,char,char);
-	void updateKP(int value);
-	void updateKD(int value);		
+	void updateKP(int);
+	void updateKD(int);
+	char* getBuffer(int);
+	bool ready();
+	bool moveToggle = true;
+	
+	int writeBuffer[16][4];
+	
+	
+	char bufferS1[5];
+	char bufferS2[5];
+	char bufferS3[5];
+	char bufferS4[5];
+	char bufferL1[5];
+	char bufferL2[5];
+	char bufferM1[5];
+	
+	int bufferStatus = 10;
 };
 
 #endif

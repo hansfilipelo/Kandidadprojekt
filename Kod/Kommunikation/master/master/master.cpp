@@ -53,29 +53,9 @@ void handleDataFromSteer(){
 
 void handleDataFromSensor(){
 	ReceiveFromSensor=false;
-	int sensor = Bus.inDataArray[2];
-	char m = Bus.inDataArray[3];
-	char dm = Bus.inDataArray[4];
-	char cm = Bus.inDataArray[5];
 	
-	switch (sensor)
-	{
-		case 0 : Display.updateL1(m,dm,cm);
-		break;
-		case 1 : Display.updateL2(m,dm,cm);
-		break;
-		case 2 : Display.updateS1(m,dm,cm);
-		break;
-		case 3 : Display.updateS2(m,dm,cm);
-		break;
-		case 4 : Display.updateS3(m,dm,cm);
-		break;
-		case 5 : Display.updateS4(m,dm,cm);
-		break;
-		case 6 : Display.updateM1(m,dm,cm);
-		break;
-		default : //
-		break;
+	if(Display.bufferStatus!=Bus.inDataArray[2]){
+	memcpy(Display.getBuffer(Bus.inDataArray[2]),Bus.inDataArray,5);
 	}
 }
 
@@ -125,7 +105,7 @@ ISR(INT0_vect){
 int main(void)
 {
     Firefly.setPointer(&Bus,&buffer);
-	Display.drawSensorNames();
+	//Display.drawSensorNames();
     
 	sei();
     
@@ -138,5 +118,6 @@ int main(void)
 		if(ReceiveFromSensor){
 			handleDataFromSensor();
 		}
+		Display.draw(0x53,0x80);
 	}	
 }
