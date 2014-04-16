@@ -1,4 +1,4 @@
-#include "Map.h"
+#include "masterMap.h"
 
 using namespace std;
 
@@ -20,8 +20,6 @@ void Map::setColAsChar(char* inCol)
 	for (int row = 0; row < 25; row++) {
 		setSection(col,row,&inCol[row]);
 	}
-	
-	return 0;
 }
 
 // --------- SET POS ------------

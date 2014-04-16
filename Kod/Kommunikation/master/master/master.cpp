@@ -19,7 +19,7 @@
 
 #endif
 
-#include "Map.h"    
+#include "masterMap.h"    
 #include <string.h>
 #include "bluetooth.h"
 #include "spi.h"
@@ -43,8 +43,7 @@ void handleDataFromSteer(){
 	//memcpy(Firefly.outDataArray, Bus.inDataArray, 25);
 	asm("");
 	if(Firefly.outDataArray[1]=='M'){
-		char* temp = (char*)Bus.inDataArray;
-		//buffer.setColAsChar(temp);
+		buffer.setColAsChar((char*)Bus.inDataArray);
 		//int blowMe = buffer.setColAsChar();
 		if((int)Firefly.outDataArray[2]==31){
 			Firefly.sendMap();

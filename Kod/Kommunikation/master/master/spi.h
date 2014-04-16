@@ -12,7 +12,7 @@
 
 #define F_CPU 14.7456E6
 #include <util/delay.h>
-#include "Map.h"
+#include "masterMap.h"
 #include "../../../Styr_m/Styr_m/Abstraction.h"
 
 class Bluetooth;
