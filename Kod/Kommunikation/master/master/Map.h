@@ -18,16 +18,17 @@
 class Map
 {
 public:
-	char* getColAsChar(int);
+ 	char* getColAsChar(int);
     void setColAsChar(char*);
     void setSection(int, int, char*);
+    char* getPos(int x, int y);
     
 #if DEBUG == 1
     void printMap();
 #endif
 	
 protected:
-	char* mapArea[32][25] = NULL;
+	char* mapArea[32][25];
 };
 
 #endif

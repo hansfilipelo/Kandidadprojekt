@@ -1,19 +1,12 @@
 #include "Map.h"
-#include "MapSection.h"
 
 using namespace std;
 
-// -----------------------------------------
-
-Map::~Map(){
-    delete mapArea;
-}
-
 // ------------------------------------------
 
 // ------------------------------------------
 
-MapSection* Map::getPos(int x, int y){
+char* Map::getPos(int x, int y){
     return mapArea[x][y];
 }
 
@@ -26,7 +19,7 @@ char* Map::getColAsChar(int col)
     
 	for (int it = 0; it < 25; it++){
         // Type of the block we are looking at
-        output[it] = this->getPos(col,it);
+        output[it] = *this->getPos(col,it);
 	}
     
     return output;
@@ -38,14 +31,14 @@ void Map::setColAsChar(char* inCol){
     
     int col = inCol[2];
     
-    for (int row = 0; x < 25; row++) {
-        setSection(col,row,inCol[row]);
+    for (int row = 0; row < 25; row++) {
+        setSection(col,row,&inCol[row]);
     }
 }
 
 // --------- SET POS ------------
 
-void Map::setSection(int xPos, int yPos, MapSection* inSection){
+void Map::setSection(int xPos, int yPos, char* inSection){
     mapArea[xPos][yPos] = inSection;
 }
 
@@ -55,7 +48,7 @@ void Map::setSection(int xPos, int yPos, MapSection* inSection){
 void Map::printMap(){    
     for (int it = 0; it < 17; it++) {
         for (int i = 0; i < 32; i++) {
-            cout << this->getPos(i,it) << " ";
+            cout << *this->getPos(i,it) << " ";
         }
         cout << endl;
     }
