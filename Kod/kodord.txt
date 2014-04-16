@@ -17,7 +17,7 @@ sensor 0-9      //  fix 5       //  S   //  0-9 //  [100tal, 10tal, 1tal]
 gyro-sensor-styr//  fix 1       //  G   // 'DNC'// 'DNC'
 RFID            //  fix 1       //  R   // 'DNC'// 'DNC'
 
-Kartkolumn      //  fix 19      //  M   //  RAD // CHARS
+Kartkolumn      //  fix 19      //  M   //  COL // CHARS
 
 Man/Auto	// fix 1	// a/q	// ’DNC’
 

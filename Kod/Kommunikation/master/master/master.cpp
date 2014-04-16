@@ -45,6 +45,7 @@ volatile bool Btrec = false;
 
 void SPI_MasterInit(void)
 {
+#if DEBUG == 0
 	//Enable SPI, sets it low
 	PRR0 &= ~(1<<PRSPI);
 	//Sets slave select
@@ -59,11 +60,12 @@ void SPI_MasterInit(void)
 	//Enable interupts
 	EIMSK |= (1<<INT0)|(1<<INT2)|(1<<INT1);
 	EICRA |= (1<<ISC01)|(1<<ISC00)|(1<<ISC11)|(1<<ISC10)|(1<<ISC21)|(1<<ISC20);
+#endif
 }
 
 void USART_Init( unsigned int baud )
 {
-	
+#if DEBUG == 0
 	DDRA |= (1<<PORTA2)|(1<<PORTA3);
 	PORTA &= ~((1<<PORTA2)|(1<<PORTA3));
 	/* Set baud rate */
@@ -73,11 +75,15 @@ void USART_Init( unsigned int baud )
 	UCSR0B = (1<<RXEN0)|(1<<TXEN0)|(1<<RXCIE0);
 	/* Set frame format: 8data, 1stop bit */
 	UCSR0C = (0<<USBS0)|(3<<UCSZ00);
+#endif
 }
 
 char SPI_MasterTransmit(char outData, unsigned int slave)
 {
+    
 	char inData;
+    
+#if DEBUG == 0
 	//choose slave
 	if (slave == 1){
 		PORTA &= ~(1<<PORTA0);
@@ -98,6 +104,8 @@ char SPI_MasterTransmit(char outData, unsigned int slave)
 	else{
 		PORTA |= (1<<PORTA1);
 	}
+#endif
+    
 	return inData;
 }
 
@@ -129,19 +137,22 @@ void SPIReceiveArray(unsigned int slave){
 
 void USART_Transmit( unsigned char data )
 {
+#if DEBUG == 0
 	/* Wait for empty transmit buffer */
 	while ( !( UCSR0A & (1<<UDRE0)) );
 	/* Put data into buffer, sends the data */
 	UDR0 = data;
+#endif
 }
 
 unsigned char USART_Receive(void)
 {
+#if DEBUG == 0
 	/* Wait for data to be received */
 	while ( !(UCSR0A & (1<<RXC0)) );
 	/* Get and return received data from buffer */
 	unsigned char readData = UDR0;
-
+#endif
 	return readData;
 }
 
@@ -173,18 +184,24 @@ volatile void handleBluetooth(){
 }
 
 void BluetoothReceive(){
-	cli();
+#if DEBUG == 0
+    cli();
+    
 	//Set CTS and RTS to 1
 	PORTA |= (1<<PORTA2)|(1<<PORTA3);
 	pcInDataArray[pcPosition] = USART_Receive();
+#endif
 	pcPosition++;
 	if(pcPosition == 25){
 		Btrec = true;
 		asm("");
 		pcPosition = 0;
 	}
+
+#if DEBUG == 0
 	PORTA &= ~((1<<PORTA2)|(1<<PORTA3));
 	sei();
+#endif
 }
 /*
 *	Handeling data from modules
@@ -203,6 +220,7 @@ void handleDataFromSensor(){
 	ReceiveFromSensor=false;	
 }
 
+#if DEBUG == 0
 /*
 *	INTERUPTS
 */
@@ -242,13 +260,17 @@ ISR(INT0_vect){
 	sei();
 }
 
+#endif
+
 
 int main(void)
 {
 	SPI_MasterInit();
 	USART_Init(7);
+#if DEBUG == 0
 	sei();
-	
+#endif
+    
 	for(;;){
 		asm("");
 		handleBluetooth();
