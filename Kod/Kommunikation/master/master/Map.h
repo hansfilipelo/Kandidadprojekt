@@ -18,7 +18,7 @@
 class Map
 {
 public:
- 	char* getColAsChar(int);
+	char* getColAsChar(int);
     void setColAsChar(char*);
     void setSection(int, int, char*);
     char* getPos(int x, int y);

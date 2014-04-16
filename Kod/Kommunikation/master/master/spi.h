@@ -12,6 +12,8 @@
 
 #define F_CPU 14.7456E6
 #include <util/delay.h>
+#include "Map.h"
+#include "../../../Styr_m/Styr_m/Abstraction.h"
 
 class Bluetooth;
 
@@ -19,7 +21,8 @@ class Spi
 {
     
 public:
-	Spi(Bluetooth*);
+	unsigned char* getInDataArray();
+	Spi(Bluetooth*,Map*);
 	void init();
     char transfer(char, unsigned int);
 	void sendArray(unsigned int);
@@ -32,6 +35,7 @@ public:
 private:
     unsigned int  position = 0;
     Bluetooth* bluetoothPointer;
+	Map* mapPointer;
 };
 
 #endif
