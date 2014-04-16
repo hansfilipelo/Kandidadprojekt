@@ -23,6 +23,7 @@
 #include <string.h>
 #include "bluetooth.h"
 #include "spi.h"
+#include "lcd.h"
 
 bool toggle = false;
 bool ReceiveFromSteer = false;
@@ -94,9 +95,10 @@ ISR(INT0_vect){
 int main(void)
 {
     Firefly.setPointer(&Bus);
-    Firefly.init();
-    Bus.init();
-    
+	Lcd Display;
+	
+	Display.drawSensorNames();
+    Display.updateS1(1,9,1);
 	sei();
     
 	for(;;){

@@ -7,23 +7,19 @@
 
 
 
-#ifndef BLUETOOTH
-#define BLUETOOTH
-
+#ifndef LCD
+#define LCD
 
 #include <avr/io.h>
+#define F_CPU 14.7456E6
 #include <util/delay.h>
-#define LCD_data PORTC //ska denna vara kvar? Automerge gjorde massa skit.
-
 
 class Lcd
 {
 public:
     Lcd();
     char shift = 0x00;
-    void setKp(int value);
-    void setKd(int value);
-    void updateSensor(int sensornid, int value);
+
     void SetData(unsigned char var);
     void init();
     void command(unsigned char var);
@@ -31,5 +27,16 @@ public:
     void draw(unsigned char location, unsigned char sign);
     void reset();
     void drawSensorNames();
-				
+	
+	void updateS1(char,char,char);
+	void updateS2(char,char,char);
+	void updateS3(char,char,char);
+	void updateS4(char,char,char);
+	void updateL1(char,char,char);
+	void updateL2(char,char,char);
+	void updateM1(char,char,char);
+	void updateKP(int value);
+	void updateKD(int value);		
 };
+
+#endif

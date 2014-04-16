@@ -22,6 +22,7 @@
 
 Lcd::Lcd(){
 	init();
+	command(0x0C); //turns of cursor
 }
 
 void Lcd::SetData(unsigned char var){
@@ -99,20 +100,6 @@ void Lcd::SetData(unsigned char var){
 	}
 }
 
-/*
-void LCD_busy(){
-	PORTC = 0x80;
-	PORTA |= (1<<PORTA7); //enable
-	PORTA |= (1<<PORTA6);
-	PORTA &= ~(0<<PORTA5);
-
-	while(PORTC7){ //read busy flag again and again till it becomes 0
-		PORTA &= ~(0<<PORTA7); //disable
-		PORTA |= (1<<PORTA7); //enable
-	}
-}
-*/
-
 void Lcd::init(){
     DDRC |= 0xC3; //portC pin 0,1,6,7 till utgångar
 	DDRD |= 0xF0;	//portD pin 4-7 som utgångar
@@ -147,14 +134,6 @@ void Lcd::init(){
 	_delay_ms(100);
 }
 
-//Skriver ut namnen pŒ sensorerna
-void Lcd::drawSensorNames(){
-    draw(0x80,0x53);    //8->rad1
-    draw(0x9f,0x53);	//9->rad3
-    draw(0xc0,0x53);	//c->rad2
-    draw(0xdf,0x53);	//d->rad4
-}
-
 void Lcd::command(unsigned char var) // för att uföra olika kommandon
 {
 	SetData(var);
@@ -162,7 +141,6 @@ void Lcd::command(unsigned char var) // för att uföra olika kommandon
 	PORTA |= (1<<PORTA7); //enable
 	PORTA &= ~(1<<PORTA7); //disable
 	//LCD_busy(); //Wait for LCD to process the command
-	_delay_ms(100);
 }
 
 void Lcd::senddata(unsigned char var)
@@ -173,11 +151,129 @@ void Lcd::senddata(unsigned char var)
 	PORTA |= (1<<PORTA5); //Rs till 1
 	PORTA |= (1<<PORTA7); //enable
 	PORTA &= ~(1<<PORTA7); //disable
-	_delay_ms(100);
 	//LCD_busy(); //Wait for LCD to process the command
 }
 
 void Lcd::draw(unsigned char location, unsigned char sign){
-	LCD_command(location);
-	LCD_senddata(sign);
+	_delay_ms(1);
+	command(location);
+	_delay_ms(1);
+	senddata(sign);
+}
+
+/*
+*Skriver ut namnen på sensorerna
+*	Bit 1
+*	8->rad1
+*	c->rad2
+*	9->rad3
+*	d->rad4
+*
+*	Bit 2 bestämmer vart på raden (0->f)
+*/
+void Lcd::drawSensorNames(){
+	//rad 1
+	//prints S1
+	draw(0x80,0x53);
+	draw(0x81,0x31);
+	//prints L1
+	draw(0x87,0x4c);
+	draw(0x88,0x31);
+	//prints KP
+	draw(0x8d,0x4b);
+	draw(0x8e,0x50);
+	
+	//rad 2
+	//prints S2
+	draw(0xc0,0x53);
+	draw(0xc1,0x32);
+	//prints L2
+	draw(0xc7,0x4c);
+	draw(0xc8,0x32);
+	//prints KD
+	draw(0xcd,0x4b);
+	draw(0xce,0x44);
+	
+	//rad 3
+	//prints S3
+	draw(0x90,0x53);
+	draw(0x91,0x33);
+	//prints M1
+	draw(0x97,0x4d);
+	draw(0x98,0x31);
+	
+	//rad 4
+	//prints S4
+	draw(0xd0,0x53);
+	draw(0xd1,0x34);
+}
+
+void Lcd::updateS1(char data1, char data2, char data3){
+	int m = 0x30 + (int)(data1);
+	int dm= 0x30 + (int)(data2);
+	int cm= 0x30 + (int)(data3);
+	
+	draw(0x83,m);
+	draw(0x84,dm);
+	draw(0x85,cm);
+}
+
+void Lcd::updateS2(char data1, char data2, char data3){
+	int m = 0x30 + (int)(data1);
+	int dm= 0x30 + (int)(data2);
+	int cm= 0x30 + (int)(data3);
+	
+	draw(0xc3,m);
+	draw(0xc4,dm);
+	draw(0xc5,cm);
+}
+
+void Lcd::updateS3(char data1, char data2, char data3){
+	int m = 0x30 + (int)(data1);
+	int dm= 0x30 + (int)(data2);
+	int cm= 0x30 + (int)(data3);
+	
+	draw(0x93,m);
+	draw(0x94,dm);
+	draw(0x95,cm);
+}
+
+void Lcd::updateS4(char data1, char data2, char data3){
+	int m = 0x30 + (int)(data1);
+	int dm= 0x30 + (int)(data2);
+	int cm= 0x30 + (int)(data3);
+	
+	draw(0xd3,m);
+	draw(0xd4,dm);
+	draw(0xd5,cm);
+}
+
+void Lcd::updateL1(char data1, char data2, char data3){
+	int m = 0x30 + (int)(data1);
+	int dm= 0x30 + (int)(data2);
+	int cm= 0x30 + (int)(data3);
+	
+	draw(0x8a,m);
+	draw(0x8b,dm);
+	draw(0x8c,cm);
+}
+
+void Lcd::updateL2(char data1, char data2, char data3){
+	int m = 0x30 + (int)(data1);
+	int dm= 0x30 + (int)(data2);
+	int cm= 0x30 + (int)(data3);
+	
+	draw(0xca,m);
+	draw(0xcb,dm);
+	draw(0xcc,cm);
+}
+
+void Lcd::updateM1(char data1, char data2, char data3){
+	int m = 0x30 + (int)(data1);
+	int dm= 0x30 + (int)(data2);
+	int cm= 0x30 + (int)(data3);
+	
+	draw(0x9a,m);
+	draw(0x9b,dm);
+	draw(0x9c,cm);
 }
