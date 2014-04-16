@@ -19,6 +19,8 @@
 
 #endif
 
+#include "Map.h"    
+#include <string.h>
 #include "bluetooth.h"
 #include "spi.h"
 
@@ -46,6 +48,7 @@ void handleDataFromSensor(){
 	ReceiveFromSensor=false;	
 }
 
+#if DEBUG == 0
 /*
 *	INTERUPTS
 */
@@ -85,6 +88,8 @@ ISR(INT0_vect){
 	sei();
 }
 
+#endif
+
 
 int main(void)
 {
@@ -93,7 +98,7 @@ int main(void)
     Bus.init();
     
 	sei();
-	
+    
 	for(;;){
 		asm("");
 		Firefly.handle();
