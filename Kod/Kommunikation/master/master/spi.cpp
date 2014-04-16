@@ -10,6 +10,7 @@
 
 Spi::Spi(Bluetooth* ptr){
 	bluetoothPointer = ptr;
+    init();
 }
 
 void Spi::init(){
