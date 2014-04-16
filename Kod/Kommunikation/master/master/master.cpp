@@ -100,18 +100,15 @@ ISR(INT0_vect){
 
 int main(void)
 {
-<<<<<<< HEAD
-    Firefly.setPointer(&Bus);
+    Firefly.setPointer(&Bus,&buffer);
 	Lcd Display;
 	
 	Display.drawSensorNames();
     Display.updateS1(1,9,1);
-=======
-    Firefly.setPointer(&Bus,&buffer);
-    Firefly.init();
-    Bus.init();
+
     
->>>>>>> c9f2e6f31372f05a0782551e0856ba3bddf246a4
+
+    
 	sei();
     
 	for(;;){
