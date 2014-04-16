@@ -26,7 +26,7 @@ Lcd::Lcd(){
 	LCD_init();
 	
 	
-	LCD_draw(0x80,0x53); //8->rad1
+	LCD_draw(0x80,0x53); //8->rad1, 0-f väljer vart på raden
 	LCD_draw(0x9f,0x53);	//9->rad3
 	LCD_draw(0xc0,0x53);	//c->rad2
 	LCD_draw(0xdf,0x53);	//d->rad4
