@@ -17,6 +17,13 @@ Order::~Order(){
 /*Constructs the array that are to be sent to AVR processor.
  */
 
+void Order::setPID(int kp, int kd){
+    char kpC = kp;
+    char kdC = kd;
+    char data[25] = {4,'P',0,kpC,kdC,'Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z'};
+    serport->sendArray(data);
+}
+
 void Order::rotateLeft(int inSpeed){
 
     char speed = inSpeed;
