@@ -32,6 +32,7 @@ bool ReceiveFromSensor = false;
 Map buffer;
 Bluetooth Firefly;
 Spi Bus(&Firefly,&buffer);
+Lcd Display;
 
 /*
 *	Handeling data from modules
@@ -52,7 +53,31 @@ void handleDataFromSteer(){
 }	
 
 void handleDataFromSensor(){
-	ReceiveFromSensor=false;	
+	ReceiveFromSensor=false;
+	int sensor = Bus.inDataArray[2];
+	char m = Bus.inDataArray[3];
+	char dm = Bus.inDataArray[4];
+	char cm = Bus.inDataArray[5];
+	
+	switch (sensor)
+	{
+		case 0 : Display.updateL1(m,dm,cm);
+		break;
+		case 1 : Display.updateL2(m,dm,cm);
+		break;
+		case 2 : Display.updateS1(m,dm,cm);
+		break;
+		case 3 : Display.updateS2(m,dm,cm);
+		break;
+		case 4 : Display.updateS3(m,dm,cm);
+		break;
+		case 5 : Display.updateS4(m,dm,cm);
+		break;
+		case 6 : Display.updateM1(m,dm,cm);
+		break;
+		default : //
+		break;
+	}
 }
 
 #if DEBUG == 0
@@ -101,13 +126,7 @@ ISR(INT0_vect){
 int main(void)
 {
     Firefly.setPointer(&Bus,&buffer);
-	Lcd Display;
-	
 	Display.drawSensorNames();
-    Display.updateS1(1,9,1);
-
-    
-
     
 	sei();
     
