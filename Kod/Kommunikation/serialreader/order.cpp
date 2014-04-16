@@ -14,6 +14,9 @@ Order::Order(SerialPort *inPort){
 Order::~Order(){
 }
 
+/*Constructs the array that are to be sent to AVR processor.
+ */
+
 void Order::rotateLeft(int inSpeed){
 
     char speed = inSpeed;

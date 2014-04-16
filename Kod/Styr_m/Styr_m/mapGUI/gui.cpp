@@ -77,6 +77,7 @@ int Gui::startPort(){
 
         SerialPort* port = new SerialPort(serialPort);
         serPort = port;
+        port->setGui(this);
         Order * order = new Order(port);
         bluetooth = order;
         return 0;
@@ -206,34 +207,34 @@ void Gui::updatePlots(){
     ui->sensorPlot1->xAxis->setRange(timeVector.at(timeVector.size()-1),timeVector.at(0));
     ui->sensorPlot1->replot();
 }
-void Gui::insertRow(char inArray[25], char inMap[10][17])
+void Gui::insertRow(char inArray[25])
 {
     int row = inArray[2];
     for(int i=0; i < 17; i++ ){
-        inMap[row][i] = inArray[i+3];
-        std::cout << inMap[row][i] << std::endl;
+        map[row][i] = inArray[i+3];
+        std::cout << map[row][i] << std::endl;
     }
 
 }
-void Gui::updateMap(char inMap[10][17]){
+void Gui::updateMap(){
     qDeleteAll( scene->items());
     for (int rad = 0; rad < 10; rad++){
         for(int kol = 0; kol < 17; kol ++){
             QGraphicsRectItem*   temp = new QGraphicsRectItem(kol*20,rad*20,20,20);
-            if(inMap[rad][kol]=='E'){
+            if(map[rad][kol]=='E'){
                 temp->setBrush(Qt::green);
                scene->addItem(temp);
             }
-            else if(inMap[rad][kol]=='U'){
+            else if(map[rad][kol]=='U'){
                 temp->setBrush(Qt::green);
                 scene->addItem(temp);
             }
 
-            else if(inMap[rad][kol]=='F'){
+            else if(map[rad][kol]=='F'){
                 temp->setBrush(Qt::red);
                 scene->addItem(temp);
             }
-            else if(inMap[rad][kol]=='R'){
+            else if(map[rad][kol]=='R'){
                 QGraphicsEllipseItem* robot = new QGraphicsEllipseItem(kol*20,rad*20,20,20);
                 robot->setBrush(Qt::black);
                 temp->setBrush(Qt::green);

@@ -20,16 +20,27 @@ SerialPort::~SerialPort()
 {
 }
 
+/* Write exactly 25 bytes of data to port. Our char arrays are not nullterminated. Will cause issue if not for 25 bytes max.
+ * Wait for a maximum och 0.6 seconds for successful transmission.
+ */
+
+
 void SerialPort::sendArray(const char inArray[25]){
-    port->write(inArray,25);                           //write exactly 25 bytes of data to port.
+    port->write(inArray,25);
     port->waitForBytesWritten(600);
 }
 
 
-//Alt. handleReadyRead(), assuming tempData is QByteArray
+/*handleReadyRead(). tempData is the data from potential previous transmission. if the current transmission added with the previous
+ * transmission has a length of less than 25 it is saved in tempData and we leave the readyread to accept more data.
+ * On 25 or more bytes 25 bytes of data are sent to handleData, excess is stored in tempData for future transmissiondata.
+ * This function is not fully tested yet.
+ */
+
 void SerialPort::handleReadyRead() {
+    
     QByteArray inData;
-    std::cout << "yo" << std::endl;
+    
     int inBytes = port->bytesAvailable();
     int tempBytes = tempData.length();
     
@@ -60,58 +71,42 @@ void SerialPort::handleReadyRead() {
  }
 
 
-/*
-void SerialPort::handleReadyRead() //semitested readyread will fail to handle if alot of data arrives fast with no spaces inbetween.
+/*Function for conversion and deepcopy from QByteArray to char array.
+ */
+
+char* SerialPort::QByteToArray(QByteArray inArray)
 {
-    QString inData = "";
-    inData = port->readAll();
-    m_standardOutput << inData << endl;
-    if(inData.length() == 25){
-        handleData(inData);
-        inData ="";
-        tempData ="";
-        std::cout << "first" << std::endl;
-        return;
-    }else if((inData.length() < 25) & (tempData == "")){
-        tempData = inData;
-        std::cout << "second. " << inData.length()  << std::endl;
-        return;
-    }else if(inData.length() < 25){
-        std::cout << "third" << inData.length() << std::endl;
-        tempData.append(inData);
-        if (tempData.length() < 25){
-            std::cout << "fourth" << tempData.length() << std::endl;
-            return;
-        }
-        if(tempData.length() == 25){
-            std::cout << "fifth" << std::endl;
-            handleData(tempData);
-            inData = "";
-            tempData = "";
-            return;
-        }
-        if(tempData.length() > 25){
-            std::cout << "Fatal error too long data from BT" << std::endl;
-        }else if(inData.length() > 25){
-            std::cout << "Fatal error too long data from BT" << std::endl;
-        }
-    }
+int size = inArray.size();
+char *outData = new char(size);
+memcpy(outData, inArray.data(), size);
+return outData;
 }
-*/
+
+/*Pointer to gui neccessary for handleData.
+ */
+
+void SerialPort::setGui(Gui* ptr){
+    GUI = ptr;
+}
+
+/*Errorhandling of serialport. Currently only informs. Improvement would be to have it reconnect.
+ */
 
 void SerialPort::handleError(QSerialPort::SerialPortError serialPortError)
 {
     if (serialPortError == QSerialPort::ReadError) {
         m_standardOutput << QObject::tr("An I/O error occurred while reading the data from port %1, error: %2").arg(port->portName()).arg(port->errorString()) << endl;
-        QCoreApplication::exit(1);
+        //QCoreApplication::exit(1);
     }
 }
 
+/*Passing and preformatting data that arrives from serialport and handleReadyRead.
+ */
+
 void SerialPort::handleData(QByteArray inData){
-    QString text = inData;
-    std::string temp = text.toStdString();
-    int test = temp.at(0);
-        std::cout << test << temp << std::endl;
-    return;
-    
+    if(inData[1] == 'M'){
+        char* data = QByteToArray(inData);
+        GUI->insertRow(data);
+        delete data;
+    }
 }
