@@ -17,6 +17,7 @@ class Spi;
 class Bluetooth
 {
 public:
+	Bluetooth();
 	void setPointer(Spi*,Map*);
 	void init();
 	void transmitByte(unsigned char);

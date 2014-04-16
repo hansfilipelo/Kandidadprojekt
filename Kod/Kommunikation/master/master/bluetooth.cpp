@@ -8,6 +8,10 @@
 #include "bluetooth.h"
 #include "spi.h"
 
+Bluetooth::Bluetooth(){
+	init();
+}
+
 void Bluetooth::setPointer(Spi* ptr, Map* inMap){
 	spiPointer=ptr;
 	mapPointer = inMap;
