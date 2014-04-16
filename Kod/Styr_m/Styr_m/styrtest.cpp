@@ -8,7 +8,7 @@
 #include "Map.h"
 #include "Abstraction.h"
 #include "Communication.h"
-#include "../../sensormodul/sensormodul/slave.h"
+#include "slave.h"
 
 using namespace std;
 
@@ -80,9 +80,21 @@ int main(){
         cout << testPushBack[i] << endl;
     }
     
-    while (cin) {
-        
+    cout << "--------" << " Testing to enter sensordata " << "--------" <<  endl;
+    
+    char* temp = new char[3];
+    
+    for (int i = 0; i < 3; i++) {
+        temp[i] = 50-i;
     }
+    
+    testRobot->fwdValueIn(temp);
+    testRobot->bwdValueIn(temp);
+    testRobot->leftLongValueIn(temp);
+    testRobot->leftFrontValueIn(temp);
+    testRobot->leftBackValueIn(temp);
+    testRobot->rightFrontValueIn(temp);
+    testRobot->rightBackValueIn(temp);
     
     // Delete
     delete testRobot;

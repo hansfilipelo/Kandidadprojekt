@@ -36,7 +36,7 @@
 				\\
 				Kandidatprojekt Y - Grupp 8 - VT2014
 				\\
-				Version 0.1
+				Version 0.2
 				\end{center}
 		\endgroup
 	\vspace*{\fill}
@@ -47,7 +47,7 @@
 		\vspace{3pt} %Whitespace 3 pts
 	    \begin{tabular}{| p{3cm} | p{3cm} | p{3cm} |} %tabell, 4 horizontella |, 3 cm emellan dem.
 	    \hline %översta horizontella linjen.
-	    Granskad & - & \today \\ \hline % & -tecken för att "gå till nästa ruta" 
+	    Granskad & hanel742 & \today \\ \hline % & -tecken för att "gå till nästa ruta" 
 		Godkänd & - & - \\ \hline % avslutas med \\ och \hline.
 
 	    \end{tabular}
@@ -119,7 +119,7 @@
 Simultan positionering och kartläggning (SLAM) är ett problem som kan liknas vid ''Hönan och ägget''-problemet. Utan att veta var vi är - hur kartlägger vi då vår omgivining? Åt andra hållet får man ställa sig frågan - hur kartlägger vi vår omgivning utan att veta var vi är? 
 
 Det är inte helt enkelt att lösa dessa frågor, men det finns approximativa lösningar på problemet SLAM. Gemensamt för alla lösningar är att de bygger på möjligheten att läsa av sin omgivning i kombination med
-sannolikhetsteori. Då sensordata aldrig kan antas vara exakt använder man sannolikhetsteori för att göra rimlighetsbedömningar i de stickprov av sensordata som sensorerna ger oss.
+sannolikhetsteori. Då sensordata aldrig kan antas vara exakt använder man sannolikhetsteori för att göra rimlighetsbedömningar i de stickprov av mätningar sensorerna ger.
 
 Själva problemet är alltså inte entydigt löst rent matematiskt, utan
 bygger på sannolikhetsteori i kombination med att moderna processorer
@@ -163,7 +163,9 @@ ISY tillhandahåller följande i sin utvecklingsmiljö:
 %------------------------------------------------
 %--------------------Kunskapsbas-----------------
 %------------------------------------------------
-\section{Kunskapsbas}
+\newpage
+\section{Fördjupning}
+I denna fördjupande del går vi igenom förkunskaper som krävs för att beskriva en implementering som kan utföra SLAM i en miljö lik den i problemställningen. 
 
 %----------------------Odometri------------------
 \subsection{Odometri}
@@ -178,7 +180,7 @@ Med optisk avläsning av omvärlden finns alltid möjligheten att korrigera tidi
 
 \subsubsection{Tillståndsrepresentation av reglersystem}
 
-Inom reglerteknik kan linjära system beskrivas på så kallad tillståndsformel så som Glad, Torkel och Ljung, Lennart (2006) beskriver i \textit{Reglerteknik - Grundläggande teori}. I fallet med SLAM använder man lämpligen sensorernas värden som tillstånd, tecknat $\vec{x}$. Tillstånden mäts med diskreta värden då datorer endast hanterar diskreta mätningar och ej kontinuerliga. En diskret tillståndsbeskrivning av ett linjärt reglersystem beskrivs av: 
+Inom reglerteknik kan linjära system beskrivas på så kallad tillståndsformel så som Glad och Ljung\footnote{Glad, Torkel och Ljung, (2006) beskriver i \textit{Reglerteknik - Grundläggande teori}.} beskriver. I fallet med SLAM använder man lämpligen sensorernas värden som tillstånd, tecknat $\vec{x}$. Tillstånden mäts med diskreta värden då datorer endast hanterar diskreta mätningar och ej kontinuerliga. En diskret tillståndsbeskrivning av ett linjärt reglersystem beskrivs av: 
 
 \begin{gather}
 \vec{x}[n+1] = A\vec{x}[n] + B\vec{u}[n] \\
@@ -189,11 +191,11 @@ Där A, B, C och D är insignaler, u är insignaler och $\vec{y}$ exempelvis är
 
 I ett realiserbart system nyttjas sensorer med en viss osäkerhet. Man kan därmed enbart skatta systemets tillstånd och inte exakt beräkna dem. 
 
-Tillståndsvariablerna kan skattas med flera metoder utifrån tillgänglig mätdata. Två exempel på väl använda metoder Maximum likelihood-metoden (ML-skattning) och Minstakvadratmetoden. Minstakvadratmetoden är något precisare - medan implementeringen av ML-skattning är enklare. Då man bygger en robot som implementerar SLAM är det ofta lämpligt att implementera ML-skattning. 
+Tillståndsvariablerna kan skattas med flera metoder utifrån tillgänglig mätdata. Två exempel på väl använda metoder är Maximum likelihood-metoden (ML-skattning) och Minstakvadratmetoden. Minstakvadratmetoden är något precisare - medan implementeringen av ML-skattning är enklare. Då man bygger en robot som implementerar SLAM är det ofta lämpligt att implementera ML-skattning. 
 
 \paragraph{ML-skattning}
 
-Antag att en sensors mäter en längd. Längdens korrekta värde ges av $x_true$, och att $\hat{x} $ är ett givet stickprov, alltså mätdata, med N antal mätningar. 
+Antag att en sensor mäter en längd. Längdens korrekta värde ges av $x_{true}$, och att $\hat{x} $ är ett givet stickprov, alltså mätdata, med N antal mätningar. 
 
 Det mest sannolika värdet fås, för diskreta mätvärden, binomialfördelningen. 
 
@@ -201,7 +203,7 @@ Det mest sannolika värdet fås, för diskreta mätvärden, binomialfördelninge
 P(X = x_{i}) = p^{x_{i}}(1-p)^{n-x_{i}}
 \end{gather}
 
-Där p är sannolikheten att sensorvärdet är $x_i$ och n är antalet mätningar med resultat $x_i$. 
+Där p är sannolikheten att sensorvärdet är $x_i$ och n är antalet mätningar. 
 
 Sannolikhetsfunktionen, L, för hela stickprovet ges sedan av: 
 
@@ -223,22 +225,14 @@ Derivatan ges sedan av:
 
 Vilket efter uträkningar ger $p = \bar{x}$. Vid ML-skattning av sensorvärden är alltså medelvärdet av sensordata lämpligt att använda.
 
-\subsubsection{Filtrering av sensordata}
-
-Inom odometri finns det några olika tekniker för att filtrera sensordata från sin omgivning och besluta om var inom given inertialram sin nuvarande position är. Gemensamt för samtliga tekniker är att de är filter som arbetar mot oberoende tillståndsvariabler. 
 
 
-
-
-
-%-------------------------------Typer av SLAM--------------------------------------------------------------------------------
+%-------------------------------Typer av SLAM------------------------------------------------------
 \subsection{Typer av SLAM}
 Det finns olika typer av SLAM för olika typer av tillämpningar och med olika egenskaper. Vissa är bra på större avstånd medan andra är mer precisa och bra på kortare avstånd. 
 
 \subsubsection{Kalmanfilter (KF-SLAM)}
-Ett Kalmanfilter är en typ av algoritm som med hjälp av tidigare mätdata från sensorer som kan innehålla brus och störningar uppskattar okända variabler. Ett Kalmanfilter arbetar på linjära och oberoende tillståndsvariabler och är ett essentiellt verktyg för vägval samt positionsuppskattningen i ett SLAM-system. 
-
-Kalmnafilter är en lösning
+Ett Kalmanfilter är en typ av algoritm som med hjälp av tidigare mätdata från sensorer, som kan innehålla brus och störningar, uppskattar okända variabler. Ett Kalmanfilter arbetar på linjära och oberoende tillståndsvariabler och är ett essentiellt verktyg för vägval samt positionsuppskattningen i ett SLAM-system. 
 
 \subsubsection{EKF-SLAM} 
 EKF-SLAM är en förkortning för Extended Kalman Filter for Simultaneous Localization And Mapping. Det utökade Kalmanfiltret (extended) skiljer sig från det ursprungliga på så vis att den används vid icke-linjära förhållanden och istället linjäriserar variablerna kring ett medelvärde och deras kovarians. Med kovarians menas då hur de olika variablerna beror av varandra.
@@ -246,16 +240,16 @@ EKF-SLAM är en förkortning för Extended Kalman Filter for Simultaneous Locali
 Algoritmen arbetar oftast i två steg; först skattas variablerna sedan vid nästa mätning 
 kommer de skattade variablerna viktas, där de med mest säkerhet är av störst vikt.
 
-\subsubsection{FastSLAM}
-FastSlam är en teknik där systemet visuellt kan uppfatta landmärken. Landmärkenas position i förhållande till roboten noteras och uppmäts med regelbundna samplingar. Genom att positionsbestämma dessa landmärken kan roboten snabbare bestämma sin position. 
+\subsubsection{fastSLAM}
+fastSlam är en teknik där systemet visuellt kan uppfatta landmärken. Landmärkenas position i förhållande till roboten noteras och uppmäts med regelbundna samplingar. Genom att positionsbestämma dessa landmärken kan roboten snabbare bestämma sin position. 
 
-FastSLAM är snabbare på att bestämma sin position än KF-SLAM men är däremot inte genomförbar då miljön systemet rör sig i är så pass homogen att inga landmärken går att utfinna. Om vi tar den bana vår robot ska kartlägga som referens är den väldigt homogen\footnote{Tävlingsregler: \url{https://drive.google.com/file/d/0B758zzcy4ZrTeG1wRTY4WG9lTDQ/edit?usp=sharing, Hämtad 28 mars 2014}}. fastSLAM är antagligen inte den bästa tekniken för positionsbestämning och kartläggning av den typen av ''rum''. 
+fastSLAM är snabbare på att bestämma sin position än KF-SLAM men är däremot inte genomförbar då miljön systemet rör sig i är så pass homogen att inga landmärken går att utfinna. Som referens är problemställningen i denna rapport\footnote{Tävlingsregler: \url{https://drive.google.com/file/d/0B758zzcy4ZrTeG1wRTY4WG9lTDQ/edit?usp=sharing, Hämtad 28 mars 2014}} att kartlägga ett rum med ortogonala väggar en väldigt homogen miljö. fastSLAM är av den anledningen inte den bästa tekniken för positionsbestämning och kartläggning av den typen av ''rum''. 
 
 
 
 \subsubsection{VSLAM}
 
-VSLAM står för visuell SLAM, vilket betyder att lokaliseringen sker med hjälp av kameror. Kamerorna används för att finna landmärken i området som kartläggs och sedan använda dessa som referenser när roboten fortsätter att utforska för att t ex se hur långt och i vilken riktning förflyttning sker relativt landmärket. Visuell SLAM är en förutsättning för att utnyttja den tidigare nämna fastSLAM-tekniken. 
+VSLAM står för visuell SLAM, vilket betyder att lokaliseringen sker med hjälp av kameror. Kamerorna används för att finna landmärken i området som kartläggs och sedan använda dessa som referenser när roboten fortsätter att utforska för att t ex se hur långt och i vilken riktning förflyttning sker relativt landmärket. Visuell SLAM är en förutsättning för att utnyttja den tidigare nämnda fastSLAM-tekniken. 
 
 För att bedöma avstånd till ett objekt mäts vinklar mellan farkost och objektet vid olika tidpunkter. Utifrån farkostens hastighet kan mjukvaran sedan bestämma avståndet till objektet i fråga. 
 
@@ -269,25 +263,27 @@ Denna metod använder sig av styrkan på WiFi-signaler i närheten för att avg�
 
 För att WiFi-SLAM ska fungera krävs att accesspunkten har information om positionsdata för sig själv, alternativt att den anslutna enheten har information om var aktuellt WiFi är tillgängligt. I en mobiltelefon används den senare metoden då telefonen kan kontrollera var WiFi-nätverket finns med hjälp av GPS. 
 
-\subsection{Implementeringar}
+\subsection{Exempel på implementeringar}
 
-Det finns många exempel på implementeringar av SLAM. Robotdammsugare är ett bra exempel på en modern tillämpning som kan använda sig av SLAM. Det är då en liten enhet som kan använda sig av en modifierad version av VSLAM som kallas CV-SLAM. Detta står för Ceiling Visual SLAM, det vill säga att roboten har kameror som är riktade uppåt och använder landmärken i taket för att rita upp en karta över rummet den städar, så att den dammsuger alla platser i rummet istället för att städa samma punkt flera gånger. 
+Det finns många exempel på implementeringar av SLAM. Robotdammsugare är ett bra exempel på en modern tillämpning som kan använda sig av SLAM. Det är då en liten enhet som kan använda sig av en modifierad version av VSLAM som kallas CV-SLAM. Detta står för Ceiling Visual SLAM, det vill säga att roboten har kameror som är riktade uppåt och använder landmärken i taket för att rita upp en karta över rummet den städar. Det gör att den dammsuger alla platser i rummet istället för att städa samma punkt flera gånger. 
 
 Det här är ett bra exempel på hur moderna, små mikrokontrollers kan möjliggöra SLAM att användas för att förenkla vår vardag.  
 
-SLAM används, och har används under längre tid, till exempel också i rymdexpeditioner där robotar skickas upp i rymden för att upptäcka och kartlägga ställen som vi människor inte har möjlighet att besöka. 
+SLAM används, och har används under längre tid, också i rymdexpeditioner där robotar skickas upp i rymden för att upptäcka och kartlägga ställen som vi människor inte har möjlighet att besöka. 
 
 %------------------------------------------------
 %--------------------Fördjupning-----------------
 %------------------------------------------------
 \newpage
-\section{Fördjupning och kodexempel}
+\section{Implementering}
 
 För att rita en karta krävs det att mjukvara och hårdvara sammarbetar. Sensorerna och deras värden behöver översättas till något som kan behandlas av en dator. 
 
+% --------------------------------------
+
 \subsection{Skattning av parametrar}
 
-I just detta problem, som är begränsat kommer positionen att skattas med hjälp av sensorvärden i form av vinkel och avstånd i kombination med enkla algoritmer. Eftersom en del parametrar är kända blir skattningen något lättare än om det hade varit t ex ett godtyckligt stort område. Det kommer att finnas två stycken tre-meters avståndssensorer som är riktade framåt och bakåt, här kallade $S_{front}$ \& $S_{back}$. Om båda sensorerna ger utslag på över tre meter kommer antagandet göras att de har gått utanför sitt mätområde och kommer då skattas som nedan. Mätvärdena kommer i största möjliga mån plockas ut som medelvärdet av den senaste mätdatan.
+I just detta problem, som är begränsat, kommer positionen att skattas med hjälp av sensorvärden i form av vinkel och avstånd i kombination med enkla algoritmer. Eftersom en del parametrar är kända blir skattningen något lättare än om det hade varit till exempel ett godtyckligt stort område. Det kommer att finnas två stycken tre-meters avståndssensorer som är riktade framåt och bakåt, här kallade $S_{front}$ \& $S_{back}$. Mätvärdena kommer i största möjliga mån plockas ut som medelvärdet, $\bar{S}$, av den senaste mätdatan. Om båda sensorerna ger utslag på över tre meter kommer antagandet göras att de har gått utanför sitt mätområde och kommer då skattas som nedan. 
 
 \begin{gather}
 	S_{front}=3,00 m \\
@@ -302,17 +298,26 @@ Om endast den ena av sensorerna, i detta exempel $S_{back}$, befinner sig utanf�
 
 Där 6,00 m är den maximala längden som kan uppstå i området. Dessa sensorvärden kommer sedan användas för att skatta robotens position.
 
+
+% --------------------------------------
+
 \subsection{Positionsskattning}
 
-För att uppskatta hur långt roboten har färdats kommer referensvärden på sensorerna sparas undan innan roboten rör sig. Dessa värden kommer sedan uppdateras varje gång roboten har färdats 40 cm (ett segment av området). För att veta när roboten färdats 40 cm kommer ett nuvarande sensorvärde jämföras med referensen t ex om roboten färdas framåt kommer differensen mellan $S_{front}$ \& $S_{frontref}$ beräknas. Förflyttningen har åstadkommits då ekvationen nedan är uppfylld. 
+För att uppskatta hur långt roboten har färdats kommer referensvärden $S_{ref}$ på sensorerna sparas innan roboten rör sig. Dessa värden kommer sedan uppdateras varje gång roboten har färdats 40 cm (ett segment av området). För att veta när roboten färdats 40 cm kommer ett nuvarande sensorvärde jämföras med referensen, till exempel om roboten färdas framåt kommer differensen mellan $S_{front}$ \& $S_{frontref}$ beräknas. Förflyttningen har åstadkommits då ekvationen nedan är uppfylld. 
 
 \begin{gather}
 	S_{frontref} - S_{front} = 40
 \end{gather}
 
+Utöver detta går det att med hjälp av data från gyrot få ut vinkelhastigheten $\omega$. Problemet med vinkelhastigheten är att den inte bidrar till att beskriva robotens positionering utan att omvandlas till robotens vinkel relativt ursprungsriktningen, här kallad $\phi$. Omvandlingen sker utifrån (11) där $n_{clock}$ är antalet klockcykler på processorn sedan roboten börjat rotera och där $f$ är processorns klockfrekvens.
+
+\begin{gather}
+	\phi = \omega \cdot \frac{n_{clock}}{f}
+\end{gather} 
+
 \subsection{Kartabstraktion}
 
-En karta kan abstraheras i form av en rektangel med ett rutnät med dimensionen 33x17 rutor med koordinaterna (0,0) i det övre vänstra hörnet. Det definierade området i problemformuleringen, d v s det verkliga området skulle med liknande rutnät bli 15x15 rutor, men den utökas något för att underlätta uppritningen. Felaktigheter i avläsning kan leda till att roboten i abstraktionen tillfälligt är utanför sitt givna område. Roboten kommer i början att placeras i punkten (16,0) och rita upp kartan utifrån detta. Det kommer då inte spela någon roll hur roboten är placerad i det verkliga systemet eftersom det finns utrymma för 15 rutor åt båda hållen inklusive marginaler. 
+En karta kan abstraheras i form av en rektangel med ett rutnät med dimensionen 33x17 rutor med koordinaterna (0,0) i det övre vänstra hörnet. Det definierade området i problemformuleringen, det vill säga det verkliga området, skulle med liknande rutnät bli 15x15 rutor. För att kompensera för eventuella mätfel utökas matrisen något för att underlätta uppritningen. Felaktigheter i avläsning kan leda till att roboten i abstraktionen tillfälligt är utanför sitt givna område. Roboten kommer i början att placeras i punkten (16,0) och rita upp kartan utifrån detta. Det kommer då inte spela någon roll hur roboten är placerad i det verkliga systemet eftersom det finns utrymme för 15 rutor åt båda hållen inklusive marginaler. 
 
 Hur skapar man då en matris i mjukvara? Beroende på språk, utvecklingsmiljö och abstraktionslager/bilbiotek görs det såklart med olika syntax - men den övergripande designen är densamma oberoende av utvecklingsmiljö. 
 
@@ -320,7 +325,7 @@ En abstraktion av en matris i mjukvara skapas med hjälp utav nästlade arrayer,
 
 \paragraph{Objektklasser}
 ~\\
-Kartmatrisen hålls inne i en containerklass med funktioner för att abstrahera acess till den. I modern programmering är objekthantering ett kraftfullt verktyg för abstraktion. Klasser tänkbara att implementera för SLAM följer nedan, med engelska namnet inom parantes. Detta då programmering görs bäst på engelska tack vare att språken härstammar från engelskan. 
+Kartmatrisen hålls inne i en containerklass med funktioner för att abstrahera acess till den. I modern programmering är objekthantering ett kraftfullt verktyg för abstraktion. Klasser tänkbara att implementera för SLAM följer nedan, med engelska namnet inom parantes. Detta då programmering görs bäst på engelska tack vare att programmeringsspråken härstammar från engelskan. 
 
 \begin{itemize}
 	\item Karta (Map)
@@ -340,51 +345,78 @@ MapSection kan anta ett antal olika tillstånd för att markera vilken typ av om
 
 Till en början är alla områden outforskade. I takt med att sensordata kommer in och beräknas kan sedan roboten omvandla tillstånden hos objekten i kartan utefter given logik. 
 
+% --------------------------------------
+
+\newpage
+\subsection{Kartläggningsalgoritmer}
+
+Antag att roboten har en kartabstraktion, kan ta in sensordata och göra en uppskattning av sin omgivning - hur implementerar man sedan en bra och snabb kartläggningsalgoritm? Hur ska man utforska sin omgivning och i vilken ordning? 
+
+Beroende på hur omgivningen ser ut finns det olika svar på frågorna. Omfattningen för den här rapporten gäller insidan av ett rum i en byggnad, där alla hörn kan antas vara ortogonala. En enkel implementering är då att enbart köra roboten i ett rutnät - med ortogonala sökriktningar. Detta förenklar markant modellen då vinklar enbart behöver mätas vid rotationer, alltså riktningsändringar, istället för konstant under körning. En enkel implementering är ofta också en snabb implementering, både att realisera och att optimera. 
+
+Nedan syns ett flödesschema över hur en tänkt kartläggningsalgoritm skulle kunna se ut. Kartläggningalgoritmen utför sina kommandon genom att anropa funktioner i robotobjektet. Robotobjektet kan ses som operationens hjärna medan algoritmen är den övergripande handen som ser till att roboten arbetar i rätt ordning. 
+
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,scale=0.5]{../../Designspec/Flode_kartritning.jpg}  %skala och filnamn. 
+  \end{center}
+  \caption{Flödesschema kartläggning} %figurtext.
+  \label{fig:fire} %glöm inte att uppdatera era labels
+\end{figure}
+
 %------------------------------------------------
 %------------Resultat och slutsatser-------------
 %------------------------------------------------
-
+\newpage
 \section{Resultat och slutsatser}
 
-Till slut kan vi konstatera att SLAM används i många tillämpningar man kanske inte tänker på. Man kan också konstatera att algoritmerna, filtren och mjukvaran som används för att implementera SLAM är relativt komplicerade. Vi inser att vi gjort ett klokt beslut att fördjupa oss i just SLAM, då vi är beroende av detta i vårt projekt att konstruera en kartritande robot. 
+Till slut kan vi konstatera att SLAM används i många tillämpningar man kanske inte tänker på. Man kan också konstatera att algoritmerna, filtren och mjukvaran som används för att implementera SLAM ibland kan vara väldigt komplexa. I miljöer där sensorerna kan täcka en stor del av banan kan däremot algoritmerna hållas relativt enkla. Detta då variabler med enkelhet kan skattas via avståndssensorernas medelvärde. 
+
+Vi inser att vi gjort ett klokt beslut att fördjupa oss i just SLAM, då vi är beroende av detta i vårt projekt att konstruera en kartritande robot. SLAM var också den delen vi såg, och fortfarande ser, som störst hinder i utvecklingsprocessen. 
+
+Vi har insett att vi tack vare det långa synfältet hos våra optiska sensorer i kombination med det relativt lilla område vi ska kartlägga kommer kunna använda en relativt enkel implementering. En implementering som använder sig av ML-skattning som observatör\footnote{Glad och Ljung (2006)} för systemet. 
 
 % --------------- Källförteckning ---------------------
-\newpage \section{Källförteckning} Smith, R.C.; Cheeseman, P. (1986).
-''On the Representation and Estimation of Spatial Uncertainty''. The
-International Journal of Robotics Research, 5(4), sida 56–68. Hämtad
-28 mars 2014:
-\url{http://www.frc.ri.cmu.edu/~hpm/project.archive/reference.file/Smith&Cheeseman.pdf}
+\newpage 
+\section{Källförteckning} 
+
+David Törnqvist. Estimation and Detection with Applications to Navigation. PhD thesis, Linköping University, 2008. Hämtad 15 april 2014.
+\url{http://urn.kb.se/resolve?urn=urn:nbn:se:liu:diva-14956}
+
+Datablad Atmega 1284p, Vanheden, databladsserver hos Institutionen för Systemteknik vid Linköpings Universitet. Hämtad 14 april 2014. \url{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/atmega1284p.pdf}
+
+FastSLAM: A Factored Solution to the Simultaneous
+Localization and Mapping Problem, Stanford University. Hämtad 28 mars 2014.
+\url{http://robots.stanford.edu/papers/montemerlo.fastslam-tr.pdf}
+
+Fox, C.; Evans, M.; Pearson, M.; Prescott, T. (2012)
+''Tactile SLAM with a biomimetic whiskered robot''. 2012 IEEE International Conference on Robotics and Automation. Hämtad 28 mars 2014.
+\url{http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6224813}
 
 Glad, Torkel och Ljung, Lennart. 2006. \textit{Reglerteknik - Grundläggande teori}. Upplaga 4:10. Lund. Studentlitteratur AB.
+
+Kandidatprojekt Y: Elektronikprojekt, Tävlingsregler för katläggningsrobot. Hämtad 28 mars 2014.  \url{https://drive.google.com/file/d/0B758zzcy4ZrTeG1wRTY4WG9lTDQ/edit?usp=sharing}
+
+Karlsson, N.; Goncalves, L.; Munich, M.E.; Pirjanian, P.
+''The vSLAM Algorithm for Navigation in Natural Environments''. Evolution Robotics, Inc. Hämtad 28 mars 2014:
+\url{http://www.vision.caltech.edu/mariomu/research/papers/vSLAM-krs.pdf}
+
+Openslam.org
+\url{http://www.openslam.org/}
 
 Risgaard, S; Blas, M.R (2005).
 ''SLAM for Dummies, A Tutorial Approach to Simultaneous Localization and Mapping''. 
 Hämtad 28 mars 2014:
 \url{http://ocw.mit.edu/courses/aeronautics-and-astronautics/16-412j-cognitive-robotics-spring-2005/projects/1aslam_blas_repo.pdf}
 
-Karlsson, N.; Goncalves, L.; Munich, M.E.; Pirjanian, P.
-''The vSLAM Algorithm for Navigation in Natural Environments''. Evolution Robotics, Inc. Hämtad 28 mars 2014:
-\url{http://www.vision.caltech.edu/mariomu/research/papers/vSLAM-krs.pdf}
+Smith, R.C.; Cheeseman, P. (1986). ''On the Representation and Estimation of Spatial Uncertainty''. The
+International Journal of Robotics Research, 5(4), sida 56–68. Hämtad
+28 mars 2014:
+\url{http://www.frc.ri.cmu.edu/~hpm/project.archive/reference.file/Smith&Cheeseman.pdf}
 
-Fox, C.; Evans, M.; Pearson, M.; Prescott, T. (2012)
-''Tactile SLAM with a biomimetic whiskered robot''. 2012 IEEE International Conference on Robotics and Automation. Hämtad 28 mars 2014.
-\url{http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6224813}
 
-FastSLAM: A Factored Solution to the Simultaneous
-Localization and Mapping Problem, Stanford University. Hämtad 28 mars 2014.
-\url{http://robots.stanford.edu/papers/montemerlo.fastslam-tr.pdf}
 
-Openslam.org
-\url{http://www.openslam.org/}
 
-Atmega 1284p, Vanheden, databladsserver hos Institutionen för Systemteknik vid Linköpings Universitet. Hämtad 14 april 2014. \url{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/atmega1284p.pdf}
 
-Kandidatprojekt Y: Elektronikprojekt, Tävlingsregler för katläggningsrobot. Hämtad 28 mars 2014.  \url{https://drive.google.com/file/d/0B758zzcy4ZrTeG1wRTY4WG9lTDQ/edit?usp=sharing}
-
-% ----------------------------- Appendix
-% -----------------------------------------
-% 
-\newpage \appendix \pagestyle{empty}
-\newgeometry{left=2cm,right=2cm,bottom=2cm,top=2cm} \section{Appendix A}
 
 \end{document}

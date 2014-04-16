@@ -129,7 +129,7 @@ int main(void)
 	//gyromode = true;
 	sensormodul.SPI_Init();
 	Sensor_Init();
-	USART_Init(383);
+	USART_Init(7);
 	
 	sei();					// Enable Global Interrupts
 	ADCSRA |= 1<<ADSC;		// Start Conversion

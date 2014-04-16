@@ -121,6 +121,7 @@ void LCD_init(){
 	PORTA |= (1<<PORTA7); //enable
 	PORTA &= ~(1<<PORTA7); //disable
 	//LCD_busy();
+
 	_delay_us(40);
 	
 	SetData(0x0F);
@@ -128,7 +129,7 @@ void LCD_init(){
 	PORTA &= ~(1<<PORTA5)|(1<<PORTA6);
 	PORTA |= (1<<PORTA7); //enable
 	PORTA &= ~(1<<PORTA7); //disable
-	//LCD_busy();
+	//LCD_busy()
 	_delay_us(40);
 	
 	SetData(0x01);
@@ -166,7 +167,6 @@ void LCD_senddata(unsigned char var)
 	PORTA |= (1<<PORTA7); //enable
 	PORTA &= ~(1<<PORTA7); //disable
 	_delay_ms(40);
-	
 	//LCD_busy(); //Wait for LCD to process the command
 }
 
@@ -175,7 +175,6 @@ void LCD_sendstring(unsigned char *var)
 	while(*var) //till string ends
 	LCD_senddata(*var++); //send characters one by one
 }
-
 
 void LCD_build(unsigned char location, unsigned char *ptr){
 	unsigned char i;

@@ -15,6 +15,10 @@
 
 #endif
 
+#if DEBUG == 1
+#include <iostream>
+#endif
+
 #include <stdio.h>
 #include <string.h>
 #include "Abstraction.h"
@@ -91,13 +95,19 @@ public:
 	// Putting sensordata in array
 	void fwdValueIn(char*);
 	void bwdValueIn(char*);
-	void leftValueIn(char*);
-	void rightValueIn(char*);
+	void leftFrontValueIn(char*);
+    void leftBackValueIn(char*);
+    void leftLongValueIn(char*);
+	void rightFrontValueIn(char*);
+    void rightBackValueIn(char*);
 	void phiDotValueIn(char*);
     
 	// SLAM (mapping, positioning)
 	void setFwdClosed();
 	void setBwdClosed();
+    void setRightClosed();
+    void setLeftClosed();
+    
     void changeDirection(char);
     char* getColAsChar(int col);
     
@@ -105,18 +115,24 @@ public:
     void updateRobotPosition();
     
     // Automatic control
-    void turnLeft(int speed);
-    void turnRight(int speed);
+    void turn(int pd); //Positive or negative value will decide left or right
+    int getRightDifference();
+    int getLeftDifference();
     void adjustPosition();
     
     
     
 protected:
+    int getRightDistance();
+    
     char* fwdSensor = new char[100];
     char* bwdSensor = new char[100];
-    char* leftSensor = new char[100];
-    char* rightSensor = new char[100];
+    char* leftFrontSensor = new char[100];
+    char* leftBackSensor = new char[100];
+    char* rightFrontSensor = new char[100];
+    char* rightBackSensor = new char[100];
     char* phiDotSensor = new char[100];
+    char* leftLongSensor = new char[100];
 	
 	int fwdDiff;
 	int bwdDiff;
@@ -128,8 +144,20 @@ protected:
     
     int fwdReference;
     int bwdReference;
-    int leftReference;
-    int rightReference;
+    int leftFrontReference;
+    int leftBackReference;
+    int rightFrontReference;
+    int rightBackReference;
+    
+    //Values concerning automatic control
+    
+    int movementSpeed;
+    int Kd; //Differentiation coeff.
+    int Kp; //Proportional coeff.
+    int Ref=5; //Reference value for control
+    int previousRightError = 0;
+    int previousLeftError = 0;
+    
     
     MapSection* previousSection = NULL;
     Communication* commObj = NULL;

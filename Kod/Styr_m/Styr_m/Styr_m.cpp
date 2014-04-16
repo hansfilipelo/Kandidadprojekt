@@ -5,7 +5,7 @@
  *  Author: hanel742 och tobgr602
  */ 
 
-
+#define F_CPU 14745600
 #include <avr/io.h>
 #include <util/delay.h>
 #include <avr/interrupt.h>
@@ -15,20 +15,19 @@
 #include "Map.h"
 #include "Abstraction.h"
 #include "Communication.h"
-#include "../../sensormodul/sensormodul/slave.h"
-
-#if DEBUG == 0
+#include "slave.h"
 
 // Intiating global variables
 // -----------------------------
 // Chooses direction
-static int gear = 0;
+//static int gear = 0;
 //static int speed = 0;
 Slave steerModuleSlave;
 Slave* slavePointer = &steerModuleSlave;
 Communication* abstractionObject = new Communication(slavePointer);
-Map* mapPointer = new Map();
-Robot* robotPointer = new Robot(16,1,mapPointer,abstractionObject);
+
+
+#if DEBUG == 0
 
 // Interreupt for bus comm
 // -----------------------------
@@ -42,10 +41,8 @@ ISR(SPI_STC_vect){
 		steerModuleSlave.position = 0;
 		PORTC |= (1<<PORTC0);
 		PORTC &=~(1<<PORTC0);
-		
 	}
 }
-
 
 ISR(PCINT2_vect){
 	abstractionObject->handleData();
@@ -140,12 +137,23 @@ int main(void)
     
     // Set up bus comm
     steerModuleSlave.SPI_Init();
+	volatile bool watch = abstractionObject->sendMapNow;
     
 	sei();
 	
 	#endif
 	
-	while(1){
+	Map* mapPointer = new Map();
+	Robot* robotPointer = new Robot(16,1,mapPointer,abstractionObject);
+	abstractionObject->setRobot(robotPointer);
+	
+	for(;;){
+		if(abstractionObject->sendMapNow){
+			asm("");
+			abstractionObject->sendMapNow=false;
+			abstractionObject->sendMap();
+			asm("");
+		}	
 	}
 	
 	return 0;

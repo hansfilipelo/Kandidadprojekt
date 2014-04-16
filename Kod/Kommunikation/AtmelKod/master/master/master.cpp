@@ -21,6 +21,9 @@ unsigned char pcOutDataArray[25] = {'0','0','0','0','0','0','0','0','0','0','0',
 unsigned int  position = 0;
 unsigned int  pcPosition = 0;
 unsigned char pcHandle[25];
+bool toggle = false;
+bool ReceiveFromSteer = false;
+bool ReceiveFromSensor = false;
 
 volatile bool Btrec = false; 
 
@@ -101,9 +104,11 @@ void SPIReceiveArray(unsigned int slave){
 	
 	inDataArray[0] = SPI_MasterTransmit(0x00,slave);
 	unsigned int length = inDataArray[0];
+	_delay_us(3);//om data inte kommer fram korrekt, testa då att höja denna.
 	for (unsigned int i=1; i<=length; i++)
 	{
 		inDataArray[i] = SPI_MasterTransmit(0x00, slave);
+		_delay_us(3);
 	}
 }
 
@@ -144,14 +149,14 @@ volatile void handleBluetooth(){
 	Btrec = false;
 	asm("");
 	
-	if(pcInDataArray[1] == 'f' || pcInDataArray[1] == 'r'|| pcInDataArray[1] == 'b' || pcInDataArray[1] == 'h'){
+	if(pcInDataArray[1] == 'f' || pcInDataArray[1] == 'r'|| pcInDataArray[1] == 'b' || pcInDataArray[1] == 'h' || pcInDataArray[1] == 'F'){
 		asm("");
 		outDataArray[0] = pcHandle[0];
 		outDataArray[1] = pcHandle[1];
 		outDataArray[2] = pcHandle[2];
 		outDataArray[3] = pcHandle[3];
 		asm("");
-		SPISendArray(1); //send data to module 1 (control)
+		SPISendArray(1); //send data to module 1 (steer)
 		asm("");
 	}
 }
@@ -170,6 +175,22 @@ void BluetoothReceive(){
 	PORTA &= ~((1<<PORTA2)|(1<<PORTA3));
 	sei();
 }
+/*
+*	Handeling data from modules
+*/
+
+void handleDataFromSteer(){
+	ReceiveFromSteer=false;
+	memcpy(pcOutDataArray,inDataArray,25);
+	asm("");
+	if(pcOutDataArray[1]=='M'){
+		BluetoothSendArray();
+	}
+}	
+
+void handleDataFromSensor(){
+	ReceiveFromSensor=false;	
+}
 
 /*
 *	INTERUPTS
@@ -184,33 +205,28 @@ ISR(USART0_RX_vect)
 ISR(INT2_vect){
 	cli();
 	SPIReceiveArray(1);
+	ReceiveFromSteer = true;
 	sei();
 }
 //Sensor module wants to send data
 ISR(INT1_vect){
 	cli();
 	SPIReceiveArray(0);
+	ReceiveFromSensor = true;
 	sei();
 }
-
+//Handle auto/manual button event
 ISR(INT0_vect){
 	cli();
-	outDataArray[0]= 2;
-	outDataArray[1]= 'r';
-	outDataArray[2]= 0;
-	
-	
-	/*
-	outDataArray[1] = 3;
-	outDataArray[2] = 4;
-	SPISendArray(1);
-	
-	_delay_us(10);
-	outDataArray[0] = 2;
-	outDataArray[1] = 5;
-	outDataArray[2] = 6;
-	*/
-	
+	if(toggle){
+		outDataArray[1]= 'q';
+		toggle = false;
+	}
+	else{
+		outDataArray[1]= 'a';
+		toggle = true;
+	}
+	outDataArray[0]= 1;
 	SPISendArray(1);
 	sei();
 }
@@ -222,9 +238,15 @@ int main(void)
 	USART_Init(7);
 	sei();
 	
-	while(1){
+	for(;;){
 		asm("");
 		handleBluetooth();
+		if (ReceiveFromSteer){
+			handleDataFromSteer();		
+		}
+		if(ReceiveFromSensor){
+			handleDataFromSensor();
+		}
 	}
 	
 }
