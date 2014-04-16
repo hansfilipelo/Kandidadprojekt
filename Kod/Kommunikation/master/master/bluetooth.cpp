@@ -13,7 +13,6 @@ void Bluetooth::setPointer(Spi* ptr, Map* inMap){
 	mapPointer = inMap;
 }
 
-
 void Bluetooth::init(){
     
     unsigned int baud=7;

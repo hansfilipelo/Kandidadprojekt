@@ -11,6 +11,7 @@
 Spi::Spi(Bluetooth* ptr, Map* inMap){
 	bluetoothPointer = ptr;
 	mapPointer = inMap;
+    init();
 }
 
 void Spi::init(){

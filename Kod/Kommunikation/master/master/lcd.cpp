@@ -1,35 +1,27 @@
 /*
- * LCD.cpp
+ * lcd.cpp
  *
  * Created: 4/14/2014 11:13:42 AM
  *  Author: davha227
- 
- Rs -> PORTA5
- R/W -> PORTA6
- E -> PORTA7
- DB0 -> PORTC0
- DB1 -> PORTC1
- DB2 -> PORTD4
- DB3 -> PORTD5
- DB4 -> PORTD6
- DB5 -> PORTD7
- DB6 -> PORTC6
- DB7 -> PORTC7
- */ 
-#include "LCD.h"
+ *
+ *  Virat kablage
+ *  Rs -> PORTA5
+ *  R/W -> PORTA6
+ *  E -> PORTA7
+ *  DB0 -> PORTC0
+ *  DB1 -> PORTC1
+ *  DB2 -> PORTD4
+ *  DB3 -> PORTD5
+ *  DB4 -> PORTD6
+ *  DB5 -> PORTD7
+ *  DB6 -> PORTC6
+ *  DB7 -> PORTC7
+ */
+
+#include "lcd.h"
 
 Lcd::Lcd(){
-	DDRC |= 0xC3; //portC pin 0,1,6,7 till utgångar
-	DDRD |= 0xF0;	//portD pin 4-7 som utgångar
-	DDRA |= 0xE0; //port A pin 5-7 sätt till utgång
-	PORTA |= (1<<PORTA7); // enable till 1
-	LCD_init();
-	
-	
-	LCD_draw(0x80,0x53); //8->rad1
-	LCD_draw(0x9f,0x53);	//9->rad3
-	LCD_draw(0xc0,0x53);	//c->rad2
-	LCD_draw(0xdf,0x53);	//d->rad4
+	init();
 }
 
 void Lcd::SetData(unsigned char var){
@@ -121,7 +113,12 @@ void LCD_busy(){
 }
 */
 
-void Lcd::LCD_init(){
+void Lcd::init(){
+    DDRC |= 0xC3; //portC pin 0,1,6,7 till utgångar
+	DDRD |= 0xF0;	//portD pin 4-7 som utgångar
+	DDRA |= 0xE0; //port A pin 5-7 sätt till utgång
+	PORTA |= (1<<PORTA7); // enable till 1
+    
 	SetData(0x38);
 	 //Function set: 2 Line, 8-bit, 5x8 dots
 	PORTA &= ~(1<<PORTA5)|(1<<PORTA6);
@@ -150,7 +147,15 @@ void Lcd::LCD_init(){
 	_delay_ms(100);
 }
 
-void Lcd::LCD_command(unsigned char var) // för att uföra olika kommandon
+//Skriver ut namnen pŒ sensorerna
+void Lcd::drawSensorNames(){
+    draw(0x80,0x53);    //8->rad1
+    draw(0x9f,0x53);	//9->rad3
+    draw(0xc0,0x53);	//c->rad2
+    draw(0xdf,0x53);	//d->rad4
+}
+
+void Lcd::command(unsigned char var) // för att uföra olika kommandon
 {
 	SetData(var);
 	PORTA &= ~(1<<PORTA5)|(1<<PORTA6);
@@ -160,7 +165,7 @@ void Lcd::LCD_command(unsigned char var) // för att uföra olika kommandon
 	_delay_ms(100);
 }
 
-void Lcd::LCD_senddata(unsigned char var)
+void Lcd::senddata(unsigned char var)
 {
 	SetData(var); //Function set: 2 Line, 8-bit, 5x7 dots
 	
@@ -172,14 +177,7 @@ void Lcd::LCD_senddata(unsigned char var)
 	//LCD_busy(); //Wait for LCD to process the command
 }
 
-
-void Lcd::LCD_draw(unsigned char location, unsigned char sign){
+void Lcd::draw(unsigned char location, unsigned char sign){
 	LCD_command(location);
 	LCD_senddata(sign);
 }
-
-
-int main(){
-		Lcd hej;
-		for(;;);
-	};
