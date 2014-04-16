@@ -97,7 +97,6 @@ int main(void)
     Bus.init();
     
 	sei();
-#endif
     
 	for(;;){
 		asm("");
