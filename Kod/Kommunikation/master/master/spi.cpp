@@ -6,6 +6,11 @@
  */ 
 
 #include "spi.h"
+#include "bluetooth.h"
+
+Spi::Spi(Bluetooth* ptr){
+	bluetoothPointer = ptr;
+}
 
 void Spi::init(){
     
@@ -61,18 +66,19 @@ void Spi::sendArray(unsigned int slave){
 	length = outDataArray[0];
 	for (unsigned int i=0; i<=length; i++)
 	{
-		SPI_MasterTransmit(outDataArray[i], slave);
+		
+		transfer(outDataArray[i], slave);
 	}
 }
 
 void Spi::receiveArray(unsigned int slave){
 	
-	inDataArray[0] = SPI_MasterTransmit(0x00,slave);
+	inDataArray[0] = transfer(0x00,slave);
 	unsigned int length = inDataArray[0];
 	_delay_us(3);//om data inte kommer fram korrekt, testa dÂ att hˆja denna.
 	for (unsigned int i=1; i<=length; i++)
 	{
-		inDataArray[i] = SPI_MasterTransmit(0x00, slave);
+		inDataArray[i] = transfer(0x00, slave);
 		_delay_us(3);
 	}
 }

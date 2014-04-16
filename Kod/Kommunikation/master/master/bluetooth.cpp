@@ -6,6 +6,12 @@
  */ 
 
 #include "bluetooth.h"
+#include "spi.h"
+
+void Bluetooth::setPointer(Spi* ptr){
+	spiPointer=ptr;
+}
+
 
 void Bluetooth::init(){
     
@@ -51,12 +57,12 @@ void Bluetooth::sendArray(){
 	}
 }
 
-volatile void Bluetooth::handle{
-    if(!Btrec){
+volatile void Bluetooth::handle(){
+    if(!this->Btrec){
 		return;
 	}
 	memcpy(pcHandle,inDataArray,25);
-	Btrec = false;
+	this->Btrec = false;
 	asm("");
 	
 	if(inDataArray[1] == 'f' || inDataArray[1] == 'r'|| inDataArray[1] == 'b' || inDataArray[1] == 'h' || inDataArray[1] == 'F'){
@@ -66,7 +72,7 @@ volatile void Bluetooth::handle{
 		outDataArray[2] = pcHandle[2];
 		outDataArray[3] = pcHandle[3];
 		asm("");
-		SPISendArray(1); //send data to module 1 (steer)
+		spiPointer->sendArray(1); //send data to module 1 (steer)
 		asm("");
 	}
 }
@@ -75,7 +81,7 @@ void Bluetooth::receiveArray(){
     cli();
 	//Set CTS and RTS to 1
 	PORTA |= (1<<PORTA2)|(1<<PORTA3);
-	inDataArray[position] = USART_Receive();
+	inDataArray[position] = receiveByte();
 	position++;
 	if(position == 25){
 		Btrec = true;

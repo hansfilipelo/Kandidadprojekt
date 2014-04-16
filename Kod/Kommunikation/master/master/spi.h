@@ -13,15 +13,17 @@
 #define F_CPU 14.7456E6
 #include <util/delay.h>
 
+class Bluetooth;
+
 class Spi
 {
     
 public:
+	Spi(Bluetooth*);
 	void init();
-    void transfer();
-	void sendArray();
-    void receiveArray();
-    
+    char transfer(char, unsigned int);
+	void sendArray(unsigned int);
+    void receiveArray(unsigned int);
     
     // Data arrives in order, datalength (data.length + codeword + arg), codeword, arg, data.
     unsigned char inDataArray[25];
@@ -29,8 +31,7 @@ public:
    
 private:
     unsigned int  position = 0;
-    
-    
+    Bluetooth* bluetoothPointer;
 };
 
 #endif

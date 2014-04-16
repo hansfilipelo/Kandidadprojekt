@@ -11,11 +11,14 @@
 #include <avr/interrupt.h>
 #include <string.h>
 
+class Spi;
+
 class Bluetooth
 {
 public:
+	void setPointer(Spi*);
 	void init();
-	void transmitByte();
+	void transmitByte(unsigned char);
 	unsigned char receiveByte();
 	void sendArray();
     void receiveArray();
@@ -29,8 +32,8 @@ public:
     
 private:
     unsigned int position = 0;
-    
-    
+	
+	Spi* spiPointer;
 };
 
 #endif
