@@ -19,17 +19,20 @@
 
 #endif
 
-#include "Map.h"    
+#include "masterMap.h"    
 #include <string.h>
 #include "bluetooth.h"
 #include "spi.h"
+#include "lcd.h"
 
 bool toggle = false;
 bool ReceiveFromSteer = false;
 bool ReceiveFromSensor = false;
 
+Map buffer;
 Bluetooth Firefly;
-Spi Bus(&Firefly);
+Spi Bus(&Firefly,&buffer);
+Lcd Display;
 
 /*
 *	Handeling data from modules
@@ -37,15 +40,43 @@ Spi Bus(&Firefly);
 
 void handleDataFromSteer(){
 	ReceiveFromSteer=false;
-	memcpy(Firefly.outDataArray, Bus.inDataArray, 25);
+	//memcpy(Firefly.outDataArray, Bus.inDataArray, 25);
 	asm("");
 	if(Firefly.outDataArray[1]=='M'){
-		Firefly.sendArray();
+		buffer.setColAsChar((char*)Bus.inDataArray);
+		//int blowMe = buffer.setColAsChar();
+		if((int)Firefly.outDataArray[2]==31){
+			Firefly.sendMap();
+		}
 	}
 }	
 
 void handleDataFromSensor(){
-	ReceiveFromSensor=false;	
+	ReceiveFromSensor=false;
+	int sensor = Bus.inDataArray[2];
+	char m = Bus.inDataArray[3];
+	char dm = Bus.inDataArray[4];
+	char cm = Bus.inDataArray[5];
+	
+	switch (sensor)
+	{
+		case 0 : Display.updateL1(m,dm,cm);
+		break;
+		case 1 : Display.updateL2(m,dm,cm);
+		break;
+		case 2 : Display.updateS1(m,dm,cm);
+		break;
+		case 3 : Display.updateS2(m,dm,cm);
+		break;
+		case 4 : Display.updateS3(m,dm,cm);
+		break;
+		case 5 : Display.updateS4(m,dm,cm);
+		break;
+		case 6 : Display.updateM1(m,dm,cm);
+		break;
+		default : //
+		break;
+	}
 }
 
 #if DEBUG == 0
@@ -93,9 +124,8 @@ ISR(INT0_vect){
 
 int main(void)
 {
-    Firefly.setPointer(&Bus);
-    Firefly.init();
-    Bus.init();
+    Firefly.setPointer(&Bus,&buffer);
+	Display.drawSensorNames();
     
 	sei();
     
@@ -108,6 +138,5 @@ int main(void)
 		if(ReceiveFromSensor){
 			handleDataFromSensor();
 		}
-	}
-	
+	}	
 }

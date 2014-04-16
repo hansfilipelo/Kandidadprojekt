@@ -8,10 +8,14 @@
 #include "bluetooth.h"
 #include "spi.h"
 
-void Bluetooth::setPointer(Spi* ptr){
-	spiPointer=ptr;
+Bluetooth::Bluetooth(){
+	init();
 }
 
+void Bluetooth::setPointer(Spi* ptr, Map* inMap){
+	spiPointer=ptr;
+	mapPointer = inMap;
+}
 
 void Bluetooth::init(){
     
@@ -54,6 +58,14 @@ void Bluetooth::sendArray(){
     
     for (unsigned int i=0; i<25; i++){
 		transmitByte(outDataArray[i]);
+	}
+}
+
+void Bluetooth::sendMap(){
+	for(unsigned int i = 0; i<32;i++){
+		memcpy(outDataArray,this->mapPointer->getColAsChar(i),25);
+		sendArray();
+		_delay_ms(2);
 	}
 }
 
