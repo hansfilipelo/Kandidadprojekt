@@ -28,8 +28,9 @@ void SerialPort::sendArray(const char inArray[25]){
 
 //Alt. handleReadyRead(), assuming tempData is QByteArray
 void SerialPort::handleReadyRead() {
+    
     QByteArray inData;
-    std::cout << "yo" << std::endl;
+    
     int inBytes = port->bytesAvailable();
     int tempBytes = tempData.length();
     
@@ -99,6 +100,18 @@ void SerialPort::handleReadyRead() //semitested readyread will fail to handle if
 }
 */
 
+char* SerialPort::QByteToArray(QByteArray inArray)
+{
+int size = inArray.size();
+char *outData = new char(size);
+memcpy(outData, inArray.data(), size);
+return outData;
+}
+
+void SerialPort::setGui(Gui* ptr){
+    GUI = ptr;
+}
+
 void SerialPort::handleError(QSerialPort::SerialPortError serialPortError)
 {
     if (serialPortError == QSerialPort::ReadError) {
@@ -108,10 +121,9 @@ void SerialPort::handleError(QSerialPort::SerialPortError serialPortError)
 }
 
 void SerialPort::handleData(QByteArray inData){
-    QString text = inData;
-    std::string temp = text.toStdString();
-    int test = temp.at(0);
-        std::cout << test << temp << std::endl;
-    return;
-    
+    if(inData[1] == 'M'){
+        char* data = QByteToArray(inData);
+        GUI->insertRow(data);
+        delete data;
+    }
 }

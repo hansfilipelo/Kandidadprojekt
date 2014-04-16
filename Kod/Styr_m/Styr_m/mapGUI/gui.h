@@ -28,8 +28,8 @@ public:
     void setupPlots();
     void updateSensorValues(int value1, int value2, int value3, int value4, int value5, int value6);
     void updatePlots();
-    void updateMap(char inMap[10][17]);
-    void insertRow(char inArray[25], char inMap[10][17]);
+    void updateMap();
+    void insertRow(char inArray[25]);
     int startPort();
     int connectStatus;
     void labelSet(QString);

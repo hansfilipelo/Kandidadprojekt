@@ -13,8 +13,10 @@
 #include <QTimer>
 #include <QByteArray>
 #include <QObject>
+#include "../../Styr_m/mapGUI/gui.h"
 
 QT_USE_NAMESPACE
+class Gui;
 
 
 class SerialPort : public QObject
@@ -26,6 +28,7 @@ public:
     ~SerialPort();
     void sendArray(const char data[25]);
     QSerialPort *port;
+    void setGui(Gui*);
     
 private slots:
     void handleReadyRead();
@@ -34,6 +37,8 @@ private slots:
 
 private:
     
+    Gui* GUI;
+    char* QByteToArray(QByteArray);
     QByteArray  m_readData;
     QTextStream m_standardOutput;
     QByteArray tempData;
