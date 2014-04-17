@@ -27,6 +27,7 @@ class Slave
 	void SPI_Send();
 	void SPI_Interupt();
 	bool SPI_RecievedData();
+	bool slaveSend = false;
 	
 	// Data arrives in order, datalength (data.length + codeword + type), codeword, type, data.
 	unsigned char inDataArray[25]; 
