@@ -18,6 +18,7 @@ gyro-sensor-styr//  fix 1       //  G   // 'DNC'// 'DNC'
 RFID            //  fix 1       //  R   // 'DNC'// 'DNC'
 
 Kartkolumn      //  fix 19      //  M   //  COL // CHARS
+requestCol	//  fix 2	//  m	//  COL // ’DNC’
 
 Man/Auto	// fix 1	// a/q	// ’DNC’
 

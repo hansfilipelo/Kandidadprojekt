@@ -23,6 +23,7 @@ class Gui : public QMainWindow
     Q_OBJECT
 
 public:
+    void giveValues();
     explicit Gui(QWidget *parent = 0);
     ~Gui();
     void setupPlots();
@@ -33,6 +34,7 @@ public:
     int startPort();
     int connectStatus;
     void labelSet(QString);
+    char mapArea[32][25];
 
 private slots:
     void on_speedSlider_valueChanged(int value);
@@ -70,6 +72,7 @@ private slots:
     void on_fetchButton_pressed();
 
 private:
+    int val = 0;
     Ui::Gui *ui;
     QVector<int> sensorVector1;
     QVector<int> sensorVector2;
@@ -83,6 +86,7 @@ private:
     QGraphicsScene* scene = new QGraphicsScene();
     Order* bluetooth;
     SerialPort* serPort;
+
     int speedMultiplier;
     //testvariabler
     char map[10][17]={{'U','U','U','U','U','U','U','F','U','E','E','R','E','E','E','E','U'},
@@ -97,5 +101,7 @@ private:
                       {'U','U','U','U','U','U','U','F','U','E','E','R','E','E','E','E','U'}};
     char testArray[25] = {24,'M',9,'F','F','F','F','F','F','F','F','F','F','F','F','F','F','F','F','F',0,0,0,0,0};
 };
+
+
 
 #endif // UI_H

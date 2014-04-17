@@ -77,7 +77,7 @@ void SerialPort::handleReadyRead() {
 char* SerialPort::QByteToArray(QByteArray inArray)
 {
     int size = inArray.size();
-    char *outData = new char(size);
+    char *outData = new char[size];
     memcpy(outData, inArray.data(), size);
     return outData;
 }
@@ -105,13 +105,13 @@ void SerialPort::handleError(QSerialPort::SerialPortError serialPortError)
 
 void SerialPort::handleData(QByteArray inData){
     if(inData[1] == 'M'){
-        char* data = QByteToArray(inData);
-        GUI->insertRow(data);
-        delete data;
-        if((int)inData[2] == 31){
-            GUI->updateMap();
-        }
+        int row = (int)QByteToArray(inData)[2];
+        std::cout << row << std::endl;
+        memcpy(GUI->mapArea[row],QByteToArray(inData),25);
+        return;
     }
+}
+    /*
     //sensor 0-9      //  fix 5       //  S   //  0-9 //  [100tal, 10tal, 1tal]
     if(inData[1] == 'S'){
         switch((int)inData[2]){
@@ -139,3 +139,4 @@ void SerialPort::handleData(QByteArray inData){
     }
 
 }
+*/

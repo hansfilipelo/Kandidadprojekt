@@ -33,6 +33,7 @@ void Gui::labelSet(QString text){
     ui->label->setText(text);
 }
 
+
 int Gui::startPort(){
 
         QTextStream standardOutput(stdout);
@@ -42,12 +43,10 @@ int Gui::startPort(){
         QString serialPortName = "FireFly-AA63-SPP";
         serialPort->setPortName(serialPortName);
 
-           if (!serialPort->open(QIODevice::ReadWrite)) {
-               standardOutput << QObject::tr("Failed to open port %1, error: %2").arg(serialPortName).arg(serialPort->errorString()) << endl;
-               return 1;
-           }
-           //else {ui->label->setText("Connected.");
-         //  }
+        if (!serialPort->open(QIODevice::ReadWrite)) {
+            standardOutput << QObject::tr("Failed to open port %1, error: %2").arg(serialPortName).arg(serialPort->errorString()) << endl;
+            return 1;
+        }
 
         int serialPortBaudRate = 115200; // kanske inte fungerar just nu
         if (!serialPort->setBaudRate(serialPortBaudRate)) {
@@ -96,9 +95,6 @@ void Gui::on_speedSlider_valueChanged(int value)
 {
    QString integer = QString::number(value);
    ui->speedPercent->setText(integer);
-
-
-   //Bluetooth->sendSpeed(value)
 }
 
 
@@ -153,6 +149,11 @@ void Gui::setupPlots(){
     ui->sensorPlot6->graph(0)->setPen(QPen(Qt::blue));
     ui->sensorPlot6->graph(0)->setLineStyle(QCPGraph::lsNone);
     ui->sensorPlot6->graph(0)->setScatterStyle(QCPScatterStyle::ssDisc);
+}
+
+void Gui::giveValues(){
+    val = val +1;
+    updateSensorValues(val,val,val,val,val,val);
 }
 
 void Gui::updateSensorValues(int value1, int value2, int value3, int value4, int value5, int value6){
