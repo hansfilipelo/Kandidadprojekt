@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>6.1</ProjectVersion>
     <ToolchainName>com.Atmel.AVRGCC8.CPP</ToolchainName>
-    <ProjectGuid>{4fce115a-460f-49f7-a375-a162a41bb1eb}</ProjectGuid>
+    <ProjectGuid>{5cbba778-1611-4971-a2cb-41c2062306aa}</ProjectGuid>
     <avrdevice>ATmega1284P</avrdevice>
     <avrdeviceseries>none</avrdeviceseries>
     <OutputType>Executable</OutputType>
@@ -12,9 +12,9 @@
     <OutputFileName>$(MSBuildProjectName)</OutputFileName>
     <OutputFileExtension>.elf</OutputFileExtension>
     <OutputDirectory>$(MSBuildProjectDirectory)\$(Configuration)</OutputDirectory>
-    <AssemblyName>BlueTooth2</AssemblyName>
-    <Name>BlueTooth2</Name>
-    <RootNamespace>BlueTooth2</RootNamespace>
+    <AssemblyName>master</AssemblyName>
+    <Name>master</Name>
+    <RootNamespace>master</RootNamespace>
     <ToolchainFlavour>Native</ToolchainFlavour>
     <KeepTimersRunning>true</KeepTimersRunning>
     <OverrideVtor>false</OverrideVtor>
@@ -47,10 +47,22 @@
         <InterfaceName>JTAG</InterfaceName>
       </ToolOptions>
       <ToolType>com.atmel.avrdbg.tool.jtagice3plus</ToolType>
-      <ToolNumber>J30200012584</ToolNumber>
+      <ToolNumber>J30200012872</ToolNumber>
       <ToolName>JTAGICE3</ToolName>
     </com_atmel_avrdbg_tool_jtagice3plus>
     <avrtoolinterface>JTAG</avrtoolinterface>
+    <com_atmel_avrdbg_tool_simulator>
+      <ToolOptions xmlns="">
+        <InterfaceProperties>
+          <JtagEnableExtResetOnStartSession>false</JtagEnableExtResetOnStartSession>
+        </InterfaceProperties>
+        <InterfaceName>JTAG</InterfaceName>
+      </ToolOptions>
+      <ToolType xmlns="">com.atmel.avrdbg.tool.simulator</ToolType>
+      <ToolNumber xmlns="">
+      </ToolNumber>
+      <ToolName xmlns="">Simulator</ToolName>
+    </com_atmel_avrdbg_tool_simulator>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <ToolchainSettings>
@@ -134,7 +146,39 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="BlueTooth2.cpp">
+    <Compile Include="..\..\..\Styr_m\Styr_m\Abstraction.cpp">
+      <SubType>compile</SubType>
+      <Link>Abstraction.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\Styr_m\Styr_m\Abstraction.h">
+      <SubType>compile</SubType>
+      <Link>Abstraction.h</Link>
+    </Compile>
+    <Compile Include="bluetooth.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="bluetooth.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="lcd.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="lcd.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="master.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="masterMap.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <None Include="masterMap.h">
+      <SubType>compile</SubType>
+    </None>
+    <Compile Include="spi.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="spi.h">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>
