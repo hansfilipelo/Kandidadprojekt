@@ -69,6 +69,8 @@ private slots:
 
     void on_fetchButton_pressed();
 
+    void on_setParameterButton_pressed();
+
 private:
     Ui::Gui *ui;
     QVector<int> sensorVector1;
