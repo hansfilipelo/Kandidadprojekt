@@ -71,6 +71,8 @@ private slots:
 
     void on_fetchButton_pressed();
 
+    void on_setParameterButton_pressed();
+
 private:
     int val = 0;
     Ui::Gui *ui;

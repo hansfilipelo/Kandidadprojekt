@@ -61,7 +61,7 @@ void Lcd::SetData(unsigned char var){
 	else{
 		PORTD &= ~(1<<PORTD5);
 	}
-
+    
 	shift = var >>4;
 	shift = shift & 0x01;
 	if(shift == 0x01){
@@ -89,7 +89,7 @@ void Lcd::SetData(unsigned char var){
 	else{
 		PORTC &= ~(1<<PORTC6);
 	}
-
+    
 	shift = var >>7;
 	shift = shift & 0x01;
 	if(shift == 0x01){
@@ -107,7 +107,7 @@ void Lcd::init(){
 	PORTA |= (1<<PORTA7); // enable till 1
     
 	SetData(0x38);
-	 //Function set: 2 Line, 8-bit, 5x8 dots
+    //Function set: 2 Line, 8-bit, 5x8 dots
 	PORTA &= ~(1<<PORTA5)|(1<<PORTA6);
 	PORTA |= (1<<PORTA7); //enable
 	PORTA &= ~(1<<PORTA7); //disable
@@ -133,9 +133,8 @@ void Lcd::init(){
 	PORTA |= (1<<PORTA7); //enable
 	_delay_ms(100);
 }
-
-void Lcd::command(unsigned char var) // för att uföra olika kommandon
-{
+// för att uföra olika kommandon
+void Lcd::command(unsigned char var){
 	SetData(var);
 	PORTA &= ~(1<<PORTA5)|(1<<PORTA6);
 	PORTA |= (1<<PORTA7); //enable
@@ -143,8 +142,7 @@ void Lcd::command(unsigned char var) // för att uföra olika kommandon
 	//LCD_busy(); //Wait for LCD to process the command
 }
 
-void Lcd::senddata(unsigned char var)
-{
+void Lcd::senddata(unsigned char var){
 	SetData(var); //Function set: 2 Line, 8-bit, 5x7 dots
 	
 	PORTA &= ~(1<<PORTA6);
@@ -155,57 +153,71 @@ void Lcd::senddata(unsigned char var)
 }
 
 void Lcd::draw(unsigned char location, unsigned char sign){
-	_delay_ms(1);
-	command(location);
-	_delay_ms(1);
-	senddata(sign);
+	if(ready() && moveToggle){
+        command(location);
+        moveToggle = 0;
+	}
+	if(ready() && (!moveToggle)){
+        senddata(sign);
+        moveToggle = 1;
+        drawSucceded = true;
+	}
+}
+
+void Lcd::firstDraw(){
+    //DŒligt med delayer bšr endast gšas vid initiering.
+    _delay_us(40);
+    command(location);
+    _delay_us(40);
+    senddata(sign);
 }
 
 /*
-*Skriver ut namnen på sensorerna
-*	Bit 1
-*	8->rad1
-*	c->rad2
-*	9->rad3
-*	d->rad4
-*
-*	Bit 2 bestämmer vart på raden (0->f)
-*/
+ *Skriver ut namnen på sensorerna
+ *	Bit 1
+ *	8->rad1
+ *	c->rad2
+ *	9->rad3
+ *	d->rad4
+ *
+ *	Bit 2 bestämmer vart på raden (0->f)
+ */
 void Lcd::drawSensorNames(){
-	//rad 1
+	
+    //rad 1
 	//prints S1
-	draw(0x80,0x53);
-	draw(0x81,0x31);
+	firstDraw(0x80,0x53);
+	firstDraw(0x81,0x31);
 	//prints L1
-	draw(0x87,0x4c);
-	draw(0x88,0x31);
+	firstDraw(0x87,0x4c);
+	firstDraw(0x88,0x31);
 	//prints KP
-	draw(0x8d,0x4b);
-	draw(0x8e,0x50);
+	firstDraw(0x8d,0x4b);
+	firstDraw(0x8e,0x50);
 	
 	//rad 2
 	//prints S2
-	draw(0xc0,0x53);
-	draw(0xc1,0x32);
+	firstDraw(0xc0,0x53);
+	firstDraw(0xc1,0x32);
 	//prints L2
-	draw(0xc7,0x4c);
-	draw(0xc8,0x32);
+	firstDraw(0xc7,0x4c);
+	firstDraw(0xc8,0x32);
 	//prints KD
-	draw(0xcd,0x4b);
-	draw(0xce,0x44);
+	firstDraw(0xcd,0x4b);
+	firstDraw(0xce,0x44);
 	
 	//rad 3
 	//prints S3
-	draw(0x90,0x53);
-	draw(0x91,0x33);
+	firstDraw(0x90,0x53);
+	firstDraw(0x91,0x33);
 	//prints M1
-	draw(0x97,0x4d);
-	draw(0x98,0x31);
-	
+	firstDraw(0x97,0x4d);
+	firstDraw(0x98,0x31);
+    
 	//rad 4
 	//prints S4
-	draw(0xd0,0x53);
-	draw(0xd1,0x34);
+	firstDraw(0xd0,0x53);
+	firstDraw(0xd1,0x34);
 }
 
 void Lcd::updateS1(char data1, char data2, char data3){
@@ -277,3 +289,102 @@ void Lcd::updateM1(char data1, char data2, char data3){
 	draw(0x9b,dm);
 	draw(0x9c,cm);
 }
+
+void Lcd::update(){
+    
+    //funktionen Šr inte klar Šn.
+    
+    int row = getRow();
+    int col = getCol();
+    
+    int value = 0x30 + (int)(writeBuffer[counter][row]);
+    
+    
+    if(counter=){
+        position = 0x80;
+    }
+    else if(16<=counter<33){
+        position = 0xc0;
+        row=1;
+    }
+    else if(33<=counter<49) {
+        position = 0x90;
+        row=2;
+    }
+    else{
+        position = 0xd0;
+        row=3;
+    }
+    
+    draw(position,value);
+    
+    if (drawSucceded) {
+        counter++;
+    }
+}
+
+void Lcd::insertSensorValuesToBuffer(int sensor, char m, char dm, char cm){
+    //places sensorvalues in the correct position in the buffer
+    int row = getRow(sensor);
+    int col = getCol(sensor);
+    
+    writeBuffer[col][row] = m;
+    writeBuffer[col+1][row] = dm
+    writeBuffer[col+2][row] = cm;
+}
+
+
+int Lcd::getCol(int sensor){
+    int col = 0;
+    if((sensor =< 1) or (sensor == 6)){
+        col = 10
+    }
+    else{
+        col = 3;
+    }
+    return col;
+}
+
+int Lcd::getRow(int sensor){
+    int row;
+    if((sensor == 0) or (sensor == 2)){
+        row = 1;
+    }
+    else if((sensor == 1) or (sensor == 3)){
+        row = 2;
+    }
+    else if((sensor == 4) or (sensor == 6)){
+        row = 3;
+    }
+    else{
+        row = 4;
+    }
+    return row;
+}
+
+
+bool Lcd::ready(){
+    PORTA |=(1<<PORTA7);
+    asm("nop");
+    asm("nop");
+    asm("nop");
+    asm("nop");
+    PORTA &=~(1<<PORTA7);
+    asm("nop");
+    asm("nop");
+    asm("nop");
+    asm("nop");
+    PORTA |=(1<<PORTA7);
+    PORTA |= (1<<PORTA6); //enable
+    PORTA &= ~(1<<PORTA5);
+    bool temp = PINC & 0x80;
+    if(!temp){
+        PORTA &= ~(1<<PORTA6);
+        return true;
+    }
+    else{
+        PORTA &= ~(1<<PORTA6);
+        return false;
+    }
+}
+

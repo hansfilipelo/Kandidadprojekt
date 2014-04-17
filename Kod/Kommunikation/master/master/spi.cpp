@@ -85,6 +85,8 @@ void Spi::receiveArray(unsigned int slave){
 	}
 }
 
+
+
 unsigned char* Spi::getInDataArray()
 {
 	unsigned char* outPtr = new unsigned char;
@@ -94,4 +96,13 @@ unsigned char* Spi::getInDataArray()
 		outPtr[i] = inDataArray[i];
 	}
 	return outPtr;
+}
+
+void Spi::requestRow( unsigned int row)
+{
+	outDataArray[0] = 2;
+	outDataArray[1] = 'm';
+	outDataArray[2] =  row;
+	
+	sendArray(1);	
 }

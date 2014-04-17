@@ -160,12 +160,12 @@
     <Compile Include="bluetooth.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="lcd.cpp">
+    <None Include="lcd.cpp">
       <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="lcd.h">
+    </None>
+    <None Include="lcd.h">
       <SubType>compile</SubType>
-    </Compile>
+    </None>
     <Compile Include="master.cpp">
       <SubType>compile</SubType>
     </Compile>

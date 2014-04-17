@@ -340,3 +340,8 @@ void Gui::on_fetchButton_pressed()
         bluetooth->fetchMap();
     }
 }
+
+void Gui::on_setParameterButton_pressed()
+{
+   // bluetooth->setControlParameters();
+}

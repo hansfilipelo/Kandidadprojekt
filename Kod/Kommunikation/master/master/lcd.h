@@ -20,14 +20,20 @@ public:
     Lcd();
     char shift = 0x00;
 
-    void SetData(unsigned char var);
+    void SetData(unsigned char);
     void init();
-    void command(unsigned char var);
-    void senddata(unsigned char var);
-    void draw(unsigned char location, unsigned char sign);
+    void command(unsigned char);
+    void senddata(unsigned char);
+    void draw(unsigned char, unsigned char);
     void reset();
     void drawSensorNames();
+    void firstDraw();
+    void insertSensorValuesToBuffer(int, char, char, char);
+    bool drawSucceded;
+    int getCol(int);
+    int getRow(int);
 	
+	void update();
 	void updateS1(char,char,char);
 	void updateS2(char,char,char);
 	void updateS3(char,char,char);
@@ -35,8 +41,18 @@ public:
 	void updateL1(char,char,char);
 	void updateL2(char,char,char);
 	void updateM1(char,char,char);
-	void updateKP(int value);
-	void updateKD(int value);		
+	void updateKP(int);
+	void updateKD(int);
+
+
+
+private:
+    bool ready();
+	bool moveToggle = true;
+    
+    unsigned int writeBuffer[16][4];
+    unsigned int counter = 0;
+    
 };
 
 #endif

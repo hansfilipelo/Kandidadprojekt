@@ -37,16 +37,19 @@ ISR(SPI_STC_vect){
 	SPDR = steerModuleSlave.outDataArray[steerModuleSlave.position];
 	steerModuleSlave.inDataArray[steerModuleSlave.position - 1] = SPDR;
 	
-	if ((steerModuleSlave.position == (steerModuleSlave.inDataArray[0]+1))&(steerModuleSlave.inDataArray[0]!= 0)){
+	if ((steerModuleSlave.position == (steerModuleSlave.inDataArray[0]+1))&&(steerModuleSlave.inDataArray[0]!= 0)){
 		steerModuleSlave.position = 0;
 		PORTC |= (1<<PORTC0);
 		PORTC &=~(1<<PORTC0);
+	}
+	if((steerModuleSlave.slaveSend && (steerModuleSlave.position == steerModuleSlave.outDataArray[0]+1))){ //When slave sends, position is not set to zero. 
+		steerModuleSlave.slaveSend = false;
+		steerModuleSlave.position = 0;
 	}
 }
 
 ISR(PCINT2_vect){
 	abstractionObject->handleData();
-	
 }
 
 // ---------------------------------

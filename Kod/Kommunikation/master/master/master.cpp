@@ -23,7 +23,7 @@
 #include <string.h>
 #include "bluetooth.h"
 #include "spi.h"
-#include "lcd.h"
+//#include "lcd.h"
 
 bool toggle = false;
 bool ReceiveFromSteer = false;
@@ -32,26 +32,47 @@ bool ReceiveFromSensor = false;
 Map buffer;
 Bluetooth Firefly;
 Spi Bus(&Firefly,&buffer);
+//Lcd Display;
 
 /*
 *	Handeling data from modules
 */
 
+void myCopy25(unsigned char* to, const unsigned char* from){
+	for(unsigned int i = 0; i < 25; i++){
+	to[i] = from[i];	
+	}
+}
+
+
 void handleDataFromSteer(){
+	
+	
 	ReceiveFromSteer=false;
-	//memcpy(Firefly.outDataArray, Bus.inDataArray, 25);
-	asm("");
+	memcpy(Firefly.outDataArray, Bus.inDataArray,25);
+	
+	
+	
 	if(Firefly.outDataArray[1]=='M'){
-		buffer.setColAsChar((char*)Bus.inDataArray);
-		//int blowMe = buffer.setColAsChar();
-		if((int)Firefly.outDataArray[2]==31){
+		
+		memcpy(buffer.mapArea[Firefly.outDataArray[2]],Firefly.outDataArray,25);
+		
+		if((int)Firefly.mapNumber==31){
 			Firefly.sendMap();
+			Firefly.getMap =false;
+			Firefly.mapNumber = 0;
+		}else{
+			Firefly.mapNumber++;
+			Firefly.getMap =true;
 		}
+		
 	}
 }	
 
 void handleDataFromSensor(){
-	ReceiveFromSensor=false;	
+	ReceiveFromSensor=false;
+    //inserts data from one sensor into the buffer
+    //Display.insertSensorValuesToBuffer(inDataArray[2],inDataArray[3],inDataArray[4],inDataArray[5]);
 }
 
 #if DEBUG == 0
@@ -100,13 +121,7 @@ ISR(INT0_vect){
 int main(void)
 {
     Firefly.setPointer(&Bus,&buffer);
-	Lcd Display;
-	
-	Display.drawSensorNames();
-    Display.updateS1(1,9,1);
-
-    
-
+	//Display.drawSensorNames();
     
 	sei();
     
@@ -119,5 +134,11 @@ int main(void)
 		if(ReceiveFromSensor){
 			handleDataFromSensor();
 		}
+		if(Firefly.getMap){
+		Bus.requestRow(Firefly.mapNumber);
+		Firefly.getMap = false; 
+		}
+			
+		//Display.update();
 	}	
 }

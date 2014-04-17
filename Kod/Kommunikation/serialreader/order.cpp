@@ -67,3 +67,7 @@ void Order::fetchMap(){
     char data[25] = {1,'F','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z'};
     serport->sendArray(data);
 }
+
+void Order::setControlParameters(double Kp, double Kd, int Ref){
+
+}

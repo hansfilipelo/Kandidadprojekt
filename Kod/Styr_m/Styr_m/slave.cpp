@@ -40,7 +40,7 @@ void Slave::SPI_Send(){
 	
 #if DEBUG == 0
     SPDR = outDataArray[0];
-    
+    slaveSend= true;
 	PORTB |= (1<<PORTB2);	//interrupt to master
 	PORTB &= ~(1<<PORTB2);	//clear interrupt to master
 #endif

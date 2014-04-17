@@ -24,7 +24,8 @@ public:
 //flyttade från protected
 	unsigned char inData[25];
     unsigned char outData[25];
-	volatile bool sendMapNow = false;	   
+	volatile bool sendMapNow = false;
+	int row = 0; 	   
 
 protected:
     int dataLength;
