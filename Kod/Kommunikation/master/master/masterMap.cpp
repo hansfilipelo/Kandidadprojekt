@@ -5,7 +5,7 @@ using namespace std;
 // ------------------------------------------
 
 // ------------------------------------------
-
+/*
 char* Map::getPos(int x, int y){
     return mapArea[x][y];
 }
@@ -16,10 +16,8 @@ char* Map::getPos(int x, int y){
 // --------- SET COL ------------
 void Map::setColAsChar(char* inCol)
 {
-	int col = inCol[2];
-	for (int row = 0; row < 25; row++) {
-		setSection(col,row,&inCol[row]);
-	}
+	char* ptr = mapArea[inCol[2]][1];
+	memcpy(ptr, inCol,25);
 }
 
 // --------- SET POS ------------
@@ -29,7 +27,7 @@ void Map::setSection(int xPos, int yPos, char* inSection){
 }
 
 // --------- DEBUG --------------
-
+*/
 #if DEBUG == 1
 void Map::printMap(){    
     for (int it = 0; it < 17; it++) {
@@ -41,7 +39,7 @@ void Map::printMap(){
 }
 
 #endif
-
+/*
 char* Map::getColAsChar(int col)
 {
 	// Char sent to computer
@@ -55,3 +53,4 @@ char* Map::getColAsChar(int col)
 	return output;
 	
 }
+*/
