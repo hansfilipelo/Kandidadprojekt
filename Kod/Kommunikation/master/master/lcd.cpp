@@ -291,6 +291,8 @@ void Lcd::updateM1(char data1, char data2, char data3){
 
 void Lcd::update(){
     
+    //funktionen Šr inte klar Šn.
+    
     int row = getRow();
     int col = getCol();
     
