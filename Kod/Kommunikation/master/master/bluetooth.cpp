@@ -79,10 +79,10 @@ volatile void Bluetooth::handle(){
 	
 	if(inDataArray[1] == 'f' || inDataArray[1] == 'r'|| inDataArray[1] == 'b' || inDataArray[1] == 'h' || inDataArray[1] == 'F'){
 		asm("");
-		outDataArray[0] = pcHandle[0];
-		outDataArray[1] = pcHandle[1];
-		outDataArray[2] = pcHandle[2];
-		outDataArray[3] = pcHandle[3];
+		spiPointer->outDataArray[0] = pcHandle[0];
+		spiPointer->outDataArray[1] = pcHandle[1];
+		spiPointer->outDataArray[2] = pcHandle[2];
+		spiPointer->outDataArray[3] = pcHandle[3];
 		asm("");
 		spiPointer->sendArray(1); //send data to module 1 (steer)
 		asm("");

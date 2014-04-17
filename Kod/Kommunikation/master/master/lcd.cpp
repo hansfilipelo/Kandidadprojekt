@@ -164,13 +164,14 @@ void Lcd::draw(unsigned char location, unsigned char sign){
 	}
 }
 
-void Lcd::firstDraw{
+void Lcd::firstDraw(){
     //DŒligt med delayer bšr endast gšas vid initiering.
     _delay_us(40);
     command(location);
     _delay_us(40);
     senddata(sign);
 }
+
 /*
  *Skriver ut namnen på sensorerna
  *	Bit 1

@@ -194,7 +194,7 @@ int main(void)
 		sensormodul.outDataArray[3] = (sensordata[savepos]/100); //plats 4
 		sensormodul.outDataArray[4] = ((sensordata[savepos]/10) %10); // plats 5
 		sensormodul.outDataArray[5] = (sensordata[savepos] % 10); // plats 6
-		sensormodul.SPI_Send();
+		//sensormodul.SPI_Send();
 
 		if(ADMUX == 0x26){
 			ADMUX = 0x20;
