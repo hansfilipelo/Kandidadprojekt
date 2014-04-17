@@ -61,7 +61,7 @@ void Lcd::SetData(unsigned char var){
 	else{
 		PORTD &= ~(1<<PORTD5);
 	}
-
+    
 	shift = var >>4;
 	shift = shift & 0x01;
 	if(shift == 0x01){
@@ -89,7 +89,7 @@ void Lcd::SetData(unsigned char var){
 	else{
 		PORTC &= ~(1<<PORTC6);
 	}
-
+    
 	shift = var >>7;
 	shift = shift & 0x01;
 	if(shift == 0x01){
@@ -107,7 +107,7 @@ void Lcd::init(){
 	PORTA |= (1<<PORTA7); // enable till 1
     
 	SetData(0x38);
-	 //Function set: 2 Line, 8-bit, 5x8 dots
+    //Function set: 2 Line, 8-bit, 5x8 dots
 	PORTA &= ~(1<<PORTA5)|(1<<PORTA6);
 	PORTA |= (1<<PORTA7); //enable
 	PORTA &= ~(1<<PORTA7); //disable
@@ -133,7 +133,7 @@ void Lcd::init(){
 	PORTA |= (1<<PORTA7); //enable
 	_delay_ms(100);
 }
- // för att uföra olika kommandon
+// för att uföra olika kommandon
 void Lcd::command(unsigned char var){
 	SetData(var);
 	PORTA &= ~(1<<PORTA5)|(1<<PORTA6);
@@ -154,12 +154,13 @@ void Lcd::senddata(unsigned char var){
 
 void Lcd::draw(unsigned char location, unsigned char sign){
 	if(ready() && moveToggle){
-	command(location);
-	moveToggle = 0;
+        command(location);
+        moveToggle = 0;
 	}
 	if(ready() && (!moveToggle)){
-	senddata(sign);
-	moveToggle = 1;
+        senddata(sign);
+        moveToggle = 1;
+        drawSucceded = true;
 	}
 }
 
@@ -289,13 +290,14 @@ void Lcd::updateM1(char data1, char data2, char data3){
 }
 
 void Lcd::update(){
-    int position;
-    int row = 0;
+    
+    int row = getRow();
+    int col = getCol();
+    
     int value = 0x30 + (int)(writeBuffer[counter][row]);
     
     
-    
-    if(counter<16){
+    if(counter=){
         position = 0x80;
     }
     else if(16<=counter<33){
@@ -312,73 +314,74 @@ void Lcd::update(){
     }
     
     draw(position,value);
-    counter++;
+    
+    if (drawSucceded) {
+        counter++;
+    }
 }
 
 void Lcd::insertSensorValuesToBuffer(int sensor, char m, char dm, char cm){
-    int row = 0;
-    int col = 0;
     //places sensorvalues in the correct position in the buffer
-    switch (sensor)
-	{
-		case 0 :
-            col=10;
-            row=1;
-            break;
-		case 1 :
-            col=10;
-            row=2;
-            break;
-		case 2 :
-            col=3;
-            row=1;
-            break;
-		case 3 :
-            col=3;
-            row=2;
-            break;
-		case 4 :
-            col=3;
-            row=3;
-            break;
-		case 5 :
-            col=3;
-            row=4;
-            break;
-		case 6 :
-            col=10;
-            row=3;
-            break;
-		default : //
-            break;
-	}
+    int row = getRow(sensor);
+    int col = getCol(sensor);
+    
     writeBuffer[col][row] = m;
     writeBuffer[col+1][row] = dm
     writeBuffer[col+2][row] = cm;
 }
 
+
+int Lcd::getCol(int sensor){
+    int col = 0;
+    if((sensor =< 1) or (sensor == 6)){
+        col = 10
+    }
+    else{
+        col = 3;
+    }
+    return col;
+}
+
+int Lcd::getRow(int sensor){
+    int row;
+    if((sensor == 0) or (sensor == 2)){
+        row = 1;
+    }
+    else if((sensor == 1) or (sensor == 3)){
+        row = 2;
+    }
+    else if((sensor == 4) or (sensor == 6)){
+        row = 3;
+    }
+    else{
+        row = 4;
+    }
+    return row;
+}
+
+
 bool Lcd::ready(){
-	PORTA |=(1<<PORTA7);
-	asm("nop");
-	asm("nop");
-	asm("nop");
-	asm("nop");
-	PORTA &=~(1<<PORTA7);
-	asm("nop");
-	asm("nop");
-	asm("nop");
-	asm("nop");
-	PORTA |=(1<<PORTA7);
-	PORTA |= (1<<PORTA6); //enable
-	PORTA &= ~(1<<PORTA5);
-	bool temp = PINC & 0x80; 
-	if(!temp){
-		PORTA &= ~(1<<PORTA6);
-		return true;
-	}
-	else{
-		PORTA &= ~(1<<PORTA6);
-		return false;
-	}
+    PORTA |=(1<<PORTA7);
+    asm("nop");
+    asm("nop");
+    asm("nop");
+    asm("nop");
+    PORTA &=~(1<<PORTA7);
+    asm("nop");
+    asm("nop");
+    asm("nop");
+    asm("nop");
+    PORTA |=(1<<PORTA7);
+    PORTA |= (1<<PORTA6); //enable
+    PORTA &= ~(1<<PORTA5);
+    bool temp = PINC & 0x80;
+    if(!temp){
+        PORTA &= ~(1<<PORTA6);
+        return true;
+    }
+    else{
+        PORTA &= ~(1<<PORTA6);
+        return false;
+    }
 }
 

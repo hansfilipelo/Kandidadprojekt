@@ -29,7 +29,9 @@ public:
     void drawSensorNames();
     void firstDraw();
     void insertSensorValuesToBuffer(int, char, char, char);
-    
+    bool drawSucceded;
+    int getCol(int);
+    int getRow(int);
 	
 	void update();
 	void updateS1(char,char,char);
