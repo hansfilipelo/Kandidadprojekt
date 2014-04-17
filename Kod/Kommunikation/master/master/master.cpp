@@ -53,10 +53,8 @@ void handleDataFromSteer(){
 
 void handleDataFromSensor(){
 	ReceiveFromSensor=false;
-	
-	if(Display.bufferStatus!=Bus.inDataArray[2]){
-	memcpy(Display.getBuffer(Bus.inDataArray[2]),Bus.inDataArray,5);
-	}
+    //inserts data from one sensor into the buffer
+    Display.insertSensorValuesToBuffer(inDataArray[2],inDataArray[3],inDataArray[4],inDataArray[5]);
 }
 
 #if DEBUG == 0
@@ -118,6 +116,6 @@ int main(void)
 		if(ReceiveFromSensor){
 			handleDataFromSensor();
 		}
-		Display.draw(0x53,0x80);
+		Display.update();
 	}	
 }

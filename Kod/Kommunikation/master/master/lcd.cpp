@@ -133,9 +133,8 @@ void Lcd::init(){
 	PORTA |= (1<<PORTA7); //enable
 	_delay_ms(100);
 }
-
-void Lcd::command(unsigned char var) // för att uföra olika kommandon
-{
+ // för att uföra olika kommandon
+void Lcd::command(unsigned char var){
 	SetData(var);
 	PORTA &= ~(1<<PORTA5)|(1<<PORTA6);
 	PORTA |= (1<<PORTA7); //enable
@@ -143,8 +142,7 @@ void Lcd::command(unsigned char var) // för att uföra olika kommandon
 	//LCD_busy(); //Wait for LCD to process the command
 }
 
-void Lcd::senddata(unsigned char var)
-{
+void Lcd::senddata(unsigned char var){
 	SetData(var); //Function set: 2 Line, 8-bit, 5x7 dots
 	
 	PORTA &= ~(1<<PORTA6);
@@ -155,8 +153,6 @@ void Lcd::senddata(unsigned char var)
 }
 
 void Lcd::draw(unsigned char location, unsigned char sign){
-	location = 0x80;
-	sign = 0x53;
 	if(ready() && moveToggle){
 	command(location);
 	moveToggle = 0;
@@ -167,70 +163,59 @@ void Lcd::draw(unsigned char location, unsigned char sign){
 	}
 }
 
+void Lcd::firstDraw{
+    //DŒligt med delayer bšr endast gšas vid initiering.
+    _delay_us(40);
+    command(location);
+    _delay_us(40);
+    senddata(sign);
+}
 /*
-*Skriver ut namnen på sensorerna
-*	Bit 1
-*	8->rad1
-*	c->rad2
-*	9->rad3
-*	d->rad4
-*
-*	Bit 2 bestämmer vart på raden (0->f)
-*/
+ *Skriver ut namnen på sensorerna
+ *	Bit 1
+ *	8->rad1
+ *	c->rad2
+ *	9->rad3
+ *	d->rad4
+ *
+ *	Bit 2 bestämmer vart på raden (0->f)
+ */
 void Lcd::drawSensorNames(){
 	
-	/*writeBuffer[0]= 0x53;
-	writeBuffer[1]= 0x31;
-	writeBuffer[2]= 0x4c;
-	writeBuffer[3]= 0x31;
-	writeBuffer[4]= 0x4b;
-	writeBuffer[3]= 0x50;
-	
-	*/
-	
-	
-	
-	
-	//rad 1
+    //rad 1
 	//prints S1
-	draw(0x80,0x53);
-	draw(0x81,0x31);
+	firstDraw(0x80,0x53);
+	firstDraw(0x81,0x31);
 	//prints L1
-	draw(0x87,0x4c);
-	draw(0x88,0x31);
+	firstDraw(0x87,0x4c);
+	firstDraw(0x88,0x31);
 	//prints KP
-	draw(0x8d,0x4b);
-	draw(0x8e,0x50);
+	firstDraw(0x8d,0x4b);
+	firstDraw(0x8e,0x50);
 	
 	//rad 2
 	//prints S2
-	draw(0xc0,0x53);
-	draw(0xc1,0x32);
+	firstDraw(0xc0,0x53);
+	firstDraw(0xc1,0x32);
 	//prints L2
-	draw(0xc7,0x4c);
-	draw(0xc8,0x32);
+	firstDraw(0xc7,0x4c);
+	firstDraw(0xc8,0x32);
 	//prints KD
-	draw(0xcd,0x4b);
-	draw(0xce,0x44);
+	firstDraw(0xcd,0x4b);
+	firstDraw(0xce,0x44);
 	
 	//rad 3
 	//prints S3
-	draw(0x90,0x53);
-	draw(0x91,0x33);
+	firstDraw(0x90,0x53);
+	firstDraw(0x91,0x33);
 	//prints M1
-	draw(0x97,0x4d);
-	draw(0x98,0x31);
-	
+	firstDraw(0x97,0x4d);
+	firstDraw(0x98,0x31);
+    
 	//rad 4
 	//prints S4
-	draw(0xd0,0x53);
-	draw(0xd1,0x34);
-}
-
-void Lcd::update(){
-	
-	updateS1(2,0,1);
-	
+	firstDraw(0xd0,0x53);
+	firstDraw(0xd1,0x34);
 }
 
 void Lcd::updateS1(char data1, char data2, char data3){
@@ -303,26 +288,73 @@ void Lcd::updateM1(char data1, char data2, char data3){
 	draw(0x9c,cm);
 }
 
-char* Lcd::getBuffer(int sensor){
-	switch (sensor)
+void Lcd::update(){
+    int position;
+    int row = 0;
+    int value = 0x30 + (int)(writeBuffer[counter][row]);
+    
+    
+    
+    if(counter<16){
+        position = 0x80;
+    }
+    else if(16<=counter<33){
+        position = 0xc0;
+        row=1;
+    }
+    else if(33<=counter<49) {
+        position = 0x90;
+        row=2;
+    }
+    else{
+        position = 0xd0;
+        row=3;
+    }
+    
+    draw(position,value);
+    counter++;
+}
+
+void Lcd::insertSensorValuesToBuffer(int sensor, char m, char dm, char cm){
+    int row = 0;
+    int col = 0;
+    //places sensorvalues in the correct position in the buffer
+    switch (sensor)
 	{
-		case 0 : return bufferL1;
-		break;
-		case 1 : return bufferL2;
-		break;
-		case 2 : return bufferS1;
-		break;
-		case 3 : return bufferS2;
-		break;
-		case 4 : return bufferS3;
-		break;
-		case 5 : return bufferS4;
-		break;
-		case 6 : return bufferM1;
-		break;
+		case 0 :
+            col=10;
+            row=1;
+            break;
+		case 1 :
+            col=10;
+            row=2;
+            break;
+		case 2 :
+            col=3;
+            row=1;
+            break;
+		case 3 :
+            col=3;
+            row=2;
+            break;
+		case 4 :
+            col=3;
+            row=3;
+            break;
+		case 5 :
+            col=3;
+            row=4;
+            break;
+		case 6 :
+            col=10;
+            row=3;
+            break;
 		default : //
-		break;
+            break;
 	}
+    writeBuffer[col][row] = m;
+    writeBuffer[col+1][row] = dm
+    writeBuffer[col+2][row] = cm;
 }
 
 bool Lcd::ready(){
@@ -347,7 +379,6 @@ bool Lcd::ready(){
 	else{
 		PORTA &= ~(1<<PORTA6);
 		return false;
-	}	
-	
+	}
 }
 
