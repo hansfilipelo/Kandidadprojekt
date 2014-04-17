@@ -29,6 +29,7 @@ public:
     void backward(int);
     void test();
     void fetchMap();
+    void setControlParameters(double, double, int);
     
 protected:
     
