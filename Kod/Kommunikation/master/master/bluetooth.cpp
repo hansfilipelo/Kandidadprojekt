@@ -77,6 +77,10 @@ volatile void Bluetooth::handle(){
 	this->Btrec = false;
 	asm("");
 	
+	if(pcHandle[0]='Z'){
+		position = 0;
+	}
+	
 	if(inDataArray[1] == 'f' || inDataArray[1] == 'r'|| inDataArray[1] == 'b' || inDataArray[1] == 'h'){
 		asm("");
 		spiPointer->outDataArray[0] = pcHandle[0];
