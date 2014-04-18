@@ -11,7 +11,6 @@
 #include <avr/interrupt.h>
 #include <math.h>
 #include "slave.h"
-#include <numeric.h>
 
 #define F_CPU 14.7456E6
 #include <util/delay.h>
@@ -107,10 +106,18 @@ void handleInDataArray(){
 	}
 }
 
+int average(volatile int* inArray){
+	long long int sum=0;
+	for(unsigned int i= 0; i < 350; i ++){
+		sum = sum + inArray[i];
+	}
+	return (int)sum/350;
+}
+
 void sendSensors(){
-    sensormodul.outDataArray[0] = 5;
+    sensormodul.outDataArray[0] = 26;
     sensormodul.outDataArray[1] = 'S';
-    sensormodul.outDataArray[2] =  savepos; //'DNC'
+    sensormodul.outDataArray[2] =  'A'; //'DNC'
     sensormodul.outDataArray[3] = (sen0/100); //plats 4
     sensormodul.outDataArray[4] = ((sen0/10) %10); // plats 5
     sensormodul.outDataArray[5] = (sen0 % 10); // plats 6
@@ -133,8 +140,8 @@ void sendSensors(){
     sensormodul.outDataArray[22] = ((sen6/10) %10); // plats 5
     sensormodul.outDataArray[23] = (sen6 % 10); // plats 6
     sensormodul.outDataArray[24] = (sen7/100); //plats 4
-    sensormodul.outDataArray[] = ((sen7/10) %10); // plats 5
-    sensormodul.outDataArray[5] = (sen7 % 10); // plats 6
+    sensormodul.outDataArray[25] = ((sen7/10) %10); // plats 5
+    sensormodul.outDataArray[26] = (sen7 % 10); // plats 6
     sensormodul.SPI_Send();
 
 }
@@ -275,14 +282,14 @@ int main(void)
 			ADMUX = ADMUX + 1;
 		}
         if(savepos == 350){
-            sen0 = std::accumulate(sensor0,sensor0+350,0)/350;
-            sen1 = std::accumulate(sensor1,sensor1+350,0)/350;
-            sen2 = std::accumulate(sensor2,sensor2+350,0)/350;
-            sen3 = std::accumulate(sensor3,sensor3+350,0)/350;
-            sen4 = std::accumulate(sensor4,sensor4+350,0)/350;
-            sen5 = std::accumulate(sensor5,sensor5+350,0)/350;
-            sen6 = std::accumulate(sensor6,sensor6+350,0)/350;
-            sen7 = std::accumulate(sensor7,sensor7+350,0)/350;
+            sen0 = average(sensor0);
+            sen1 = average(sensor1);
+            sen2 = average(sensor2);
+            sen3 = average(sensor3);
+            sen4 = average(sensor4);
+            sen5 = average(sensor5);
+            sen6 = average(sensor6);
+            sen7 = average(sensor7);
             
             sendSensors();
             
