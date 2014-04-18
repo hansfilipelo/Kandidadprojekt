@@ -11,10 +11,30 @@
 #include <avr/interrupt.h>
 #include <math.h>
 #include "slave.h"
+#include <numeric.h>
 
 #define F_CPU 14.7456E6
 #include <util/delay.h>
 
+
+
+volatile int sensor0[350];
+volatile int sensor1[350];
+volatile int sensor2[350];
+volatile int sensor3[350];
+volatile int sensor4[350];
+volatile int sensor5[350];
+volatile int sensor6[350];
+volatile int sensor7[350];
+
+volatile int sen0;
+volatile int sen1;
+volatile int sen2;
+volatile int sen3;
+volatile int sen4;
+volatile int sen5;
+volatile int sen6;
+volatile int sen7;
 
 volatile int sensordata[7]={};
 volatile int savepos = 0;		//counter for the storage array
@@ -86,6 +106,41 @@ void handleInDataArray(){
 		rightTurnConstant = hundratusen * 100000 + tiotusen * 10000 + tusen * 10000 + hundra * 100 + tio * 10 + en;
 	}
 }
+
+void sendSensors(){
+    sensormodul.outDataArray[0] = 5;
+    sensormodul.outDataArray[1] = 'S';
+    sensormodul.outDataArray[2] =  savepos; //'DNC'
+    sensormodul.outDataArray[3] = (sen0/100); //plats 4
+    sensormodul.outDataArray[4] = ((sen0/10) %10); // plats 5
+    sensormodul.outDataArray[5] = (sen0 % 10); // plats 6
+    sensormodul.outDataArray[6] = (sen1/100); //plats 4
+    sensormodul.outDataArray[7] = ((sen1/10) %10); // plats 5
+    sensormodul.outDataArray[8] = (sen1 % 10); // plats 6
+    sensormodul.outDataArray[9] = (sen2/100); //plats 4
+    sensormodul.outDataArray[10] = ((sen2/10) %10); // plats 5
+    sensormodul.outDataArray[11] = (sen2 % 10); // plats 6
+    sensormodul.outDataArray[12] = (sen3/100); //plats 4
+    sensormodul.outDataArray[13] = ((sen3/10) %10); // plats 5
+    sensormodul.outDataArray[14] = (sen3 % 10); // plats 6
+    sensormodul.outDataArray[15] = (sen4/100); //plats 4
+    sensormodul.outDataArray[16] = ((sen4/10) %10); // plats 5
+    sensormodul.outDataArray[17] = (sen4 % 10); // plats 6
+    sensormodul.outDataArray[18] = (sen5/100); //plats 4
+    sensormodul.outDataArray[19] = ((sen5/10) %10); // plats 5
+    sensormodul.outDataArray[20] = (sen5 % 10); // plats 6
+    sensormodul.outDataArray[21] = (sen6/100); //plats 4
+    sensormodul.outDataArray[22] = ((sen6/10) %10); // plats 5
+    sensormodul.outDataArray[23] = (sen6 % 10); // plats 6
+    sensormodul.outDataArray[24] = (sen7/100); //plats 4
+    sensormodul.outDataArray[] = ((sen7/10) %10); // plats 5
+    sensormodul.outDataArray[5] = (sen7 % 10); // plats 6
+    sensormodul.SPI_Send();
+
+}
+
+
+//------------------------------------INTERRUPTS---------------------------------
 
 //Extremt känslig för tillägg av kod
 ISR(SPI_STC_vect){
@@ -169,25 +224,40 @@ int main(void)
 		}
 		
 		if(ADMUX == 0x20){			//konvertering av A0
-			sensordata[savepos]	= round(45.64*pow(spanning,4)-320.2*pow(spanning,3)+830.3*pow(spanning,2)-984.9*spanning+524.4);
+			sensor0[savepos]	= round(45.64*pow(spanning,4)-320.2*pow(spanning,3)+830.3*pow(spanning,2)-984.9*spanning+524.4);
 		}
 		
 		if(ADMUX == 0x21){		//konvertering av A1
-			sensordata[savepos]	= round(1.031*pow(spanning,4)-68*pow(spanning,3)+364.8*pow(spanning,2)-683.2*spanning+492.2);
+			sensor1[savepos]	= round(1.031*pow(spanning,4)-68*pow(spanning,3)+364.8*pow(spanning,2)-683.2*spanning+492.2);
 		}
 		
 		
-		if( (ADMUX == 0x22) ||(ADMUX == 0x23) || (ADMUX ==0x24) || (ADMUX == 0x25)){	//konvertering av A2-A5 (kortdistanssensorer)
+		if( (ADMUX == 0x22)){	//konvertering av A2-A5 (kortdistanssensorer)
 			asm("");
-			sensordata[savepos]	= round(12.5*pow(spanning,4)-100.7*pow(spanning,3)+291.4*pow(spanning,2)-367.2*spanning+189.6);
+			sensor2[savepos]	= round(12.5*pow(spanning,4)-100.7*pow(spanning,3)+291.4*pow(spanning,2)-367.2*spanning+189.6);
 		}
+        if( (ADMUX == 0x23)){	//konvertering av A2-A5 (kortdistanssensorer)
+			asm("");
+			sensor3[savepos]	= round(12.5*pow(spanning,4)-100.7*pow(spanning,3)+291.4*pow(spanning,2)-367.2*spanning+189.6);
+		}
+        if( (ADMUX == 0x24)){	//konvertering av A2-A5 (kortdistanssensorer)
+			asm("");
+			sensor4[savepos]	= round(12.5*pow(spanning,4)-100.7*pow(spanning,3)+291.4*pow(spanning,2)-367.2*spanning+189.6);
+		}
+        if( (ADMUX == 0x25)){	//konvertering av A2-A5 (kortdistanssensorer)
+			asm("");
+			sensor5[savepos]	= round(12.5*pow(spanning,4)-100.7*pow(spanning,3)+291.4*pow(spanning,2)-367.2*spanning+189.6);
+		}
+
+
+
 		
 		if(ADMUX == 0x26){		//konvertering av A7 (mellandistanssensorn)
 			asm("");
-			sensordata[savepos]	= round(8.139*pow(spanning,4)-81.21*pow(spanning,3)+282.6*pow(spanning,2)-414.2*spanning+259.7);
+			sensor6[savepos]	= round(8.139*pow(spanning,4)-81.21*pow(spanning,3)+282.6*pow(spanning,2)-414.2*spanning+259.7);
 			
 		}
-		
+		/*
 		sensormodul.outDataArray[0] = 5;
 		sensormodul.outDataArray[1] = 'S';
 		sensormodul.outDataArray[2] =  savepos;
@@ -195,18 +265,32 @@ int main(void)
 		sensormodul.outDataArray[4] = ((sensordata[savepos]/10) %10); // plats 5
 		sensormodul.outDataArray[5] = (sensordata[savepos] % 10); // plats 6
 		sensormodul.SPI_Send();
+        */
 
 		if(ADMUX == 0x26){
 			ADMUX = 0x20;
-			savepos = 0;
+			savepos++;
 		}
 		else{
 			ADMUX = ADMUX + 1;
-			savepos++;
 		}
+        if(savepos == 350){
+            sen0 = std::accumulate(sensor0,sensor0+350,0)/350;
+            sen1 = std::accumulate(sensor1,sensor1+350,0)/350;
+            sen2 = std::accumulate(sensor2,sensor2+350,0)/350;
+            sen3 = std::accumulate(sensor3,sensor3+350,0)/350;
+            sen4 = std::accumulate(sensor4,sensor4+350,0)/350;
+            sen5 = std::accumulate(sensor5,sensor5+350,0)/350;
+            sen6 = std::accumulate(sensor6,sensor6+350,0)/350;
+            sen7 = std::accumulate(sensor7,sensor7+350,0)/350;
+            
+            sendSensors();
+            
+            savepos = 0;
+            
+        }
 
-		ADCdone = false;		
-		_delay_ms(50);
+		ADCdone = false;
 		ADCSRA |= 1<<ADSC;	// Start Conversion
 		
 		while(!ADCdone);	//vänta tills ADC klar
