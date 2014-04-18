@@ -133,8 +133,8 @@ void sendSensors(){
     sensormodul.outDataArray[22] = ((sen6/10) %10); // plats 5
     sensormodul.outDataArray[23] = (sen6 % 10); // plats 6
     sensormodul.outDataArray[24] = (sen7/100); //plats 4
-    sensormodul.outDataArray[] = ((sen7/10) %10); // plats 5
-    sensormodul.outDataArray[5] = (sen7 % 10); // plats 6
+    sensormodul.outDataArray[25] = ((sen7/10) %10); // plats 5
+    sensormodul.outDataArray[26] = (sen7 % 10); // plats 6
     sensormodul.SPI_Send();
 
 }

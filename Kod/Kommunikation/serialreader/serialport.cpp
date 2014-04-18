@@ -110,6 +110,18 @@ void SerialPort::handleData(QByteArray inData){
         memcpy(GUI->mapArea[row],QByteToArray(inData),27);
         return;
     }
+    if(inData[1] == 'S'){
+        std::cout << (int)inData[0] << std::endl;
+        std::cout << inData[1] << std::endl;
+        std::cout << inData[2] << std::endl;
+        for(int i =3; i <27; i++){
+            std::cout << (int)inData[i];
+            i++;
+            std::cout << (int)inData[i];
+            i++;
+            std::cout << (int)inData[i] << std::endl;
+        }
+    }
 }
     /*
     //sensor 0-9      //  fix 5       //  S   //  0-9 //  [100tal, 10tal, 1tal]
