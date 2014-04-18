@@ -30,8 +30,8 @@ public:
     void receiveArray(unsigned int);
     
     // Data arrives in order, datalength (data.length + codeword + arg), codeword, arg, data.
-    unsigned char inDataArray[25];
-    unsigned char outDataArray[25];
+    unsigned char inDataArray[27];
+    unsigned char outDataArray[27];
    
 private:
     unsigned int  position = 0;

@@ -19,8 +19,8 @@ class Slave
 	bool SPI_RecievedData();
 	
 	// Data arrives in order, datalength (data.length + codeword + type), codeword, type, data.
-	unsigned char inDataArray[25]; 
-	unsigned char outDataArray[25];
+	unsigned char inDataArray[27]; 
+	unsigned char outDataArray[27];
 	unsigned int position;
 };
 

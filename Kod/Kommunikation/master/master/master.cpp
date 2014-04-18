@@ -38,8 +38,8 @@ Spi Bus(&Firefly,&buffer);
 *	Handeling data from modules
 */
 
-void myCopy25(unsigned char* to, const unsigned char* from){
-	for(unsigned int i = 0; i < 25; i++){
+void myCopy27(unsigned char* to, const unsigned char* from){
+	for(unsigned int i = 0; i < 27; i++){
 	to[i] = from[i];	
 	}
 }
@@ -49,13 +49,13 @@ void handleDataFromSteer(){
 	
 	
 	ReceiveFromSteer=false;
-	memcpy(Firefly.outDataArray, Bus.inDataArray,25);
+	memcpy(Firefly.outDataArray, Bus.inDataArray,27);
 	
 	
 	
 	if(Firefly.outDataArray[1]=='M'){
 		
-		memcpy(buffer.mapArea[Firefly.outDataArray[2]],Firefly.outDataArray,25);
+		memcpy(buffer.mapArea[Firefly.outDataArray[2]],Firefly.outDataArray,27);
 		
 		if((int)Firefly.mapNumber==31){
 			Firefly.sendMap();

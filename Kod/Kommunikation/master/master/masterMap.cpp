@@ -17,7 +17,7 @@ char* Map::getPos(int x, int y){
 void Map::setColAsChar(char* inCol)
 {
 	char* ptr = mapArea[inCol[2]][1];
-	memcpy(ptr, inCol,25);
+	memcpy(ptr, inCol,27);
 }
 
 // --------- SET POS ------------
@@ -43,9 +43,9 @@ void Map::printMap(){
 char* Map::getColAsChar(int col)
 {
 	// Char sent to computer
-	char* output = new char[25];
+	char* output = new char[27];
 	
-	for (int it = 0; it < 25; it++){
+	for (int it = 0; it < 27; it++){
 		// Type of the block we are looking at
 		output[it] = *this->getPos(col,it);
 	}

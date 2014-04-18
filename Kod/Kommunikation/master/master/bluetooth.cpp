@@ -56,16 +56,16 @@ unsigned char Bluetooth::receiveByte(){
 
 void Bluetooth::sendArray(){
     
-    for (unsigned int i=0; i<25; i++){
+    for (unsigned int i=0; i<27; i++){
 		transmitByte(outDataArray[i]);
 	}
 }
 
 void Bluetooth::sendMap(){
 	for(unsigned int i = 0; i<32;i++){
-		memcpy(outDataArray,mapPointer->mapArea[i],25);
+		memcpy(outDataArray,mapPointer->mapArea[i],27);
 		sendArray();
-		_delay_ms(25);
+		_delay_ms(27);
 	}
 }
 
@@ -73,7 +73,7 @@ volatile void Bluetooth::handle(){
     if(!this->Btrec){
 		return;
 	}
-	memcpy(pcHandle,inDataArray,25);
+	memcpy(pcHandle,inDataArray,27);
 	this->Btrec = false;
 	asm("");
 	
@@ -103,7 +103,7 @@ void Bluetooth::receiveArray(){
 	PORTA |= (1<<PORTA2)|(1<<PORTA3);
 	inDataArray[position] = receiveByte();
 	position++;
-	if(position == 25){
+	if(position == 27){
 		Btrec = true;
 		asm("");
 		position = 0;

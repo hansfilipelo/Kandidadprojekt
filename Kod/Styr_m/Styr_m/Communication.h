@@ -22,8 +22,8 @@ public:
     void sendRotateRequest();
     
 //flyttade från protected
-	unsigned char inData[25];
-    unsigned char outData[25];
+	unsigned char inData[27];
+    unsigned char outData[27];
 	volatile bool sendMapNow = false;
 	int row = 0; 	   
 

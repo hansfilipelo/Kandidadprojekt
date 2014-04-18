@@ -8,7 +8,7 @@ Communication::Communication(Slave* pointer){
 
 void Communication::handleData(){
    
-	memcpy(inData,slavePointer->inDataArray,25);
+	memcpy(inData,slavePointer->inDataArray,27);
     dataLength = (int)inData[0];
 	int speed = (int)inData[3];
 	//checks manual/auto

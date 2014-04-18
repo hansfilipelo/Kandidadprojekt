@@ -10,7 +10,7 @@ int main() {
     Map testMap;
     
     // Initiate array to send in.
-    char* benny = new char[25];
+    char* benny = new char[27];
     
     benny[0] = 19;
     benny[1] = 'M';

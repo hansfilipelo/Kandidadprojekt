@@ -18,7 +18,7 @@
 class Map
 {
 public:
-	char mapArea[32][25];
+	char mapArea[32][27];
 	//unsigned char** mapPtr[14];
 	
 	//char* getColAsChar(int);

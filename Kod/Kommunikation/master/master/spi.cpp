@@ -91,7 +91,7 @@ unsigned char* Spi::getInDataArray()
 {
 	unsigned char* outPtr = new unsigned char;
 	
-	for (int i = 0; i < 25; i++)
+	for (int i = 0; i < 27; i++)
 	{
 		outPtr[i] = inDataArray[i];
 	}

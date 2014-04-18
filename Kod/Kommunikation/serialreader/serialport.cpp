@@ -20,20 +20,20 @@ SerialPort::~SerialPort()
 {
 }
 
-/* Write exactly 25 bytes of data to port. Our char arrays are not nullterminated. Will cause issue if not for 25 bytes max.
+/* Write exactly 27 bytes of data to port. Our char arrays are not nullterminated. Will cause issue if not for 27 bytes max.
  * Wait for a maximum och 0.6 seconds for successful transmission.
  */
 
 
-void SerialPort::sendArray(const char inArray[25]){
-    port->write(inArray,25);
+void SerialPort::sendArray(const char inArray[27]){
+    port->write(inArray,27);
     port->waitForBytesWritten(600);
 }
 
 
 /*handleReadyRead(). tempData is the data from potential previous transmission. if the current transmission added with the previous
- * transmission has a length of less than 25 it is saved in tempData and we leave the readyread to accept more data.
- * On 25 or more bytes 25 bytes of data are sent to handleData, excess is stored in tempData for future transmissiondata.
+ * transmission has a length of less than 27 it is saved in tempData and we leave the readyread to accept more data.
+ * On 27 or more bytes 27 bytes of data are sent to handleData, excess is stored in tempData for future transmissiondata.
  * This function is not fully tested yet.
  */
 
@@ -46,7 +46,7 @@ void SerialPort::handleReadyRead() {
     
     int checkBytes = inBytes + tempBytes;
     
-    if(checkBytes == 25){
+    if(checkBytes == 27){
         inData = port->readAll();
         tempData.append(inData);
         handleData(tempData);
@@ -54,14 +54,14 @@ void SerialPort::handleReadyRead() {
         tempData.clear();
         return;
     }
-    if(checkBytes < 25){                //too little data to handle, save data and leave rdyread.
+    if(checkBytes < 27){                //too little data to handle, save data and leave rdyread.
         inData = port->readAll();
         tempData.append(inData);
         inData.clear();
         return;
     }
-    if(checkBytes >25){
-        inData = port->read(25-tempBytes); //Read bytes to fill to exact 25 bytes
+    if(checkBytes >27){
+        inData = port->read(27-tempBytes); //Read bytes to fill to exact 27 bytes
         tempData.append(inData);           //put data together.
         handleData(tempData);               // handle the data and clear the variables.
         tempData.clear();
@@ -107,7 +107,7 @@ void SerialPort::handleData(QByteArray inData){
     if(inData[1] == 'M'){
         int row = (int)QByteToArray(inData)[2];
         std::cout << row << std::endl;
-        memcpy(GUI->mapArea[row],QByteToArray(inData),25);
+        memcpy(GUI->mapArea[row],QByteToArray(inData),27);
         return;
     }
 }
