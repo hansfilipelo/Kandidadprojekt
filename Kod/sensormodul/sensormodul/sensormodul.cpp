@@ -26,14 +26,14 @@ volatile int sensor5[350];
 volatile int sensor6[350];
 volatile int sensor7[350];
 
-volatile int sen0;
-volatile int sen1;
-volatile int sen2;
-volatile int sen3;
-volatile int sen4;
-volatile int sen5;
-volatile int sen6;
-volatile int sen7;
+volatile double sen0;
+volatile double sen1;
+volatile double sen2;
+volatile double sen3;
+volatile double sen4;
+volatile double sen5;
+volatile double sen6;
+volatile double sen7;
 
 volatile int sensordata[7]={};
 volatile int savepos = 0;		//counter for the storage array
@@ -106,12 +106,12 @@ void handleInDataArray(){
 	}
 }
 
-int average(volatile int* inArray){
+double average(volatile int* inArray){
 	long long int sum=0;
 	for(unsigned int i= 0; i < 350; i ++){
 		sum = sum + inArray[i];
 	}
-	return (int)sum/350;
+	return (double)sum/350;
 }
 
 void sendSensors(){
