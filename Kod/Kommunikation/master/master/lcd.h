@@ -29,9 +29,6 @@ public:
     void drawSensorNames();
     void firstDraw();
     void insertSensorValuesToBuffer(int, char, char, char);
-    bool drawSucceded;
-    int getCol(int);
-    int getRow(int);
 	
 	void update();
 	void updateS1(char,char,char);
@@ -50,8 +47,13 @@ private:
     bool ready();
 	bool moveToggle = true;
     
+    int getCol(int);
+    int getRow(int);
+    bool drawSucceded;
+    
+    
     unsigned int writeBuffer[16][4];
-    unsigned int counter = 0;
+    unsigned int sensorCounter = 0;
     
 };
 

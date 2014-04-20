@@ -153,19 +153,22 @@ void Lcd::senddata(unsigned char var){
 }
 
 void Lcd::draw(unsigned char location, unsigned char sign){
-	if(ready() && moveToggle){
-        command(location);
-        moveToggle = 0;
-	}
-	if(ready() && (!moveToggle)){
-        senddata(sign);
-        moveToggle = 1;
-        drawSucceded = true;
-	}
+	
+    while (!drawSucceded){
+        if(ready() && moveToggle){
+            command(location);
+            moveToggle = 0;
+        }
+        if(ready() && (!moveToggle)){
+            senddata(sign);
+            moveToggle = 1;
+            drawSucceded = true;
+        }
+    }
 }
 
 void Lcd::firstDraw(){
-    //DŒligt med delayer bšr endast gšas vid initiering.
+    //DŒligt med delayer bšr endast gšras vid initiering.
     _delay_us(40);
     command(location);
     _delay_us(40);
@@ -292,34 +295,36 @@ void Lcd::updateM1(char data1, char data2, char data3){
 
 void Lcd::update(){
     
-    //funktionen Šr inte klar Šn.
+    int row = getRow(sensorCounter);
+    int col = getCol(sensorCounter);
     
-    int row = getRow();
-    int col = getCol();
+    char position;
     
-    int value = 0x30 + (int)(writeBuffer[counter][row]);
-    
-    
-    if(counter=){
+    if(row == 0){
         position = 0x80;
     }
-    else if(16<=counter<33){
+    if(row == 1){
         position = 0xc0;
-        row=1;
     }
-    else if(33<=counter<49) {
+    if(row == 2) {
         position = 0x90;
-        row=2;
     }
     else{
         position = 0xd0;
-        row=3;
     }
     
-    draw(position,value);
+    if (col==3) {
+        position = position + 3
+    }
+    else{
+        position = position + 10;
+    }
     
-    if (drawSucceded) {
-        counter++;
+    int value = (int)(writeBuffer[col][row]);
+    for (unsigned int i=0; i<3; i++) {
+        draw(position,value);
+        int value = (int)(writeBuffer[col+1][row]);
+        position = position + 1;
     }
 }
 
@@ -332,7 +337,6 @@ void Lcd::insertSensorValuesToBuffer(int sensor, char m, char dm, char cm){
     writeBuffer[col+1][row] = dm
     writeBuffer[col+2][row] = cm;
 }
-
 
 int Lcd::getCol(int sensor){
     int col = 0;
