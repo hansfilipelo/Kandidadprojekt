@@ -6,6 +6,10 @@
 #include <QtSerialPort/QSerialPort>
 #include <QtCore>
 #include <QIODevice>
+#include <math.h>
+#include <iostream>
+#include <chrono>
+#include <thread>
 
 Gui::Gui(QWidget *parent) :
     QMainWindow(parent),
@@ -14,13 +18,15 @@ Gui::Gui(QWidget *parent) :
     ui->setupUi(this);
     setupPlots();
     ui->speedPercent->setText(0);
-    connect(timer, SIGNAL(timeout()), this, SLOT(updateTimeVector()));
+    /*connect(timer, SIGNAL(timeout()), this, SLOT(updateTimeVector()));
     timeVector.insert(0,0);
     timer->start(1000);
+    */
     ui->mapView->setScene(scene);
     //alla keys förutom pilarna kräver manuell connection, bör rensas upp då alla slots inte behövs. Har atm flera slots som gör samma saker
     // via shortcuts samt knappar i UI:n
     new QShortcut(QKeySequence(Qt::Key_Space), this, SLOT(on_actionStop_triggered()));
+    time.start();
 
 }
 
@@ -106,9 +112,10 @@ void Gui::setupPlots(){
     ui->sensorPlot1->graph(0)->setPen(QPen(Qt::blue));
     ui->sensorPlot1->graph(0)->setLineStyle(QCPGraph::lsNone);
     ui->sensorPlot1->graph(0)->setScatterStyle(QCPScatterStyle::ssDisc);
-    ui->sensorPlot1->xAxis->setRange(-1,1);
+    ui->sensorPlot1->xAxis->setRange(0,10);
     ui->sensorPlot1->xAxis->setAutoTickStep(false);
     ui->sensorPlot1->xAxis->setTickStep(2);
+    ui->sensorPlot1->graph(0)->setData(sensorVector1,timeVector);
 
     ui->sensorPlot2->addGraph();
     ui->sensorPlot2->graph(0)->setPen(QPen(Qt::blue));
@@ -117,6 +124,7 @@ void Gui::setupPlots(){
     ui->sensorPlot2->graph(0)->setPen(QPen(Qt::blue));
     ui->sensorPlot2->graph(0)->setLineStyle(QCPGraph::lsNone);
     ui->sensorPlot2->graph(0)->setScatterStyle(QCPScatterStyle::ssDisc);
+    ui->sensorPlot2->graph(0)->setData(timeVector,sensorVector1);
 
     ui->sensorPlot3->addGraph();
     ui->sensorPlot3->graph(0)->setPen(QPen(Qt::blue));
@@ -125,6 +133,7 @@ void Gui::setupPlots(){
     ui->sensorPlot3->graph(0)->setPen(QPen(Qt::blue));
     ui->sensorPlot3->graph(0)->setLineStyle(QCPGraph::lsNone);
     ui->sensorPlot3->graph(0)->setScatterStyle(QCPScatterStyle::ssDisc);
+    ui->sensorPlot3->graph(0)->setData(timeVector,sensorVector3);
 
     ui->sensorPlot4->addGraph();
     ui->sensorPlot4->graph(0)->setPen(QPen(Qt::blue));
@@ -133,6 +142,7 @@ void Gui::setupPlots(){
     ui->sensorPlot4->graph(0)->setPen(QPen(Qt::blue));
     ui->sensorPlot4->graph(0)->setLineStyle(QCPGraph::lsNone);
     ui->sensorPlot4->graph(0)->setScatterStyle(QCPScatterStyle::ssDisc);
+    ui->sensorPlot4->graph(0)->setData(timeVector,sensorVector4);
 
     ui->sensorPlot5->addGraph();
     ui->sensorPlot5->graph(0)->setPen(QPen(Qt::blue));
@@ -141,6 +151,7 @@ void Gui::setupPlots(){
     ui->sensorPlot5->graph(0)->setPen(QPen(Qt::blue));
     ui->sensorPlot5->graph(0)->setLineStyle(QCPGraph::lsNone);
     ui->sensorPlot5->graph(0)->setScatterStyle(QCPScatterStyle::ssDisc);
+    ui->sensorPlot5->graph(0)->setData(timeVector,sensorVector5);
 
     ui->sensorPlot6->addGraph();
     ui->sensorPlot6->graph(0)->setPen(QPen(Qt::blue));
@@ -149,57 +160,64 @@ void Gui::setupPlots(){
     ui->sensorPlot6->graph(0)->setPen(QPen(Qt::blue));
     ui->sensorPlot6->graph(0)->setLineStyle(QCPGraph::lsNone);
     ui->sensorPlot6->graph(0)->setScatterStyle(QCPScatterStyle::ssDisc);
+    ui->sensorPlot6->graph(0)->setData(timeVector,sensorVector6);
 }
 
-void Gui::giveValues(){
-    val = val +1;
-    updateSensorValues(val,val,val,val,val,val);
+
+//simply exists for initial testing purposes.
+void Gui::giveValues(int inInt){
+   for(int i = 0; i <= inInt; i++){
+    int val0 = rand()%5;
+    int val1 = rand()%5;
+    int val2 = rand()%5;
+    int val3 = rand()%5;
+    int val4 = rand()%5;
+    int val5 = rand()%5;
+    int val6 = rand()%5;
+    int val7 = rand()%5;
+
+    updateSensorValues(val0,val1,val2,val3,val4,val5,val6,val7);
+
+    std::cout << "Waiting for 1000 ms" << std::endl;
+    std::chrono::milliseconds dura( 1000 );
+    std::this_thread::sleep_for( dura );
+    std::cout << "Waited 1000 ms\n";
+   }
 }
 
-void Gui::updateSensorValues(int value1, int value2, int value3, int value4, int value5, int value6){
-    if (sensorVector1.size() == 10){
-    sensorVector1.push_front(value1);
-    sensorVector1.pop_back();
-    }
-    else{
-        sensorVector1.push_front(value1);
-    }
-    if (sensorVector2.size() == 10){
-    sensorVector2.push_front(value2);
-    sensorVector2.pop_back();
-    }
-    else{
-        sensorVector2.push_front(value2);
-    }
-    if (sensorVector3.size() == 10){
-    sensorVector3.push_front(value3);
-    sensorVector3.pop_back();
-    }
-    else{
-        sensorVector3.push_front(value3);
-    }
-    if (sensorVector4.size() == 10){
-    sensorVector4.push_front(value4);
-    sensorVector4.pop_back();
-    }
-    else{
-        sensorVector4.push_front(value4);
-    }
-    if (sensorVector5.size() == 10){
-    sensorVector5.push_front(value5);
-    sensorVector5.pop_back();
-    }
-    else{
-        sensorVector5.push_front(value5);
-    }
-    if (sensorVector6.size() == 10){
-    sensorVector6.push_front(value6);
-    sensorVector6.pop_back();
-    }
-    else{
-        sensorVector6.push_front(value6);
-    }
+void Gui::updateSensorValues(int value0, int value1, int value2, int value3, int value4, int value5, int value6, int value7){
+   sensorVector0.push_back(value0);
+   sensorVector1.push_back(value1);
+   sensorVector2.push_back(value2);
+   sensorVector3.push_back(value3);
+   sensorVector4.push_back(value4);
+   sensorVector5.push_back(value5);
+   sensorVector6.push_back(value6);
+   sensorVector7.push_back(value7);
+   timeVector.push_back(time.elapsed()/1000);
+   ui->sensorPlot1->graph(0)->setData(timeVector,sensorVector1);
+   ui->sensorPlot1->xAxis->setRange(timeVector.last()-10,timeVector.last()+1);
+   ui->sensorPlot1->replot();
 
+   ui->sensorPlot2->graph(0)->setData(timeVector,sensorVector2);
+   ui->sensorPlot2->xAxis->setRange(timeVector.last()-10,timeVector.last()+1);
+   ui->sensorPlot2->replot();
+
+   ui->sensorPlot3->graph(0)->setData(timeVector,sensorVector3);
+   ui->sensorPlot3->xAxis->setRange(timeVector.last()-10,timeVector.last()+1);
+   ui->sensorPlot3->replot();
+
+   ui->sensorPlot4->graph(0)->setData(timeVector,sensorVector4);
+   ui->sensorPlot4->xAxis->setRange(timeVector.last()-10,timeVector.last()+1);
+   ui->sensorPlot4->replot();
+
+   ui->sensorPlot5->graph(0)->setData(timeVector,sensorVector5);
+   ui->sensorPlot5->xAxis->setRange(timeVector.last()-10,timeVector.last()+1);
+   ui->sensorPlot5->replot();
+
+   ui->sensorPlot6->graph(0)->setData(timeVector,sensorVector6);
+   ui->sensorPlot6->xAxis->setRange(timeVector.last()-10,timeVector.last()+1);
+   ui->sensorPlot6->replot();
 }
 
 void Gui::updatePlots(){

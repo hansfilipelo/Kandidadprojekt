@@ -4,10 +4,10 @@
 #include <QMainWindow>
 #include <QVector>
 #include <QTimer>
-#include<algorithm>
-#include<string.h>
-#include<iostream>
-#include<QGraphicsScene>
+#include <algorithm>
+#include <string.h>
+#include <iostream>
+#include <QGraphicsScene>
 #include <QtAlgorithms>
 #include <QtSerialPort/QtSerialPort>
 
@@ -23,11 +23,11 @@ class Gui : public QMainWindow
     Q_OBJECT
 
 public:
-    void giveValues();
+    void giveValues(int);
     explicit Gui(QWidget *parent = 0);
     ~Gui();
     void setupPlots();
-    void updateSensorValues(int value1, int value2, int value3, int value4, int value5, int value6);
+    void updateSensorValues(int value0,int value1, int value2, int value3, int value4, int value5, int value6,int value7);
     void updatePlots();
     void updateMap();
     void insertRow(char inArray[25]);
@@ -74,14 +74,17 @@ private slots:
     void on_setParameterButton_pressed();
 
 private:
+    QTime time;
     int val = 0;
     Ui::Gui *ui;
-    QVector<int> sensorVector1;
-    QVector<int> sensorVector2;
-    QVector<int> sensorVector3;
-    QVector<int> sensorVector4;
-    QVector<int> sensorVector5;
-    QVector<int> sensorVector6;
+    QVector<double> sensorVector0;
+    QVector<double> sensorVector1;
+    QVector<double> sensorVector2;
+    QVector<double> sensorVector3;
+    QVector<double> sensorVector4;
+    QVector<double> sensorVector5;
+    QVector<double> sensorVector6;
+    QVector<double> sensorVector7;
     QVector<double> timeVector;
     QTimer *timer = new QTimer(this);
     QVector<double> testVector;

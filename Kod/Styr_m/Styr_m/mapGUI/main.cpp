@@ -11,11 +11,12 @@ int main(int argc, char *argv[])
         if(w.startPort() == 1){
             continue;
         }
+
      connected = 1;
      w.labelSet("Connected");
      break;
     }
     w.connectStatus = connected;
-
+    w.giveValues(5);
     return a.exec();
 }
