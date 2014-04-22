@@ -111,16 +111,25 @@ void SerialPort::handleData(QByteArray inData){
         return;
     }
     if(inData[1] == 'S'){
-        std::cout << (int)inData[0] << std::endl;
-        std::cout << inData[1] << std::endl;
-        std::cout << inData[2] << std::endl;
-        for(int i =3; i <27; i++){
-            std::cout << (int)inData[i];
-            i++;
-            std::cout << (int)inData[i];
-            i++;
-            std::cout << (int)inData[i] << std::endl;
-        }
+
+        int sen0 = 100*inData[3]+10*inData[4]+inData[5];
+        int sen1 = 100*inData[6]+10*inData[7]+inData[8];
+        int sen2 = 100*inData[9]+10*inData[10]+inData[11];
+        int sen3 = 100*inData[12]+10*inData[13]+inData[14];
+        int sen4 = 100*inData[15]+10*inData[16]+inData[17];
+        int sen5 = 100*inData[18]+10*inData[19]+inData[20];
+        int sen6 = 100*inData[21]+10*inData[22]+inData[23];
+        int sen7 = 100*inData[24]+10*inData[25]+inData[26];
+        GUI->updateSensorValues(sen0,sen1,sen2,sen3,sen4,sen5,sen6,sen7);
+        std::cout << "sen0 " << sen0 << std::endl;
+        std::cout << "sen1 " << sen1 << std::endl;
+        std::cout << "sen2 " << sen2 << std::endl;
+        std::cout << "sen3 " << sen3 << std::endl;
+        std::cout << "sen4 " << sen4 << std::endl;
+        std::cout << "sen5 " << sen5 << std::endl;
+        std::cout << "sen6 " << sen6 << std::endl;
+
+
     }
 }
     /*
