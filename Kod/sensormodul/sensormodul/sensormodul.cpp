@@ -18,23 +18,23 @@
 
 volatile int numOfSamples = 60;
 
-volatile int sensor0[numOfSamples];
-volatile int sensor1[numOfSamples]; // not certain that this initialization will fly. 
-volatile int sensor2[numOfSamples];
-volatile int sensor3[numOfSamples];
-volatile int sensor4[numOfSamples];
-volatile int sensor5[numOfSamples];
-volatile int sensor6[numOfSamples];
-volatile int sensor7[numOfSamples];
+volatile int sensor0[60];
+volatile int sensor1[60]; // not certain that this initialization will fly. 
+volatile int sensor2[60];
+volatile int sensor3[60];
+volatile int sensor4[60];
+volatile int sensor5[60];
+volatile int sensor6[60];
+volatile int sensor7[60];
 
-volatile double sen0;
-volatile double sen1;
-volatile double sen2;
-volatile double sen3;
-volatile double sen4;
-volatile double sen5;
-volatile double sen6;
-volatile double sen7;
+volatile int sen0;
+volatile int sen1;
+volatile int sen2;
+volatile int sen3;
+volatile int sen4;
+volatile int sen5;
+volatile int sen6;
+volatile int sen7;
 
 volatile int sensordata[7]={};
 volatile int savepos = 0;  //counter for the storage array
@@ -108,12 +108,12 @@ void handleInDataArray(){
 	}
 }
 
-double average(volatile int* inArray){
-	long long int sum=0;
+int average(volatile int* inArray){
+	long int sum=0;
 	for(unsigned int i= 0; i < numOfSamples; i ++){
 		sum = sum + inArray[i];
 	}
-	return (double)sum/numOfSamples;
+	return (int)sum/numOfSamples;
 }
 
 void sendSensors(){
