@@ -17,6 +17,6 @@ int main(int argc, char *argv[])
      break;
     }
     w.connectStatus = connected;
-   // w.giveValues(5);
+    //w.giveValues(15);
     return a.exec();
 }

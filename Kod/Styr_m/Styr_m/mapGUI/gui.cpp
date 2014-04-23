@@ -110,7 +110,7 @@ void Gui::setupPlots(){
     ui->sensorPlot1->graph(0)->setBrush(QBrush(QColor(240, 255, 200)));
     ui->sensorPlot1->addGraph();
     ui->sensorPlot1->graph(0)->setPen(QPen(Qt::blue));
-    ui->sensorPlot1->graph(0)->setLineStyle(QCPGraph::lsNone);
+    ui->sensorPlot1->graph(0)->setLineStyle(QCPGraph::lsLine);
     ui->sensorPlot1->graph(0)->setScatterStyle(QCPScatterStyle::ssDisc);
     ui->sensorPlot1->xAxis->setRange(0,10);
     ui->sensorPlot1->yAxis->setRange(0,300);
@@ -123,7 +123,7 @@ void Gui::setupPlots(){
     ui->sensorPlot2->graph(0)->setBrush(QBrush(QColor(240, 255, 200)));
     ui->sensorPlot2->addGraph();
     ui->sensorPlot2->graph(0)->setPen(QPen(Qt::blue));
-    ui->sensorPlot2->graph(0)->setLineStyle(QCPGraph::lsNone);
+    ui->sensorPlot2->graph(0)->setLineStyle(QCPGraph::lsLine);
     ui->sensorPlot2->graph(0)->setScatterStyle(QCPScatterStyle::ssDisc);
     ui->sensorPlot2->graph(0)->setData(timeVector,sensorVector1);
     ui->sensorPlot2->yAxis->setRange(0,300);
@@ -133,7 +133,7 @@ void Gui::setupPlots(){
     ui->sensorPlot3->graph(0)->setBrush(QBrush(QColor(240, 255, 200)));
     ui->sensorPlot3->addGraph();
     ui->sensorPlot3->graph(0)->setPen(QPen(Qt::blue));
-    ui->sensorPlot3->graph(0)->setLineStyle(QCPGraph::lsNone);
+    ui->sensorPlot3->graph(0)->setLineStyle(QCPGraph::lsLine);
     ui->sensorPlot3->graph(0)->setScatterStyle(QCPScatterStyle::ssDisc);
     ui->sensorPlot3->graph(0)->setData(timeVector,sensorVector3);
     ui->sensorPlot3->yAxis->setRange(0,300);
@@ -143,7 +143,7 @@ void Gui::setupPlots(){
     ui->sensorPlot4->graph(0)->setBrush(QBrush(QColor(240, 255, 200)));
     ui->sensorPlot4->addGraph();
     ui->sensorPlot4->graph(0)->setPen(QPen(Qt::blue));
-    ui->sensorPlot4->graph(0)->setLineStyle(QCPGraph::lsNone);
+    ui->sensorPlot4->graph(0)->setLineStyle(QCPGraph::lsLine);
     ui->sensorPlot4->graph(0)->setScatterStyle(QCPScatterStyle::ssDisc);
     ui->sensorPlot4->graph(0)->setData(timeVector,sensorVector4);
     ui->sensorPlot4->yAxis->setRange(0,300);
@@ -153,7 +153,7 @@ void Gui::setupPlots(){
     ui->sensorPlot5->graph(0)->setBrush(QBrush(QColor(240, 255, 200)));
     ui->sensorPlot5->addGraph();
     ui->sensorPlot5->graph(0)->setPen(QPen(Qt::blue));
-    ui->sensorPlot5->graph(0)->setLineStyle(QCPGraph::lsNone);
+    ui->sensorPlot5->graph(0)->setLineStyle(QCPGraph::lsLine);
     ui->sensorPlot5->graph(0)->setScatterStyle(QCPScatterStyle::ssDisc);
     ui->sensorPlot5->graph(0)->setData(timeVector,sensorVector5);
     ui->sensorPlot5->yAxis->setRange(0,300);
@@ -173,21 +173,21 @@ void Gui::setupPlots(){
 //simply exists for initial testing purposes.
 void Gui::giveValues(int inInt){
    for(int i = 0; i <= inInt; i++){
-    int val0 = rand()%5;
-    int val1 = rand()%5;
-    int val2 = rand()%5;
-    int val3 = rand()%5;
-    int val4 = rand()%5;
-    int val5 = rand()%5;
-    int val6 = rand()%5;
-    int val7 = rand()%5;
+    int val0 = rand()%270;
+    int val1 = rand()%270;
+    int val2 = rand()%270;
+    int val3 = rand()%270;
+    int val4 = rand()%270;
+    int val5 = rand()%270;
+    int val6 = rand()%270;
+    int val7 = rand()%270;
 
     updateSensorValues(val0,val1,val2,val3,val4,val5,val6,val7);
 
-    std::cout << "Waiting for 1000 ms" << std::endl;
-    std::chrono::milliseconds dura( 1000 );
+    std::cout << "Waiting for 750 ms" << std::endl;
+    std::chrono::milliseconds dura( 750 );
     std::this_thread::sleep_for( dura );
-    std::cout << "Waited 1000 ms\n";
+    std::cout << "Waited 750 ms\n";
    }
 }
 
@@ -200,10 +200,10 @@ void Gui::updateSensorValues(int value0, int value1, int value2, int value3, int
     sensorVector5.push_back(value5);
     sensorVector6.push_back(value6);
     sensorVector7.push_back(value7);
-    timeVector.push_back(time.elapsed()/1000);
+    timeVector.push_back((double)time.elapsed()/1000);
     ui->sensorPlot1->graph(0)->setData(timeVector,sensorVector1);
     ui->sensorPlot1->xAxis->setRange(timeVector.last()-10,timeVector.last()+1);
-    //ui->sensorPlot1->replot();
+    ui->sensorPlot1->replot();
     ui->sensor1data->setText(QString::number(sensorVector1.last()));
 
     ui->sensorPlot2->graph(0)->setData(timeVector,sensorVector2);
