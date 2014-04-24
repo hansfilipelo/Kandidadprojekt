@@ -21,7 +21,7 @@ public:
     Order(SerialPort*);
     ~Order();
 
-    void setPID(int,int);
+   // void setPID(int,int);
     void rotateLeft(int);
     void rotateRight(int);
     void halt();

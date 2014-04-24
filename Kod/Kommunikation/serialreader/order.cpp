@@ -17,10 +17,10 @@ Order::~Order(){
 /*Constructs the array that are to be sent to AVR processor.
  */
 
-void Order::setPID(int kp, int kd){
-    char data[27] = {4,'P',0,(char)kp,(char)kd,'Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z'};
-    serport->sendArray(data);
-}
+//void Order::setPID(int kp, int kd){
+//    char data[27] = {4,'P',0,(char)kp,(char)kd,'Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z'};
+//    serport->sendArray(data);
+//}
 
 void Order::rotateLeft(int speed){
 
@@ -69,5 +69,15 @@ void Order::fetchMap(){
 }
 
 void Order::setControlParameters(double Kp, double Kd, int Ref){
+    //Separates the parts of the doubles and sends them as chars.
+    int Kp1=floor(Kp);
+    int Kp01=floor(10*Kp);
+    int Kp001=floor(100*Kp);
 
+    int Kd1=floor(Kd);
+    int Kd01=floor(10*Kd);
+    int Kd001=floor(100*Kd);
+
+    char data[27] = {9,'P',0,(char)Kp1,(char)Kp01,(char)Kp001,(char)Kd1,(char)Kd01,(char)Kd001,(char)Ref,'Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z'};
+    serport->sendArray(data);
 }
