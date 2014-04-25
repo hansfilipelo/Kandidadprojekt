@@ -39,13 +39,13 @@ public:
 private slots:
     void on_speedSlider_valueChanged(int value);
 
-    void on_upButton_pressed();
+//    void on_upButton_pressed();
 
-    void on_downButton_pressed();
+//    void on_downButton_pressed();
 
-    void on_leftButton_pressed();
+//    void on_leftButton_pressed();
 
-    void on_rightButton_pressed();
+//    void on_rightButton_pressed();
 
     void on_speedSlider_sliderReleased();
 

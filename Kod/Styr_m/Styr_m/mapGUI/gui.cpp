@@ -280,29 +280,29 @@ void Gui::updateMap(){
 
 
 
-void Gui::on_upButton_pressed()
-{
-    if(connectStatus){
-    bluetooth->forward(speedMultiplier);}
-}
+//void Gui::on_upButton_pressed()
+//{
+//    if(connectStatus){
+//    bluetooth->forward(speedMultiplier);}
+//}
 
-void Gui::on_downButton_pressed()
-{
-    if(connectStatus){
-    bluetooth->backward(speedMultiplier);}
-}
+//void Gui::on_downButton_pressed()
+//{
+//    if(connectStatus){
+//    bluetooth->backward(speedMultiplier);}
+//}
 
-void Gui::on_leftButton_pressed()
-{
-    if(connectStatus){
-    bluetooth->rotateLeft(speedMultiplier);}
-}
+//void Gui::on_leftButton_pressed()
+//{
+//    if(connectStatus){
+//    bluetooth->rotateLeft(speedMultiplier);}
+//}
 
-void Gui::on_rightButton_pressed()
-{
-    if(connectStatus){
-    bluetooth->rotateRight(speedMultiplier);}
-}
+//void Gui::on_rightButton_pressed()
+//{
+//    if(connectStatus){
+//    bluetooth->rotateRight(speedMultiplier);}
+//}
 
 void Gui::on_speedSlider_sliderReleased(){
    speedMultiplier = ui->speedSlider->value();
@@ -373,5 +373,14 @@ void Gui::on_fetchButton_pressed()
 
 void Gui::on_setParameterButton_pressed()
 {
-   // bluetooth->setControlParameters();
+   double kp;
+   double kd;
+   int ref;
+
+   kp=ui->doubleSpinBox->value();
+   kd=ui->doubleSpinBox_2->value();
+   ref=ui->spinBox->value();
+   if(connectStatus){
+   bluetooth->setControlParameters(kp, kd, ref);
+}
 }

@@ -154,7 +154,6 @@ void Lcd::senddata(unsigned char var){
 
 void Lcd::draw(unsigned char location, unsigned char sign){
 	
-    while (!drawSucceded){
         if(ready() && moveToggle){
             command(location);
             moveToggle = 0;
@@ -162,12 +161,10 @@ void Lcd::draw(unsigned char location, unsigned char sign){
         if(ready() && (!moveToggle)){
             senddata(sign);
             moveToggle = 1;
-            drawSucceded = true;
-        }
     }
 }
 
-void Lcd::firstDraw(){
+void Lcd::firstDraw(unsigned char location, unsigned char sign){
     //DŒligt med delayer bšr endast gšras vid initiering.
     _delay_us(40);
     command(location);
@@ -314,7 +311,7 @@ void Lcd::update(){
     }
     
     if (col==3) {
-        position = position + 3
+        position = position + 3;
     }
     else{
         position = position + 10;
@@ -334,14 +331,14 @@ void Lcd::insertSensorValuesToBuffer(int sensor, char m, char dm, char cm){
     int col = getCol(sensor);
     
     writeBuffer[col][row] = m;
-    writeBuffer[col+1][row] = dm
+    writeBuffer[col+1][row] = dm;
     writeBuffer[col+2][row] = cm;
 }
 
 int Lcd::getCol(int sensor){
     int col = 0;
-    if((sensor =< 1) or (sensor == 6)){
-        col = 10
+    if((sensor <= 1) or (sensor == 6)){
+        col = 10;
     }
     else{
         col = 3;
@@ -368,6 +365,57 @@ int Lcd::getRow(int sensor){
 
 
 bool Lcd::ready(){
+
+/*
+ * lcd.cpp
+ *
+ * Created: 4/14/2014 11:13:42 AM
+ *  Author: davha227
+ *
+ *  Virat kablage
+ *  Rs -> PORTA5
+ *  R/W -> PORTA6
+ *  E -> PORTA7
+ *  DB0 -> PORTC0
+ *  DB1 -> PORTC1
+ *  DB2 -> PORTD4
+ *  DB3 -> PORTD5
+ *  DB4 -> PORTD6
+ *  DB5 -> PORTD7
+ *  DB6 -> PORTC6
+ *  DB7 -> PORTC7
+ */
+
+	//Make it possible to read from DB0-DB7
+	DDRC &=~((1<<PORTC0)|(1<<PORTC1)|(1<<PORTC6)|(1<<PORTC7));
+	DDRD &=~((1<<PORTD4)|(1<<PORTD5)|(1<<PORTD6)|(1<<PORTD7));
+	PORTA &=~(1<<PORTA5);
+	PORTA |=(1<<PORTA6);
+	_delay_us(1);
+	PORTA |=(1<<PORTA7);
+	_delay_us(1);
+	//Data should now be ready to read from PORTC7.
+	
+	volatile bool temp = PINC & 0x80;
+	
+	
+	DDRC |=(1<<PORTC0)|(1<<PORTC1)|(1<<PORTC6)|(1<<PORTC7);
+	DDRD |=(1<<PORTD4)|(1<<PORTD5)|(1<<PORTD6)|(1<<PORTD7);
+	
+	if(temp){
+		PORTA &=~(1<<PORTA7);
+		return false;
+	}
+	else{
+		PORTA &=~(1<<PORTA7);
+		return true;
+	}
+	
+}
+
+	
+	
+	/*
     PORTA |=(1<<PORTA7);
     asm("nop");
     asm("nop");
@@ -390,5 +438,5 @@ bool Lcd::ready(){
         PORTA &= ~(1<<PORTA6);
         return false;
     }
-}
+	*/
 

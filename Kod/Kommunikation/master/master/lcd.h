@@ -27,7 +27,7 @@ public:
     void draw(unsigned char, unsigned char);
     void reset();
     void drawSensorNames();
-    void firstDraw();
+    void firstDraw(unsigned char,unsigned char);
     void insertSensorValuesToBuffer(int, char, char, char);
 	
 	void update();

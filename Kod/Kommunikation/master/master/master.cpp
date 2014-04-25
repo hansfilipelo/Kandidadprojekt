@@ -23,7 +23,7 @@
 #include <string.h>
 #include "bluetooth.h"
 #include "spi.h"
-//#include "lcd.h"
+#include "lcd.h"
 
 bool toggle = false;
 bool ReceiveFromSteer = false;
@@ -32,18 +32,11 @@ bool ReceiveFromSensor = false;
 Map buffer;
 Bluetooth Firefly;
 Spi Bus(&Firefly,&buffer);
-//Lcd Display;
+Lcd Display;
 
 /*
 *	Handeling data from modules
 */
-
-void myCopy27(unsigned char* to, const unsigned char* from){
-	for(unsigned int i = 0; i < 27; i++){
-	to[i] = from[i];	
-	}
-}
-
 
 void handleDataFromSteer(){
 	
@@ -126,7 +119,7 @@ ISR(INT0_vect){
 int main(void)
 {
     Firefly.setPointer(&Bus,&buffer);
-	//Display.drawSensorNames();
+    //Display.drawSensorNames();
     
 	sei();
     
@@ -144,6 +137,6 @@ int main(void)
 		Firefly.getMap = false; 
 		}
 			
-		//Display.update();
+		//Display.draw(0x80,0x53);
 	}	
 }

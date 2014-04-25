@@ -47,7 +47,7 @@
         <InterfaceName>JTAG</InterfaceName>
       </ToolOptions>
       <ToolType>com.atmel.avrdbg.tool.jtagice3plus</ToolType>
-      <ToolNumber>J30200012584</ToolNumber>
+      <ToolNumber>J30200012872</ToolNumber>
       <ToolName>JTAGICE3</ToolName>
     </com_atmel_avrdbg_tool_jtagice3plus>
     <avrtoolinterface>JTAG</avrtoolinterface>
@@ -160,9 +160,9 @@
     <Compile Include="bluetooth.h">
       <SubType>compile</SubType>
     </Compile>
-    <None Include="lcd.cpp">
+    <Compile Include="lcd.cpp">
       <SubType>compile</SubType>
-    </None>
+    </Compile>
     <None Include="lcd.h">
       <SubType>compile</SubType>
     </None>
