@@ -16,25 +16,25 @@
 #include <util/delay.h>
 
 
-volatile int numOfSamples = 60;
+volatile int numOfSamples = 150;
 
-volatile int sensor0[60];
-volatile int sensor1[60]; // not certain that this initialization will fly. 
-volatile int sensor2[60];
-volatile int sensor3[60];
-volatile int sensor4[60];
-volatile int sensor5[60];
-volatile int sensor6[60];
-volatile int sensor7[60];
+volatile int sensor0[150];
+volatile int sensor1[150]; // not certain that this initialization will fly. 
+volatile int sensor2[150];
+volatile int sensor3[150];
+volatile int sensor4[150];
+volatile int sensor5[150];
+volatile int sensor6[150];
+volatile int sensor7[150];
 
-volatile int sen0;
-volatile int sen1;
-volatile int sen2;
-volatile int sen3;
-volatile int sen4;
-volatile int sen5;
-volatile int sen6;
-volatile int sen7;
+volatile long int sen0;
+volatile long int sen1;
+volatile long int sen2;
+volatile long int sen3;
+volatile long int sen4;
+volatile long int sen5;
+volatile long int sen6;
+volatile long int sen7;
 
 volatile int sensordata[7]={};
 volatile int savepos = 0;  //counter for the storage array
@@ -108,12 +108,12 @@ void handleInDataArray(){
 	}
 }
 
-int average(volatile int* inArray){
+long int average(volatile int* inArray){
 	long int sum=0;
 	for(unsigned int i= 0; i < numOfSamples; i ++){
 		sum = sum + inArray[i];
 	}
-	return (int)sum/numOfSamples;
+	return (long int)sum/numOfSamples;
 }
 
 void sendSensors(){

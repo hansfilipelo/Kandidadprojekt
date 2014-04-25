@@ -137,6 +137,6 @@ int main(void)
 		Firefly.getMap = false; 
 		}
 			
-		Display.draw(0x80,0x53);
+		//Display.draw(0x80,0x53);
 	}	
 }
