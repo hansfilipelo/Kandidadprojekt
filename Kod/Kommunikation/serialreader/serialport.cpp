@@ -120,44 +120,10 @@ void SerialPort::handleData(QByteArray inData){
         int sen5 = 100*inData[18]+10*inData[19]+inData[20];
         int sen6 = 100*inData[21]+10*inData[22]+inData[23];
         int sen7 = 100*inData[24]+10*inData[25]+inData[26];
+
         GUI->updateSensorValues(sen0,sen1,sen2,sen3,sen4,sen5,sen6,sen7);
-        std::cout << "sen0 " << sen0 << std::endl;
-        std::cout << "sen1 " << sen1 << std::endl;
-        std::cout << "sen2 " << sen2 << std::endl;
-        std::cout << "sen3 " << sen3 << std::endl;
-        std::cout << "sen4 " << sen4 << std::endl;
-        std::cout << "sen5 " << sen5 << std::endl;
-        std::cout << "sen6 " << sen6 << std::endl;
 
+        std::cout << sen0 << '\n' << sen1 << '\n' << sen2 << '\n' << sen3 << '\n' << sen4 << '\n' << sen5 << '\n' << sen6 << '\n' << sen7 << std::endl;
 
     }
 }
-    /*
-    //sensor 0-9      //  fix 5       //  S   //  0-9 //  [100tal, 10tal, 1tal]
-    if(inData[1] == 'S'){
-        switch((int)inData[2]){
-        case 0 :
-            break;
-        case 1 :
-            break;
-        case 2 :
-            break;
-        case 3 :
-            break;
-        case 4 :
-            break;
-        case 5 :
-            break;
-        case 6 :
-            break;
-        case 7 :
-            break;
-        case 8 :
-            break;
-        case 9 :
-            break;
-        }
-    }
-
-}
-*/

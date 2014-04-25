@@ -101,14 +101,14 @@
    <widget class="QLabel" name="sensor1">
     <property name="geometry">
      <rect>
-      <x>460</x>
+      <x>431</x>
       <y>60</y>
-      <width>62</width>
-      <height>19</height>
+      <width>111</width>
+      <height>20</height>
      </rect>
     </property>
     <property name="text">
-     <string>Sensor1:</string>
+     <string>Back Long</string>
     </property>
    </widget>
    <widget class="QLabel" name="sensor1data">
@@ -127,14 +127,14 @@
    <widget class="QLabel" name="sensor2">
     <property name="geometry">
      <rect>
-      <x>459</x>
+      <x>430</x>
       <y>180</y>
-      <width>62</width>
-      <height>19</height>
+      <width>111</width>
+      <height>20</height>
      </rect>
     </property>
     <property name="text">
-     <string>Sensor2:</string>
+     <string>Left back Short</string>
     </property>
    </widget>
    <widget class="QLabel" name="sensor2data">
@@ -153,14 +153,14 @@
    <widget class="QLabel" name="sensor3">
     <property name="geometry">
      <rect>
-      <x>460</x>
+      <x>431</x>
       <y>300</y>
-      <width>62</width>
-      <height>19</height>
+      <width>111</width>
+      <height>20</height>
      </rect>
     </property>
     <property name="text">
-     <string>Sensor3:</string>
+     <string>Right back Short</string>
     </property>
    </widget>
    <widget class="QLabel" name="sensor3data">
@@ -179,14 +179,14 @@
    <widget class="QLabel" name="sensor4">
     <property name="geometry">
      <rect>
-      <x>460</x>
+      <x>431</x>
       <y>420</y>
-      <width>62</width>
-      <height>19</height>
+      <width>111</width>
+      <height>20</height>
      </rect>
     </property>
     <property name="text">
-     <string>sensor4:</string>
+     <string>Left front Short</string>
     </property>
    </widget>
    <widget class="QLabel" name="sensor4data">
@@ -205,14 +205,14 @@
    <widget class="QLabel" name="sensor5">
     <property name="geometry">
      <rect>
-      <x>459</x>
+      <x>430</x>
       <y>530</y>
-      <width>62</width>
-      <height>19</height>
+      <width>111</width>
+      <height>20</height>
      </rect>
     </property>
     <property name="text">
-     <string>sensor5:</string>
+     <string>Right front Short</string>
     </property>
    </widget>
    <widget class="QLabel" name="sensor5data">
