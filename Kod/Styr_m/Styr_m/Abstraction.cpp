@@ -14,11 +14,11 @@ using namespace std;
 void pushBackChar(char* inArray, char inChar){
     
     // Get size of Array
-    int size = strlen(inArray);
+    //int size = strlen(inArray);
     //Går att skriva mindre generellt just för vårt fall, då vet vi hur stor      //    arrayen är (Tobias)
-    
-    for (int i = size; i > 0; i--) {
-        inArray[i] = inArray[i-1];
+	
+    for (int i = 100; i > 0; i--) {
+		inArray[i] = inArray[i-1];
     }
     
     inArray[0] = inChar;
