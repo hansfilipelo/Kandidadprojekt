@@ -16,8 +16,6 @@ void pushBackChar(char* inArray, char inChar){
     // Get size of Array
     //int size = strlen(inArray);
     //Går att skriva mindre generellt just för vårt fall, då vet vi hur stor      //    arrayen är (Tobias)
-	char benny[100];
-	memcpy(inArray,benny,100);
 	
     for (int i = 99; i > 0; i--) {
 		inArray[i] = inArray[i-1];
