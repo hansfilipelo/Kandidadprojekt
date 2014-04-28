@@ -215,10 +215,10 @@ void Gui::updateSensorValues(int value0, int value1, int value2, int value3, int
     sensorVector7.push_back(value7);
     timeVector.push_back((double)time.elapsed()/1000);
 
-    ui->sensorPlot0->graph(0)->setData(timeVector,sensorVector1);
+    ui->sensorPlot0->graph(0)->setData(timeVector,sensorVector0);
     ui->sensorPlot0->xAxis->setRange(timeVector.last()-10,timeVector.last()+1);
     ui->sensorPlot0->replot();
-    ui->sensor0data->setText(QString::number(sensorVector1.last()));
+    ui->sensor0data->setText(QString::number(sensorVector0.last()));
 
     ui->sensorPlot1->graph(0)->setData(timeVector,sensorVector1);
     ui->sensorPlot1->xAxis->setRange(timeVector.last()-10,timeVector.last()+1);
