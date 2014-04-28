@@ -102,6 +102,14 @@ void Communication::handleData(){
         robotPointer->stopRotation();
     }
     
+    if(this->inData[1]=='P'){
+        int kp=assembleDouble(inData[3],inData[4],inData[5],inData[6]);
+        int kd=assembleDouble(inData[7],inData[8],inData[9],inData[10]);
+        int ref=(int)inData[11];
+                          
+        robotPointer->setControlParameters(kp,kd,ref);
+    }
+    
 }
 
 // -------------------
@@ -128,5 +136,14 @@ void Communication::sendRotateRequest(){
     slavePointer->SPI_Send();
 }
 
+double assembleDouble(char ten, char one, char tenth, char hundreth){
+    double tenNumber=(double)ten*10;
+    double oneNumber=(double)one;
+    double tenthNumber=(double)tenth/10;
+    double hundrethNumber=(double)hundreth/100;
+    
+    return tenNumber+oneNumber+tenthNumber+hundrethNumber;
+    
+}
 
 

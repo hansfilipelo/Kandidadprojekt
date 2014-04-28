@@ -96,6 +96,26 @@ volatile void Bluetooth::handle(){
 	if(inDataArray[1] == 'F'){
 		getMap = true;
 	}
+    if(inDataArray[1]=='P'){
+        asm("");
+		spiPointer->outDataArray[0] = pcHandle[0];
+		spiPointer->outDataArray[1] = pcHandle[1];
+		spiPointer->outDataArray[2] = pcHandle[2];
+		spiPointer->outDataArray[3] = pcHandle[3];
+        spiPointer->outDataArray[4] = pcHandle[4];
+		spiPointer->outDataArray[5] = pcHandle[5];
+		spiPointer->outDataArray[6] = pcHandle[6];
+		spiPointer->outDataArray[7] = pcHandle[7];
+        spiPointer->outDataArray[8] = pcHandle[8];
+		spiPointer->outDataArray[9] = pcHandle[9];
+		spiPointer->outDataArray[10] = pcHandle[10];
+		spiPointer->outDataArray[11] = pcHandle[11];
+		asm("");
+		spiPointer->sendArray(1); //send data to module 1 (steer)
+		asm("");
+
+        
+    }
 }
 
 void Bluetooth::receiveArray(){

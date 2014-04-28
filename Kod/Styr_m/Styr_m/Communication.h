@@ -25,7 +25,8 @@ public:
 	unsigned char inData[27];
     unsigned char outData[27];
 	volatile bool sendMapNow = false;
-	int row = 0; 	   
+	int row = 0;
+    double assembleDouble(char, char, char, char);
 
 protected:
     int dataLength;
