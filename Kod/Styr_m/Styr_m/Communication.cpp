@@ -102,6 +102,7 @@ void Communication::handleData(){
         robotPointer->stopRotation();
     }
     
+    // Constants for PD-control
     if(this->inData[1]=='P'){
         int kp=assembleDouble(inData[3],inData[4],inData[5],inData[6]);
         int kd=assembleDouble(inData[7],inData[8],inData[9],inData[10]);
