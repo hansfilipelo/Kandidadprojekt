@@ -28,20 +28,9 @@ public:
     void reset();
     void drawSensorNames();
     void firstDraw(unsigned char,unsigned char);
-    void insertSensorValuesToBuffer(int, char, char, char);
+    void insertSensorValuesToBuffer(unsigned char*);
 	
 	void update();
-	void updateS1(char,char,char);
-	void updateS2(char,char,char);
-	void updateS3(char,char,char);
-	void updateS4(char,char,char);
-	void updateL1(char,char,char);
-	void updateL2(char,char,char);
-	void updateM1(char,char,char);
-	void updateKP(int);
-	void updateKD(int);
-
-
 
 private:
     bool ready();
@@ -49,12 +38,13 @@ private:
     
     int getCol(int);
     int getRow(int);
-    bool drawSucceded;
+    bool drawSucceded = true;
     
-    
-    unsigned int writeBuffer[16][4];
+	unsigned int writeValue = 0;
+	unsigned char writePosition = 0;
+    unsigned int writeBuffer[4][16];
     unsigned int sensorCounter = 0;
-    
+    unsigned int internalCounter = 0;
 };
 
 #endif

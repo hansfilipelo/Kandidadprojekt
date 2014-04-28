@@ -23,6 +23,12 @@
 Lcd::Lcd(){
 	init();
 	command(0x0C); //turns of cursor
+	
+    for (int it = 0; it < 4; it++) {
+	    for (int i = 0; i < 16; i++) {
+		   writeBuffer[it][i] = 2;
+	    }
+    }
 }
 
 void Lcd::SetData(unsigned char var){
@@ -152,18 +158,6 @@ void Lcd::senddata(unsigned char var){
 	//LCD_busy(); //Wait for LCD to process the command
 }
 
-void Lcd::draw(unsigned char location, unsigned char sign){
-	
-        if(ready() && moveToggle){
-            command(location);
-            moveToggle = 0;
-        }
-        if(ready() && (!moveToggle)){
-            senddata(sign);
-            moveToggle = 1;
-    }
-}
-
 void Lcd::firstDraw(unsigned char location, unsigned char sign){
     //DŒligt med delayer bšr endast gšras vid initiering.
     _delay_us(40);
@@ -220,119 +214,68 @@ void Lcd::drawSensorNames(){
 	firstDraw(0xd1,0x34);
 }
 
-void Lcd::updateS1(char data1, char data2, char data3){
-	int m = 0x30 + (int)(data1);
-	int dm= 0x30 + (int)(data2);
-	int cm= 0x30 + (int)(data3);
+void Lcd::draw(unsigned char location, unsigned char sign){
 	
-	draw(0x83,m);
-	draw(0x84,dm);
-	draw(0x85,cm);
-}
-
-void Lcd::updateS2(char data1, char data2, char data3){
-	int m = 0x30 + (int)(data1);
-	int dm= 0x30 + (int)(data2);
-	int cm= 0x30 + (int)(data3);
-	
-	draw(0xc3,m);
-	draw(0xc4,dm);
-	draw(0xc5,cm);
-}
-
-void Lcd::updateS3(char data1, char data2, char data3){
-	int m = 0x30 + (int)(data1);
-	int dm= 0x30 + (int)(data2);
-	int cm= 0x30 + (int)(data3);
-	
-	draw(0x93,m);
-	draw(0x94,dm);
-	draw(0x95,cm);
-}
-
-void Lcd::updateS4(char data1, char data2, char data3){
-	int m = 0x30 + (int)(data1);
-	int dm= 0x30 + (int)(data2);
-	int cm= 0x30 + (int)(data3);
-	
-	draw(0xd3,m);
-	draw(0xd4,dm);
-	draw(0xd5,cm);
-}
-
-void Lcd::updateL1(char data1, char data2, char data3){
-	int m = 0x30 + (int)(data1);
-	int dm= 0x30 + (int)(data2);
-	int cm= 0x30 + (int)(data3);
-	
-	draw(0x8a,m);
-	draw(0x8b,dm);
-	draw(0x8c,cm);
-}
-
-void Lcd::updateL2(char data1, char data2, char data3){
-	int m = 0x30 + (int)(data1);
-	int dm= 0x30 + (int)(data2);
-	int cm= 0x30 + (int)(data3);
-	
-	draw(0xca,m);
-	draw(0xcb,dm);
-	draw(0xcc,cm);
-}
-
-void Lcd::updateM1(char data1, char data2, char data3){
-	int m = 0x30 + (int)(data1);
-	int dm= 0x30 + (int)(data2);
-	int cm= 0x30 + (int)(data3);
-	
-	draw(0x9a,m);
-	draw(0x9b,dm);
-	draw(0x9c,cm);
+        if(ready() && moveToggle){
+            command(location);
+            moveToggle = 0;
+        }
+        if(ready() && (!moveToggle)){
+            senddata(sign);
+            moveToggle = 1;
+			drawSucceded = true;
+    }
 }
 
 void Lcd::update(){
+	if(drawSucceded){
+		drawSucceded = false;
+		int row = getRow(sensorCounter);
+		int col = getCol(sensorCounter);
     
-    int row = getRow(sensorCounter);
-    int col = getCol(sensorCounter);
+		if(row == 0){
+			writePosition = 0x80;
+		}
+		if(row == 1){
+			writePosition = 0xc0;
+		}
+		if(row == 2) {
+			writePosition = 0x90;
+		}
+		else{
+			writePosition = 0xd0;
+		}
     
-    char position;
-    
-    if(row == 0){
-        position = 0x80;
-    }
-    if(row == 1){
-        position = 0xc0;
-    }
-    if(row == 2) {
-        position = 0x90;
-    }
-    else{
-        position = 0xd0;
-    }
-    
-    if (col==3) {
-        position = position + 3;
-    }
-    else{
-        position = position + 10;
-    }
-    
-    int value = (int)(writeBuffer[col][row]);
-    for (unsigned int i=0; i<3; i++) {
-        draw(position,value);
-        int value = (int)(writeBuffer[col+1][row]);
-        position = position + 1;
-    }
+		if (col==3) {
+			writePosition = writePosition + 2;
+		}
+		else{
+			writePosition = writePosition + 9;
+		}
+		internalCounter = internalCounter + 1;
+		writeValue = (int)(writeBuffer[row][col]);
+		if(internalCounter <= 3){
+			writePosition = writePosition + 1;
+			col = col + 1;
+		}
+		else{
+			internalCounter = 0;
+			sensorCounter = sensorCounter + 1;
+		}
+	}
+	draw(writePosition,writeValue);
 }
 
-void Lcd::insertSensorValuesToBuffer(int sensor, char m, char dm, char cm){
+void Lcd::insertSensorValuesToBuffer(unsigned char* inArray){
     //places sensorvalues in the correct position in the buffer
-    int row = getRow(sensor);
-    int col = getCol(sensor);
-    
-    writeBuffer[col][row] = m;
-    writeBuffer[col+1][row] = dm;
-    writeBuffer[col+2][row] = cm;
+	for(unsigned int i = 0; i<7; i++){
+		    int row = getRow(i+1);
+		    int col = getCol(i+1);
+		    
+		    writeBuffer[row][col] = inArray[i+2];
+		    writeBuffer[row][col+1] = inArray[i+3];
+		    writeBuffer[row][col+2] = inArray[i+4];
+	}
 }
 
 int Lcd::getCol(int sensor){
