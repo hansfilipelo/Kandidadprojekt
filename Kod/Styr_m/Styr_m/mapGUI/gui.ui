@@ -82,7 +82,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Left back Short</string>
+     <string>Left back short</string>
     </property>
    </widget>
    <widget class="QLabel" name="sensor2data">
@@ -108,7 +108,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Right back Short</string>
+     <string>Right back short</string>
     </property>
    </widget>
    <widget class="QLabel" name="sensor3data">
@@ -134,7 +134,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Left front Short</string>
+     <string>Left front short</string>
     </property>
    </widget>
    <widget class="QLabel" name="sensor4data">
@@ -160,7 +160,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Right front Short</string>
+     <string>Right front short</string>
     </property>
    </widget>
    <widget class="QLabel" name="sensor5data">
@@ -456,6 +456,48 @@
     </property>
     <property name="text">
      <string>Set parameters</string>
+    </property>
+   </widget>
+   <widget class="QCustomPlot" name="sensorPlot0" native="true">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>630</y>
+      <width>261</width>
+      <height>101</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>120</width>
+      <height>0</height>
+     </size>
+    </property>
+   </widget>
+   <widget class="QLabel" name="sensor0">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>650</y>
+      <width>111</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Front long</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="sensor0data">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>670</y>
+      <width>81</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>sensor6data</string>
     </property>
    </widget>
   </widget>
