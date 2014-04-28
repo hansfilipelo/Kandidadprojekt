@@ -11,6 +11,11 @@ void Communication::handleData(){
 	memcpy(inData,slavePointer->inDataArray,27);
     dataLength = (int)inData[0];
 	int speed = (int)inData[3];
+    // Protect from incorrect transmissions
+    if (speed > 100) {
+        speed = 5;
+    }
+    
 	//checks manual/auto
 	if (this->inData[1]=='a') {
 		manual = false;
