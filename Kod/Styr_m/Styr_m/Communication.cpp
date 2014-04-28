@@ -137,7 +137,7 @@ void Communication::sendRotateRequest(){
     slavePointer->SPI_Send();
 }
 
-double assembleDouble(char ten, char one, char tenth, char hundreth){
+double Communication::assembleDouble(char ten, char one, char tenth, char hundreth){
     double tenNumber=(double)ten*10;
     double oneNumber=(double)one;
     double tenthNumber=(double)tenth/10;
