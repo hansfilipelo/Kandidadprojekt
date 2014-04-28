@@ -192,14 +192,14 @@
    <widget class="QLabel" name="sensor6">
     <property name="geometry">
      <rect>
-      <x>460</x>
+      <x>430</x>
       <y>650</y>
-      <width>62</width>
+      <width>111</width>
       <height>19</height>
      </rect>
     </property>
     <property name="text">
-     <string>sensor6:</string>
+     <string>Left midrange</string>
     </property>
    </widget>
    <widget class="QLabel" name="speedLabel">
@@ -461,7 +461,7 @@
    <widget class="QCustomPlot" name="sensorPlot0" native="true">
     <property name="geometry">
      <rect>
-      <x>170</x>
+      <x>160</x>
       <y>630</y>
       <width>261</width>
       <height>101</height>
@@ -497,7 +497,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>sensor6data</string>
+     <string>sensor0data</string>
     </property>
    </widget>
   </widget>
