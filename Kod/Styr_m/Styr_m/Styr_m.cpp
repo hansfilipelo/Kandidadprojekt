@@ -150,6 +150,7 @@ int main(void)
 	Robot* robotPointer = new Robot(16,1,mapPointer,abstractionObject);
 	abstractionObject->setRobot(robotPointer);
 	
+    // counter
     int i = 0;
     
     for (;;) {
@@ -168,7 +169,10 @@ int main(void)
             
             // Update position in map
             robotPointer->updateRobotPosition();
+            
+            i = 0;
         }
+        i++;
         
         if(abstractionObject->sendMapNow){
             asm("");
