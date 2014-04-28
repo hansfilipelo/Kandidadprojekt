@@ -800,9 +800,11 @@ int Robot::getRightDistance(){
     
 }
 
-
-
-
+void Robot::setControlParameters(double inputKp, double inputKd, int inputRef){
+    Kp=inputKp;
+    Kd=inputKd;
+    Ref=inputRef;
+}
 
 
 

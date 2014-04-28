@@ -31,6 +31,11 @@ public:
     void fetchMap();
     void setControlParameters(double, double, int);
     
+    int getTen(double); //Returns ex. 1 if the number is 10
+    int getOne(double); //Returns ex 1 if the number is 1
+    int getTenth(double); //Returns ex. 1 if the number is 0.1
+    int getHundreth(double); //Returns ex. 1 if the number is 0.01
+    
 protected:
     
 private:

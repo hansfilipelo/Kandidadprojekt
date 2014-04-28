@@ -120,6 +120,8 @@ public:
     int getLeftDifference();
     void adjustPosition();
     
+    void setControlParameters(double, double, int);
+    
     
     
 protected:
@@ -152,8 +154,8 @@ protected:
     //Values concerning automatic control
     
     int movementSpeed;
-    int Kd; //Differentiation coeff.
-    int Kp; //Proportional coeff.
+    double Kd; //Differentiation coeff.
+    double Kp; //Proportional coeff.
     int Ref=5; //Reference value for control
     int previousRightError = 0;
     int previousLeftError = 0;

@@ -7,7 +7,7 @@ Communication::Communication(Slave* pointer){
 }
 
 void Communication::handleData(){
-   
+    
 	memcpy(inData,slavePointer->inDataArray,27);
     dataLength = (int)inData[0];
 	int speed = (int)inData[3];
@@ -47,79 +47,68 @@ void Communication::handleData(){
 		}
 	}
     
-    // Front sensor
-    if (this->inData[1] == 'S' && this->inData[2] == 0) {
+    
+    if ( this->inData[1]=='S' ) {
+        
+        // Front sensor
         char* temp = new char[3];
         
         for (int it = 0; it < 3; it++) {
             temp[it] = inData[it+3];
         }
         robotPointer->fwdValueIn(temp);
-    }
-    
-    // Back sensor
-    if (this->inData[1] == 'S' && this->inData[2] == 1) {
-        char* temp = new char[3];
         
-        for (int it = 0; it < 3; it++) {
+        // Back sensor
+        for (int it = 3; it < 6; it++) {
             temp[it] = inData[it+3];
         }
         robotPointer->bwdValueIn(temp);
-    }
-    
-    // Left long sensor
-    if (this->inData[1] == 'S' && this->inData[2] == 6) {
-        char* temp = new char[3];
         
-        for (int it = 0; it < 3; it++) {
+        // Left long sensor
+        for (int it = 6; it < 9; it++) {
             temp[it] = inData[it+3];
         }
         robotPointer->leftLongValueIn(temp);
-    }
-    
-    // Left front sensor
-    if (this->inData[1] == 'S' && this->inData[2] == 2) {
-        char* temp = new char[3];
         
-        for (int it = 0; it < 3; it++) {
+        // Left front sensor
+        for (int it = 9; it < 12; it++) {
             temp[it] = inData[it+3];
         }
         robotPointer->leftFrontValueIn(temp);
-    }
-    
-    // Left back sensor
-    if (this->inData[1] == 'S' && this->inData[2] == 3) {
-        char* temp = new char[3];
         
-        for (int it = 0; it < 3; it++) {
+        // Left back sensor
+        for (int it = 12; it < 15 ; it++) {
             temp[it] = inData[it+3];
         }
         robotPointer->leftBackValueIn(temp);
-    }
-    
-    // Right front sensor
-    if (this->inData[1] == 'S' && this->inData[2] == 4) {
-        char* temp = new char[3];
         
-        for (int it = 0; it < 3; it++) {
+        // Right front sensor
+        for (int it = 15; it < 18; it++) {
             temp[it] = inData[it+3];
         }
         robotPointer->rightFrontValueIn(temp);
-    }
-    
-    // Right back sensor
-    if (this->inData[1] == 'S' && this->inData[2] == 5) {
-        char* temp = new char[3];
         
-        for (int it = 0; it < 3; it++) {
+        
+        // Right back sensor
+        for (int it = 18; it < 21; it++) {
             temp[it] = inData[it+3];
         }
         robotPointer->rightBackValueIn(temp);
+        
     }
     
     // Gyro interrupt
     if (this->inData[1] == 'G') {
         robotPointer->stopRotation();
+    }
+    
+    // Constants for PD-control
+    if(this->inData[1]=='P'){
+        int kp=assembleDouble(inData[3],inData[4],inData[5],inData[6]);
+        int kd=assembleDouble(inData[7],inData[8],inData[9],inData[10]);
+        int ref=(int)inData[11];
+                          
+        robotPointer->setControlParameters(kp,kd,ref);
     }
     
 }
@@ -133,9 +122,9 @@ void Communication::setRobot(Robot* inRobot){
 // -------------------
 
 void Communication::sendMap(){
-		memcpy(slavePointer->outDataArray,robotPointer->getColAsChar(row),25);
-		asm("");
-		slavePointer->SPI_Send();
+    memcpy(slavePointer->outDataArray,robotPointer->getColAsChar(row),25);
+    asm("");
+    slavePointer->SPI_Send();
 }
 
 // --------------------------
@@ -148,5 +137,14 @@ void Communication::sendRotateRequest(){
     slavePointer->SPI_Send();
 }
 
+double Communication::assembleDouble(char ten, char one, char tenth, char hundreth){
+    double tenNumber=(double)ten*10;
+    double oneNumber=(double)one;
+    double tenthNumber=(double)tenth/10;
+    double hundrethNumber=(double)hundreth/100;
+    
+    return tenNumber+oneNumber+tenthNumber+hundrethNumber;
+    
+}
 
 

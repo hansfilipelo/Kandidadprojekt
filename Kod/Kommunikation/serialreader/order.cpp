@@ -69,17 +69,26 @@ void Order::fetchMap(){
 }
 
 void Order::setControlParameters(double Kp, double Kd, int Ref){
-    //Separates the parts of the doubles and sends them as chars.
-    int Kp1=floor(Kp);
-    int Kp01=floor(10*Kp);
-    int Kp001=floor(100*Kp);
-
-    int Kd1=floor(Kd);
-    int Kd01=floor(10*Kd);
-    int Kd001=floor(100*Kd);
-
-    std::cout << kp1 << kp01 << kp001 << std::endl;
-
-    char data[27] = {9,'P',0,(char)Kp1,(char)Kp01,(char)Kp001,(char)Kd1,(char)Kd01,(char)Kd001,(char)Ref,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30};
+    
+    char data[27] = {11,'P',0,(char)getTen(Kp),(char)getOne(Kp),(char)getTenth(Kp),(char)getHundreth(Kp),(char)getTen(Kd),(char)getOne(Kd),(char)getTenth(Kd),(char)getHundreth(Kd),(char)Ref,'Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z','Z'};
     serport->sendArray(data);
 }
+
+int Order::getTen(double number){
+    return ((int)floor(number/10) %10);
+}
+
+int Order::getOne(double number){
+    return ((int)floor(number) %10);
+}
+
+int Order::getTenth(double number){
+    return ((int)floor(number*10) %10);
+}
+
+int Order::getHundreth(double number){
+    return ((int)floor(number*100) %10);
+}
+
+
+
