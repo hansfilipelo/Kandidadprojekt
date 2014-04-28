@@ -25,6 +25,8 @@
 Slave steerModuleSlave;
 Slave* slavePointer = &steerModuleSlave;
 Communication* abstractionObject = new Communication(slavePointer);
+Map* mapPointer = new Map();
+Robot* robotPointer = new Robot(16,1,mapPointer,abstractionObject);
 
 
 #if DEBUG == 0
@@ -146,17 +148,21 @@ int main(void)
 	
 #endif
 	
-	Map* mapPointer = new Map();
-	Robot* robotPointer = new Robot(16,1,mapPointer,abstractionObject);
 	abstractionObject->setRobot(robotPointer);
+	
 	
     // counter
     int i = 0;
     
     for (;;) {
         // Drive
-        robotPointer->drive(25);
-        
+		if (abstractionObject->manual)
+		{
+			robotPointer->drive(0);
+		}
+		else{
+			robotPointer->drive(25);
+        }
         // Steer along wall
         robotPointer->adjustPosition();
         

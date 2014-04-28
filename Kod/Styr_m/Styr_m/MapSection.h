@@ -122,12 +122,14 @@ public:
     
     void setControlParameters(double, double, int);
     
-    
+    volatile double Kd = 0; //Differentiation coeff.
+    volatile double Kp = 0; //Proportional coeff.
+	
     
 protected:
     int getRightDistance();
     
-    char* fwdSensor = new char[100];
+	char* fwdSensor = new char[100];
     char* bwdSensor = new char[100];
     char* leftFrontSensor = new char[100];
     char* leftBackSensor = new char[100];
@@ -154,8 +156,6 @@ protected:
     //Values concerning automatic control
     
     int movementSpeed;
-    double Kd; //Differentiation coeff.
-    double Kp; //Proportional coeff.
     int Ref=5; //Reference value for control
     int previousRightError = 0;
     int previousLeftError = 0;

@@ -65,8 +65,11 @@ void handleDataFromSteer(){
 void handleDataFromSensor(){
 	ReceiveFromSensor=false;
 	memcpy(Firefly.outDataArray, Bus.inDataArray,27);
+	// copy data to Bus outDataArray
+	memcpy(Bus.outDataArray, Bus.inDataArray,27);
 	
 	if(Firefly.outDataArray[1] == 'S'){
+	Bus.sendArray(1);
 	Firefly.sendArray();
 	}
     //inserts data from one sensor into the buffer

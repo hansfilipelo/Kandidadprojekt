@@ -27,12 +27,13 @@ public:
 	volatile bool sendMapNow = false;
 	int row = 0;
     double assembleDouble(char, char, char, char);
+	
+	bool manual = true;
 
 protected:
     int dataLength;
     Slave* slavePointer;
     Robot* robotPointer;
-	bool manual = true;
 	
 };
 

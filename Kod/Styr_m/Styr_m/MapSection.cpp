@@ -721,9 +721,14 @@ void Robot::updateRobotPosition(){
 // -----------------------------------------
 
 void Robot::adjustPosition(){
-    int pd;
-    int error;
-    int derivError;
+	volatile int pd = 0;
+	volatile int error = 0;
+	volatile int derivError = 0;
+	
+	/*
+	char benny[100];
+	memcpy(this->fwdSensor,benny,100);
+	*/
     if (meanValueArray(rightFrontSensor,3)>80) { //right sensor out of range
         error=Ref-meanValueArray(leftFrontSensor,3);
         derivError=meanValueArray(leftFrontSensor,3)-previousLeftError;
