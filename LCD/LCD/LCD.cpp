@@ -4,36 +4,36 @@
  * Created: 4/14/2014 11:13:42 AM
  *  Author: davha227
  
- Rs -> PORTA5
- R/W -> PORTA6
- E -> PORTA7
- DB0 -> PORTC0
- DB1 -> PORTC1
- DB2 -> PORTD4
- DB3 -> PORTD5
- DB4 -> PORTD6
- DB5 -> PORTD7
- DB6 -> PORTC6
- DB7 -> PORTC7
+  Rs -> PORTA5
+  R/W -> PORTA6
+  E -> PORTA7
+  DB0 -> PORTC0
+  DB1 -> PORTC1
+  DB2 -> PORTD4
+  DB3 -> PORTD5
+  DB4 -> PORTD6
+  DB5 -> PORTD7
+  DB6 -> PORTC6
+  DB7 -> PORTC7
  */ 
 #include "LCD.h"
 
 Lcd::Lcd(){
-	DDRC |= 0xC3; //portC pin 0,1,6,7 till utgångar
-	DDRD |= 0xF0;	//portD pin 4-7 som utgångar
-	DDRA |= 0xE0; //port A pin 5-7 sätt till utgång
-	PORTA |= (1<<PORTA7); // enable till 1
+	DDRC |= 0xC3;			//portC pin 0,1,6,7 till utgångar
+	DDRD |= 0xF0;			//portD pin 4-7 som utgångar
+	DDRA |= 0xE0;			//port A pin 5-7 sätt till utgång
+	PORTA |= (1<<PORTA7);	//enable till 1
 	LCD_init();
 	
 	
-	LCD_draw(0x80,0x53); //8->rad1, 0-f väljer vart på raden
+	LCD_draw(0x80,0x53);	//8->rad1, 0-f väljer vart på raden
 	LCD_draw(0x9f,0x53);	//9->rad3
 	LCD_draw(0xc0,0x53);	//c->rad2
 	LCD_draw(0xdf,0x53);	//d->rad4
 }
 
-void Lcd::SetData(unsigned char var){
-	shift = var & 0x01;
+void Lcd::SetData(unsigned char var){	//plockar ut varje bit för sig i ett hextal och skickar ut det på rätt portar till LCD:n
+	shift = var & 0x01;					//skiftar och and:ar med 0x01 för att få ut önskad bit
 	if(shift == 0x01){
 		PORTC |= (1<<PORTC0);
 	}
@@ -107,6 +107,7 @@ void Lcd::SetData(unsigned char var){
 	}
 }
 
+//den här funktionen borde kollas på, är snyggare att kolla flagga än att lägg in delays
 /*
 void LCD_busy(){
 	PORTC = 0x80;
@@ -150,32 +151,30 @@ void Lcd::LCD_init(){
 	_delay_ms(100);
 }
 
-void Lcd::LCD_command(unsigned char var) // för att uföra olika kommandon
+void Lcd::LCD_command(unsigned char var)	// för att uföra olika kommandon, oftast önskad plats
 {
 	SetData(var);
 	PORTA &= ~(1<<PORTA5)|(1<<PORTA6);
 	PORTA |= (1<<PORTA7); //enable
 	PORTA &= ~(1<<PORTA7); //disable
-	//LCD_busy(); //Wait for LCD to process the command
 	_delay_ms(100);
 }
 
-void Lcd::LCD_senddata(unsigned char var)
+void Lcd::LCD_senddata(unsigned char var)	// för att skicka tecken till LCD
 {
-	SetData(var); //Function set: 2 Line, 8-bit, 5x7 dots
+	SetData(var);
 	
 	PORTA &= ~(1<<PORTA6);
 	PORTA |= (1<<PORTA5); //Rs till 1
 	PORTA |= (1<<PORTA7); //enable
 	PORTA &= ~(1<<PORTA7); //disable
 	_delay_ms(100);
-	//LCD_busy(); //Wait for LCD to process the command
 }
 
 
-void Lcd::LCD_draw(unsigned char location, unsigned char sign){
-	LCD_command(location);
-	LCD_senddata(sign);
+void Lcd::LCD_draw(unsigned char location, unsigned char sign){	//för att skriva på LCD
+	LCD_command(location);					//sätter platsen på LCD
+	LCD_senddata(sign);						//skickar önskat tecken till LCD
 }
 
 

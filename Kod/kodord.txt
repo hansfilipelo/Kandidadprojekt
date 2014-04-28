@@ -13,7 +13,8 @@ PIDVarSet       // Varierande   //  P   //  0   // [10tal,1tal,10del,100del,10ta
 styr-sensor-gyro//  fix 1       //  g	//  ’DNC’//  ’DNC’
 gyro konstantett// fix 8	//  k	//   0 //  [100 000-tal, 10 000-tal, 1000-tal, 100tal, 10tal, 1tal]
 gyro konstanttwa// fix 8	//  k	//   1 //  [100 000-tal, 10 000-tal, 1000-tal, 100tal, 10tal, 1tal]
-sensor 0-9      //  fix 5       //  S   //  0-9 //  [100tal, 10tal, 1tal]
+sensor 0-9      //  fix 26       //  S   // ’DNC’//  
+[100tal sens0, 10talsens0, 1talsens0, 100 tal sens1, 10tal sens1, 1talsens1 … ]
 gyro-sensor-styr//  fix 1       //  G   // 'DNC'// 'DNC'
 RFID            //  fix 1       //  R   // 'DNC'// 'DNC'
 
