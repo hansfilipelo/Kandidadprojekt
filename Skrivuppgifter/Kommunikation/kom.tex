@@ -142,9 +142,6 @@ Standarden finns i flertalet versioner som använder sig av olika frekvensband o
 \subsubsection{WEP}
 Wired Equivalent Privacy (WEP) är ett system som utvecklats för att göra 802.11 standarden säker. Principiellt går det till så att avsändaren(exempelvis routern) krypterar data och skickar det trådlöst för att mottagaren(exempelvis en smartphone)sedan ska kunna dekryptera det. WEP är ett protokoll som bygger på att både sändare och mottagare har samma nyckel. RC4-chiffret använder sedan nyckeln för att skapa en pseudo-slumpad utsekvens som skickas till mottagaren. Väl på mottagarsidan sker samma sekvens fast i omvänd form för att få fram datapaketet.\footnote{\label{RC4}Chaabouni, Rafik. Break WEP Faster with Statistical Analysis, Institute of Technology Lausanne, 2006. http://lasecwww.epfl.ch/pub/lasec/doc/cha06.pdf}
 
-Lind, Mikael. Affärsprocessinriktad förändringsanalys: utveckling och tillämpning av synsätt och metod. School of Computer and Communication Sciences
-, Linköpings universitet, 1996.
-
 \begin{figure}[htp]
   \begin{center}
   \includegraphics[keepaspectratio=true,width=0.5\linewidth]{WEP}  %skala och filnamn. 
@@ -245,6 +242,18 @@ Med ZigBee följer även ett koncept som heter ''Trust Center'' som möjliggör 
 
 \newpage
 \subsection{Räckvidd och störkänslighet}
+\begin{tabular}{lcr}
+	\hline
+	Bluetooth & WLAN & Zigbee \\
+	5-10 m  & 50-100 m   & 10-100 m\\
+	\hline
+ \end{tabular}
+\newline
+
+Bluetooth finns i 3 olika klasser där en klass har betydligt mycket längre räckvidd(upp till 100m). Detta beror dock på att den har mer än 40 gånger så stor sändareffekt och denna klass lämpar givetvis inte produkter med batteridrift och är inte medtagen i tabellen ovan. Zigbee har längre räckvidd än bluetooth på grund av dess låga strömkonsumtion och lämpar sig för mindre robotar etc. 
+WLan har helt klar bättre räckvidd och  här är det mer omgivningen som är problematiken.\footnote{
+Comparing WLAN and ZigBee for embedded applications}
+
 
 Det finns flertalet källor till störningar, ett exempel är andra trådlösa kommunikationstekniker som mobiltelefoner. Alla elektromagnetiska källor i aktuellt frekvensband kan vara en störningskälla, en vanlig sådan källa är mikrovågsugnar som skickar ut störningar i hela 2,4 GHz bandet.
 
@@ -291,6 +300,8 @@ Part 15.4 Wireless Medium Access Control (MAC) and Physical Layer (PHY) Specific
 Wheeler, Andy. Krama saften ur Zigbee. \emph{Elektronik Tidningen (2005).} \\ http://etn.se/index.php?option=com\_content\&task=view\&id=18463\&Itemid=66
 
 Zimmermann, Hubert (April 1980).\emph{ OSI Reference Model — The ISO Model of Architecture for Open Systems Interconnection.} IEEE Transactions on Communications 28 (4): 425–432. doi:10.1109/TCOM.1980.1094702
+
+Comparing WLAN and ZigBee for embedded applications,http://www.eetimes.com/document.asp?doc\_id=1276272
 
 
 \end{document}
