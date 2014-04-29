@@ -106,7 +106,7 @@ void SerialPort::handleError(QSerialPort::SerialPortError serialPortError)
 void SerialPort::handleData(QByteArray inData){
     if(inData[1] == 'M'){
         int row = (int)QByteToArray(inData)[2];
-        std::cout << row << std::endl;
+        //std::cout << row << std::endl;
         memcpy(GUI->mapArea[row],QByteToArray(inData),27);
         return;
     }
@@ -123,7 +123,7 @@ void SerialPort::handleData(QByteArray inData){
 
         GUI->updateSensorValues(sen0,sen1,sen2,sen3,sen4,sen5,sen6,sen7);
 
-        std::cout << sen0 << '\n' << sen1 << '\n' << sen2 << '\n' << sen3 << '\n' << sen4 << '\n' << sen5 << '\n' << sen6 << '\n' << sen7 << std::endl;
+        //std::cout << sen0 << '\n' << sen1 << '\n' << sen2 << '\n' << sen3 << '\n' << sen4 << '\n' << sen5 << '\n' << sen6 << '\n' << sen7 << std::endl;
 
     }
 }
