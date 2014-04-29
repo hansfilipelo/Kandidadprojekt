@@ -28,7 +28,6 @@ Communication* abstractionObject = new Communication(slavePointer);
 Map* mapPointer = new Map();
 Robot* robotPointer = new Robot(16,1,mapPointer,abstractionObject);
 
-
 #if DEBUG == 0
 
 // Interreupt for bus comm
@@ -142,7 +141,6 @@ int main(void)
     
     // Set up bus comm
     steerModuleSlave.SPI_Init();
-	volatile bool watch = abstractionObject->sendMapNow;
     
 	sei();
 	
@@ -154,15 +152,22 @@ int main(void)
     // counter
     int i = 0;
     
+    bool go = false;
+    
+    
     for (;;) {
         // Drive
 		if (abstractionObject->manual)
 		{
 			robotPointer->drive(0);
+            go = false;
 		}
-		else{
+		else if( !go && !abstractionObject->manual ) {
+			robotPointer->changeGear('f');
 			robotPointer->drive(25);
+            go = true;
         }
+        
         // Steer along wall
         robotPointer->adjustPosition();
         

@@ -69,7 +69,7 @@ protected:
 	 e = emptysection
 	 f = fire
 */
-	Map* mom = NULL;
+	Map* mom;
     char next;
 };
 
@@ -125,8 +125,6 @@ public:
     volatile double Kd = 0; //Differentiation coeff.
     volatile double Kp = 0; //Proportional coeff.
 	
-    
-protected:
     int getRightDistance();
     
 	int fwdSensor;
