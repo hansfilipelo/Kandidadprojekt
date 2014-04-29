@@ -135,7 +135,6 @@ protected:
     int leftBackSensor;
     int rightFrontSensor;
     int rightBackSensor;
-    int phiDotSensor;
     int leftLongSensor;
 	
 	int fwdDiff;
