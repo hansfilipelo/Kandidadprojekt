@@ -241,6 +241,10 @@ Standarden använder sig även av kontroll av vilka noder som är tillåtna, all
 Med ZigBee följer även ett koncept som heter ''Trust Center'' som möjliggör för noder att ansluta till nätverket, distribuera nycklar och ge möjligheten att kontrollera säkerheten hela vägen mellan två enheter. Det finns två olika säkerhetsnivåer, en gjord för hemmabruk och en för kommersiella applikationer. Den största skillnaden mellan de båda nivåerna är att den sistnämnda skapar och underhåller säkerhetsnycklar.\footnote{Wheeler Andy 2005}
 
 \subsection{Räckvidd och störkänslighet}
+Bluetooth finns i 3 olika klasser där en klass har betydligt mycket längre räckvidd(upp till 100m). Detta beror dock på att den har mer än 40 gånger så stor sändareffekt och denna klass lämpar givetvis inte produkter med batteridrift och är inte medtagen i tabellen ovan. Zigbee har längre räckvidd än bluetooth på grund av dess låga strömkonsumtion och lämpar sig för mindre robotar etc. 
+WLan har helt klar bättre räckvidd och  här är det mer omgivningen som är problematiken.\footnote{
+Comparing WLAN and ZigBee for embedded applications}
+
 \begin{tabular}{lcr}
 	\hline
 	Bluetooth & WLAN & Zigbee \\
@@ -248,11 +252,6 @@ Med ZigBee följer även ett koncept som heter ''Trust Center'' som möjliggör 
 	\hline
  \end{tabular}
 \newline
-
-Bluetooth finns i 3 olika klasser där en klass har betydligt mycket längre räckvidd(upp till 100m). Detta beror dock på att den har mer än 40 gånger så stor sändareffekt och denna klass lämpar givetvis inte produkter med batteridrift och är inte medtagen i tabellen ovan. Zigbee har längre räckvidd än bluetooth på grund av dess låga strömkonsumtion och lämpar sig för mindre robotar etc. 
-WLan har helt klar bättre räckvidd och  här är det mer omgivningen som är problematiken.\footnote{
-Comparing WLAN and ZigBee for embedded applications}
-
 
 Det finns flertalet källor till störningar,ett exempel är andra trådlösa kommunikationstekniker som mobiltelefoner. Alla elektromagnetiska källor i aktuellt frekvensband kan vara en störningskälla.
 
