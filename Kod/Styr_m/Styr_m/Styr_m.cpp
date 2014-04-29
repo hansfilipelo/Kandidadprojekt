@@ -164,6 +164,7 @@ int main(void)
 			robotPointer->drive(0);
 		}
 		else if( !go && !abstractionObject->manual ) {
+			robotPointer->changeGear('f');
 			robotPointer->drive(25);
             go = true;
         }
