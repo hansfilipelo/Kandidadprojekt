@@ -712,14 +712,10 @@ void Robot::adjustPosition(){
 	volatile int pd = 0;
 	volatile int error = 0;
 	volatile int derivError = 0;
-	
-	/*
-	char benny[100];
-	memcpy(this->fwdSensor,benny,100);
-	*/
-    if (meanValueArray(rightFrontSensor,3)>80) { //right sensor out of range
-        error=Ref-meanValueArray(leftFrontSensor,3);
-        derivError=meanValueArray(leftFrontSensor,3)-previousLeftError;
+
+    if (rightFrontSensor>80) { //right sensor out of range
+        error=Ref-leftFrontSensor;
+        derivError=previousLeftError-error;
         pd= Kp*error + Kd*derivError;
         previousLeftError=error; //Saves value for next differentiation
         if(getLeftDifference() < 0){
@@ -730,8 +726,8 @@ void Robot::adjustPosition(){
         }
     }
     else { //left Sensor out of range
-        error=Ref-meanValueArray(rightFrontSensor,3);
-        derivError=meanValueArray(rightFrontSensor,3)-previousRightError;
+        error=Ref-rightFrontSensor;
+        derivError=previousRightError-error;
         previousRightError=error;
         pd= Kp*error + Kd*derivError;
         if(getRightDifference() < 0){
@@ -750,8 +746,8 @@ void Robot::adjustPosition(){
 int Robot::getRightDifference(){
     int front;
     int back;
-    front = meanValueArray(rightFrontSensor,3);
-    back = meanValueArray(rightBackSensor,3);
+    front = rightFrontSensor;
+    back = rightBackSensor;
     return front - back;
 
     
@@ -760,8 +756,8 @@ int Robot::getRightDifference(){
 int Robot::getLeftDifference(){
     int front;
     int back;
-    front = meanValueArray(leftFrontSensor,3);
-    back = meanValueArray(leftBackSensor,3);
+    front = leftFrontSensor;
+    back = leftBackSensor;
     return front - back;
     
     
@@ -787,8 +783,8 @@ char* Robot::getColAsChar(int col){
 
 int Robot::getRightDistance(){
     
-    int output = meanValueArray(rightFrontSensor,3);
-    output = output + meanValueArray(rightBackSensor,3);
+    int output = rightFrontSensor;
+    output = output + rightBackSensor;
     return output/2;
     
 }

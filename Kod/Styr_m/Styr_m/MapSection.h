@@ -129,14 +129,14 @@ public:
 protected:
     int getRightDistance();
     
-	char fwdSensor[100];
-    char bwdSensor[100];
-    char leftFrontSensor[100];
-    char leftBackSensor[100];
-    char rightFrontSensor[100];
-    char rightBackSensor[100];
-    char phiDotSensor[100];
-    char leftLongSensor[100];
+	int fwdSensor;
+    int bwdSensor;
+    int leftFrontSensor;
+    int leftBackSensor;
+    int rightFrontSensor;
+    int rightBackSensor;
+    int phiDotSensor;
+    int leftLongSensor;
 	
 	int fwdDiff;
 	int bwdDiff;
@@ -156,7 +156,7 @@ protected:
     //Values concerning automatic control
     
     int movementSpeed;
-    int Ref=5; //Reference value for control
+    int Ref=10; //Reference value for control
     int previousRightError = 0;
     int previousLeftError = 0;
     
