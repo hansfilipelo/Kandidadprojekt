@@ -325,12 +325,10 @@ void Robot::turn(int pd){
 // ------------------------------------
 // Gets sensorvalues and will probably later activate SLAM functions
 
-void Robot::fwdValueIn(char* fwd){
+void Robot::fwdValueIn(char fwd[3]){
 	
-    for (int i = 0; i < 3; i++) {
-        pushBackChar(fwdSensor, fwd[i]);
-    }
-    
+        pushBackChar(fwdSensor, fwd);
+
 #if DEBUG == 1
     cout << "fwdValueIn" << endl;
     for (int it = 0; it < (int)strlen(fwdSensor); it++) {
@@ -341,7 +339,7 @@ void Robot::fwdValueIn(char* fwd){
 
 void Robot::bwdValueIn(char* bwd){
 	for (int i = 0; i < 3; i++) {
-        pushBackChar(bwdSensor, bwd[i]);
+        pushBackChar(bwdSensor, bwd);
     }
     
 #if DEBUG == 1
@@ -352,10 +350,8 @@ void Robot::bwdValueIn(char* bwd){
 #endif
 }
 
-void Robot::leftBackValueIn(char* left){
-	for (int i = 0; i < 3; i++) {
-        pushBackChar(leftBackSensor, left[i]);
-    }
+void Robot::leftBackValueIn(char left[3]){
+        pushBackChar(leftBackSensor, left);
     
 #if DEBUG == 1
     cout << "leftBackValueIn" << endl;
@@ -365,10 +361,8 @@ void Robot::leftBackValueIn(char* left){
 #endif
 }
 
-void Robot::leftFrontValueIn(char* left){
-	for (int i = 0; i < 3; i++) {
-        pushBackChar(leftFrontSensor, left[i]);
-    }
+void Robot::leftFrontValueIn(char left[3]){
+        pushBackChar(leftFrontSensor, left);
     
 #if DEBUG == 1
     cout << "leftFrontValueIn" << endl;
@@ -378,10 +372,8 @@ void Robot::leftFrontValueIn(char* left){
 #endif
 }
 
-void Robot::leftLongValueIn(char* left){
-	for (int i = 0; i < 3; i++) {
-        pushBackChar(leftLongSensor, left[i]);
-    }
+void Robot::leftLongValueIn(char left[3]){
+        pushBackChar(leftLongSensor, left);
     
 #if DEBUG == 1
     cout << "leftLongValueIn" << endl;
@@ -391,9 +383,9 @@ void Robot::leftLongValueIn(char* left){
 #endif
 }
 
-void Robot::rightBackValueIn(char* right){
+void Robot::rightBackValueIn(char right[3]){
 	for (int i = 0; i < 3; i++) {
-        pushBackChar(rightBackSensor, right[i]);
+        pushBackChar(rightBackSensor, right);
     }
     
 #if DEBUG == 1
@@ -404,10 +396,8 @@ void Robot::rightBackValueIn(char* right){
 #endif
 }
 
-void Robot::rightFrontValueIn(char* left){
-	for (int i = 0; i < 3; i++) {
-        pushBackChar(rightFrontSensor, left[i]);
-    }
+void Robot::rightFrontValueIn(char right[3]){
+        pushBackChar(rightFrontSensor, right);
     
 #if DEBUG == 1
     cout << "rightFrontValueIn" << endl;
@@ -417,10 +407,8 @@ void Robot::rightFrontValueIn(char* left){
 #endif
 }
 
-void Robot::phiDotValueIn(char* phiDot){
-	for (int i = 0; i < 3; i++) {
-        pushBackChar(phiDotSensor, phiDot[i]);
-    }
+void Robot::phiDotValueIn(char phiDot[3]){
+        pushBackChar(phiDotSensor, phiDot);
 }
 
 // --------------------------------------------

@@ -28,7 +28,7 @@ void operator delete[](void *);
 
 #endif
 
-void pushBackChar(char* inArray, char inChar);
+void pushBackChar(char* inArray, char inChar[3]);
 char* intToChar(int inInt);
 int charToInt(char* inArray);
 int getValueFromArray(char* inArray, int valueNr);

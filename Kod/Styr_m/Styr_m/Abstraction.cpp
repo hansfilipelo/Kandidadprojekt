@@ -11,17 +11,19 @@ using namespace std;
 // Usage: 
 //		ArrayPointer = pushBackChar(inArray, char);
 
-void pushBackChar(char* inArray, char inChar){
+void pushBackChar(char* inArray, char inChar[3]){
     
     // Get size of Array
     //int size = strlen(inArray);
     //Går att skriva mindre generellt just för vårt fall, då vet vi hur stor      //    arrayen är (Tobias)
 	
-    for (int i = 99; i > 0; i--) {
+    for (int i = 99; i > 2; i--) {
 		inArray[i] = inArray[i-1];
     }
     
-    inArray[0] = inChar;
+    inArray[0] = inChar[0];
+	inArray[1] = inChar[1];
+	inArray[2] = inChar[2];
 }
 
 // -----------
