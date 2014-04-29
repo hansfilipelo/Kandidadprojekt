@@ -93,14 +93,14 @@ public:
     void stopRotation();
 	
 	// Putting sensordata in array
-	void fwdValueIn(char*);
-	void bwdValueIn(char*);
-	void leftFrontValueIn(char*);
-    void leftBackValueIn(char*);
-    void leftLongValueIn(char*);
-	void rightFrontValueIn(char*);
-    void rightBackValueIn(char*);
-	void phiDotValueIn(char*);
+	void fwdValueIn(char fwd[3]);
+	void bwdValueIn(char bwd[3]);
+	void leftFrontValueIn(char left[3]);
+    void leftBackValueIn(char left[3]);
+    void leftLongValueIn(char left[3]);
+	void rightFrontValueIn(char right[3]);
+    void rightBackValueIn(char right[3]);
+	void phiDotValueIn(char phi[3]);
     
 	// SLAM (mapping, positioning)
 	void setFwdClosed();
@@ -129,14 +129,14 @@ public:
 protected:
     int getRightDistance();
     
-	char* fwdSensor = new char[100];
-    char* bwdSensor = new char[100];
-    char* leftFrontSensor = new char[100];
-    char* leftBackSensor = new char[100];
-    char* rightFrontSensor = new char[100];
-    char* rightBackSensor = new char[100];
-    char* phiDotSensor = new char[100];
-    char* leftLongSensor = new char[100];
+	char fwdSensor[100];
+    char bwdSensor[100];
+    char leftFrontSensor[100];
+    char leftBackSensor[100];
+    char rightFrontSensor[100];
+    char rightBackSensor[100];
+    char phiDotSensor[100];
+    char leftLongSensor[100];
 	
 	int fwdDiff;
 	int bwdDiff;
