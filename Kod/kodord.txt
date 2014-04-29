@@ -1,7 +1,7 @@
 ﻿Beskrivning     // Datalängd (dec)//  KodOrd (char) // ev Arg (dec)  //  Data (dec/char)
 
-rotera vänster  //  fix 2       //  r   //  0   // [Var1] (speed)
-rotera höger    //  fix 2       //  r   //  1   // [Var1] (speed)
+rotera vänster  //  fix 3       //  r   //  0   // [Var1] (speed)
+rotera höger    //  fix 3       //  r   //  1   // [Var1] (speed)
 halt            //  fix 3       //  h   // ’DNC’// ’DNC’
 framåt          //  fix 3       //  f   //  0   // [Var1] (speed)
 bakåt           //  fix 3       //  b   //  0   // [Var1] (speed)
@@ -10,10 +10,11 @@ FetchMap	//  fix 1	//  F	// ’DNC’// ’DNC’
 
 PIDVarSet       // Varierande   //  P   //  0   // [10tal,1tal,10del,100del,10tal, 1tal,10del,100del, Var1]
 
-styr-sensor-gyro//  fix 1       //  g	//  ’DNC’//  ’DNC’
-gyro medurs// fix 5	//  k	//   0 //  [100tal, 10tal, 1tal]
-gyro moturs// fix 5	//  k	//   1 //  [100tal, 10tal, 1tal]
-sensor 0-9      //  fix 26       //  S   // ’DNC’//  
+gyrokalibrering	//  fix 2       //  g	//  0  //  ’DNC’
+svängberäkning	//  fix 2       //  g	//  1  //  ’DNC'
+gyro medurskonst//  fix 5	//  k	//   0 //  [100tal, 10tal, 1tal]
+gyro moturskonst//  fix 5	//  k	//   1 //  [100tal, 10tal, 1tal]
+sensor 0-9      //  fix 26      //  S   // ’DNC’//  
 [100tal sens0, 10talsens0, 1talsens0, 100 tal sens1, 10tal sens1, 1talsens1 … ]
 gyro-sensor-styr//  fix 1       //  G   // 'DNC'// 'DNC'
 RFID            //  fix 1       //  R   // 'DNC'// 'DNC'

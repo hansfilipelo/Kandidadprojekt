@@ -116,7 +116,7 @@
 %------------------------------------------------
 \section{Inledning}
 
-Simultan positionering och kartläggning (SLAM) är ett problem som kan liknas vid ''Hönan och ägget''-problemet. Utan att veta var vi är - hur kartlägger vi då vår omgivining? Åt andra hållet får man ställa sig frågan - hur kartlägger vi vår omgivning utan att veta var vi är? 
+Simultan positionering och kartläggning (SLAM) är ett problem som kan liknas vid ''Hönan och ägget''-problemet. Utan att veta var vi är - hur kartlägger vi då vår omgivning? Åt andra hållet får man ställa sig frågan - hur kartlägger vi vår omgivning utan att veta var vi är? 
 
 Det är inte helt enkelt att lösa dessa frågor, men det finns approximativa lösningar på problemet SLAM. Gemensamt för alla lösningar är att de bygger på möjligheten att läsa av sin omgivning i kombination med
 sannolikhetsteori. Då sensordata aldrig kan antas vara exakt använder man sannolikhetsteori för att göra rimlighetsbedömningar i de stickprov av mätningar sensorerna ger.
@@ -148,11 +148,11 @@ På senare år har man, precis som inom många andra vetenskapliga områden, set
 
 \section{Problemformulering}
 
-En robot med tillgång till ett antal avståndssensorer, ett gyro och en RFID-sensor placeras i ett stängt område med dimension 6x6 meter och som är uppdelad i 40x40 centimeters segment. Den ska, med en vägg som startpunkt, helt autonomt kartlägga området genom att markera ut var väggar finns och var det finns områden som inte går att nå. Den ska även markera ut var det går att finna RFID-taggar. Om inte hela det slutna området är kartlagt ska den upptäcka vilka segment som är oupptäckta, färdas dit och lägga till det i kartan. När området är kartlagt ska roboten ta sig tillbaka till startpunkten och avsluta arbetet. 
+En robot med tillgång till ett antal avståndssensorer, ett gyro och en RFID-sensor placeras i ett stängt område med dimension 6 x 6 meter och som är uppdelad i 40 x 40 centimeters segment. Den ska, med en vägg som startpunkt, helt autonomt kartlägga området genom att markera ut var väggar finns och var det finns områden som inte går att nå. Den ska även markera ut var det går att finna RFID-taggar. Om inte hela det slutna området är kartlagt ska den upptäcka vilka segment som är oupptäckta, färdas dit och lägga till det i kartan. När området är kartlagt ska roboten ta sig tillbaka till startpunkten och avsluta arbetet. 
 
 \subsection{Tillgängligt materiel}
 
-I världen finns ett väldigt stort utbud av hårdvara, mjukvara och kommunikationslänkar. Denna rapport begränsar sig till kod som kan köras på AVR-processorer, och då mer specifikt Atmega 1284p\footnote{ISY, https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/atmega1284p.pdf}
+I världen finns ett stort utbud av hårdvara, mjukvara och kommunikationslänkar. Denna rapport begränsar sig till kod som kan köras på AVR-processorer, och då mer specifikt Atmega 1284p\footnote{ISY, https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/atmega1284p.pdf, Hämtad 28 mars 2014.}
 
 ISY tillhandahåller följande i sin utvecklingsmiljö: 
 \begin{itemize}
@@ -176,22 +176,22 @@ Uppskattandet av färdvägen är aldrig en exakt lära. Det finns alltid en viss
 
 Många robotar nyttjar förmågan att optiskt mäta objekt i sin omgivning, men det förekommer även implementeringar med radar och sonar. Det finns då möjlighet att kompensera för tidigare mätfel vid framtida mätningar, något som inte bara går att utföra med data från optiska sensorer, men som kan göra större inverkan på dessa. Om man enbart förlitar sig på interna mätningar finns risken att tidiga mätfel görs, vilket fortplantar sig och leder till än större felskattningar senare under kartläggningen. 
 
-Med optisk avläsning av omvärlden finns alltid möjligheten att korrigera tidigare felaktiga mätvärden genom att samla in mer mätdata för att mer korrekt kunna beskriva sin omgivning. Av den anledningen är all typ av SLAM beroende av att på något sätt granska sin omgivning. 
+Med optisk avläsning av omvärlden finns alltid möjligheten att korrigera tidigare felaktiga mätvärden genom att samla in mer mätdata för att på ett korrektare sätt kunna beskriva sin omgivning. Av den anledningen är all typ av SLAM beroende av att på något sätt granska sin omgivning. 
 
 \subsubsection{Tillståndsrepresentation av reglersystem}
 
-Inom reglerteknik kan linjära system beskrivas på så kallad tillståndsformel så som Glad och Ljung\footnote{Glad, Torkel och Ljung, (2006) beskriver i \textit{Reglerteknik - Grundläggande teori}.} beskriver. I fallet med SLAM använder man lämpligen sensorernas värden som tillstånd, tecknat $\vec{x}$. Tillstånden mäts med diskreta värden då datorer endast hanterar diskreta mätningar och ej kontinuerliga. En diskret tillståndsbeskrivning av ett linjärt reglersystem beskrivs av: 
+Inom reglerteknik kan linjära system beskrivas på så kallad tillståndsformel så som Glad och Ljung\footnote{Glad, Torkel och Ljung, Lennart (2006), \textit{Reglerteknik - Grundläggande teori}.} beskriver. I fallet med SLAM använder man lämpligen sensorernas värden som tillstånd, tecknat $\vec{x}$. Tillstånden mäts med diskreta värden då datorer endast hanterar diskreta mätningar och ej kontinuerliga. En diskret tillståndsbeskrivning av ett linjärt reglersystem beskrivs av: 
 
 \begin{gather}
 \vec{x}[n+1] = A\vec{x}[n] + B\vec{u}[n] \\
 \vec{y}[n] = C\vec{x[n]} + D\vec{u[n]}
 \end{gather}
 \\
-Där A, B, C och D är insignaler, u är insignaler och $\vec{y}$ exempelvis är kringliggande objekts position i förhållande till till roboten, alternativt robotens position. 
+där A, B, C och D är insignaler, u är insignaler och $\vec{y}$ exempelvis är kringliggande objekts position i förhållande till roboten, alternativt robotens position. 
 
 I ett realiserbart system nyttjas sensorer med en viss osäkerhet. Man kan därmed enbart skatta systemets tillstånd och inte exakt beräkna dem. 
 
-Tillståndsvariablerna kan skattas med flera metoder utifrån tillgänglig mätdata. Två exempel på väl använda metoder är Maximum likelihood-metoden (ML-skattning) och Minstakvadratmetoden. Minstakvadratmetoden är något precisare - medan implementeringen av ML-skattning är enklare. Då man bygger en robot som implementerar SLAM är det ofta lämpligt att implementera ML-skattning. 
+Tillståndsvariablerna kan skattas med flera metoder utifrån tillgänglig mätdata. Två exempel på väl använda metoder är Maximum likelihood-metoden (ML-skattning) och Minstakvadratmetoden. Minstakvadratmetoden är något precisare medan implementeringen av ML-skattning är enklare. Då man bygger en robot som implementerar SLAM är det ofta lämpligt att implementera ML-skattning. 
 
 \paragraph{ML-skattning}
 
@@ -203,7 +203,7 @@ Det mest sannolika värdet fås, för diskreta mätvärden, binomialfördelninge
 P(X = x_{i}) = p^{x_{i}}(1-p)^{n-x_{i}}
 \end{gather}
 
-Där p är sannolikheten att sensorvärdet är $x_i$ och n är antalet mätningar. 
+där p är sannolikheten att sensorvärdet är $x_i$ och n är antalet mätningar. 
 
 Sannolikhetsfunktionen, L, för hela stickprovet ges sedan av: 
 
@@ -223,7 +223,7 @@ Derivatan ges sedan av:
 \frac{dL}{dp} = 0 = \sum\limits_1^i{\frac{x_i}{p}+\frac{n-x_i}{1-p}}
 \end{gather}
 
-Vilket efter uträkningar ger $p = \bar{x}$. Vid ML-skattning av sensorvärden är alltså medelvärdet av sensordata lämpligt att använda.
+vilket efter uträkningar ger $p = \bar{x}$. Vid ML-skattning av sensorvärden är alltså medelvärdet av sensordata lämpligt att använda.
 
 
 
@@ -235,9 +235,9 @@ Det finns olika typer av SLAM för olika typer av tillämpningar och med olika e
 Ett Kalmanfilter är en typ av algoritm som med hjälp av tidigare mätdata från sensorer, som kan innehålla brus och störningar, uppskattar okända variabler. Ett Kalmanfilter arbetar på linjära och oberoende tillståndsvariabler och är ett essentiellt verktyg för vägval samt positionsuppskattningen i ett SLAM-system. 
 
 \subsubsection{EKF-SLAM} 
-EKF-SLAM är en förkortning för Extended Kalman Filter for Simultaneous Localization And Mapping. Det utökade Kalmanfiltret (extended) skiljer sig från det ursprungliga på så vis att den används vid icke-linjära förhållanden och istället linjäriserar variablerna kring ett medelvärde och deras kovarians. Med kovarians menas då hur de olika variablerna beror av varandra.
+EKF-SLAM är en förkortning för Extended Kalman Filter for Simultaneous Localization And Mapping. Det utökade Kalmanfiltret (extended) skiljer sig från det ursprungliga på så vis att det används vid icke-linjära förhållanden och istället linjäriserar variablerna kring ett medelvärde och deras kovarians. Med kovarians menas då hur de olika variablerna beror av varandra.
 
-Algoritmen arbetar oftast i två steg; först skattas variablerna sedan vid nästa mätning 
+Algoritmen arbetar oftast i två steg; först skattas variablerna, sedan vid nästa mätning 
 kommer de skattade variablerna viktas, där de med mest säkerhet är av störst vikt.
 
 \subsubsection{fastSLAM}
@@ -265,11 +265,11 @@ För att WiFi-SLAM ska fungera krävs att accesspunkten har information om posit
 
 \subsection{Exempel på implementeringar}
 
-Det finns många exempel på implementeringar av SLAM. Robotdammsugare är ett bra exempel på en modern tillämpning som kan använda sig av SLAM. Det är då en liten enhet som kan använda sig av en modifierad version av VSLAM som kallas CV-SLAM. Detta står för Ceiling Visual SLAM, det vill säga att roboten har kameror som är riktade uppåt och använder landmärken i taket för att rita upp en karta över rummet den städar. Det gör att den dammsuger alla platser i rummet istället för att städa samma punkt flera gånger. 
+Det finns många exempel på implementeringar av SLAM. Robotdammsugare är ett bra exempel på en modern tillämpning som kan använda sig av SLAM. Det är då en liten enhet som kan utnyttja en modifierad version av VSLAM som kallas CV-SLAM. Detta står för Ceiling Visual SLAM, det vill säga att roboten har kameror som är riktade uppåt och använder landmärken i taket för att rita upp en karta över rummet den städar. Det gör att den dammsuger alla platser i rummet istället för att städa samma punkt flera gånger. 
 
-Det här är ett bra exempel på hur moderna, små mikrokontrollers kan möjliggöra SLAM att användas för att förenkla vår vardag.  
+Det här är ett bra exempel på hur moderna, små mikrokontrollers kan göra det möjligt att använda SLAM för att förenkla vår vardag.
 
-SLAM används, och har används under längre tid, också i rymdexpeditioner där robotar skickas upp i rymden för att upptäcka och kartlägga ställen som vi människor inte har möjlighet att besöka. 
+SLAM används, och har använts under längre tid, också i rymdexpeditioner där robotar skickas upp i rymden för att upptäcka och kartlägga ställen som vi människor inte har möjlighet att besöka. 
 
 %------------------------------------------------
 %--------------------Fördjupning-----------------
@@ -378,7 +378,8 @@ Vi har insett att vi tack vare det långa synfältet hos våra optiska sensorer 
 
 % --------------- Källförteckning ---------------------
 \newpage 
-\section{Källförteckning} 
+\section*{Källförteckning} 
+\addcontentsline{toc}{section}{Källförteckning}
 
 David Törnqvist. Estimation and Detection with Applications to Navigation. PhD thesis, Linköping University, 2008. Hämtad 15 april 2014.
 \url{http://urn.kb.se/resolve?urn=urn:nbn:se:liu:diva-14956}
