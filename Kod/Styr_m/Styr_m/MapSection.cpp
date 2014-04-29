@@ -505,14 +505,7 @@ void Robot::setBwdClosed(){
 
 void Robot::setLeftClosed(){
 	
-	int output = 0;
-    
-    if ( fwdSensor > 340 && bwdSensor > 340 ) {
-        output = 300;
-    }
-    else{
-        output = leftLongSensor/40;
-    }
+	int output = leftLongSensor/40;
 	
 	// Set closed section output + 1 steps away from robot.
 	// Direction 0->y->17, "fwd"
