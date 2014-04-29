@@ -154,14 +154,18 @@ int main(void)
     // counter
     int i = 0;
     
+    bool go = false;
+    
+    
     for (;;) {
         // Drive
 		if (abstractionObject->manual)
 		{
 			robotPointer->drive(0);
 		}
-		else{
+		else if( !go && !abstractionObject->manual ) {
 			robotPointer->drive(25);
+            go = true;
         }
         // Steer along wall
         robotPointer->adjustPosition();
