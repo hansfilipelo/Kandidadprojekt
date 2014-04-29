@@ -44,11 +44,11 @@ ISR(ADC_vect)
 	double temp = (double)varde;
 	hey = (double)temp*5/256;
 	asm("");
-	if( hey < 2.51 && hey > 2.47){
+	if( hey < 2.57 && hey > 2.53){
 		
 	}
 	else{
-	angle = angle + hey-2.48;	
+	angle = angle + hey-2.55;	
 	}
 	
 }
