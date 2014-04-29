@@ -28,6 +28,8 @@ Communication* abstractionObject = new Communication(slavePointer);
 Map* mapPointer = new Map();
 Robot* robotPointer = new Robot(16,1,mapPointer,abstractionObject);
 
+volatile double testKp;
+volatile double testKd;
 
 #if DEBUG == 0
 
@@ -191,6 +193,9 @@ int main(void)
             abstractionObject->sendMap();
             asm("");
         }
+		
+		testKp = robotPointer->Kp;
+		testKd = robotPointer->Kd;
     }
 	
 	return 0;

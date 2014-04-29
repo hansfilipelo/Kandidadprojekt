@@ -109,10 +109,10 @@ void Communication::handleData(){
     
     // Constants for PD-control
     if(this->inData[1]=='P'){
-        int kp=assembleDouble(inData[3],inData[4],inData[5],inData[6]);
-        int kd=assembleDouble(inData[7],inData[8],inData[9],inData[10]);
+        double kp=assembleDouble(inData[3],inData[4],inData[5],inData[6]);
+        double kd=assembleDouble(inData[7],inData[8],inData[9],inData[10]);
         int ref=(int)inData[11];
-                          
+		
         robotPointer->setControlParameters(kp,kd,ref);
     }
     
@@ -144,11 +144,18 @@ void Communication::sendRotateRequest(){
 
 double Communication::assembleDouble(char ten, char one, char tenth, char hundreth){
     double tenNumber=(double)ten*10;
-    double oneNumber=(double)one;
-    double tenthNumber=(double)tenth/10;
-    double hundrethNumber=(double)hundreth/100;
     
-    return tenNumber+oneNumber+tenthNumber+hundrethNumber;
+	double oneNumber=(double)one;
+	
+	double tenthTemp = (double)tenth;
+    volatile double tenthNumber=tenthTemp/10;
+	
+	double hundrethTemp = (double)hundreth;
+    double hundrethNumber = hundrethTemp/100;
+    
+	volatile double output = tenNumber+oneNumber+tenthNumber+hundrethNumber;
+	
+    return output;
     
 }
 
