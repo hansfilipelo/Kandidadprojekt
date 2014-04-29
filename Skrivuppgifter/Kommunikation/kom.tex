@@ -243,15 +243,15 @@ Säkerhetsåtgärderna i denna standard är baserade på symmetrisk kryptering �
 Standarden använder sig även av kontroll av vilka noder som är tillåtna, alltså vilka som får skicka data. Varje nod har en access control list (ACL), en lista över noder som är godkända att kommunicera med som noden har för att kunna jämföra med inkommande förfrågningar från andra noder.\footnote{Zimmermann, Hubert 1980} 
 Med ZigBee följer även ett koncept som heter ''Trust Center'' som möjliggör för noder att ansluta till nätverket, distribuera nycklar och ge möjligheten att kontrollera säkerheten hela vägen mellan två enheter. Det finns två olika säkerhetsnivåer, en gjord för hemmabruk och en för kommersiella applikationer. Den största skillnaden mellan de båda nivåerna är att den sistnämnda skapar och underhåller säkerhetsnycklar.\footnote{Wheeler Andy 2005}
 
+\newpage
 \subsection{Räckvidd och störkänslighet}
 
-Det finns flertalet källor till störningar,ett exempel är andra trådlösa kommunikationstekniker som mobiltelefoner. Alla elektromagnetiska källor i aktuellt frekvensband kan vara en störningskälla.
+Det finns flertalet källor till störningar, ett exempel är andra trådlösa kommunikationstekniker som mobiltelefoner. Alla elektromagnetiska källor i aktuellt frekvensband kan vara en störningskälla, en vanlig sådan källa är mikrovågsugnar som skickar ut störningar i hela 2,4 GHz bandet.
 
-IEEE 802.11, Bluetooth och ZigBee arbetar samtliga helt eller delvis i 2,4 GHz bandet och detta leder till möjligheter för störningar mellan de olika kommunikationsteknikerna. Dessa tre tekniker är alla godkända av IEEE 802 som utvecklar standarder för kommunikation via trådlösa medier. En del av att räknas till IEEE 802-familjen är att ta fram ett ''Coexistence Assurance Document'' och en plan för hur samtliga IEEE 802 tekniker ska kunna fungera gemensamt utan att påverka varandra mer än nödvändigt. 
-\footnote{ZigBee and Wireless Radio
+IEEE 802.11, Bluetooth och ZigBee arbetar samtliga nära 2,4 GHz bandet och detta leder till möjligheter för störningar mellan de olika kommunikationsteknikerna. Dessa tre tekniker är alla godkända av IEEE 802 som utvecklar standarder för kommunikation via trådlösa medier. En del av att räknas till IEEE 802-familjen är att ta fram ett ''Coexistence Assurance Document'' och en plan för hur samtliga IEEE 802 tekniker ska kunna fungera gemensamt utan att påverka varandra mer än nödvändigt.\footnote{ZigBee and Wireless Radio
 Frequency Coexistence, 2007, https://docs.zigbee.org/zigbee-docs/dcn/07-5219.PDF}
 
-En av teknikerna för att minska eventuella störningar är att skicka sin data utspridd på olika frekvenser. Detta ger vid en störning på en viss frekvens att det är endast den delen av datasändningen som blir förstörd. Denna förstörda data kan upptäckas och skickas om på en annan frekvens. Detta kallas ''spread spectrum'' och en vanlig implementering av den kallas ''frequency hopping''.\footnote{
+En av teknikerna för att minska eventuella störningar är att skicka sin data utspridd på olika frekvenser. Detta ger vid en störning på en viss frekvens att det är endast den delen av datasändningen som blir förstörd. Denna förstörda data kan upptäckas och skickas om på en annan frekvens. Detta kallas ''spread spectrum'' och en vanlig implementering av den kallas ''frequency hopping'', (FH). Med FH kommer transmissioner att spridas ut på vissa frekvenser, där mer avancerade versioner av FH kan mäta i sin omgivning för att hitta lämpliga kanaler i bandet för kommunikationen. När enheten har hittat dessa kanaler så skapas en mask som sedan delas mellan enheterna som ska kommunicera.\footnote{
 How WiFi Works, http://www.i-programmer.info/programming/hardware/2767-how-wifi-works.html}
 
 \newpage
