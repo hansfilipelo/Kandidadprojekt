@@ -326,89 +326,80 @@ void Robot::turn(int pd){
 // Gets sensorvalues and will probably later activate SLAM functions
 
 void Robot::fwdValueIn(char fwd[3]){
-	
-        pushBackChar(fwdSensor, fwd);
+    fwdSensor = 100 * fwd[0];
+    fwdSensor = 10 * fwd[1];
+    fwdSensor = fwd[2];
 
 #if DEBUG == 1
     cout << "fwdValueIn" << endl;
-    for (int it = 0; it < (int)strlen(fwdSensor); it++) {
-        cout << fwdSensor[it] << endl;
-    }
+    cout << fwdSensor << endl;
 #endif
 }
 
 void Robot::bwdValueIn(char* bwd){
-	for (int i = 0; i < 3; i++) {
-        pushBackChar(bwdSensor, bwd);
-    }
+    bwdSensor = 100 * bwd[0];
+    bwdSensor = 10 * bwd[1];
+    bwdSensor = bwd[2];
     
 #if DEBUG == 1
     cout << "bwdValueIn" << endl;
-    for (int it = 0; it < (int)strlen(fwdSensor); it++) {
-        cout << bwdSensor[it] << endl;
-    }
+    cout << bwdSensor << endl;
 #endif
 }
 
 void Robot::leftBackValueIn(char left[3]){
-        pushBackChar(leftBackSensor, left);
+    leftBackSensor = 100 * left[0];
+    leftBackSensor = 10 * left[1];
+    leftBackSensor = left[2];
     
 #if DEBUG == 1
     cout << "leftBackValueIn" << endl;
-    for (int it = 0; it < (int)strlen(fwdSensor); it++) {
-        cout << leftBackSensor[it] << endl;
-    }
+    cout << leftBackSensor << endl;
 #endif
 }
 
 void Robot::leftFrontValueIn(char left[3]){
-        pushBackChar(leftFrontSensor, left);
+    leftFrontSensor = 100 * left[0];
+    leftFrontSensor = 10 * left[1];
+    leftFrontSensor = left[2];
     
 #if DEBUG == 1
     cout << "leftFrontValueIn" << endl;
-    for (int it = 0; it < (int)strlen(fwdSensor); it++) {
-        cout << leftFrontSensor[it] << endl;
-    }
+    cout << leftFrontSensor << endl;
 #endif
 }
 
 void Robot::leftLongValueIn(char left[3]){
-        pushBackChar(leftLongSensor, left);
+    leftLongSensor = 100 * left[0];
+    leftLongSensor = 10 * left[1];
+    leftLongSensor = left[2];
     
 #if DEBUG == 1
     cout << "leftLongValueIn" << endl;
-    for (int it = 0; it < (int)strlen(fwdSensor); it++) {
-        cout << leftLongSensor[it] << endl;
-    }
+    cout << leftLongSensor << endl;
 #endif
 }
 
 void Robot::rightBackValueIn(char right[3]){
-	for (int i = 0; i < 3; i++) {
-        pushBackChar(rightBackSensor, right);
-    }
+	rightBackSensor = 100 * right[0];
+    rightBackSensor = 10 * right[1];
+    rightBackSensor = right[2];
     
 #if DEBUG == 1
     cout << "rightBackValueIn" << endl;
-    for (int it = 0; it < (int)strlen(fwdSensor); it++) {
-        cout << rightBackSensor[it] << endl;
-    }
+    cout << rightBackSensor << endl;
 #endif
 }
 
 void Robot::rightFrontValueIn(char right[3]){
-        pushBackChar(rightFrontSensor, right);
+    rightFrontSensor = 100 * right[0];
+    rightFrontSensor = 10 * right[1];
+    rightFrontSensor = right[2];
     
 #if DEBUG == 1
     cout << "rightFrontValueIn" << endl;
-    for (int it = 0; it < (int)strlen(fwdSensor); it++) {
-        cout << rightFrontSensor[it] << endl;
-    }
+    cout << rightFrontSensor << endl;
 #endif
-}
-
-void Robot::phiDotValueIn(char phiDot[3]){
-        pushBackChar(phiDotSensor, phiDot);
 }
 
 // --------------------------------------------
@@ -416,7 +407,7 @@ void Robot::phiDotValueIn(char phiDot[3]){
 
 void Robot::setFwdClosed(){
 	
-	int output = meanValueArray(fwdSensor,3)/40;
+	int output = fwdSensor/40;
 	
 	// Set closed section output + 1 steps away from robot.
 	// Direction 0->y->17, "fwd"
@@ -462,7 +453,7 @@ void Robot::setFwdClosed(){
 void Robot::setBwdClosed(){
 	
 	// A block is 40x40
-	int output = meanValueArray(bwdSensor,3)/40;
+	int output = bwdSensor/40;
     
 	// Set closed section output + 1 steps away from robot.
 	// Direction 0->y->17, "fwd"
@@ -507,7 +498,7 @@ void Robot::setBwdClosed(){
 
 void Robot::setLeftClosed(){
 	
-	int output = meanValueArray(leftLongSensor,3)/40;
+	int output = leftLongSensor/40;
 	
 	// Set closed section output + 1 steps away from robot.
 	// Direction 0->y->17, "fwd"
@@ -611,12 +602,12 @@ int Robot::meanValueArray(char* inputArray, int iterations) {
 // -----------------------------------------
 //Sets reference values and moves robot in map abstraction if robot has moved one square
 void Robot::updateRobotPosition(){
-    if (meanValueArray(fwdSensor,3) > 340 && meanValueArray(bwdSensor,3) > 340) {
+    if (fwdSensor > 340 && bwdSensor > 340) {
         fwdReference = 300;
         bwdReference = 300;
     }
-    if (fwdReference - meanValueArray(fwdSensor,3) >= 40){
-        fwdReference=meanValueArray(fwdSensor,3);
+    if (fwdReference - fwdSensor >= 40){
+        fwdReference=fwdSensor;
         if (direction == 'f'){
             // Place back the section we stand in
             mom->setSection(previousSection->getX(), previousSection->getY(), previousSection);
@@ -658,8 +649,8 @@ void Robot::updateRobotPosition(){
             xCoord--;
         }
     }
-    else if (meanValueArray(bwdSensor,3)-bwdReference <= 40){
-        bwdReference=meanValueArray(bwdSensor,3);
+    else if (bwdSensor-bwdReference <= 40){
+        bwdReference=bwdSensor;
         if (direction == 'f'){
             // Place back the section we stand in
             mom->setSection(previousSection->getX(), previousSection->getY(), previousSection);

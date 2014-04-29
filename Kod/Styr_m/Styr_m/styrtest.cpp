@@ -65,36 +65,36 @@ int main(){
     // Push back
     // --------------------------------
     
-    cout << "--------" << " Testing pushBackChar " << "--------" <<  endl;
-    char* testPushBack = new char[10];
-    
-    pushBackChar(testPushBack,'K');
-    pushBackChar(testPushBack,'U');
-    pushBackChar(testPushBack,'K');
-    
-    int size = strlen(testPushBack);
-    
-    cout << "Nr of chars: " << size << endl;
-    
-    for (int i = 0; i < size; i++) {
-        cout << testPushBack[i] << endl;
-    }
-    
-    cout << "--------" << " Testing to enter sensordata " << "--------" <<  endl;
-    
-    char* temp = new char[3];
-    
-    for (int i = 0; i < 3; i++) {
-        temp[i] = 50-i;
-    }
-    
-    testRobot->fwdValueIn(temp);
-    testRobot->bwdValueIn(temp);
-    testRobot->leftLongValueIn(temp);
-    testRobot->leftFrontValueIn(temp);
-    testRobot->leftBackValueIn(temp);
-    testRobot->rightFrontValueIn(temp);
-    testRobot->rightBackValueIn(temp);
+//    cout << "--------" << " Testing pushBackChar " << "--------" <<  endl;
+//    char* testPushBack = new char[10];
+//    
+//    pushBackChar(testPushBack,'K');
+//    pushBackChar(testPushBack,'U');
+//    pushBackChar(testPushBack,'K');
+//    
+//    int size = strlen(testPushBack);
+//    
+//    cout << "Nr of chars: " << size << endl;
+//    
+//    for (int i = 0; i < size; i++) {
+//        cout << testPushBack[i] << endl;
+//    }
+//    
+//    cout << "--------" << " Testing to enter sensordata " << "--------" <<  endl;
+//    
+//    char* temp = new char[3];
+//    
+//    for (int i = 0; i < 3; i++) {
+//        temp[i] = 50-i;
+//    }
+//    
+//    testRobot->fwdValueIn(temp);
+//    testRobot->bwdValueIn(temp);
+//    testRobot->leftLongValueIn(temp);
+//    testRobot->leftFrontValueIn(temp);
+//    testRobot->leftBackValueIn(temp);
+//    testRobot->rightFrontValueIn(temp);
+//    testRobot->rightBackValueIn(temp);
     
     // Delete
     delete testRobot;
