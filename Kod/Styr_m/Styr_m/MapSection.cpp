@@ -327,8 +327,8 @@ void Robot::turn(int pd){
 
 void Robot::fwdValueIn(char fwd[3]){
     fwdSensor = 100 * fwd[0];
-    fwdSensor = 10 * fwd[1];
-    fwdSensor = fwd[2];
+    fwdSensor += 10 * fwd[1];
+    fwdSensor += fwd[2];
 
 #if DEBUG == 1
     cout << "fwdValueIn" << endl;
@@ -338,8 +338,8 @@ void Robot::fwdValueIn(char fwd[3]){
 
 void Robot::bwdValueIn(char* bwd){
     bwdSensor = 100 * bwd[0];
-    bwdSensor = 10 * bwd[1];
-    bwdSensor = bwd[2];
+    bwdSensor += 10 * bwd[1];
+    bwdSensor += bwd[2];
     
 #if DEBUG == 1
     cout << "bwdValueIn" << endl;
@@ -349,8 +349,8 @@ void Robot::bwdValueIn(char* bwd){
 
 void Robot::leftBackValueIn(char left[3]){
     leftBackSensor = 100 * left[0];
-    leftBackSensor = 10 * left[1];
-    leftBackSensor = left[2];
+    leftBackSensor += 10 * left[1];
+    leftBackSensor += left[2];
     
 #if DEBUG == 1
     cout << "leftBackValueIn" << endl;
@@ -360,8 +360,8 @@ void Robot::leftBackValueIn(char left[3]){
 
 void Robot::leftFrontValueIn(char left[3]){
     leftFrontSensor = 100 * left[0];
-    leftFrontSensor = 10 * left[1];
-    leftFrontSensor = left[2];
+    leftFrontSensor += 10 * left[1];
+    leftFrontSensor += left[2];
     
 #if DEBUG == 1
     cout << "leftFrontValueIn" << endl;
@@ -371,8 +371,8 @@ void Robot::leftFrontValueIn(char left[3]){
 
 void Robot::leftLongValueIn(char left[3]){
     leftLongSensor = 100 * left[0];
-    leftLongSensor = 10 * left[1];
-    leftLongSensor = left[2];
+    leftLongSensor += 10 * left[1];
+    leftLongSensor += left[2];
     
 #if DEBUG == 1
     cout << "leftLongValueIn" << endl;
@@ -382,8 +382,8 @@ void Robot::leftLongValueIn(char left[3]){
 
 void Robot::rightBackValueIn(char right[3]){
 	rightBackSensor = 100 * right[0];
-    rightBackSensor = 10 * right[1];
-    rightBackSensor = right[2];
+    rightBackSensor += 10 * right[1];
+    rightBackSensor += right[2];
     
 #if DEBUG == 1
     cout << "rightBackValueIn" << endl;
@@ -393,8 +393,8 @@ void Robot::rightBackValueIn(char right[3]){
 
 void Robot::rightFrontValueIn(char right[3]){
     rightFrontSensor = 100 * right[0];
-    rightFrontSensor = 10 * right[1];
-    rightFrontSensor = right[2];
+    rightFrontSensor += 10 * right[1];
+    rightFrontSensor += right[2];
     
 #if DEBUG == 1
     cout << "rightFrontValueIn" << endl;

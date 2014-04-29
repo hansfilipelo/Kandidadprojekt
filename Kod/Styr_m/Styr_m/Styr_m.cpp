@@ -30,6 +30,7 @@ Robot* robotPointer = new Robot(16,1,mapPointer,abstractionObject);
 
 volatile double testKp;
 volatile double testKd;
+volatile int testFwd;
 
 #if DEBUG == 0
 
@@ -196,6 +197,7 @@ int main(void)
 		
 		testKp = robotPointer->Kp;
 		testKd = robotPointer->Kd;
+		testFwd = robotPointer->fwdSensor;
     }
 	
 	return 0;
