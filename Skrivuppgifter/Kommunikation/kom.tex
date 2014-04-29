@@ -142,9 +142,6 @@ Standarden finns i flertalet versioner som använder sig av olika frekvensband o
 \subsubsection{WEP}
 Wired Equivalent Privacy (WEP) är ett system som utvecklats för att göra 802.11 standarden säker. Principiellt går det till så att avsändaren(exempelvis routern) krypterar data och skickar det trådlöst för att mottagaren(exempelvis en smartphone)sedan ska kunna dekryptera det. WEP är ett protokoll som bygger på att både sändare och mottagare har samma nyckel. RC4-chiffret använder sedan nyckeln för att skapa en pseudo-slumpad utsekvens som skickas till mottagaren. Väl på mottagarsidan sker samma sekvens fast i omvänd form för att få fram datapaketet.\footnote{\label{RC4}Chaabouni, Rafik. Break WEP Faster with Statistical Analysis, Institute of Technology Lausanne, 2006. http://lasecwww.epfl.ch/pub/lasec/doc/cha06.pdf}
 
-Lind, Mikael. Affärsprocessinriktad förändringsanalys: utveckling och tillämpning av synsätt och metod. School of Computer and Communication Sciences
-, Linköpings universitet, 1996.
-
 \begin{figure}[htp]
   \begin{center}
   \includegraphics[keepaspectratio=true,width=0.5\linewidth]{WEP}  %skala och filnamn. 
@@ -243,15 +240,27 @@ Säkerhetsåtgärderna i denna standard är baserade på symmetrisk kryptering �
 Standarden använder sig även av kontroll av vilka noder som är tillåtna, alltså vilka som får skicka data. Varje nod har en access control list (ACL), en lista över noder som är godkända att kommunicera med som noden har för att kunna jämföra med inkommande förfrågningar från andra noder.\footnote{Zimmermann, Hubert 1980} 
 Med ZigBee följer även ett koncept som heter ''Trust Center'' som möjliggör för noder att ansluta till nätverket, distribuera nycklar och ge möjligheten att kontrollera säkerheten hela vägen mellan två enheter. Det finns två olika säkerhetsnivåer, en gjord för hemmabruk och en för kommersiella applikationer. Den största skillnaden mellan de båda nivåerna är att den sistnämnda skapar och underhåller säkerhetsnycklar.\footnote{Wheeler Andy 2005}
 
+\newpage
 \subsection{Räckvidd och störkänslighet}
+Bluetooth finns i 3 olika klasser där en klass har betydligt mycket längre räckvidd(upp till 100m). Detta beror dock på att den har mer än 40 gånger så stor sändareffekt och denna klass lämpar givetvis inte produkter med batteridrift och är inte medtagen i tabellen ovan. Zigbee har längre räckvidd än bluetooth på grund av dess låga strömkonsumtion och lämpar sig för mindre robotar etc. 
+WLan har helt klar bättre räckvidd och  här är det mer omgivningen som är problematiken.\footnote{
+Comparing WLAN and ZigBee for embedded applications}
 
-Det finns flertalet källor till störningar,ett exempel är andra trådlösa kommunikationstekniker som mobiltelefoner. Alla elektromagnetiska källor i aktuellt frekvensband kan vara en störningskälla.
+\begin{tabular}{lcr}
+	\hline
+	Bluetooth & WLAN & Zigbee \\
+	5-10 m  & 50-100 m   & 10-100 m\\
+	\hline
+ \end{tabular}
+\newline
 
-IEEE 802.11, Bluetooth och ZigBee arbetar samtliga helt eller delvis i 2,4 GHz bandet och detta leder till möjligheter för störningar mellan de olika kommunikationsteknikerna. Dessa tre tekniker är alla godkända av IEEE 802 som utvecklar standarder för kommunikation via trådlösa medier. En del av att räknas till IEEE 802-familjen är att ta fram ett ''Coexistence Assurance Document'' och en plan för hur samtliga IEEE 802 tekniker ska kunna fungera gemensamt utan att påverka varandra mer än nödvändigt. 
-\footnote{ZigBee and Wireless Radio
+
+Det finns flertalet källor till störningar, ett exempel är andra trådlösa kommunikationstekniker som mobiltelefoner. Alla elektromagnetiska källor i aktuellt frekvensband kan vara en störningskälla, en vanlig sådan källa är mikrovågsugnar som skickar ut störningar i hela 2,4 GHz bandet.
+
+IEEE 802.11, Bluetooth och ZigBee arbetar samtliga nära 2,4 GHz bandet och detta leder till möjligheter för störningar mellan de olika kommunikationsteknikerna. Dessa tre tekniker är alla godkända av IEEE 802 som utvecklar standarder för kommunikation via trådlösa medier. En del av att räknas till IEEE 802-familjen är att ta fram ett ''Coexistence Assurance Document'' och en plan för hur samtliga IEEE 802 tekniker ska kunna fungera gemensamt utan att påverka varandra mer än nödvändigt.\footnote{ZigBee and Wireless Radio
 Frequency Coexistence, 2007, https://docs.zigbee.org/zigbee-docs/dcn/07-5219.PDF}
 
-En av teknikerna för att minska eventuella störningar är att skicka sin data utspridd på olika frekvenser. Detta ger vid en störning på en viss frekvens att det är endast den delen av datasändningen som blir förstörd. Denna förstörda data kan upptäckas och skickas om på en annan frekvens. Detta kallas ''spread spectrum'' och en vanlig implementering av den kallas ''frequency hopping''.\footnote{
+En av teknikerna för att minska eventuella störningar är att skicka sin data utspridd på olika frekvenser. Detta ger vid en störning på en viss frekvens att det är endast den delen av datasändningen som blir förstörd. Denna förstörda data kan upptäckas och skickas om på en annan frekvens. Detta kallas ''spread spectrum'' och en vanlig implementering av den kallas ''frequency hopping'', (FH). Med FH kommer transmissioner att spridas ut på vissa frekvenser, där mer avancerade versioner av FH kan mäta i sin omgivning för att hitta lämpliga kanaler i bandet för kommunikationen. När enheten har hittat dessa kanaler så skapas en mask som sedan delas mellan enheterna som ska kommunicera.\footnote{
 How WiFi Works, http://www.i-programmer.info/programming/hardware/2767-how-wifi-works.html}
 
 \newpage
@@ -291,6 +300,8 @@ Part 15.4 Wireless Medium Access Control (MAC) and Physical Layer (PHY) Specific
 Wheeler, Andy. Krama saften ur Zigbee. \emph{Elektronik Tidningen (2005).} \\ http://etn.se/index.php?option=com\_content\&task=view\&id=18463\&Itemid=66
 
 Zimmermann, Hubert (April 1980).\emph{ OSI Reference Model — The ISO Model of Architecture for Open Systems Interconnection.} IEEE Transactions on Communications 28 (4): 425–432. doi:10.1109/TCOM.1980.1094702
+
+Comparing WLAN and ZigBee for embedded applications,http://www.eetimes.com/document.asp?doc\_id=1276272
 
 
 \end{document}
