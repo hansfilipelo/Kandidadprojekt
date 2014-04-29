@@ -717,22 +717,22 @@ void Robot::adjustPosition(){
         pd= Kp*error + Kd*derivError;
         previousLeftError=error; //Saves value for next differentiation
         if(getLeftDifference() < 0){
-            turn(pd); //Turn right
+            turn(-pd); //Turn right
         }
         else{
-            turn(-pd); //Turn left
+            turn(pd); //Turn left
         }
     }
     else { //left Sensor out of range
         error=Ref-rightFrontSensor;
-        derivError=error - previousRightError;
+        derivError = error - previousRightError;
         previousRightError=error;
         pd= Kp*error + Kd*derivError;
         if(getRightDifference() < 0){
-            turn(-pd); //Turn left
+            turn(pd); //Turn left
         }
         else{
-            turn(pd); //Turn right
+            turn(-pd); //Turn right
         }
     }
     
