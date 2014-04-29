@@ -713,7 +713,7 @@ void Robot::adjustPosition(){
 
     if (rightFrontSensor>80) { //right sensor out of range
         error=Ref-leftFrontSensor;
-        derivError=previousLeftError-error;
+        derivError=error - previousLeftError;
         pd= Kp*error + Kd*derivError;
         previousLeftError=error; //Saves value for next differentiation
         if(getLeftDifference() < 0){
@@ -725,7 +725,7 @@ void Robot::adjustPosition(){
     }
     else { //left Sensor out of range
         error=Ref-rightFrontSensor;
-        derivError=previousRightError-error;
+        derivError=error - previousRightError;
         previousRightError=error;
         pd= Kp*error + Kd*derivError;
         if(getRightDifference() < 0){
