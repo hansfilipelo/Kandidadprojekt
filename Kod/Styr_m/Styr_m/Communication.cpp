@@ -30,26 +30,25 @@ void Communication::handleData(){
 		asm("");
 	}
 	
-	if (manual){
-		if (this->inData[1]=='r' && inData[2]==0) {
-			robotPointer->changeGear('l');
-			robotPointer->drive(speed);
-		}
-		else if (this->inData[1]=='r' && inData[2]==1) {
-			robotPointer->changeGear('r');
-			robotPointer->drive(speed);
-		}
-		else if (this->inData[1]=='f'){
-			robotPointer->changeGear('f');
-			robotPointer->drive(speed);
-		}
-		else if (this->inData[1]=='b'){
-			robotPointer->changeGear('b');
-			robotPointer->drive(speed);
-		}
-		else if (this->inData[1] == 'h'){
-			robotPointer->drive(0);
-		}
+	if (this->inData[1]=='r' && inData[2]==0) {
+		robotPointer->changeGear('l');
+		robotPointer->drive(speed);
+	}
+	else if (this->inData[1]=='r' && inData[2]==1) {
+		robotPointer->changeGear('r');
+		robotPointer->drive(speed);
+	}
+	else if (this->inData[1]=='f'){
+		robotPointer->changeGear('f');
+		robotPointer->drive(speed);
+	}
+	else if (this->inData[1]=='b'){
+		robotPointer->changeGear('b');
+		robotPointer->drive(speed);
+	}
+	else if (this->inData[1] == 'h'){
+		robotPointer->drive(0);
+		manual = !manual;
 	}
     
     

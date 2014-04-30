@@ -28,10 +28,6 @@ Communication* abstractionObject = new Communication(slavePointer);
 Map* mapPointer = new Map();
 Robot* robotPointer = new Robot(16,1,mapPointer,abstractionObject);
 
-volatile double testKp;
-volatile double testKd;
-volatile int testFwd;
-
 #if DEBUG == 0
 
 // Interreupt for bus comm
@@ -145,7 +141,6 @@ int main(void)
     
     // Set up bus comm
     steerModuleSlave.SPI_Init();
-	volatile bool watch = abstractionObject->sendMapNow;
     
 	sei();
 	
@@ -165,15 +160,21 @@ int main(void)
 		if (abstractionObject->manual)
 		{
 			robotPointer->drive(0);
+            go = false;
 		}
 		else if( !go && !abstractionObject->manual ) {
 			robotPointer->changeGear('f');
 			robotPointer->drive(25);
             go = true;
         }
-        // Steer along wall
-        robotPointer->adjustPosition();
         
+        // Steer along wall
+		if (!abstractionObject->manual)
+		{
+			robotPointer->adjustPosition();
+		}
+        
+		/*
         // Look for walls every 500th turn of main loop
         if (i == 500) {
             robotPointer->setFwdClosed();
@@ -187,6 +188,7 @@ int main(void)
             i = 0;
         }
         i++;
+		*/
         
         if(abstractionObject->sendMapNow){
             asm("");
@@ -194,10 +196,6 @@ int main(void)
             abstractionObject->sendMap();
             asm("");
         }
-		
-		testKp = robotPointer->Kp;
-		testKd = robotPointer->Kd;
-		testFwd = robotPointer->fwdSensor;
     }
 	
 	return 0;
