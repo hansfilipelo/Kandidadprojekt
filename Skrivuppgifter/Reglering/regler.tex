@@ -121,13 +121,13 @@ Simultan positionering och kartläggning (SLAM) är ett problem som kan liknas v
 Det är inte helt enkelt att lösa dessa frågor, men det finns approximativa lösningar på problemet SLAM. Gemensamt för alla lösningar är att de bygger på möjligheten att läsa av sin omgivning i kombination med
 sannolikhetsteori. Då sensordata aldrig kan antas vara exakt använder man sannolikhetsteori för att göra rimlighetsbedömningar i de stickprov av mätningar sensorerna ger.
 
-Själva problemet är alltså inte entydigt löst rent matematiskt, utan
+SLAM-problemet är alltså oftast inte entydigt lösbart rent matematiskt, utan
 bygger på sannolikhetsteori i kombination med att moderna processorer
 och minnen kan hantera en stor mängd data. Moderna processorer möjliggör
 alltså ett stort stickprov vilket kan leda till en mindre osäkerhet.
 
 \subsection{Syfte}
-Syftet med denna rapport är att fördjupa läsaren i de algoritmer och tekniker som används för kartläggning och positionsbestämning hos ett icke-medvetande system och att lösa ett enklare SLAM-problem.
+Syftet med denna rapport är att ge läsaren en introduktion till de algoritmer och tekniker som används för kartläggning och positionsbestämning i ett mikroprocessorsystem och att lösa ett enklare SLAM-problem. 
 
 \subsection{Historia}
 
@@ -136,9 +136,8 @@ Principerna för SLAM formulerades för första gången 1986\footnote{Smith, R.C
 International Journal of Robotics Research, 5(4), sida 56–68. Hämtad 28 mars 2014}. Redan vid formuleringen av problemet beskrevs SLAM som en inexakt vetenskap. SLAM handlar om att skaffa sig en approximativ uppfattning av sin omgivning och position som är tillräckligt bra för att fatta ett beslut kring färdväg och/eller kartläggning. 
 
 Utvecklingen på området har sedan dess accelererat kraftigt tack vare
-mikrokontrollers förmåga att hantera mer data - eftersom
-sannolikhetsberäkningarna SLAM innefattar gynnas kraftigt av att arbeta
-med stora stickprov.
+mikrokontrollers förmåga att hantera mer data. Då sannolikhetsberäkningarna SLAM innefattar gynnas kraftigt av att arbeta
+med stora stickprov, hanterar 
 
 På senare år har man, precis som inom många andra vetenskapliga områden, sett utvecklingen ta ytterligare ett kliv tack vare internet och öppna källkodsprojekt som Github och OpenSLAM. Att göra en sökning på ''SLAM'' på Github resulterar i en mängd aktiva projekt på området. Eftersom källkoden där också finns tillgänglig är detta ett utmärkt exempel för de som vill läsa på om SLAM-algoritmer. 
 
@@ -148,20 +147,11 @@ På senare år har man, precis som inom många andra vetenskapliga områden, set
 
 \section{Problemformulering}
 
-En robot med tillgång till ett antal avståndssensorer, ett gyro och en RFID-sensor placeras i ett stängt område med dimension 6 x 6 meter och som är uppdelad i 40 x 40 centimeters segment. Den ska, med en vägg som startpunkt, helt autonomt kartlägga området genom att markera ut var väggar finns och var det finns områden som inte går att nå. Den ska även markera ut var det går att finna RFID-taggar. Om inte hela det slutna området är kartlagt ska den upptäcka vilka segment som är oupptäckta, färdas dit och lägga till det i kartan. När området är kartlagt ska roboten ta sig tillbaka till startpunkten och avsluta arbetet. 
+En robot med tillgång till ett antal avståndssensorer och ett gyro placeras i ett okänt slutet område. Den ska, med en vägg som startpunkt, helt autonomt kartlägga området genom att markera ut var väggar finns och var det finns områden som inte går att nå. Om inte hela det slutna området är kartlagt ska den upptäcka vilka segment som är oupptäckta, färdas dit och lägga till det i kartan. När området är kartlagt ska roboten ta sig tillbaka till startpunkten för att kunna återhämtas och på så sätt avsluta arbetet. 
 
-\subsection{Tillgängligt materiel}
-
-I världen finns ett stort utbud av hårdvara, mjukvara och kommunikationslänkar. Denna rapport begränsar sig till kod som kan köras på AVR-processorer, och då mer specifikt Atmega 1284p\footnote{ISY, https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/atmega1284p.pdf, Hämtad 28 mars 2014.}
-
-ISY tillhandahåller följande i sin utvecklingsmiljö: 
-\begin{itemize}
-	\item Atmega 1284p-processorer
-	\item Utvecklingsmiljön Atmel Studio med kompilatorn avr-gcc
-\end{itemize}
 
 %------------------------------------------------
-%--------------------Kunskapsbas-----------------
+%--------------------Fördjupning-----------------
 %------------------------------------------------
 \newpage
 \section{Fördjupning}
@@ -235,7 +225,7 @@ Det finns olika typer av SLAM för olika typer av tillämpningar och med olika e
 Ett Kalmanfilter är en typ av algoritm som med hjälp av tidigare mätdata från sensorer, som kan innehålla brus och störningar, uppskattar okända variabler. Ett Kalmanfilter arbetar på linjära och oberoende tillståndsvariabler och är ett essentiellt verktyg för vägval samt positionsuppskattningen i ett SLAM-system. 
 
 \subsubsection{EKF-SLAM} 
-EKF-SLAM är en förkortning för Extended Kalman Filter for Simultaneous Localization And Mapping. Det utökade Kalmanfiltret (extended) skiljer sig från det ursprungliga på så vis att det används vid icke-linjära förhållanden och istället linjäriserar variablerna kring ett medelvärde och deras kovarians. Med kovarians menas då hur de olika variablerna beror av varandra.
+EKF-SLAM är en förkortning för Extended Kalman Filter for Simultaneous Localization And Mapping. Det utökade Kalmanfiltret (extended) skiljer sig från det ursprungliga på så vis att det används då tillståndsvariablerna ej kan antas vara lijära. Ett EKF linjäriserar variablerna kring ett medelvärde, och väger också in deras kovarians. Med kovarians menas här hur de olika variablerna beror av varandra.
 
 Algoritmen arbetar oftast i två steg; först skattas variablerna, sedan vid nästa mätning 
 kommer de skattade variablerna viktas, där de med mest säkerhet är av störst vikt.
