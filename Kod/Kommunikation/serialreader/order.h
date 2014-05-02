@@ -24,7 +24,7 @@ public:
    // void setPID(int,int);
     void rotateLeft(int);
     void rotateRight(int);
-    void halt();
+    void halt(int);
     void forward(int);
     void backward(int);
     void test();
