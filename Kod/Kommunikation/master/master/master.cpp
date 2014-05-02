@@ -68,8 +68,12 @@ void handleDataFromSensor(){
 	Bus.sendArray(1);
 	Firefly.sendArray();
 	}
-	//inserts data from one sensor into the buffer
-	//Display.insertSensorValuesToBuffer(Firefly.outDataArray);
+	//inserts data from all sensors into the Display-buffer
+	if (Display.bufferWritten)
+	{
+		Display.insertSensorValuesToBuffer(Firefly.outDataArray);
+		Display.bufferWritten = false;
+	}
 }
 
 #if DEBUG == 0
@@ -118,10 +122,9 @@ ISR(INT0_vect){
 int main(void)
 {
     Firefly.setPointer(&Bus,&buffer);
+	sei();
 	unsigned char array[24] = {26,'S','0','1','2','3','1','2','3','1','2','3','1','2','3','1','2','3','1','2','3','1','2','3'};
 	Display.insertSensorValuesToBuffer(array);
-	sei();
-	
     
 	for(;;){
 		asm("");
@@ -136,7 +139,6 @@ int main(void)
 		Bus.requestRow(Firefly.mapNumber);
 		Firefly.getMap = false; 
 		}
-		
 		Display.update(); 
 	}
 }
