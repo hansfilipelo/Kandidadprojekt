@@ -2,8 +2,8 @@
  * sensormodul.cpp
  *
  * Created: 4/7/2014 3:21:49 PM
- *  Author: Erik our conqueror and master!
- *	All makt åt Erik vår befriare.
+ *  Author: Erik our grand receiver and David  our conqueror and master!
+ *	All snopp åt Erik vår buttyboy.
  */ 
 
 
@@ -83,7 +83,7 @@ void Timer_Init()
 	TCCR0B = 0x04;			//prescaler 256 på timer
 }
 
-void handleInDataArray(){
+void handleInDataArray(){		//hanterar det som skickats till sensormodulen från bussen
 	if(sensormodul.inDataArray[1] == 'g'){
 		gyromode = true;
 		//nollställa tiden om den ska användas
@@ -152,6 +152,7 @@ void sendSensors(){
 //------------------------------------INTERRUPTS---------------------------------
 
 //Extremt känslig för tillägg av kod
+//bussavbrott
 ISR(SPI_STC_vect){
 	sensormodul.position++;
 	SPDR = sensormodul.outDataArray[sensormodul.position];
@@ -163,11 +164,12 @@ ISR(SPI_STC_vect){
 	}
 }
 
+//internt avbrott för färdig mottagning
 ISR(PCINT2_vect){
 	handleInDataArray();
 }
 		
-//ADC Conversion Complete Interrupt Service Routine (ISR)
+//ADC Conversion Complete Interrupt
 ISR(ADC_vect)
 {	
 	sei();
@@ -228,7 +230,7 @@ int main(void)
 	
 	while(1){				// Wait forever
 		
-		while(gyromode){
+		while(gyromode){		//hoppa till gyrodelen
 			gyroberakning();
 		}
 		

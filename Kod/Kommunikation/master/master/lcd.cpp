@@ -22,13 +22,7 @@
 
 Lcd::Lcd(){
 	init();
-	command(0x0C); //turns of cursor
-	
-    for (int it = 0; it < 4; it++) {
-	    for (int i = 0; i < 16; i++) {
-		   writeBuffer[it][i] = 2;
-	    }
-    }
+	//command(0x0C); //turns of cursor
 }
 
 void Lcd::SetData(unsigned char var){
@@ -166,19 +160,9 @@ void Lcd::firstDraw(unsigned char location, unsigned char sign){
     senddata(sign);
 }
 
-/*
- *Skriver ut namnen på sensorerna
- *	Bit 1
- *	8->rad1
- *	c->rad2
- *	9->rad3
- *	d->rad4
- *
- *	Bit 2 bestämmer vart på raden (0->f)
- */
 void Lcd::drawSensorNames(){
 	
-    //rad 1
+	//rad 1
 	//prints S1
 	firstDraw(0x80,0x53);
 	firstDraw(0x81,0x31);
@@ -188,8 +172,7 @@ void Lcd::drawSensorNames(){
 	//prints KP
 	firstDraw(0x8d,0x4b);
 	firstDraw(0x8e,0x50);
-	
-	//rad 2
+   //rad 2
 	//prints S2
 	firstDraw(0xc0,0x53);
 	firstDraw(0xc1,0x32);
@@ -199,7 +182,6 @@ void Lcd::drawSensorNames(){
 	//prints KD
 	firstDraw(0xcd,0x4b);
 	firstDraw(0xce,0x44);
-	
 	//rad 3
 	//prints S3
 	firstDraw(0x90,0x53);
@@ -212,16 +194,18 @@ void Lcd::drawSensorNames(){
 	//prints S4
 	firstDraw(0xd0,0x53);
 	firstDraw(0xd1,0x34);
+	
+	
 }
 
-void Lcd::draw(unsigned char location, unsigned char sign){
-	
-        if(ready() && moveToggle){
-            command(location);
-            moveToggle = 0;
+void Lcd::draw(unsigned char sign){
+	   if(ready() && moveToggle){
+		   //fulkod
+			command(0x80);
+            moveToggle = false;
         }
-        if(ready() && (!moveToggle)){
-            senddata(sign);
+       if(ready() && (!moveToggle)){
+			senddata(sign);
             moveToggle = 1;
 			drawSucceded = true;
     }
@@ -230,10 +214,50 @@ void Lcd::draw(unsigned char location, unsigned char sign){
 void Lcd::update(){
 	if(drawSucceded){
 		drawSucceded = false;
-		int row = getRow(sensorCounter);
-		int col = getCol(sensorCounter);
-    
-		if(row == 0){
+		writeValue = (int)(writeBuffer[row][col]);
+		col = col + 1;
+		if (col==16){
+			col = 0;
+			row = row + 1;
+		}
+		if((col==16) & (row==4)){
+			row=0;
+			col=0;
+		}
+	}
+	draw(writeValue);
+}
+
+void Lcd::insertSensorValuesToBuffer(unsigned char* inArray){
+    //places sensorvalues in the correct position in the buffer
+	int r = 0;
+	int c = 3;
+	
+  	for(unsigned int i = 1; i<8; i++){
+		switch(i)
+		{
+			case 0 : r = 0;
+			break;
+			case 1 : r = 2;
+			break;
+			case 2 : r = 0, c = 10;
+			break;
+			case 3 : r = 2;
+			break;
+			case 4 : r = 1;	
+			break;
+			case 5 : r = 3;
+			break;
+			case 6 : r = 2, c= 3;
+			break;
+		}
+		writeBuffer[r][c] = inArray[i*3];
+		writeBuffer[r][c+1] = inArray[i*3+1];
+		writeBuffer[r][c+2] = inArray[i*3+2];
+	}
+}
+
+/*		if(row == 0){
 			writePosition = 0x80;
 		}
 		if(row == 1){
@@ -242,69 +266,24 @@ void Lcd::update(){
 		if(row == 2) {
 			writePosition = 0x90;
 		}
-		else{
+		if(row == 3){
 			writePosition = 0xd0;
 		}
-    
-		if (col==3) {
+		if (col == 3) {
 			writePosition = writePosition + 2;
 		}
 		else{
 			writePosition = writePosition + 9;
 		}
-		internalCounter = internalCounter + 1;
-		writeValue = (int)(writeBuffer[row][col]);
-		if(internalCounter <= 3){
-			writePosition = writePosition + 1;
-			col = col + 1;
-		}
-		else{
-			internalCounter = 0;
-			sensorCounter = sensorCounter + 1;
-		}
-	}
-	draw(writePosition,writeValue);
-}
 
-void Lcd::insertSensorValuesToBuffer(unsigned char* inArray){
-    //places sensorvalues in the correct position in the buffer
-	for(unsigned int i = 0; i<7; i++){
-		    int row = getRow(i+1);
-		    int col = getCol(i+1);
-		    
-		    writeBuffer[row][col] = inArray[i+2];
-		    writeBuffer[row][col+1] = inArray[i+3];
-		    writeBuffer[row][col+2] = inArray[i+4];
-	}
-}
-
-int Lcd::getCol(int sensor){
-    int col = 0;
-    if((sensor <= 1) or (sensor == 6)){
-        col = 10;
-    }
-    else{
-        col = 3;
-    }
-    return col;
-}
-
-int Lcd::getRow(int sensor){
-    int row;
-    if((sensor == 0) or (sensor == 2)){
-        row = 1;
-    }
-    else if((sensor == 1) or (sensor == 3)){
-        row = 2;
-    }
-    else if((sensor == 4) or (sensor == 6)){
-        row = 3;
-    }
-    else{
-        row = 4;
-    }
-    return row;
-}
+L1 array[3]
+L2 array[6]
+S1
+S2
+S3
+S4
+M1
+*/
 
 
 bool Lcd::ready(){
@@ -344,16 +323,13 @@ bool Lcd::ready(){
 	
 	DDRC |=(1<<PORTC0)|(1<<PORTC1)|(1<<PORTC6)|(1<<PORTC7);
 	DDRD |=(1<<PORTD4)|(1<<PORTD5)|(1<<PORTD6)|(1<<PORTD7);
-	
+
 	if(temp){
-		PORTA &=~(1<<PORTA7);
 		return false;
 	}
 	else{
-		PORTA &=~(1<<PORTA7);
 		return true;
 	}
-	
 }
 
 	

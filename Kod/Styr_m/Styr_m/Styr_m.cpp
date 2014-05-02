@@ -3,7 +3,7 @@
  *
  * Created: 3/27/2014 11:58:55 AM
  *  Author: hanel742 och tobgr602
- */ 
+ */
 
 #define F_CPU 14745600
 #include <avr/io.h>
@@ -25,6 +25,8 @@
 Slave steerModuleSlave;
 Slave* slavePointer = &steerModuleSlave;
 Communication* abstractionObject = new Communication(slavePointer);
+Map* mapPointer = new Map();
+Robot* robotPointer = new Robot(16,1,mapPointer,abstractionObject);
 
 
 #if DEBUG == 0
@@ -42,7 +44,7 @@ ISR(SPI_STC_vect){
 		PORTC |= (1<<PORTC0);
 		PORTC &=~(1<<PORTC0);
 	}
-	if((steerModuleSlave.slaveSend && (steerModuleSlave.position == steerModuleSlave.outDataArray[0]+1))){ //When slave sends, position is not set to zero. 
+	if((steerModuleSlave.slaveSend && (steerModuleSlave.position == steerModuleSlave.outDataArray[0]+1))){ //When slave sends, position is not set to zero.
 		steerModuleSlave.slaveSend = false;
 		steerModuleSlave.position = 0;
 	}
@@ -55,7 +57,7 @@ ISR(PCINT2_vect){
 // ---------------------------------
 
 void pwm_init()
-{	
+{
 	OCR2A = 0;
 	OCR2B = 0;
 	
@@ -74,52 +76,52 @@ void pwm_init()
 }
 
 /*
-// Gearbox, port 17
-ISR(INT0_vect){
-	cli();
-	if (gear == 0){
-		PORTD |= 0x10;
-		PORTD &= ~0x20;
-		gear = gear + 1;
-	}
-	else if (gear == 1){
-		PORTD &= ~0x10;
-		PORTD |= 0x20;
-		gear = gear + 1;
-	}
-	else if (gear == 2){
-		PORTD |= 0x10;
-		PORTD |= 0x20;
-		gear = gear + 1;
-	}
-	else {
-		PORTD &= ~0x10;
-		PORTD &= ~0x20;
-		gear = 0;
-	}
-		
-	sei();
-}
-*/
+ // Gearbox, port 17
+ ISR(INT0_vect){
+ cli();
+ if (gear == 0){
+ PORTD |= 0x10;
+ PORTD &= ~0x20;
+ gear = gear + 1;
+ }
+ else if (gear == 1){
+ PORTD &= ~0x10;
+ PORTD |= 0x20;
+ gear = gear + 1;
+ }
+ else if (gear == 2){
+ PORTD |= 0x10;
+ PORTD |= 0x20;
+ gear = gear + 1;
+ }
+ else {
+ PORTD &= ~0x10;
+ PORTD &= ~0x20;
+ gear = 0;
+ }
+ 
+ sei();
+ }
+ */
 
 /*
-// Drive, port 16
-ISR(INT1_vect){
-	cli();
-	if (speed == 0){
-		speed = 25;
-	}
-	else{
-		speed = 0;
-	}
-	int output = floor(speed * 255 / 100);
-	
-	OCR2A = output;
-	OCR2B = output;
-	
-	sei();
-}
-*/
+ // Drive, port 16
+ ISR(INT1_vect){
+ cli();
+ if (speed == 0){
+ speed = 25;
+ }
+ else{
+ speed = 0;
+ }
+ int output = floor(speed * 255 / 100);
+ 
+ OCR2A = output;
+ OCR2B = output;
+ 
+ sei();
+ }
+ */
 #endif
 
 // ----------------------------------------
@@ -127,7 +129,7 @@ ISR(INT1_vect){
 
 int main(void)
 {
-	#if DEBUG == 0
+#if DEBUG == 0
     // Set up interrupts
 	cli();
 	MCUCR = 0b00000000;
@@ -144,20 +146,47 @@ int main(void)
     
 	sei();
 	
-	#endif
+#endif
 	
-	Map* mapPointer = new Map();
-	Robot* robotPointer = new Robot(16,1,mapPointer,abstractionObject);
 	abstractionObject->setRobot(robotPointer);
 	
-	for(;;){
-		if(abstractionObject->sendMapNow){
-			asm("");
-			abstractionObject->sendMapNow=false;
-			abstractionObject->sendMap();
-			asm("");
-		}	
-	}
+	
+    // counter
+    int i = 0;
+    
+    for (;;) {
+        // Drive
+		if (abstractionObject->manual)
+		{
+			robotPointer->drive(0);
+		}
+		else{
+			robotPointer->drive(25);
+        }
+        // Steer along wall
+        robotPointer->adjustPosition();
+        
+        // Look for walls every 500th turn of main loop
+        if (i == 500) {
+            robotPointer->setFwdClosed();
+            robotPointer->setBwdClosed();
+            robotPointer->setLeftClosed();
+            robotPointer->setRightClosed();
+            
+            // Update position in map
+            robotPointer->updateRobotPosition();
+            
+            i = 0;
+        }
+        i++;
+        
+        if(abstractionObject->sendMapNow){
+            asm("");
+            abstractionObject->sendMapNow=false;
+            abstractionObject->sendMap();
+            asm("");
+        }
+    }
 	
 	return 0;
 }

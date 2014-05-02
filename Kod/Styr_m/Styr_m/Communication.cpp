@@ -11,6 +11,11 @@ void Communication::handleData(){
 	memcpy(inData,slavePointer->inDataArray,27);
     dataLength = (int)inData[0];
 	int speed = (int)inData[3];
+    // Protect from incorrect transmissions
+    if (speed > 100) {
+        speed = 5;
+    }
+    
 	//checks manual/auto
 	if (this->inData[1]=='a') {
 		manual = false;
@@ -51,7 +56,7 @@ void Communication::handleData(){
     if ( this->inData[1]=='S' ) {
         
         // Front sensor
-        char* temp = new char[3];
+        char temp[3];
         
         for (int it = 0; it < 3; it++) {
             temp[it] = inData[it+3];
@@ -59,41 +64,41 @@ void Communication::handleData(){
         robotPointer->fwdValueIn(temp);
         
         // Back sensor
-        for (int it = 3; it < 6; it++) {
-            temp[it] = inData[it+3];
+        for (int it = 0; it < 3; it++) {
+            temp[it] = inData[it+6];
         }
         robotPointer->bwdValueIn(temp);
         
-        // Left long sensor
-        for (int it = 6; it < 9; it++) {
-            temp[it] = inData[it+3];
-        }
-        robotPointer->leftLongValueIn(temp);
-        
-        // Left front sensor
-        for (int it = 9; it < 12; it++) {
-            temp[it] = inData[it+3];
-        }
-        robotPointer->leftFrontValueIn(temp);
-        
-        // Left back sensor
-        for (int it = 12; it < 15 ; it++) {
-            temp[it] = inData[it+3];
+        // Left back short sensor
+        for (int it = 0; it < 3; it++) {
+            temp[it] = inData[it+9];
         }
         robotPointer->leftBackValueIn(temp);
         
+        // Right back sensor
+        for (int it = 0; it < 3; it++) {
+            temp[it] = inData[it+12];
+        }
+        robotPointer->rightBackValueIn(temp);
+        
+        // Left front sensor
+        for (int it = 0; it < 3 ; it++) {
+            temp[it] = inData[it+15];
+        }
+        robotPointer->leftFrontValueIn(temp);
+        
         // Right front sensor
-        for (int it = 15; it < 18; it++) {
-            temp[it] = inData[it+3];
+        for (int it = 0; it < 3; it++) {
+            temp[it] = inData[it+18];
         }
         robotPointer->rightFrontValueIn(temp);
         
         
         // Right back sensor
-        for (int it = 18; it < 21; it++) {
-            temp[it] = inData[it+3];
+        for (int it = 0; it < 3; it++) {
+            temp[it] = inData[it+21];
         }
-        robotPointer->rightBackValueIn(temp);
+        robotPointer->leftLongValueIn(temp);
         
     }
     
@@ -137,7 +142,7 @@ void Communication::sendRotateRequest(){
     slavePointer->SPI_Send();
 }
 
-double assembleDouble(char ten, char one, char tenth, char hundreth){
+double Communication::assembleDouble(char ten, char one, char tenth, char hundreth){
     double tenNumber=(double)ten*10;
     double oneNumber=(double)one;
     double tenthNumber=(double)tenth/10;

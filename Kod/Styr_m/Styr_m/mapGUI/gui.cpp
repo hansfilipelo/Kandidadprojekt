@@ -179,7 +179,7 @@ void Gui::setupPlots(){
     ui->sensorPlot6->graph(0)->setLineStyle(QCPGraph::lsLine);
     ui->sensorPlot6->graph(0)->setScatterStyle(QCPScatterStyle::ssDisc);
     ui->sensorPlot6->graph(0)->setData(timeVector,sensorVector6);
-    ui->sensorPlot6->yAxis->setRange(0,100);
+    ui->sensorPlot6->yAxis->setRange(0,160);
 }
 
 

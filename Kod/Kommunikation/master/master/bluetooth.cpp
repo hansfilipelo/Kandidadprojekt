@@ -77,7 +77,7 @@ volatile void Bluetooth::handle(){
 	this->Btrec = false;
 	asm("");
 	
-	if(pcHandle[0]=='Z'){
+	if(pcHandle[0]==30 || pcHandle[1] == 30){
 		position = 0;
 		return;
 	}
