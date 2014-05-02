@@ -244,15 +244,15 @@ Med ZigBee följer även ett koncept som heter ''Trust Center'' som möjliggör 
 
 \newpage
 \subsection{Räckvidd och störkänslighet}
-Bluetooth finns i 3 olika klasser där en klass har betydligt mycket längre räckvidd (upp till 100m). Detta beror dock på att den har mer än 40 gånger så stor sändareffekt och denna klass lämpar givetvis inte produkter med batteridrift och är inte medtagen i tabellen nedan. Zigbee har längre räckvidd än bluetooth på grund av dess låga strömkonsumption och lämpar sig för mindre robotar etc. 
-WLan har helt klar bättre räckvidd och  här är det mer omgivningen som är problematiken.\footnote{
-Comparing WLAN and ZigBee for embedded applications}
+I tabellen nedan visas räckvidden för respektive teknik. Alla teknikerna har ungefär samma räckvidd. 
+
+\footnote{Comparing WLAN and ZigBee for embedded applications}
 \newline
 \\
 \begin{tabular}{lcr}
 	\hline
 	Bluetooth & WLAN & Zigbee \\
-	5-10 m  & 50-100 m   & 10-100 m\\
+	5-100 m  & 50-100 m   & 10-100 m\\
 	\hline
  \end{tabular}
 \newline
@@ -279,9 +279,11 @@ ZigBee och Bluetooth är relativt lika tekniker, där ZigBee åtminstone ursprun
 \section{Diskussion}
 Utifrån fördjupningen kan vi sluta oss till att IR-kommunikation inte är ett alternativ för ett mobilt robotfordon. IR kräver antingen relativt stillastående föremål eller korta avstånd. Dessutom krävs sändar-mottagarstruktur på båda sidor då ett mobilt robotfordon rimligen ska kunna både skicka och ta emot data.
 
-WLAN, Bluetooth och ZigBee tillhör som sagt alla IEEE802-familjen och har därför alla tekniker och metoder för att minimera störningar, i vårt fall ska även nämnas att tappad uppkoppling under kortare tid inte är ett allvarligt problem, utan skulle kunna lösas via mjukvarubuffrar etc. Vi har inte kunnat hitta någon signifikant skillnad mellan de olika teknikerna, men det kan tänkas att en viss teknik i en given miljö skulle fungera bättre. För en applikation som skulle utnyttjas i en viss miljö kan en radiofrekvensmätning utföras för att sedan utföra vidare undersökningar om någon av teknikerna lämpar sig bättre.
+WLAN, Bluetooth och ZigBee tillhör som sagt alla IEEE802-familjen och har därför alla tekniker och metoder för att minimera störningar, i vårt fall ska även nämnas att tappad uppkoppling under kortare tid inte är ett allvarligt problem, utan skulle kunna lösas via mjukvarubuffrar etc. Vi har inte kunnat hitta någon signifikant skillnad mellan de olika teknikerna vad gällande stabilitet, men det kan tänkas att en viss teknik i en given miljö skulle fungera bättre. För en applikation som skulle utnyttjas i en viss miljö kan en radiofrekvensmätning utföras för att sedan utföra vidare undersökningar om någon av teknikerna lämpar sig bättre.
 
 IEEE802.11 är ett starkt alternativ tack vare sin höga överföringshastighet och långa räckvidd, men en oro är störningar som kan uppstå då många signaler populerar IEEE802.11 bandet, samt att en existerande nätverksstruktur behövs användas. En nätverksstruktur skulle troligen innebära ytterligare en enhet att behöva eventuellt felsöka.
+
+Zigbee-tekniken har dock längre räckvidd vid samma strömförbrukning än Bluetooth och lämpar sig därav för mindre robotar som ska kunna operera under en längre tid. Omgivningen har även den stor betydelse för räckvidden och framförallt för signaler med låg intensitet. Oavsett vilken av teknikerna som används kommer en övervägning mellan strömförbrukning och räckvidd att vara nödvändig. En ytterligare aspekt till detta är mottagarenhets begränsningar. En persondator med inbyggd bluetooth har ca. 10 meter räckvidd på sin Bluetooth enhet medan nätverkskortet kan kommunicera med WiFi på över 50-100 meter. 
 
 Bluetooth, ZigBee och IEEE802.11 klarar alla kommunikation i båda riktningar, har tillräcklig säkerhet och stabilitet för vårt fall. Bluetooths användarvänlighet, att det ofta finns färdig sändare/mottagare i persondatorer och det faktum att den är Point-to-Point får avgöra i detta fall och Bluetooth blir rekommendationen vi lämnar på kommunikationen med autonomt robotfordon.
 
