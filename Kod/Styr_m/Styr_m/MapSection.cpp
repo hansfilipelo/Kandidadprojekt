@@ -711,7 +711,7 @@ void Robot::adjustPosition(){
 	volatile int error = 0;
 	volatile int derivError = 0;
 
-    if (rightFrontSensor>80) { //right sensor out of range
+    if (rightFrontSensor > 80) { //right sensor out of range
         error=Ref-leftFrontSensor;
         derivError=error - previousLeftError;
         pd= Kp*error + Kd*derivError;
@@ -723,7 +723,7 @@ void Robot::adjustPosition(){
             turn(pd); //Turn left
         }
     }
-    else { //left Sensor out of range
+    else { //right Sensor in range
         error=Ref-rightFrontSensor;
         derivError = error - previousRightError;
         previousRightError=error;
