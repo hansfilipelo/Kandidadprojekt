@@ -205,8 +205,7 @@ void Robot::changeGear(char inGear){
 // ------------------------------------
 // Drives 
 
-void Robot::drive(int speed){
-    movementSpeed=speed;
+void Robot::drive(){
 	int output = floor(speed * 255 / 100);
 	
 	#if DEBUG == 0
@@ -243,11 +242,12 @@ void Robot::rotateLeft(){
 	
 	while (rotateActive)
 	{
-		drive(25);
+		drive();
 	}
 	
 	// Stop rotation and set gear to forward
-	drive(0);
+	setSpeed(0);
+	drive();
 	changeGear('f');
     
     // Update direction
@@ -287,11 +287,12 @@ void Robot::rotateRight(){
     changeGear('r');
 	while (rotateActive)
 	{
-		drive(25);
+		drive();
 	}
 	
 	// Stop rotation and set gear to forward
-	drive(0);
+	setSpeed(0);
+	drive();
 	changeGear('f');
     
     // Update direction
@@ -314,11 +315,12 @@ void Robot::rotateRight(){
 void Robot::turn(int pd){
     int output = floor(movementSpeed * 255 / 100);
 	
-#if DEBUG == 0
-    OCR2A = output+pd; //Negative value on pd will turn left, positive right
-    OCR2B = output-pd;
-#endif
-    
+	int pdOut = pd * movementSpeed * 0.01;
+	
+	#if DEBUG == 0
+	OCR2A = output+pdOut; //Negative value on pd will turn left, positive right
+	OCR2B = output-pdOut;
+	#endif
 }
 
 
@@ -708,14 +710,22 @@ void Robot::updateRobotPosition(){
 
 void Robot::adjustPosition(){
 	volatile int pd = 0;
-	volatile int error = 0;
+	volatile int frontError = 0;
 	volatile int derivError = 0;
-
+	volatile int backError = 0;
+	volatile int error = 0;
+	volatile int both = 0;
+	
     if (rightFrontSensor > 80) { //right sensor out of range
-        error=Ref-leftFrontSensor;
-        derivError=error - previousLeftError;
-        pd= Kp*error + Kd*derivError;
-        previousLeftError=error; //Saves value for next differentiation
+        frontError=Ref-leftFrontSensor;
+		backError=Ref-leftBackSensor;
+		
+		both = frontError + backError;
+		error = both/2;
+		
+        derivError=frontError - backError;
+		pd= Kp*error + Kd*derivError;
+        //previousLeftError=error; //Saves value for next differentiation
         
         turn(-pd);
         
@@ -727,10 +737,18 @@ void Robot::adjustPosition(){
         }*/
     }
     else { //right Sensor in range
-        error=Ref-rightFrontSensor;
-        derivError = error - previousRightError;
-        previousRightError=error;
+        frontError=Ref-rightFrontSensor;
+		backError=Ref-rightBackSensor;
+		
+        derivError = frontError - backError;
+        
+		// previousRightError=error;
+		
+		both = frontError + backError;
+		error = both/2;
+		
         pd= Kp*error + Kd*derivError;
+		robotTempPd = pd;
         
         // Turn
         turn(pd);
@@ -798,6 +816,12 @@ void Robot::setControlParameters(double inputKp, double inputKd, int inputRef){
     Kd=inputKd;
 	
     Ref=inputRef;
+}
+
+void Robot::setSpeed(int inSpeed)
+{
+	speed = inSpeed;
+	movementSpeed=inSpeed;
 }
 
 

@@ -27,6 +27,8 @@ Slave* slavePointer = &steerModuleSlave;
 Communication* abstractionObject = new Communication(slavePointer);
 Map* mapPointer = new Map();
 Robot* robotPointer = new Robot(16,1,mapPointer,abstractionObject);
+volatile long int tempPrevRightError;
+volatile long int tempPd;
 
 #if DEBUG == 0
 
@@ -147,7 +149,7 @@ int main(void)
 #endif
 	
 	abstractionObject->setRobot(robotPointer);
-	
+	robotPointer->changeDirection('f');
 	
     // counter
     int i = 0;
@@ -159,12 +161,13 @@ int main(void)
         // Drive
 		if (abstractionObject->manual)
 		{
-			robotPointer->drive(0);
+			robotPointer->setSpeed(0);
+			robotPointer->drive();
             go = false;
 		}
 		else if( !go && !abstractionObject->manual ) {
 			robotPointer->changeGear('f');
-			robotPointer->drive(25);
+			robotPointer->drive();
             go = true;
         }
         
@@ -172,6 +175,8 @@ int main(void)
 		if (!abstractionObject->manual)
 		{
 			robotPointer->adjustPosition();
+			tempPd = robotPointer->robotTempPd;
+			tempPrevRightError = robotPointer->previousRightError;
 		}
         
 		/*

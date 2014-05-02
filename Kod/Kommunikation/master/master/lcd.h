@@ -1,3 +1,6 @@
+
+
+
 /*
  * lcd.h
  *
@@ -18,36 +21,38 @@ class Lcd
 {
 public:
     Lcd();
-    char shift = 0x00;
-
     void SetData(unsigned char);
     void init();
     void command(unsigned char);
     void senddata(unsigned char);
-    void draw(unsigned char);
+    void draw(unsigned char, unsigned char);
     void reset();
     void drawSensorNames();
-    void firstDraw(unsigned char,unsigned char);
+    void firstDraw(unsigned char, unsigned char);
     void insertSensorValuesToBuffer(unsigned char*);
-	
 	void update();
+	
+	char shift = 0x00;
+	bool bufferWritten = false;
+
 
 private:
-    bool ready();
+	bool ready();
+	unsigned int getNewPosition(int, int);
+    int getCol(int);
+    int getRow(int);
+
+	unsigned int sensorCounter = 0;
 	bool moveToggle = true;
-    
-   	int col = 0;
+	unsigned int position = 0;
 	int row = 0;
+	int col = 0;
     bool drawSucceded = true;
-    
-	unsigned int writeValue = 0;
-	unsigned char writePosition = 0;
-    unsigned char writeBuffer[4][16] = {{'L','1',' ',' ',' ',' ',' ','S','1',' ',' ',' ',' ',' ',' ',' '}, 
-										{'M','1',' ',' ',' ',' ',' ','S','3',' ',' ',' ',' ',' ',' ',' '},
-										{'L','2',' ',' ',' ',' ',' ','S','2',' ',' ',' ',' ',' ',' ',' '},
-										{' ',' ',' ',' ',' ',' ',' ','S','4',' ',' ',' ',' ',' ',' ',' '}};
-    unsigned int sensorCounter = 0;
-    unsigned int internalCounter = 0;
+	int internalCounter = 0;
+    unsigned char writeBuffer[4][16]={{'L','1',' ',' ',' ',' ',' ','S','1',' ',' ',' ',' ',' ',' ',' '},
+									{'L','2',' ',' ',' ',' ',' ','S','2',' ',' ',' ',' ',' ',' ',' '},
+									{'M','1',' ',' ',' ',' ',' ','S','3',' ',' ',' ',' ',' ',' ',' '},
+									{' ',' ',' ',' ',' ',' ',' ','S','4',' ',' ',' ',' ',' ',' ',' '}};
 };
 
 #endif
