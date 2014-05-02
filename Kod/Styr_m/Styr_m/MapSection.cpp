@@ -314,11 +314,12 @@ void Robot::rotateRight(){
 void Robot::turn(int pd){
     int output = floor(movementSpeed * 255 / 100);
 	
-#if DEBUG == 0
-    OCR2A = output+pd; //Negative value on pd will turn left, positive right
-    OCR2B = output-pd;
-#endif
-    
+	int pdOut = pd * movementSpeed * 0.01;
+	
+	#if DEBUG == 0
+	OCR2A = output+pdOut; //Negative value on pd will turn left, positive right
+	OCR2B = output-pdOut;
+	#endif
 }
 
 
@@ -707,9 +708,9 @@ void Robot::updateRobotPosition(){
 // -----------------------------------------
 
 void Robot::adjustPosition(){
-	volatile int pd = 0;
-	volatile int error = 0;
-	volatile int derivError = 0;
+	volatile long int pd = 0;
+	volatile long int error = 0;
+	volatile long int derivError = 0;
 
     if (rightFrontSensor > 80) { //right sensor out of range
         error=Ref-leftFrontSensor;
@@ -731,6 +732,7 @@ void Robot::adjustPosition(){
         derivError = error - previousRightError;
         previousRightError=error;
         pd= Kp*error + Kd*derivError;
+		robotTempPd = pd;
         
         // Turn
         turn(pd);

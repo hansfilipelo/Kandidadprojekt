@@ -156,7 +156,7 @@ public:
     int Ref=10; //Reference value for control
     int previousRightError = 0;
     int previousLeftError = 0;
-    
+	long int robotTempPd;
     
     MapSection* previousSection = NULL;
     Communication* commObj = NULL;
