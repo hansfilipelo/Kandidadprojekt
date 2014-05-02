@@ -13,16 +13,16 @@
 #include "slave.h"
 
 //------------sensorer----------------------
-volatile int numOfSamples = 150;
+volatile int numOfSamples = 50;
 volatile int savepos = 0;  //counter for the storage array
 
-volatile int sensor0[150];
-volatile int sensor1[150]; // not certain that this initialization will fly. 
-volatile int sensor2[150];
-volatile int sensor3[150];
-volatile int sensor4[150];
-volatile int sensor5[150];
-volatile int sensor6[150];
+volatile int sensor0[50];
+volatile int sensor1[50]; // not certain that this initialization will fly. 
+volatile int sensor2[50];
+volatile int sensor3[50];
+volatile int sensor4[50];
+volatile int sensor5[50];
+volatile int sensor6[50];
 
 
 volatile long int sen0;

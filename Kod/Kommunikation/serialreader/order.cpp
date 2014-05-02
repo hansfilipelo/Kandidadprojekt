@@ -36,9 +36,9 @@ void Order::rotateRight(int speed){
 }
 
 
-void Order::halt(){
+void Order::halt(int speed){
     
-    char data[27] = {1,'h',30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30};
+    char data[27] = {3,'h',0,(char)speed,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30};
     serport->sendArray(data);
 }
 

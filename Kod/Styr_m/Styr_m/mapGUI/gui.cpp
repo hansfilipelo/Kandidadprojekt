@@ -354,14 +354,14 @@ void Gui::on_actionRight_triggered()
 void Gui::on_stopButton_pressed()
 {
     if(connectStatus){
-        bluetooth->halt();
+        bluetooth->halt(speedMultiplier);
     }
 }
 
 void Gui::on_actionStop_triggered()
 {
     if(connectStatus){
-        bluetooth->halt();
+        bluetooth->halt(speedMultiplier);
     }
 }
 
