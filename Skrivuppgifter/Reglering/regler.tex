@@ -218,23 +218,22 @@ vilket efter uträkningar ger $p = \bar{x}$. Vid ML-skattning av sensorvärden �
 
 %-------------------------------Typer av SLAM------------------------------------------------------
 \subsection{Typer av SLAM}
-Det finns olika typer av SLAM för olika typer av tillämpningar och med olika egenskaper. Vissa är bra på större avstånd medan andra är mer precisa och bra på kortare avstånd. 
+Det finns olika typer av SLAM för olika typer av tillämpningar och med olika egenskaper. Vissa är bra på större områden medan andra är mer precisa och bra på mindre områden. 
 
 \subsubsection{Kalmanfilter (KF-SLAM)}
-Ett Kalmanfilter är en typ av algoritm som med hjälp av tidigare mätdata från sensorer, som kan innehålla brus och störningar, uppskattar okända variabler. Ett Kalmanfilter arbetar på linjära och oberoende tillståndsvariabler och är ett essentiellt verktyg för vägval samt positionsuppskattningen i ett SLAM-system. 
+Ett Kalmanfilter är en typ av algoritm som med hjälp av mätdata från sensorer, som kan innehålla brus och störningar, uppskattar okända variabler. Ett Kalmanfilter arbetar på linjära och oberoende tillståndsvariabler och är ett essentiellt verktyg för vägval samt positionsuppskattningen i ett SLAM-system. 
 
 \subsubsection{EKF-SLAM} 
-EKF-SLAM är en förkortning för Extended Kalman Filter for Simultaneous Localization And Mapping. Det utökade Kalmanfiltret (extended) skiljer sig från det ursprungliga på så vis att det används då tillståndsvariablerna ej kan antas vara lijära. Ett EKF linjäriserar variablerna kring ett medelvärde, och väger också in deras kovarians. Med kovarians menas här hur de olika variablerna beror av varandra.
-
-Algoritmen arbetar oftast i två steg; först skattas variablerna, sedan vid nästa mätning 
-kommer de skattade variablerna viktas, där de med mest säkerhet är av störst vikt.
+EKF-SLAM är en förkortning för Extended Kalman Filter for SLAM. Det utökade (extended) Kalmanfiltret skiljer sig från det ursprungliga på så vis att det används då tillståndsvariablerna ej kan antas vara linjära. Ett EKF linjäriserar variablerna kring ett medelvärde, och väger också in deras kovarians. Med kovarians menas här hur de olika variablernas varianser beror av varandra. Efter linjäriseringen appliceras sedan ett Kalmanfilter på variablerna.
 
 \subsubsection{fastSLAM}
 fastSlam är en teknik där systemet visuellt kan uppfatta landmärken. Landmärkenas position i förhållande till roboten noteras och uppmäts med regelbundna samplingar. Genom att positionsbestämma dessa landmärken kan roboten snabbare bestämma sin position. 
 
-fastSLAM är snabbare på att bestämma sin position än KF-SLAM men är däremot inte genomförbar då miljön systemet rör sig i är så pass homogen att inga landmärken går att utfinna. Som referens är problemställningen i denna rapport\footnote{Tävlingsregler: \url{https://drive.google.com/file/d/0B758zzcy4ZrTeG1wRTY4WG9lTDQ/edit?usp=sharing, Hämtad 28 mars 2014}} att kartlägga ett rum med ortogonala väggar en väldigt homogen miljö. fastSLAM är av den anledningen inte den bästa tekniken för positionsbestämning och kartläggning av den typen av ''rum''. 
+fastSLAM är snabbare på att bestämma sin position än KF-SLAM men är däremot inte genomförbar då miljön systemet rör sig i är så pass homogen att inga landmärken går att utfinna. Som referens är problemställningen i denna rapport\footnote{Tävlingsregler: \url{https://drive.google.com/file/d/0B758zzcy4ZrTeG1wRTY4WG9lTDQ/edit?usp=sharing, Hämtad 28 mars 2014}} att kartlägga ett rum med ortogonala väggar en väldigt homogen miljö. fastSLAM är av den anledningen inte den bästa tekniken för positionsbestämning och kartläggning av den typen av rum. 
 
+\subsection{Andra typer av sensorer}
 
+I denna rapport berör vi mest området där SLAM baseras på optiska avståndssensorer, men det finns även andra typer av sensorer som går att använda. Nedan kommer några exempel på sådana implementeringar.
 
 \subsubsection{VSLAM}
 
