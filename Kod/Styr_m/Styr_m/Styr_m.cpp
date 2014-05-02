@@ -161,12 +161,13 @@ int main(void)
         // Drive
 		if (abstractionObject->manual)
 		{
-			robotPointer->drive(0);
+			robotPointer->setSpeed(0);
+			robotPointer->drive();
             go = false;
 		}
 		else if( !go && !abstractionObject->manual ) {
 			robotPointer->changeGear('f');
-			robotPointer->drive(25);
+			robotPointer->drive();
             go = true;
         }
         

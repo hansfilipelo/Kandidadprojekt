@@ -85,7 +85,8 @@ public:
     
 	// Driving
     void changeGear(char direction);
-    void drive(int speed);
+    void drive();
+	void setSpeed(int);
     void driveBackward(int speed);
     void moveTo(int xPos, int yPos);
 	void rotateLeft();
@@ -160,6 +161,8 @@ public:
     
     MapSection* previousSection = NULL;
     Communication* commObj = NULL;
+	
+	int speed = 0;
     
     };
 
