@@ -160,15 +160,15 @@ I denna fördjupande del går vi igenom förkunskaper som krävs för att beskri
 %----------------------Odometri------------------
 \subsection{Odometri}
 
-För att kunna utföra SLAM krävs det att man gör odometri, d v s kontinuerligt uppskattar vägen man färdats. Odometri kan göras på olika sätt - exempelvis genom att optiskt mäta avstånd till objekt i sin omgivning, vinkelhastigheter på hjul med känd storlek eller steg med given längd. 
+För att kunna utföra SLAM krävs det att man gör odometri, d v s kontinuerligt uppskattar vägen man färdats över tid. Odometri kan göras på olika sätt - exempelvis genom att optiskt mäta avstånd till objekt i sin omgivning, vinkelhastigheter på hjul med känd storlek eller steg med given längd. 
 
 Uppskattandet av färdvägen är aldrig en exakt lära. Det finns alltid en viss osäkerhet i sensorer. Det är av denna anledning som SLAM är en sannolikhetslära mer än en exakt vetenskap. 
 
-Många robotar nyttjar förmågan att optiskt mäta objekt i sin omgivning, men det förekommer även implementeringar med radar och sonar. Det finns då möjlighet att kompensera för tidigare mätfel vid framtida mätningar, något som inte bara går att utföra med data från optiska sensorer, men som kan göra större inverkan på dessa. Om man enbart förlitar sig på interna mätningar finns risken att tidiga mätfel görs, vilket fortplantar sig och leder till än större felskattningar senare under kartläggningen. 
+Många robotar nyttjar förmågan att optiskt mäta objekt i sin omgivning, men det förekommer även implementeringar med radar och sonar. I implementeringar där det finns möjlighet att hela tiden mäta sin position i förhållande till andra objekt finns det också möjlighet att kompensera för tidigare mätfel vid framtida mätningar. Om man enbart förlitar sig på mätningar som görs ursprungligen, alltså första gången man stöter på ett objekt, finns risken att tidiga mätfel görs och sedan fortplantar sig. Tidiga mätfel kan leda till än större felskattningar senare under kartläggningen. 
 
 Med optisk avläsning av omvärlden finns alltid möjligheten att korrigera tidigare felaktiga mätvärden genom att samla in mer mätdata för att på ett korrektare sätt kunna beskriva sin omgivning. Av den anledningen är all typ av SLAM beroende av att på något sätt granska sin omgivning. 
 
-\subsubsection{Tillståndsrepresentation av reglersystem}
+\subsection{Tillståndsrepresentation av reglersystem}
 
 Inom reglerteknik kan linjära system beskrivas på så kallad tillståndsformel så som Glad och Ljung\footnote{Glad, Torkel och Ljung, Lennart (2006), \textit{Reglerteknik - Grundläggande teori}.} beskriver. I fallet med SLAM använder man lämpligen sensorernas värden som tillstånd, tecknat $\vec{x}$. Tillstånden mäts med diskreta värden då datorer endast hanterar diskreta mätningar och ej kontinuerliga. En diskret tillståndsbeskrivning av ett linjärt reglersystem beskrivs av: 
 
@@ -177,13 +177,13 @@ Inom reglerteknik kan linjära system beskrivas på så kallad tillståndsformel
 \vec{y}[n] = C\vec{x[n]} + D\vec{u[n]}
 \end{gather}
 \\
-där A, B, C och D är insignaler, u är insignaler och $\vec{y}$ exempelvis är kringliggande objekts position i förhållande till roboten, alternativt robotens position. 
+där $A$, $B$, $C$ och $D$ är matriser, $u$ är insignal och $\vec{y}$ exempelvis är kringliggande objekts position i förhållande till roboten, alternativt robotens position vid mätning med GPS/GLONASS. 
 
 I ett realiserbart system nyttjas sensorer med en viss osäkerhet. Man kan därmed enbart skatta systemets tillstånd och inte exakt beräkna dem. 
 
-Tillståndsvariablerna kan skattas med flera metoder utifrån tillgänglig mätdata. Två exempel på väl använda metoder är Maximum likelihood-metoden (ML-skattning) och Minstakvadratmetoden. Minstakvadratmetoden är något precisare medan implementeringen av ML-skattning är enklare. Då man bygger en robot som implementerar SLAM är det ofta lämpligt att implementera ML-skattning. 
+Tillståndsvariablerna kan skattas med flera metoder utifrån tillgänglig mätdata. Två exempel på väl använda metoder är Maximum likelihood-metoden (ML-skattning) och Minstakvadratmetoden. Då man bygger en robot som löser ett enklare SLAM-problem är det ofta lämpligt att implementera en ML-skattning. 
 
-\paragraph{ML-skattning}
+\subsubsection{ML-skattning}
 
 Antag att en sensor mäter en längd. Längdens korrekta värde ges av $x_{true}$, och att $\hat{x} $ är ett givet stickprov, alltså mätdata, med N antal mätningar. 
 
