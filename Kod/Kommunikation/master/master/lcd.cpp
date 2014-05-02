@@ -134,7 +134,7 @@ void Lcd::init(){
 	PORTA |= (1<<PORTA7); //enable
 	_delay_ms(100);
 }
-// för att uföra olika kommandon
+
 void Lcd::command(unsigned char var){
 	/*
  * lcd.cpp
@@ -204,33 +204,27 @@ void Lcd::firstDraw(unsigned char location, unsigned char sign){
 void Lcd::drawSensorNames(){
 	
     //rad 1
-	//prints S1
-	firstDraw(0x87,0x53);
-	firstDraw(0x88,0x31);
-	//prints L1
-	firstDraw(0x80,0x4c);
-	firstDraw(0x81,0x31);
+	firstDraw(0x87,'L');
+	firstDraw(0x88,'b');
+	firstDraw(0x80,'L');
+	firstDraw(0x81,'1');
 	
 	//rad 2
-	//prints S2
-	firstDraw(0xc7,0x53);
-	firstDraw(0xc8,0x32);
-	//prints L2
-	firstDraw(0xc0,0x4c);
-	firstDraw(0xc1,0x32);
+	firstDraw(0xc7,'R');
+	firstDraw(0xc8,'b');
+	firstDraw(0xc0,'L');
+	firstDraw(0xc1,'2');
 	
 	//rad 3
-	//prints S3
-	firstDraw(0x97,0x53);
-	firstDraw(0x98,0x33);
-	//prints M1
-	firstDraw(0x90,0x4d);
-	firstDraw(0x91,0x31);
+	firstDraw(0x97,'L');
+	firstDraw(0x98,'f');
+	firstDraw(0x90,'M');
+	firstDraw(0x91,'1');
     
 	//rad 4
 	//prints S4
-	firstDraw(0xd7,0x53);
-	firstDraw(0xd8,0x34);
+	firstDraw(0xd7,'R');
+	firstDraw(0xd8,'f');
 }
 
 unsigned int Lcd::getNewPosition(int col, int row){
@@ -270,7 +264,6 @@ void Lcd::update(){
 		}
 		else{
 			internalCounter = 0;
-			
 			if(sensorCounter==7){
 				sensorCounter = 0;
 				drawSucceded = true;
@@ -319,15 +312,15 @@ void Lcd::insertSensorValuesToBuffer(unsigned char* inArray){
 						c = 3;
 						break;
 		}
-		writeBuffer[r][c] = inArray[i*3];
-		writeBuffer[r][c+1] = inArray[i*3+1];
-		writeBuffer[r][c+2] = inArray[i*3+2];
+		writeBuffer[r][c] = 0x30 + (int)inArray[i*3];
+		writeBuffer[r][c+1] = 0x30 + (int)inArray[i*3+1];
+		writeBuffer[r][c+2] = 0x30 + (int)inArray[i*3+2];
 	}
 }
 
 int Lcd::getCol(int sensor){
     int col = 0;
-    if(sensor <= 1){
+    if((sensor <= 1) || (sensor == 6)){
         col = 3;
     }
     else{
@@ -338,13 +331,13 @@ int Lcd::getCol(int sensor){
 
 int Lcd::getRow(int sensor){
     int row;
-    if((sensor == 0) or (sensor == 2)){
+    if((sensor == 0) || (sensor == 2)){
         row = 0;
     }
-    else if((sensor == 1) or (sensor == 3)){
+    else if((sensor == 1) || (sensor == 3)){
         row = 1;
     }
-    else if((sensor == 4) or (sensor == 6)){
+    else if((sensor == 4) || (sensor == 6)){
         row = 2;
     }
     else{

@@ -123,8 +123,8 @@ int main(void)
 {
     Firefly.setPointer(&Bus,&buffer);
 	sei();
-	unsigned char array[24] = {26,'S','0','1','2','3','1','2','3','1','2','3','1','2','3','1','2','3','1','2','3','1','2','3'};
-	Display.insertSensorValuesToBuffer(array);
+	//unsigned char array[24] = {26,'S','0','1','2','3','1','2','3','1','2','3','1','2','3','1','2','3','1','2','3','1','2','3'};
+	//Display.insertSensorValuesToBuffer(array);
     
 	for(;;){
 		asm("");
