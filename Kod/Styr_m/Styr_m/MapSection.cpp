@@ -325,102 +325,81 @@ void Robot::turn(int pd){
 // ------------------------------------
 // Gets sensorvalues and will probably later activate SLAM functions
 
-void Robot::fwdValueIn(char* fwd){
-	
-    for (int i = 0; i < 3; i++) {
-        pushBackChar(fwdSensor, fwd[i]);
-    }
-    
+void Robot::fwdValueIn(char fwd[3]){
+    fwdSensor = 100 * fwd[0];
+    fwdSensor += 10 * fwd[1];
+    fwdSensor += fwd[2];
+
 #if DEBUG == 1
     cout << "fwdValueIn" << endl;
-    for (int it = 0; it < (int)strlen(fwdSensor); it++) {
-        cout << fwdSensor[it] << endl;
-    }
+    cout << fwdSensor << endl;
 #endif
 }
 
 void Robot::bwdValueIn(char* bwd){
-	for (int i = 0; i < 3; i++) {
-        pushBackChar(bwdSensor, bwd[i]);
-    }
+    bwdSensor = 100 * bwd[0];
+    bwdSensor += 10 * bwd[1];
+    bwdSensor += bwd[2];
     
 #if DEBUG == 1
     cout << "bwdValueIn" << endl;
-    for (int it = 0; it < (int)strlen(fwdSensor); it++) {
-        cout << bwdSensor[it] << endl;
-    }
+    cout << bwdSensor << endl;
 #endif
 }
 
-void Robot::leftBackValueIn(char* left){
-	for (int i = 0; i < 3; i++) {
-        pushBackChar(leftBackSensor, left[i]);
-    }
+void Robot::leftBackValueIn(char left[3]){
+    leftBackSensor = 100 * left[0];
+    leftBackSensor += 10 * left[1];
+    leftBackSensor += left[2];
     
 #if DEBUG == 1
     cout << "leftBackValueIn" << endl;
-    for (int it = 0; it < (int)strlen(fwdSensor); it++) {
-        cout << leftBackSensor[it] << endl;
-    }
+    cout << leftBackSensor << endl;
 #endif
 }
 
-void Robot::leftFrontValueIn(char* left){
-	for (int i = 0; i < 3; i++) {
-        pushBackChar(leftFrontSensor, left[i]);
-    }
+void Robot::leftFrontValueIn(char left[3]){
+    leftFrontSensor = 100 * left[0];
+    leftFrontSensor += 10 * left[1];
+    leftFrontSensor += left[2];
     
 #if DEBUG == 1
     cout << "leftFrontValueIn" << endl;
-    for (int it = 0; it < (int)strlen(fwdSensor); it++) {
-        cout << leftFrontSensor[it] << endl;
-    }
+    cout << leftFrontSensor << endl;
 #endif
 }
 
-void Robot::leftLongValueIn(char* left){
-	for (int i = 0; i < 3; i++) {
-        pushBackChar(leftLongSensor, left[i]);
-    }
+void Robot::leftLongValueIn(char left[3]){
+    leftLongSensor = 100 * left[0];
+    leftLongSensor += 10 * left[1];
+    leftLongSensor += left[2];
     
 #if DEBUG == 1
     cout << "leftLongValueIn" << endl;
-    for (int it = 0; it < (int)strlen(fwdSensor); it++) {
-        cout << leftLongSensor[it] << endl;
-    }
+    cout << leftLongSensor << endl;
 #endif
 }
 
-void Robot::rightBackValueIn(char* right){
-	for (int i = 0; i < 3; i++) {
-        pushBackChar(rightBackSensor, right[i]);
-    }
+void Robot::rightBackValueIn(char right[3]){
+	rightBackSensor = 100 * right[0];
+    rightBackSensor += 10 * right[1];
+    rightBackSensor += right[2];
     
 #if DEBUG == 1
     cout << "rightBackValueIn" << endl;
-    for (int it = 0; it < (int)strlen(fwdSensor); it++) {
-        cout << rightBackSensor[it] << endl;
-    }
+    cout << rightBackSensor << endl;
 #endif
 }
 
-void Robot::rightFrontValueIn(char* left){
-	for (int i = 0; i < 3; i++) {
-        pushBackChar(rightFrontSensor, left[i]);
-    }
+void Robot::rightFrontValueIn(char right[3]){
+    rightFrontSensor = 100 * right[0];
+    rightFrontSensor += 10 * right[1];
+    rightFrontSensor += right[2];
     
 #if DEBUG == 1
     cout << "rightFrontValueIn" << endl;
-    for (int it = 0; it < (int)strlen(fwdSensor); it++) {
-        cout << rightFrontSensor[it] << endl;
-    }
+    cout << rightFrontSensor << endl;
 #endif
-}
-
-void Robot::phiDotValueIn(char* phiDot){
-	for (int i = 0; i < 3; i++) {
-        pushBackChar(phiDotSensor, phiDot[i]);
-    }
 }
 
 // --------------------------------------------
@@ -428,7 +407,14 @@ void Robot::phiDotValueIn(char* phiDot){
 
 void Robot::setFwdClosed(){
 	
-	int output = meanValueArray(fwdSensor,3)/40;
+    int output = 0;
+    
+    if ( fwdSensor > 340 && bwdSensor > 340 ) {
+        output = 300;
+    }
+    else{
+        output = fwdSensor/40;
+    }
 	
 	// Set closed section output + 1 steps away from robot.
 	// Direction 0->y->17, "fwd"
@@ -474,7 +460,7 @@ void Robot::setFwdClosed(){
 void Robot::setBwdClosed(){
 	
 	// A block is 40x40
-	int output = meanValueArray(bwdSensor,3)/40;
+	int output = bwdSensor/40;
     
 	// Set closed section output + 1 steps away from robot.
 	// Direction 0->y->17, "fwd"
@@ -519,7 +505,7 @@ void Robot::setBwdClosed(){
 
 void Robot::setLeftClosed(){
 	
-	int output = meanValueArray(leftLongSensor,3)/40;
+	int output = leftLongSensor/40;
 	
 	// Set closed section output + 1 steps away from robot.
 	// Direction 0->y->17, "fwd"
@@ -623,12 +609,12 @@ int Robot::meanValueArray(char* inputArray, int iterations) {
 // -----------------------------------------
 //Sets reference values and moves robot in map abstraction if robot has moved one square
 void Robot::updateRobotPosition(){
-    if (meanValueArray(fwdSensor,3) > 340 && meanValueArray(bwdSensor,3) > 340) {
+    if (fwdSensor > 340 && bwdSensor > 340) {
         fwdReference = 300;
         bwdReference = 300;
     }
-    if (fwdReference - meanValueArray(fwdSensor,3) >= 40){
-        fwdReference=meanValueArray(fwdSensor,3);
+    if (fwdReference - fwdSensor >= 40){
+        fwdReference=fwdSensor;
         if (direction == 'f'){
             // Place back the section we stand in
             mom->setSection(previousSection->getX(), previousSection->getY(), previousSection);
@@ -670,8 +656,8 @@ void Robot::updateRobotPosition(){
             xCoord--;
         }
     }
-    else if (meanValueArray(bwdSensor,3)-bwdReference <= 40){
-        bwdReference=meanValueArray(bwdSensor,3);
+    else if (bwdSensor-bwdReference <= 40){
+        bwdReference=bwdSensor;
         if (direction == 'f'){
             // Place back the section we stand in
             mom->setSection(previousSection->getX(), previousSection->getY(), previousSection);
@@ -724,33 +710,29 @@ void Robot::adjustPosition(){
 	volatile int pd = 0;
 	volatile int error = 0;
 	volatile int derivError = 0;
-	
-	/*
-	char benny[100];
-	memcpy(this->fwdSensor,benny,100);
-	*/
-    if (meanValueArray(rightFrontSensor,3)>80) { //right sensor out of range
-        error=Ref-meanValueArray(leftFrontSensor,3);
-        derivError=meanValueArray(leftFrontSensor,3)-previousLeftError;
+
+    if (rightFrontSensor>80) { //right sensor out of range
+        error=Ref-leftFrontSensor;
+        derivError=error - previousLeftError;
         pd= Kp*error + Kd*derivError;
         previousLeftError=error; //Saves value for next differentiation
         if(getLeftDifference() < 0){
-            turn(pd); //Turn right
+            turn(-pd); //Turn right
         }
         else{
-            turn(-pd); //Turn left
+            turn(pd); //Turn left
         }
     }
     else { //left Sensor out of range
-        error=Ref-meanValueArray(rightFrontSensor,3);
-        derivError=meanValueArray(rightFrontSensor,3)-previousRightError;
+        error=Ref-rightFrontSensor;
+        derivError = error - previousRightError;
         previousRightError=error;
         pd= Kp*error + Kd*derivError;
         if(getRightDifference() < 0){
-            turn(-pd); //Turn left
+            turn(pd); //Turn left
         }
         else{
-            turn(pd); //Turn right
+            turn(-pd); //Turn right
         }
     }
     
@@ -762,8 +744,8 @@ void Robot::adjustPosition(){
 int Robot::getRightDifference(){
     int front;
     int back;
-    front = meanValueArray(rightFrontSensor,3);
-    back = meanValueArray(rightBackSensor,3);
+    front = rightFrontSensor;
+    back = rightBackSensor;
     return front - back;
 
     
@@ -772,8 +754,8 @@ int Robot::getRightDifference(){
 int Robot::getLeftDifference(){
     int front;
     int back;
-    front = meanValueArray(leftFrontSensor,3);
-    back = meanValueArray(leftBackSensor,3);
+    front = leftFrontSensor;
+    back = leftBackSensor;
     return front - back;
     
     
@@ -799,8 +781,8 @@ char* Robot::getColAsChar(int col){
 
 int Robot::getRightDistance(){
     
-    int output = meanValueArray(rightFrontSensor,3);
-    output = output + meanValueArray(rightBackSensor,3);
+    int output = rightFrontSensor;
+    output = output + rightBackSensor;
     return output/2;
     
 }
@@ -808,6 +790,7 @@ int Robot::getRightDistance(){
 void Robot::setControlParameters(double inputKp, double inputKd, int inputRef){
     Kp=inputKp;
     Kd=inputKd;
+	
     Ref=inputRef;
 }
 

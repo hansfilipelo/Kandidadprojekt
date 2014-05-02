@@ -3,7 +3,7 @@
  *
  * Created: 4/7/2014 3:21:49 PM
  *  Author: Erik our grand receiver and David  our conqueror and master!
- *	All snopp åt Erik vår buttyboy.
+ *	All snopp åt Erik, vår buttyboy.
  */ 
 
 
@@ -12,11 +12,9 @@
 #include <math.h>
 #include "slave.h"
 
-#define F_CPU 14.7456E6
-#include <util/delay.h>
-
-
+//------------sensorer----------------------
 volatile int numOfSamples = 150;
+volatile int savepos = 0;  //counter for the storage array
 
 volatile int sensor0[150];
 volatile int sensor1[150]; // not certain that this initialization will fly. 
@@ -25,7 +23,7 @@ volatile int sensor3[150];
 volatile int sensor4[150];
 volatile int sensor5[150];
 volatile int sensor6[150];
-volatile int sensor7[150];
+
 
 volatile long int sen0;
 volatile long int sen1;
@@ -34,28 +32,25 @@ volatile long int sen3;
 volatile long int sen4;
 volatile long int sen5;
 volatile long int sen6;
-volatile long int sen7;
 
-volatile int sensordata[7]={};
-volatile int savepos = 0;  //counter for the storage array
-
+//------------------ADC---------------------------
 volatile double decadc=0;
 volatile bool ADCdone = false;
 double spanning = 0;
 
+//------------------USART-------------------------
 unsigned char indata;
 unsigned char startbit = 0x0A;
 
-
+//------------------GYRO--------------------------
 bool gyromode = false;
-double gyrodata = 0;
-long int leftTurnConstant = 1000000;
-long int rightTurnConstant = 1000000;
-int time = 0;
-
+volatile double medurs = -137;
+volatile double moturs = 130;
+volatile double angle = 0;
+volatile double gyrovila = 0;
 Slave sensormodul;
 
-//Initiera USART
+//-------------------------------Init--------------------------------------
 void USART_Init( unsigned int baud )
 {
 	/* Set baud rate */
@@ -78,33 +73,49 @@ void Sensor_Init()
 
 void Timer_Init()
 {
-	OCR0A = 0x80;			//set COMPA
 	TCNT0 = 0x00;			//set timer to 0
 	TCCR0B = 0x04;			//prescaler 256 på timer
+	TIMSK0 = 0x00;		//stäng av tidsavbrott
+}
+
+
+//------------------------------------------------------------------------------
+void gyrocal(){
+	ADMUX = 0x27;
+	volatile int i = 0;
+	while(i < 100){
+		asm("");
+		ADCdone = false;
+		ADCSRA |= 1<<ADSC;	// Start Conversion
+		while(!ADCdone);	//vänta tills ADC klar
+		cli();
+		gyrovila = spanning + gyrovila;
+		i++;
+		sei();
+	}
+	gyrovila = gyrovila/100;
+	ADMUX = 0x20;
 }
 
 void handleInDataArray(){		//hanterar det som skickats till sensormodulen från bussen
-	if(sensormodul.inDataArray[1] == 'g'){
+	if((sensormodul.inDataArray[1] == 'g') and (sensormodul.inDataArray[2] == '1')){
 		gyromode = true;
-		//nollställa tiden om den ska användas
+		TCNT0 = 0x00;			//set timer to 0
+	}
+	else if((sensormodul.inDataArray[1] == 'g') and (sensormodul.inDataArray[2] == '0')){
+		gyrocal();
 	}
 	else if((sensormodul.inDataArray[1] == 'k') and(sensormodul.inDataArray[2] == '0')){
-		int hundratusen = sensormodul.inDataArray[3];
-		int tiotusen = sensormodul.inDataArray[4];
-		int tusen = sensormodul.inDataArray[5];
-		int hundra = sensormodul.inDataArray[6];
-		int tio = sensormodul.inDataArray[7];
-		int en = sensormodul.inDataArray[8];
-		leftTurnConstant = hundratusen * 100000 + tiotusen * 10000 + tusen * 10000 + hundra * 100 + tio * 10 + en;
+		int hundra = sensormodul.inDataArray[3];
+		int tio = sensormodul.inDataArray[4];
+		int en = sensormodul.inDataArray[5];
+		medurs = hundra * 10 + tio + en /10;
 	}
 	else if((sensormodul.inDataArray[1] == 'k') and(sensormodul.inDataArray[2] == '1')){
-		int hundratusen = sensormodul.inDataArray[3];
-		int tiotusen = sensormodul.inDataArray[4];
-		int tusen = sensormodul.inDataArray[5];
-		int hundra = sensormodul.inDataArray[6];
-		int tio = sensormodul.inDataArray[7];
-		int en = sensormodul.inDataArray[8];
-		rightTurnConstant = hundratusen * 100000 + tiotusen * 10000 + tusen * 10000 + hundra * 100 + tio * 10 + en;
+		int hundra = sensormodul.inDataArray[3];
+		int tio = sensormodul.inDataArray[4];
+		int en = sensormodul.inDataArray[5];
+		moturs = hundra * 10 + tio + en /10;
 	}
 }
 
@@ -117,7 +128,7 @@ long int average(volatile int* inArray){
 }
 
 void sendSensors(){
-    sensormodul.outDataArray[0] = 26;
+    sensormodul.outDataArray[0] = 23;
     sensormodul.outDataArray[1] = 'S';
     sensormodul.outDataArray[2] =  'A'; //'DNC'
     sensormodul.outDataArray[3] = (sen0/100); //plats 4
@@ -141,9 +152,7 @@ void sendSensors(){
     sensormodul.outDataArray[21] = (sen6/100); //plats 4
     sensormodul.outDataArray[22] = ((sen6/10) %10); // plats 5
     sensormodul.outDataArray[23] = (sen6 % 10); // plats 6
-    sensormodul.outDataArray[24] = (sen7/100); //plats 4
-    sensormodul.outDataArray[25] = ((sen7/10) %10); // plats 5
-    sensormodul.outDataArray[26] = (sen7 % 10); // plats 6
+
     sensormodul.SPI_Send();
 
 }
@@ -176,6 +185,13 @@ ISR(ADC_vect)
 	decadc = ADCH;
 	spanning = decadc*5/256;
 	ADCdone = true;
+	if(gyromode){
+		if( spanning < gyrovila + 0.08 && spanning > gyrovila - 0.05){	//gränser kan behöva justeras
+		}
+		else{
+			angle = angle + spanning-gyrovila;			//gränser kan behöva justeras
+		}
+	}
 }
 
 //Avbrott för USART, kanske disabla efter några läsningar för att inte avbryta ADC
@@ -191,32 +207,11 @@ ISR(USART0_RX_vect){
 }
 
 //avbrott för timer
-ISR(TIMER0_COMPA_vect){
-	TIMSK0 = 0x00;			//disable compare A interrupt
-	ADCSRA |= 1<<ADSC;		// Start Conversion
-	/*
-		TCNT0 = 0x00;			//set timer to 0
-		TIMSK0 = 0x02;			//enable compare A interrupt
-	*/
+ISR(TIMER0_OVF_vect){
+	asm("");
+	ADCSRA |= 1<<ADSC;
 }
 
-//rutin för gyroutslag
-void gyroberakning(){
-	ADMUX = 0x27;
-	ADCdone = false;		// adc is in progress
-	time = TCNT0;
-	ADCSRA |= 1<<ADSC;		// Start Conversion
-	while(!ADCdone);		// vänta tills adc klar
-	TCNT0 = 0x00;			//set timer to 0
-	if((spanning > 4.5)||(spanning<0.5));
-	else if((spanning < 2.46)||(spanning > 2.55)){
-		gyrodata =  gyrodata + ((spanning - 2.5)*150)*time/1000;
-	}
-	if((gyrodata > leftTurnConstant) || (gyrodata < -1*rightTurnConstant))
-	{
-		leftTurnConstant = TCNT0;
-	}
-}
 
 int main(void)
 {	
@@ -226,12 +221,30 @@ int main(void)
 	Timer_Init();
 	
 	sei();					// Enable Global Interrupts
+	gyrocal();
+	gyromode = true;
 	ADCSRA |= 1<<ADSC;		// Start Conversion
 	
 	while(1){				// Wait forever
 		
 		while(gyromode){		//hoppa till gyrodelen
-			gyroberakning();
+			ADMUX = 0x27;
+			TIMSK0 = 0x01;		//tillåt tidsavbrott
+			/* kan behövas för att ge lite tid åt avbrotten
+			ADCdone = false;
+			while(!ADCdone);	//vänta tills ADC klar
+			*/
+			cli();
+			if((angle <= medurs) or (angle >= moturs)){
+				asm("");
+				gyromode = false;
+				angle = 0;
+				TIMSK0 = 0x00;		//stäng av tidsavbrott
+				sensormodul.outDataArray[0] = 1;
+				sensormodul.outDataArray[1] = 'G';
+				sensormodul.SPI_Send();
+			}
+			sei();
 		}
 		
 		if(ADMUX == 0x20){			//konvertering av A0
@@ -270,15 +283,6 @@ int main(void)
 			sensor6[savepos]	= round(8.139*pow(spanning,4)-81.21*pow(spanning,3)+282.6*pow(spanning,2)-414.2*spanning+259.7);
 			
 		}
-		/*
-		sensormodul.outDataArray[0] = 5;
-		sensormodul.outDataArray[1] = 'S';
-		sensormodul.outDataArray[2] =  savepos;
-		sensormodul.outDataArray[3] = (sensordata[savepos]/100); //plats 4
-		sensormodul.outDataArray[4] = ((sensordata[savepos]/10) %10); // plats 5
-		sensormodul.outDataArray[5] = (sensordata[savepos] % 10); // plats 6
-		sensormodul.SPI_Send();
-        */
 
 		if(ADMUX == 0x26){
 			ADMUX = 0x20;
@@ -295,7 +299,6 @@ int main(void)
             sen4 = average(sensor4);
             sen5 = average(sensor5);
             sen6 = average(sensor6);
-            sen7 = average(sensor7);
             
             sendSensors();
             
