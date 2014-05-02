@@ -248,34 +248,36 @@ int main(void)
 		}
 		
 		if(ADMUX == 0x20){			//konvertering av A0
+			asm("");
 			sensor0[savepos]	= round(45.64*pow(spanning,4)-320.2*pow(spanning,3)+830.3*pow(spanning,2)-984.9*spanning+524.4);
+			asm("");
 		}
 		
 		if(ADMUX == 0x21){		//konvertering av A1
+			asm("");
 			sensor1[savepos]	= round(1.031*pow(spanning,4)-68*pow(spanning,3)+364.8*pow(spanning,2)-683.2*spanning+492.2);
 		}
-		
-		
+				
 		if( (ADMUX == 0x22)){	//konvertering av A2-A5 (kortdistanssensorer)
 			asm("");
 			sensor2[savepos]	= round(12.5*pow(spanning,4)-100.7*pow(spanning,3)+291.4*pow(spanning,2)-367.2*spanning+189.6);
 		}
+		
         if( (ADMUX == 0x23)){	//konvertering av A2-A5 (kortdistanssensorer)
 			asm("");
 			sensor3[savepos]	= round(12.5*pow(spanning,4)-100.7*pow(spanning,3)+291.4*pow(spanning,2)-367.2*spanning+189.6);
 		}
+		
         if( (ADMUX == 0x24)){	//konvertering av A2-A5 (kortdistanssensorer)
 			asm("");
 			sensor4[savepos]	= round(12.5*pow(spanning,4)-100.7*pow(spanning,3)+291.4*pow(spanning,2)-367.2*spanning+189.6);
 		}
+		
         if( (ADMUX == 0x25)){	//konvertering av A2-A5 (kortdistanssensorer)
 			asm("");
 			sensor5[savepos]	= round(12.5*pow(spanning,4)-100.7*pow(spanning,3)+291.4*pow(spanning,2)-367.2*spanning+189.6);
 		}
-
-
-
-		
+				
 		if(ADMUX == 0x26){		//konvertering av A7 (mellandistanssensorn)
 			asm("");
 			sensor6[savepos]	= round(8.139*pow(spanning,4)-81.21*pow(spanning,3)+282.6*pow(spanning,2)-414.2*spanning+259.7);
