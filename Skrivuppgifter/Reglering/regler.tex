@@ -126,6 +126,7 @@ bygger på sannolikhetsteori i kombination med att moderna processorer
 och minnen kan hantera en stor mängd data. Moderna processorer möjliggör
 alltså ett stort stickprov vilket kan leda till en mindre osäkerhet.
 
+
 \subsection{Syfte}
 Syftet med denna rapport är att ge läsaren en introduktion till de algoritmer och tekniker som används för kartläggning och positionsbestämning i ett mikroprocessorsystem och att lösa ett enklare SLAM-problem. 
 
@@ -139,7 +140,7 @@ Utvecklingen på området har sedan dess accelererat kraftigt tack vare
 mikrokontrollers förmåga att hantera mer data. Då sannolikhetsberäkningarna SLAM innefattar gynnas kraftigt av att arbeta
 med stora stickprov, hanterar 
 
-På senare år har man, precis som inom många andra vetenskapliga områden, sett utvecklingen ta ytterligare ett kliv tack vare internet och öppna källkodsprojekt som Github och OpenSLAM. Att göra en sökning på ''SLAM'' på Github resulterar i en mängd aktiva projekt på området. Eftersom källkoden där också finns tillgänglig är detta ett utmärkt exempel för de som vill läsa på om SLAM-algoritmer. 
+På senare år har man, precis som inom många andra vetenskapliga områden, sett utvecklingen ta ytterligare ett kliv tack vare internet och öppna källkodsprojekt som Github och OpenSLAM. Att göra en sökning på SLAM på Github resulterar i en mängd aktiva projekt på området. Eftersom källkoden där också finns tillgänglig är detta ett utmärkt exempel för de som vill läsa på om SLAM-algoritmer. 
 
 %------------------------------------------------
 %-------------Problemformulering-----------------
@@ -148,6 +149,9 @@ På senare år har man, precis som inom många andra vetenskapliga områden, set
 \section{Problemformulering}
 
 En robot med tillgång till ett antal avståndssensorer och ett gyro placeras i ett okänt slutet område. Den ska, med en vägg som startpunkt, helt autonomt kartlägga området genom att markera ut var väggar finns och var det finns områden som inte går att nå. Om inte hela det slutna området är kartlagt ska den upptäcka vilka segment som är oupptäckta, färdas dit och lägga till det i kartan. När området är kartlagt ska roboten ta sig tillbaka till startpunkten för att kunna återhämtas och på så sätt avsluta arbetet. 
+
+SLAM är en teknik där ett system visuellt kan uppfatta landmärken. Med landmärken menas alla typer av objekt eller liknande som kan användas som referenser. Landmärkenas position i förhållande till roboten ska noteras och uppmätas med regelbundna samplingar. Genom att positionsbestämma dessa landmärken kan roboten snabbare bestämma sin position. 
+
 
 
 %------------------------------------------------
@@ -222,9 +226,9 @@ I denna rapport berör vi mest området där SLAM baseras på optiska avståndss
 
 \subsubsection{VSLAM}
 
-VSLAM står för visuell SLAM, vilket betyder att lokaliseringen sker med hjälp av kameror. Kamerorna används för att finna landmärken i området som kartläggs och sedan använda dessa som referenser när roboten fortsätter att utforska för att t ex se hur långt och i vilken riktning förflyttning sker relativt landmärket. Visuell SLAM är en förutsättning för att utnyttja den tidigare nämnda fastSLAM-tekniken. 
+VSLAM står för visuell SLAM, vilket betyder att lokaliseringen sker med hjälp av kameror. Kamerorna används för att finna landmärken i området som kartläggs och sedan använda dessa som referenser när roboten fortsätter att utforska för att t ex se hur långt och i vilken riktning förflyttning sker relativt landmärket\footnote{Fox, C.; Evans, M.; Pearson, M.; Prescott, T. (2012) ''Tactile SLAM with a biomimetic whiskered robot''. 2012 IEEE International Conference on Robotics and Automation. Hämtad 28 mars 2014.}. Visuell SLAM är en förutsättning för att utnyttja den tidigare nämnda fastSLAM-tekniken. 
 
-För att bedöma avstånd till ett objekt mäts vinklar mellan farkost och objektet vid olika tidpunkter. Utifrån farkostens hastighet kan mjukvaran sedan bestämma avståndet till objektet i fråga. 
+För att bedöma avstånd till ett objekt mäts vinklar mellan farkost och objektet vid olika tidpunkter. Utifrån farkostens hastighet kan mjukvarans algoritmer sedan bestämma avståndet till objektet i fråga. 
 
 VSLAM är i de allra flesta fall komplicerat att implementera då man behöver avancerade bildsökningsalgoritmer för att finna lämpliga landmärken. 
 
