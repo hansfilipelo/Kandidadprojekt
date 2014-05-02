@@ -167,6 +167,8 @@ Uppskattandet av färdvägen är aldrig en exakt lära. Det finns alltid en viss
 
 Med optisk avläsning av omvärlden finns alltid möjligheten att korrigera tidigare felaktiga mätvärden genom att samla in mer mätdata för att på ett korrektare sätt kunna beskriva sin omgivning. Av den anledningen är all typ av SLAM beroende av att på något sätt granska sin omgivning. 
 
+\newpage
+
 \subsection{Tillståndsrepresentation av reglersystem}
 
 Inom reglerteknik kan linjära system beskrivas på så kallad tillståndsformel så som Glad och Ljung\footnote{Glad, Torkel och Ljung, Lennart (2006), \textit{Reglerteknik - Grundläggande teori}.} beskriver. I fallet med SLAM för en robot använder man robotens position som tillstånd , tecknat $\vec{x}$. En observatör används för att skatta positionen i förhållande till kringliggande objekt med hjälp av till exempel sensorvärden. Tillstånden mäts med tidsdiskreta värden då datorer endast hanterar diskreta mätningar och ej kontinuerliga. En diskret tillståndsbeskrivning av ett linjärt reglersystem beskrivs av: 
@@ -180,42 +182,23 @@ där $A$, $B$, $C$ och $D$ är matriser, $u$ är insignal och $\vec{y}$ exempelv
 
 I ett realiserbart system nyttjas sensorer med en viss osäkerhet. Man kan därmed enbart skatta systemets tillstånd och inte exakt beräkna dem. 
 
-Tillståndsvariablerna kan skattas med flera metoder utifrån tillgänglig mätdata. Två exempel på väl använda metoder är Maximum likelihood-metoden (ML-skattning) och Minstakvadratmetoden. Då man bygger en robot som löser ett enklare SLAM-problem är det ofta lämpligt att implementera en ML-skattning. 
+\subsubsection{Skattning av tillstånd}
 
-\subsubsection{ML-skattning}
+Tillståndsvariablerna kan skattas med flera metoder utifrån tillgänglig mätdata. Om man utgår från att närliggande mätningar görs kring samma position för roboten kan mätningarna antas vara normalfördelade kring en viss längd. 
 
-Antag att en sensor mäter en längd. Längdens korrekta värde ges av $x_{true}$, och att $\hat{x} $ är ett givet stickprov, alltså mätdata, med N antal mätningar. 
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,scale=0.5]{normalfordelning.png}  %skala och filnamn. 
+  \end{center}
+  \caption{Normalfördelning} %figurtext.
+  \label{fig:fire} %glöm inte att uppdatera era labels
+\end{figure}
 
-Det mest sannolika värdet fås, för diskreta mätvärden, binomialfördelningen. 
+Variablernas tillstånd kan sedan skattas med mätningarnas väntevärde, $\mu$. Då mätningarna är normalfördelade ges väntevärdet av mätningarnas medelvärde, $\bar{x}$, vilket lätt ses i figur ovan\footnote{Wikipedia, \url{http://sv.wikipedia.org/wiki/Normalf\%C3\%B6rdelning}, hämtad 2014-05-02.}. 
 
-\begin{gather}
-P(X = x_{i}) = p^{x_{i}}(1-p)^{n-x_{i}}
-\end{gather}
+Skattningen, alltså väntevärdet, är alltså observatören för tillståndsvariablerna i systemet. 
 
-där p är sannolikheten att sensorvärdet är $x_i$ och n är antalet mätningar. 
-
-Sannolikhetsfunktionen, L, för hela stickprovet ges sedan av: 
-
-\begin{gather}
-L = \prod\limits_1^i{p^{x_{i}}(1-p)^{n-x_{i}}}
-\end{gather}
-
-Det mest sannolika värdet fås då $\frac{dL}{dp}$ är lika med 0. För att förenkla derivering och beräkningar används $log(L)$. Multiplikationssumman blir då en vanlig summa. 
-
-\begin{gather}
-\log(L) = \sum\limits_1^i{\log{(p)}{\cdot}x_{i}+\log{(1-p)}\cdot{(n-x_{i})}}
-\end{gather}
-
-Derivatan ges sedan av: 
-
-\begin{gather}
-\frac{dL}{dp} = 0 = \sum\limits_1^i{\frac{x_i}{p}+\frac{n-x_i}{1-p}}
-\end{gather}
-
-vilket efter uträkningar ger $p = \bar{x}$. Vid ML-skattning av sensorvärden är alltså medelvärdet av sensordata lämpligt att använda.
-
-
-
+\newpage
 %-------------------------------Typer av SLAM------------------------------------------------------
 \subsection{Typer av SLAM}
 Det finns olika typer av SLAM för olika typer av tillämpningar och med olika egenskaper. Vissa är bra på större avstånd medan andra är mer precisa och bra på kortare avstånd. 
