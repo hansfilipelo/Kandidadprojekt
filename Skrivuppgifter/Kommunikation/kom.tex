@@ -242,28 +242,21 @@ Säkerhetsåtgärderna i denna standard är baserade på symmetrisk kryptering �
 Standarden använder sig även av kontroll av vilka noder som är tillåtna, alltså vilka som får skicka data. Varje nod har en access control list (ACL), en lista över noder som är godkända att kommunicera med som noden har för att kunna jämföra med inkommande förfrågningar från andra noder.\footnote{Zimmermann, Hubert 1980} 
 Med ZigBee följer även ett koncept som heter ''Trust Center'' som möjliggör för noder att ansluta till nätverket, distribuera nycklar och ge möjligheten att kontrollera säkerheten hela vägen mellan två enheter. Det finns två olika säkerhetsnivåer, en gjord för hemmabruk och en för kommersiella applikationer. Den största skillnaden mellan de båda nivåerna är att den sistnämnda skapar och underhåller säkerhetsnycklar.\footnote{Wheeler Andy 2005}
 
-\newpage
 \subsection{Räckvidd och störkänslighet}
-Bluetooth finns i 3 olika klasser där en klass har betydligt mycket längre räckvidd (upp till 100m). Detta beror dock på att den har mer än 40 gånger så stor sändareffekt och denna klass lämpar givetvis inte produkter med batteridrift och är inte medtagen i tabellen nedan. Zigbee har längre räckvidd än bluetooth på grund av dess låga strömkonsumption och lämpar sig för mindre robotar etc. 
-WLan har helt klar bättre räckvidd och  här är det mer omgivningen som är problematiken.\footnote{
-Comparing WLAN and ZigBee for embedded applications}
-\newline
-\\
+I tabellen nedan visas räckvidden för respektive teknik. Alla teknikerna har ungefär samma räckvidd. \footnote{Comparing WLAN and ZigBee for embedded applications}
+
 \begin{tabular}{lcr}
 	\hline
 	Bluetooth & WLAN & Zigbee \\
-	5-10 m  & 50-100 m   & 10-100 m\\
+	5-100 m  & 50-100 m   & 10-100 m\\
 	\hline
  \end{tabular}
 \newline
 
 Det finns flertalet källor till störningar, ett exempel är andra trådlösa kommunikationstekniker som mobiltelefoner. Alla elektromagnetiska källor i aktuellt frekvensband kan vara en störningskälla, en vanlig sådan källa är mikrovågsugnar som skickar ut störningar i hela 2,4 GHz bandet.
 
-IEEE 802.11, Bluetooth och ZigBee arbetar samtliga nära 2,4 GHz bandet och detta leder till möjligheter för störningar mellan de olika kommunikationsteknikerna. Dessa tre tekniker är alla godkända av IEEE 802 som utvecklar standarder för kommunikation via trådlösa medier. En del av att räknas till IEEE 802-familjen är att ta fram ett ''Coexistence Assurance Document'' och en plan för hur samtliga IEEE 802 tekniker ska kunna fungera gemensamt utan att påverka varandra mer än nödvändigt.\footnote{ZigBee and Wireless Radio
-Frequency Coexistence, 2007, https://docs.zigbee.org/zigbee-docs/dcn/07-5219.PDF}
-
-En av teknikerna för att minska eventuella störningar är att skicka sin data utspridd på olika frekvenser. Detta ger vid en störning på en viss frekvens att det är endast den delen av datasändningen som blir förstörd. Denna förstörda data kan upptäckas och skickas om på en annan frekvens. Detta kallas ''spread spectrum'' och en vanlig implementering av den kallas ''frequency hopping'', (FH). Med FH kommer transmissioner att spridas ut på vissa frekvenser, där mer avancerade versioner av FH kan mäta i sin omgivning för att hitta lämpliga kanaler i bandet för kommunikationen. När enheten har hittat dessa kanaler så skapas en mask som sedan delas mellan enheterna som ska kommunicera.\footnote{
-How WiFi Works, http://www.i-programmer.info/programming/hardware/2767-how-wifi-works.html}
+IEEE 802.11, Bluetooth och ZigBee arbetar samtliga nära 2,4 GHz bandet och detta leder till möjligheter för störningar mellan de olika kommunikationsteknikerna. Dessa tre tekniker är alla godkända av IEEE 802 som utvecklar standarder för kommunikation via trådlösa medier. En del av att räknas till IEEE 802-familjen är att ta fram ett ''Coexistence Assurance Document'' och en plan för hur samtliga IEEE 802 tekniker ska kunna fungera gemensamt utan att påverka varandra mer än nödvändigt.\footnote{ZigBee and Wireless Radio Frequency Coexistence, 2007, https://docs.zigbee.org/zigbee-docs/dcn/07-5219.PDF} En av teknikerna för att minska eventuella störningar är att skicka sin data utspridd på olika frekvenser. Detta ger vid en störning på en viss frekvens att det är endast den delen av datasändningen som blir förstörd. Den förstörda datan kan då upptäckas och skickas om på en annan frekvens. Detta kallas ''spread spectrum'' och en vanlig implementering av den kallas ''frequency hopping'', (FH). Med FH kommer transmissioner att spridas ut på vissa frekvenser, där mer avancerade versioner av FH kan mäta i sin omgivning för att hitta lämpliga kanaler i bandet för kommunikationen. När enheten har hittat dessa kanaler så skapas en mask som sedan delas mellan enheterna som ska kommunicera sinsemellan.\footnote{
+How WiFi Works,http://www.i-programmer.info/programming/hardware/2767-how-wifi-works.html}
 
 \newpage
 
@@ -277,13 +270,15 @@ IR-kommunikation har kort räckvidd och kräver väldig stabilitet hos både mot
 ZigBee och Bluetooth är relativt lika tekniker, där ZigBee åtminstone ursprungligen riktade sig mer mot strömsnåla implementeringar i högre grad än Bluetooth
 
 \section{Diskussion}
-Utifrån fördjupningen kan vi sluta oss till att IR-kommunikation inte är ett alternativ för ett mobilt robotfordon. IR kräver antingen relativt stillastående föremål eller korta avstånd. Dessutom krävs sändar-mottagarstruktur på båda sidor då ett mobilt robotfordon rimligen ska kunna både skicka och ta emot data.
+Utifrån fördjupningen kan vi sluta oss till att IR-kommunikation inte är ett alternativ för ett mobilt robotfordon. IR kräver antingen relativt stillastående föremål eller korta avstånd. Dessutom krävs sändar-mottagarstruktur på båda sidor då ett mobilt robotfordon rimligen ska både kunna skicka och ta emot data.
 
-WLAN, Bluetooth och ZigBee tillhör som sagt alla IEEE802-familjen och har därför alla tekniker och metoder för att minimera störningar, i vårt fall ska även nämnas att tappad uppkoppling under kortare tid inte är ett allvarligt problem, utan skulle kunna lösas via mjukvarubuffrar etc. Vi har inte kunnat hitta någon signifikant skillnad mellan de olika teknikerna, men det kan tänkas att en viss teknik i en given miljö skulle fungera bättre. För en applikation som skulle utnyttjas i en viss miljö kan en radiofrekvensmätning utföras för att sedan utföra vidare undersökningar om någon av teknikerna lämpar sig bättre.
+WLAN, Bluetooth och ZigBee tillhör som sagt alla IEEE802-familjen och har därför alla tekniker och metoder för att minimera störningar, i vårt fall ska även nämnas att tappad uppkoppling under kortare tid inte är ett allvarligt problem, utan skulle kunna lösas via mjukvarubuffrar etc. Vi har inte kunnat hitta någon signifikant skillnad i störkänslighet mellan de olika teknikerna, men det kan tänkas att en viss teknik i en given miljö skulle fungera bättre. För en applikation som skulle utnyttjas i en viss miljö kan en radiofrekvensmätning utföras för att sedan utföra vidare undersökningar om någon av teknikerna lämpar sig bättre. Kanske finns en störning på en viss frekvens i just den miljön.
 
 IEEE802.11 är ett starkt alternativ tack vare sin höga överföringshastighet och långa räckvidd, men en oro är störningar som kan uppstå då många signaler populerar IEEE802.11 bandet, samt att en existerande nätverksstruktur behövs användas. En nätverksstruktur skulle troligen innebära ytterligare en enhet att behöva eventuellt felsöka.
 
-Bluetooth, ZigBee och IEEE802.11 klarar alla kommunikation i båda riktningar, har tillräcklig säkerhet och stabilitet för vårt fall. Bluetooths användarvänlighet, att det ofta finns färdig sändare/mottagare i persondatorer och det faktum att den är Point-to-Point får avgöra i detta fall och Bluetooth blir rekommendationen vi lämnar på kommunikationen med autonomt robotfordon.
+Zigbee-tekniken har dock längre räckvidd vid samma strömförbrukning än Bluetooth och lämpar sig därav för mindre robotar som ska kunna operera under en längre tid. Omgivningen har även den stor betydelse för räckvidden och framförallt för signaler med låg intensitet. Oavsett vilken av teknikerna som används kommer en övervägning mellan strömförbrukning och räckvidd att vara nödvändig. En ytterligare aspekt till detta är mottagarenhetens begränsningar. En persondator med inbyggd Bluetooth har ca. 10 meter räckvidd på sin Bluetooth-enhet medan nätverkskortet kan kommunicera via WiFi på ca. 50-100 meter. 
+
+Bluetooth, ZigBee och IEEE802.11 klarar alla kommunikation i båda riktningar, har tillräcklig säkerhet och stabilitet för vårt fall. Bluetooths användarvänlighet, att det ofta finns färdig sändare/mottagare i persondatorer och det faktum att den är Point-to-Point får avgöra i detta fall och Bluetooth blir rekommendationen vi lämnar på kommunikation med autonomt robotfordon.
 
 \newpage 
 \section*{Referenser}
