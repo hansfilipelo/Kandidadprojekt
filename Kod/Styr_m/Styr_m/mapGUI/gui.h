@@ -30,11 +30,11 @@ public:
     void updateSensorValues(int value0,int value1, int value2, int value3, int value4, int value5, int value6,int value7);
     void updatePlots();
     void updateMap();
-    void insertRow(char inArray[25]);
+    void insertRow(char inArray[27]);
     int startPort();
     int connectStatus;
     void labelSet(QString);
-    char mapArea[32][25];
+    char mapArea[32][27];
 
 private slots:
     void on_speedSlider_valueChanged(int value);
