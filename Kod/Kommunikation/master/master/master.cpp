@@ -56,23 +56,34 @@ void handleDataFromSteer(){
 			Firefly.getMap =true;
 		}
 	}
+	if(Firefly.outDataArray[1]=='g'){
+		Bus.outDataArray[0] = 2;
+		Bus.outDataArray[1] = 'g';
+		Bus.outDataArray[2] = 1;
+		Bus.sendArray(0);	
+	}
 }	
 
 void handleDataFromSensor(){
 	ReceiveFromSensor=false;
-	memcpy(Firefly.outDataArray, Bus.inDataArray,27);
-	// copy data to Bus outDataArray
-	memcpy(Bus.outDataArray, Bus.inDataArray,27);
+	memcpy(Bus.buffer, Bus.inDataArray,27);
 	
-	if(Firefly.outDataArray[1] == 'S'){
-	Bus.sendArray(1);
-	Firefly.sendArray();
+	if(Bus.buffer[1] == 'S'){
+		// copy data to Bus outDataArray
+		memcpy(Bus.outDataArray, Bus.buffer,27);
+		Bus.sendArray(1);
+		memcpy(Firefly.outDataArray, Bus.buffer,27);
+		Firefly.sendArray();
+		//inserts data from all sensors into the Display-buffer
+		if (Display.bufferWritten)
+		{
+			Display.insertSensorValuesToBuffer(Firefly.outDataArray);
+			Display.bufferWritten = false;
+		}
 	}
-	//inserts data from all sensors into the Display-buffer
-	if (Display.bufferWritten)
-	{
-		Display.insertSensorValuesToBuffer(Firefly.outDataArray);
-		Display.bufferWritten = false;
+	if(Bus.buffer[1] == 'G'){
+		memcpy(Bus.outDataArray, Bus.buffer,2);
+		Bus.sendArray(1);
 	}
 }
 
@@ -86,7 +97,7 @@ ISR(USART0_RX_vect)
 	Firefly.receiveArray();
 }
 
-//Control module wants to send data
+//Steer module wants to send data
 ISR(INT2_vect){
 	cli();
 	Bus.receiveArray(1);
