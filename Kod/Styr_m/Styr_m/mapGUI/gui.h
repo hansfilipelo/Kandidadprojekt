@@ -73,6 +73,8 @@ private slots:
 
     void on_setParameterButton_pressed();
 
+    void on_temp90Button_clicked();
+
 private:
     QTime time;
     int val = 0;

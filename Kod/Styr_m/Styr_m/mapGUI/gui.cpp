@@ -410,3 +410,8 @@ void Gui::on_setParameterButton_pressed()
    bluetooth->setControlParameters(kp, kd, ref);
 }
 }
+
+void Gui::on_temp90Button_clicked()
+{
+    bluetooth->turnDone();
+}
