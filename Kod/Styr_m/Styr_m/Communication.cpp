@@ -32,33 +32,33 @@ void Communication::handleData(){
 	
 	if (this->inData[1]=='r' && inData[2]==0) {
 		robotPointer->changeGear('l');
-		robotPointer->setSpeed(speed);
+		robotPointer->setUserSpeed(speed);
 		robotPointer->drive();
 	}
 	else if (this->inData[1]=='r' && inData[2]==1) {
 		robotPointer->changeGear('r');
-		robotPointer->setSpeed(speed);
+		robotPointer->setUserSpeed(speed);
 		robotPointer->drive();
 	}
 	else if (this->inData[1]=='f'){
 		robotPointer->changeGear('f');
-		robotPointer->setSpeed(speed);
+		robotPointer->setUserSpeed(speed);
 		robotPointer->drive();
 	}
 	else if (this->inData[1]=='b'){
 		robotPointer->changeGear('b');
-		robotPointer->setSpeed(speed);
+		robotPointer->setUserSpeed(speed);
 		robotPointer->drive();
 	}
 	else if (this->inData[1] == 'h'){
 		if (!manual)
 		{
-			robotPointer->setSpeed(0);
+			robotPointer->setUserSpeed(0);
 			robotPointer->drive();
 			manual = !manual;
 		}
 		else {
-			robotPointer->setSpeed(speed);
+			robotPointer->setUserSpeed(speed);
 			robotPointer->drive();
 			manual = !manual;
 		}

@@ -176,17 +176,17 @@ int main(void)
         // Steer along wall
 		if (!abstractionObject->manual)
 		{
-			if (robotPointer->rotateActive)
-			{
+			if (robotPointer->rotateActive){
 				robotPointer->rotateRight();
-				robotPointer->setSpeed(50);
+				robotPointer->setSpeed(robotPointer->userSpeed);
 				robotPointer->drive();
 			}
-			else if (robotPointer->fwdSensor < 40){
-				robotPointer->setSpeed(0);
-				robotPointer->drive();
-			}
+			//else if (robotPointer->fwdSensor < 40){
+			//	robotPointer->setSpeed(0);
+			//	robotPointer->drive();
+			//}
 			else {
+				robotPointer->setSpeed(robotPointer->userSpeed);
 				robotPointer->adjustPosition();
 				
 				// Look for walls every 500th turn of main loop
@@ -203,8 +203,7 @@ int main(void)
 				}
 				i++;
 			}
-		}
-        
+        }
 		
         
         if(abstractionObject->sendMapNow){

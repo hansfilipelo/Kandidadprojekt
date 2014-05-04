@@ -206,12 +206,19 @@ void Robot::changeGear(char inGear){
 // Drives 
 
 void Robot::drive(){
-	int output = floor(speed * 255 / 100);
-	
-	#if DEBUG == 0
+	if (speed < 101)
+	{
+		int output = floor(speed * 255 / 100);
+		
+		#if DEBUG == 0
 		OCR2A = output;
 		OCR2B = output;
-	#endif	
+		#endif
+	}
+	else {
+		OCR2A = 0;
+		OCR2B = 0;
+	}
 }
 
 void Robot::driveBackward(int speed){
@@ -282,6 +289,7 @@ void Robot::rotateRight(){
 	// First send stuff to sensor module
 	// When we have rotated 90 degrees sensor module will send a signal which will deactivate rotate
 	//---------
+	commObj->sendRotateRequest();
 	
     // Turns
     changeGear('r');
@@ -880,6 +888,13 @@ void Robot::setBwdReference(){
 	else {
 		bwdReference = bwdSensor;
 	}
+}
+
+void Robot::setUserSpeed(int inSpeed)
+{
+	speed = inSpeed;
+	userSpeed = inSpeed;
+	movementSpeed = inSpeed;
 }
 
 

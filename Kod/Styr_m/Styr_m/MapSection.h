@@ -87,6 +87,7 @@ public:
     void changeGear(char direction);
     void drive();
 	void setSpeed(int);
+	void setUserSpeed(int);
     void driveBackward(int speed);
     void moveTo(int xPos, int yPos);
 	void rotateLeft();
@@ -125,8 +126,8 @@ public:
     
     void setControlParameters(double, double, int);
     
-    volatile double Kd = 0; //Differentiation coeff.
-    volatile double Kp = 0; //Proportional coeff.
+    volatile double Kd = 26; //Differentiation coeff.
+    volatile double Kp = 7; //Proportional coeff.
 	
     int getRightDistance();
     
@@ -156,7 +157,7 @@ public:
     //Values concerning automatic control
     
     int movementSpeed;
-    int Ref=10; //Reference value for control
+    int Ref=20; //Reference value for control
     int previousRightError = 0;
     int previousLeftError = 0;
 	long int robotTempPd;
@@ -165,6 +166,7 @@ public:
     Communication* commObj = NULL;
 	
 	int speed = 0;
+	int userSpeed = 0;
     
     };
 
