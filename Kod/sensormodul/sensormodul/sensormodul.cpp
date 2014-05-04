@@ -222,7 +222,7 @@ int main(void)
 	
 	sei();					// Enable Global Interrupts
 	gyrocal();
-	gyromode = true;
+	gyromode = false;		// Ska vara false för att kunna göra samtidig reset
 	ADCSRA |= 1<<ADSC;		// Start Conversion
 	
 	while(1){				// Wait forever
