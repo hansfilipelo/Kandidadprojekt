@@ -27,8 +27,6 @@ Slave* slavePointer = &steerModuleSlave;
 Communication* abstractionObject = new Communication(slavePointer);
 Map* mapPointer = new Map();
 Robot* robotPointer = new Robot(16,1,mapPointer,abstractionObject);
-volatile long int tempPrevRightError;
-volatile long int tempPd;
 
 #if DEBUG == 0
 
@@ -150,11 +148,12 @@ int main(void)
 	
 	abstractionObject->setRobot(robotPointer);
 	robotPointer->changeDirection('f');
-	
-    // counter
-    int i = 0;
     
+	// Related to main loop
     bool go = false;
+	robotPointer->rotateActive = true;
+	// counter
+	int i = 0;
 	
 	robotPointer->setFwdReference();
 	robotPointer->setBwdReference();
@@ -177,25 +176,36 @@ int main(void)
         // Steer along wall
 		if (!abstractionObject->manual)
 		{
-			robotPointer->adjustPosition();
-			tempPd = robotPointer->robotTempPd;
-			tempPrevRightError = robotPointer->previousRightError;
+			if (robotPointer->rotateActive)
+			{
+				robotPointer->rotateRight();
+				robotPointer->setSpeed(50);
+				robotPointer->drive();
+			}
+			else if (robotPointer->fwdSensor < 40){
+				robotPointer->setSpeed(0);
+				robotPointer->drive();
+			}
+			else {
+				robotPointer->adjustPosition();
+				
+				// Look for walls every 500th turn of main loop
+				if (i == 500) {
+					robotPointer->setFwdClosed();
+					robotPointer->setBwdClosed();
+					robotPointer->setLeftClosed();
+					robotPointer->setRightClosed();
+					
+					// Update position in map
+					robotPointer->updateRobotPosition();
+					
+					i = 0;
+				}
+				i++;
+			}
 		}
         
 		
-        // Look for walls every 500th turn of main loop
-        if (i == 500) {
-            robotPointer->setFwdClosed();
-            robotPointer->setBwdClosed();
-            robotPointer->setLeftClosed();
-            robotPointer->setRightClosed();
-            
-            // Update position in map
-            //robotPointer->updateRobotPosition();
-            
-            i = 0;
-        }
-        i++;
         
         if(abstractionObject->sendMapNow){
             asm("");
