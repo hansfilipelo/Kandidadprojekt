@@ -38,6 +38,7 @@ void Slave::SPI_Init()
 }
 
 void Slave::SPI_Send(){
+	slaveSend = true;
 	position=0;
 	SPDR = outDataArray[0];
 	PORTB |= (1<<PORTB2);	//interrupt to master
