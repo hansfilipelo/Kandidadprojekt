@@ -268,28 +268,35 @@ void Gui::insertRow(char inArray[25])
 }
 void Gui::updateMap(){
     qDeleteAll( scene->items());
-    for (int rad = 0; rad < 10; rad++){
-        for(int kol = 0; kol < 17; kol ++){
-            QGraphicsRectItem*   temp = new QGraphicsRectItem(kol*20,rad*20,20,20);
-            if(map[rad][kol]=='E'){
+    for (int rad = 0; rad < 32; rad++){
+        for(int kol = 3; kol < 20; kol ++){
+            QGraphicsRectItem*   temp = new QGraphicsRectItem(rad*10,(kol-3)*10,10,10);
+            if(mapArea[rad][kol]=='e'){
                 temp->setBrush(Qt::green);
-               scene->addItem(temp);
+                scene->addItem(temp);
             }
-            else if(map[rad][kol]=='U'){
-                temp->setBrush(Qt::green);
+            else if(mapArea[rad][kol]=='u'){
+                temp->setBrush(Qt::white);
                 scene->addItem(temp);
             }
 
-            else if(map[rad][kol]=='F'){
+            else if(mapArea[rad][kol]=='f'){
                 temp->setBrush(Qt::red);
                 scene->addItem(temp);
             }
-            else if(map[rad][kol]=='R'){
-                QGraphicsEllipseItem* robot = new QGraphicsEllipseItem(kol*20,rad*20,20,20);
+            else if(mapArea[rad][kol]=='c'){
+                temp->setBrush(Qt::black);
+                scene->addItem(temp);
+            }
+            else if(mapArea[rad][kol]=='r'){
+                QGraphicsEllipseItem* robot = new QGraphicsEllipseItem(rad*10,(kol-3)*10,10,10);
                 robot->setBrush(Qt::black);
                 temp->setBrush(Qt::green);
                 scene->addItem(temp);
                 scene->addItem(robot);
+            }
+            else{
+                std::cout << mapArea[rad][kol] << std::endl;
             }
         }
 
@@ -402,4 +409,9 @@ void Gui::on_setParameterButton_pressed()
    if(connectStatus){
    bluetooth->setControlParameters(kp, kd, ref);
 }
+}
+
+void Gui::on_temp90Button_clicked()
+{
+    bluetooth->turnDone();
 }
