@@ -114,6 +114,8 @@ public:
     
     int meanValueArray(char* inputArray, int iterations);
     void updateRobotPosition();
+	void setFwdReference();
+	void setBwdReference();
     
     // Automatic control
     void turn(int pd); //Positive or negative value will decide left or right

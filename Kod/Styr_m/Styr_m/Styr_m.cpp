@@ -155,6 +155,9 @@ int main(void)
     int i = 0;
     
     bool go = false;
+	
+	robotPointer->setFwdReference();
+	robotPointer->setBwdReference();
     
     
     for (;;) {
@@ -179,7 +182,7 @@ int main(void)
 			tempPrevRightError = robotPointer->previousRightError;
 		}
         
-		/*
+		
         // Look for walls every 500th turn of main loop
         if (i == 500) {
             robotPointer->setFwdClosed();
@@ -188,12 +191,11 @@ int main(void)
             robotPointer->setRightClosed();
             
             // Update position in map
-            robotPointer->updateRobotPosition();
+            //robotPointer->updateRobotPosition();
             
             i = 0;
         }
         i++;
-		*/
         
         if(abstractionObject->sendMapNow){
             asm("");
