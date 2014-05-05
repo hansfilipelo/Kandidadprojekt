@@ -31,17 +31,18 @@ public:
     void firstDraw(unsigned char, unsigned char);
     void insertSensorValuesToBuffer(unsigned char*);
 	void update();
-	
+
 	char shift = 0x00;
 	bool bufferWritten = false;
-
+	unsigned int RfidOnes = 0;
+	unsigned int RfidTens = 0;
 
 private:
 	bool ready();
 	unsigned int getNewPosition(int, int);
     int getCol(int);
     int getRow(int);
-
+	
 	unsigned int sensorCounter = 0;
 	bool moveToggle = true;
 	unsigned int position = 0;
@@ -49,10 +50,10 @@ private:
 	int col = 0;
     bool drawSucceded = true;
 	int internalCounter = 0;
-    unsigned char writeBuffer[4][16]={{'L','1',' ',' ',' ',' ',' ','S','1',' ',' ',' ',' ',' ',' ',' '},
-									{'L','2',' ',' ',' ',' ',' ','S','2',' ',' ',' ',' ',' ',' ',' '},
-									{'M','1',' ',' ',' ',' ',' ','S','3',' ',' ',' ',' ',' ',' ',' '},
-									{' ',' ',' ',' ',' ',' ',' ','S','4',' ',' ',' ',' ',' ',' ',' '}};
+	unsigned char writeBuffer[4][16]={{'L','1',' ',' ',' ',' ',' ','L','b',' ',' ',' ',' ',' ',' ',' '},
+									{'L','2',' ',' ',' ',' ',' ','R','b',' ',' ',' ',' ',' ',' ',' '},
+									{'M','1',' ',' ',' ',' ',' ','L','f',' ',' ',' ',' ',' ',' ',' '},
+									{'I','D',' ',' ',' ',' ',' ','R','f',' ',' ',' ',' ',' ',' ',' '}};
 };
 
 #endif

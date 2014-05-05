@@ -75,6 +75,8 @@ private slots:
 
     void on_temp90Button_clicked();
 
+    void on_actionSetParameter_triggered();
+
 private:
     QTime time;
     int val = 0;

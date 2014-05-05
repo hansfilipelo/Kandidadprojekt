@@ -225,6 +225,8 @@ void Lcd::drawSensorNames(){
 	//prints S4
 	firstDraw(0xd7,'R');
 	firstDraw(0xd8,'f');
+	firstDraw(0xd0,'I');
+	firstDraw(0xd1,'D');
 }
 
 unsigned int Lcd::getNewPosition(int col, int row){
@@ -264,7 +266,7 @@ void Lcd::update(){
 		}
 		else{
 			internalCounter = 0;
-			if(sensorCounter==7){
+			if(sensorCounter==8){
 				sensorCounter = 0;
 				drawSucceded = true;
 				bufferWritten = true;
@@ -279,15 +281,15 @@ void Lcd::update(){
 		internalCounter++;
 		nextChar = writeBuffer[row][col];
 	}
-	draw(position,nextChar);
+	draw(position,nextChar);	
 }
 
 void Lcd::insertSensorValuesToBuffer(unsigned char* inArray){
 	//places sensorvalues in the correct position in the buffer
 	int r = 0;
 	int c = 0;
-
-	for(unsigned int i = 1; i<8; i++){
+	
+	for(unsigned int i = 1; i<9; i++){
 		switch(i)
 		{
 			case 1 :	r = 0;
@@ -311,7 +313,10 @@ void Lcd::insertSensorValuesToBuffer(unsigned char* inArray){
 			case 7 :	r = 2;
 						c = 3;
 						break;
-		}
+			case 8 :	r = 3;
+						c = 3;
+						break;
+		}				
 		writeBuffer[r][c] = 0x30 + (int)inArray[i*3];
 		writeBuffer[r][c+1] = 0x30 + (int)inArray[i*3+1];
 		writeBuffer[r][c+2] = 0x30 + (int)inArray[i*3+2];
@@ -320,7 +325,7 @@ void Lcd::insertSensorValuesToBuffer(unsigned char* inArray){
 
 int Lcd::getCol(int sensor){
     int col = 0;
-    if((sensor <= 1) || (sensor == 6)){
+    if((sensor <= 1) || (sensor == 6) || (sensor == 7)){
         col = 3;
     }
     else{

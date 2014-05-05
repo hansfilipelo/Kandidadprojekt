@@ -49,11 +49,11 @@ void handleDataFromSteer(){
 		
 		if((int)Firefly.mapNumber==31){
 			Firefly.sendMap();
-			Firefly.getMap =false;
+			Firefly.getMap = false;
 			Firefly.mapNumber = 0;
 		}else{
 			Firefly.mapNumber++;
-			Firefly.getMap =true;
+			Firefly.getMap = true;
 		}
 	}
 	if(Firefly.outDataArray[1]=='g'){
@@ -77,13 +77,18 @@ void handleDataFromSensor(){
 		//inserts data from all sensors into the Display-buffer
 		if (Display.bufferWritten)
 		{
-			Display.insertSensorValuesToBuffer(Firefly.outDataArray);
+			Display.insertSensorValuesToBuffer(Bus.buffer);
 			Display.bufferWritten = false;
 		}
 	}
 	if(Bus.buffer[1] == 'G'){
 		memcpy(Bus.outDataArray, Bus.buffer,2);
 		Bus.sendArray(1);
+	}
+	if(Bus.buffer[1] == 'R'){
+		Bus.outDataArray[0] = 1;
+		Bus.outDataArray[1] = 'r';
+		Bus.sendArray(0);
 	}
 }
 
@@ -148,6 +153,6 @@ int main(void)
 		Bus.requestRow(Firefly.mapNumber);
 		Firefly.getMap = false; 
 		}
-		Display.update(); 
+		Display.update();
 	}
 }

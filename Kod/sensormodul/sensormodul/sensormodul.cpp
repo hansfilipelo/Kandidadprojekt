@@ -32,6 +32,7 @@ volatile long int sen3;
 volatile long int sen4;
 volatile long int sen5;
 volatile long int sen6;
+volatile int RfidCount = 0;
 
 //------------------ADC---------------------------
 volatile double decadc=0;
@@ -117,6 +118,9 @@ void handleInDataArray(){		//hanterar det som skickats till sensormodulen från b
 		int en = sensormodul.inDataArray[5];
 		moturs = hundra * 10 + tio + en /10;
 	}
+	else if(sensormodul.inDataArray[1] == 'r'){
+		UCSR0B |= (1<<RXCIE0);						//enable USART interrups
+	}
 }
 
 long int average(volatile int* inArray){
@@ -128,7 +132,7 @@ long int average(volatile int* inArray){
 }
 
 void sendSensors(){
-    sensormodul.outDataArray[0] = 23;
+    sensormodul.outDataArray[0] = 26;
     sensormodul.outDataArray[1] = 'S';
     sensormodul.outDataArray[2] =  'A'; //'DNC'
     sensormodul.outDataArray[3] = (sen0/100); //plats 4
@@ -152,6 +156,9 @@ void sendSensors(){
     sensormodul.outDataArray[21] = (sen6/100); //plats 4
     sensormodul.outDataArray[22] = ((sen6/10) %10); // plats 5
     sensormodul.outDataArray[23] = (sen6 % 10); // plats 6
+	sensormodul.outDataArray[24] = (RfidCount/100);
+	sensormodul.outDataArray[25] = ((RfidCount/10) %10);
+	sensormodul.outDataArray[26] = (RfidCount % 10);
 
     sensormodul.SPI_Send();
 
@@ -204,10 +211,11 @@ ISR(USART0_RX_vect){
 	indata=UDR0;
 		
 	if(indata==startbit){
+		RfidCount++;
 		sensormodul.outDataArray[0] = 1;
 		sensormodul.outDataArray[1] = 'R';
 		sensormodul.SPI_Send();				//skicka RFID detekterad
-		//skicka detekterad till styrmodul ->stänga av RFID läsning -> vänta på ruta lämnad från styrmodul ->tillåt RFID-läsning igen?
+		UCSR0B &= ~(1<<RXCIE0);				//disable USART interrups
 	}
 }
 
@@ -222,7 +230,7 @@ int main(void)
 {	
 	sensormodul.SPI_Init();
 	Sensor_Init();
-	USART_Init(7);
+	USART_Init(383);
 	Timer_Init();
 	
 	sei();					// Enable Global Interrupts
@@ -281,7 +289,7 @@ int main(void)
 			asm("");
 			sensor5[savepos]	= round(12.5*pow(spanning,4)-100.7*pow(spanning,3)+291.4*pow(spanning,2)-367.2*spanning+189.6);
 		}
-				
+
 		if(ADMUX == 0x26){		//konvertering av A7 (mellandistanssensorn)
 			asm("");
 			sensor6[savepos]	= round(8.139*pow(spanning,4)-81.21*pow(spanning,3)+282.6*pow(spanning,2)-414.2*spanning+259.7);
