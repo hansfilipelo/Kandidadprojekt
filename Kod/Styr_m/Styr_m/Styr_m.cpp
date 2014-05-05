@@ -229,7 +229,7 @@ int main(void)
             else {
                 if ( robotPointer->isWallRight() ){
                     robotPointer->setSpeed(robotPointer->userSpeed);
-                    robotPointer->updateRobotPosition();
+                    robotPointer->adjustPosition();
                 }
                 else {
                     robotPointer->rotateRight();
