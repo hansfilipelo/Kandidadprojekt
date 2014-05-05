@@ -111,6 +111,9 @@ volatile void Bluetooth::handle(){
 		spiPointer->outDataArray[9] = pcHandle[9];
 		spiPointer->outDataArray[10] = pcHandle[10];
 		spiPointer->outDataArray[11] = pcHandle[11];
+        spiPointer->outDataArray[12] = pcHandle[12];
+        spiPointer->outDataArray[13] = pcHandle[13];
+        
 		asm("");
 		spiPointer->sendArray(1); //send data to module 1 (steer)
 		asm("");

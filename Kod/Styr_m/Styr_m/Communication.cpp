@@ -124,8 +124,10 @@ void Communication::handleData(){
         double kp=assembleDouble(inData[3],inData[4],inData[5],inData[6]);
         double kd=assembleDouble(inData[7],inData[8],inData[9],inData[10]);
         int ref=(int)inData[11];
+        int trimLeft = (int)inData[12];
+        int trimRight = (int)inData[13];
 		
-        robotPointer->setControlParameters(kp,kd,ref);
+        robotPointer->setControlParameters(kp,kd,ref,trimLeft,trimRight);
     }
     
 }

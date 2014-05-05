@@ -399,19 +399,29 @@ void Gui::on_fetchButton_pressed()
 
 void Gui::on_setParameterButton_pressed()
 {
-   double kp;
-   double kd;
-   int ref;
+    double kp;
+    double kd;
+    int ref;
+    int trimLeft;
+    int trimRight;
 
-   kp=ui->doubleSpinBox->value();
-   kd=ui->doubleSpinBox_2->value();
-   ref=ui->spinBox->value();
-   if(connectStatus){
-   bluetooth->setControlParameters(kp, kd, ref);
-}
+
+    trimLeft = ui->trimValueLeft->value();
+    trimRight = ui->trimValueRight->value();
+    kp=ui->doubleSpinBox->value();
+    kd=ui->doubleSpinBox_2->value();
+    ref=ui->spinBox->value();
+    if(connectStatus){
+        bluetooth->setControlParameters(kp, kd, ref,trimLeft,trimRight);
+    }
 }
 
 void Gui::on_temp90Button_clicked()
 {
     bluetooth->turnDone();
+}
+
+void Gui::on_actionSetParameter_triggered()
+{
+    on_setParameterButton_pressed();
 }
