@@ -188,6 +188,7 @@ int main(void)
             // Checks for wall in front
             if ( robotPointer->isWallFwd() ) {
                 robotPointer->setSpeed(25);
+				robotPointer->changeGear('f');
                 robotPointer->drive();
                 
 #if DEBUG == 0
@@ -214,12 +215,14 @@ int main(void)
             // Check for corner on the right side
             else if (robotPointer->isCornerRight()) {
                 while ( robotPointer->rightBackSensor < 40 ) {
+					robotPointer->changeGear('f');
                     robotPointer->setSpeed(25);
                     robotPointer->drive();
                 }
                 robotPointer->rotateRight();
                 
                 while (!robotPointer->isWallRight()) {
+					robotPointer->changeGear('f');
                     robotPointer->setSpeed(25);
                     robotPointer->drive();
                 }
@@ -229,13 +232,22 @@ int main(void)
             else {
                 if ( robotPointer->isWallRight() ){
                     robotPointer->setSpeed(robotPointer->userSpeed);
+					robotPointer->drive();
                     robotPointer->adjustPosition();
                 }
                 else {
                     robotPointer->rotateRight();
+					robotPointer->changeGear('f');
+					robotPointer->setSpeed(robotPointer->userSpeed);
+					robotPointer->drive();
 #if DEBUG == 0
 					_delay_ms(500);
 #endif
+					asm("");
+					asm("");
+					volatile bool damnYOU = true;
+					asm("");
+					asm("");
                 }
             }
         }

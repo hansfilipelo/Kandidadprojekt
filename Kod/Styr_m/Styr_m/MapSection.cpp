@@ -268,8 +268,8 @@ void Robot::rotateLeft(){
 	
 	// Stop rotation and set gear to forward
 	setSpeed(0);
-	drive();
 	changeGear('f');
+	drive();
     
     // Update direction
     if (direction == 'f') {
@@ -315,8 +315,8 @@ void Robot::rotateRight(){
 	
 	// Stop rotation and set gear to forward
 	setSpeed(0);
-	drive();
 	changeGear('f');
+	drive();
     
     // Update direction
     if (direction == 'f') {
@@ -980,7 +980,8 @@ bool Robot::isWallRight(){
 bool Robot::isCornerRight(){
     
     if ( rightFrontSensor > 40 && rightBackSensor < 25 ){
-        return true;
+		volatile bool shitFace = true;
+        return shitFace;
     }
     else {
         return false;
