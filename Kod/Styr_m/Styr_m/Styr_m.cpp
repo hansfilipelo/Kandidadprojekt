@@ -212,6 +212,7 @@ int main(void)
             // Check for wall on the right and follow it
             else {
                 if ( robotPointer->isWallRight() ){
+                    robotPointer->setSpeed(robotPointer->userSpeed);
                     robotPointer->updateRobotPosition();
                 }
                 else {

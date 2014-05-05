@@ -259,6 +259,7 @@ void Robot::rotateLeft(){
 	
     // Turns
     changeGear('l');
+    setSpeed(25);
 	
 	while (rotateActive)
 	{
@@ -306,6 +307,7 @@ void Robot::rotateRight(){
 	
     // Turns
     changeGear('r');
+    setSpeed(25);
 	while (rotateActive)
 	{
 		drive();
@@ -989,6 +991,9 @@ bool Robot::isCornerRight(){
 
 bool Robot::isWallFwd(){
     
+    if ( fwdSensor == 0 ) {
+        return false;
+    }
     if ( fwdSensor < 40 ){
         return true;
     }
@@ -1002,7 +1007,10 @@ bool Robot::isWallFwd(){
 
 bool Robot::isWallLeft(){
     
-    if ( leftFrontSensor > 30 || leftFrontSensor > 30 ){
+    if ( leftFrontSensor == 0 || leftBackSensor == 0 ) {
+        return false;
+    }
+    else if ( leftFrontSensor > 30 || leftFrontSensor > 30 ){
         return false;
     }
     else {
