@@ -31,15 +31,11 @@ public:
     void firstDraw(unsigned char, unsigned char);
     void insertSensorValuesToBuffer(unsigned char*);
 	void update();
-	void detectedRFID();
-	unsigned int RFIDCounter = 0;
-	unsigned int RFIDCounterten = 0;
-	
+
 	char shift = 0x00;
 	bool bufferWritten = false;
-	bool RFID = false;
-	bool RFIDten = false;
-
+	unsigned int RfidOnes = 0;
+	unsigned int RfidTens = 0;
 
 private:
 	bool ready();
