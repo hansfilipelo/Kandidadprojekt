@@ -194,6 +194,13 @@ int main(void)
 #if DEBUG == 0
                 _delay_ms(200);
 #endif
+                robotPointer->setSpeed(0);
+				robotPointer->changeGear('f');
+                robotPointer->drive();
+#if DEBUG == 0
+                _delay_ms(200);
+#endif
+                
                 //jobbig högerficka, högre prio än vänstersväng
                 if(!robotPointer->isWallRight()){
                     robotPointer->rotateRight();
