@@ -168,6 +168,8 @@ int main(void)
 	int i = 0;
 	
 	bool temporary = true;
+//-----------------------------------------------------
+    //right wall following loop
     
     for (;;) {
         
@@ -185,8 +187,27 @@ int main(void)
         // Automatic mode
         else {
             
+           
+            
+            // Check for corner on the right side
+            if (robotPointer->isCornerRight()) {
+                while ( robotPointer->rightBackSensor < 40 ) {
+					robotPointer->changeGear('f');
+                    robotPointer->setSpeed(25);
+                    robotPointer->drive();
+                }
+                robotPointer->rotateRight();
+                
+                while (!robotPointer->isWallRight()) {
+					robotPointer->changeGear('f');
+                    robotPointer->setSpeed(25);
+                    robotPointer->drive();
+                }
+            }
+            
+            
             // Checks for wall in front
-            if ( robotPointer->isWallFwd() ) {
+            else if ( robotPointer->isWallFwd() ) {
                 robotPointer->setSpeed(25);
 				robotPointer->changeGear('f');
                 robotPointer->drive();
@@ -227,22 +248,6 @@ int main(void)
 #endif
                 }
                 
-            }
-            
-            // Check for corner on the right side
-            else if (robotPointer->isCornerRight()) {
-                while ( robotPointer->rightBackSensor < 40 ) {
-					robotPointer->changeGear('f');
-                    robotPointer->setSpeed(25);
-                    robotPointer->drive();
-                }
-                robotPointer->rotateRight();
-                
-                while (!robotPointer->isWallRight()) {
-					robotPointer->changeGear('f');
-                    robotPointer->setSpeed(25);
-                    robotPointer->drive();
-                }
             }
             
             // Check for wall on the right and follow it
