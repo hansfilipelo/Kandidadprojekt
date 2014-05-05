@@ -259,7 +259,7 @@ void Robot::rotateLeft(){
 	
     // Turns
     changeGear('l');
-    setSpeed(25);
+    setSpeed(35);
 	
 	while (rotateActive)
 	{
@@ -307,7 +307,7 @@ void Robot::rotateRight(){
 	
     // Turns
     changeGear('r');
-    setSpeed(25);
+    setSpeed(35);
 	while (rotateActive)
 	{
 		drive();

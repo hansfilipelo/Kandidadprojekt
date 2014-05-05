@@ -192,7 +192,7 @@ int main(void)
                 robotPointer->drive();
                 
 #if DEBUG == 0
-                _delay_ms(1500);
+                _delay_ms(200);
 #endif
                 // If dead-end, turn 180 degrees
                 if ( robotPointer->leftFrontSensor < 30 && robotPointer->leftBackSensor < 30 ) {
