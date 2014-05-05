@@ -29,6 +29,9 @@ bool toggle = false;
 bool ReceiveFromSteer = false;
 bool ReceiveFromSensor = false;
 
+unsigned long int LED = 0;
+bool LEDtoggle = true;
+
 Map buffer;
 Bluetooth Firefly;
 Spi Bus(&Firefly,&buffer);
@@ -137,6 +140,7 @@ ISR(INT0_vect){
 
 int main(void)
 {
+	DDRA |= (1<<PORTA4);
     Firefly.setPointer(&Bus,&buffer);
 	sei();
 
@@ -151,8 +155,21 @@ int main(void)
 		}
 		if(Firefly.getMap){
 		Bus.requestRow(Firefly.mapNumber);
-		Firefly.getMap = false; 
+		Firefly.getMap = false;
 		}
 		Display.update();
+		
+		if(LED == 50000){
+			LED = 0;
+			if(LEDtoggle){
+				PORTA |=(1<<PORTA4);
+				LEDtoggle = false;
+			}
+			else{
+				PORTA &= ~(1<<PORTA4);
+				LEDtoggle = true;
+			}
+		}
+		LED++;
 	}
 }

@@ -27,6 +27,10 @@ Gui::Gui(QWidget *parent) :
     // via shortcuts samt knappar i UI:n
     new QShortcut(QKeySequence(Qt::Key_Space), this, SLOT(on_actionStop_triggered()));
     time.start();
+    int i = ui->speedSlider->value();
+    QString s = QString::number(i);
+    ui->speedPercent->setText(s);
+    speedMultiplier = i;
 
 }
 

@@ -135,6 +135,7 @@ public:
     volatile double Kp = 7; //Proportional coeff.
 	
     int getRightDistance();
+	int getLeftDistance();
     
 	int fwdSensor;
     int bwdSensor;
@@ -162,7 +163,7 @@ public:
     //Values concerning automatic control
     
     int movementSpeed;
-    int Ref=20; //Reference value for control
+    int Ref=10; //Reference value for control
     int previousRightError = 0;
     int previousLeftError = 0;
 	long int robotTempPd;

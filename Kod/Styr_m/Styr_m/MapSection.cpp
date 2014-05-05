@@ -259,7 +259,7 @@ void Robot::rotateLeft(){
 	
     // Turns
     changeGear('l');
-    setSpeed(25);
+    setSpeed(35);
 	
 	while (rotateActive)
 	{
@@ -268,8 +268,8 @@ void Robot::rotateLeft(){
 	
 	// Stop rotation and set gear to forward
 	setSpeed(0);
-	drive();
 	changeGear('f');
+	drive();
     
     // Update direction
     if (direction == 'f') {
@@ -307,7 +307,7 @@ void Robot::rotateRight(){
 	
     // Turns
     changeGear('r');
-    setSpeed(25);
+    setSpeed(35);
 	while (rotateActive)
 	{
 		drive();
@@ -315,8 +315,8 @@ void Robot::rotateRight(){
 	
 	// Stop rotation and set gear to forward
 	setSpeed(0);
-	drive();
 	changeGear('f');
+	drive();
     
     // Update direction
     if (direction == 'f') {
@@ -434,8 +434,8 @@ void Robot::setFwdClosed(){
 	
     int output = 0;
     
-    if ( fwdSensor > 340 && bwdSensor > 340 ) {
-        output = 300/40;
+    if (fwdSensor > 300) {
+        output = 280/40;
     }
     else{
         output = fwdSensor/40;
@@ -498,11 +498,11 @@ void Robot::setBwdClosed(){
 	
 	int output = 0;
 	
-	if ( fwdSensor > 340 && bwdSensor > 340 ) {
-		output = 300/40;
+	if (bwdSensor > 300) {
+		output = 280/40;
 	}
 	else{
-		output = bwdSensor/40;
+		output = bwdSensor/40; //ser vissa problem med detta.
 	}
 	
 	// Set closed section output + 1 steps away from robot.
@@ -561,38 +561,52 @@ void Robot::setBwdClosed(){
 void Robot::setLeftClosed(){
 	
 		int output = 0;
-		
-		if ( fwdSensor > 340 && bwdSensor > 340 ) {
-			output = 300/40;
+	    
+	    if( getLeftDifference() < -5 || getLeftDifference() > 5){
+		    return; //the too great uncertainty if.
+	    }
+	    else if ( getLeftDistance() < 30 ) { // this value might need to be calibrated
+		    output = 0;				//if distance is great only print max 2 empty.
+	    }
+		else if (leftLongSensor > 160){
+			output = 120/40;
 		}
-		else{
-			output = leftLongSensor/40;
-		}
-	
+	    else{
+		    output = leftLongSensor/40;
+	    }
+
 	// Set closed section output + 1 steps away from robot.
 	// Direction 0->y->17, "fwd"
 	if (direction == 'f'){
 		//mom->convertSection(xCoord + output + 1,yCoord, 'c');
         
-        // Set every section between robot and wall as empty
+        // Set every section between robot and wall as empty or closed
         for (int i = 0; i < output; i++) {
             if(xCoord+1+i > 31){
                 break;
             }
             mom->convertSection(xCoord + i + 1,yCoord, 'e');
         }
+        if(output == 0){
+	        mom->convertSection(xCoord + 1,yCoord, 'c');
+        }
 	}
+
+		
 	// Direction 17->y->0, "bwd"
 	else if (direction == 'b'){
 		//mom->convertSection(xCoord - output - 1,yCoord, 'c');
         
-        // Set every section between robot and wall as empty
+        // Set every section between robot and wall as empty or closed
         for (int i = 0; i < output; i++) {
             if(xCoord-1-i < 0){
                 break;
             }
             mom->convertSection(xCoord - i - 1,yCoord, 'e');
         }
+		if(output == 0){
+			mom->convertSection(xCoord - 1,yCoord, 'c');
+		}
 	}
 	// Direction 0->x->32, "right"
 	else if (direction == 'r'){
@@ -605,6 +619,9 @@ void Robot::setLeftClosed(){
             }
             mom->convertSection(xCoord,yCoord - i - 1, 'e');
         }
+		if(output == 0){
+			mom->convertSection(xCoord,yCoord - 1, 'c');
+		}
 	}
 	// Direction 32->x->0, "left"
 	else if (direction == 'l'){
@@ -617,6 +634,9 @@ void Robot::setLeftClosed(){
             }
             mom->convertSection(xCoord,yCoord + i + 1, 'e');
         }
+		if(output == 0){
+			mom->convertSection(xCoord,yCoord + 1, 'c');
+		}
 	}
 }
 
@@ -625,9 +645,13 @@ void Robot::setLeftClosed(){
 void Robot::setRightClosed(){
 	
 	int output = 0;
+    
+    if( getRightDifference() < -5 || getRightDifference() > 5){
+        return; //the too great uncertainty if.
+    }
 	
-	if ( fwdSensor > 340 && bwdSensor > 340 ) {
-		output = 300/40;
+	if ( getRightDistance() > 60 ) { // this value might need to be calibrated
+		output = 80/40;//if distance is great only print max 2 empty.
 	}
 	else{
 		output = getRightDistance()/40;
@@ -636,8 +660,7 @@ void Robot::setRightClosed(){
 	// Set closed section output + 1 steps away from robot.
 	// Direction 0->y->17, "fwd"
 	if (direction == 'f'){
-		//mom->convertSection(xCoord - output - 1,yCoord, 'c');
-        
+		
         // Set every section between robot and wall as empty
         for (int i = 0; i < output; i++) {
             if(xCoord-1-i < 0){
@@ -645,10 +668,13 @@ void Robot::setRightClosed(){
             }
             mom->convertSection(xCoord - i - 1,yCoord, 'e');
         }
+        if(output == 0){
+            mom->convertSection(xCoord - 1,yCoord, 'c');
+        }
 	}
 	// Direction 17->y->0, "bwd"
 	else if (direction == 'b'){
-		//mom->convertSection(xCoord + output + 1,yCoord, 'c');
+		
         
         // Set every section between robot and wall as empty
         for (int i = 0; i < output; i++) {
@@ -657,18 +683,25 @@ void Robot::setRightClosed(){
             }
             mom->convertSection(xCoord + i + 1,yCoord, 'e');
         }
+        if(output == 0){
+            mom->convertSection(xCoord + 1,yCoord, 'c');
+        }
 	}
 	// Direction 0->x->32, "right"
 	else if (direction == 'r'){
-		//mom->convertSection(xCoord,yCoord + output + 1, 'c');
+		
         
         // Set every section between robot and wall as empty
         for (int i = 0; i < output; i++) {
-            if(yCoord+1+i > 31){
+            if(yCoord+1+i > 16){
                 break;
             }
             mom->convertSection(xCoord,yCoord + i + 1, 'e');
         }
+        if(output == 0){
+            mom->convertSection(xCoord,yCoord + 1, 'c');
+        }
+        
 	}
 	// Direction 32->x->0, "left"
 	else if (direction == 'l'){
@@ -680,6 +713,9 @@ void Robot::setRightClosed(){
                 break;
             }
             mom->convertSection(xCoord,yCoord - i - 1, 'e');
+        }
+        if(output == 0){
+            mom->convertSection(xCoord,yCoord - 1, 'c');
         }
 	}
 }
@@ -917,6 +953,14 @@ int Robot::getRightDistance(){
     
 }
 
+int Robot::getLeftDistance(){
+	
+	int output = leftFrontSensor;
+	output = output + leftFrontSensor;
+	return output/2;
+	
+}
+
 void Robot::setControlParameters(double inputKp, double inputKd, int inputRef, int trimLeft, int trimRight){
     Kp=inputKp;
     Kd=inputKd;
@@ -967,11 +1011,13 @@ void Robot::setUserSpeed(int inSpeed)
 
 bool Robot::isWallRight(){
     
-    if ( rightFrontSensor > 30 || rightBackSensor > 30 ){
-        return false;
+    if ( rightFrontSensor < 30 && rightBackSensor < 30 ){
+		volatile bool benny = true;
+        return benny;
     }
     else {
-        return true;
+		volatile bool benny = false;
+        return benny;
     }
 }
 
@@ -980,7 +1026,8 @@ bool Robot::isWallRight(){
 bool Robot::isCornerRight(){
     
     if ( rightFrontSensor > 40 && rightBackSensor < 25 ){
-        return true;
+		volatile bool shitFace = true;
+        return shitFace;
     }
     else {
         return false;
