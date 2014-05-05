@@ -29,7 +29,7 @@ bool toggle = false;
 bool ReceiveFromSteer = false;
 bool ReceiveFromSensor = false;
 
-int LED = 0;
+unsigned long int LED = 0;
 bool LEDtoggle = true;
 
 Map buffer;
@@ -159,7 +159,7 @@ int main(void)
 		}
 		Display.update();
 		
-		if(LED = 500){
+		if(LED == 50000){
 			LED = 0;
 			if(LEDtoggle){
 				PORTA |=(1<<PORTA4);
