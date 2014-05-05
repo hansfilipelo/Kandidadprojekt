@@ -22,6 +22,7 @@ class Slave
 	unsigned char inDataArray[27]; 
 	unsigned char outDataArray[27];
 	unsigned int position;
+	bool slaveSend = false;
 };
 
 #endif

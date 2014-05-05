@@ -13,16 +13,16 @@
 #include "slave.h"
 
 //------------sensorer----------------------
-volatile int numOfSamples = 150;
+volatile int numOfSamples = 50;
 volatile int savepos = 0;  //counter for the storage array
 
-volatile int sensor0[150];
-volatile int sensor1[150]; // not certain that this initialization will fly. 
-volatile int sensor2[150];
-volatile int sensor3[150];
-volatile int sensor4[150];
-volatile int sensor5[150];
-volatile int sensor6[150];
+volatile int sensor0[50];
+volatile int sensor1[50]; // not certain that this initialization will fly. 
+volatile int sensor2[50];
+volatile int sensor3[50];
+volatile int sensor4[50];
+volatile int sensor5[50];
+volatile int sensor6[50];
 
 
 volatile long int sen0;
@@ -98,20 +98,20 @@ void gyrocal(){
 }
 
 void handleInDataArray(){		//hanterar det som skickats till sensormodulen från bussen
-	if((sensormodul.inDataArray[1] == 'g') and (sensormodul.inDataArray[2] == '1')){
+	if((sensormodul.inDataArray[1] == 'g') and (sensormodul.inDataArray[2] == 1)){
 		gyromode = true;
 		TCNT0 = 0x00;			//set timer to 0
 	}
-	else if((sensormodul.inDataArray[1] == 'g') and (sensormodul.inDataArray[2] == '0')){
+	else if((sensormodul.inDataArray[1] == 'g') and (sensormodul.inDataArray[2] == 0)){
 		gyrocal();
 	}
-	else if((sensormodul.inDataArray[1] == 'k') and(sensormodul.inDataArray[2] == '0')){
+	else if((sensormodul.inDataArray[1] == 'k') and(sensormodul.inDataArray[2] == 0)){
 		int hundra = sensormodul.inDataArray[3];
 		int tio = sensormodul.inDataArray[4];
 		int en = sensormodul.inDataArray[5];
 		medurs = hundra * 10 + tio + en /10;
 	}
-	else if((sensormodul.inDataArray[1] == 'k') and(sensormodul.inDataArray[2] == '1')){
+	else if((sensormodul.inDataArray[1] == 'k') and(sensormodul.inDataArray[2] == 1)){
 		int hundra = sensormodul.inDataArray[3];
 		int tio = sensormodul.inDataArray[4];
 		int en = sensormodul.inDataArray[5];
@@ -168,7 +168,12 @@ ISR(SPI_STC_vect){
 	sensormodul.inDataArray[sensormodul.position-1] = SPDR;
 	
 	if ((sensormodul.position == (sensormodul.inDataArray[0]+1))&(sensormodul.inDataArray[0]!= 0)){
+		sensormodul.position = 0;
 		PORTC |= (1<<PORTC0);
+		PORTC &= ~(1<<PORTC0);
+	}
+	if((sensormodul.slaveSend && (sensormodul.position == sensormodul.outDataArray[0]+1))){ //When slave sends, position is not set to zero.
+		sensormodul.slaveSend = false;
 		sensormodul.position = 0;
 	}
 }
@@ -222,7 +227,6 @@ int main(void)
 	
 	sei();					// Enable Global Interrupts
 	gyrocal();
-	gyromode = true;
 	ADCSRA |= 1<<ADSC;		// Start Conversion
 	
 	while(1){				// Wait forever

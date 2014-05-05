@@ -85,7 +85,9 @@ public:
     
 	// Driving
     void changeGear(char direction);
-    void drive(int speed);
+    void drive();
+	void setSpeed(int);
+	void setUserSpeed(int);
     void driveBackward(int speed);
     void moveTo(int xPos, int yPos);
 	void rotateLeft();
@@ -113,6 +115,8 @@ public:
     
     int meanValueArray(char* inputArray, int iterations);
     void updateRobotPosition();
+	void setFwdReference();
+	void setBwdReference();
     
     // Automatic control
     void turn(int pd); //Positive or negative value will decide left or right
@@ -122,8 +126,8 @@ public:
     
     void setControlParameters(double, double, int);
     
-    volatile double Kd = 0; //Differentiation coeff.
-    volatile double Kp = 0; //Proportional coeff.
+    volatile double Kd = 26; //Differentiation coeff.
+    volatile double Kp = 7; //Proportional coeff.
 	
     int getRightDistance();
     
@@ -153,13 +157,16 @@ public:
     //Values concerning automatic control
     
     int movementSpeed;
-    int Ref=10; //Reference value for control
+    int Ref=20; //Reference value for control
     int previousRightError = 0;
     int previousLeftError = 0;
-    
+	long int robotTempPd;
     
     MapSection* previousSection = NULL;
     Communication* commObj = NULL;
+	
+	int speed = 0;
+	int userSpeed = 0;
     
     };
 
