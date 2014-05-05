@@ -155,6 +155,7 @@ public:
 	
 	char direction = 'f';
     char gear = 'f';
+    char validSensor = 'N'; //No valid from start.
     
     int fwdReference;
     int bwdReference;

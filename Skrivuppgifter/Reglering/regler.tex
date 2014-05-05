@@ -128,7 +128,7 @@ alltså ett stort stickprov vilket kan leda till en mindre osäkerhet.
 
 
 \subsection{Syfte}
-Syftet med denna rapport är att ge läsaren en introduktion till de algoritmer och tekniker som används för kartläggning och positionsbestämning i ett mikroprocessorsystem och att lösa ett enklare SLAM-problem. 
+Syftet med denna rapport är att ge läsaren en introduktion till de algoritmer och tekniker som används för kartläggning och positionsbestämning i ett mikroprocessorsystem.
 
 \subsection{Historia}
 
@@ -161,6 +161,35 @@ SLAM är en teknik där ett system visuellt kan uppfatta landmärken. Med landm�
 I denna fördjupande del går vi igenom förkunskaper som krävs för att beskriva en implementering som kan utföra SLAM i en miljö lik den i problemställningen. 
 
 %----------------------Odometri------------------
+
+\section{Tillståndsrepresentation av reglersystem}
+
+Inom reglerteknik kan linjära system beskrivas på så kallad tillståndsformel så som Glad och Ljung\footnote{Glad, Torkel och Ljung, Lennart (2006), \textit{Reglerteknik - Grundläggande teori}.} beskriver. I fallet med SLAM för en robot använder man robotens position som tillstånd , tecknat $\vec{x}$. 
+\\
+där $A$, $B$, $C$ och $D$ är matriser, $u$ är insignal och $\vec{y}$ exempelvis är kringliggande objekts position i förhållande till roboten, alternativt robotens position vid mätning med GPS/GLONASS. 
+
+
+Tillstånden för en robot mäts med tidsdiskreta värden då datorer endast hanterar diskreta mätningar och ej kontinuerliga. I dessa fall är det bättre att använda sig av en diskret tillståndsbeskrivning. En diskret tillståndsbeskrivning av ett linjärt reglersystem beskrivs av: 
+
+\begin{gather}
+\vec{x}[n+1] = A\vec{x}[n] + B\vec{u}[n] \\
+\vec{y}[n] = C\vec{x[n]} + D\vec{u[n]}
+\end{gather}
+
+
+
+
+I ett realiserbart system nyttjas sensorer med en viss osäkerhet. Man kan därmed enbart skatta systemets tillstånd och inte exakt beräkna dem. För att uppskatta dem används det ofta en så kallad observatör.
+
+\subsection{Observatörer}
+
+En observatör används för att skatta positionen i förhållande till kringliggande objekt med hjälp av till exempel sensorvärden. 
+
+
+\subsection{Kalmanfilter}
+
+\subsection{EKF - Det utökade kalmanfiltret}
+
 \subsection{Odometri}
 
 För att kunna utföra SLAM krävs det att man gör odometri, det vill säga att man kontinuerligt uppskattar vägen som färdats. Odometri kan göras på olika sätt - exempelvis genom att optiskt mäta avstånd till objekt i sin omgivning, vinkelhastigheter på hjul med känd storlek eller steg med given längd. 
@@ -172,18 +201,7 @@ Med optisk avläsning av omvärlden finns alltid möjligheten att korrigera tidi
 
 \newpage
 
-\subsection{Tillståndsrepresentation av reglersystem}
 
-Inom reglerteknik kan linjära system beskrivas på så kallad tillståndsformel så som Glad och Ljung\footnote{Glad, Torkel och Ljung, Lennart (2006), \textit{Reglerteknik - Grundläggande teori}.} beskriver. I fallet med SLAM för en robot använder man robotens position som tillstånd , tecknat $\vec{x}$. En observatör används för att skatta positionen i förhållande till kringliggande objekt med hjälp av till exempel sensorvärden. Tillstånden mäts med tidsdiskreta värden då datorer endast hanterar diskreta mätningar och ej kontinuerliga. En diskret tillståndsbeskrivning av ett linjärt reglersystem beskrivs av: 
-
-\begin{gather}
-\vec{x}[n+1] = A\vec{x}[n] + B\vec{u}[n] \\
-\vec{y}[n] = C\vec{x[n]} + D\vec{u[n]}
-\end{gather}
-\\
-där $A$, $B$, $C$ och $D$ är matriser, $u$ är insignal och $\vec{y}$ exempelvis är kringliggande objekts position i förhållande till roboten, alternativt robotens position vid mätning med GPS/GLONASS. 
-
-I ett realiserbart system nyttjas sensorer med en viss osäkerhet. Man kan därmed enbart skatta systemets tillstånd och inte exakt beräkna dem. 
 
 \subsubsection{Skattning av tillstånd}
 
@@ -202,6 +220,8 @@ Variablernas tillstånd kan sedan skattas med mätningarnas väntevärde, $\mu$.
 Skattningen, alltså väntevärdet, är alltså observatören för tillståndsvariablerna i systemet. 
 
 \newpage
+
+
 %-------------------------------Typer av SLAM------------------------------------------------------
 \subsection{Typer av SLAM}
 Det finns olika typer av SLAM för olika typer av tillämpningar och med olika egenskaper. Vissa är bra på större områden medan andra är mer precisa och bra på mindre områden. 

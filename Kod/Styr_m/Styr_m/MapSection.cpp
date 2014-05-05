@@ -738,8 +738,101 @@ int Robot::meanValueArray(char* inputArray, int iterations) {
 // -----------------------------------------
 //Sets reference values and moves robot in map abstraction if robot has moved one square
 void Robot::updateRobotPosition(){
-    if (fwdReference - getFwdDistance() >= 40){
-        fwdReference=getFwdDistance();
+    if(validSensor == 'N'){
+        validSensor = determineValidSensor();
+    }
+    int sensorDifference = 0;
+    
+    if (validSensor == 'b'){
+        sensorDifference = bwdReference - getBwdDistance();
+    }
+    else if(validSensor == 'f'){
+        sensorDifference = fwdReference - getFwdDistance();
+    }
+    
+    if (sensorDifference > 39){
+    switch (direction)
+    {
+            
+//-------------------------Direction is forwards in map-------------------
+        case 'f':
+            // Place back the section we stand in
+            mom->setSection(previousSection->getX(), previousSection->getY(), previousSection);
+            // Get a new prev section
+            previousSection = mom->getPos(xCoord, yCoord + 1);
+            // Put robot in place
+            mom->setSection(xCoord,yCoord + 1, this);
+            // Update robot info about position
+            yCoord++;
+            
+            break;
+            
+//-------------------------Direction is backwards in map-------------------
+        case 'b':
+            // Place back the section we stand in
+            mom->setSection(previousSection->getX(), previousSection->getY(), previousSection);
+            // Get a new prev section
+            previousSection = mom->getPos(xCoord, yCoord - 1);
+            // Put robot in place
+            mom->setSection(xCoord,yCoord - 1, this);
+            // Update robot info about position
+            yCoord--;
+            
+            break;
+            
+//-------------------------Direction is right in map-----------------------
+        case 'r':
+            // Place back the section we stand in
+            mom->setSection(previousSection->getX(), previousSection->getY(), previousSection);
+            // Get a new prev section
+            previousSection = mom->getPos(xCoord + 1, yCoord);
+            // Put robot in place
+            mom->setSection(xCoord + 1,yCoord, this);
+            // Update robot info about position
+            xCoord++;
+            
+            break;
+            
+//-------------------------Direction is left in map------------------------
+        case 'l':
+            // Place back the section we stand in
+            mom->setSection(previousSection->getX(), previousSection->getY(), previousSection);
+            // Get a new prev section
+            previousSection = mom->getPos(xCoord - 1, yCoord);
+            // Put robot in place
+            mom->setSection(xCoord - 1,yCoord, this);
+            // Update robot info about position
+            xCoord--;
+            
+            break;
+            
+//-------------------------Direction is undefined.-------------------------
+        default
+            //would like to throw some kind of error here.
+            return;
+        }
+        
+        //update which sensor that is valid and should be measured.
+        //and update the references on that sensor.
+        validSensor = determineValidSensor();
+        if(validSensor == 'f'){
+            this->setFwdReference();
+        }
+        else if(validSensor == 'b'){
+            this->setBwdReference();
+        }
+        else{
+            validSensor = 'N';
+            this->setBwdReference();
+            this->setFwdReference();
+        }
+    }
+}
+/*
+	
+	
+    if (fwdReference - fwdSensor >= 40){
+        fwdReference=fwdSensor;
         if (direction == 'f'){
             // Place back the section we stand in
             mom->setSection(previousSection->getX(), previousSection->getY(), previousSection);
@@ -844,7 +937,7 @@ void Robot::updateRobotPosition(){
     }
 }
 
-
+*/
 // -----------------------------------------
 
 void Robot::adjustPosition(){
@@ -993,23 +1086,11 @@ void Robot::setSpeed(int inSpeed)
 // Sets reference for mapping
 
 void Robot::setFwdReference(){
-	if (getFwdDistance() > 340)
-	{
-		fwdReference = 300;
-	}
-	else {
-		fwdReference = getFwdDistance();
-	}
+	fwdReference = getFwdDistance();
 }
 
 void Robot::setBwdReference(){
-		if (getBwdDistance() > 340)
-	{
-		bwdReference = 300;
-	}
-	else {
-		bwdReference = getBwdDistance();
-	}
+    bwdReference = getBwdDistance();
 }
 
 void Robot::setUserSpeed(int inSpeed)
