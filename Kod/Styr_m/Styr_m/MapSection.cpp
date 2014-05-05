@@ -444,6 +444,9 @@ void Robot::setFwdClosed(){
         
         // Set every section between robot and wall as empty
         for (int i = 0; i < output; i++) {
+            if(yCoord+i+1>16){
+                break;
+            }
             mom->convertSection(xCoord,yCoord + i + 1, 'e');
         }
 	}
@@ -453,6 +456,9 @@ void Robot::setFwdClosed(){
         
         // Set every section between robot and wall as empty
         for (int i = 0; i < output; i++) {
+            if(yCoord-i-1<0){
+                break;
+            }
             mom->convertSection(xCoord,yCoord - i - 1, 'e');
         }
 	}
@@ -462,6 +468,9 @@ void Robot::setFwdClosed(){
         
         // Set every section between robot and wall as empty
         for (int i = 0; i < output; i++) {
+            if(xCoord+i+1>31){
+                break;
+            }
             mom->convertSection(xCoord + i + 1,yCoord, 'e');
         }
 	}
@@ -471,6 +480,9 @@ void Robot::setFwdClosed(){
         
         // Set every section between robot and wall as empty
         for (int i = 0; i < output; i++) {
+            if(xCoord-i-1<0){
+                break;
+            }
             mom->convertSection(xCoord - i - 1,yCoord, 'e');
         }
 	}	
