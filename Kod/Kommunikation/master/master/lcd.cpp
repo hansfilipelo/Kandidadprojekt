@@ -22,7 +22,7 @@
 
 Lcd::Lcd(){
 	init();
-	command(0x0C); //turns of cursor
+	//command(0x0C); //turns of cursor
 }
 
 void Lcd::SetData(unsigned char var){
@@ -152,18 +152,6 @@ void Lcd::senddata(unsigned char var){
 	//LCD_busy(); //Wait for LCD to process the command
 }
 
-void Lcd::draw(unsigned char location, unsigned char sign){
-	
-        if(ready() && moveToggle){
-            command(location);
-            moveToggle = 0;
-        }
-        if(ready() && (!moveToggle)){
-            senddata(sign);
-            moveToggle = 1;
-    }
-}
-
 void Lcd::firstDraw(unsigned char location, unsigned char sign){
     //DŒligt med delayer bšr endast gšras vid initiering.
     _delay_us(40);
@@ -172,19 +160,9 @@ void Lcd::firstDraw(unsigned char location, unsigned char sign){
     senddata(sign);
 }
 
-/*
- *Skriver ut namnen på sensorerna
- *	Bit 1
- *	8->rad1
- *	c->rad2
- *	9->rad3
- *	d->rad4
- *
- *	Bit 2 bestämmer vart på raden (0->f)
- */
 void Lcd::drawSensorNames(){
 	
-    //rad 1
+	//rad 1
 	//prints S1
 	firstDraw(0x80,0x53);
 	firstDraw(0x81,0x31);
@@ -194,8 +172,7 @@ void Lcd::drawSensorNames(){
 	//prints KP
 	firstDraw(0x8d,0x4b);
 	firstDraw(0x8e,0x50);
-	
-	//rad 2
+   //rad 2
 	//prints S2
 	firstDraw(0xc0,0x53);
 	firstDraw(0xc1,0x32);
@@ -205,7 +182,6 @@ void Lcd::drawSensorNames(){
 	//prints KD
 	firstDraw(0xcd,0x4b);
 	firstDraw(0xce,0x44);
-	
 	//rad 3
 	//prints S3
 	firstDraw(0x90,0x53);
@@ -218,150 +194,96 @@ void Lcd::drawSensorNames(){
 	//prints S4
 	firstDraw(0xd0,0x53);
 	firstDraw(0xd1,0x34);
+	
+	
 }
 
-void Lcd::updateS1(char data1, char data2, char data3){
-	int m = 0x30 + (int)(data1);
-	int dm= 0x30 + (int)(data2);
-	int cm= 0x30 + (int)(data3);
-	
-	draw(0x83,m);
-	draw(0x84,dm);
-	draw(0x85,cm);
-}
-
-void Lcd::updateS2(char data1, char data2, char data3){
-	int m = 0x30 + (int)(data1);
-	int dm= 0x30 + (int)(data2);
-	int cm= 0x30 + (int)(data3);
-	
-	draw(0xc3,m);
-	draw(0xc4,dm);
-	draw(0xc5,cm);
-}
-
-void Lcd::updateS3(char data1, char data2, char data3){
-	int m = 0x30 + (int)(data1);
-	int dm= 0x30 + (int)(data2);
-	int cm= 0x30 + (int)(data3);
-	
-	draw(0x93,m);
-	draw(0x94,dm);
-	draw(0x95,cm);
-}
-
-void Lcd::updateS4(char data1, char data2, char data3){
-	int m = 0x30 + (int)(data1);
-	int dm= 0x30 + (int)(data2);
-	int cm= 0x30 + (int)(data3);
-	
-	draw(0xd3,m);
-	draw(0xd4,dm);
-	draw(0xd5,cm);
-}
-
-void Lcd::updateL1(char data1, char data2, char data3){
-	int m = 0x30 + (int)(data1);
-	int dm= 0x30 + (int)(data2);
-	int cm= 0x30 + (int)(data3);
-	
-	draw(0x8a,m);
-	draw(0x8b,dm);
-	draw(0x8c,cm);
-}
-
-void Lcd::updateL2(char data1, char data2, char data3){
-	int m = 0x30 + (int)(data1);
-	int dm= 0x30 + (int)(data2);
-	int cm= 0x30 + (int)(data3);
-	
-	draw(0xca,m);
-	draw(0xcb,dm);
-	draw(0xcc,cm);
-}
-
-void Lcd::updateM1(char data1, char data2, char data3){
-	int m = 0x30 + (int)(data1);
-	int dm= 0x30 + (int)(data2);
-	int cm= 0x30 + (int)(data3);
-	
-	draw(0x9a,m);
-	draw(0x9b,dm);
-	draw(0x9c,cm);
+void Lcd::draw(unsigned char sign){
+	   if(ready() && moveToggle){
+		   //fulkod
+			command(0x80);
+            moveToggle = false;
+        }
+       if(ready() && (!moveToggle)){
+			senddata(sign);
+            moveToggle = 1;
+			drawSucceded = true;
+    }
 }
 
 void Lcd::update(){
-    
-    int row = getRow(sensorCounter);
-    int col = getCol(sensorCounter);
-    
-    char position;
-    
-    if(row == 0){
-        position = 0x80;
-    }
-    if(row == 1){
-        position = 0xc0;
-    }
-    if(row == 2) {
-        position = 0x90;
-    }
-    else{
-        position = 0xd0;
-    }
-    
-    if (col==3) {
-        position = position + 3;
-    }
-    else{
-        position = position + 10;
-    }
-    
-    int value = (int)(writeBuffer[col][row]);
-    for (unsigned int i=0; i<3; i++) {
-        draw(position,value);
-        int value = (int)(writeBuffer[col+1][row]);
-        position = position + 1;
-    }
+	if(drawSucceded){
+		drawSucceded = false;
+		writeValue = (int)(writeBuffer[row][col]);
+		col = col + 1;
+		if (col==16){
+			col = 0;
+			row = row + 1;
+		}
+		if((col==16) & (row==4)){
+			row=0;
+			col=0;
+		}
+	}
+	draw(writeValue);
 }
 
-void Lcd::insertSensorValuesToBuffer(int sensor, char m, char dm, char cm){
+void Lcd::insertSensorValuesToBuffer(unsigned char* inArray){
     //places sensorvalues in the correct position in the buffer
-    int row = getRow(sensor);
-    int col = getCol(sensor);
-    
-    writeBuffer[col][row] = m;
-    writeBuffer[col+1][row] = dm;
-    writeBuffer[col+2][row] = cm;
+	int r = 0;
+	int c = 3;
+	
+  	for(unsigned int i = 1; i<8; i++){
+		switch(i)
+		{
+			case 0 : r = 0;
+			break;
+			case 1 : r = 2;
+			break;
+			case 2 : r = 0, c = 10;
+			break;
+			case 3 : r = 2;
+			break;
+			case 4 : r = 1;	
+			break;
+			case 5 : r = 3;
+			break;
+			case 6 : r = 2, c= 3;
+			break;
+		}
+		writeBuffer[r][c] = inArray[i*3];
+		writeBuffer[r][c+1] = inArray[i*3+1];
+		writeBuffer[r][c+2] = inArray[i*3+2];
+	}
 }
 
-int Lcd::getCol(int sensor){
-    int col = 0;
-    if((sensor <= 1) or (sensor == 6)){
-        col = 10;
-    }
-    else{
-        col = 3;
-    }
-    return col;
-}
+/*		if(row == 0){
+			writePosition = 0x80;
+		}
+		if(row == 1){
+			writePosition = 0xc0;
+		}
+		if(row == 2) {
+			writePosition = 0x90;
+		}
+		if(row == 3){
+			writePosition = 0xd0;
+		}
+		if (col == 3) {
+			writePosition = writePosition + 2;
+		}
+		else{
+			writePosition = writePosition + 9;
+		}
 
-int Lcd::getRow(int sensor){
-    int row;
-    if((sensor == 0) or (sensor == 2)){
-        row = 1;
-    }
-    else if((sensor == 1) or (sensor == 3)){
-        row = 2;
-    }
-    else if((sensor == 4) or (sensor == 6)){
-        row = 3;
-    }
-    else{
-        row = 4;
-    }
-    return row;
-}
+L1 array[3]
+L2 array[6]
+S1
+S2
+S3
+S4
+M1
+*/
 
 
 bool Lcd::ready(){
@@ -401,16 +323,13 @@ bool Lcd::ready(){
 	
 	DDRC |=(1<<PORTC0)|(1<<PORTC1)|(1<<PORTC6)|(1<<PORTC7);
 	DDRD |=(1<<PORTD4)|(1<<PORTD5)|(1<<PORTD6)|(1<<PORTD7);
-	
+
 	if(temp){
-		PORTA &=~(1<<PORTA7);
 		return false;
 	}
 	else{
-		PORTA &=~(1<<PORTA7);
 		return true;
 	}
-	
 }
 
 	

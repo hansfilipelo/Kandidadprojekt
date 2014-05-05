@@ -13,7 +13,7 @@ Bluetooth::Bluetooth(){
 }
 
 void Bluetooth::setPointer(Spi* ptr, Map* inMap){
-	spiPointer=ptr;
+	spiPointer = ptr;
 	mapPointer = inMap;
 }
 

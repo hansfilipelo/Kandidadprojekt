@@ -125,6 +125,9 @@ Trådlös kommunikation med ett mobilt fordon ställer vissa krav på kommunikat
 \newpage
 
 \section{Principer för trådlös kommunikation}
+
+Trådlös kommunikation utnyttjar ljus eller radiovågor och modulering av dessa för att skicka en följd av ettor och nollor i ett förspecificerat protokoll från sändarenheten. På mottagarenheten finns hårdvara för att läsa av den inkommande vågens modulering och konvertera tillbaka detta till en bitföljd och tolka datat.
+
 \subsection{WLAN}
 Ett wireless local area network (WLAN) kopplar ihop två eller flera noder med hjälp av någon form av trådlös distributionsmetod. Ett exempel på en sådan distributionsmetod är orthogonal frequency-division multiplexing (OFDM) som utnyttjar olika bärvågfrekvenser får att koda om signalen. WLAN använder sig oftast av en accesspunkt så att noderna/användarna kan förflytta sig inom räckvidden för denna accesspunkt. Idag används mestadels WLAN som är baserade på standarden IEEE 802.11 som i vardagligt språk brukar kallas Wi-Fi. Standarden är skapat av Institute of Electrical and Electronics Engineers, (IEEE).
 
@@ -141,9 +144,6 @@ Standarden finns i flertalet versioner som använder sig av olika frekvensband o
 
 \subsubsection{WEP}
 Wired Equivalent Privacy (WEP) är ett system som utvecklats för att göra 802.11 standarden säker. Principiellt går det till så att avsändaren(exempelvis routern) krypterar data och skickar det trådlöst för att mottagaren(exempelvis en smartphone)sedan ska kunna dekryptera det. WEP är ett protokoll som bygger på att både sändare och mottagare har samma nyckel. RC4-chiffret använder sedan nyckeln för att skapa en pseudo-slumpad utsekvens som skickas till mottagaren. Väl på mottagarsidan sker samma sekvens fast i omvänd form för att få fram datapaketet.\footnote{\label{RC4}Chaabouni, Rafik. Break WEP Faster with Statistical Analysis, Institute of Technology Lausanne, 2006. http://lasecwww.epfl.ch/pub/lasec/doc/cha06.pdf}
-
-Lind, Mikael. Affärsprocessinriktad förändringsanalys: utveckling och tillämpning av synsätt och metod. School of Computer and Communication Sciences
-, Linköpings universitet, 1996.
 
 \begin{figure}[htp]
   \begin{center}
@@ -224,13 +224,12 @@ Flera hinder finns för konstruktion för långdistanskommunikation via IR. Dess
 
 \subsubsection{Säkerhet}
 Säkerhet i IR-kommunikationsfallet vid kortdistans, handlar mer eller mindre om det faktum att avstånden för överföring är såpass små att hackningförsök blir inaktuella, men kryptering av data på mottagar- och sändarsida är självklart möjligt.$^{\ref{Carruthers2}}$
-
+\newpage
 \subsection{ZigBee}
 ZigBee är en standard för trådlös styrning och övervakning som används i hem och industrier men även i andra övervaknings- och styrningsapplikationer där låg strömförbrukning och hög tillgänglighet är i fokus. Zigbee-standarden erbjuder näverks-, säkerhets- och applikationssupport ovanpå IEEE 802.15.4-standarden. Plattformen har stöd för stjärnnät och trädstruktur men mesh-arkitektur är mest populär.
 
 \subsubsection{IEEE 802.15}
-Standarden definierar protokoll och sammankoppling av enheter i ett wireless personal area network (WPAN). IEEE 802.15.4 (LR-WPAN) som ZigBee använder sig av är en undergrupp till denna standard och har egenskaper som låg datahastighet men med lång batteritid. Datahastigheten kommer maximalt att kunna uppnå 250 kb/s men räcker gott och väl till dess användningsområde. Det kan också skalas ner till 20 kb/s för att kunna hantera sensorer och dylikt.\footnote{\label{IEEE} Part 15.4 Wireless Medium Access Control (MAC) and Physical Layer (PHY) Specifications for Low-Rate Wireless Personal Area Networks (LR-WPANs). The Institute of Electrical and Electronics Engineers, Inc. (2003)}
-
+Standarden definierar protokoll och sammankoppling av enheter i ett wireless personal area network (WPAN). IEEE 802.15.4 (LR-WPAN) som ZigBee använder sig av är en undergrupp till denna standard och har egenskaper som låg datahastighet men med lång batteritid. Datahastigheten kommer maximalt att kunna uppnå 250 kb/s men räcker gott och väl till dess användningsområde. Det kan också skalas ner till 20 kb/s för att kunna hantera sensorer och dylikt.\footnote{\label{IEEE} Part 15.4 Wireless Medium Access Control (MAC) and Physical Layer (PHY) Specifications for Low-Rate Wireless Personal Area Networks (LR-WPANs). The Institute of Electrical and Electronics Engineers, Inc. (2003)} ZigBee utvecklades som ett strömsnålt trådlöst interface och enheten kan sättas i sovande läge större delen av tiden då ingen kommunikation sker. ZigBee lämpar sig därför bra för batteridrivna enheter där data inte skickas så ofta.\footnote{Blumenscheid, Bob. Comparing WLAN and ZigBee for embedded applications. http://www.eetimes.com/document.asp?doc\_id=1276273} 
 
 Standarden definierar det fysiska lagret samt datalänklagret i OSI-modellen.\footnote{Zimmermann, Hubert (April 1980). OSI Reference Model — The ISO Model of Architecture for Open Systems Interconnection. IEEE Transactions on Communications 28 (4): 425–432. doi:10.1109/TCOM.1980.1094702} 
 
@@ -244,15 +243,20 @@ Standarden använder sig även av kontroll av vilka noder som är tillåtna, all
 Med ZigBee följer även ett koncept som heter ''Trust Center'' som möjliggör för noder att ansluta till nätverket, distribuera nycklar och ge möjligheten att kontrollera säkerheten hela vägen mellan två enheter. Det finns två olika säkerhetsnivåer, en gjord för hemmabruk och en för kommersiella applikationer. Den största skillnaden mellan de båda nivåerna är att den sistnämnda skapar och underhåller säkerhetsnycklar.\footnote{Wheeler Andy 2005}
 
 \subsection{Räckvidd och störkänslighet}
+I tabellen nedan visas räckvidden för respektive teknik. Alla teknikerna har ungefär samma räckvidd. \footnote{Comparing WLAN and ZigBee for embedded applications}
 
-Det finns flertalet källor till störningar,ett exempel är andra trådlösa kommunikationstekniker som mobiltelefoner. Alla elektromagnetiska källor i aktuellt frekvensband kan vara en störningskälla.
+\begin{tabular}{lcr}
+	\hline
+	Bluetooth & WLAN & Zigbee \\
+	5-100 m  & 50-100 m   & 10-100 m\\
+	\hline
+ \end{tabular}
+\newline
 
-IEEE 802.11, Bluetooth och ZigBee arbetar samtliga helt eller delvis i 2,4 GHz bandet och detta leder till möjligheter för störningar mellan de olika kommunikationsteknikerna. Dessa tre tekniker är alla godkända av IEEE 802 som utvecklar standarder för kommunikation via trådlösa medier. En del av att räknas till IEEE 802-familjen är att ta fram ett ''Coexistence Assurance Document'' och en plan för hur samtliga IEEE 802 tekniker ska kunna fungera gemensamt utan att påverka varandra mer än nödvändigt. 
-\footnote{ZigBee and Wireless Radio
-Frequency Coexistence, 2007, https://docs.zigbee.org/zigbee-docs/dcn/07-5219.PDF}
+Det finns flertalet källor till störningar, ett exempel är andra trådlösa kommunikationstekniker som mobiltelefoner. Alla elektromagnetiska källor i aktuellt frekvensband kan vara en störningskälla, en vanlig sådan källa är mikrovågsugnar som skickar ut störningar i hela 2,4 GHz bandet.
 
-En av teknikerna för att minska eventuella störningar är att skicka sin data utspridd på olika frekvenser. Detta ger vid en störning på en viss frekvens att det är endast den delen av datasändningen som blir förstörd. Denna förstörda data kan upptäckas och skickas om på en annan frekvens. Detta kallas ''spread spectrum'' och en vanlig implementering av den kallas ''frequency hopping''.\footnote{
-How WiFi Works, http://www.i-programmer.info/programming/hardware/2767-how-wifi-works.html}
+IEEE 802.11, Bluetooth och ZigBee arbetar samtliga nära 2,4 GHz bandet och detta leder till möjligheter för störningar mellan de olika kommunikationsteknikerna. Dessa tre tekniker är alla godkända av IEEE 802 som utvecklar standarder för kommunikation via trådlösa medier. En del av att räknas till IEEE 802-familjen är att ta fram ett ''Coexistence Assurance Document'' och en plan för hur samtliga IEEE 802 tekniker ska kunna fungera gemensamt utan att påverka varandra mer än nödvändigt.\footnote{ZigBee and Wireless Radio Frequency Coexistence, 2007, https://docs.zigbee.org/zigbee-docs/dcn/07-5219.PDF} En av teknikerna för att minska eventuella störningar är att skicka sin data utspridd på olika frekvenser. Detta ger vid en störning på en viss frekvens att det är endast den delen av datasändningen som blir förstörd. Den förstörda datan kan då upptäckas och skickas om på en annan frekvens. Detta kallas ''spread spectrum'' och en vanlig implementering av den kallas ''frequency hopping'', (FH). Med FH kommer transmissioner att spridas ut på vissa frekvenser, där mer avancerade versioner av FH kan mäta i sin omgivning för att hitta lämpliga kanaler i bandet för kommunikationen. När enheten har hittat dessa kanaler så skapas en mask som sedan delas mellan enheterna som ska kommunicera sinsemellan.\footnote{
+How WiFi Works,http://www.i-programmer.info/programming/hardware/2767-how-wifi-works.html}
 
 \newpage
 
@@ -263,12 +267,18 @@ Bluetooth skapar solida kopplingar mellan enskilda enheter och har förhållande
 
 IR-kommunikation har kort räckvidd och kräver väldig stabilitet hos både mottagare och sändare. Om synsikten mellan sändare och mottagare bryts kommer även kommunikationen att brytas. Hastigheten hos IR är relativt hög. 
 
-ZigBee kan beskrivas som en enklare version av Bluetooth och har inga egentliga fördelar över Bluetooth. 
+ZigBee och Bluetooth är relativt lika tekniker, där ZigBee åtminstone ursprungligen riktade sig mer mot strömsnåla implementeringar i högre grad än Bluetooth
 
 \section{Diskussion}
-Utifrån fördjupningen kan vi sluta oss till att IR-kommunikation inte är ett alternativ för ett mobilt robotfordon. IR kräver antingen relativt stillastående föremål eller korta avstånd. Dessutom krävs sändar-mottagarstruktur på båda sidor då ett mobilt robotfordon rimligen ska kunna både skicka och ta emot data.
-IEEE802.11 är ett starkt alternativ tack vare sin höga överföringshastighet och långa räckvidd, men en oro är störningar som kan uppstå då många signaler populerar IEEE802.11 bandet, samt att en existerande nätverksstruktur behövs användas.
-Bluetooth och IEEE802.11 klarar båda två kommunikation i båda riktningar, har tillräcklig säkerhet och stabilitet. Bluetooths användarvänlighet och det faktum att den är Point-to-Point får avgöra i detta fall och bluetooth blir rekommendationen vi lämnar på kommunikationen med autonomt robotfordon.
+Utifrån fördjupningen kan vi sluta oss till att IR-kommunikation inte är ett alternativ för ett mobilt robotfordon. IR kräver antingen relativt stillastående föremål eller korta avstånd. Dessutom krävs sändar-mottagarstruktur på båda sidor då ett mobilt robotfordon rimligen ska både kunna skicka och ta emot data.
+
+WLAN, Bluetooth och ZigBee tillhör som sagt alla IEEE802-familjen och har därför alla tekniker och metoder för att minimera störningar, i vårt fall ska även nämnas att tappad uppkoppling under kortare tid inte är ett allvarligt problem, utan skulle kunna lösas via mjukvarubuffrar etc. Vi har inte kunnat hitta någon signifikant skillnad i störkänslighet mellan de olika teknikerna, men det kan tänkas att en viss teknik i en given miljö skulle fungera bättre. För en applikation som skulle utnyttjas i en viss miljö kan en radiofrekvensmätning utföras för att sedan utföra vidare undersökningar om någon av teknikerna lämpar sig bättre. Kanske finns en störning på en viss frekvens i just den miljön.
+
+IEEE802.11 är ett starkt alternativ tack vare sin höga överföringshastighet och långa räckvidd, men en oro är störningar som kan uppstå då många signaler populerar IEEE802.11 bandet, samt att en existerande nätverksstruktur behövs användas. En nätverksstruktur skulle troligen innebära ytterligare en enhet att behöva eventuellt felsöka.
+
+Zigbee-tekniken har dock längre räckvidd vid samma strömförbrukning än Bluetooth och lämpar sig därav för mindre robotar som ska kunna operera under en längre tid. Omgivningen har även den stor betydelse för räckvidden och framförallt för signaler med låg intensitet. Oavsett vilken av teknikerna som används kommer en övervägning mellan strömförbrukning och räckvidd att vara nödvändig. En ytterligare aspekt till detta är mottagarenhetens begränsningar. En persondator med inbyggd Bluetooth har ca. 10 meter räckvidd på sin Bluetooth-enhet medan nätverkskortet kan kommunicera via WiFi på ca. 50-100 meter. 
+
+Bluetooth, ZigBee och IEEE802.11 klarar alla kommunikation i båda riktningar, har tillräcklig säkerhet och stabilitet för vårt fall. Bluetooths användarvänlighet, att det ofta finns färdig sändare/mottagare i persondatorer och det faktum att den är Point-to-Point får avgöra i detta fall och Bluetooth blir rekommendationen vi lämnar på kommunikation med autonomt robotfordon.
 
 \newpage 
 \section*{Referenser}
@@ -278,9 +288,13 @@ Bluetooth SIG. Fast Facts http://www.bluetooth.com/Pages/Fast-Facts.asp
 
 Chaabouni, Rafik. Break WEP Faster with Statistical Analysis, Institute of Technology Lausanne, 2006. http://lasecwww.epfl.ch/pub/lasec/doc/cha06.pdf
 
+Comparing WLAN and ZigBee for embedded applications,http://www.eetimes.com/document.asp?doc\_id=1276272
+
 Gupta, Naresh. \emph{Inside BLUETOOTH LOW ENERGY.} Artech House, 2013
 
 Holger Karl, Andreas Willig. \emph{Protocols and Architectures for Wireless Sensor Networks}, Wiley, 2005
+
+How WiFi Works, http://www.i-programmer.info/programming/hardware/2767-how-wifi-works.html
 
 Kryptera mera. WEP, WPA och WPA2. http://www.omwlan.se/artiklar/kryptering-wep-wpa.aspx 
 
@@ -290,7 +304,11 @@ Part 15.4 Wireless Medium Access Control (MAC) and Physical Layer (PHY) Specific
 
 Wheeler, Andy. Krama saften ur Zigbee. \emph{Elektronik Tidningen (2005).} \\ http://etn.se/index.php?option=com\_content\&task=view\&id=18463\&Itemid=66
 
+ZigBee and Wireless Radio
+Frequency Coexistence, 2007, https://docs.zigbee.org/zigbee-docs/dcn/07-5219.PDF
+
 Zimmermann, Hubert (April 1980).\emph{ OSI Reference Model — The ISO Model of Architecture for Open Systems Interconnection.} IEEE Transactions on Communications 28 (4): 425–432. doi:10.1109/TCOM.1980.1094702
+
 
 
 \end{document}

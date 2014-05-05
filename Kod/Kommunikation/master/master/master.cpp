@@ -40,11 +40,8 @@ Lcd Display;
 
 void handleDataFromSteer(){
 	
-	
 	ReceiveFromSteer=false;
 	memcpy(Firefly.outDataArray, Bus.inDataArray,27);
-	
-	
 	
 	if(Firefly.outDataArray[1]=='M'){
 		
@@ -58,7 +55,6 @@ void handleDataFromSteer(){
 			Firefly.mapNumber++;
 			Firefly.getMap =true;
 		}
-		
 	}
 }	
 
@@ -72,8 +68,8 @@ void handleDataFromSensor(){
 	Bus.sendArray(1);
 	Firefly.sendArray();
 	}
-    //inserts data from one sensor into the buffer
-    //Display.insertSensorValuesToBuffer(inDataArray[2],inDataArray[3],inDataArray[4],inDataArray[5]);
+	//inserts data from one sensor into the buffer
+	//Display.insertSensorValuesToBuffer(Firefly.outDataArray);
 }
 
 #if DEBUG == 0
@@ -122,9 +118,10 @@ ISR(INT0_vect){
 int main(void)
 {
     Firefly.setPointer(&Bus,&buffer);
-    //Display.drawSensorNames();
-    
+	unsigned char array[24] = {26,'S','0','1','2','3','1','2','3','1','2','3','1','2','3','1','2','3','1','2','3','1','2','3'};
+	Display.insertSensorValuesToBuffer(array);
 	sei();
+	
     
 	for(;;){
 		asm("");
@@ -139,7 +136,7 @@ int main(void)
 		Bus.requestRow(Firefly.mapNumber);
 		Firefly.getMap = false; 
 		}
-			
-		//Display.draw(0x80,0x53);
-	}	
+		
+		Display.update(); 
+	}
 }
