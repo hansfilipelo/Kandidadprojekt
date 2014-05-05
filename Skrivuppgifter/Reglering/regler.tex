@@ -172,8 +172,8 @@ där $A$, $B$, $C$ och $D$ är matriser, $u$ är insignal och $\vec{y}$ exempelv
 Tillstånden för en robot mäts med tidsdiskreta värden då datorer endast hanterar diskreta mätningar och ej kontinuerliga. I dessa fall är det bättre att använda sig av en diskret tillståndsbeskrivning. En diskret tillståndsbeskrivning av ett linjärt reglersystem beskrivs av: 
 
 \begin{gather}
-\vec{x}[n+1] = A\vec{x}[n] + B\vec{u}[n] \\
-\vec{y}[n] = C\vec{x[n]} + D\vec{u[n]}
+x[n+1] = Ax[n] + B[n] \\
+y[n] = Cx[n] + Du[n]
 \end{gather}
 
 
@@ -183,27 +183,7 @@ I ett realiserbart system nyttjas sensorer med en viss osäkerhet. Man kan därm
 
 \subsection{Observatörer}
 
-En observatör används för att skatta positionen i förhållande till kringliggande objekt med hjälp av till exempel sensorvärden. 
-
-
-\subsection{Kalmanfilter}
-
-\subsection{EKF - Det utökade kalmanfiltret}
-
-\subsection{Odometri}
-
-För att kunna utföra SLAM krävs det att man gör odometri, det vill säga att man kontinuerligt uppskattar vägen som färdats. Odometri kan göras på olika sätt - exempelvis genom att optiskt mäta avstånd till objekt i sin omgivning, vinkelhastigheter på hjul med känd storlek eller steg med given längd. 
-
-Många robotar nyttjar förmågan att optiskt mäta objekt i sin omgivning, men det förekommer även implementeringar med radar, sonar eller GPS. Det finns då möjlighet att kompensera för tidigare mätfel vid framtida mätningar, något som inte bara går att utföra med data från optiska sensorer, men som kan göra större inverkan på dessa. Om man enbart förlitar sig på interna mätningar finns risken att tidiga mätfel görs, vilket fortplantar sig och leder till än större felskattningar senare under kartläggningen. 
-Uppskattandet av färdvägen är aldrig en exakt lära. Det finns alltid en viss osäkerhet i sensorer. Det är av denna anledning som SLAM är en sannolikhetslära mer än en exakt vetenskap. 
-
-Med optisk avläsning av omvärlden finns alltid möjligheten att korrigera tidigare felaktiga mätvärden genom att samla in mer mätdata för att på ett korrektare sätt kunna beskriva sin omgivning. Av den anledningen är all typ av SLAM beroende av att på något sätt granska sin omgivning. 
-
-\newpage
-
-
-
-\subsubsection{Skattning av tillstånd}
+Inom reglerteknik används en observatör för att skatta tillståndsvariabler i ett givet system när tillstånden hos systemet ej kan ges med säkerhet. I fallet positionering och kartritning kan roboten och kringliggande objekts positioner som sagt inte bestämmas entydigt och behöver därför skattas. 
 
 Tillståndsvariablerna kan skattas med flera metoder utifrån tillgänglig mätdata. Om man utgår från att närliggande mätningar görs kring samma position för roboten kan mätningarna antas vara normalfördelade kring en viss längd. 
 
@@ -215,9 +195,24 @@ Tillståndsvariablerna kan skattas med flera metoder utifrån tillgänglig mätd
   \label{fig:fire} %glöm inte att uppdatera era labels
 \end{figure}
 
-Variablernas tillstånd kan sedan skattas med mätningarnas väntevärde, $\mu$. Då mätningarna är normalfördelade ges väntevärdet av mätningarnas medelvärde, $\bar{x}$, vilket lätt ses i figur ovan\footnote{Wikipedia, \url{http://sv.wikipedia.org/wiki/Normalf\%C3\%B6rdelning}, hämtad 2014-05-02.}. 
+Variablernas tillstånd kan sedan skattas med mätningarnas väntevärde, $\mu$. Då mätningarna över en kort period, inom systemets nuvarande tillstånd, är normalfördelade ges väntevärdet av mätningarnas medelvärde, $\bar{x}$, vilket lätt ses i figur ovan\footnote{Wikipedia, \url{http://sv.wikipedia.org/wiki/Normalf\%C3\%B6rdelning}, hämtad 2014-05-02.}. 
 
-Skattningen, alltså väntevärdet, är alltså observatören för tillståndsvariablerna i systemet. 
+Systemets tillstånd är generellt en kort period där robotens position kan antas vara konstant. För att skatta nästkommande tillstånd används inom SLAM ofta en observatör som kallas Kalmanfilter. 
+
+\subsubsection{Kalmanfilter}
+
+
+
+\subsubsection{EKF - Det utökade kalmanfiltret}
+
+\subsection{Odometri}
+
+För att kunna utföra SLAM krävs det att man gör odometri, det vill säga att man kontinuerligt uppskattar vägen som färdats. Odometri kan göras på olika sätt - exempelvis genom att optiskt mäta avstånd till objekt i sin omgivning, vinkelhastigheter på hjul med känd storlek eller steg med given längd. 
+
+Många robotar nyttjar förmågan att optiskt mäta objekt i sin omgivning, men det förekommer även implementeringar med radar, sonar eller GPS. Det finns då möjlighet att kompensera för tidigare mätfel vid framtida mätningar, något som inte bara går att utföra med data från optiska sensorer, men som kan göra större inverkan på dessa. Om man enbart förlitar sig på interna mätningar finns risken att tidiga mätfel görs, vilket fortplantar sig och leder till än större felskattningar senare under kartläggningen. 
+Uppskattandet av färdvägen är aldrig en exakt lära. Det finns alltid en viss osäkerhet i sensorer. Det är av denna anledning som SLAM är en sannolikhetslära mer än en exakt vetenskap. 
+
+Med optisk avläsning av omvärlden finns alltid möjligheten att korrigera tidigare felaktiga mätvärden genom att samla in mer mätdata för att på ett korrektare sätt kunna beskriva sin omgivning. Av den anledningen är all typ av SLAM beroende av att på något sätt granska sin omgivning. 
 
 \newpage
 
