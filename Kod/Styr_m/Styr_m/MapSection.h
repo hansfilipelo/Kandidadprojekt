@@ -135,6 +135,7 @@ public:
     volatile double Kp = 7; //Proportional coeff.
 	
     int getRightDistance();
+	int getLeftDistance();
     
 	int fwdSensor;
     int bwdSensor;
