@@ -81,8 +81,9 @@ volatile void Bluetooth::handle(){
 		position = 0;
 		return;
 	}
+    
 	
-	if(pcHandle[1] == 'f' || pcHandle[1] == 'r'|| pcHandle[1] == 'b' || pcHandle[1] == 'h'){
+	if(pcHandle[1] == 'f' || pcHandle[1] == 'r'|| pcHandle[1] == 'b' || pcHandle[1] == 'h' || pcHandle[1] == 'G'){
 		asm("");
 		spiPointer->outDataArray[0] = pcHandle[0];
 		spiPointer->outDataArray[1] = pcHandle[1];

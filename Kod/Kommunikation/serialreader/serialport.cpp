@@ -106,8 +106,11 @@ void SerialPort::handleError(QSerialPort::SerialPortError serialPortError)
 void SerialPort::handleData(QByteArray inData){
     if(inData[1] == 'M'){
         int row = (int)QByteToArray(inData)[2];
-        //std::cout << row << std::endl;
+        std::cout << row << std::endl;
         memcpy(GUI->mapArea[row],QByteToArray(inData),27);
+        if(row == 31){
+            GUI->updateMap();
+        }
         return;
     }
     if(inData[1] == 'S'){

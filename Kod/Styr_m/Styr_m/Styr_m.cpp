@@ -147,48 +147,64 @@ int main(void)
 #endif
 	
 	abstractionObject->setRobot(robotPointer);
-	
-	
-    // counter
-    int i = 0;
+	robotPointer->changeDirection('f');
     
+	// Related to main loop
     bool go = false;
+	robotPointer->rotateActive = true;
+	// counter
+	int i = 0;
+	
+	robotPointer->setFwdReference();
+	robotPointer->setBwdReference();
     
     
     for (;;) {
         // Drive
 		if (abstractionObject->manual)
 		{
-			robotPointer->drive(0);
+			robotPointer->setSpeed(0);
+			robotPointer->drive();
             go = false;
 		}
 		else if( !go && !abstractionObject->manual ) {
 			robotPointer->changeGear('f');
-			robotPointer->drive(25);
+			robotPointer->drive();
             go = true;
         }
         
         // Steer along wall
 		if (!abstractionObject->manual)
 		{
-			robotPointer->adjustPosition();
-		}
-        
-		/*
-        // Look for walls every 500th turn of main loop
-        if (i == 500) {
-            robotPointer->setFwdClosed();
-            robotPointer->setBwdClosed();
-            robotPointer->setLeftClosed();
-            robotPointer->setRightClosed();
-            
-            // Update position in map
-            robotPointer->updateRobotPosition();
-            
-            i = 0;
+			if (robotPointer->rotateActive){
+				robotPointer->rotateRight();
+				robotPointer->setSpeed(robotPointer->userSpeed);
+				robotPointer->drive();
+			}
+			//else if (robotPointer->fwdSensor < 40){
+			//	robotPointer->setSpeed(0);
+			//	robotPointer->drive();
+			//}
+			else {
+				robotPointer->setSpeed(robotPointer->userSpeed);
+				robotPointer->adjustPosition();
+				
+				// Look for walls every 500th turn of main loop
+				if (i == 500) {
+					robotPointer->setFwdClosed();
+					robotPointer->setBwdClosed();
+					robotPointer->setLeftClosed();
+					robotPointer->setRightClosed();
+					
+					// Update position in map
+					robotPointer->updateRobotPosition();
+					
+					i = 0;
+				}
+				i++;
+			}
         }
-        i++;
-		*/
+		
         
         if(abstractionObject->sendMapNow){
             asm("");

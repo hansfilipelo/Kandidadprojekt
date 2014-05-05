@@ -36,7 +36,7 @@
 				\\
 				Kandidatprojekt Y - Grupp 8 - VT2014
 				\\
-				Version 0.2
+				Version 0.3
 				\end{center}
 		\endgroup
 	\vspace*{\fill}
@@ -126,6 +126,7 @@ bygger på sannolikhetsteori i kombination med att moderna processorer
 och minnen kan hantera en stor mängd data. Moderna processorer möjliggör
 alltså ett stort stickprov vilket kan leda till en mindre osäkerhet.
 
+
 \subsection{Syfte}
 Syftet med denna rapport är att ge läsaren en introduktion till de algoritmer och tekniker som används för kartläggning och positionsbestämning i ett mikroprocessorsystem och att lösa ett enklare SLAM-problem. 
 
@@ -136,10 +137,9 @@ Principerna för SLAM formulerades för första gången 1986\footnote{Smith, R.C
 International Journal of Robotics Research, 5(4), sida 56–68. Hämtad 28 mars 2014}. Redan vid formuleringen av problemet beskrevs SLAM som en inexakt vetenskap. SLAM handlar om att skaffa sig en approximativ uppfattning av sin omgivning och position som är tillräckligt bra för att fatta ett beslut kring färdväg och/eller kartläggning. 
 
 Utvecklingen på området har sedan dess accelererat kraftigt tack vare
-mikrokontrollers förmåga att hantera mer data. Då sannolikhetsberäkningarna SLAM innefattar gynnas kraftigt av att arbeta
-med stora stickprov, hanterar 
+mikrokontrollers förmåga att hantera mer data. Då sannolikhetsberäkningarna SLAM innefattar gynnas kraftigt av att arbeta med stora stickprov. 
 
-På senare år har man, precis som inom många andra vetenskapliga områden, sett utvecklingen ta ytterligare ett kliv tack vare internet och öppna källkodsprojekt som Github och OpenSLAM. Att göra en sökning på ''SLAM'' på Github resulterar i en mängd aktiva projekt på området. Eftersom källkoden där också finns tillgänglig är detta ett utmärkt exempel för de som vill läsa på om SLAM-algoritmer. 
+På senare år har man, precis som inom många andra vetenskapliga områden, sett utvecklingen ta ytterligare ett kliv tack vare internet och öppna källkodsprojekt som Github och OpenSLAM. Att göra en sökning på SLAM på Github resulterar i en mängd aktiva projekt på området. Eftersom källkoden där också finns tillgänglig är detta ett utmärkt exempel för de som vill läsa på om SLAM-algoritmer. 
 
 %------------------------------------------------
 %-------------Problemformulering-----------------
@@ -148,6 +148,9 @@ På senare år har man, precis som inom många andra vetenskapliga områden, set
 \section{Problemformulering}
 
 En robot med tillgång till ett antal avståndssensorer och ett gyro placeras i ett okänt slutet område. Den ska, med en vägg som startpunkt, helt autonomt kartlägga området genom att markera ut var väggar finns och var det finns områden som inte går att nå. Om inte hela det slutna området är kartlagt ska den upptäcka vilka segment som är oupptäckta, färdas dit och lägga till det i kartan. När området är kartlagt ska roboten ta sig tillbaka till startpunkten för att kunna återhämtas och på så sätt avsluta arbetet. 
+
+SLAM är en teknik där ett system visuellt kan uppfatta landmärken. Med landmärken menas alla typer av objekt eller liknande som kan användas som referenser. Landmärkenas position i förhållande till roboten ska noteras och uppmätas med regelbundna samplingar. Genom att positionsbestämma dessa landmärken kan roboten snabbare bestämma sin position. 
+
 
 
 %------------------------------------------------
@@ -209,12 +212,12 @@ Ett Kalmanfilter är en typ av algoritm som med hjälp av mätdata från sensore
 \subsubsection{EKF-SLAM} 
 EKF-SLAM är en förkortning för Extended Kalman Filter for SLAM. Det utökade (extended) Kalmanfiltret skiljer sig från det ursprungliga på så vis att det används då tillståndsvariablerna ej kan antas vara linjära. Ett EKF linjäriserar variablerna kring ett medelvärde, och väger också in deras kovarians. Med kovarians menas här hur de olika variablernas varianser beror av varandra. Efter linjäriseringen appliceras sedan ett Kalmanfilter på variablerna.
 
-\subsubsection{fastSLAM}
-fastSLAM är en relativt modern teknik som använder ett så kallat partikelfilter för att filtrera givet mätdata, där varje värde i mätdatat ses som en partikel. De mest sannolika värdena sparas och de minst sannolika värdena förkastas. Man kallar det här för en omsapling av datat då man utgår från en sampelmängd av mätvärden och sedan minskar denna. 
+\subsubsection{FastSLAM}
+FastSLAM är en relativt modern teknik som använder ett så kallat partikelfilter för att filtrera givet mätdata, där varje värde i mätdatat ses som en partikel. De mest sannolika värdena sparas och de minst sannolika värdena förkastas. Man kallar det här för en omsapling av datat då man utgår från en sampelmängd av mätvärden och sedan minskar denna. 
 
 För att effektivisera filtreringen av mätvärden delas olika distinkt upptäckta objekt i robotens miljö in i olika zoner. Dessa zoner filtreras sedan individuellt för att få fram den mest sannolika positionen för objektet i zonen. 
 
-Mätvärdena körs sedan flera gånger genom filtret tills dess att man med tillräckligt stor sannolikhet kan bestämma kartans utseende. Metoden har visat sig väldigt effektiv i praktiken. Nackdelen med metoden är att man genom omsampling av mätvärdena förlorar mätinformation som skulle kunna vara korrekt. Beroende på hur filtret prioriterar är det möjligt att man får en skev bild av omgivningen. 
+Mätvärdena körs sedan flera gånger genom filtret tills dess att man med tillräckligt stor sannolikhet kan bestämma kartans utseende. Metoden har visat sig väldigt effektiv i praktiken. Nackdelen med metoden är att man genom omsampling av mätvärdena förlorar mätinformation som skulle kunna vara korrekt. Beroende på hur filtret prioriterar är det möjligt att man får en skev bild av omgivningen.\footnote{David Törnqvist. Estimation and Detection with Applications to Navigation. PhD thesis, Linköping University, 2008. Hämtad 15 april 2014.}
 
 \subsection{Andra typer av sensorer}
 
@@ -222,9 +225,9 @@ I denna rapport berör vi mest området där SLAM baseras på optiska avståndss
 
 \subsubsection{VSLAM}
 
-VSLAM står för visuell SLAM, vilket betyder att lokaliseringen sker med hjälp av kameror. Kamerorna används för att finna landmärken i området som kartläggs och sedan använda dessa som referenser när roboten fortsätter att utforska för att t ex se hur långt och i vilken riktning förflyttning sker relativt landmärket. Visuell SLAM är en förutsättning för att utnyttja den tidigare nämnda fastSLAM-tekniken. 
+VSLAM står för visuell SLAM, vilket betyder att lokaliseringen sker med hjälp av kameror. Kamerorna används för att finna landmärken i området som kartläggs och sedan använda dessa som referenser när roboten fortsätter att utforska för att t ex se hur långt och i vilken riktning förflyttning sker relativt landmärket\footnote{Fox, C.; Evans, M.; Pearson, M.; Prescott, T. (2012) ''Tactile SLAM with a biomimetic whiskered robot''. 2012 IEEE International Conference on Robotics and Automation. Hämtad 28 mars 2014.}. Visuell SLAM är en förutsättning för att utnyttja den tidigare nämnda fastSLAM-tekniken. 
 
-För att bedöma avstånd till ett objekt mäts vinklar mellan farkost och objektet vid olika tidpunkter. Utifrån farkostens hastighet kan mjukvaran sedan bestämma avståndet till objektet i fråga. 
+För att bedöma avstånd till ett objekt mäts vinklar mellan farkost och objektet vid olika tidpunkter. Utifrån farkostens hastighet kan mjukvarans algoritmer sedan bestämma avståndet till objektet i fråga. 
 
 VSLAM är i de allra flesta fall komplicerat att implementera då man behöver avancerade bildsökningsalgoritmer för att finna lämpliga landmärken. 
 
@@ -236,7 +239,7 @@ Denna metod använder sig av styrkan på WiFi-signaler i närheten för att avg�
 
 För att WiFi-SLAM ska fungera krävs att accesspunkten har information om positionsdata för sig själv, alternativt att den anslutna enheten har information om var aktuellt WiFi är tillgängligt. I en mobiltelefon används den senare metoden då telefonen kan kontrollera var WiFi-nätverket finns med hjälp av GPS. 
 
-\subsection{Exempel på implementeringar}
+\subsection{Exempel på andra implementeringar}
 
 Det finns många exempel på implementeringar av SLAM. Robotdammsugare är ett bra exempel på en modern tillämpning som kan använda sig av SLAM. Det är då en liten enhet som kan utnyttja en modifierad version av VSLAM som kallas CV-SLAM. Detta står för Ceiling Visual SLAM, det vill säga att roboten har kameror som är riktade uppåt och använder landmärken i taket för att rita upp en karta över rummet den städar. Det gör att den dammsuger alla platser i rummet istället för att städa samma punkt flera gånger. 
 
@@ -248,7 +251,7 @@ SLAM används, och har använts under längre tid, också i rymdexpeditioner dä
 %--------------------Fördjupning-----------------
 %------------------------------------------------
 \newpage
-\section{Implementering}
+\section{Förslag till implementering}
 
 För att rita en karta krävs det att mjukvara och hårdvara sammarbetar. Sensorerna och deras värden behöver översättas till något som kan behandlas av en dator. 
 
@@ -256,7 +259,9 @@ För att rita en karta krävs det att mjukvara och hårdvara sammarbetar. Sensor
 
 \subsection{Skattning av parametrar}
 
-I just detta problem, som är begränsat, kommer positionen att skattas med hjälp av sensorvärden i form av vinkel och avstånd i kombination med enkla algoritmer. Eftersom en del parametrar är kända blir skattningen något lättare än om det hade varit till exempel ett godtyckligt stort område. Det kommer att finnas två stycken tre-meters avståndssensorer som är riktade framåt och bakåt, här kallade $S_{front}$ \& $S_{back}$. Mätvärdena kommer i största möjliga mån plockas ut som medelvärdet, $\bar{S}$, av den senaste mätdatan. Om båda sensorerna ger utslag på över tre meter kommer antagandet göras att de har gått utanför sitt mätområde och kommer då skattas som nedan. 
+I ett SLAM-problem likt det i rapportens problemställning, kommer positionen att skattas med hjälp av sensorvärden i form av vinkel och avstånd i kombination med enkla algoritmer. Eftersom området är slutet kan det upskattas klart mycket enklare än ett godtyckligt stort område. 
+
+Alla typer av optiska sensorer har en begränsad räckvidd. Det kommer att finnas två stycken tre-meters avståndssensorer som är riktade framåt och bakåt, här kallade $S_{front}$ \& $S_{back}$. Mätvärdena kommer i största möjliga mån plockas ut som medelvärdet, $\bar{S}$, av den senaste mätdatan. Om båda sensorerna ger utslag på över tre meter kommer antagandet göras att de har gått utanför sitt mätområde och kommer då skattas som nedan. 
 
 \begin{gather}
 	S_{front}=3,00 m \\
@@ -343,11 +348,13 @@ Nedan syns ett flödesschema över hur en tänkt kartläggningsalgoritm skulle k
 \newpage
 \section{Resultat och slutsatser}
 
-Till slut kan vi konstatera att SLAM används i många tillämpningar man kanske inte tänker på. Man kan också konstatera att algoritmerna, filtren och mjukvaran som används för att implementera SLAM ibland kan vara väldigt komplexa. I miljöer där sensorerna kan täcka en stor del av banan kan däremot algoritmerna hållas relativt enkla. Detta då variabler med enkelhet kan skattas via avståndssensorernas medelvärde. 
+Till slut kan vi konstatera att SLAM används i många tillämpningar man kanske inte tänker på. Man kan också konstatera att algoritmerna, filtren och mjukvaran som används för att implementera SLAM ibland kan vara väldigt komplexa. I miljöer där sensorerna kan täcka en stor del av omgivningen kan däremot algoritmerna hållas relativt enkla. Robotens position i förhållande till kringliggande objekt kan lätt skattas med avståndssensorernas medelvärde. 
+
+Genom att ta stora stickprov, alltså många sampplingar, och sedan beräkna medelvärdet av dem filtreras eventuella avvikande mätvärden bort på ett enkelt sätt. 
 
 Vi inser att vi gjort ett klokt beslut att fördjupa oss i just SLAM, då vi är beroende av detta i vårt projekt att konstruera en kartritande robot. SLAM var också den delen vi såg, och fortfarande ser, som störst hinder i utvecklingsprocessen. 
 
-Vi har insett att vi tack vare det långa synfältet hos våra optiska sensorer i kombination med det relativt lilla område vi ska kartlägga kommer kunna använda en relativt enkel implementering. En implementering som använder sig av ML-skattning som observatör\footnote{Glad och Ljung (2006)} för systemet. 
+Vi har insett att vi tack vare den relativt långa räckvidden hos våra optiska sensorer i kombination med det relativt lilla område vi ska kartlägga kommer kunna använda en relativt enkel implementering. En implementering som använder sig av ML-skattning som observatör\footnote{Glad och Ljung (2006)} för systemet. 
 
 % --------------- Källförteckning ---------------------
 \newpage 

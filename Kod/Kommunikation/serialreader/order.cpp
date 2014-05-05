@@ -35,10 +35,17 @@ void Order::rotateRight(int speed){
     serport->sendArray(data);
 }
 
+void Order::turnDone()
+{
+    char data[27] = {1,'G',30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30};
+    serport->sendArray(data);
+    std::cout << "Done" << std::endl;
+}
 
-void Order::halt(){
+
+void Order::halt(int speed){
     
-    char data[27] = {1,'h',30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30};
+    char data[27] = {3,'h',0,(char)speed,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30};
     serport->sendArray(data);
 }
 
