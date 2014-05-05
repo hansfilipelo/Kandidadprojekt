@@ -167,7 +167,9 @@ Robot::~Robot(){
 // Sets direction to travel
 
 void Robot::changeGear(char inGear){
-		if (inGear == 'b'){
+		
+        currentGear = inGear;
+        if (inGear == 'b'){
             
             gear = inGear;
             
@@ -207,12 +209,21 @@ void Robot::changeGear(char inGear){
 
 void Robot::drive(){
 	if (speed < 101)
-	{
-		int output = floor(speed * 255 / 100);
-		
+    {
+        int outputLeft;
+        int outputRight;
+        
+        if (currentGear == 'f'){
+            outputLeft = floor(speed * 255 / 100) + trimLeft;
+            outputRight = floor(speed * 255 / 100) + trimRight;
+        }
+        else{
+            outputLeft = floor(speed * 255 / 100);
+            outputRight = floor(speed * 255 /100);
+		}
 		#if DEBUG == 0
-		OCR2A = output;
-		OCR2B = output;
+		OCR2A = outputLeft;
+		OCR2B = outputRight;
 		#endif
 	}
 	else {
@@ -485,6 +496,9 @@ void Robot::setBwdClosed(){
         
         // Set every section between robot and wall as empty
         for (int i = 0; i < output; i++) {
+            if(yCoord-1-i < 0){
+                break;
+            }
             mom->convertSection(xCoord,yCoord - i - 1, 'e');
         }
 	}
@@ -494,6 +508,9 @@ void Robot::setBwdClosed(){
         
         // Set every section between robot and wall as empty
         for (int i = 0; i < output; i++) {
+            if(yCoord +1 +i >16){
+                break;
+            }
             mom->convertSection(xCoord,yCoord + i + 1, 'e');
         }
 	}
@@ -503,6 +520,9 @@ void Robot::setBwdClosed(){
         
         // Set every section between robot and wall as empty
         for (int i = 0; i < output; i++) {
+            if(xCoord-1-i < 0){
+                break;
+            }
             mom->convertSection(xCoord - i - 1,yCoord, 'e');
         }
 	}
@@ -512,6 +532,9 @@ void Robot::setBwdClosed(){
         
         // Set every section between robot and wall as empty
         for (int i = 0; i < output; i++) {
+            if(xCoord+1+i > 31){
+                break;
+            }
             mom->convertSection(xCoord + i + 1,yCoord, 'e');
         }
 	}
@@ -537,6 +560,9 @@ void Robot::setLeftClosed(){
         
         // Set every section between robot and wall as empty
         for (int i = 0; i < output; i++) {
+            if(xCoord+1+i > 31){
+                break;
+            }
             mom->convertSection(xCoord + i + 1,yCoord, 'e');
         }
 	}
@@ -546,6 +572,9 @@ void Robot::setLeftClosed(){
         
         // Set every section between robot and wall as empty
         for (int i = 0; i < output; i++) {
+            if(xCoord-1-i < 0){
+                break;
+            }
             mom->convertSection(xCoord - i - 1,yCoord, 'e');
         }
 	}
@@ -555,6 +584,9 @@ void Robot::setLeftClosed(){
         
         // Set every section between robot and wall as empty
         for (int i = 0; i < output; i++) {
+            if(yCoord-1-i < 0){
+                break;
+            }
             mom->convertSection(xCoord,yCoord - i - 1, 'e');
         }
 	}
@@ -564,6 +596,9 @@ void Robot::setLeftClosed(){
         
         // Set every section between robot and wall as empty
         for (int i = 0; i < output; i++) {
+            if(yCoord+1+i > 16){
+                break;
+            }
             mom->convertSection(xCoord,yCoord + i + 1, 'e');
         }
 	}
@@ -589,6 +624,9 @@ void Robot::setRightClosed(){
         
         // Set every section between robot and wall as empty
         for (int i = 0; i < output; i++) {
+            if(xCoord-1-i < 0){
+                break;
+            }
             mom->convertSection(xCoord - i - 1,yCoord, 'e');
         }
 	}
@@ -598,6 +636,9 @@ void Robot::setRightClosed(){
         
         // Set every section between robot and wall as empty
         for (int i = 0; i < output; i++) {
+            if(xCoord+1+i > 31){
+                break;
+            }
             mom->convertSection(xCoord + i + 1,yCoord, 'e');
         }
 	}
@@ -607,6 +648,9 @@ void Robot::setRightClosed(){
         
         // Set every section between robot and wall as empty
         for (int i = 0; i < output; i++) {
+            if(yCoord+1+i > 31){
+                break;
+            }
             mom->convertSection(xCoord,yCoord + i + 1, 'e');
         }
 	}
@@ -616,6 +660,9 @@ void Robot::setRightClosed(){
         
         // Set every section between robot and wall as empty
         for (int i = 0; i < output; i++) {
+            if(yCoord-1-i < 0){
+                break;
+            }
             mom->convertSection(xCoord,yCoord - i - 1, 'e');
         }
 	}
@@ -854,11 +901,14 @@ int Robot::getRightDistance(){
     
 }
 
-void Robot::setControlParameters(double inputKp, double inputKd, int inputRef){
+void Robot::setControlParameters(double inputKp, double inputKd, int inputRef, int trimLeft, int trimRight){
     Kp=inputKp;
     Kd=inputKd;
-	
+    
     Ref=inputRef;
+    
+    this->trimLeft = trimLeft;
+    this->trimRight = trimRight;
 }
 
 void Robot::setSpeed(int inSpeed)

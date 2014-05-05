@@ -124,7 +124,7 @@ public:
     int getLeftDifference();
     void adjustPosition();
     
-    void setControlParameters(double, double, int);
+    void setControlParameters(double, double, int, int, int);
     
     volatile double Kd = 26; //Differentiation coeff.
     volatile double Kp = 7; //Proportional coeff.
@@ -167,6 +167,9 @@ public:
 	
 	int speed = 0;
 	int userSpeed = 0;
+    int trimLeft = 0;
+    int trimRight = 0;
+    char currentGear = 'f';
     
     };
 

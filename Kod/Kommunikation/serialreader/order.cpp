@@ -75,9 +75,9 @@ void Order::fetchMap(){
     serport->sendArray(data);
 }
 
-void Order::setControlParameters(double Kp, double Kd, int Ref){
+void Order::setControlParameters(double Kp, double Kd, int Ref,int trimLeft,int trimRight){
     
-    char data[27] = {11,'P',0,(char)getTen(Kp),(char)getOne(Kp),(char)getTenth(Kp),(char)getHundreth(Kp),(char)getTen(Kd),(char)getOne(Kd),(char)getTenth(Kd),(char)getHundreth(Kd),(char)Ref,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30};
+    char data[27] = {13,'P',0,(char)getTen(Kp),(char)getOne(Kp),(char)getTenth(Kp),(char)getHundreth(Kp),(char)getTen(Kd),(char)getOne(Kd),(char)getTenth(Kd),(char)getHundreth(Kd),(char)Ref,(char)trimLeft,char(trimRight),30,30,30,30,30,30,30,30,30,30,30,30,30};
     serport->sendArray(data);
 }
 

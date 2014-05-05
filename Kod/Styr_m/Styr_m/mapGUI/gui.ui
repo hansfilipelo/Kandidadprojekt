@@ -42,6 +42,9 @@
     <property name="maximum">
      <number>100</number>
     </property>
+    <property name="value">
+     <number>50</number>
+    </property>
     <property name="orientation">
      <enum>Qt::Horizontal</enum>
     </property>
@@ -225,7 +228,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>0</string>
+     <string>50</string>
     </property>
    </widget>
    <widget class="QCustomPlot" name="sensorPlot1" native="true">
@@ -411,6 +414,9 @@
       <height>24</height>
      </rect>
     </property>
+    <property name="value">
+     <double>7.000000000000000</double>
+    </property>
    </widget>
    <widget class="QDoubleSpinBox" name="doubleSpinBox_2">
     <property name="geometry">
@@ -421,6 +427,9 @@
       <height>24</height>
      </rect>
     </property>
+    <property name="value">
+     <double>26.000000000000000</double>
+    </property>
    </widget>
    <widget class="QSpinBox" name="spinBox">
     <property name="geometry">
@@ -430,6 +439,9 @@
       <width>71</width>
       <height>24</height>
      </rect>
+    </property>
+    <property name="value">
+     <number>20</number>
     </property>
    </widget>
    <widget class="QLabel" name="pdControlLabel">
@@ -511,6 +523,64 @@
     </property>
     <property name="text">
      <string>90 turn done</string>
+    </property>
+   </widget>
+   <widget class="QSpinBox" name="trimValueLeft">
+    <property name="geometry">
+     <rect>
+      <x>310</x>
+      <y>540</y>
+      <width>49</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="minimum">
+     <number>0</number>
+    </property>
+    <property name="maximum">
+     <number>9</number>
+    </property>
+   </widget>
+   <widget class="QLabel" name="trimLeftLabel">
+    <property name="geometry">
+     <rect>
+      <x>190</x>
+      <y>540</y>
+      <width>111</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Trim value left</string>
+    </property>
+   </widget>
+   <widget class="QSpinBox" name="trimValueRight">
+    <property name="geometry">
+     <rect>
+      <x>310</x>
+      <y>570</y>
+      <width>49</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="minimum">
+     <number>0</number>
+    </property>
+    <property name="maximum">
+     <number>9</number>
+    </property>
+   </widget>
+   <widget class="QLabel" name="trimRightLabel">
+    <property name="geometry">
+     <rect>
+      <x>190</x>
+      <y>570</y>
+      <width>111</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Trim value right</string>
     </property>
    </widget>
   </widget>
