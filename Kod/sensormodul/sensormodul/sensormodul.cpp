@@ -144,12 +144,8 @@ long int average(volatile int* inArray){
 
 //send sensordata
 void sendSensors(){
-<<<<<<< HEAD
 	//set outDataArray
-    sensormodul.outDataArray[0] = 23;
-=======
     sensormodul.outDataArray[0] = 26;
->>>>>>> 372c4b957d51dcdc78e6a874f68eb96f2c792cca
     sensormodul.outDataArray[1] = 'S';
     sensormodul.outDataArray[2] =  'A'; //'DNC'
     sensormodul.outDataArray[3] = (sen0/100); //plats 4
@@ -228,14 +224,9 @@ ISR(ADC_vect)
 ISR(USART0_RX_vect){
 	indata=UDR0;		//receive data
 		
-<<<<<<< HEAD
-	if(indata==startbit){		//check if tag is detekted
-		sensormodul.outDataArray[0] = 1;	//update outDataArray to RFID-detected
-=======
 	if(indata==startbit){
 		RfidCount++;
 		sensormodul.outDataArray[0] = 1;
->>>>>>> 372c4b957d51dcdc78e6a874f68eb96f2c792cca
 		sensormodul.outDataArray[1] = 'R';
 		sensormodul.SPI_Send();				//send outDataArray
 		UCSR0B &= ~(1<<RXCIE0);				//disable USART interrups

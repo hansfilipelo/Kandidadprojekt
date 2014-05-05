@@ -164,11 +164,21 @@ int main(void)
 	robotPointer->setFwdReference();
 	robotPointer->setBwdReference();
     
+	// Iterator for mapping
+	int i = 0;
+	
+	bool temporary = true;
     
     for (;;) {
         
         // Manual mode
         if (abstractionObject->manual) {
+			if ( temporary )
+			{
+				robotPointer->setSpeed(0);
+				robotPointer->drive();
+				temporary = false;
+			}
             asm("");
         }
         
@@ -187,10 +197,16 @@ int main(void)
                 if ( robotPointer->leftFrontSensor < 30 && robotPointer->leftBackSensor < 30 ) {
                     robotPointer->rotateLeft();
                     robotPointer->rotateLeft();
+#if DEBUG == 0
+					_delay_ms(500);
+#endif
                 }
                 // If not dead end, make left turn
                 else{
                     robotPointer->rotateLeft();
+#if DEBUG == 0
+					_delay_ms(500);
+#endif
                 }
                 
             }
@@ -217,10 +233,26 @@ int main(void)
                 }
                 else {
                     robotPointer->rotateRight();
+#if DEBUG == 0
+					_delay_ms(500);
+#endif
                 }
             }
         }
-        
+		
+		// Look for walls every 500th turn of main loop
+		if (i == 500) {
+			robotPointer->setFwdClosed();
+			robotPointer->setBwdClosed();
+			robotPointer->setLeftClosed();
+			robotPointer->setRightClosed();
+
+			// Update position in map
+			robotPointer->updateRobotPosition();
+
+			i = 0;
+		}
+		i++;
         
         
         if(abstractionObject->sendMapNow){
