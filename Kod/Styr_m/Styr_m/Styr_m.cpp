@@ -194,8 +194,18 @@ int main(void)
 #if DEBUG == 0
                 _delay_ms(200);
 #endif
+                //jobbig högerficka, högre prio än vänstersväng
+                if(!robotPointer->isWallRight()){
+                    robotPointer->rotateRight();
+                    while (!robotPointer->isWallRight()) {
+                        robotPointer->changeGear('f');
+                        robotPointer->setSpeed(25);
+                        robotPointer->drive();
+                    }
+                }
+                
                 // If dead-end, turn 180 degrees
-                if ( robotPointer->leftFrontSensor < 30 && robotPointer->leftBackSensor < 30 ) {
+                else if ( robotPointer->leftFrontSensor < 30 && robotPointer->leftBackSensor < 30 ) {
                     robotPointer->rotateLeft();
                     robotPointer->rotateLeft();
 #if DEBUG == 0
