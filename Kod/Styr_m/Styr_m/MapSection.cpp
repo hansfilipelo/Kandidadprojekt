@@ -807,7 +807,7 @@ void Robot::updateRobotPosition(){
             break;
             
 //-------------------------Direction is undefined.-------------------------
-        default
+        default :
             //would like to throw some kind of error here.
             return;
         }
