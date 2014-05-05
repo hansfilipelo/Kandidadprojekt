@@ -420,3 +420,8 @@ void Gui::on_temp90Button_clicked()
 {
     bluetooth->turnDone();
 }
+
+void Gui::on_actionSetParameter_triggered()
+{
+    on_setParameterButton_pressed();
+}
