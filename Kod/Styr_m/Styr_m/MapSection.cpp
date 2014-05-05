@@ -227,8 +227,10 @@ void Robot::drive(){
 		#endif
 	}
 	else {
+#if DEBUG == 0
 		OCR2A = 0;
 		OCR2B = 0;
+#endif
 	}
 }
 
@@ -257,6 +259,7 @@ void Robot::rotateLeft(){
 	
     // Turns
     changeGear('l');
+    setSpeed(25);
 	
 	while (rotateActive)
 	{
@@ -304,6 +307,7 @@ void Robot::rotateRight(){
 	
     // Turns
     changeGear('r');
+    setSpeed(25);
 	while (rotateActive)
 	{
 		drive();
@@ -959,6 +963,72 @@ void Robot::setUserSpeed(int inSpeed)
 	movementSpeed = inSpeed;
 }
 
+// --------------------------
 
+bool Robot::isWallRight(){
+    
+    if ( rightFrontSensor > 30 || rightBackSensor > 30 ){
+        return false;
+    }
+    else {
+        return true;
+    }
+}
+
+// --------------------------
+
+bool Robot::isCornerRight(){
+    
+    if ( rightFrontSensor > 40 && rightBackSensor < 25 ){
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+// --------------------------
+
+bool Robot::isWallFwd(){
+    
+    if ( fwdSensor == 0 ) {
+        return false;
+    }
+    if ( fwdSensor < 40 ){
+        return true;
+    }
+    else{
+        return false;
+    }
+    
+}
+
+// --------------------------
+
+bool Robot::isWallLeft(){
+    
+    if ( leftFrontSensor == 0 || leftBackSensor == 0 ) {
+        return false;
+    }
+    else if ( leftFrontSensor > 30 || leftFrontSensor > 30 ){
+        return false;
+    }
+    else {
+        return true;
+    }
+}
 
 //
+
+
+
+
+
+
+
+
+
+
+
+
+

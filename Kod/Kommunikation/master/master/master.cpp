@@ -49,11 +49,11 @@ void handleDataFromSteer(){
 		
 		if((int)Firefly.mapNumber==31){
 			Firefly.sendMap();
-			Firefly.getMap =false;
+			Firefly.getMap = false;
 			Firefly.mapNumber = 0;
 		}else{
 			Firefly.mapNumber++;
-			Firefly.getMap =true;
+			Firefly.getMap = true;
 		}
 	}
 	if(Firefly.outDataArray[1]=='g'){
@@ -77,7 +77,7 @@ void handleDataFromSensor(){
 		//inserts data from all sensors into the Display-buffer
 		if (Display.bufferWritten)
 		{
-			Display.insertSensorValuesToBuffer(Firefly.outDataArray);
+			Display.insertSensorValuesToBuffer(Bus.buffer);
 			Display.bufferWritten = false;
 		}
 	}
@@ -86,15 +86,6 @@ void handleDataFromSensor(){
 		Bus.sendArray(1);
 	}
 	if(Bus.buffer[1] == 'R'){
-		Display.RFIDCounter++;
-		if(Display.RFIDCounter > 9){
-			Display.RFIDCounterten++;
-			Display.RFIDCounter = 0;
-			Display.RFIDten = true;
-		}
-		else{
-			Display.RFID = true;
-		}
 		Bus.outDataArray[0] = 1;
 		Bus.outDataArray[1] = 'r';
 		Bus.sendArray(0);

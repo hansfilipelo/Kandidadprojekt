@@ -389,7 +389,6 @@ void Gui::on_pushButton_clicked()
     this->startPort();
 }
 
-
 void Gui::on_fetchButton_pressed()
 {
     if(connectStatus){
@@ -404,7 +403,6 @@ void Gui::on_setParameterButton_pressed()
     int ref;
     int trimLeft;
     int trimRight;
-
 
     trimLeft = ui->trimValueLeft->value();
     trimRight = ui->trimValueRight->value();

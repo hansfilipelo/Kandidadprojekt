@@ -525,6 +525,32 @@
      <string>90 turn done</string>
     </property>
    </widget>
+   <widget class="QLabel" name="trimLeftLabel">
+    <property name="geometry">
+     <rect>
+      <x>190</x>
+      <y>540</y>
+      <width>111</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Trim value left</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="trimRightLabel">
+    <property name="geometry">
+     <rect>
+      <x>190</x>
+      <y>570</y>
+      <width>111</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Trim value right</string>
+    </property>
+   </widget>
    <widget class="QSpinBox" name="trimValueLeft">
     <property name="geometry">
      <rect>
@@ -541,19 +567,6 @@
      <number>9</number>
     </property>
    </widget>
-   <widget class="QLabel" name="trimLeftLabel">
-    <property name="geometry">
-     <rect>
-      <x>190</x>
-      <y>540</y>
-      <width>111</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Trim value left</string>
-    </property>
-   </widget>
    <widget class="QSpinBox" name="trimValueRight">
     <property name="geometry">
      <rect>
@@ -568,19 +581,6 @@
     </property>
     <property name="maximum">
      <number>9</number>
-    </property>
-   </widget>
-   <widget class="QLabel" name="trimRightLabel">
-    <property name="geometry">
-     <rect>
-      <x>190</x>
-      <y>570</y>
-      <width>111</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Trim value right</string>
     </property>
    </widget>
   </widget>
@@ -604,6 +604,7 @@
     <addaction name="actionSpeedUp"/>
     <addaction name="actionSlowDown"/>
     <addaction name="actionStop"/>
+    <addaction name="actionSetParameter"/>
    </widget>
    <addaction name="menuCommands"/>
   </widget>
@@ -670,6 +671,14 @@
    </property>
    <property name="shortcut">
     <string>Space</string>
+   </property>
+  </action>
+  <action name="actionSetParameter">
+   <property name="text">
+    <string>Set parameters</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
    </property>
   </action>
  </widget>

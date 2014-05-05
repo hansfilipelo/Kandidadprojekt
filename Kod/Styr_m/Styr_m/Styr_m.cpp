@@ -6,9 +6,21 @@
  */
 
 #define F_CPU 14745600
+
+#ifndef __AVR_ATmega1284P__
+#define DEBUG 1
+#else
+#define DEBUG 0
+#endif
+
+#if DEBUG == 0
+
 #include <avr/io.h>
 #include <util/delay.h>
 #include <avr/interrupt.h>
+
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "MapSection.h"
@@ -148,63 +160,68 @@ int main(void)
 	
 	abstractionObject->setRobot(robotPointer);
 	robotPointer->changeDirection('f');
-    
-	// Related to main loop
-    bool go = false;
-	robotPointer->rotateActive = true;
-	// counter
-	int i = 0;
 	
 	robotPointer->setFwdReference();
 	robotPointer->setBwdReference();
     
     
     for (;;) {
-        // Drive
-		if (abstractionObject->manual)
-		{
-			robotPointer->setSpeed(0);
-			robotPointer->drive();
-            go = false;
-		}
-		else if( !go && !abstractionObject->manual ) {
-			robotPointer->changeGear('f');
-			robotPointer->drive();
-            go = true;
+        
+        // Manual mode
+        if (abstractionObject->manual) {
+            asm("");
         }
         
-        // Steer along wall
-		if (!abstractionObject->manual)
-		{
-			if (robotPointer->rotateActive){
-				robotPointer->rotateRight();
-				robotPointer->setSpeed(robotPointer->userSpeed);
-				robotPointer->drive();
-			}
-			//else if (robotPointer->fwdSensor < 40){
-			//	robotPointer->setSpeed(0);
-			//	robotPointer->drive();
-			//}
-			else {
-				robotPointer->setSpeed(robotPointer->userSpeed);
-				robotPointer->adjustPosition();
-				
-				// Look for walls every 500th turn of main loop
-				if (i == 500) {
-					robotPointer->setFwdClosed();
-					robotPointer->setBwdClosed();
-					robotPointer->setLeftClosed();
-					robotPointer->setRightClosed();
-					
-					// Update position in map
-					robotPointer->updateRobotPosition();
-					
-					i = 0;
-				}
-				i++;
-			}
+        // Automatic mode
+        else {
+            
+            // Checks for wall in front
+            if ( robotPointer->isWallFwd() ) {
+                robotPointer->setSpeed(25);
+                robotPointer->drive();
+                
+#if DEBUG == 0
+                _delay_ms(1500);
+#endif
+                // If dead-end, turn 180 degrees
+                if ( robotPointer->leftFrontSensor < 30 && robotPointer->leftBackSensor < 30 ) {
+                    robotPointer->rotateLeft();
+                    robotPointer->rotateLeft();
+                }
+                // If not dead end, make left turn
+                else{
+                    robotPointer->rotateLeft();
+                }
+                
+            }
+            
+            // Check for corner on the right side
+            else if (robotPointer->isCornerRight()) {
+                while ( robotPointer->rightBackSensor < 40 ) {
+                    robotPointer->setSpeed(25);
+                    robotPointer->drive();
+                }
+                robotPointer->rotateRight();
+                
+                while (!robotPointer->isWallRight()) {
+                    robotPointer->setSpeed(25);
+                    robotPointer->drive();
+                }
+            }
+            
+            // Check for wall on the right and follow it
+            else {
+                if ( robotPointer->isWallRight() ){
+                    robotPointer->setSpeed(robotPointer->userSpeed);
+                    robotPointer->updateRobotPosition();
+                }
+                else {
+                    robotPointer->rotateRight();
+                }
+            }
         }
-		
+        
+        
         
         if(abstractionObject->sendMapNow){
             asm("");
