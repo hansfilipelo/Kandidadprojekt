@@ -562,7 +562,7 @@ void Robot::setLeftClosed(){
 	
 		int output = 0;
 		
-		if ( fwdSensor > 340 && bwdSensor > 340 ) {
+		if ( output  ) { //om superkort så använd kort sensorer och stäng, annars medel och stäng inte.
 			output = 300/40;
 		}
 		else{
@@ -633,7 +633,7 @@ void Robot::setRightClosed(){
         return; //the too great uncertainty if.
     }
 	
-	if ( getRightDistance() > 70 ) {
+	if ( getRightDistance() > 60 ) { // this value might need to be calibrated
 		output = 80/40;//if distance is great only print max 2 empty.
 	}
 	else{
