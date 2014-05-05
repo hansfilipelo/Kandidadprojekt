@@ -110,6 +110,11 @@ public:
     void setRightClosed();
     void setLeftClosed();
     
+    bool isWallRight();
+    bool isCornerRight();
+    bool isWallFwd();
+    bool isWallLeft();
+    
     void changeDirection(char);
     char* getColAsChar(int col);
     
