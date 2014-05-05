@@ -248,7 +248,7 @@ int main(void)
 			robotPointer->setRightClosed();
 
 			// Update position in map
-			robotPointer->updateRobotPosition();
+			//robotPointer->updateRobotPosition();
 
 			i = 0;
 		}
