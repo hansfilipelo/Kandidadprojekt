@@ -32,6 +32,7 @@ volatile long int sen3;
 volatile long int sen4;
 volatile long int sen5;
 volatile long int sen6;
+volatile int RfidCount = 0;
 
 //------------------ADC---------------------------
 volatile double decadc=0;
@@ -131,7 +132,7 @@ long int average(volatile int* inArray){
 }
 
 void sendSensors(){
-    sensormodul.outDataArray[0] = 23;
+    sensormodul.outDataArray[0] = 26;
     sensormodul.outDataArray[1] = 'S';
     sensormodul.outDataArray[2] =  'A'; //'DNC'
     sensormodul.outDataArray[3] = (sen0/100); //plats 4
@@ -155,6 +156,9 @@ void sendSensors(){
     sensormodul.outDataArray[21] = (sen6/100); //plats 4
     sensormodul.outDataArray[22] = ((sen6/10) %10); // plats 5
     sensormodul.outDataArray[23] = (sen6 % 10); // plats 6
+	sensormodul.outDataArray[24] = (RfidCount/100);
+	sensormodul.outDataArray[25] = ((RfidCount/10) %10);
+	sensormodul.outDataArray[26] = (RfidCount % 10);
 
     sensormodul.SPI_Send();
 
@@ -207,6 +211,7 @@ ISR(USART0_RX_vect){
 	indata=UDR0;
 		
 	if(indata==startbit){
+		RfidCount++;
 		sensormodul.outDataArray[0] = 1;
 		sensormodul.outDataArray[1] = 'R';
 		sensormodul.SPI_Send();				//skicka RFID detekterad
