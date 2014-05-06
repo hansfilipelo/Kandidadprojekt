@@ -31,14 +31,10 @@ void Communication::handleData(){
 	}
 	
 	if (this->inData[1]=='r' && inData[2]==0) {
-		robotPointer->changeGear('l');
-		robotPointer->setUserSpeed(speed);
-		robotPointer->drive();
+		robotPointer->rotateLeft();
 	}
 	else if (this->inData[1]=='r' && inData[2]==1) {
-		robotPointer->changeGear('r');
-		robotPointer->setUserSpeed(speed);
-		robotPointer->drive();
+		robotPointer->rotateRight();
 	}
 	else if (this->inData[1]=='f'){
 		robotPointer->changeGear('f');
