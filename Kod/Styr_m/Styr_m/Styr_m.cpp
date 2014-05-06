@@ -174,13 +174,7 @@ int main(void)
     for (;;) {
         
         // Manual mode
-        if (abstractionObject->manual) {
-			if ( temporary )
-			{
-				robotPointer->setSpeed(0);
-				robotPointer->drive();
-				temporary = false;
-			}
+        if (abstractionObject->getManual()) {
             asm("");
         }
         
@@ -190,6 +184,7 @@ int main(void)
             if(robotPointer->fwdLongSensor < 10){
                 
             }
+            
             
             
             
