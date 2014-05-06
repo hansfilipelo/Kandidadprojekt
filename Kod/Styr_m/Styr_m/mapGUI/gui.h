@@ -68,6 +68,8 @@ private slots:
 
     void on_actionSetParameter_triggered();
 
+    void on_saveDataButton_pressed();
+
 private:
     QTime time;
     int val = 0;
