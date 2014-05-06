@@ -1110,7 +1110,7 @@ bool Robot::isWallFwd(){
     if ( getFwdDistance() == 0 ) {
         return false;
     }
-    if ( getFwdDistance() < 35 ){
+    if ( getFwdDistance() < 40 ){
         return true;
     }
     else{
