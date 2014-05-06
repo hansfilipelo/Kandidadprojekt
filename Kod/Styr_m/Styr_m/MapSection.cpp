@@ -1080,7 +1080,7 @@ void Robot::setUserSpeed(int inSpeed)
 
 bool Robot::isWallRight(){
     
-    if ( rightFrontSensor < 30 && rightBackSensor < 30 ){
+    if ( rightFrontSensor < 30 || rightBackSensor < 30 ){
 		volatile bool benny = true;
         return benny;
     }
@@ -1110,7 +1110,7 @@ bool Robot::isWallFwd(){
     if ( getFwdDistance() == 0 ) {
         return false;
     }
-    if ( getFwdDistance() < 15 ){
+    if ( getFwdDistance() < 35 ){
         return true;
     }
     else{
