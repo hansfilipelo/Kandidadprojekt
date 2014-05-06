@@ -302,7 +302,7 @@ int main(void)
 
 		if(ADMUX == 0x26){		//get distance from sensor A6 with conversion formula
 			asm("");
-			sensor6[savepos]	= round(8.139*pow(spanning,4)-81.21*pow(spanning,3)+282.6*pow(spanning,2)-414.2*spanning+259.7);
+			sensor6[savepos]	= round(19.38*pow(spanning,4)-144.41*pow(spanning,3)+396.49*pow(spanning,2)-497.97*spanning+282.57);
 			
 		}
 

@@ -310,9 +310,10 @@ int main(void)
                 }
             }
         
-            */
-            
-    
+		
+		*/
+		}
+		
 		// Look for walls every 500th turn of main loop
 		if (i == 500) {
 			robotPointer->setFwdClosed();
