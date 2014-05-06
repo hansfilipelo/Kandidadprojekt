@@ -747,7 +747,7 @@ void Robot::updateRobotPosition(){
         sensorDifference = fwdReference - getFwdDistance();
     }
     
-    if (sensorDifference > 39){
+    if ((sensorDifference > 39)||(sensorDifference < -39)){
     switch (direction)
     {
             
@@ -1023,7 +1023,7 @@ char* Robot::getColAsChar(int col){
 
 // ----------------------------------------
 int Robot::getFwdDistance(){
-	if(fwdShortSensor < 45){
+	if(fwdShortSensor < 60){
 		return fwdShortSensor;
 	}
 	else{
@@ -1032,7 +1032,7 @@ int Robot::getFwdDistance(){
 }
 
 int Robot::getBwdDistance(){
-	if(bwdShortSensor < 45){
+	if(bwdShortSensor < 60){
 		return bwdShortSensor;
 	}
 	else{
