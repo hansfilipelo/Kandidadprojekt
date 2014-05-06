@@ -159,6 +159,7 @@ public:
     
     int fwdReference;
     int bwdReference;
+    char determineValidSensor();
     int leftFrontReference;
     int leftBackReference;
     int rightFrontReference;
