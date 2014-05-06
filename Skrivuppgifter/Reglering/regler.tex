@@ -151,44 +151,39 @@ En robot med tillgång till ett antal avståndssensorer och ett gyro placeras i 
 
 SLAM är en teknik där ett system visuellt kan uppfatta landmärken. Med landmärken menas alla typer av objekt eller liknande som kan användas som referenser. Landmärkenas position i förhållande till roboten ska noteras och uppmätas med regelbundna samplingar. Genom att positionsbestämma dessa landmärken kan roboten snabbare bestämma sin position. 
 
+Denna rapport kommer behandla en del av problemen som uppstår vid SLAM och vad som behövs för att lösa dem.
 
 
 %------------------------------------------------
 %--------------------Fördjupning-----------------
 %------------------------------------------------
 \newpage
-\section{Fördjupning}
-I denna fördjupande del går vi igenom förkunskaper som krävs för att beskriva en implementering som kan utföra SLAM i en miljö lik den i problemställningen. 
+\section{Simultaneous Localization And Mapping}
+I denna fördjupande del går vi igenom förkunskaper som krävs för att beskriva en implementering som kan utföra SLAM i en miljö lik den i problemställningen. Bland annat kommer tillståndsrepresentation, skattning av tillstånd med hjälp av observatörer och Kalmanfilter tas upp.
 
-%----------------------Odometri------------------
+För att kunna utföra SLAM krävs det att man gör odometri, det vill säga att man kontinuerligt uppskattar vägen som färdats. Odometri kan göras på olika sätt - exempelvis genom att optiskt mäta avstånd till objekt i sin omgivning, vinkelhastigheter på hjul med känd storlek eller steg med given längd. 
 
-\section{Tillståndsrepresentation av reglersystem}
+Många robotar nyttjar förmågan att optiskt mäta objekt i sin omgivning, men det förekommer även implementeringar med radar, sonar eller GPS. Det finns då möjlighet att kompensera för tidigare mätfel vid framtida mätningar, något som inte bara går att utföra med data från optiska sensorer, men som kan göra större inverkan på dessa. Om man enbart förlitar sig på interna mätningar finns risken att tidiga mätfel görs, vilket fortplantar sig och leder till än större felskattningar senare under kartläggningen. 
+Uppskattandet av färdvägen är aldrig en exakt lära. Det finns alltid en viss osäkerhet i sensorer. Det är av denna anledning som SLAM är en sannolikhetslära mer än en exakt vetenskap. 
 
-Inom reglerteknik kan linjära system beskrivas på så kallad tillståndsformel så som Glad och Ljung\footnote{Glad, Torkel och Ljung, Lennart (2006), \textit{Reglerteknik - Grundläggande teori}.} beskriver. I fallet med SLAM för en robot använder man robotens position i förhållande till kringliggande objekt som tillstånd , tecknat $x$. 
-\\
-där $A$, $B$, $C$ och $D$ är matriser, $u$ är insignal och $y$ exempelvis är kringliggande objekts position i förhållande till roboten, alternativt robotens position vid mätning med GPS/GLONASS. 
+Med optisk avläsning av omvärlden finns alltid möjligheten att korrigera tidigare felaktiga mätvärden genom att samla in mer mätdata för att på ett korrektare sätt kunna beskriva sin omgivning. Av den anledningen är all typ av SLAM beroende av att på något sätt granska sin omgivning. 
 
-Ett reglersystem på tillståndsform kan skrivas enligt: 
+\subsection{Mätningar}
 
-\begin{gather}
-\dot{x} = Ax + Bu \\
-y = Cx
-\end{gather}
+För att kunna avgöra var roboten befinner sig behövs ett eller flera sätt för att känna av omgivningen. Den kan till exmepel behöva utföra mätningar på avstånd, hastighet och vinkelhastighet för att åstadkomma detta. Dessa mätningar och uppskattningar kan göras på många sätt, men görs mestadels med olika typer av sensorer så som avståndssensorer, accelerometrar och gyroskop i kombination med en dator som processerar datan.
 
-Tillstånden för en robot mäts med tidsdiskreta värden då datorer endast hanterar diskreta mätningar och ej kontinuerliga. I dessa fall är det bättre att använda sig av en diskret tillståndsbeskrivning. En diskret tillståndsbeskrivning av ett linjärt reglersystem beskrivs av: 
+\subsubsection{Avståndssensor}
 
-\begin{gather}
-x[n+1] = Ax[n] + B[n] \\
-y[n] = Cx[n]
-\end{gather}
+Som avståndsmätare kan någon typ av optisk sensor användas. Att sensorn är optisk innebär att den använder sig av ljus för att utföra mätningarna. De finns till exempel sensorer som belyser en yta som avstånd ska mätas till, tar emot reflekterat ljus och sedan med hjälp av tiden det tagit för ljuset att färdas beräkna avståndet. Denna metod kallas time-of-flight. Ytterligare en metod som används kallas optisk triangulering och det innebär att med hjälp av vinkeln mellan sändare och mottagare bestämma avståndet till objektet\footnote{Hägg, M. Avståndskamera för utomhusbruk, LTU http://epubl.ltu.se/1402-1617/2000/317/LTU-EX-00317-SE.pdf, hämtad 2014-05-06}.
 
-I ett realiserbart system nyttjas sensorer med en viss osäkerhet. Man kan därmed enbart skatta systemets tillstånd och inte exakt beräkna dem. För att uppskatta dem används det ofta en så kallad observatör.
+\subsubsection{Gyroskop}
 
-\subsection{Observatörer}
+För att mäta vinkelhastighet går det att använda ett gyroskop även kallat gyro. En gyrosensor av MEMS-typ (Micro Electro-Mechanical System) utnyttjar att två lika stora massor som oscillerar konstant i motsatta riktningar påverkas av Korioliskraften vid rotation. Kraften verkar i olika riktningar på de två massorna och det leder till en förändring i kapacitans.
+Skillnaden i kapacitans har visat sig vara proportionell mot vinkelhastigheten, därav går det att bestämma den med hjälp av ett gyro \footnote{http://electroiq.com/blog/2010/11/introduction-to-mems-gyroscopes/, hämtad 2014-05-06}.
 
-Inom reglerteknik används en observatör för att skatta tillståndsvariabler i ett givet system när tillstånden hos systemet ej kan ges med säkerhet. I fallet positionering och kartritning kan roboten och kringliggande objekts positioner som sagt inte bestämmas entydigt och behöver därför skattas. 
+\subsubsection{Processering av data}
 
-Tillståndsvariablerna kan skattas med flera metoder utifrån tillgänglig mätdata. Om man utgår från att närliggande mätningar görs kring samma position för roboten kan mätningarna antas vara normalfördelade kring en viss längd. 
+Sensorerna producerar mängder med data, data som kan variera något vid varje mätning. Om det då utgås från att närliggande mätningar görs kring samma position för roboten kan mätningarna antas vara normalfördelade.
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
@@ -198,34 +193,106 @@ Tillståndsvariablerna kan skattas med flera metoder utifrån tillgänglig mätd
   \label{fig:fire} %glöm inte att uppdatera era labels
 \end{figure}
 
-Variablernas tillstånd kan sedan skattas med mätningarnas väntevärde, $\mu$. Då mätningarna över en kort period, inom systemets nuvarande tillstånd, är normalfördelade ges väntevärdet av mätningarnas medelvärde, $\bar{x}$, vilket lätt ses i figur ovan\footnote{Wikipedia, \url{http://sv.wikipedia.org/wiki/Normalf\%C3\%B6rdelning}, hämtad 2014-05-02.}. 
+En mer korrekt bild av till exempel avståndet kan sedan fås med mätningarnas väntevärde, $\mu$. Då mätningarna är normalfördelade ges väntevärdet av mätningarnas medelvärde, $\bar{x}$, vilket kan ses i figur ovan\footnote{Wikipedia, \url{http://sv.wikipedia.org/wiki/Normalf\%C3\%B6rdelning}, hämtad 2014-05-02.}. 
 
-Systemets tillstånd är generellt en kort period där robotens position kan antas vara konstant. För att skatta nästkommande tillstånd används inom SLAM ofta en observatör som kallas Kalmanfilter. 
+
+\newpage
+%----------------------Tillståndsrepresentation av reglersystem------------------
+
+\subsection{Tillståndsrepresentation av reglersystem}
+
+Inom reglerteknik kan linjära system beskrivas på så kallad tillståndsform så som Glad och Ljung\footnote{Glad, Torkel och Ljung, Lennart (2006), \textit{Reglerteknik - Grundläggande teori}.} beskriver. I fallet med SLAM för en robot använder man robotens position som tillstånd , tecknat $x$. Ett tidskontinuerligt system kan beskrivas på tillståndsform som nedan.
+
+\begin{gather}
+\dot{x}=Ax+Bu \\
+y=Cx+Du	
+\label{equ:tillstand}
+\end{gather}
+där $A$, $B$, $C$ och $D$ är matriser, $u$ är en vektor med insignaler och $y$ är en vektor med utsignaler.
+
+Tillstånden för en robot mäts med tidsdiskreta värden då datorer endast hanterar diskreta mätningar och ej kontinuerliga. I dessa fall är det bättre att använda sig av en diskret tillståndsbeskrivning. En diskret tillståndsbeskrivning av ett linjärt reglersystem beskrivs av: 
+\begin{gather}
+\vec{x}[n+1] = A\vec{x}[n] + B\vec{u}[n] \\
+\vec{y}[n] = C\vec{x[n]} + D\vec{u[n]}
+\end{gather}
+
+Om systemet istället skulle vara icke-linjärt så går det inte att beskriva det på samma sätt. Det kan dock approximeras genom att linjärisera systemet genom att använda sig av Taylorutveckling, vilket i slutändan leder till att $A$-, $B$-, $C$- och $D$-matriserna innehåller partiella derivator. Dessa matriser kallas jacobianer, $J$ och skrivs:
+\begin{gather}
+	J= \begin{pmatrix}
+	\frac{\partial f_1}{\partial x_1} & \dots & \frac{\partial f_n}{\partial x_1} \\
+	  							\vdots &       & \vdots \\
+	  \frac{\partial f_1}{\partial x_n} & \dots & \frac{\partial f_n}{\partial x_n}
+	  \end{pmatrix}
+\end{gather}
+
+
+
+I ett realiserbart system nyttjas till exempel sensorer som insignaler med en viss osäkerhet för att bestämma systemets tillstånd. Man kan därmed enbart skatta systemets tillstånd och inte exakt beräkna dem. För att uppskatta dem används det ofta en så kallad observatör.
+
+\subsubsection{Tillståndsåterkoppling och observatörer}
+
+Inom reglerteknik används en observatör för att skatta tillståndsvariabler i ett givet system när tillstånden hos systemet ej kan ges med säkerhet. I fallet positionering och kartritning kan roboten och kringliggande objekts positioner som sagt inte bestämmas entydigt och behöver därför skattas. 
+
+Skattningen av variabler kan utföras genom tillståndsåterkoppling, som sedan verifieras med observatören.  Tillståndet $x$ för systemet i ekvation \ref{equ:tillstand} kan skattas med hjälp av observatören: 
+
+\begin{gather}
+\dot{\hat{x}} = Ax + Bu + K(y - C\hat{x})
+\label{equ:observer}
+\end{gather}
+
+Skattningsfelet ges sedan av differentialekvationen: 
+
+\begin{gather}
+\dot{\tilde{x}} = (A - KC)\tilde{x}
+\label{equ:observerError}
+\end{gather}
+
+Genom att välja olika K-matriser ges systemet olika egenskaper i form av hastighet och störningskänslighet. Inom SLAM är både hastighet och störningskänslighet essentiellt och man använder då en variabel K-matris. För att skatta nästkommande tillstånd med variabel K-matris kan man använda ett system som kallas Kalmanfilter. 
 
 \subsubsection{Kalmanfilter}
 
-
-
+Antag att tillståndssystemet i ekvation \ref{equ:tillstand} störs av mätfelet $v$ och yttre störningen $e$, vilket vi antar är vitt brus.  
 \begin{gather}
-\frac{dx}{dt} = A(t)x(t) + B(t)u(t) + w(t) \\
-y(t) = C(t)x(t) + v(t)
+\dot{x}=Ax+Bu+e \\
+y=Cx+Du+v
 \end{gather}
 
+Mätfelet i ekvation \ref{equ:observerError} ges då istället av: 
 \begin{gather}
-x_k = A_{k-1}x_{k-1} + Bu_k + w_k \\
-y_{k} = Hx_k + Dv_k
+\dot{\tilde{x}} = (A - KC)\tilde{x} + e - Kv
 \end{gather}
+
+Då $e$ och $v$ antas vara vitt brus kan man, genom att uppskatta störningarnas kovarians, beräkna mätfelets kovarians. Kovariansen hos mätfelet minimeras sedan genom att sätta K enligt: 
+\begin{gather}
+K = PC^{T}R_{2}^{-1}
+\end{gather}
+
+Där matrisen $P$ ges av att lösa ekvationen nedan - och sedan välja den positivt semidefinita lösningen på $P$. 
+\begin{gather}
+AP + PA^{T} + R_{1} - PC^{T}R_{2}^{-1}CP = 0
+\end{gather}
+
+I praktiska tillämpningar antas $R_{1}$ och $R_{2}$ vara diagonalmatriser för att förenkla implementering. Dessa matriser viktar sedan hur mycket störning man uppskattar att systemet påverkas av. 
+
+Kalmanfiltret är tyvärr inte särskilt effektivt vid SLAM. Detta då filtret enbart är implementerbart för linjära system. Av den anledningen används istället ett anpassat Kalmanfilter vid implementeringar av SLAM.  
 
 \subsubsection{EKF - Det utökade kalmanfiltret}
 
+Det utökade kalmanfiltret, Extended Kalman Filter (EKF), är vad som vanligtvis används då man implementerar SLAM-algoritmer. Till skillnad från Kalmanfiltret kan EKF lösa icke-linjära SLAM-problem. Detta då filtrets matriser beräknas om för varje nytt tillstånd. Matriserna beräknas med hjälp av jacobianer, och linjäriseras därmed kring varje tillstånd för att kunna skatta nästa tillstånd. 
+
+
+\subsection{FastSLAM}
+FastSLAM är en relativt modern teknik som använder ett så kallat partikelfilter för att filtrera givet mätdata, där varje värde i mätdatat ses som en partikel. De mest sannolika värdena sparas och de minst sannolika värdena förkastas. Man kallar det här för en omsapling av datat då man utgår från en sampelmängd av mätvärden och sedan minskar denna. 
+
+För att effektivisera filtreringen av mätvärden delas olika distinkt upptäckta objekt i robotens miljö in i olika zoner. Dessa zoner filtreras sedan individuellt för att få fram den mest sannolika positionen för objektet i zonen. 
+
+Mätvärdena körs sedan flera gånger genom filtret tills dess att man med tillräckligt stor sannolikhet kan bestämma kartans utseende. Metoden har visat sig väldigt effektiv i praktiken. Nackdelen med metoden är att man genom omsampling av mätvärdena förlorar mätinformation som skulle kunna vara korrekt. Beroende på hur filtret prioriterar är det möjligt att man får en skev bild av omgivningen.
+
+De matematiska grunderna för FastSLAM ligger utanför vad denna rapport täcker in - men för den intresserade läsaren rekommenderas David Törnqvists doktorsavhandling \textit{Estimation and Detection with Applications to Navigation}\footnote{David Törnqvist. Estimation and Detection with Applications to Navigation. PhD thesis, Linköping University, 2008. Hämtad 15 april 2014.}.
+
 \subsection{Odometri}
 
-För att kunna utföra SLAM krävs det att man gör odometri, det vill säga att man kontinuerligt uppskattar vägen som färdats. Odometri kan göras på olika sätt - exempelvis genom att optiskt mäta avstånd till objekt i sin omgivning, vinkelhastigheter på hjul med känd storlek eller steg med given längd. 
 
-Många robotar nyttjar förmågan att optiskt mäta objekt i sin omgivning, men det förekommer även implementeringar med radar, sonar eller GPS. Det finns då möjlighet att kompensera för tidigare mätfel vid framtida mätningar, något som inte bara går att utföra med data från optiska sensorer, men som kan göra större inverkan på dessa. Om man enbart förlitar sig på interna mätningar finns risken att tidiga mätfel görs, vilket fortplantar sig och leder till än större felskattningar senare under kartläggningen. 
-Uppskattandet av färdvägen är aldrig en exakt lära. Det finns alltid en viss osäkerhet i sensorer. Det är av denna anledning som SLAM är en sannolikhetslära mer än en exakt vetenskap. 
-
-Med optisk avläsning av omvärlden finns alltid möjligheten att korrigera tidigare felaktiga mätvärden genom att samla in mer mätdata för att på ett korrektare sätt kunna beskriva sin omgivning. Av den anledningen är all typ av SLAM beroende av att på något sätt granska sin omgivning. 
 
 \newpage
 
@@ -239,13 +306,6 @@ Ett Kalmanfilter är en typ av algoritm som med hjälp av mätdata från sensore
 
 \subsubsection{EKF-SLAM} 
 EKF-SLAM är en förkortning för Extended Kalman Filter for SLAM. Det utökade (extended) Kalmanfiltret skiljer sig från det ursprungliga på så vis att det används då tillståndsvariablerna ej kan antas vara linjära. Ett EKF linjäriserar variablerna kring ett medelvärde, och väger också in deras kovarians. Med kovarians menas här hur de olika variablernas varianser beror av varandra. Efter linjäriseringen appliceras sedan ett Kalmanfilter på variablerna.
-
-\subsubsection{FastSLAM}
-FastSLAM är en relativt modern teknik som använder ett så kallat partikelfilter för att filtrera givet mätdata, där varje värde i mätdatat ses som en partikel. De mest sannolika värdena sparas och de minst sannolika värdena förkastas. Man kallar det här för en omsapling av datat då man utgår från en sampelmängd av mätvärden och sedan minskar denna. 
-
-För att effektivisera filtreringen av mätvärden delas olika distinkt upptäckta objekt i robotens miljö in i olika zoner. Dessa zoner filtreras sedan individuellt för att få fram den mest sannolika positionen för objektet i zonen. 
-
-Mätvärdena körs sedan flera gånger genom filtret tills dess att man med tillräckligt stor sannolikhet kan bestämma kartans utseende. Metoden har visat sig väldigt effektiv i praktiken. Nackdelen med metoden är att man genom omsampling av mätvärdena förlorar mätinformation som skulle kunna vara korrekt. Beroende på hur filtret prioriterar är det möjligt att man får en skev bild av omgivningen.\footnote{David Törnqvist. Estimation and Detection with Applications to Navigation. PhD thesis, Linköping University, 2008. Hämtad 15 april 2014.}
 
 \subsection{Andra typer av sensorer}
 
@@ -369,7 +429,7 @@ Nedan syns ett flödesschema över hur en tänkt kartläggningsalgoritm skulle k
   \includegraphics[keepaspectratio=true,scale=0.5]{../../Designspec/Flode_kartritning.jpg}  %skala och filnamn. 
   \end{center}
   \caption{Flödesschema kartläggning} %figurtext.
-  \label{fig:fire} %glöm inte att uppdatera era labels
+  \label{fig:algoritm} %glöm inte att uppdatera era labels
 \end{figure}
 
 %------------------------------------------------
