@@ -153,6 +153,13 @@ int MapSection::findUnexplored(){
 Robot::Robot(int xPos, int yPos, Map* inMom, Communication* inComm) : MapSection(xPos, yPos, inMom){
 	type = 'r';
 	direction = 'f';
+	
+	Kd = 26;
+	Kp = 7;
+	Ref = 10;
+	
+	trimRight = 15;
+	trimLeft = 0;
     
     commObj = inComm;
     previousSection = mom->getPos(xPos,yPos);
