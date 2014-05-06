@@ -279,9 +279,10 @@ int main(void)
 					asm("");
                 }
             }
-        }
+        
 		
 		*/
+		}
 		
 		// Look for walls every 500th turn of main loop
 		if (i == 500) {
