@@ -1005,29 +1005,6 @@ void Robot::adjustPosition(){
     
 }
 
-//----------------------------------
-//Get difference between left and right side sensors
-
-int Robot::getRightDifference(){
-    int front;
-    int back;
-    front = rightFrontSensor;
-    back = rightBackSensor;
-    return front - back;
-
-    
-}
-//kommer inte funka längre
-int Robot::getLeftDifference(){
-    int front;
-    int back;
-    front = fwdShortSensor;
-    back = getBwdDistance();
-    return front - back;
-    
-    
-}
-
 // ---------------------------------------
 // Sets direction
 
