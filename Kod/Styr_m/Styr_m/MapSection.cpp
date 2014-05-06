@@ -772,13 +772,15 @@ void Robot::updateRobotPosition(){
     int sensorDifference = 0;
     
     if (validSensor == 'b'){
-        sensorDifference = bwdReference - getBwdDistance();
+		int ref = bwdReference/40;
+        sensorDifference = getBwdDistance() - ref*40;
     }
     else if(validSensor == 'f'){
-        sensorDifference = fwdReference - getFwdDistance();
+		int ref = fwdReference/40;
+		sensorDifference = getFwdDistance() - ref*40;
     }
     
-    if ((sensorDifference > 39)||(sensorDifference < -39)){
+    if ((sensorDifference > 35)||(sensorDifference < -35)){
 		switch (direction)
 		{
             
