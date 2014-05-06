@@ -154,8 +154,9 @@ void Communication::sendMap(){
 // Asks for measure of angles
 
 void Communication::sendRotateRequest(){
-    slavePointer->outDataArray[0] = 1;
+    slavePointer->outDataArray[0] = 2;
     slavePointer->outDataArray[1] = 'g';
+	slavePointer->outDataArray[2] = 1;
     
     slavePointer->SPI_Send();
 }
