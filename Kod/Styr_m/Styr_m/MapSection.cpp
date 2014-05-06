@@ -213,7 +213,7 @@ void Robot::drive(){
         int outputLeft;
         int outputRight;
         
-        if (currentGear == 'f'){
+        if (currentGear == 'f' && speed != 0){
             outputLeft = floor(speed * 255 / 100) + trimLeft;
             outputRight = floor(speed * 255 / 100) + trimRight;
         }
@@ -433,7 +433,6 @@ void Robot::rightFrontValueIn(char right[3]){
 void Robot::setFwdClosed(){
 	
     int output = 0;
-    
     if (getFwdDistance() > 300) {
         output = 280/40;
     }
@@ -562,15 +561,13 @@ void Robot::setLeftClosed(){
 	
 		int output = 0;
 	    
-	    if( getLeftDifference() < -5 || getLeftDifference() > 5){
-		    return; //the too great uncertainty if.
+	    if(leftMidSensor < 40){
+		    output = 10/40;
 	    }
-	    else if ( getLeftDistance() < 30 ) { // this value might need to be calibrated
-		    output = 0;				//if distance is great only print max 2 empty.
+	    else if(leftMidSensor > 150) { // this value might need to be calibrated
+		    output = 160/40;				//if distance is great only print max 2 empty.
 	    }
-		else if (leftMidSensor > 160){
-			output = 120/40;
-		}
+
 	    else{
 		    output = leftMidSensor/40;
 	    }
@@ -971,24 +968,14 @@ void Robot::adjustPosition(){
 		
         derivError=frontError - backError;
 		pd= Kp*error + Kd*derivError;
-        //previousLeftError=error; //Saves value for next differentiation
         
         turn(-pd);
-        
-        /*if(getLeftDifference() < 0){
-            turn(-pd); //Turn right
-        }
-        else{
-            turn(pd); //Turn left
-        }*/
     }
     else { //right Sensor in range
         frontError=Ref-rightFrontSensor;
 		backError=Ref-rightBackSensor;
 		
         derivError = frontError - backError;
-        
-		// previousRightError=error;
 		
 		both = frontError + backError;
 		error = both/2;
@@ -998,36 +985,7 @@ void Robot::adjustPosition(){
         
         // Turn
         turn(pd);
-        /*if(getRightDifference() < 0){
-            turn(pd); //Turn left
-        }
-        else{
-            turn(-pd); //Turn right
-        }*/
     }
-    
-}
-
-//----------------------------------
-//Get difference between left and right side sensors
-
-int Robot::getRightDifference(){
-    int front;
-    int back;
-    front = rightFrontSensor;
-    back = rightBackSensor;
-    return front - back;
-
-    
-}
-//kommer inte funka längre
-int Robot::getLeftDifference(){
-    int front;
-    int back;
-    front = fwdShortSensor;
-    back = getBwdDistance();
-    return front - back;
-    
     
 }
 
@@ -1049,7 +1007,7 @@ char* Robot::getColAsChar(int col){
 
 // ----------------------------------------
 int Robot::getFwdDistance(){
-	if(fwdShortSensor < 60){
+	if(fwdShortSensor < 45){
 		return fwdShortSensor;
 	}
 	else{
@@ -1058,7 +1016,7 @@ int Robot::getFwdDistance(){
 }
 
 int Robot::getBwdDistance(){
-	if(bwdShortSensor < 60){
+	if(bwdShortSensor < 45){
 		return bwdShortSensor;
 	}
 	else{
@@ -1076,8 +1034,12 @@ int Robot::getRightDistance(){
 
 int Robot::getLeftDistance(){
 	
-	return leftMidSensor;
-	
+	if (leftMidSensor < 40){
+		return 10;
+	}
+	else {
+		return leftMidSensor;
+	}
 }
 
 void Robot::setControlParameters(double inputKp, double inputKd, int inputRef, int trimLeft, int trimRight){
@@ -1148,7 +1110,7 @@ bool Robot::isWallFwd(){
     if ( getFwdDistance() == 0 ) {
         return false;
     }
-    if ( getFwdDistance() < 40 ){
+    if ( getFwdDistance() < 15 ){
         return true;
     }
     else{
@@ -1159,9 +1121,20 @@ bool Robot::isWallFwd(){
 
 // --------------------------
 
+int Robot::getRightDifference(){
+    int front;
+    int back;
+    front = rightFrontSensor;
+    back = rightBackSensor;
+    return front - back;
+}
 
 
+// ---------------------------
 
+int Robot::getUserSpeed(){
+    return userSpeed;
+}
 
 
 
