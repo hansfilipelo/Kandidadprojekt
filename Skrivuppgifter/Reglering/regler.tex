@@ -225,14 +225,46 @@ Om systemet istället skulle vara icke-linjärt så går det inte att beskriva d
 
 I ett realiserbart system nyttjas till exempel sensorer som insignaler med en viss osäkerhet för att bestämma systemets tillstånd. Man kan därmed enbart skatta systemets tillstånd och inte exakt beräkna dem. För att uppskatta dem används det ofta en så kallad observatör.
 
-\subsection{Observatörer}
+\subsection{Tillståndsåterkoppling och observatörer}
 
-En observatör används för att skatta positionen i förhållande till kringliggande objekt med hjälp av till exempel sensorvärden. 
+Inom reglerteknik används en observatör för att skatta tillståndsvariabler i ett givet system när tillstånden hos systemet ej kan ges med säkerhet. I fallet positionering och kartritning kan roboten och kringliggande objekts positioner som sagt inte bestämmas entydigt och behöver därför skattas. 
+
+Skattningen av variabler kan utföras genom tillståndsåterkoppling, som sedan verifieras med observatören.  Tillståndet $x$ för systemet i ekvation \ref{equ:tillstand} kan skattas med hjälp av observatören: 
+
+\begin{gather}
+\dot{\hat{x}} = Ax + Bu + K(y - C\hat{x})
+\label{equ:observer}
+\end{gather}
+
+Skattningsfelet ges sedan av differentialekvationen: 
+
+\begin{gather}
+\dot{\tilde{x}} = (A - KC)\tilde{x}
+\label{equ:observerError}
+\end{gather}
+
+Genom att välja olika K-matriser ges systemet olika egenskaper i form av hastighet och störningskänslighet. Inom SLAM är både hastighet och störningskänslighet essentiellt och man använder då en variabel K-matris. För att skatta nästkommande tillstånd med variabel K-matris kan man använda ett system som kallas Kalmanfilter. 
+
+Tillståndsvariablerna kan skattas med flera metoder utifrån tillgänglig mätdata. Om man utgår från att närliggande mätningar görs kring samma position för roboten kan mätningarna antas vara normalfördelade kring en viss längd. 
 
 
-\subsection{Kalmanfilter}
+Variablernas tillstånd kan sedan skattas med mätningarnas väntevärde, $\mu$. Då mätningarna över en kort period, inom systemets nuvarande tillstånd, är normalfördelade ges väntevärdet av mätningarnas medelvärde, $\bar{x}$, vilket lätt ses i figur ovan\footnote{Wikipedia, \url{http://sv.wikipedia.org/wiki/Normalf\%C3\%B6rdelning}, hämtad 2014-05-02.}. 
 
-\subsection{EKF - Det utökade kalmanfiltret}
+\subsubsection{Kalmanfilter}
+
+
+
+\begin{gather}
+\frac{dx}{dt} = A(t)x(t) + B(t)u(t) + w(t) \\
+y(t) = C(t)x(t) + v(t)
+\end{gather}
+
+\begin{gather}
+x_k = A_{k-1}x_{k-1} + Bu_k + w_k \\
+y_{k} = Hx_k + Dv_k
+\end{gather}
+
+\subsubsection{EKF - Det utökade kalmanfiltret}
 
 \subsection{Odometri}
 
@@ -242,14 +274,6 @@ Många robotar nyttjar förmågan att optiskt mäta objekt i sin omgivning, men 
 Uppskattandet av färdvägen är aldrig en exakt lära. Det finns alltid en viss osäkerhet i sensorer. Det är av denna anledning som SLAM är en sannolikhetslära mer än en exakt vetenskap. 
 
 Med optisk avläsning av omvärlden finns alltid möjligheten att korrigera tidigare felaktiga mätvärden genom att samla in mer mätdata för att på ett korrektare sätt kunna beskriva sin omgivning. Av den anledningen är all typ av SLAM beroende av att på något sätt granska sin omgivning. 
-
-\newpage
-
-
-
-\subsubsection{Skattning av tillstånd}
-
-
 
 \newpage
 
@@ -393,7 +417,7 @@ Nedan syns ett flödesschema över hur en tänkt kartläggningsalgoritm skulle k
   \includegraphics[keepaspectratio=true,scale=0.5]{../../Designspec/Flode_kartritning.jpg}  %skala och filnamn. 
   \end{center}
   \caption{Flödesschema kartläggning} %figurtext.
-  \label{fig:fire} %glöm inte att uppdatera era labels
+  \label{fig:algoritm} %glöm inte att uppdatera era labels
 \end{figure}
 
 %------------------------------------------------

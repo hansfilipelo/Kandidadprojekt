@@ -350,58 +350,58 @@ void Robot::turn(int pd){
 // ------------------------------------
 // Gets sensorvalues and will probably later activate SLAM functions
 
-void Robot::fwdValueIn(char fwd[3]){
-    fwdSensor = 100 * fwd[0];
-    fwdSensor += 10 * fwd[1];
-    fwdSensor += fwd[2];
+void Robot::fwdLongValueIn(char fwd[3]){
+    fwdLongSensor = 100 * fwd[0];
+    fwdLongSensor += 10 * fwd[1];
+    fwdLongSensor += fwd[2];
 
 #if DEBUG == 1
     cout << "fwdValueIn" << endl;
-    cout << fwdSensor << endl;
+    cout << fwdLongSensor << endl;
 #endif
 }
 
-void Robot::bwdValueIn(char* bwd){
-    bwdSensor = 100 * bwd[0];
-    bwdSensor += 10 * bwd[1];
-    bwdSensor += bwd[2];
+void Robot::bwdLongValueIn(char* bwd){
+    bwdLongSensor = 100 * bwd[0];
+    bwdLongSensor += 10 * bwd[1];
+    bwdLongSensor += bwd[2];
     
 #if DEBUG == 1
     cout << "bwdValueIn" << endl;
-    cout << bwdSensor << endl;
+    cout << bwdLongSensor << endl;
 #endif
 }
 
-void Robot::leftBackValueIn(char left[3]){
-    leftBackSensor = 100 * left[0];
-    leftBackSensor += 10 * left[1];
-    leftBackSensor += left[2];
+void Robot::bwdShortValueIn(char bwdShort[3]){
+    bwdShortSensor = 100 * bwdShort[0];
+    bwdShortSensor += 10 * bwdShort[1];
+    bwdShortSensor += bwdShort[2];
     
 #if DEBUG == 1
-    cout << "leftBackValueIn" << endl;
-    cout << leftBackSensor << endl;
+    cout << "bwdShortValueIn" << endl;
+    cout << bwdShortSensor << endl;
 #endif
 }
 
-void Robot::leftFrontValueIn(char left[3]){
-    leftFrontSensor = 100 * left[0];
-    leftFrontSensor += 10 * left[1];
-    leftFrontSensor += left[2];
+void Robot::fwdShortValueIn(char fwdShort[3]){
+    fwdShortSensor = 100 * fwdShort[0];
+    fwdShortSensor += 10 * fwdShort[1];
+    fwdShortSensor += fwdShort[2];
     
 #if DEBUG == 1
-    cout << "leftFrontValueIn" << endl;
-    cout << leftFrontSensor << endl;
+    cout << "fwdShortValueIn" << endl;
+    cout << fwdShortSensor << endl;
 #endif
 }
 
 void Robot::leftLongValueIn(char left[3]){
-    leftLongSensor = 100 * left[0];
-    leftLongSensor += 10 * left[1];
-    leftLongSensor += left[2];
+    leftMidSensor = 100 * left[0];
+    leftMidSensor += 10 * left[1];
+    leftMidSensor += left[2];
     
 #if DEBUG == 1
     cout << "leftLongValueIn" << endl;
-    cout << leftLongSensor << endl;
+    cout << leftMidSensor << endl;
 #endif
 }
 
@@ -434,11 +434,11 @@ void Robot::setFwdClosed(){
 	
     int output = 0;
     
-    if (fwdSensor > 300) {
+    if (getFwdDistance() > 300) {
         output = 280/40;
     }
     else{
-        output = fwdSensor/40;
+        output = getFwdDistance()/40;
     }
 	
 	// Set closed section output + 1 steps away from robot.
@@ -498,11 +498,11 @@ void Robot::setBwdClosed(){
 	
 	int output = 0;
 	
-	if (bwdSensor > 300) {
+	if (getBwdDistance() > 300) {
 		output = 280/40;
 	}
 	else{
-		output = bwdSensor/40; //ser vissa problem med detta.
+		output = getBwdDistance()/40; //ser vissa problem med detta.
 	}
 	
 	// Set closed section output + 1 steps away from robot.
@@ -568,11 +568,11 @@ void Robot::setLeftClosed(){
 	    else if ( getLeftDistance() < 30 ) { // this value might need to be calibrated
 		    output = 0;				//if distance is great only print max 2 empty.
 	    }
-		else if (leftLongSensor > 160){
+		else if (leftMidSensor > 160){
 			output = 120/40;
 		}
 	    else{
-		    output = leftLongSensor/40;
+		    output = leftMidSensor/40;
 	    }
 
 	// Set closed section output + 1 steps away from robot.
@@ -738,7 +738,97 @@ int Robot::meanValueArray(char* inputArray, int iterations) {
 // -----------------------------------------
 //Sets reference values and moves robot in map abstraction if robot has moved one square
 void Robot::updateRobotPosition(){
-	
+    if(validSensor == 'N'){
+        validSensor = determineValidSensor();
+    }
+    int sensorDifference = 0;
+    
+    if (validSensor == 'b'){
+        sensorDifference = bwdReference - getBwdDistance();
+    }
+    else if(validSensor == 'f'){
+        sensorDifference = fwdReference - getFwdDistance();
+    }
+    
+    if (sensorDifference > 39){
+    switch (direction)
+    {
+            
+//-------------------------Direction is forwards in map-------------------
+        case 'f':
+            // Place back the section we stand in
+            mom->setSection(previousSection->getX(), previousSection->getY(), previousSection);
+            // Get a new prev section
+            previousSection = mom->getPos(xCoord, yCoord + 1);
+            // Put robot in place
+            mom->setSection(xCoord,yCoord + 1, this);
+            // Update robot info about position
+            yCoord++;
+            
+            break;
+            
+//-------------------------Direction is backwards in map-------------------
+        case 'b':
+            // Place back the section we stand in
+            mom->setSection(previousSection->getX(), previousSection->getY(), previousSection);
+            // Get a new prev section
+            previousSection = mom->getPos(xCoord, yCoord - 1);
+            // Put robot in place
+            mom->setSection(xCoord,yCoord - 1, this);
+            // Update robot info about position
+            yCoord--;
+            
+            break;
+            
+//-------------------------Direction is right in map-----------------------
+        case 'r':
+            // Place back the section we stand in
+            mom->setSection(previousSection->getX(), previousSection->getY(), previousSection);
+            // Get a new prev section
+            previousSection = mom->getPos(xCoord + 1, yCoord);
+            // Put robot in place
+            mom->setSection(xCoord + 1,yCoord, this);
+            // Update robot info about position
+            xCoord++;
+            
+            break;
+            
+//-------------------------Direction is left in map------------------------
+        case 'l':
+            // Place back the section we stand in
+            mom->setSection(previousSection->getX(), previousSection->getY(), previousSection);
+            // Get a new prev section
+            previousSection = mom->getPos(xCoord - 1, yCoord);
+            // Put robot in place
+            mom->setSection(xCoord - 1,yCoord, this);
+            // Update robot info about position
+            xCoord--;
+            
+            break;
+            
+//-------------------------Direction is undefined.-------------------------
+        default :
+            //would like to throw some kind of error here.
+            return;
+        }
+        
+        //update which sensor that is valid and should be measured.
+        //and update the references on that sensor.
+        validSensor = determineValidSensor();
+        if(validSensor == 'f'){
+            this->setFwdReference();
+        }
+        else if(validSensor == 'b'){
+            this->setBwdReference();
+        }
+        else{
+            validSensor = 'N';
+            this->setBwdReference();
+            this->setFwdReference();
+        }
+    }
+}
+/*
 	
 	
     if (fwdReference - fwdSensor >= 40){
@@ -793,8 +883,8 @@ void Robot::updateRobotPosition(){
         }
     }
 	
-    else if (bwdSensor-bwdReference <= 40){
-        bwdReference=bwdSensor;
+    else if (getBwdDistance()-bwdReference <= 40){
+        bwdReference=getBwdDistance();
         if (direction == 'f'){
             // Place back the section we stand in
             mom->setSection(previousSection->getX(), previousSection->getY(), previousSection);
@@ -847,7 +937,7 @@ void Robot::updateRobotPosition(){
     }
 }
 
-
+*/
 // -----------------------------------------
 
 void Robot::adjustPosition(){
@@ -859,8 +949,8 @@ void Robot::adjustPosition(){
 	volatile int both = 0;
 	
     if (rightFrontSensor > 80) { //right sensor out of range
-        frontError=Ref-leftFrontSensor;
-		backError=Ref-leftBackSensor;
+        frontError=Ref-fwdShortSensor;
+		backError=Ref-getBwdDistance();
 		
 		both = frontError + backError;
 		error = both/2;
@@ -916,12 +1006,12 @@ int Robot::getRightDifference(){
 
     
 }
-
+//kommer inte funka längre
 int Robot::getLeftDifference(){
     int front;
     int back;
-    front = leftFrontSensor;
-    back = leftBackSensor;
+    front = fwdShortSensor;
+    back = getBwdDistance();
     return front - back;
     
     
@@ -944,6 +1034,23 @@ char* Robot::getColAsChar(int col){
 
 
 // ----------------------------------------
+int Robot::getFwdDistance(){
+	if(fwdShortSensor < 60){
+		return fwdShortSensor;
+	}
+	else{
+		return fwdLongSensor;	
+	}
+}
+
+int Robot::getBwdDistance(){
+	if(bwdShortSensor < 60){
+		return bwdShortSensor;
+	}
+	else{
+		return bwdLongSensor;
+	}
+}
 
 int Robot::getRightDistance(){
     
@@ -955,9 +1062,7 @@ int Robot::getRightDistance(){
 
 int Robot::getLeftDistance(){
 	
-	int output = leftFrontSensor;
-	output = output + leftFrontSensor;
-	return output/2;
+	return leftMidSensor;
 	
 }
 
@@ -981,23 +1086,11 @@ void Robot::setSpeed(int inSpeed)
 // Sets reference for mapping
 
 void Robot::setFwdReference(){
-	if (fwdSensor > 340)
-	{
-		fwdReference = 300;
-	}
-	else {
-		fwdReference = fwdSensor;
-	}
+	fwdReference = getFwdDistance();
 }
 
 void Robot::setBwdReference(){
-		if (bwdSensor > 340)
-	{
-		bwdReference = 300;
-	}
-	else {
-		bwdReference = bwdSensor;
-	}
+    bwdReference = getBwdDistance();
 }
 
 void Robot::setUserSpeed(int inSpeed)
@@ -1038,10 +1131,10 @@ bool Robot::isCornerRight(){
 
 bool Robot::isWallFwd(){
     
-    if ( fwdSensor == 0 ) {
+    if ( getFwdDistance() == 0 ) {
         return false;
     }
-    if ( fwdSensor < 40 ){
+    if ( getFwdDistance() < 40 ){
         return true;
     }
     else{
@@ -1052,20 +1145,6 @@ bool Robot::isWallFwd(){
 
 // --------------------------
 
-bool Robot::isWallLeft(){
-    
-    if ( leftFrontSensor == 0 || leftBackSensor == 0 ) {
-        return false;
-    }
-    else if ( leftFrontSensor > 30 || leftFrontSensor > 30 ){
-        return false;
-    }
-    else {
-        return true;
-    }
-}
-
-//
 
 
 

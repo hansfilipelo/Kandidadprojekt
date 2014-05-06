@@ -187,13 +187,15 @@ int main(void)
         // Automatic mode
         else {
 //----------------------Om kortdistans flyttas fram----
-            if(robotPointer->fwdSensor < 10){
+            if(robotPointer->fwdLongSensor < 10){
                 
             }
             
             
             
-            
+			
+			
+ /* ///OBS gammal autonomkod          
 //----------------------
             // Checks for wall in front
             if ( robotPointer->isWallFwd() ) {
@@ -222,7 +224,7 @@ int main(void)
                 }
                 
                 // If dead-end, turn 180 degrees
-                else if ( robotPointer->leftFrontSensor < 30 && robotPointer->leftBackSensor < 30 ) {
+                else if ( robotPointer->fwdShortSensor < 30 && robotPointer->bwdShortSensor < 30 ) {
                     robotPointer->rotateLeft();
                     robotPointer->rotateLeft();
 #if DEBUG == 0
@@ -278,6 +280,8 @@ int main(void)
                 }
             }
         }
+		
+		*/
 		
 		// Look for walls every 500th turn of main loop
 		if (i == 500) {

@@ -73,19 +73,19 @@ void Communication::handleData(){
         for (int it = 0; it < 3; it++) {
             temp[it] = inData[it+3];
         }
-        robotPointer->fwdValueIn(temp);
+        robotPointer->fwdLongValueIn(temp);
         
         // Back sensor
         for (int it = 0; it < 3; it++) {
             temp[it] = inData[it+6];
         }
-        robotPointer->bwdValueIn(temp);
+        robotPointer->bwdLongValueIn(temp);
         
         // Left back short sensor
         for (int it = 0; it < 3; it++) {
             temp[it] = inData[it+9];
         }
-        robotPointer->leftBackValueIn(temp);
+        robotPointer->bwdShortValueIn(temp);
         
         // Right back sensor
         for (int it = 0; it < 3; it++) {
@@ -97,7 +97,7 @@ void Communication::handleData(){
         for (int it = 0; it < 3 ; it++) {
             temp[it] = inData[it+15];
         }
-        robotPointer->leftFrontValueIn(temp);
+        robotPointer->fwdShortValueIn(temp);
         
         // Right front sensor
         for (int it = 0; it < 3; it++) {

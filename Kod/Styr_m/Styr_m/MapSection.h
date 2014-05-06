@@ -95,11 +95,11 @@ public:
     void stopRotation();
 	
 	// Putting sensordata in array
-	void fwdValueIn(char fwd[3]);
-	void bwdValueIn(char bwd[3]);
-	void leftFrontValueIn(char left[3]);
-    void leftBackValueIn(char left[3]);
-    void leftLongValueIn(char left[3]);
+	void fwdLongValueIn(char fwd[3]);
+	void bwdLongValueIn(char bwd[3]);
+	void fwdShortValueIn(char fwdShort[3]);
+    void bwdShortValueIn(char bwdShort[3]);
+    void leftLongValueIn(char midLeft[3]);
 	void rightFrontValueIn(char right[3]);
     void rightBackValueIn(char right[3]);
 	void phiDotValueIn(char phi[3]);
@@ -136,14 +136,17 @@ public:
 	
     int getRightDistance();
 	int getLeftDistance();
+	int getFwdDistance();
+	int getBwdDistance();
+	
     
-	int fwdSensor;
-    int bwdSensor;
-    int leftFrontSensor;
-    int leftBackSensor;
+	int fwdLongSensor;
+    int bwdLongSensor;
+    int fwdShortSensor;
+    int bwdShortSensor;
     int rightFrontSensor;
     int rightBackSensor;
-    int leftLongSensor;
+    int leftMidSensor;
 	
 	int fwdDiff;
 	int bwdDiff;
@@ -152,6 +155,7 @@ public:
 	
 	char direction = 'f';
     char gear = 'f';
+    char validSensor = 'N'; //No valid from start.
     
     int fwdReference;
     int bwdReference;
