@@ -1130,7 +1130,11 @@ int Robot::getRightDifference(){
 }
 
 
+// ---------------------------
 
+int Robot::getUserSpeed(){
+    return userSpeed;
+}
 
 
 

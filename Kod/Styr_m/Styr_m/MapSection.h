@@ -123,6 +123,9 @@ public:
 	void setFwdReference();
 	void setBwdReference();
     
+    int getRightDifference();
+    int getUserSpeed();
+    
     // Automatic control
     void turn(int pd); //Positive or negative value will decide left or right
     void adjustPosition();
@@ -161,7 +164,6 @@ protected:
     int rightFrontReference;
     int rightBackReference;
     
-    int getRightDifference();
     
     //Values concerning automatic control
     
