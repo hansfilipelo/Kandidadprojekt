@@ -164,20 +164,23 @@ I denna fördjupande del går vi igenom förkunskaper som krävs för att beskri
 
 \section{Tillståndsrepresentation av reglersystem}
 
-Inom reglerteknik kan linjära system beskrivas på så kallad tillståndsformel så som Glad och Ljung\footnote{Glad, Torkel och Ljung, Lennart (2006), \textit{Reglerteknik - Grundläggande teori}.} beskriver. I fallet med SLAM för en robot använder man robotens position som tillstånd , tecknat $\vec{x}$. 
+Inom reglerteknik kan linjära system beskrivas på så kallad tillståndsformel så som Glad och Ljung\footnote{Glad, Torkel och Ljung, Lennart (2006), \textit{Reglerteknik - Grundläggande teori}.} beskriver. I fallet med SLAM för en robot använder man robotens position i förhållande till kringliggande objekt som tillstånd , tecknat $x$. 
 \\
-där $A$, $B$, $C$ och $D$ är matriser, $u$ är insignal och $\vec{y}$ exempelvis är kringliggande objekts position i förhållande till roboten, alternativt robotens position vid mätning med GPS/GLONASS. 
+där $A$, $B$, $C$ och $D$ är matriser, $u$ är insignal och $y$ exempelvis är kringliggande objekts position i förhållande till roboten, alternativt robotens position vid mätning med GPS/GLONASS. 
 
+Ett reglersystem på tillståndsform kan skrivas enligt: 
+
+\begin{gather}
+\dot{x} = Ax + Bu \\
+y = Cx
+\end{gather}
 
 Tillstånden för en robot mäts med tidsdiskreta värden då datorer endast hanterar diskreta mätningar och ej kontinuerliga. I dessa fall är det bättre att använda sig av en diskret tillståndsbeskrivning. En diskret tillståndsbeskrivning av ett linjärt reglersystem beskrivs av: 
 
 \begin{gather}
 x[n+1] = Ax[n] + B[n] \\
-y[n] = Cx[n] + Du[n]
+y[n] = Cx[n]
 \end{gather}
-
-
-
 
 I ett realiserbart system nyttjas sensorer med en viss osäkerhet. Man kan därmed enbart skatta systemets tillstånd och inte exakt beräkna dem. För att uppskatta dem används det ofta en så kallad observatör.
 
@@ -202,6 +205,16 @@ Systemets tillstånd är generellt en kort period där robotens position kan ant
 \subsubsection{Kalmanfilter}
 
 
+
+\begin{gather}
+\frac{dx}{dt} = A(t)x(t) + B(t)u(t) + w(t) \\
+y(t) = C(t)x(t) + v(t)
+\end{gather}
+
+\begin{gather}
+x_k = A_{k-1}x_{k-1} + Bu_k + w_k \\
+y_{k} = Hx_k + Dv_k
+\end{gather}
 
 \subsubsection{EKF - Det utökade kalmanfiltret}
 
