@@ -1137,6 +1137,19 @@ int Robot::getUserSpeed(){
     return userSpeed;
 }
 
+bool Robot::isWallFwdClose()
+{
+	    if ( getFwdDistance() == 0 ) {
+		    return false;
+	    }
+	    if ( getFwdDistance() < 20 ){
+		    return true;
+	    }
+	    else{
+		    return false;
+	    }
+}
+
 
 
 

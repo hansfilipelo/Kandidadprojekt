@@ -201,6 +201,15 @@ int main(void)
 			
 			
             else if(robotPointer->isWallFwd()){
+				robotPointer->setSpeed(20);
+				robotPointer->changeGear('f');
+				while (!robotPointer->isWallFwdClose())
+				{
+					robotPointer->drive();
+				}
+				robotPointer->setSpeed(0);
+				robotPointer->drive();
+				
 				if(!robotPointer->isWallRight())
 				{
 					robotPointer->rotateRight();
