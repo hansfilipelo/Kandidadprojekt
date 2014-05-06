@@ -169,9 +169,9 @@ protected:
     //Values concerning automatic control
     
     int movementSpeed;
-    int Ref=10; //Reference value for control
-    volatile double Kd = 26; //Differentiation coeff.
-    volatile double Kp = 7; //Proportional coeff.
+    int Ref; //Reference value for control
+    volatile double Kd; //Differentiation coeff.
+    volatile double Kp; //Proportional coeff.
     
     int previousRightError = 0;
     int previousLeftError = 0;
@@ -182,8 +182,8 @@ protected:
 	
 	int speed = 0;
 	int userSpeed = 0;
-    int trimLeft = 0;
-    int trimRight = 0;
+    int trimLeft;
+    int trimRight;
     char currentGear = 'f';
     
     };

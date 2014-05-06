@@ -66,8 +66,6 @@ private slots:
 
     void on_setParameterButton_pressed();
 
-    void on_temp90Button_clicked();
-
     void on_actionSetParameter_triggered();
 
 private:

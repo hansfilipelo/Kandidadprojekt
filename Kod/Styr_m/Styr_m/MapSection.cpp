@@ -153,6 +153,13 @@ int MapSection::findUnexplored(){
 Robot::Robot(int xPos, int yPos, Map* inMom, Communication* inComm) : MapSection(xPos, yPos, inMom){
 	type = 'r';
 	direction = 'f';
+	
+	Kd = 26;
+	Kp = 7;
+	Ref = 10;
+	
+	trimRight = 15;
+	trimLeft = 0;
     
     commObj = inComm;
     previousSection = mom->getPos(xPos,yPos);
@@ -748,82 +755,83 @@ void Robot::updateRobotPosition(){
     }
     
     if ((sensorDifference > 39)||(sensorDifference < -39)){
-    switch (direction)
-    {
+		switch (direction)
+		{
             
 //-------------------------Direction is forwards in map-------------------
-        case 'f':
-            // Place back the section we stand in
-            mom->setSection(previousSection->getX(), previousSection->getY(), previousSection);
-            // Get a new prev section
-            previousSection = mom->getPos(xCoord, yCoord + 1);
-            // Put robot in place
-            mom->setSection(xCoord,yCoord + 1, this);
-            // Update robot info about position
-            yCoord++;
+			case 'f':
+				// Place back the section we stand in
+				mom->setSection(previousSection->getX(), previousSection->getY(), previousSection);
+				// Get a new prev section
+				previousSection = mom->getPos(xCoord, yCoord + 1);
+				// Put robot in place
+				mom->setSection(xCoord,yCoord + 1, this);
+				// Update robot info about position
+				yCoord++;
             
-            break;
+				break;
             
 //-------------------------Direction is backwards in map-------------------
-        case 'b':
-            // Place back the section we stand in
-            mom->setSection(previousSection->getX(), previousSection->getY(), previousSection);
-            // Get a new prev section
-            previousSection = mom->getPos(xCoord, yCoord - 1);
-            // Put robot in place
-            mom->setSection(xCoord,yCoord - 1, this);
-            // Update robot info about position
-            yCoord--;
+			case 'b':
+				// Place back the section we stand in
+				mom->setSection(previousSection->getX(), previousSection->getY(), previousSection);
+				// Get a new prev section
+				previousSection = mom->getPos(xCoord, yCoord - 1);
+				// Put robot in place
+				mom->setSection(xCoord,yCoord - 1, this);
+				// Update robot info about position
+				yCoord--;
             
-            break;
+				break;
             
 //-------------------------Direction is right in map-----------------------
-        case 'r':
-            // Place back the section we stand in
-            mom->setSection(previousSection->getX(), previousSection->getY(), previousSection);
-            // Get a new prev section
-            previousSection = mom->getPos(xCoord + 1, yCoord);
-            // Put robot in place
-            mom->setSection(xCoord + 1,yCoord, this);
-            // Update robot info about position
-            xCoord++;
+			case 'r':
+				// Place back the section we stand in
+				mom->setSection(previousSection->getX(), previousSection->getY(), previousSection);
+				// Get a new prev section
+				previousSection = mom->getPos(xCoord + 1, yCoord);
+				// Put robot in place
+				mom->setSection(xCoord + 1,yCoord, this);
+				// Update robot info about position
+				xCoord++;
             
-            break;
+				break;
             
 //-------------------------Direction is left in map------------------------
-        case 'l':
-            // Place back the section we stand in
-            mom->setSection(previousSection->getX(), previousSection->getY(), previousSection);
-            // Get a new prev section
-            previousSection = mom->getPos(xCoord - 1, yCoord);
-            // Put robot in place
-            mom->setSection(xCoord - 1,yCoord, this);
-            // Update robot info about position
-            xCoord--;
+			case 'l':
+				// Place back the section we stand in
+				mom->setSection(previousSection->getX(), previousSection->getY(), previousSection);
+				// Get a new prev section
+				previousSection = mom->getPos(xCoord - 1, yCoord);
+				// Put robot in place
+				mom->setSection(xCoord - 1,yCoord, this);
+				// Update robot info about position
+				xCoord--;
             
-            break;
+				break;
             
-//-------------------------Direction is undefined.-------------------------
-        default :
-            //would like to throw some kind of error here.
-            return;
-        }
-        
-        //update which sensor that is valid and should be measured.
-        //and update the references on that sensor.
-        validSensor = determineValidSensor();
-        if(validSensor == 'f'){
-            this->setFwdReference();
-        }
-        else if(validSensor == 'b'){
-            this->setBwdReference();
-        }
-        else{
-            validSensor = 'N';
-            this->setBwdReference();
-            this->setFwdReference();
-        }
-    }
+	//-------------------------Direction is undefined.-------------------------
+			default :
+				//would like to throw some kind of error here.
+				return;
+			}
+			//om inte rfid så gör detta:
+			mom->convertSection(previousSection->getX(),previousSection->getY(), 'e');
+			//update which sensor that is valid and should be measured.
+			//and update the references on that sensor.
+			validSensor = determineValidSensor();
+			if(validSensor == 'f'){
+				this->setFwdReference();
+			}
+			else if(validSensor == 'b'){
+				this->setBwdReference();
+			}
+			else{
+				validSensor = 'N';
+				this->setBwdReference();
+				this->setFwdReference();
+		}
+	}
 }
 /*
 	

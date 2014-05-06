@@ -431,12 +431,12 @@ void Gui::on_setParameterButton_pressed()
     }
 }
 
-void Gui::on_temp90Button_clicked()
-{
-    bluetooth->turnDone();
-}
-
 void Gui::on_actionSetParameter_triggered()
 {
     on_setParameterButton_pressed();
+}
+
+void Gui::on_saveDataButton_pressed()
+{
+    saveToFile();
 }

@@ -177,7 +177,7 @@ int main(void)
         }
         // Automatic mode
         else {
-			if (!(robotPointer->isWallFwd()) && robotPointer->isWallRight())
+			if ((!robotPointer->isWallFwd()) && robotPointer->isWallRight())
 			{
 				robotPointer->setSpeed(robotPointer->getUserSpeed());
 				robotPointer->changeGear('f');
@@ -190,7 +190,7 @@ int main(void)
 					robotPointer->changeGear('f');
 					robotPointer->setSpeed(25);
 					robotPointer->drive();
-				}	
+				}
 				robotPointer->rotateRight();
 				while ( !robotPointer->isWallRight()) {
 					robotPointer->changeGear('f');
@@ -198,8 +198,6 @@ int main(void)
 					robotPointer->drive();
 				}
 			}
-			
-			
             else if(robotPointer->isWallFwd()){
 				robotPointer->setSpeed(20);
 				robotPointer->changeGear('f');
