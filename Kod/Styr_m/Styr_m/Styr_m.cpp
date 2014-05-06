@@ -168,12 +168,16 @@ int main(void)
 	int i = 0;
     //-----------------------------------------------------
     //right wall following loop
-    
+    robotPointer->setFwdClosed();
+    robotPointer->setBwdClosed();
+    robotPointer->setRightClosed();
+    robotPointer->setLeftClosed();
     for (;;) {
         
         // Manual mode
         if (abstractionObject->getManual()) {
             asm("");
+			robotPointer->updateRobotPosition();
         }
         // Automatic mode
         else {
