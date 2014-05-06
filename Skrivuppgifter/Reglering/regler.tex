@@ -158,37 +158,28 @@ SLAM är en teknik där ett system visuellt kan uppfatta landmärken. Med landm�
 %------------------------------------------------
 \newpage
 \section{Fördjupning}
-I denna fördjupande del går vi igenom förkunskaper som krävs för att beskriva en implementering som kan utföra SLAM i en miljö lik den i problemställningen. 
+I denna fördjupande del går vi igenom förkunskaper som krävs för att beskriva en implementering som kan utföra SLAM i en miljö lik den i problemställningen. Bland annat kommer tillståndsrepresentation, skattning av tillstånd med hjälp av observatörer och Kalmanfilter tas upp.
 
-%----------------------Odometri------------------
+\subsection{Mätningar}
 
-\section{Tillståndsrepresentation av reglersystem}
+För att kunna avgöra var roboten befinner sig behövs ett eller flera sätt för att känna av omgivningen. Den kan till exmepel behöva utföra mätningar på avstånd, hastighet och vinkelhastighet för att åstadkomma detta. Dessa mätningar och uppskattningar kan göras på många sätt, men görs mestadels med olika typer av sensorer så som avståndssensorer, accelerometrar och gyroskop i kombination med en dator som processerar datan.
 
-Inom reglerteknik kan linjära system beskrivas på så kallad tillståndsformel så som Glad och Ljung\footnote{Glad, Torkel och Ljung, Lennart (2006), \textit{Reglerteknik - Grundläggande teori}.} beskriver. I fallet med SLAM för en robot använder man robotens position i förhållande till kringliggande objekt som tillstånd , tecknat $x$. 
-\\
-där $A$, $B$, $C$ och $D$ är matriser, $u$ är insignal och $y$ exempelvis är kringliggande objekts position i förhållande till roboten, alternativt robotens position vid mätning med GPS/GLONASS. 
+\subsubsection{Avståndssensor}
 
-Ett reglersystem på tillståndsform kan skrivas enligt: 
+Som avståndsmätare kan någon typ av optisk sensor användas. Att sensorn är optisk innebär att den använder sig av ljus för att utföra mätningarna. De finns till exempel sensorer som belyser en yta som avstånd ska mätas till, tar emot reflekterat ljus och sedan med hjälp av tiden det tagit för ljuset att färdas beräkna avståndet. Denna metod kallas time-of-flight. Ytterligare en metod som används kallas optisk triangulering och det innebär att med hjälp av vinkeln mellan sändare och mottagare bestämma avståndet till objektet\footnote{Hägg, M. Avståndskamera för utomhusbruk, LTU http://epubl.ltu.se/1402-1617/2000/317/LTU-EX-00317-SE.pdf, hämtad 2014-05-06}.
 
-\begin{gather}
-\dot{x} = Ax + Bu \\
-y = Cx
-\end{gather}
+\subsubsection{Accelerometer}
 
-Tillstånden för en robot mäts med tidsdiskreta värden då datorer endast hanterar diskreta mätningar och ej kontinuerliga. I dessa fall är det bättre att använda sig av en diskret tillståndsbeskrivning. En diskret tillståndsbeskrivning av ett linjärt reglersystem beskrivs av: 
+\subsubsection{Gyroskop}
 
-\begin{gather}
-x[n+1] = Ax[n] + B[n] \\
-y[n] = Cx[n]
-\end{gather}
+För att mäta vinkelhastighet går det att använda ett gyroskop även kallat gyro. En gyrosensor av MEMS-typ (Micro Electro-Mechanical System) utnyttjar att när två lika stora massor som oscillerar konstant i motsatta riktningar påverkas av Korioliskraften
 
-I ett realiserbart system nyttjas sensorer med en viss osäkerhet. Man kan därmed enbart skatta systemets tillstånd och inte exakt beräkna dem. För att uppskatta dem används det ofta en så kallad observatör.
+\footnote{http://electroiq.com/blog/2010/11/introduction-to-mems-gyroscopes/, hämtad 2014-05-06}
 
-\subsection{Observatörer}
 
-Inom reglerteknik används en observatör för att skatta tillståndsvariabler i ett givet system när tillstånden hos systemet ej kan ges med säkerhet. I fallet positionering och kartritning kan roboten och kringliggande objekts positioner som sagt inte bestämmas entydigt och behöver därför skattas. 
+\subsubsection{Processering av data}
 
-Tillståndsvariablerna kan skattas med flera metoder utifrån tillgänglig mätdata. Om man utgår från att närliggande mätningar görs kring samma position för roboten kan mätningarna antas vara normalfördelade kring en viss längd. 
+Om det utgås från att närliggande mätningar görs kring samma position för roboten kan mätningarna antas vara normalfördelade kring en viss längd. 
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
@@ -198,9 +189,66 @@ Tillståndsvariablerna kan skattas med flera metoder utifrån tillgänglig mätd
   \label{fig:fire} %glöm inte att uppdatera era labels
 \end{figure}
 
-Variablernas tillstånd kan sedan skattas med mätningarnas väntevärde, $\mu$. Då mätningarna över en kort period, inom systemets nuvarande tillstånd, är normalfördelade ges väntevärdet av mätningarnas medelvärde, $\bar{x}$, vilket lätt ses i figur ovan\footnote{Wikipedia, \url{http://sv.wikipedia.org/wiki/Normalf\%C3\%B6rdelning}, hämtad 2014-05-02.}. 
+Variablernas tillstånd kan sedan skattas med mätningarnas väntevärde, $\mu$. Då mätningarna är normalfördelade ges väntevärdet av mätningarnas medelvärde, $\bar{x}$, vilket lätt ses i figur ovan\footnote{Wikipedia, \url{http://sv.wikipedia.org/wiki/Normalf\%C3\%B6rdelning}, hämtad 2014-05-02.}. 
 
-Systemets tillstånd är generellt en kort period där robotens position kan antas vara konstant. För att skatta nästkommande tillstånd används inom SLAM ofta en observatör som kallas Kalmanfilter. 
+Skattningen, alltså väntevärdet, är alltså observatören för tillståndsvariablerna i systemet. 
+
+
+%----------------------Tillståndsrepresentation av reglersystem------------------
+
+\subsection{Tillståndsrepresentation av reglersystem}
+
+Inom reglerteknik kan linjära system beskrivas på så kallad tillståndsform så som Glad och Ljung\footnote{Glad, Torkel och Ljung, Lennart (2006), \textit{Reglerteknik - Grundläggande teori}.} beskriver. I fallet med SLAM för en robot använder man robotens position som tillstånd , tecknat $x$. Ett tidskontinuerligt system kan beskrivas på tillståndsform som nedan.
+
+\begin{gather}
+\dot{x}=Ax+Bu \\
+y=Cx+Du	
+\end{gather}
+där $A$, $B$, $C$ och $D$ är matriser, $u$ är en vektor med insignaler och $y$ är en vektor med utsignaler.
+
+Tillstånden för en robot mäts med tidsdiskreta värden då datorer endast hanterar diskreta mätningar och ej kontinuerliga. I dessa fall är det bättre att använda sig av en diskret tillståndsbeskrivning. En diskret tillståndsbeskrivning av ett linjärt reglersystem beskrivs av: 
+\begin{gather}
+\vec{x}[n+1] = A\vec{x}[n] + B\vec{u}[n] \\
+\vec{y}[n] = C\vec{x[n]} + D\vec{u[n]}
+\end{gather}
+
+Om systemet istället skulle vara icke-linjärt så går det inte att beskriva det på samma sätt. Det kan dock approximeras genom att linjärisera systemet genom att använda sig av Taylorutveckling, vilket i slutändan leder till att $A$-, $B$-, $C$- och $D$-matriserna innehåller partiella derivator. Dessa matriser kallas jacobianer, $J$ och skrivs:
+\begin{gather}
+	J= \begin{pmatrix}
+	\frac{\partial f_1}{\partial x_1} & \dots & \frac{\partial f_n}{\partial x_1} \\
+	  							\vdots &       & \vdots \\
+	  \frac{\partial f_1}{\partial x_n} & \dots & \frac{\partial f_n}{\partial x_n}
+	  \end{pmatrix}
+\end{gather}
+
+
+
+I ett realiserbart system nyttjas till exempel sensorer som insignaler med en viss osäkerhet för att bestämma systemets tillstånd. Man kan därmed enbart skatta systemets tillstånd och inte exakt beräkna dem. För att uppskatta dem används det ofta en så kallad observatör.
+
+\subsection{Tillståndsåterkoppling och observatörer}
+
+Inom reglerteknik används en observatör för att skatta tillståndsvariabler i ett givet system när tillstånden hos systemet ej kan ges med säkerhet. I fallet positionering och kartritning kan roboten och kringliggande objekts positioner som sagt inte bestämmas entydigt och behöver därför skattas. 
+
+Skattningen av variabler kan utföras genom tillståndsåterkoppling, som sedan verifieras med observatören.  Tillståndet $x$ för systemet i ekvation \ref{equ:tillstand} kan skattas med hjälp av observatören: 
+
+\begin{gather}
+\dot{\hat{x}} = Ax + Bu + K(y - C\hat{x})
+\label{equ:observer}
+\end{gather}
+
+Skattningsfelet ges sedan av differentialekvationen: 
+
+\begin{gather}
+\dot{\tilde{x}} = (A - KC)\tilde{x}
+\label{equ:observerError}
+\end{gather}
+
+Genom att välja olika K-matriser ges systemet olika egenskaper i form av hastighet och störningskänslighet. Inom SLAM är både hastighet och störningskänslighet essentiellt och man använder då en variabel K-matris. För att skatta nästkommande tillstånd med variabel K-matris kan man använda ett system som kallas Kalmanfilter. 
+
+Tillståndsvariablerna kan skattas med flera metoder utifrån tillgänglig mätdata. Om man utgår från att närliggande mätningar görs kring samma position för roboten kan mätningarna antas vara normalfördelade kring en viss längd. 
+
+
+Variablernas tillstånd kan sedan skattas med mätningarnas väntevärde, $\mu$. Då mätningarna över en kort period, inom systemets nuvarande tillstånd, är normalfördelade ges väntevärdet av mätningarnas medelvärde, $\bar{x}$, vilket lätt ses i figur ovan\footnote{Wikipedia, \url{http://sv.wikipedia.org/wiki/Normalf\%C3\%B6rdelning}, hämtad 2014-05-02.}. 
 
 \subsubsection{Kalmanfilter}
 
@@ -369,7 +417,7 @@ Nedan syns ett flödesschema över hur en tänkt kartläggningsalgoritm skulle k
   \includegraphics[keepaspectratio=true,scale=0.5]{../../Designspec/Flode_kartritning.jpg}  %skala och filnamn. 
   \end{center}
   \caption{Flödesschema kartläggning} %figurtext.
-  \label{fig:fire} %glöm inte att uppdatera era labels
+  \label{fig:algoritm} %glöm inte att uppdatera era labels
 \end{figure}
 
 %------------------------------------------------
