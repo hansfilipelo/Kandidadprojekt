@@ -967,24 +967,14 @@ void Robot::adjustPosition(){
 		
         derivError=frontError - backError;
 		pd= Kp*error + Kd*derivError;
-        //previousLeftError=error; //Saves value for next differentiation
         
         turn(-pd);
-        
-        /*if(getLeftDifference() < 0){
-            turn(-pd); //Turn right
-        }
-        else{
-            turn(pd); //Turn left
-        }*/
     }
     else { //right Sensor in range
         frontError=Ref-rightFrontSensor;
 		backError=Ref-rightBackSensor;
 		
         derivError = frontError - backError;
-        
-		// previousRightError=error;
 		
 		both = frontError + backError;
 		error = both/2;
@@ -994,12 +984,6 @@ void Robot::adjustPosition(){
         
         // Turn
         turn(pd);
-        /*if(getRightDifference() < 0){
-            turn(pd); //Turn left
-        }
-        else{
-            turn(-pd); //Turn right
-        }*/
     }
     
 }
@@ -1136,6 +1120,13 @@ bool Robot::isWallFwd(){
 
 // --------------------------
 
+int Robot::getRightDifference(){
+    int front;
+    int back;
+    front = rightFrontSensor;
+    back = rightBackSensor;
+    return front - back;
+}
 
 
 
