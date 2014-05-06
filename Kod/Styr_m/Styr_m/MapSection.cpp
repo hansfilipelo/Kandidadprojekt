@@ -213,7 +213,7 @@ void Robot::drive(){
         int outputLeft;
         int outputRight;
         
-        if (currentGear == 'f'){
+        if (currentGear == 'f' && speed != 0){
             outputLeft = floor(speed * 255 / 100) + trimLeft;
             outputRight = floor(speed * 255 / 100) + trimRight;
         }
@@ -968,24 +968,14 @@ void Robot::adjustPosition(){
 		
         derivError=frontError - backError;
 		pd= Kp*error + Kd*derivError;
-        //previousLeftError=error; //Saves value for next differentiation
         
         turn(-pd);
-        
-        /*if(getLeftDifference() < 0){
-            turn(-pd); //Turn right
-        }
-        else{
-            turn(pd); //Turn left
-        }*/
     }
     else { //right Sensor in range
         frontError=Ref-rightFrontSensor;
 		backError=Ref-rightBackSensor;
 		
         derivError = frontError - backError;
-        
-		// previousRightError=error;
 		
 		both = frontError + backError;
 		error = both/2;
@@ -995,12 +985,6 @@ void Robot::adjustPosition(){
         
         // Turn
         turn(pd);
-        /*if(getRightDifference() < 0){
-            turn(pd); //Turn left
-        }
-        else{
-            turn(-pd); //Turn right
-        }*/
     }
     
 }
@@ -1096,7 +1080,7 @@ void Robot::setUserSpeed(int inSpeed)
 
 bool Robot::isWallRight(){
     
-    if ( rightFrontSensor < 30 && rightBackSensor < 30 ){
+    if ( rightFrontSensor < 30 || rightBackSensor < 30 ){
 		volatile bool benny = true;
         return benny;
     }
@@ -1126,7 +1110,7 @@ bool Robot::isWallFwd(){
     if ( getFwdDistance() == 0 ) {
         return false;
     }
-    if ( getFwdDistance() < 40 ){
+    if ( getFwdDistance() < 35 ){
         return true;
     }
     else{
@@ -1137,9 +1121,20 @@ bool Robot::isWallFwd(){
 
 // --------------------------
 
+int Robot::getRightDifference(){
+    int front;
+    int back;
+    front = rightFrontSensor;
+    back = rightBackSensor;
+    return front - back;
+}
 
 
+// ---------------------------
 
+int Robot::getUserSpeed(){
+    return userSpeed;
+}
 
 
 

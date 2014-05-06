@@ -166,9 +166,7 @@ int main(void)
     
 	// Iterator for mapping
 	int i = 0;
-	
-	bool temporary = true;
-//-----------------------------------------------------
+    //-----------------------------------------------------
     //right wall following loop
     
     for (;;) {
@@ -180,127 +178,85 @@ int main(void)
         
         // Automatic mode
         else {
-//----------------------Om kortdistans flyttas fram----
-            if(robotPointer->fwdLongSensor < 10){
-                
-            }
-            
-            
-            
-            
+            //----------------------Om kortdistans flyttas fram----------
+			if(robotPointer->isCornerRight()){
+				while ( robotPointer->isWallRight()) {
+					robotPointer->changeGear('f');
+					robotPointer->setSpeed(25);
+					robotPointer->drive();
+				}	
+				robotPointer->rotateRight();
+				while ( !robotPointer->isWallRight()) {
+					robotPointer->changeGear('f');
+					robotPointer->setSpeed(25);
+					robotPointer->drive();
+				}
+			}
 			
 			
- /* ///OBS gammal autonomkod          
-//----------------------
-            // Checks for wall in front
-            if ( robotPointer->isWallFwd() ) {
-                robotPointer->setSpeed(25);
-				robotPointer->changeGear('f');
-                robotPointer->drive();
-                
-#if DEBUG == 0
-                _delay_ms(200);
-#endif
-                robotPointer->setSpeed(0);
-				robotPointer->changeGear('f');
-                robotPointer->drive();
-#if DEBUG == 0
-                _delay_ms(200);
-#endif
-                
-                //jobbig högerficka, högre prio än vänstersväng
-                if(!robotPointer->isWallRight()){
-                    robotPointer->rotateRight();
-                    while (!robotPointer->isWallRight()) {
-                        robotPointer->changeGear('f');
-                        robotPointer->setSpeed(25);
-                        robotPointer->drive();
-                    }
-                }
-                
-                // If dead-end, turn 180 degrees
-                else if ( robotPointer->fwdShortSensor < 30 && robotPointer->bwdShortSensor < 30 ) {
-                    robotPointer->rotateLeft();
-                    robotPointer->rotateLeft();
+            else if(robotPointer->isWallFwd()){
+				if(!robotPointer->isWallRight())
+				{
+					robotPointer->rotateRight();
+			//kör framåt tills roboten åkt in i korridoren
+					while (!robotPointer->isWallRight()) {
+						robotPointer->changeGear('f');
+						robotPointer->setSpeed(25);
+						robotPointer->drive();
+					}
+				}
+				
+				else
+				{
+					robotPointer->rotateLeft();
 #if DEBUG == 0
 					_delay_ms(500);
 #endif
-                }
-                // If not dead end, make left turn
-                else{
-                    robotPointer->rotateLeft();
+				}
+                
+            }
+			else
+			{
+				if(!robotPointer->isWallRight())
+				{
+					robotPointer->rotateRight();
 #if DEBUG == 0
 					_delay_ms(500);
 #endif
-                }
-                
-            }
-            
-            // Check for corner on the right side
-            else if (robotPointer->isCornerRight()) {
-                while ( robotPointer->rightBackSensor < 40 ) {
+					
+				}
+				else
+				{
+					robotPointer->setSpeed(robotPointer->getUserSpeed());
 					robotPointer->changeGear('f');
-                    robotPointer->setSpeed(25);
-                    robotPointer->drive();
-                }
-                robotPointer->rotateRight();
-                
-                while (!robotPointer->isWallRight()) {
-					robotPointer->changeGear('f');
-                    robotPointer->setSpeed(25);
-                    robotPointer->drive();
-                }
-            }
-            
-            // Check for wall on the right and follow it
-            else {
-                if ( robotPointer->isWallRight() ){
-                    robotPointer->setSpeed(robotPointer->userSpeed);
 					robotPointer->drive();
-                    robotPointer->adjustPosition();
-                }
-                else {
-                    robotPointer->rotateRight();
-					robotPointer->changeGear('f');
-					robotPointer->setSpeed(robotPointer->userSpeed);
-					robotPointer->drive();
-#if DEBUG == 0
-					_delay_ms(500);
-#endif
-					asm("");
-					asm("");
-					volatile bool damnYOU = true;
-					asm("");
-					asm("");
-                }
-            }
-        
-		
-		*/
+					robotPointer->adjustPosition();
+				}
+			}
 		}
-		
-		// Look for walls every 500th turn of main loop
-		if (i == 500) {
-			robotPointer->setFwdClosed();
-			robotPointer->setBwdClosed();
-			robotPointer->setLeftClosed();
-			robotPointer->setRightClosed();
-
-			// Update position in map
-			//robotPointer->updateRobotPosition();
-
-			i = 0;
-		}
-		i++;
+    
+    // Look for walls every 500th turn of main loop
+    if (i == 500) {
+        robotPointer->setFwdClosed();
+        robotPointer->setBwdClosed();
+        robotPointer->setLeftClosed();
+        robotPointer->setRightClosed();
         
+        // Update position in map
+        //robotPointer->updateRobotPosition();
         
-        if(abstractionObject->sendMapNow){
-            asm("");
-            abstractionObject->sendMapNow=false;
-            abstractionObject->sendMap();
-            asm("");
-        }
+        i = 0;
     }
-	
-	return 0;
+    i++;
+    
+    
+    if(abstractionObject->sendMapNow){
+        asm("");
+        abstractionObject->sendMapNow=false;
+        abstractionObject->sendMap();
+        asm("");
+    }
+}
+
+return 0;
 }

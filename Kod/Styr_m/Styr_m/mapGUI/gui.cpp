@@ -307,33 +307,6 @@ void Gui::updateMap(){
     }
 }
 
-
-
-
-//void Gui::on_upButton_pressed()
-//{
-//    if(connectStatus){
-//    bluetooth->forward(speedMultiplier);}
-//}
-
-//void Gui::on_downButton_pressed()
-//{
-//    if(connectStatus){
-//    bluetooth->backward(speedMultiplier);}
-//}
-
-//void Gui::on_leftButton_pressed()
-//{
-//    if(connectStatus){
-//    bluetooth->rotateLeft(speedMultiplier);}
-//}
-
-//void Gui::on_rightButton_pressed()
-//{
-//    if(connectStatus){
-//    bluetooth->rotateRight(speedMultiplier);}
-//}
-
 void Gui::on_speedSlider_sliderReleased(){
    speedMultiplier = ui->speedSlider->value();
 }

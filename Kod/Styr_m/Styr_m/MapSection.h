@@ -123,15 +123,16 @@ public:
 	void setFwdReference();
 	void setBwdReference();
     
+    int getRightDifference();
+    int getUserSpeed();
+    
     // Automatic control
     void turn(int pd); //Positive or negative value will decide left or right
     void adjustPosition();
     
     void setControlParameters(double, double, int, int, int);
     
-    volatile double Kd = 26; //Differentiation coeff.
-    volatile double Kp = 7; //Proportional coeff.
-	
+protected:
     int getRightDistance();
 	int getLeftDistance();
 	int getFwdDistance();
@@ -163,10 +164,14 @@ public:
     int rightFrontReference;
     int rightBackReference;
     
+    
     //Values concerning automatic control
     
     int movementSpeed;
     int Ref=10; //Reference value for control
+    volatile double Kd = 26; //Differentiation coeff.
+    volatile double Kp = 7; //Proportional coeff.
+    
     int previousRightError = 0;
     int previousLeftError = 0;
 	long int robotTempPd;
