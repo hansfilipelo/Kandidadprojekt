@@ -262,6 +262,17 @@ int main(void)
 				gyromode = false;	//done with gyroreadings
 				angle = 0;			//reset angle
 				TIMSK0 = 0x00;		//don't allow time interrupts
+				for(int i = 0; i<50; i++){
+					sensor0[i] = 0;
+					sensor1[i] = 0;
+					sensor2[i] = 0;
+					sensor3[i] = 0;
+					sensor4[i] = 0;
+					sensor5[i] = 0;
+					sensor6[i] = 0;
+				}
+				savepos = 0;
+				ADMUX = 0x20;
 				sensormodul.outDataArray[0] = 1;
 				sensormodul.outDataArray[1] = 'G';
 				sensormodul.SPI_Send();		//send 90 degree turn is complete
