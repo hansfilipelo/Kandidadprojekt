@@ -748,7 +748,6 @@ void Robot::updateRobotPosition(){
     }
     
     if ((sensorDifference > 39)||(sensorDifference < -39)){
-		mom->convertSection(xCoord,yCoord, 'e');
 		switch (direction)
 		{
             
@@ -809,7 +808,7 @@ void Robot::updateRobotPosition(){
 				//would like to throw some kind of error here.
 				return;
 			}
-        
+			mom->convertSection(previousSection->getX(),previousSection->getY(), 'e');
 			//update which sensor that is valid and should be measured.
 			//and update the references on that sensor.
 			validSensor = determineValidSensor();
