@@ -161,10 +161,7 @@ Denna rapport kommer behandla en del av problemen som uppstår vid SLAM och vad 
 \section{Simultaneous Localization And Mapping}
 I denna fördjupande del går vi igenom förkunskaper som krävs för att beskriva en implementering som kan utföra SLAM i en miljö lik den i problemställningen. Bland annat kommer tillståndsrepresentation, skattning av tillstånd med hjälp av observatörer och Kalmanfilter tas upp.
 
-För att kunna utföra SLAM krävs det att man gör odometri, det vill säga att man kontinuerligt uppskattar vägen som färdats. Odometri kan göras på olika sätt - exempelvis genom att optiskt mäta avstånd till objekt i sin omgivning, vinkelhastigheter på hjul med känd storlek eller steg med given längd. 
-
-Många robotar nyttjar förmågan att optiskt mäta objekt i sin omgivning, men det förekommer även implementeringar med radar, sonar eller GPS. Det finns då möjlighet att kompensera för tidigare mätfel vid framtida mätningar, något som inte bara går att utföra med data från optiska sensorer, men som kan göra större inverkan på dessa. Om man enbart förlitar sig på interna mätningar finns risken att tidiga mätfel görs, vilket fortplantar sig och leder till än större felskattningar senare under kartläggningen. 
-Uppskattandet av färdvägen är aldrig en exakt lära. Det finns alltid en viss osäkerhet i sensorer. Det är av denna anledning som SLAM är en sannolikhetslära mer än en exakt vetenskap. 
+För att kunna utföra SLAM krävs det att man gör odometri, det vill säga att man kontinuerligt uppskattar vägen som färdats. Odometri kan göras på olika sätt - exempelvis genom att optiskt mäta avstånd till objekt i sin omgivning, vinkelhastigheter på hjul med känd storlek eller steg med given längd. Många robotar nyttjar förmågan att optiskt mäta objekt i sin omgivning, men det förekommer även implementeringar med radar, sonar eller GPS. Uppskattandet av färdvägen är aldrig en exakt lära. Det finns alltid en viss osäkerhet i sensorer. Det är av denna anledning som SLAM är en sannolikhetslära mer än en exakt vetenskap. 
 
 Med optisk avläsning av omvärlden finns alltid möjligheten att korrigera tidigare felaktiga mätvärden genom att samla in mer mätdata för att på ett korrektare sätt kunna beskriva sin omgivning. Av den anledningen är all typ av SLAM beroende av att på något sätt granska sin omgivning. 
 
