@@ -179,11 +179,26 @@ int main(void)
         // Automatic mode
         else {
             //----------------------Om kortdistans flyttas fram----------
-            if(robotPointer->isWallFwd()){
+			if(robotPointer->isCornerRight()){
+				while ( robotPointer->isWallRight()) {
+					robotPointer->changeGear('f');
+					robotPointer->setSpeed(25);
+					robotPointer->drive();
+				}	
+				robotPointer->rotateRight();
+				while ( !robotPointer->isWallRight()) {
+					robotPointer->changeGear('f');
+					robotPointer->setSpeed(25);
+					robotPointer->drive();
+				}
+			}
+			
+			
+            else if(robotPointer->isWallFwd()){
 				if(!robotPointer->isWallRight())
 				{
 					robotPointer->rotateRight();
-					//kör framåt tills roboten åkt in i korridoren
+			//kör framåt tills roboten åkt in i korridoren
 					while (!robotPointer->isWallRight()) {
 						robotPointer->changeGear('f');
 						robotPointer->setSpeed(25);
@@ -194,6 +209,9 @@ int main(void)
 				else
 				{
 					robotPointer->rotateLeft();
+#if DEBUG == 0
+					_delay_ms(500);
+#endif
 				}
                 
             }
@@ -202,16 +220,15 @@ int main(void)
 				if(!robotPointer->isWallRight())
 				{
 					robotPointer->rotateRight();
-					//kör framåt tills roboten åkt in i korridoren
-					while ( !robotPointer->isWallRight()) {
-						robotPointer->changeGear('f');
-						robotPointer->setSpeed(25);
-						robotPointer->drive();
-					}
+#if DEBUG == 0
+					_delay_ms(500);
+#endif
+					
 				}
 				else
 				{
 					robotPointer->setSpeed(robotPointer->getUserSpeed());
+					robotPointer->changeGear('f');
 					robotPointer->drive();
 					robotPointer->adjustPosition();
 				}
