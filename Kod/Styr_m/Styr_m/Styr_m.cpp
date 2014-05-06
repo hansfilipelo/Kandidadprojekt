@@ -175,10 +175,16 @@ int main(void)
         if (abstractionObject->getManual()) {
             asm("");
         }
-        
         // Automatic mode
         else {
-            //----------------------Om kortdistans flyttas fram----------
+			if (!(robotPointer->isWallFwd()) && robotPointer->isWallRight())
+			{
+				robotPointer->setSpeed(robotPointer->getUserSpeed());
+				robotPointer->changeGear('f');
+				robotPointer->adjustPosition();
+			}
+            
+			//----------------------Om kortdistans flyttas fram----------
 			if(robotPointer->isCornerRight()){
 				while ( robotPointer->isWallRight()) {
 					robotPointer->changeGear('f');
@@ -243,7 +249,7 @@ int main(void)
         robotPointer->setRightClosed();
         
         // Update position in map
-        //robotPointer->updateRobotPosition();
+        robotPointer->updateRobotPosition();
         
         i = 0;
     }
