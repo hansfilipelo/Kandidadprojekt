@@ -153,6 +153,13 @@ int MapSection::findUnexplored(){
 Robot::Robot(int xPos, int yPos, Map* inMom, Communication* inComm) : MapSection(xPos, yPos, inMom){
 	type = 'r';
 	direction = 'f';
+	
+	Kd = 26;
+	Kp = 7;
+	Ref = 10;
+	
+	trimRight = 15;
+	trimLeft = 0;
     
     commObj = inComm;
     previousSection = mom->getPos(xPos,yPos);
@@ -748,7 +755,6 @@ void Robot::updateRobotPosition(){
     }
     
     if ((sensorDifference > 39)||(sensorDifference < -39)){
-		mom->convertSection(xCoord,yCoord, 'e');
 		switch (direction)
 		{
             
@@ -809,7 +815,8 @@ void Robot::updateRobotPosition(){
 				//would like to throw some kind of error here.
 				return;
 			}
-        
+			//om inte rfid så gör detta:
+			mom->convertSection(previousSection->getX(),previousSection->getY(), 'e');
 			//update which sensor that is valid and should be measured.
 			//and update the references on that sensor.
 			validSensor = determineValidSensor();
