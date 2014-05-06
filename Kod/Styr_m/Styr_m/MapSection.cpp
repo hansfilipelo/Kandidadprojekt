@@ -458,6 +458,9 @@ void Robot::setFwdClosed(){
                 break;
             }
             mom->convertSection(xCoord,yCoord + i + 1, 'e');
+		}
+        if(output == 0){
+	        mom->convertSection(xCoord + 1,yCoord, 'c');
         }
 	}
 	// Direction 17->y->0, "bwd"
@@ -471,6 +474,9 @@ void Robot::setFwdClosed(){
             }
             mom->convertSection(xCoord,yCoord - i - 1, 'e');
         }
+		if(output == 0){
+			mom->convertSection(xCoord - 1,yCoord, 'c');
+		}
 	}
 	// Direction 0->x->32, "right"
 	else if (direction == 'r'){
@@ -483,6 +489,9 @@ void Robot::setFwdClosed(){
             }
             mom->convertSection(xCoord + i + 1,yCoord, 'e');
         }
+		if(output == 0){
+			mom->convertSection(xCoord + 1,yCoord, 'c');
+		}
 	}
 	// Direction 32->x->0, "left"
 	else if (direction == 'l'){
@@ -495,6 +504,9 @@ void Robot::setFwdClosed(){
             }
             mom->convertSection(xCoord - i - 1,yCoord, 'e');
         }
+		if(output == 0){
+			mom->convertSection(xCoord - 1,yCoord, 'c');
+		}
 	}	
 }
 
@@ -523,6 +535,9 @@ void Robot::setBwdClosed(){
             }
             mom->convertSection(xCoord,yCoord - i - 1, 'e');
         }
+		if(output == 0){
+			mom->convertSection(xCoord - 1,yCoord, 'c');
+		}
 	}
 	// Direction 17->y->0, "bwd"
 	else if (direction == 'b'){
@@ -535,6 +550,9 @@ void Robot::setBwdClosed(){
             }
             mom->convertSection(xCoord,yCoord + i + 1, 'e');
         }
+		if(output == 0){
+			mom->convertSection(xCoord + 1,yCoord, 'c');
+		}
 	}
 	// Direction 0->x->32, "right"
 	else if (direction == 'r'){
@@ -547,6 +565,9 @@ void Robot::setBwdClosed(){
             }
             mom->convertSection(xCoord - i - 1,yCoord, 'e');
         }
+		if(output == 0){
+			mom->convertSection(xCoord - 1,yCoord, 'c');
+		}
 	}
 	// Direction 32->x->0, "left"
 	else if (direction == 'l'){
@@ -559,6 +580,9 @@ void Robot::setBwdClosed(){
             }
             mom->convertSection(xCoord + i + 1,yCoord, 'e');
         }
+		if(output == 0){
+			mom->convertSection(xCoord + 1,yCoord, 'c');
+		}
 	}
 }
 
@@ -1149,7 +1173,7 @@ bool Robot::isWallFwdClose()
 	    if ( getFwdDistance() == 0 ) {
 		    return false;
 	    }
-	    if ( getFwdDistance() < 20 ){
+	    if ( getFwdDistance() < 30 ){
 		    return true;
 	    }
 	    else{
