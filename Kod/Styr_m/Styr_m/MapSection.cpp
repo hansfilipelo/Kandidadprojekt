@@ -561,12 +561,13 @@ void Robot::setLeftClosed(){
 	
 		int output = 0;
 	    
-	    if(getLeftDistance() < 40){
+	    if(leftMidSensor < 40){
 		    output = 10/40;
 	    }
-	    else if(getLeftDistance() > 150) { // this value might need to be calibrated
+	    else if(leftMidSensor > 150) { // this value might need to be calibrated
 		    output = 160/40;				//if distance is great only print max 2 empty.
 	    }
+
 	    else{
 		    output = leftMidSensor/40;
 	    }
@@ -1006,7 +1007,7 @@ char* Robot::getColAsChar(int col){
 
 // ----------------------------------------
 int Robot::getFwdDistance(){
-	if(fwdShortSensor < 40){
+	if(fwdShortSensor < 45){
 		return fwdShortSensor;
 	}
 	else{
@@ -1015,7 +1016,7 @@ int Robot::getFwdDistance(){
 }
 
 int Robot::getBwdDistance(){
-	if(bwdShortSensor < 40){
+	if(bwdShortSensor < 45){
 		return bwdShortSensor;
 	}
 	else{
@@ -1109,7 +1110,7 @@ bool Robot::isWallFwd(){
     if ( getFwdDistance() == 0 ) {
         return false;
     }
-    if ( getFwdDistance() < 40 ){
+    if ( getFwdDistance() < 15 ){
         return true;
     }
     else{
