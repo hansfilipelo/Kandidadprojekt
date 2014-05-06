@@ -210,7 +210,7 @@ int main(void)
 				{
 					robotPointer->rotateLeft();
 #if DEBUG == 0
-					_delay_ms(500);
+					_delay_ms(800);
 #endif
 				}
                 
@@ -221,7 +221,7 @@ int main(void)
 				{
 					robotPointer->rotateRight();
 #if DEBUG == 0
-					_delay_ms(500);
+					_delay_ms(800);
 #endif
 					
 				}
