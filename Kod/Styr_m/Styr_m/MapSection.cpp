@@ -940,6 +940,20 @@ void Robot::updateRobotPosition(){
 */
 // -----------------------------------------
 
+char Robot::determineValidSensor(){
+    
+    if( getFwdDistance() >= getBwdDistance()){ // bwd sensor is smaller than fwd.
+        return 'b';
+    }
+    else{                   //fwd sensor is smaller than bwd.
+        return 'f';
+    }
+}
+
+//------------------------------------------
+
+
+
 void Robot::adjustPosition(){
 	volatile int pd = 0;
 	volatile int frontError = 0;
