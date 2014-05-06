@@ -772,13 +772,15 @@ void Robot::updateRobotPosition(){
     int sensorDifference = 0;
     
     if (validSensor == 'b'){
-        sensorDifference = bwdReference - getBwdDistance();
+		int ref = bwdReference/40;
+        sensorDifference = getBwdDistance() - ref*40;
     }
     else if(validSensor == 'f'){
-        sensorDifference = fwdReference - getFwdDistance();
+		int ref = fwdReference/40;
+		sensorDifference = getFwdDistance() - ref*40;
     }
     
-    if ((sensorDifference > 39)||(sensorDifference < -39)){
+    if ((sensorDifference > 35)||(sensorDifference < -35)){
 		switch (direction)
 		{
             
@@ -838,23 +840,27 @@ void Robot::updateRobotPosition(){
 			default :
 				//would like to throw some kind of error here.
 				return;
-			}
-			//om inte rfid så gör detta:
-			mom->convertSection(previousSection->getX(),previousSection->getY(), 'e');
-			//update which sensor that is valid and should be measured.
-			//and update the references on that sensor.
-			validSensor = determineValidSensor();
-			if(validSensor == 'f'){
-				this->setFwdReference();
-			}
-			else if(validSensor == 'b'){
-				this->setBwdReference();
-			}
-			else{
-				validSensor = 'N';
-				this->setBwdReference();
-				this->setFwdReference();
 		}
+		//om inte rfid så gör detta:
+		mom->convertSection(previousSection->getX(),previousSection->getY(), 'e');
+		//update which sensor that is valid and should be measured.
+		//and update the references on that sensor.
+		validSensor = determineValidSensor();
+		if(validSensor == 'f'){
+			this->setFwdReference();
+		}
+		else if(validSensor == 'b'){
+			this->setBwdReference();
+		}
+		else{
+			validSensor = 'N';
+			this->setBwdReference();
+			this->setFwdReference();
+		}
+		setFwdClosed();
+		setBwdClosed();
+		setRightClosed();
+		setLeftClosed();
 	}
 }
 /*

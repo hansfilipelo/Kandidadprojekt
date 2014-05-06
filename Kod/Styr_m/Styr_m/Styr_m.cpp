@@ -250,12 +250,7 @@ int main(void)
     
     // Look for walls every 500th turn of main loop
     if (i == 500) {
-        robotPointer->setFwdClosed();
-        robotPointer->setBwdClosed();
-        robotPointer->setLeftClosed();
-        robotPointer->setRightClosed();
-        
-        // Update position in map
+              // Update position in map
         robotPointer->updateRobotPosition();
         
         i = 0;
