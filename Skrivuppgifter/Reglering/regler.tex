@@ -164,18 +164,19 @@ I denna fördjupande del går vi igenom förkunskaper som krävs för att beskri
 
 \section{Tillståndsrepresentation av reglersystem}
 
-Inom reglerteknik kan linjära system beskrivas på så kallad tillståndsformel så som Glad och Ljung\footnote{Glad, Torkel och Ljung, Lennart (2006), \textit{Reglerteknik - Grundläggande teori}.} beskriver. I fallet med SLAM för en robot använder man robotens position i förhållande till kringliggande objekt som tillstånd , tecknat $x$. 
+Inom reglerteknik kan linjära system beskrivas på så kallad tillståndsformel så som Glad och Ljung beskriver. I fallet med SLAM för en robot använder man robotens position i förhållande till kringliggande objekt som tillstånd , tecknat $x$. 
 \\
 där $A$, $B$, $C$ och $D$ är matriser, $u$ är insignal och $y$ exempelvis är kringliggande objekts position i förhållande till roboten, alternativt robotens position vid mätning med GPS/GLONASS. 
 
-Ett reglersystem på tillståndsform kan skrivas enligt: 
+Ett reglersystem på tillståndsform kan skrivas enligt\footnote{Glad och Ljung, \textit{Reglerteknik - Grundläggande teori} (2006) s151.}: 
 
 \begin{gather}
+\label{equ:tillstand}
 \dot{x} = Ax + Bu \\
 y = Cx
 \end{gather}
 
-Tillstånden för en robot mäts med tidsdiskreta värden då datorer endast hanterar diskreta mätningar och ej kontinuerliga. I dessa fall är det bättre att använda sig av en diskret tillståndsbeskrivning. En diskret tillståndsbeskrivning av ett linjärt reglersystem beskrivs av: 
+Tillstånden för en robot mäts med tidsdiskreta värden då datorer endast hanterar diskreta mätningar och ej kontinuerliga. Systemets tillstånd är generellt en kort period där robotens position kan antas vara konstant. I dessa fall är det bättre att använda sig av en diskret tillståndsbeskrivning. En diskret tillståndsbeskrivning av ett linjärt reglersystem beskrivs av: 
 
 \begin{gather}
 x[n+1] = Ax[n] + B[n] \\
@@ -184,9 +185,25 @@ y[n] = Cx[n]
 
 I ett realiserbart system nyttjas sensorer med en viss osäkerhet. Man kan därmed enbart skatta systemets tillstånd och inte exakt beräkna dem. För att uppskatta dem används det ofta en så kallad observatör.
 
-\subsection{Observatörer}
+\subsection{Tillståndsåterkoppling och observatörer}
 
 Inom reglerteknik används en observatör för att skatta tillståndsvariabler i ett givet system när tillstånden hos systemet ej kan ges med säkerhet. I fallet positionering och kartritning kan roboten och kringliggande objekts positioner som sagt inte bestämmas entydigt och behöver därför skattas. 
+
+Skattningen av variabler kan utföras genom tillståndsåterkoppling, som sedan verifieras med observatören.  Tillståndet $x$ för systemet i ekvation \ref{equ:tillstand} kan skattas med hjälp av observatören: 
+
+\begin{gather}
+\dot{\hat{x}} = Ax + Bu + K(y - C\hat{x})
+\label{equ:observer}
+\end{gather}
+
+Skattningsfelet ges sedan av differentialekvationen: 
+
+\begin{gather}
+\dot{\tilde{x}} = (A - KC)\tilde{x}
+\label{equ:observerError}
+\end{gather}
+
+Genom att välja olika K-matriser ges systemet olika egenskaper i form av hastighet och störningskänslighet. Inom SLAM är både hastighet och störningskänslighet essentiellt och man använder då en variabel K-matris. För att skatta nästkommande tillstånd med variabel K-matris kan man använda ett system som kallas Kalmanfilter. 
 
 Tillståndsvariablerna kan skattas med flera metoder utifrån tillgänglig mätdata. Om man utgår från att närliggande mätningar görs kring samma position för roboten kan mätningarna antas vara normalfördelade kring en viss längd. 
 
@@ -199,8 +216,6 @@ Tillståndsvariablerna kan skattas med flera metoder utifrån tillgänglig mätd
 \end{figure}
 
 Variablernas tillstånd kan sedan skattas med mätningarnas väntevärde, $\mu$. Då mätningarna över en kort period, inom systemets nuvarande tillstånd, är normalfördelade ges väntevärdet av mätningarnas medelvärde, $\bar{x}$, vilket lätt ses i figur ovan\footnote{Wikipedia, \url{http://sv.wikipedia.org/wiki/Normalf\%C3\%B6rdelning}, hämtad 2014-05-02.}. 
-
-Systemets tillstånd är generellt en kort period där robotens position kan antas vara konstant. För att skatta nästkommande tillstånd används inom SLAM ofta en observatör som kallas Kalmanfilter. 
 
 \subsubsection{Kalmanfilter}
 
@@ -369,7 +384,7 @@ Nedan syns ett flödesschema över hur en tänkt kartläggningsalgoritm skulle k
   \includegraphics[keepaspectratio=true,scale=0.5]{../../Designspec/Flode_kartritning.jpg}  %skala och filnamn. 
   \end{center}
   \caption{Flödesschema kartläggning} %figurtext.
-  \label{fig:fire} %glöm inte att uppdatera era labels
+  \label{fig:algoritm} %glöm inte att uppdatera era labels
 \end{figure}
 
 %------------------------------------------------
