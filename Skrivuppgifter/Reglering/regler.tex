@@ -203,6 +203,7 @@ Inom reglerteknik kan linjära system beskrivas på så kallad tillståndsform s
 \begin{gather}
 \dot{x}=Ax+Bu \\
 y=Cx+Du	
+\label{equ:tillstand}
 \end{gather}
 där $A$, $B$, $C$ och $D$ är matriser, $u$ är en vektor med insignaler och $y$ är en vektor med utsignaler.
 
@@ -252,19 +253,34 @@ Variablernas tillstånd kan sedan skattas med mätningarnas väntevärde, $\mu$.
 
 \subsubsection{Kalmanfilter}
 
-
-
+Antag att tillståndssystemet i ekvation \ref{equ:tillstand} störs av mätfelet $v$ och yttre störningen $e$, vilket vi antar är vitt brus.  
 \begin{gather}
-\frac{dx}{dt} = A(t)x(t) + B(t)u(t) + w(t) \\
-y(t) = C(t)x(t) + v(t)
+\dot{x}=Ax+Bu+e \\
+y=Cx+Du+v
 \end{gather}
 
+Mätfelet i ekvation \ref{equ:observerError} ges då istället av: 
 \begin{gather}
-x_k = A_{k-1}x_{k-1} + Bu_k + w_k \\
-y_{k} = Hx_k + Dv_k
+\dot{\tilde{x}} = (A - KC)\tilde{x} + e - Kv
 \end{gather}
+
+Då $e$ och $v$ antas vara vitt brus kan man, genom att uppskatta störningarnas kovarians, beräkna mätfelets kovarians. Kovariansen hos mätfelet minimeras sedan genom att sätta K enligt: 
+\begin{gather}
+K = PC^{T}R_{2}^{-1}
+\end{gather}
+
+Där matrisen $P$ ges av att lösa ekvationen nedan - och sedan välja den positivt semidefinita lösningen på $P$. 
+\begin{gather}
+AP + PA^{T} + R_{1} - PC^{T}R_{2}^{-1}CP = 0
+\end{gather}
+
+I praktiska tillämpningar antas $R_{1}$ och $R_{2}$ vara diagonalmatriser för att förenkla implementering. Dessa matriser viktar sedan hur mycket störning man uppskattar att systemet påverkas av. 
+
+Kalmanfiltret är tyvärr inte särskilt effektivt vid SLAM. Detta då filtret enbart är implementerbart för linjära system. Av den anledningen används istället ett anpassat Kalmanfilter vid implementeringar av SLAM.  
 
 \subsubsection{EKF - Det utökade kalmanfiltret}
+
+Det utökade kalmanfiltret, Extended Kalman Filter (EKF), är vad som vanligtvis används då man implementerar SLAM-algoritmer. Till skillnad från Kalmanfiltret kan EKF lösa icke-linjära SLAM-problem. Detta då filtrets matriser beräknas om för varje nytt tillstånd. Matriserna beräknas med hjälp av jacobianer, och linjäriseras därmed kring varje tillstånd för att kunna skatta nästa tillstånd. 
 
 \subsection{Odometri}
 
