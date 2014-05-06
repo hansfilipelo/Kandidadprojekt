@@ -151,6 +151,7 @@ En robot med tillgång till ett antal avståndssensorer och ett gyro placeras i 
 
 SLAM är en teknik där ett system visuellt kan uppfatta landmärken. Med landmärken menas alla typer av objekt eller liknande som kan användas som referenser. Landmärkenas position i förhållande till roboten ska noteras och uppmätas med regelbundna samplingar. Genom att positionsbestämma dessa landmärken kan roboten snabbare bestämma sin position. 
 
+Denna rapport kommer behandla en del av problemen som uppstår vid SLAM och vad som behövs för att lösa dem.
 
 
 %------------------------------------------------
@@ -168,18 +169,14 @@ För att kunna avgöra var roboten befinner sig behövs ett eller flera sätt f�
 
 Som avståndsmätare kan någon typ av optisk sensor användas. Att sensorn är optisk innebär att den använder sig av ljus för att utföra mätningarna. De finns till exempel sensorer som belyser en yta som avstånd ska mätas till, tar emot reflekterat ljus och sedan med hjälp av tiden det tagit för ljuset att färdas beräkna avståndet. Denna metod kallas time-of-flight. Ytterligare en metod som används kallas optisk triangulering och det innebär att med hjälp av vinkeln mellan sändare och mottagare bestämma avståndet till objektet\footnote{Hägg, M. Avståndskamera för utomhusbruk, LTU http://epubl.ltu.se/1402-1617/2000/317/LTU-EX-00317-SE.pdf, hämtad 2014-05-06}.
 
-\subsubsection{Accelerometer}
-
 \subsubsection{Gyroskop}
 
-För att mäta vinkelhastighet går det att använda ett gyroskop även kallat gyro. En gyrosensor av MEMS-typ (Micro Electro-Mechanical System) utnyttjar att när två lika stora massor som oscillerar konstant i motsatta riktningar påverkas av Korioliskraften
-
-\footnote{http://electroiq.com/blog/2010/11/introduction-to-mems-gyroscopes/, hämtad 2014-05-06}
-
+För att mäta vinkelhastighet går det att använda ett gyroskop även kallat gyro. En gyrosensor av MEMS-typ (Micro Electro-Mechanical System) utnyttjar att två lika stora massor som oscillerar konstant i motsatta riktningar påverkas av Korioliskraften vid rotation. Kraften verkar i olika riktningar på de två massorna och det leder till en förändring i kapacitans.
+Skillnaden i kapacitans har visat sig vara proportionell mot vinkelhastigheten, därav går det att bestämma den med hjälp av ett gyro \footnote{http://electroiq.com/blog/2010/11/introduction-to-mems-gyroscopes/, hämtad 2014-05-06}.
 
 \subsubsection{Processering av data}
 
-Om det utgås från att närliggande mätningar görs kring samma position för roboten kan mätningarna antas vara normalfördelade kring en viss längd. 
+Sensorerna producerar mängder med data, data som kan variera något vid varje mätning. Om det då utgås från att närliggande mätningar görs kring samma position för roboten kan mätningarna antas vara normalfördelade.
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
@@ -189,9 +186,7 @@ Om det utgås från att närliggande mätningar görs kring samma position för 
   \label{fig:fire} %glöm inte att uppdatera era labels
 \end{figure}
 
-Variablernas tillstånd kan sedan skattas med mätningarnas väntevärde, $\mu$. Då mätningarna är normalfördelade ges väntevärdet av mätningarnas medelvärde, $\bar{x}$, vilket lätt ses i figur ovan\footnote{Wikipedia, \url{http://sv.wikipedia.org/wiki/Normalf\%C3\%B6rdelning}, hämtad 2014-05-02.}. 
-
-Skattningen, alltså väntevärdet, är alltså observatören för tillståndsvariablerna i systemet. 
+En mer korrekt bild av till exempel avståndet kan sedan fås med mätningarnas väntevärde, $\mu$. Då mätningarna är normalfördelade ges väntevärdet av mätningarnas medelvärde, $\bar{x}$, vilket kan ses i figur ovan\footnote{Wikipedia, \url{http://sv.wikipedia.org/wiki/Normalf\%C3\%B6rdelning}, hämtad 2014-05-02.}. 
 
 
 %----------------------Tillståndsrepresentation av reglersystem------------------
@@ -245,14 +240,7 @@ Skattningsfelet ges sedan av differentialekvationen:
 
 Genom att välja olika K-matriser ges systemet olika egenskaper i form av hastighet och störningskänslighet. Inom SLAM är både hastighet och störningskänslighet essentiellt och man använder då en variabel K-matris. För att skatta nästkommande tillstånd med variabel K-matris kan man använda ett system som kallas Kalmanfilter. 
 
-Tillståndsvariablerna kan skattas med flera metoder utifrån tillgänglig mätdata. Om man utgår från att närliggande mätningar görs kring samma position för roboten kan mätningarna antas vara normalfördelade kring en viss längd. 
-
-
-Variablernas tillstånd kan sedan skattas med mätningarnas väntevärde, $\mu$. Då mätningarna över en kort period, inom systemets nuvarande tillstånd, är normalfördelade ges väntevärdet av mätningarnas medelvärde, $\bar{x}$, vilket lätt ses i figur ovan\footnote{Wikipedia, \url{http://sv.wikipedia.org/wiki/Normalf\%C3\%B6rdelning}, hämtad 2014-05-02.}. 
-
 \subsubsection{Kalmanfilter}
-
-
 
 \begin{gather}
 \frac{dx}{dt} = A(t)x(t) + B(t)u(t) + w(t) \\
@@ -266,7 +254,7 @@ y_{k} = Hx_k + Dv_k
 
 \subsubsection{EKF - Det utökade kalmanfiltret}
 
-\subsection{Odometri}
+\section{SLAM}
 
 För att kunna utföra SLAM krävs det att man gör odometri, det vill säga att man kontinuerligt uppskattar vägen som färdats. Odometri kan göras på olika sätt - exempelvis genom att optiskt mäta avstånd till objekt i sin omgivning, vinkelhastigheter på hjul med känd storlek eller steg med given längd. 
 
