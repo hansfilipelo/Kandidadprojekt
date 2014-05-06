@@ -808,6 +808,7 @@ void Robot::updateRobotPosition(){
 				//would like to throw some kind of error here.
 				return;
 			}
+			//om inte rfid så gör detta:
 			mom->convertSection(previousSection->getX(),previousSection->getY(), 'e');
 			//update which sensor that is valid and should be measured.
 			//and update the references on that sensor.
