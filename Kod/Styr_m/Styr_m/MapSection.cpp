@@ -453,14 +453,14 @@ void Robot::setFwdClosed(){
 		//mom->convertSection(xCoord,yCoord + output + 1, 'c');
         
         // Set every section between robot and wall as empty
-        for (int i = 0; i < output; i++) {
+		for (int i = 0; i < output; i++) {
             if(yCoord+i+1>16){
                 break;
             }
             mom->convertSection(xCoord,yCoord + i + 1, 'e');
 		}
         if(output == 0){
-	        mom->convertSection(xCoord + 1,yCoord, 'c');
+	        mom->convertSection(xCoord,yCoord + 1, 'c');
         }
 	}
 	// Direction 17->y->0, "bwd"
@@ -475,7 +475,7 @@ void Robot::setFwdClosed(){
             mom->convertSection(xCoord,yCoord - i - 1, 'e');
         }
 		if(output == 0){
-			mom->convertSection(xCoord - 1,yCoord, 'c');
+			mom->convertSection(xCoord,yCoord - 1, 'c');
 		}
 	}
 	// Direction 0->x->32, "right"
@@ -536,7 +536,7 @@ void Robot::setBwdClosed(){
             mom->convertSection(xCoord,yCoord - i - 1, 'e');
         }
 		if(output == 0){
-			mom->convertSection(xCoord - 1,yCoord, 'c');
+			mom->convertSection(xCoord,yCoord - 1, 'c');
 		}
 	}
 	// Direction 17->y->0, "bwd"
@@ -551,7 +551,7 @@ void Robot::setBwdClosed(){
             mom->convertSection(xCoord,yCoord + i + 1, 'e');
         }
 		if(output == 0){
-			mom->convertSection(xCoord + 1,yCoord, 'c');
+			mom->convertSection(xCoord,yCoord + 1, 'c');
 		}
 	}
 	// Direction 0->x->32, "right"
@@ -842,7 +842,7 @@ void Robot::updateRobotPosition(){
 				return;
 		}
 		//om inte rfid så gör detta:
-		mom->convertSection(previousSection->getX(),previousSection->getY(), 'e');
+		//mom->convertSection(previousSection->getX(),previousSection->getY(), 'e');
 		//update which sensor that is valid and should be measured.
 		//and update the references on that sensor.
 		validSensor = determineValidSensor();

@@ -47,17 +47,10 @@ void Communication::handleData(){
 		robotPointer->drive();
 	}
 	else if (this->inData[1] == 'h'){
-		if (!manual)
-		{
+		
 			robotPointer->setUserSpeed(0);
 			robotPointer->drive();
-			manual = !manual;
-		}
-		else {
-			robotPointer->setUserSpeed(speed);
-			robotPointer->drive();
-			manual = !manual;
-		}
+				
 	}
     
     
