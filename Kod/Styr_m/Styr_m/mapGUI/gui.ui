@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>946</width>
-    <height>791</height>
+    <width>1159</width>
+    <height>806</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -85,7 +85,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Left back short</string>
+     <string>Back short</string>
     </property>
    </widget>
    <widget class="QLabel" name="sensor2data">
@@ -104,8 +104,8 @@
    <widget class="QLabel" name="sensor3">
     <property name="geometry">
      <rect>
-      <x>431</x>
-      <y>300</y>
+      <x>41</x>
+      <y>660</y>
       <width>111</width>
       <height>20</height>
      </rect>
@@ -117,8 +117,8 @@
    <widget class="QLabel" name="sensor3data">
     <property name="geometry">
      <rect>
-      <x>450</x>
-      <y>320</y>
+      <x>60</x>
+      <y>680</y>
       <width>81</width>
       <height>19</height>
      </rect>
@@ -137,7 +137,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Left front short</string>
+     <string>Front short</string>
     </property>
    </widget>
    <widget class="QLabel" name="sensor4data">
@@ -157,7 +157,7 @@
     <property name="geometry">
      <rect>
       <x>430</x>
-      <y>530</y>
+      <y>660</y>
       <width>111</width>
       <height>20</height>
      </rect>
@@ -170,7 +170,7 @@
     <property name="geometry">
      <rect>
       <x>450</x>
-      <y>550</y>
+      <y>680</y>
       <width>81</width>
       <height>20</height>
      </rect>
@@ -183,7 +183,7 @@
     <property name="geometry">
      <rect>
       <x>451</x>
-      <y>670</y>
+      <y>560</y>
       <width>81</width>
       <height>20</height>
      </rect>
@@ -196,7 +196,7 @@
     <property name="geometry">
      <rect>
       <x>430</x>
-      <y>650</y>
+      <y>540</y>
       <width>111</width>
       <height>19</height>
      </rect>
@@ -266,8 +266,8 @@
    <widget class="QCustomPlot" name="sensorPlot3" native="true">
     <property name="geometry">
      <rect>
-      <x>550</x>
-      <y>270</y>
+      <x>160</x>
+      <y>630</y>
       <width>261</width>
       <height>101</height>
      </rect>
@@ -278,6 +278,7 @@
       <height>0</height>
      </size>
     </property>
+    <zorder>mapView</zorder>
    </widget>
    <widget class="QCustomPlot" name="sensorPlot4" native="true">
     <property name="geometry">
@@ -299,7 +300,7 @@
     <property name="geometry">
      <rect>
       <x>550</x>
-      <y>510</y>
+      <y>630</y>
       <width>261</width>
       <height>101</height>
      </rect>
@@ -315,7 +316,7 @@
     <property name="geometry">
      <rect>
       <x>550</x>
-      <y>630</y>
+      <y>510</y>
       <width>261</width>
       <height>101</height>
      </rect>
@@ -473,8 +474,8 @@
    <widget class="QCustomPlot" name="sensorPlot0" native="true">
     <property name="geometry">
      <rect>
-      <x>160</x>
-      <y>630</y>
+      <x>550</x>
+      <y>270</y>
       <width>261</width>
       <height>101</height>
      </rect>
@@ -489,8 +490,8 @@
    <widget class="QLabel" name="sensor0">
     <property name="geometry">
      <rect>
-      <x>50</x>
-      <y>650</y>
+      <x>440</x>
+      <y>290</y>
       <width>111</width>
       <height>20</height>
      </rect>
@@ -502,8 +503,8 @@
    <widget class="QLabel" name="sensor0data">
     <property name="geometry">
      <rect>
-      <x>70</x>
-      <y>670</y>
+      <x>460</x>
+      <y>310</y>
       <width>81</width>
       <height>20</height>
      </rect>
@@ -589,7 +590,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>946</width>
+     <width>1159</width>
      <height>22</height>
     </rect>
    </property>
