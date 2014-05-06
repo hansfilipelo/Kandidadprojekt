@@ -273,7 +273,6 @@ Kalmanfiltret är tyvärr inte särskilt effektivt vid SLAM. Detta då filtret e
 
 Det utökade kalmanfiltret, Extended Kalman Filter (EKF), är vad som vanligtvis används då man implementerar SLAM-algoritmer. Till skillnad från Kalmanfiltret kan EKF lösa icke-linjära SLAM-problem. Detta då filtrets matriser beräknas om för varje nytt tillstånd. Matriserna beräknas med hjälp av jacobianer, och linjäriseras därmed kring varje tillstånd för att kunna skatta nästa tillstånd. 
 
-
 \subsection{FastSLAM}
 FastSLAM är en relativt modern teknik som använder ett så kallat partikelfilter för att filtrera givet mätdata, där varje värde i mätdatat ses som en partikel. De mest sannolika värdena sparas och de minst sannolika värdena förkastas. Man kallar det här för en omsapling av datat då man utgår från en sampelmängd av mätvärden och sedan minskar denna. 
 
