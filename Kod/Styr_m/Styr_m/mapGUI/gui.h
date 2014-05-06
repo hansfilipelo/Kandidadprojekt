@@ -35,6 +35,7 @@ public:
     int connectStatus;
     void labelSet(QString);
     char mapArea[32][27];
+    void saveToFile();
 
 private slots:
     void on_speedSlider_valueChanged(int value);
