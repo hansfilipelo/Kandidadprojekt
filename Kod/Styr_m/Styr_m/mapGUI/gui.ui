@@ -278,7 +278,6 @@
       <height>0</height>
      </size>
     </property>
-    <zorder>mapView</zorder>
    </widget>
    <widget class="QCustomPlot" name="sensorPlot4" native="true">
     <property name="geometry">
@@ -513,7 +512,7 @@
      <string>sensor0data</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="temp90Button">
+   <widget class="QPushButton" name="saveDataButton">
     <property name="geometry">
      <rect>
       <x>170</x>
@@ -523,7 +522,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>90 turn done</string>
+     <string>Save data</string>
     </property>
    </widget>
    <widget class="QLabel" name="trimLeftLabel">
