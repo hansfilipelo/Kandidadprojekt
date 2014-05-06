@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'gui.ui'
 **
-** Created by: Qt User Interface Compiler version 5.2.0
+** Created by: Qt User Interface Compiler version 5.3.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -250,12 +250,13 @@ public:
         trimValueLeft->setObjectName(QStringLiteral("trimValueLeft"));
         trimValueLeft->setGeometry(QRect(310, 540, 49, 24));
         trimValueLeft->setMinimum(0);
-        trimValueLeft->setMaximum(9);
+        trimValueLeft->setMaximum(127);
         trimValueRight = new QSpinBox(centralWidget);
         trimValueRight->setObjectName(QStringLiteral("trimValueRight"));
         trimValueRight->setGeometry(QRect(310, 570, 49, 24));
         trimValueRight->setMinimum(0);
-        trimValueRight->setMaximum(9);
+        trimValueRight->setMaximum(127);
+        trimValueRight->setValue(15);
         Gui->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(Gui);
         menuBar->setObjectName(QStringLiteral("menuBar"));

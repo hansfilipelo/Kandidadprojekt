@@ -122,13 +122,13 @@ ISR(INT1_vect){
 //Handle auto/manual button event
 ISR(INT0_vect){
 	cli();
-	if(toggle){
+	if(Firefly.autonom){
 		Bus.outDataArray[1]= 'q';
-		toggle = false;
+		Firefly.autonom = false;
 	}
 	else{
 		Bus.outDataArray[1]= 'a';
-		toggle = true;
+		Firefly.autonom = true;
 	}
 	Bus.outDataArray[0]= 1;
 	Bus.sendArray(1);

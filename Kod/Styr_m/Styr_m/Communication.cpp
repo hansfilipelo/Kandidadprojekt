@@ -31,14 +31,10 @@ void Communication::handleData(){
 	}
 	
 	if (this->inData[1]=='r' && inData[2]==0) {
-		robotPointer->changeGear('l');
-		robotPointer->setUserSpeed(speed);
-		robotPointer->drive();
+		robotPointer->rotateLeft();
 	}
 	else if (this->inData[1]=='r' && inData[2]==1) {
-		robotPointer->changeGear('r');
-		robotPointer->setUserSpeed(speed);
-		robotPointer->drive();
+		robotPointer->rotateRight();
 	}
 	else if (this->inData[1]=='f'){
 		robotPointer->changeGear('f');
@@ -51,17 +47,10 @@ void Communication::handleData(){
 		robotPointer->drive();
 	}
 	else if (this->inData[1] == 'h'){
-		if (!manual)
-		{
+		
 			robotPointer->setUserSpeed(0);
 			robotPointer->drive();
-			manual = !manual;
-		}
-		else {
-			robotPointer->setUserSpeed(speed);
-			robotPointer->drive();
-			manual = !manual;
-		}
+				
 	}
     
     
@@ -158,8 +147,9 @@ void Communication::sendMap(){
 // Asks for measure of angles
 
 void Communication::sendRotateRequest(){
-    slavePointer->outDataArray[0] = 1;
+    slavePointer->outDataArray[0] = 2;
     slavePointer->outDataArray[1] = 'g';
+	slavePointer->outDataArray[2] = 1;
     
     slavePointer->SPI_Send();
 }

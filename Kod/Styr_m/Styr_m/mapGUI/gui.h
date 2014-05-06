@@ -35,6 +35,7 @@ public:
     int connectStatus;
     void labelSet(QString);
     char mapArea[32][27];
+    void saveToFile();
 
 private slots:
     void on_speedSlider_valueChanged(int value);
@@ -65,11 +66,13 @@ private slots:
 
     void on_setParameterButton_pressed();
 
-    void on_temp90Button_clicked();
-
     void on_actionSetParameter_triggered();
 
+<<<<<<< HEAD
     void on_actionHalt_triggered();
+=======
+    void on_saveDataButton_pressed();
+>>>>>>> 2ada3207fac0b94eb9329a9877fdbb1cda7dae58
 
 private:
     QTime time;

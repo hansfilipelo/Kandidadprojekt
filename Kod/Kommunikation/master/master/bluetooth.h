@@ -28,7 +28,8 @@ public:
     volatile bool Btrec = false; 
 	void sendMap();
 	volatile bool getMap = false; 
-	volatile int mapNumber = 0; 
+	volatile int mapNumber = 0;
+	bool autonom = true;
     
     unsigned char pcHandle[27];
      // Data arrives in order, datalength (data.length + codeword + arg), codeword, arg, data.
