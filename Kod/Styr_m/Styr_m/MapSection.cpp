@@ -213,7 +213,7 @@ void Robot::drive(){
         int outputLeft;
         int outputRight;
         
-        if (currentGear == 'f'){
+        if (currentGear == 'f' && speed != 0){
             outputLeft = floor(speed * 255 / 100) + trimLeft;
             outputRight = floor(speed * 255 / 100) + trimRight;
         }
