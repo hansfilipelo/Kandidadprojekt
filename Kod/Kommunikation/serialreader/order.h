@@ -30,6 +30,7 @@ public:
     void backward(int);
     void test();
     void fetchMap();
+    void autonom();
     void setControlParameters(double, double, int, int, int);
     
     int getTen(double); //Returns ex. 1 if the number is 10

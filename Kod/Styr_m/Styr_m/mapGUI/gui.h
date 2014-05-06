@@ -69,6 +69,8 @@ private slots:
 
     void on_actionSetParameter_triggered();
 
+    void on_actionHalt_triggered();
+
 private:
     QTime time;
     int val = 0;

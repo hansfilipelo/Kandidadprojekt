@@ -41,6 +41,7 @@ public:
     QAction *actionSlowDown;
     QAction *actionStop;
     QAction *actionSetParameter;
+    QAction *actionHalt;
     QWidget *centralWidget;
     QGraphicsView *mapView;
     QSlider *speedSlider;
@@ -92,7 +93,7 @@ public:
     {
         if (Gui->objectName().isEmpty())
             Gui->setObjectName(QStringLiteral("Gui"));
-        Gui->resize(946, 791);
+        Gui->resize(871, 806);
         actionForward = new QAction(Gui);
         actionForward->setObjectName(QStringLiteral("actionForward"));
         actionDown = new QAction(Gui);
@@ -109,6 +110,8 @@ public:
         actionStop->setObjectName(QStringLiteral("actionStop"));
         actionSetParameter = new QAction(Gui);
         actionSetParameter->setObjectName(QStringLiteral("actionSetParameter"));
+        actionHalt = new QAction(Gui);
+        actionHalt->setObjectName(QStringLiteral("actionHalt"));
         centralWidget = new QWidget(Gui);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         mapView = new QGraphicsView(centralWidget);
@@ -136,10 +139,10 @@ public:
         sensor2data->setGeometry(QRect(450, 200, 81, 20));
         sensor3 = new QLabel(centralWidget);
         sensor3->setObjectName(QStringLiteral("sensor3"));
-        sensor3->setGeometry(QRect(431, 300, 111, 20));
+        sensor3->setGeometry(QRect(41, 660, 111, 20));
         sensor3data = new QLabel(centralWidget);
         sensor3data->setObjectName(QStringLiteral("sensor3data"));
-        sensor3data->setGeometry(QRect(450, 320, 81, 19));
+        sensor3data->setGeometry(QRect(60, 680, 81, 19));
         sensor4 = new QLabel(centralWidget);
         sensor4->setObjectName(QStringLiteral("sensor4"));
         sensor4->setGeometry(QRect(431, 420, 111, 20));
@@ -148,16 +151,16 @@ public:
         sensor4data->setGeometry(QRect(450, 440, 81, 20));
         sensor5 = new QLabel(centralWidget);
         sensor5->setObjectName(QStringLiteral("sensor5"));
-        sensor5->setGeometry(QRect(430, 530, 111, 20));
+        sensor5->setGeometry(QRect(430, 660, 111, 20));
         sensor5data = new QLabel(centralWidget);
         sensor5data->setObjectName(QStringLiteral("sensor5data"));
-        sensor5data->setGeometry(QRect(450, 550, 81, 20));
+        sensor5data->setGeometry(QRect(450, 680, 81, 20));
         sensor6data = new QLabel(centralWidget);
         sensor6data->setObjectName(QStringLiteral("sensor6data"));
-        sensor6data->setGeometry(QRect(451, 670, 81, 20));
+        sensor6data->setGeometry(QRect(451, 560, 81, 20));
         sensor6 = new QLabel(centralWidget);
         sensor6->setObjectName(QStringLiteral("sensor6"));
-        sensor6->setGeometry(QRect(430, 650, 111, 19));
+        sensor6->setGeometry(QRect(430, 540, 111, 19));
         speedLabel = new QLabel(centralWidget);
         speedLabel->setObjectName(QStringLiteral("speedLabel"));
         speedLabel->setGeometry(QRect(250, 470, 62, 19));
@@ -174,7 +177,7 @@ public:
         sensorPlot2->setMinimumSize(QSize(120, 0));
         sensorPlot3 = new QCustomPlot(centralWidget);
         sensorPlot3->setObjectName(QStringLiteral("sensorPlot3"));
-        sensorPlot3->setGeometry(QRect(550, 270, 261, 101));
+        sensorPlot3->setGeometry(QRect(160, 630, 261, 101));
         sensorPlot3->setMinimumSize(QSize(120, 0));
         sensorPlot4 = new QCustomPlot(centralWidget);
         sensorPlot4->setObjectName(QStringLiteral("sensorPlot4"));
@@ -182,11 +185,11 @@ public:
         sensorPlot4->setMinimumSize(QSize(120, 0));
         sensorPlot5 = new QCustomPlot(centralWidget);
         sensorPlot5->setObjectName(QStringLiteral("sensorPlot5"));
-        sensorPlot5->setGeometry(QRect(550, 510, 261, 101));
+        sensorPlot5->setGeometry(QRect(550, 630, 261, 101));
         sensorPlot5->setMinimumSize(QSize(120, 0));
         sensorPlot6 = new QCustomPlot(centralWidget);
         sensorPlot6->setObjectName(QStringLiteral("sensorPlot6"));
-        sensorPlot6->setGeometry(QRect(550, 630, 261, 101));
+        sensorPlot6->setGeometry(QRect(550, 510, 261, 101));
         sensorPlot6->setMinimumSize(QSize(120, 0));
         label = new QLabel(centralWidget);
         label->setObjectName(QStringLiteral("label"));
@@ -226,14 +229,14 @@ public:
         setParameterButton->setGeometry(QRect(10, 590, 121, 31));
         sensorPlot0 = new QCustomPlot(centralWidget);
         sensorPlot0->setObjectName(QStringLiteral("sensorPlot0"));
-        sensorPlot0->setGeometry(QRect(160, 630, 261, 101));
+        sensorPlot0->setGeometry(QRect(550, 270, 261, 101));
         sensorPlot0->setMinimumSize(QSize(120, 0));
         sensor0 = new QLabel(centralWidget);
         sensor0->setObjectName(QStringLiteral("sensor0"));
-        sensor0->setGeometry(QRect(50, 650, 111, 20));
+        sensor0->setGeometry(QRect(440, 290, 111, 20));
         sensor0data = new QLabel(centralWidget);
         sensor0data->setObjectName(QStringLiteral("sensor0data"));
-        sensor0data->setGeometry(QRect(70, 670, 81, 20));
+        sensor0data->setGeometry(QRect(460, 310, 81, 20));
         temp90Button = new QPushButton(centralWidget);
         temp90Button->setObjectName(QStringLiteral("temp90Button"));
         temp90Button->setGeometry(QRect(170, 430, 115, 32));
@@ -256,7 +259,7 @@ public:
         Gui->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(Gui);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 946, 22));
+        menuBar->setGeometry(QRect(0, 0, 871, 22));
         menuCommands = new QMenu(menuBar);
         menuCommands->setObjectName(QStringLiteral("menuCommands"));
         Gui->setMenuBar(menuBar);
@@ -276,6 +279,7 @@ public:
         menuCommands->addAction(actionSlowDown);
         menuCommands->addAction(actionStop);
         menuCommands->addAction(actionSetParameter);
+        menuCommands->addAction(actionHalt);
 
         retranslateUi(Gui);
 
@@ -301,13 +305,15 @@ public:
         actionStop->setShortcut(QApplication::translate("Gui", "Space", 0));
         actionSetParameter->setText(QApplication::translate("Gui", "Set parameters", 0));
         actionSetParameter->setShortcut(QApplication::translate("Gui", "Ctrl+S", 0));
+        actionHalt->setText(QApplication::translate("Gui", "Auto", 0));
+        actionHalt->setShortcut(QApplication::translate("Gui", "Ctrl+X", 0));
         sensor1->setText(QApplication::translate("Gui", "Back Long", 0));
         sensor1data->setText(QApplication::translate("Gui", "sensor1data", 0));
-        sensor2->setText(QApplication::translate("Gui", "Left back short", 0));
+        sensor2->setText(QApplication::translate("Gui", "Back short", 0));
         sensor2data->setText(QApplication::translate("Gui", "sensor2data", 0));
         sensor3->setText(QApplication::translate("Gui", "Right back short", 0));
         sensor3data->setText(QApplication::translate("Gui", "sensor3data", 0));
-        sensor4->setText(QApplication::translate("Gui", "Left front short", 0));
+        sensor4->setText(QApplication::translate("Gui", "Front short", 0));
         sensor4data->setText(QApplication::translate("Gui", "sensor4data", 0));
         sensor5->setText(QApplication::translate("Gui", "Right front short", 0));
         sensor5data->setText(QApplication::translate("Gui", "sensor5data", 0));

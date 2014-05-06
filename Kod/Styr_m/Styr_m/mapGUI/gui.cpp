@@ -289,7 +289,7 @@ void Gui::updateMap(){
                 scene->addItem(temp);
             }
             else if(mapArea[rad][kol]=='c'){
-                temp->setBrush(Qt::black);
+                temp->setBrush(Qt::yellow);
                 scene->addItem(temp);
             }
             else if(mapArea[rad][kol]=='r'){
@@ -399,4 +399,9 @@ void Gui::on_temp90Button_clicked()
 void Gui::on_actionSetParameter_triggered()
 {
     on_setParameterButton_pressed();
+}
+
+void Gui::on_actionHalt_triggered()
+{
+    bluetooth->autonom();
 }
