@@ -222,7 +222,7 @@ Om systemet istället skulle vara icke-linjärt så går det inte att beskriva d
 
 I ett realiserbart system nyttjas till exempel sensorer som insignaler med en viss osäkerhet för att bestämma systemets tillstånd. Man kan därmed enbart skatta systemets tillstånd och inte exakt beräkna dem. För att uppskatta dem används det ofta en så kallad observatör.
 
-\subsection{Tillståndsåterkoppling och observatörer}
+\subsubsection{Tillståndsåterkoppling och observatörer}
 
 Inom reglerteknik används en observatör för att skatta tillståndsvariabler i ett givet system när tillstånden hos systemet ej kan ges med säkerhet. I fallet positionering och kartritning kan roboten och kringliggande objekts positioner som sagt inte bestämmas entydigt och behöver därför skattas. 
 
@@ -273,6 +273,16 @@ Kalmanfiltret är tyvärr inte särskilt effektivt vid SLAM. Detta då filtret e
 
 Det utökade kalmanfiltret, Extended Kalman Filter (EKF), är vad som vanligtvis används då man implementerar SLAM-algoritmer. Till skillnad från Kalmanfiltret kan EKF lösa icke-linjära SLAM-problem. Detta då filtrets matriser beräknas om för varje nytt tillstånd. Matriserna beräknas med hjälp av jacobianer, och linjäriseras därmed kring varje tillstånd för att kunna skatta nästa tillstånd. 
 
+
+\subsection{FastSLAM}
+FastSLAM är en relativt modern teknik som använder ett så kallat partikelfilter för att filtrera givet mätdata, där varje värde i mätdatat ses som en partikel. De mest sannolika värdena sparas och de minst sannolika värdena förkastas. Man kallar det här för en omsapling av datat då man utgår från en sampelmängd av mätvärden och sedan minskar denna. 
+
+För att effektivisera filtreringen av mätvärden delas olika distinkt upptäckta objekt i robotens miljö in i olika zoner. Dessa zoner filtreras sedan individuellt för att få fram den mest sannolika positionen för objektet i zonen. 
+
+Mätvärdena körs sedan flera gånger genom filtret tills dess att man med tillräckligt stor sannolikhet kan bestämma kartans utseende. Metoden har visat sig väldigt effektiv i praktiken. Nackdelen med metoden är att man genom omsampling av mätvärdena förlorar mätinformation som skulle kunna vara korrekt. Beroende på hur filtret prioriterar är det möjligt att man får en skev bild av omgivningen.
+
+De matematiska grunderna för FastSLAM ligger utanför vad denna rapport täcker in - men för den intresserade läsaren rekommenderas David Törnqvists doktorsavhandling \textit{Estimation and Detection with Applications to Navigation}\footnote{David Törnqvist. Estimation and Detection with Applications to Navigation. PhD thesis, Linköping University, 2008. Hämtad 15 april 2014.}.
+
 \subsection{Odometri}
 
 För att kunna utföra SLAM krävs det att man gör odometri, det vill säga att man kontinuerligt uppskattar vägen som färdats. Odometri kan göras på olika sätt - exempelvis genom att optiskt mäta avstånd till objekt i sin omgivning, vinkelhastigheter på hjul med känd storlek eller steg med given längd. 
@@ -294,13 +304,6 @@ Ett Kalmanfilter är en typ av algoritm som med hjälp av mätdata från sensore
 
 \subsubsection{EKF-SLAM} 
 EKF-SLAM är en förkortning för Extended Kalman Filter for SLAM. Det utökade (extended) Kalmanfiltret skiljer sig från det ursprungliga på så vis att det används då tillståndsvariablerna ej kan antas vara linjära. Ett EKF linjäriserar variablerna kring ett medelvärde, och väger också in deras kovarians. Med kovarians menas här hur de olika variablernas varianser beror av varandra. Efter linjäriseringen appliceras sedan ett Kalmanfilter på variablerna.
-
-\subsubsection{FastSLAM}
-FastSLAM är en relativt modern teknik som använder ett så kallat partikelfilter för att filtrera givet mätdata, där varje värde i mätdatat ses som en partikel. De mest sannolika värdena sparas och de minst sannolika värdena förkastas. Man kallar det här för en omsapling av datat då man utgår från en sampelmängd av mätvärden och sedan minskar denna. 
-
-För att effektivisera filtreringen av mätvärden delas olika distinkt upptäckta objekt i robotens miljö in i olika zoner. Dessa zoner filtreras sedan individuellt för att få fram den mest sannolika positionen för objektet i zonen. 
-
-Mätvärdena körs sedan flera gånger genom filtret tills dess att man med tillräckligt stor sannolikhet kan bestämma kartans utseende. Metoden har visat sig väldigt effektiv i praktiken. Nackdelen med metoden är att man genom omsampling av mätvärdena förlorar mätinformation som skulle kunna vara korrekt. Beroende på hur filtret prioriterar är det möjligt att man får en skev bild av omgivningen.\footnote{David Törnqvist. Estimation and Detection with Applications to Navigation. PhD thesis, Linköping University, 2008. Hämtad 15 april 2014.}
 
 \subsection{Andra typer av sensorer}
 
