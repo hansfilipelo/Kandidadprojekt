@@ -134,6 +134,14 @@ void Communication::handleData(){
 
 // -------------------
 
+bool Communication::getManual(){
+    return manual;
+}
+
+
+// -------------------
+
+
 void Communication::setRobot(Robot* inRobot){
     robotPointer = inRobot;
 }
