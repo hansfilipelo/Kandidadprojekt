@@ -114,6 +114,7 @@ public:
     bool isCornerRight();
     bool isWallFwd();
     bool isWallLeft();
+	bool isWallFwdClose();
     
     void changeDirection(char);
     char* getColAsChar(int col);
