@@ -186,10 +186,45 @@ int main(void)
         
         // Automatic mode
         else {
-//----------------------Om kortdistans flyttas fram----
-            if(robotPointer->fwdLongSensor < 10){
+//----------------------Om kortdistans flyttas fram----------
+            if(robotPointer->isWallFwd()){
+				if(!robotPointer->isWallRight())
+				{
+					robotPointer->rotateRight();
+					//kör framåt tills roboten åkt in i korridoren
+					while (!robotPointer->isWallRight()) {
+						robotPointer->changeGear('f');
+						robotPointer->setSpeed(25);
+						robotPointer->drive();
+					}
+				}
+				
+				else
+				{
+					robotPointer->rotateLeft();
+				}
                 
             }
+			else
+			{
+				if(!robotPointer->isWallRight())
+				{
+					robotPointer->rotateRight();
+					//kör framåt tills roboten åkt in i korridoren
+					while ( !robotPointer->isWallRight()) {
+						robotPointer->changeGear('f');
+						robotPointer->setSpeed(25);
+						robotPointer->drive();
+					}
+				}
+				else
+				{
+					robotPointer->setSpeed(robotPointer->userSpeed);
+					robotPointer->drive();
+					robotPointer->adjustPosition();
+				}
+			}
+		}
             
             
             
