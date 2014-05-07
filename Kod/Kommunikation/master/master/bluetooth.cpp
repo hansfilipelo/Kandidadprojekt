@@ -93,6 +93,14 @@ volatile void Bluetooth::handle(){
 		spiPointer->sendArray(1); //send data to module 1 (steer)
 		asm("");
 	}
+	
+	if (pcHandle[1] == 'h'){
+		spiPointer->outDataArray[0] = 2;
+		spiPointer->outDataArray[1] = 'g';
+		spiPointer->outDataArray[2] = 2;
+		
+		spiPointer->sendArray(0);
+	}
 
 	if(pcHandle[1] == 'a'){
 		if(!autonom){
