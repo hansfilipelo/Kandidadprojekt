@@ -486,7 +486,7 @@ void Robot::setFwdClosed(){
 			mom->convertSection(xCoord,yCoord - 1, 'c');
 		}
 	}
-	// Direction 0->x->32, "right"
+	// Direction 32->x->0, "left"
 	else if (direction == 'l'){									//left right kan vara omvänt, måste testas
         
         // Set every section between robot and wall as empty
@@ -500,7 +500,7 @@ void Robot::setFwdClosed(){
 			mom->convertSection(xCoord + 1,yCoord, 'c');
 		}
 	}
-	// Direction 32->x->0, "left"
+	// Direction 0->x->32, "right"
 	else if (direction == 'r'){
         
         // Set every section between robot and wall as empty
@@ -676,11 +676,11 @@ void Robot::setRightClosed(){
         return; //the too great uncertainty if.
     }*/
 	
-	if ( getRightDistance() > 60 ) { // this value might need to be calibrated
+	if ( rightFrontSensor > 60 ) { // this value might need to be calibrated
 		output = 80/40;//if distance is great only print max 2 empty.
 	}
 	else{
-		output = getRightDistance()/40;
+		output = rightFrontSensor/40;
 	}
 	
 	// Set closed section output + 1 steps away from robot.
