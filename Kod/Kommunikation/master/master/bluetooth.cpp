@@ -95,16 +95,15 @@ volatile void Bluetooth::handle(){
 	}
 
 	if(pcHandle[1] == 'a'){
-		if(autonom){
-			spiPointer->outDataArray[0] = 1;
-			spiPointer->outDataArray[1] = 'q';
-			autonom = false;
-		}
-		else{
-			spiPointer->outDataArray[0] = 1;
+		if(!autonom){
 			spiPointer->outDataArray[1] = 'a';
 			autonom = true;
 		}
+		else{
+			spiPointer->outDataArray[1] = 'q';
+			autonom = false;
+		}
+		spiPointer->outDataArray[0] = 1;
 		spiPointer->sendArray(1);
 	}
 
