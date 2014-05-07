@@ -41,11 +41,11 @@ void MapSection::setType(char newType){
 
 //---------------------------------------------------------
 int MapSection::getX(){
-	return xCoord;
+	return this->xCoord;
 }
 
 int MapSection::getY(){
-	return yCoord;
+	return this->yCoord;
 }
 
 char MapSection::getType(){
@@ -809,8 +809,8 @@ void Robot::updateRobotPosition(){
 				// Put robot in place
 				mom->setSection(xCoord,yCoord + 1, this);
 				// Update robot info about position
-                
-				//mom->setSection(tempPrev->getX(), tempPrev->getY(), tempPrev);
+				//mom->setSection(tempPrev->getX(),tempPrev->getY(), tempPrev);
+				//mom->convertSection(xCoord,yCoord - 1, tempPrev->getType());
                 
 				yCoord++;
             

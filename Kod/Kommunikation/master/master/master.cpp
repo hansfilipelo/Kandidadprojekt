@@ -121,6 +121,7 @@ ISR(INT0_vect){
 	cli();
 	if(!Firefly.autonom){
 		Bus.outDataArray[1]= 'a';
+		Bus.outDataArray[2]= 50;
 		Firefly.autonom = true;
 		Bus.sendArray(1);
 		
@@ -132,10 +133,15 @@ ISR(INT0_vect){
 	}
 	else{
 		Bus.outDataArray[1]= 'q';
+		Bus.outDataArray[2]= 0;
 		Firefly.autonom = false;
+		Bus.sendArray(1);
+		
+		Bus.outDataArray[0] = 2;
+		Bus.outDataArray[1] = 'g';
+		Bus.outDataArray[2] = 2;
+		Bus.sendArray(0);
 	}
-	Bus.outDataArray[0]= 1;
-	Bus.sendArray(1);
 	sei();
 }
 
