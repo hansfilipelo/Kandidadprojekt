@@ -192,14 +192,23 @@ Sensorerna producerar mängder med data, data som kan variera något vid varje m
 
 En mer korrekt bild av till exempel avståndet kan sedan fås med mätningarnas väntevärde, $\mu$. Då mätningarna är normalfördelade ges väntevärdet av mätningarnas medelvärde, $\bar{x}$, vilket kan ses i figur ovan\footnote{Wikipedia, \url{http://sv.wikipedia.org/wiki/Normalf\%C3\%B6rdelning}, hämtad 2014-05-02.}. 
 
+\subsubsection{Andra typer av sensorer}
 
-\newpage
+I denna rapport berör vi mest området där SLAM baseras på optiska avståndssensorer, men det finns även andra typer av sensorer som går att använda. Till exempel finns det implementeringar som använder sig av kameror för att finna landmärken och sedan använda dessa som referenser. Det är dock mer avancerade algoritmer som krävs för att finna lämpliga landmärken \footnote{Karlsson, N.; Goncalves, L.; Munich, M.E.; Pirjanian, P.''The vSLAM Algorithm for Navigation in Natural Environments''. Evolution Robotics, Inc. Hämtad 28 mars 2014}.
+
+Något som också provats är SLAM utan användning av någon typ av optisk utrustning och istället förlita sig på känsel, med hjälp av känselsensorer som efterliknar djurs morrhår, för att kunna kartlägga ett helt mörklagt rum. Denna metod ger dock inte så bra resultat med de tekniker som existerar i dag\footnote{Fox, C.; Evans, M.; Pearson, M.; Prescott, T. (2012)
+''Tactile SLAM with a biomimetic whiskered robot''. 2012 IEEE International Conference on Robotics and Automation. Hämtad 28 mars 2014.
+\url{http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6224813}
+}.
+
+Tidigare nämndes till exempel metoder som använder sig av GPS. Detta i kombination med WiFi-signaler har använts till exempel i mobiltelefoner för att avgöra var personer befinner sig. För att WiFi-SLAM ska fungera krävs att accesspunkten har information om positionsdata för sig själv, alternativt att den anslutna enheten har information om var aktuellt WiFi är tillgängligt.
+
+
 %----------------------Tillståndsrepresentation av reglersystem------------------
 
 \subsection{Tillståndsrepresentation av reglersystem}
 
 Inom reglerteknik kan linjära system beskrivas på så kallad tillståndsform så som Glad och Ljung\footnote{Glad, Torkel och Ljung, Lennart (2006), \textit{Reglerteknik - Grundläggande teori}.} beskriver. I fallet med SLAM för en robot använder man robotens position som tillstånd , tecknat $x$. Ett tidskontinuerligt system kan beskrivas på tillståndsform som nedan.
-
 \begin{gather}
 \dot{x}=Ax+Bu \\
 y=Cx+Du	
@@ -209,8 +218,8 @@ där $A$, $B$, $C$ och $D$ är matriser, $u$ är en vektor med insignaler och $y
 
 Tillstånden för en robot mäts med tidsdiskreta värden då datorer endast hanterar diskreta mätningar och ej kontinuerliga. I dessa fall är det bättre att använda sig av en diskret tillståndsbeskrivning. En diskret tillståndsbeskrivning av ett linjärt reglersystem beskrivs av: 
 \begin{gather}
-\vec{x}[n+1] = A\vec{x}[n] + B\vec{u}[n] \\
-\vec{y}[n] = C\vec{x[n]} + D\vec{u[n]}
+x[n+1] = Ax[n] + Bu[n] \\
+y[n] = Cx[n] + Du[n]
 \end{gather}
 
 Om systemet istället skulle vara icke-linjärt så går det inte att beskriva det på samma sätt. Det kan dock approximeras genom att linjärisera systemet genom att använda sig av Taylorutveckling, vilket i slutändan leder till att $A$-, $B$-, $C$- och $D$-matriserna innehåller partiella derivator. Dessa matriser kallas jacobianer, $J$ och skrivs:
@@ -285,39 +294,6 @@ För att effektivisera filtreringen av mätvärden delas olika distinkt upptäck
 Mätvärdena körs sedan flera gånger genom filtret tills dess att man med tillräckligt stor sannolikhet kan bestämma kartans utseende. Metoden har visat sig väldigt effektiv i praktiken. Nackdelen med metoden är att man genom omsampling av mätvärdena förlorar mätinformation som skulle kunna vara korrekt. Beroende på hur filtret prioriterar är det möjligt att man får en skev bild av omgivningen.
 
 De matematiska grunderna för FastSLAM ligger utanför vad denna rapport täcker in - men för den intresserade läsaren rekommenderas David Törnqvists doktorsavhandling \textit{Estimation and Detection with Applications to Navigation}\footnote{David Törnqvist. Estimation and Detection with Applications to Navigation. PhD thesis, Linköping University, 2008. Hämtad 15 april 2014.}.
-
-\newpage
-
-
-%-------------------------------Typer av SLAM------------------------------------------------------
-\subsection{Typer av SLAM}
-Det finns olika typer av SLAM för olika typer av tillämpningar och med olika egenskaper. Vissa är bra på större områden medan andra är mer precisa och bra på mindre områden. 
-
-\subsubsection{Kalmanfilter (KF-SLAM)}
-Ett Kalmanfilter är en typ av algoritm som med hjälp av mätdata från sensorer, som kan innehålla brus och störningar, uppskattar okända variabler. Ett Kalmanfilter arbetar på linjära och oberoende tillståndsvariabler och är ett essentiellt verktyg för vägval samt positionsuppskattningen i ett SLAM-system. 
-
-\subsubsection{EKF-SLAM} 
-EKF-SLAM är en förkortning för Extended Kalman Filter for SLAM. Det utökade (extended) Kalmanfiltret skiljer sig från det ursprungliga på så vis att det används då tillståndsvariablerna ej kan antas vara linjära. Ett EKF linjäriserar variablerna kring ett medelvärde, och väger också in deras kovarians. Med kovarians menas här hur de olika variablernas varianser beror av varandra. Efter linjäriseringen appliceras sedan ett Kalmanfilter på variablerna.
-
-\subsection{Andra typer av sensorer}
-
-I denna rapport berör vi mest området där SLAM baseras på optiska avståndssensorer, men det finns även andra typer av sensorer som går att använda. Nedan kommer några exempel på sådana implementeringar.
-
-\subsubsection{VSLAM}
-
-VSLAM står för visuell SLAM, vilket betyder att lokaliseringen sker med hjälp av kameror. Kamerorna används för att finna landmärken i området som kartläggs och sedan använda dessa som referenser när roboten fortsätter att utforska för att t ex se hur långt och i vilken riktning förflyttning sker relativt landmärket\footnote{Fox, C.; Evans, M.; Pearson, M.; Prescott, T. (2012) ''Tactile SLAM with a biomimetic whiskered robot''. 2012 IEEE International Conference on Robotics and Automation. Hämtad 28 mars 2014.}. Visuell SLAM är en förutsättning för att utnyttja den tidigare nämnda fastSLAM-tekniken. 
-
-För att bedöma avstånd till ett objekt mäts vinklar mellan farkost och objektet vid olika tidpunkter. Utifrån farkostens hastighet kan mjukvarans algoritmer sedan bestämma avståndet till objektet i fråga. 
-
-VSLAM är i de allra flesta fall komplicerat att implementera då man behöver avancerade bildsökningsalgoritmer för att finna lämpliga landmärken. 
-
-\subsubsection{TSLAM}
-Tactile SLAM är en metod som provats för robotar vid kartläggning av ett mörklagt område. Metoden använder sig av känselsensorer för att hitta avgränsningar i området och med hjälp av detta rita upp kartan. Denna metod ger dock inte så bra resultat med de tekniker som existerar i dag.
-
-\subsubsection{WiFi-SLAM}
-Denna metod använder sig av styrkan på WiFi-signaler i närheten för att avgöra positionen. Detta är något som använts på t.ex. mobiltelefoner för att avgöra var personer befinner sig. 
-
-För att WiFi-SLAM ska fungera krävs att accesspunkten har information om positionsdata för sig själv, alternativt att den anslutna enheten har information om var aktuellt WiFi är tillgängligt. I en mobiltelefon används den senare metoden då telefonen kan kontrollera var WiFi-nätverket finns med hjälp av GPS. 
 
 \subsection{Exempel på andra implementeringar}
 
