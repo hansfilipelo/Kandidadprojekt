@@ -192,6 +192,8 @@ Sensorerna producerar mängder med data, data som kan variera något vid varje m
 
 En mer korrekt bild av till exempel avståndet kan sedan fås med mätningarnas väntevärde, $\mu$. Då mätningarna är normalfördelade ges väntevärdet av mätningarnas medelvärde, $\bar{x}$, vilket kan ses i figur ovan\footnote{Wikipedia, \url{http://sv.wikipedia.org/wiki/Normalf\%C3\%B6rdelning}, hämtad 2014-05-02.}. 
 
+\newpage
+
 \subsubsection{Andra typer av sensorer}
 
 I denna rapport berör vi mest området där SLAM baseras på optiska avståndssensorer, men det finns även andra typer av sensorer som går att använda. Till exempel finns det implementeringar som använder sig av kameror för att finna landmärken och sedan använda dessa som referenser. Det är dock mer avancerade algoritmer som krävs för att finna lämpliga landmärken \footnote{Karlsson, N.; Goncalves, L.; Munich, M.E.; Pirjanian, P.''The vSLAM Algorithm for Navigation in Natural Environments''. Evolution Robotics, Inc. Hämtad 28 mars 2014}.
@@ -253,7 +255,7 @@ Skattningsfelet ges sedan av differentialekvationen:
 \label{equ:observerError}
 \end{gather}
 
-Genom att välja olika K-matriser ges systemet olika egenskaper i form av hastighet och störningskänslighet. Inom SLAM är både hastighet och störningskänslighet essentiellt och man använder då en variabel K-matris. För att skatta nästkommande tillstånd med variabel K-matris kan man använda ett system som kallas Kalmanfilter. 
+Genom att välja olika K-matriser ges systemet olika egenskaper i form av hastighet och störningskänslighet. Inom SLAM är både hastighet och störningskänslighet essentiellt och man använder då en variabel K-matris. Alla tillstånd kan dessutom inte skattas utefter samma förutsättningar som tidigare tillstånd. För att skatta nästkommande tillstånd med variabel K-matris kan man använda ett system som kallas Kalmanfilter. 
 
 \subsubsection{Kalmanfilter}
 
@@ -295,7 +297,8 @@ Mätvärdena körs sedan flera gånger genom filtret tills dess att man med till
 
 De matematiska grunderna för FastSLAM ligger utanför vad denna rapport täcker in - men för den intresserade läsaren rekommenderas David Törnqvists doktorsavhandling \textit{Estimation and Detection with Applications to Navigation}\footnote{David Törnqvist. Estimation and Detection with Applications to Navigation. PhD thesis, Linköping University, 2008. Hämtad 15 april 2014.}.
 
-\subsection{Exempel på andra implementeringar}
+\newpage
+\section{Exempel på andra implementeringar}
 
 Det finns många exempel på implementeringar av SLAM. Robotdammsugare är ett bra exempel på en modern tillämpning som kan använda sig av SLAM. Det är då en liten enhet som kan utnyttja en modifierad version av VSLAM som kallas CV-SLAM. Detta står för Ceiling Visual SLAM, det vill säga att roboten har kameror som är riktade uppåt och använder landmärken i taket för att rita upp en karta över rummet den städar. Det gör att den dammsuger alla platser i rummet istället för att städa samma punkt flera gånger. 
 
@@ -307,17 +310,15 @@ SLAM används, och har använts under längre tid, också i rymdexpeditioner dä
 %------------Resultat och slutsatser-------------
 %------------------------------------------------
 \newpage
-\section{Resultat och slutsatser}
+\section{Slutsats}
 
 Till slut kan vi konstatera att SLAM används i många tillämpningar man kanske inte tänker på. Man kan också konstatera att algoritmerna, filtren och mjukvaran som används för att implementera SLAM ibland kan vara väldigt komplexa. 
 
 FastSLAM-tekniker med partikelfiltrering kan göras väldigt effektiva - men också svåra att implementera. Algoritmerna som viktar vilka partiklar ska sparas respektive förkastas kan byggas ut i stort sett hur mycket som helst. 
 
-För att rita en karta krävs det att mjukvara och hårdvara sammarbetar. Sensorerna och deras värden behöver översättas till något som kan behandlas av en dator. 
-
 I ett SLAM-problem likt det i rapportens problemställning, kommer positionen att skattas med hjälp av sensorvärden i form av vinkel och avstånd i kombination med enkla algoritmer. Eftersom området är slutet kan det upskattas klart mycket enklare än ett godtyckligt stort område. 
 
-Sett från det perspektiv vi granskar SLAM-problemet, genom ögonen på en grupp människor som gör ett kandidatprojekt på 16 hp, är avancerade FastSLAM-algoritmer för stora att implementera. Någon typ av filter måste alltid finnas i en SLAM-implementering, i fall där beräkningar man gjort ger konflikt med varandra huruvida en vägg faktiskt finns där eller ej. Enklare fall av FastSLAM kommer alltså behöva lösas vid en framtida implementering. 
+Sett från det perspektiv vi granskar SLAM-problemet, genom ögonen på en grupp människor som gör ett kandidatprojekt på 16 hp, är avancerade FastSLAM-algoritmer för stora att implementera. Det måste däremot alltid finnas någon typ av filter i en SLAM-implementering. Då beräkningar man gjort tidigare under kartläggningen ger konflikt med nuvarande mätning om huruvida en vägg faktiskt finns där eller ej. Enklare fall av partikelfiltrering kommer alltså behöva lösas vid vår framtida implementering. Vi kommer då att lösa det genom att låta roboten besöka området på nytt och ta ett beslut utifrån de nya mätdata vi får in. 
 
 Slutligen kan man säga att denna djupdykning inom SLAM givit oss bra förutsättningar att skapa en implementerbar modell för hur vår robot ska kartlägga sitt slutna område. Särskilt sektionen om Kalmanfilter och tillståndsrepresentering känns relevant vid en enklare implementering. 
 
@@ -328,8 +329,6 @@ Slutligen kan man säga att denna djupdykning inom SLAM givit oss bra förutsät
 
 David Törnqvist. Estimation and Detection with Applications to Navigation. PhD thesis, Linköping University, 2008. Hämtad 15 april 2014.
 \url{http://urn.kb.se/resolve?urn=urn:nbn:se:liu:diva-14956}
-
-Datablad Atmega 1284p, Vanheden, databladsserver hos Institutionen för Systemteknik vid Linköpings Universitet. Hämtad 14 april 2014. \url{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/atmega1284p.pdf}
 
 FastSLAM: A Factored Solution to the Simultaneous
 Localization and Mapping Problem, Stanford University. Hämtad 28 mars 2014.
