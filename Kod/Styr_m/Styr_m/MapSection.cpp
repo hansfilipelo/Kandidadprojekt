@@ -156,7 +156,7 @@ Robot::Robot(int xPos, int yPos, Map* inMom, Communication* inComm) : MapSection
 	
 	Kd = 26;
 	Kp = 7;
-	Ref = 10;
+	Ref = 14;
 	
 	trimRight = 15;
 	trimLeft = 0;
@@ -486,7 +486,7 @@ void Robot::setFwdClosed(){
 			mom->convertSection(xCoord,yCoord - 1, 'c');
 		}
 	}
-	// Direction 0->x->32, "right"
+	// Direction 32->x->0, "left"
 	else if (direction == 'l'){									//left right kan vara omvänt, måste testas
         
         // Set every section between robot and wall as empty
@@ -500,7 +500,7 @@ void Robot::setFwdClosed(){
 			mom->convertSection(xCoord + 1,yCoord, 'c');
 		}
 	}
-	// Direction 32->x->0, "left"
+	// Direction 0->x->32, "right"
 	else if (direction == 'r'){
         
         // Set every section between robot and wall as empty
@@ -676,11 +676,11 @@ void Robot::setRightClosed(){
         return; //the too great uncertainty if.
     }*/
 	
-	if ( getRightDistance() > 60 ) { // this value might need to be calibrated
+	if ( rightFrontSensor > 60 ) { // this value might need to be calibrated
 		output = 80/40;//if distance is great only print max 2 empty.
 	}
 	else{
-		output = getRightDistance()/40;
+		output = rightFrontSensor/40;
 	}
 	
 	// Set closed section output + 1 steps away from robot.
@@ -777,16 +777,12 @@ void Robot::updateRobotPosition(){
     }
     
     if ((sensorDifference > 38)||(sensorDifference < -38)){
-		//om inte rfid så gör detta:
-		/*if(previousSection->getType() != 'f'){
-			previousSection->setType('e');
-		}*/
+		MapSection* tempSection;
 		switch (direction)
 		{
             
 //-------------------------Direction is forwards in map-------------------
 			case 'f':
-				MapSection* tempSection;
 				//save section about to move into to temp container
 				tempSection = mom->getPos(xCoord,yCoord+1);
 				//move robot to new section
@@ -796,51 +792,51 @@ void Robot::updateRobotPosition(){
 				//save temp section to previous section
 				previousSection = tempSection;
 				
-				if(mom->getPos(xCoord,yCoord) == mom->getPos(xCoord,yCoord+1)){
-					volatile bool yo;
-					yo = true;
-				
-				}
-				
 				yCoord++;
 				break;
             
 //-------------------------Direction is backwards in map-------------------
 			case 'b':
-				// Place back the section we stand in
-				mom->setSection(previousSection->getX(), previousSection->getY(), previousSection);
-				// Get a new prev section
-				previousSection = mom->getPos(xCoord, yCoord - 1);
-				// Put robot in place
-				mom->setSection(xCoord,yCoord - 1, this);
-				// Update robot info about position
+				//save section about to move into to temp container
+				tempSection = mom->getPos(xCoord,yCoord-1);
+				//move robot to new section
+				mom->setSection(xCoord,yCoord-1,this);
+				//put previousSection back to last position.
+				mom->setSection(xCoord,yCoord,previousSection);
+				//save temp section to previous section
+				previousSection = tempSection;
+				
 				yCoord--;
             
 				break;
             
 //-------------------------Direction is right in map-----------------------
 			case 'r':
-				// Place back the section we stand in
-				mom->setSection(previousSection->getX(), previousSection->getY(), previousSection);
-				// Get a new prev section
-				previousSection = mom->getPos(xCoord + 1, yCoord);
-				// Put robot in place
-				mom->setSection(xCoord + 1,yCoord, this);
-				// Update robot info about position
-				xCoord++;
-            
+				//save section about to move into to temp container
+				tempSection = mom->getPos(xCoord-1,yCoord);
+				//move robot to new section
+				mom->setSection(xCoord-1,yCoord,this);
+				//put previousSection back to last position.
+				mom->setSection(xCoord,yCoord,previousSection);
+				//save temp section to previous section
+				previousSection = tempSection;
+				
+				xCoord--;
+  
 				break;
             
 //-------------------------Direction is left in map------------------------
 			case 'l':
-				// Place back the section we stand in
-				mom->setSection(previousSection->getX(), previousSection->getY(), previousSection);
-				// Get a new prev section
-				previousSection = mom->getPos(xCoord - 1, yCoord);
-				// Put robot in place
-				mom->setSection(xCoord - 1,yCoord, this);
-				// Update robot info about position
-				xCoord--;
+				//save section about to move into to temp container
+				tempSection = mom->getPos(xCoord+1,yCoord);
+				//move robot to new section
+				mom->setSection(xCoord,yCoord+1,this);
+				//put previousSection back to last position.
+				mom->setSection(xCoord,yCoord,previousSection);
+				//save temp section to previous section
+				previousSection = tempSection;
+				
+				xCoord++;
             
 				break;
             
@@ -1017,7 +1013,7 @@ void Robot::setUserSpeed(int inSpeed)
 
 bool Robot::isWallRight(){
     
-    if ( (rightFrontSensor < 30 || rightBackSensor < 30) ){
+    if ( (rightFrontSensor < 30 && rightBackSensor < 30) ){
 		volatile bool benny = true;
         return benny;
     }
