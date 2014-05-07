@@ -10,7 +10,7 @@ Map::Map(){
 	// Create 32 X by 17 Y
     for (int it = 0; it < 17; it++) {
         for (int i = 0; i < 32; i++) {
-            mapArea[i][it] = new MapSection(it,i,this);
+            mapArea[i][it] = new MapSection(i,it,this); // it, i to i, it 
         }
     }
 }
