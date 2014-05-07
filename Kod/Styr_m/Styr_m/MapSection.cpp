@@ -780,7 +780,9 @@ void Robot::updateRobotPosition(){
 		sensorDifference = getFwdDistance() - ref*40;
     }
     
-    if ((sensorDifference > 35)||(sensorDifference < -35)){
+    if ((sensorDifference > 39)||(sensorDifference < -39)){
+		//om inte rfid så gör detta:
+		mom->convertSection(previousSection->getX(),previousSection->getY(), 'e');
 		switch (direction)
 		{
             
@@ -841,8 +843,6 @@ void Robot::updateRobotPosition(){
 				//would like to throw some kind of error here.
 				return;
 		}
-		//om inte rfid så gör detta:
-		//mom->convertSection(previousSection->getX(),previousSection->getY(), 'e');
 		//update which sensor that is valid and should be measured.
 		//and update the references on that sensor.
 		validSensor = determineValidSensor();

@@ -19,9 +19,13 @@ void Communication::handleData(){
 	//checks manual/auto
 	if (this->inData[1]=='a') {
 		manual = false;
+		robotPointer->setUserSpeed(25);
+		robotPointer->drive();
 	}
 	if (this->inData[1]=='q') {
 		manual = true;
+		robotPointer->setUserSpeed(0);
+		robotPointer->drive();
 	}
 	//request to send map
 	if (this->inData[1]=='m') {
