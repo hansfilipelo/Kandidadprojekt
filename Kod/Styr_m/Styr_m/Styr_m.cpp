@@ -177,11 +177,22 @@ int main(void)
         // Manual mode
         if (abstractionObject->getManual()) {
             asm("");
+
 			if (i == 500)
 			{
 				robotPointer->updateRobotPosition();
 			}
 			i++;
+			if (robotPointer->getRotateRightActive())
+			{
+				robotPointer->rotateRight();
+				
+			}
+			else if ( robotPointer->getRotateLeftActive() ){
+				robotPointer->rotateLeft();
+			}
+			
+
         }
         // Automatic mode
         else {

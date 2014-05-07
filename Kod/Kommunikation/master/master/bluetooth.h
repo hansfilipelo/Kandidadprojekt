@@ -29,7 +29,7 @@ public:
 	void sendMap();
 	volatile bool getMap = false; 
 	volatile int mapNumber = 0;
-	bool autonom = true;
+	bool autonom = false;
     
     unsigned char pcHandle[27];
      // Data arrives in order, datalength (data.length + codeword + arg), codeword, arg, data.

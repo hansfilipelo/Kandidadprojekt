@@ -160,6 +160,9 @@ Robot::Robot(int xPos, int yPos, Map* inMom, Communication* inComm) : MapSection
 	
 	trimRight = 15;
 	trimLeft = 0;
+	
+	rotateRightActive = false;
+	rotateLeftActive = false; 
     
     commObj = inComm;
     previousSection = mom->getPos(xPos,yPos);
@@ -261,6 +264,7 @@ void Robot::driveBackward(int speed){
 
 void Robot::rotateLeft(){
 	// Rotate mode
+	rotateLeftActive = false;
 	rotateActive = true;
 	// Seft diffs to 0
 	fwdDiff = 0;
@@ -307,6 +311,7 @@ void Robot::stopRotation(){
 
 void Robot::rotateRight(){
 	// Rotate mode
+	rotateRightActive = false;
 	rotateActive = true;
 	// Seft diffs to 0
 	fwdDiff = 0;
@@ -455,7 +460,6 @@ void Robot::setFwdClosed(){
 	// Set closed section output + 1 steps away from robot.
 	// Direction 0->y->17, "fwd"
 	if (direction == 'f'){
-		//mom->convertSection(xCoord,yCoord + output + 1, 'c');
         
         // Set every section between robot and wall as empty
 		for (int i = 0; i < output; i++) {
@@ -1194,12 +1198,37 @@ bool Robot::isWallFwdClose()
 	    }
 }
 
+// ----------------
 
+void Robot::setRotateRightActive()
+{
+	
+	rotateRightActive = true;
+	rotateActive = true;
+}
 
+// -----------------
 
+bool Robot::getRotateRightActive()
+{
+	return rotateRightActive;
+}
 
+// ------------------
 
+void Robot::setRotateLeftActive()
+{
+	rotateLeftActive = true;
+	rotateActive = true;
+}
 
+// ------------------
 
+bool Robot::getRotateLeftActive()
+{
+	return rotateLeftActive;
+}
+
+// ----------------------
 
 

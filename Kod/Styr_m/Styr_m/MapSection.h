@@ -96,6 +96,10 @@ public:
 	void rotateLeft();
 	void rotateRight();
     void stopRotation();
+	void setRotateRightActive();
+	bool getRotateRightActive();
+	void setRotateLeftActive();
+	bool getRotateLeftActive();
 	
 	// Putting sensordata in array
 	void fwdLongValueIn(char fwd[3]);
@@ -188,7 +192,10 @@ protected:
     int trimLeft;
     int trimRight;
     char currentGear = 'f';
-    
+	
+	bool rotateRightActive;
+	bool rotateLeftActive;
+	
     };
 
 #endif
