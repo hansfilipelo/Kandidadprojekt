@@ -323,7 +323,7 @@ För att WiFi-SLAM ska fungera krävs att accesspunkten har information om posit
 
 Det finns många exempel på implementeringar av SLAM. Robotdammsugare är ett bra exempel på en modern tillämpning som kan använda sig av SLAM. Det är då en liten enhet som kan utnyttja en modifierad version av VSLAM som kallas CV-SLAM. Detta står för Ceiling Visual SLAM, det vill säga att roboten har kameror som är riktade uppåt och använder landmärken i taket för att rita upp en karta över rummet den städar. Det gör att den dammsuger alla platser i rummet istället för att städa samma punkt flera gånger. 
 
-Det här är ett bra exempel på hur moderna, små mikrokontrollers kan göra det möjligt att använda SLAM för att förenkla vår vardag.
+Det här är ett bra exempel på hur moderna, små mikrokontrollers kan göra det möjligt att använda SLAM för att förenkla vår vardag. 
 
 SLAM används, och har använts under längre tid, också i rymdexpeditioner där robotar skickas upp i rymden för att upptäcka och kartlägga ställen som vi människor inte har möjlighet att besöka. 
 
@@ -333,13 +333,17 @@ SLAM används, och har använts under längre tid, också i rymdexpeditioner dä
 \newpage
 \section{Resultat och slutsatser}
 
-Till slut kan vi konstatera att SLAM används i många tillämpningar man kanske inte tänker på. Man kan också konstatera att algoritmerna, filtren och mjukvaran som används för att implementera SLAM ibland kan vara väldigt komplexa. I miljöer där sensorerna kan täcka en stor del av omgivningen kan däremot algoritmerna hållas relativt enkla. Robotens position i förhållande till kringliggande objekt kan lätt skattas med avståndssensorernas medelvärde. 
+Till slut kan vi konstatera att SLAM används i många tillämpningar man kanske inte tänker på. Man kan också konstatera att algoritmerna, filtren och mjukvaran som används för att implementera SLAM ibland kan vara väldigt komplexa. 
 
-Genom att ta stora stickprov, alltså många samplingar, och sedan beräkna medelvärdet av dem filtreras eventuella avvikande mätvärden bort på ett enkelt sätt. 
+FastSLAM-tekniker med partikelfiltrering kan göras väldigt effektiva - men också svåra att implementera. Algoritmerna som viktar vilka partiklar ska sparas respektive förkastas kan byggas ut i stort sett hur mycket som helst. 
 
-Vi inser att vi gjort ett klokt beslut att fördjupa oss i just SLAM, då vi är beroende av detta i vårt projekt att konstruera en kartritande robot. SLAM var också den delen vi såg, och fortfarande ser, som störst hinder i utvecklingsprocessen. 
+För att rita en karta krävs det att mjukvara och hårdvara sammarbetar. Sensorerna och deras värden behöver översättas till något som kan behandlas av en dator. 
 
-Vi har insett att vi tack vare den relativt långa räckvidden hos våra optiska sensorer i kombination med det relativt lilla område vi ska kartlägga kommer kunna använda en relativt enkel implementering. En implementering som använder sig av ML-skattning som observatör\footnote{Glad och Ljung (2006)} för systemet. 
+I ett SLAM-problem likt det i rapportens problemställning, kommer positionen att skattas med hjälp av sensorvärden i form av vinkel och avstånd i kombination med enkla algoritmer. Eftersom området är slutet kan det upskattas klart mycket enklare än ett godtyckligt stort område. 
+
+Sett från det perspektiv vi granskar SLAM-problemet, genom ögonen på en grupp människor som gör ett kandidatprojekt på 16 hp, är avancerade FastSLAM-algoritmer för stora att implementera. Någon typ av filter måste alltid finnas i en SLAM-implementering, i fall där beräkningar man gjort ger konflikt med varandra huruvida en vägg faktiskt finns där eller ej. Enklare fall av FastSLAM kommer alltså behöva lösas vid en framtida implementering. 
+
+Slutligen kan man säga att denna djupdykning inom SLAM givit oss bra förutsättningar att skapa en implementerbar modell för hur vår robot ska kartlägga sitt slutna område. Särskilt sektionen om Kalmanfilter och tillståndsrepresentering känns relevant vid en enklare implementering. 
 
 % --------------- Källförteckning ---------------------
 \newpage 
