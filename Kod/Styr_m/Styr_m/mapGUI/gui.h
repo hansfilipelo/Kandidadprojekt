@@ -35,17 +35,10 @@ public:
     int connectStatus;
     void labelSet(QString);
     char mapArea[32][27];
+    void saveToFile();
 
 private slots:
     void on_speedSlider_valueChanged(int value);
-
-//    void on_upButton_pressed();
-
-//    void on_downButton_pressed();
-
-//    void on_leftButton_pressed();
-
-//    void on_rightButton_pressed();
 
     void on_speedSlider_sliderReleased();
 
@@ -73,9 +66,12 @@ private slots:
 
     void on_setParameterButton_pressed();
 
-    void on_temp90Button_clicked();
-
     void on_actionSetParameter_triggered();
+
+    void on_actionHalt_triggered();
+
+    void on_saveDataButton_pressed();
+
 
 private:
     QTime time;

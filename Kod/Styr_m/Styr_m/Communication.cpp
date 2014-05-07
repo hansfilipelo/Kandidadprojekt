@@ -19,9 +19,13 @@ void Communication::handleData(){
 	//checks manual/auto
 	if (this->inData[1]=='a') {
 		manual = false;
+		robotPointer->setUserSpeed(speed);
+		robotPointer->drive();
 	}
 	if (this->inData[1]=='q') {
 		manual = true;
+		robotPointer->setUserSpeed(0);
+		robotPointer->drive();
 	}
 	//request to send map
 	if (this->inData[1]=='m') {
@@ -31,14 +35,10 @@ void Communication::handleData(){
 	}
 	
 	if (this->inData[1]=='r' && inData[2]==0) {
-		robotPointer->changeGear('l');
-		robotPointer->setUserSpeed(speed);
-		robotPointer->drive();
+		robotPointer->setRotateLeftActive();
 	}
 	else if (this->inData[1]=='r' && inData[2]==1) {
-		robotPointer->changeGear('r');
-		robotPointer->setUserSpeed(speed);
-		robotPointer->drive();
+		robotPointer->setRotateRightActive();
 	}
 	else if (this->inData[1]=='f'){
 		robotPointer->changeGear('f');
@@ -51,17 +51,10 @@ void Communication::handleData(){
 		robotPointer->drive();
 	}
 	else if (this->inData[1] == 'h'){
-		if (!manual)
-		{
+		
 			robotPointer->setUserSpeed(0);
 			robotPointer->drive();
-			manual = !manual;
-		}
-		else {
-			robotPointer->setUserSpeed(speed);
-			robotPointer->drive();
-			manual = !manual;
-		}
+				
 	}
     
     
@@ -118,6 +111,11 @@ void Communication::handleData(){
     if (this->inData[1] == 'G') {
         robotPointer->stopRotation();
     }
+	
+	// RFID-detektion, måste kollas på
+    if (this->inData[1] == 'R') {
+	    robotPointer->setRFID();
+    }
     
     // Constants for PD-control
     if(this->inData[1]=='P'){
@@ -158,8 +156,9 @@ void Communication::sendMap(){
 // Asks for measure of angles
 
 void Communication::sendRotateRequest(){
-    slavePointer->outDataArray[0] = 1;
+    slavePointer->outDataArray[0] = 2;
     slavePointer->outDataArray[1] = 'g';
+	slavePointer->outDataArray[2] = 1;
     
     slavePointer->SPI_Send();
 }

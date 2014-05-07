@@ -168,23 +168,48 @@ int main(void)
 	int i = 0;
     //-----------------------------------------------------
     //right wall following loop
-    
+    robotPointer->setFwdClosed();
+    robotPointer->setBwdClosed();
+    robotPointer->setRightClosed();
+    robotPointer->setLeftClosed();
     for (;;) {
         
         // Manual mode
         if (abstractionObject->getManual()) {
             asm("");
+
+			if (i == 500)
+			{
+				robotPointer->updateRobotPosition();
+			}
+			i++;
+			if (robotPointer->getRotateRightActive())
+			{
+				robotPointer->rotateRight();
+				
+			}
+			else if ( robotPointer->getRotateLeftActive() ){
+				robotPointer->rotateLeft();
+			}
+			
+
         }
-        
         // Automatic mode
         else {
-            //----------------------Om kortdistans flyttas fram----------
+			if ((!robotPointer->isWallFwd()) && robotPointer->isWallRight())
+			{
+				robotPointer->setSpeed(robotPointer->getUserSpeed());
+				robotPointer->changeGear('f');
+				robotPointer->adjustPosition();
+			}
+            
+			//----------------------Om kortdistans flyttas fram----------
 			if(robotPointer->isCornerRight()){
 				while ( robotPointer->isWallRight()) {
 					robotPointer->changeGear('f');
 					robotPointer->setSpeed(25);
 					robotPointer->drive();
-				}	
+				}
 				robotPointer->rotateRight();
 				while ( !robotPointer->isWallRight()) {
 					robotPointer->changeGear('f');
@@ -192,9 +217,16 @@ int main(void)
 					robotPointer->drive();
 				}
 			}
-			
-			
             else if(robotPointer->isWallFwd()){
+				robotPointer->setSpeed(20);
+				robotPointer->changeGear('f');
+				while (!robotPointer->isWallFwdClose())
+				{
+					robotPointer->drive();
+				}
+				robotPointer->setSpeed(0);
+				robotPointer->drive();
+				
 				if(!robotPointer->isWallRight())
 				{
 					robotPointer->rotateRight();
@@ -237,13 +269,8 @@ int main(void)
     
     // Look for walls every 500th turn of main loop
     if (i == 500) {
-        robotPointer->setFwdClosed();
-        robotPointer->setBwdClosed();
-        robotPointer->setLeftClosed();
-        robotPointer->setRightClosed();
-        
-        // Update position in map
-        //robotPointer->updateRobotPosition();
+              // Update position in map
+        robotPointer->updateRobotPosition();
         
         i = 0;
     }

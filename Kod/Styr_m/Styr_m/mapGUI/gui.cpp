@@ -43,53 +43,93 @@ void Gui::labelSet(QString text){
     ui->label->setText(text);
 }
 
+void Gui::saveToFile()
+{
+    QDir Dir = QDir::homePath();
+    QString qAbsolutePath = Dir.absolutePath();
+    Dir.mkdir(qAbsolutePath +"/MapMaster");
+
+    QString path = qAbsolutePath + "/MapMaster";
+    QString filename = path +"/savedValues.txt";
+
+    /* Try and open a file for output */
+    QString outputFilename = filename;
+    QFile outputFile(outputFilename);
+    outputFile.open(QIODevice::WriteOnly);
+
+    /* Check it opened OK */
+    if(!outputFile.isOpen()){
+        qDebug() << "- Error, unable to open" << outputFilename << "for output";
+        return;
+    }
+
+    /* Point a QTextStream object at the file */
+    QTextStream outStream(&outputFile);
+
+    /* Write the line to the file */
+
+    for(int i = 0; i < timeVector.size(); i++){
+    outStream << timeVector.at(i) << '\n';
+    outStream << sensorVector0.at(i) << '\n';
+    outStream << sensorVector1.at(i) << '\n';
+    outStream << sensorVector2.at(i) << '\n';
+    outStream << sensorVector3.at(i) << '\n';
+    outStream << sensorVector4.at(i) << '\n';
+    outStream << sensorVector5.at(i) << '\n';
+    outStream << sensorVector6.at(i) << '\n';
+    outStream << sensorVector7.at(i) << '\n';
+    }
+    /* Close the file */
+    outputFile.close();
+}
+
 
 int Gui::startPort(){
 
-        QTextStream standardOutput(stdout);
-        QTextStream standardInput(stdin);
+    QTextStream standardOutput(stdout);
+    QTextStream standardInput(stdin);
 
-        QSerialPort* serialPort = new QSerialPort;
-        QString serialPortName = "FireFly-AA63-SPP";
-        serialPort->setPortName(serialPortName);
+    QSerialPort* serialPort = new QSerialPort;
+    QString serialPortName = "FireFly-AA63-SPP";
+    serialPort->setPortName(serialPortName);
 
-        if (!serialPort->open(QIODevice::ReadWrite)) {
-            standardOutput << QObject::tr("Failed to open port %1, error: %2").arg(serialPortName).arg(serialPort->errorString()) << endl;
-            return 1;
-        }
+    if (!serialPort->open(QIODevice::ReadWrite)) {
+        standardOutput << QObject::tr("Failed to open port %1, error: %2").arg(serialPortName).arg(serialPort->errorString()) << endl;
+        return 1;
+    }
 
-        int serialPortBaudRate = 115200; // kanske inte fungerar just nu
-        if (!serialPort->setBaudRate(serialPortBaudRate)) {
-            standardOutput << QObject::tr("Failed to set 115200 baud for port %1, error: %2").arg(serialPortName).arg(serialPort->errorString()) << endl;
-            return 1;
-        }
+    int serialPortBaudRate = 115200; // kanske inte fungerar just nu
+    if (!serialPort->setBaudRate(serialPortBaudRate)) {
+        standardOutput << QObject::tr("Failed to set 115200 baud for port %1, error: %2").arg(serialPortName).arg(serialPort->errorString()) << endl;
+        return 1;
+    }
 
-        if (!serialPort->setDataBits(QSerialPort::Data8)) {
-            standardOutput << QObject::tr("Failed to set 8 data bits for port %1, error: %2").arg(serialPortName).arg(serialPort->errorString()) << endl;
-            return 1;
-        }
+    if (!serialPort->setDataBits(QSerialPort::Data8)) {
+        standardOutput << QObject::tr("Failed to set 8 data bits for port %1, error: %2").arg(serialPortName).arg(serialPort->errorString()) << endl;
+        return 1;
+    }
 
-        if (!serialPort->setParity(QSerialPort::NoParity)) {
-            standardOutput << QObject::tr("Failed to set no parity for port %1, error: %2").arg(serialPortName).arg(serialPort->errorString()) << endl;
-            return 1;
-        }
+    if (!serialPort->setParity(QSerialPort::NoParity)) {
+        standardOutput << QObject::tr("Failed to set no parity for port %1, error: %2").arg(serialPortName).arg(serialPort->errorString()) << endl;
+        return 1;
+    }
 
-        if (!serialPort->setStopBits(QSerialPort::OneStop)) {
-            standardOutput << QObject::tr("Failed to set 1 stop bit for port %1, error: %2").arg(serialPortName).arg(serialPort->errorString()) << endl;
-            return 1;
-        }
+    if (!serialPort->setStopBits(QSerialPort::OneStop)) {
+        standardOutput << QObject::tr("Failed to set 1 stop bit for port %1, error: %2").arg(serialPortName).arg(serialPort->errorString()) << endl;
+        return 1;
+    }
 
-        if (!serialPort->setFlowControl(QSerialPort::NoFlowControl)) {
-            standardOutput << QObject::tr("Failed to set no flow control for port %1, error: %2").arg(serialPortName).arg(serialPort->errorString()) << endl;
-            return 1;
-        }
+    if (!serialPort->setFlowControl(QSerialPort::NoFlowControl)) {
+        standardOutput << QObject::tr("Failed to set no flow control for port %1, error: %2").arg(serialPortName).arg(serialPort->errorString()) << endl;
+        return 1;
+    }
 
-        SerialPort* port = new SerialPort(serialPort);
-        serPort = port;
-        port->setGui(this);
-        Order * order = new Order(port);
-        bluetooth = order;
-        return 0;
+    SerialPort* port = new SerialPort(serialPort);
+    serPort = port;
+    port->setGui(this);
+    Order * order = new Order(port);
+    bluetooth = order;
+    return 0;
 }
 
 void Gui::updateTimeVector(){
@@ -103,8 +143,8 @@ void Gui::updateTimeVector(){
 
 void Gui::on_speedSlider_valueChanged(int value)
 {
-   QString integer = QString::number(value);
-   ui->speedPercent->setText(integer);
+    QString integer = QString::number(value);
+    ui->speedPercent->setText(integer);
 }
 
 
@@ -189,23 +229,23 @@ void Gui::setupPlots(){
 
 //simply exists for initial testing purposes.
 void Gui::giveValues(int inInt){
-   for(int i = 0; i <= inInt; i++){
-    int val0 = rand()%270;
-    int val1 = rand()%270;
-    int val2 = rand()%270;
-    int val3 = rand()%270;
-    int val4 = rand()%270;
-    int val5 = rand()%270;
-    int val6 = rand()%270;
-    int val7 = rand()%270;
+    for(int i = 0; i <= inInt; i++){
+        int val0 = rand()%270;
+        int val1 = rand()%270;
+        int val2 = rand()%270;
+        int val3 = rand()%270;
+        int val4 = rand()%270;
+        int val5 = rand()%270;
+        int val6 = rand()%270;
+        int val7 = rand()%270;
 
-    updateSensorValues(val0,val1,val2,val3,val4,val5,val6,val7);
+        updateSensorValues(val0,val1,val2,val3,val4,val5,val6,val7);
 
-    std::cout << "Waiting for 750 ms" << std::endl;
-    std::chrono::milliseconds dura( 750 );
-    std::this_thread::sleep_for( dura );
-    std::cout << "Waited 750 ms\n";
-   }
+        std::cout << "Waiting for 750 ms" << std::endl;
+        std::chrono::milliseconds dura( 750 );
+        std::this_thread::sleep_for( dura );
+        std::cout << "Waited 750 ms\n";
+    }
 }
 
 void Gui::updateSensorValues(int value0, int value1, int value2, int value3, int value4, int value5, int value6, int value7){
@@ -289,7 +329,7 @@ void Gui::updateMap(){
                 scene->addItem(temp);
             }
             else if(mapArea[rad][kol]=='c'){
-                temp->setBrush(Qt::black);
+                temp->setBrush(Qt::yellow);
                 scene->addItem(temp);
             }
             else if(mapArea[rad][kol]=='r'){
@@ -307,72 +347,52 @@ void Gui::updateMap(){
     }
 }
 
-
-
-
-//void Gui::on_upButton_pressed()
-//{
-//    if(connectStatus){
-//    bluetooth->forward(speedMultiplier);}
-//}
-
-//void Gui::on_downButton_pressed()
-//{
-//    if(connectStatus){
-//    bluetooth->backward(speedMultiplier);}
-//}
-
-//void Gui::on_leftButton_pressed()
-//{
-//    if(connectStatus){
-//    bluetooth->rotateLeft(speedMultiplier);}
-//}
-
-//void Gui::on_rightButton_pressed()
-//{
-//    if(connectStatus){
-//    bluetooth->rotateRight(speedMultiplier);}
-//}
-
 void Gui::on_speedSlider_sliderReleased(){
-   speedMultiplier = ui->speedSlider->value();
+    speedMultiplier = ui->speedSlider->value();
 }
 
 void Gui::on_actionForward_triggered()
 {
     if(connectStatus){
-    bluetooth->forward(speedMultiplier);}
+        bluetooth->forward(speedMultiplier);}
 }
 
 void Gui::on_actionDown_triggered()
 {
     if(connectStatus){
-    bluetooth->backward(speedMultiplier);}
+        bluetooth->backward(speedMultiplier);}
 }
 
 void Gui::on_actionLeft_triggered()
 {
     if(connectStatus){
-    bluetooth->rotateLeft(speedMultiplier);}
+        bluetooth->rotateLeft(speedMultiplier);}
 }
 
 void Gui::on_actionRight_triggered()
 {
-      if(connectStatus){
-      bluetooth->rotateRight(speedMultiplier);}
+    if(connectStatus){
+        bluetooth->rotateRight(speedMultiplier);}
 }
 
 void Gui::on_stopButton_pressed()
 {
     if(connectStatus){
-        bluetooth->halt(speedMultiplier);
+        bluetooth->halt();
     }
 }
 
 void Gui::on_actionStop_triggered()
 {
     if(connectStatus){
-        bluetooth->halt(speedMultiplier);
+        bluetooth->halt();
+    }
+}
+
+void Gui::on_actionHalt_triggered()
+{
+    if(connectStatus){
+        bluetooth->autonom(speedMultiplier);
     }
 }
 
@@ -418,12 +438,12 @@ void Gui::on_setParameterButton_pressed()
     }
 }
 
-void Gui::on_temp90Button_clicked()
-{
-    bluetooth->turnDone();
-}
-
 void Gui::on_actionSetParameter_triggered()
 {
     on_setParameterButton_pressed();
+}
+
+void Gui::on_saveDataButton_pressed()
+{
+    saveToFile();
 }

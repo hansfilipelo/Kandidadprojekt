@@ -83,6 +83,9 @@ public:
     Robot(int xPos, int yPos, Map* inMom, Communication* inComm);
     ~Robot();
     
+	// RFID
+	void setRFID();
+	
 	// Driving
     void changeGear(char direction);
     void drive();
@@ -93,6 +96,10 @@ public:
 	void rotateLeft();
 	void rotateRight();
     void stopRotation();
+	void setRotateRightActive();
+	bool getRotateRightActive();
+	void setRotateLeftActive();
+	bool getRotateLeftActive();
 	
 	// Putting sensordata in array
 	void fwdLongValueIn(char fwd[3]);
@@ -114,6 +121,7 @@ public:
     bool isCornerRight();
     bool isWallFwd();
     bool isWallLeft();
+	bool isWallFwdClose();
     
     void changeDirection(char);
     char* getColAsChar(int col);
@@ -168,9 +176,9 @@ protected:
     //Values concerning automatic control
     
     int movementSpeed;
-    int Ref=10; //Reference value for control
-    volatile double Kd = 26; //Differentiation coeff.
-    volatile double Kp = 7; //Proportional coeff.
+    int Ref; //Reference value for control
+    volatile double Kd; //Differentiation coeff.
+    volatile double Kp; //Proportional coeff.
     
     int previousRightError = 0;
     int previousLeftError = 0;
@@ -181,10 +189,13 @@ protected:
 	
 	int speed = 0;
 	int userSpeed = 0;
-    int trimLeft = 0;
-    int trimRight = 0;
+    int trimLeft;
+    int trimRight;
     char currentGear = 'f';
-    
+	
+	bool rotateRightActive;
+	bool rotateLeftActive;
+	
     };
 
 #endif
