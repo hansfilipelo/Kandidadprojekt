@@ -43,9 +43,9 @@ void Order::turnDone()
 }
 
 
-void Order::halt(int speed){
+void Order::halt(){
     
-    char data[27] = {3,'h',0,(char)speed,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30};
+    char data[27] = {1,'h',30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30};
     serport->sendArray(data);
 }
 
@@ -72,6 +72,12 @@ void Order::test(){
 void Order::fetchMap(){
 
     char data[27] = {1,'F',30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30};
+    serport->sendArray(data);
+}
+
+void Order::autonom(int speed){
+
+    char data[27] = {3,'a',30,(char)speed,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30};
     serport->sendArray(data);
 }
 

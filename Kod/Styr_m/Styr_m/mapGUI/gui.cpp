@@ -329,7 +329,7 @@ void Gui::updateMap(){
                 scene->addItem(temp);
             }
             else if(mapArea[rad][kol]=='c'){
-                temp->setBrush(Qt::black);
+                temp->setBrush(Qt::yellow);
                 scene->addItem(temp);
             }
             else if(mapArea[rad][kol]=='r'){
@@ -378,14 +378,21 @@ void Gui::on_actionRight_triggered()
 void Gui::on_stopButton_pressed()
 {
     if(connectStatus){
-        bluetooth->halt(speedMultiplier);
+        bluetooth->halt();
     }
 }
 
 void Gui::on_actionStop_triggered()
 {
     if(connectStatus){
-        bluetooth->halt(speedMultiplier);
+        bluetooth->halt();
+    }
+}
+
+void Gui::on_actionHalt_triggered()
+{
+    if(connectStatus){
+        bluetooth->autonom(speedMultiplier);
     }
 }
 

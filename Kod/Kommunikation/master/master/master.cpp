@@ -29,9 +29,6 @@ bool toggle = false;
 bool ReceiveFromSteer = false;
 bool ReceiveFromSensor = false;
 
-unsigned long int LED = 0;
-bool LEDtoggle = true;
-
 Map buffer;
 Bluetooth Firefly;
 Spi Bus(&Firefly,&buffer);
@@ -122,13 +119,13 @@ ISR(INT1_vect){
 //Handle auto/manual button event
 ISR(INT0_vect){
 	cli();
-	if(toggle){
-		Bus.outDataArray[1]= 'q';
-		toggle = false;
+	if(!Firefly.autonom){
+		Bus.outDataArray[1]= 'a';
+		Firefly.autonom = true;
 	}
 	else{
-		Bus.outDataArray[1]= 'a';
-		toggle = true;
+		Bus.outDataArray[1]= 'q';
+		Firefly.autonom = false;
 	}
 	Bus.outDataArray[0]= 1;
 	Bus.sendArray(1);
@@ -159,17 +156,11 @@ int main(void)
 		}
 		Display.update();
 		
-		if(LED == 50000){
-			LED = 0;
-			if(LEDtoggle){
-				PORTA |=(1<<PORTA4);
-				LEDtoggle = false;
-			}
-			else{
-				PORTA &= ~(1<<PORTA4);
-				LEDtoggle = true;
-			}
+		if(Firefly.autonom){
+			PORTA |=(1<<PORTA4); // tänds lampan vid autnom körning
 		}
-		LED++;
+		else{
+			PORTA &= ~(1<<PORTA4);
+		}
 	}
 }

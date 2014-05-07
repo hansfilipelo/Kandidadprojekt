@@ -608,6 +608,7 @@
     <addaction name="actionSlowDown"/>
     <addaction name="actionStop"/>
     <addaction name="actionSetParameter"/>
+    <addaction name="actionHalt"/>
    </widget>
    <addaction name="menuCommands"/>
   </widget>
@@ -682,6 +683,14 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionHalt">
+   <property name="text">
+    <string>Auto</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+X</string>
    </property>
   </action>
  </widget>

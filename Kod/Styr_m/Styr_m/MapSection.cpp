@@ -160,6 +160,9 @@ Robot::Robot(int xPos, int yPos, Map* inMom, Communication* inComm) : MapSection
 	
 	trimRight = 15;
 	trimLeft = 0;
+	
+	rotateRightActive = false;
+	rotateLeftActive = false; 
     
     commObj = inComm;
     previousSection = mom->getPos(xPos,yPos);
@@ -212,6 +215,11 @@ void Robot::changeGear(char inGear){
 }
 
 // ------------------------------------
+void Robot::setRFID(){
+	previousSection->setType('f');
+}
+
+
 // Drives 
 
 void Robot::drive(){
@@ -256,6 +264,7 @@ void Robot::driveBackward(int speed){
 
 void Robot::rotateLeft(){
 	// Rotate mode
+	rotateLeftActive = false;
 	rotateActive = true;
 	// Seft diffs to 0
 	fwdDiff = 0;
@@ -302,6 +311,7 @@ void Robot::stopRotation(){
 
 void Robot::rotateRight(){
 	// Rotate mode
+	rotateRightActive = false;
 	rotateActive = true;
 	// Seft diffs to 0
 	fwdDiff = 0;
@@ -450,17 +460,16 @@ void Robot::setFwdClosed(){
 	// Set closed section output + 1 steps away from robot.
 	// Direction 0->y->17, "fwd"
 	if (direction == 'f'){
-		//mom->convertSection(xCoord,yCoord + output + 1, 'c');
         
         // Set every section between robot and wall as empty
-        for (int i = 0; i < output; i++) {
+		for (int i = 0; i < output; i++) {
             if(yCoord+i+1>16){
                 break;
             }
             mom->convertSection(xCoord,yCoord + i + 1, 'e');
 		}
         if(output == 0){
-	        mom->convertSection(xCoord + 1,yCoord, 'c');
+	        mom->convertSection(xCoord,yCoord + 1, 'c');
         }
 	}
 	// Direction 17->y->0, "bwd"
@@ -475,7 +484,7 @@ void Robot::setFwdClosed(){
             mom->convertSection(xCoord,yCoord - i - 1, 'e');
         }
 		if(output == 0){
-			mom->convertSection(xCoord - 1,yCoord, 'c');
+			mom->convertSection(xCoord,yCoord - 1, 'c');
 		}
 	}
 	// Direction 0->x->32, "right"
@@ -536,7 +545,7 @@ void Robot::setBwdClosed(){
             mom->convertSection(xCoord,yCoord - i - 1, 'e');
         }
 		if(output == 0){
-			mom->convertSection(xCoord - 1,yCoord, 'c');
+			mom->convertSection(xCoord,yCoord - 1, 'c');
 		}
 	}
 	// Direction 17->y->0, "bwd"
@@ -551,7 +560,7 @@ void Robot::setBwdClosed(){
             mom->convertSection(xCoord,yCoord + i + 1, 'e');
         }
 		if(output == 0){
-			mom->convertSection(xCoord + 1,yCoord, 'c');
+			mom->convertSection(xCoord,yCoord + 1, 'c');
 		}
 	}
 	// Direction 0->x->32, "right"
@@ -780,7 +789,11 @@ void Robot::updateRobotPosition(){
 		sensorDifference = getFwdDistance() - ref*40;
     }
     
-    if ((sensorDifference > 35)||(sensorDifference < -35)){
+    if ((sensorDifference > 39)||(sensorDifference < -39)){
+		//om inte rfid så gör detta:
+		if(previousSection->getType() != 'f'){
+			previousSection->setType('e');
+		}
 		switch (direction)
 		{
             
@@ -846,8 +859,6 @@ void Robot::updateRobotPosition(){
 				//would like to throw some kind of error here.
 				return;
 		}
-		//om inte rfid så gör detta:
-		mom->convertSection(previousSection->getX(),previousSection->getY(), 'e');
 		//update which sensor that is valid and should be measured.
 		//and update the references on that sensor.
 		validSensor = determineValidSensor();
@@ -1192,12 +1203,37 @@ bool Robot::isWallFwdClose()
 	    }
 }
 
+// ----------------
 
+void Robot::setRotateRightActive()
+{
+	
+	rotateRightActive = true;
+	rotateActive = true;
+}
 
+// -----------------
 
+bool Robot::getRotateRightActive()
+{
+	return rotateRightActive;
+}
 
+// ------------------
 
+void Robot::setRotateLeftActive()
+{
+	rotateLeftActive = true;
+	rotateActive = true;
+}
 
+// ------------------
 
+bool Robot::getRotateLeftActive()
+{
+	return rotateLeftActive;
+}
+
+// ----------------------
 
 

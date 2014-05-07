@@ -41,6 +41,7 @@ public:
     QAction *actionSlowDown;
     QAction *actionStop;
     QAction *actionSetParameter;
+    QAction *actionHalt;
     QWidget *centralWidget;
     QGraphicsView *mapView;
     QSlider *speedSlider;
@@ -109,6 +110,8 @@ public:
         actionStop->setObjectName(QStringLiteral("actionStop"));
         actionSetParameter = new QAction(Gui);
         actionSetParameter->setObjectName(QStringLiteral("actionSetParameter"));
+        actionHalt = new QAction(Gui);
+        actionHalt->setObjectName(QStringLiteral("actionHalt"));
         centralWidget = new QWidget(Gui);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         mapView = new QGraphicsView(centralWidget);
@@ -277,6 +280,7 @@ public:
         menuCommands->addAction(actionSlowDown);
         menuCommands->addAction(actionStop);
         menuCommands->addAction(actionSetParameter);
+        menuCommands->addAction(actionHalt);
 
         retranslateUi(Gui);
 
@@ -302,6 +306,8 @@ public:
         actionStop->setShortcut(QApplication::translate("Gui", "Space", 0));
         actionSetParameter->setText(QApplication::translate("Gui", "Set parameters", 0));
         actionSetParameter->setShortcut(QApplication::translate("Gui", "Ctrl+S", 0));
+        actionHalt->setText(QApplication::translate("Gui", "Auto", 0));
+        actionHalt->setShortcut(QApplication::translate("Gui", "Ctrl+X", 0));
         sensor1->setText(QApplication::translate("Gui", "Back Long", 0));
         sensor1data->setText(QApplication::translate("Gui", "sensor1data", 0));
         sensor2->setText(QApplication::translate("Gui", "Back short", 0));
