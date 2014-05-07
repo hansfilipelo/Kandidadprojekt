@@ -113,6 +113,13 @@ void handleInDataArray(){
 	else if((sensormodul.inDataArray[1] == 'g') and (sensormodul.inDataArray[2] == 0)){
 		gyrocal();				//run gyrocal
 	}
+
+	//if [g 2] is received
+	else if((sensormodul.inDataArray[1] == 'g') and (sensormodul.inDataArray[2] == 2)){
+		gyromode = false;	//done with gyroreadings
+		angle = 0;			//reset angle
+		TIMSK0 = 0x00;		//don't allow time interrupts
+	}
 	//if [k 1] is received
 	else if((sensormodul.inDataArray[1] == 'k') and(sensormodul.inDataArray[2] == 1)){
 		int hundra = sensormodul.inDataArray[3];
