@@ -801,7 +801,8 @@ void Robot::updateRobotPosition(){
 			case 'f':
 				
 				// Place back the section we stand in
-                MapSection* tempPrev = previousSection;
+                MapSection* tempPrev;
+				tempPrev = previousSection;
                 
                 // Get a new prev section
 				previousSection = mom->getPos(xCoord, yCoord + 1);
@@ -873,10 +874,10 @@ void Robot::updateRobotPosition(){
 			this->setBwdReference();
 			this->setFwdReference();
 		}
-		setFwdClosed();
-		setBwdClosed();
-		setRightClosed();
-		setLeftClosed();
+		//setFwdClosed();
+		//setBwdClosed();
+		//setRightClosed();
+		//setLeftClosed();
 	}
 }
 /*
