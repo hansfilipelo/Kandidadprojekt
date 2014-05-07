@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'gui.h'
 **
-** Created by: The Qt Meta Object Compiler version 67 (Qt 5.3.0)
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.2.0)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -12,25 +12,20 @@
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'gui.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
-#error "This file was generated using the moc from 5.3.0. It"
+#error "This file was generated using the moc from 5.2.0. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_Gui_t {
-<<<<<<< HEAD
     QByteArrayData data[20];
-    char stringdata[443];
-=======
-    QByteArrayData data[19];
-    char stringdata[418];
->>>>>>> 2ada3207fac0b94eb9329a9877fdbb1cda7dae58
+    char stringdata[445];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
-    qptrdiff(offsetof(qt_meta_stringdata_Gui_t, stringdata) + ofs \
-        - idx * sizeof(QByteArrayData)) \
+    offsetof(qt_meta_stringdata_Gui_t, stringdata) + ofs \
+        - idx * sizeof(QByteArrayData) \
     )
 static const qt_meta_stringdata_Gui_t qt_meta_stringdata_Gui = {
     {
@@ -51,9 +46,9 @@ QT_MOC_LITERAL(13, 263, 21),
 QT_MOC_LITERAL(14, 285, 23),
 QT_MOC_LITERAL(15, 309, 22),
 QT_MOC_LITERAL(16, 332, 29),
-QT_MOC_LITERAL(17, 362, 23),
-QT_MOC_LITERAL(18, 386, 31),
-QT_MOC_LITERAL(19, 418, 23)
+QT_MOC_LITERAL(17, 362, 31),
+QT_MOC_LITERAL(18, 394, 23),
+QT_MOC_LITERAL(19, 418, 25)
     },
     "Gui\0on_speedSlider_valueChanged\0\0value\0"
     "on_speedSlider_sliderReleased\0"
@@ -65,13 +60,9 @@ QT_MOC_LITERAL(19, 418, 23)
     "on_pushButton_clicked\0on_stopButton_pressed\0"
     "on_actionStop_triggered\0on_fetchButton_pressed\0"
     "on_setParameterButton_pressed\0"
-    "on_temp90Button_clicked\0"
-<<<<<<< HEAD
     "on_actionSetParameter_triggered\0"
     "on_actionHalt_triggered\0"
-=======
-    "on_actionSetParameter_triggered"
->>>>>>> 2ada3207fac0b94eb9329a9877fdbb1cda7dae58
+    "on_saveDataButton_pressed\0"
 };
 #undef QT_MOC_LITERAL
 
@@ -89,7 +80,6 @@ static const uint qt_meta_data_Gui[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-<<<<<<< HEAD
        1,    1,   99,    2, 0x08,
        4,    0,  102,    2, 0x08,
        5,    0,  103,    2, 0x08,
@@ -107,24 +97,6 @@ static const uint qt_meta_data_Gui[] = {
       17,    0,  115,    2, 0x08,
       18,    0,  116,    2, 0x08,
       19,    0,  117,    2, 0x08,
-=======
-       1,    1,   94,    2, 0x08 /* Private */,
-       4,    0,   97,    2, 0x08 /* Private */,
-       5,    0,   98,    2, 0x08 /* Private */,
-       6,    0,   99,    2, 0x08 /* Private */,
-       7,    0,  100,    2, 0x08 /* Private */,
-       8,    0,  101,    2, 0x08 /* Private */,
-       9,    0,  102,    2, 0x08 /* Private */,
-      10,    0,  103,    2, 0x08 /* Private */,
-      11,    0,  104,    2, 0x08 /* Private */,
-      12,    0,  105,    2, 0x08 /* Private */,
-      13,    0,  106,    2, 0x08 /* Private */,
-      14,    0,  107,    2, 0x08 /* Private */,
-      15,    0,  108,    2, 0x08 /* Private */,
-      16,    0,  109,    2, 0x08 /* Private */,
-      17,    0,  110,    2, 0x08 /* Private */,
-      18,    0,  111,    2, 0x08 /* Private */,
->>>>>>> 2ada3207fac0b94eb9329a9877fdbb1cda7dae58
 
  // slots: parameters
     QMetaType::Void, QMetaType::Int,    3,
@@ -167,9 +139,9 @@ void Gui::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **
         case 11: _t->on_actionStop_triggered(); break;
         case 12: _t->on_fetchButton_pressed(); break;
         case 13: _t->on_setParameterButton_pressed(); break;
-        case 14: _t->on_temp90Button_clicked(); break;
-        case 15: _t->on_actionSetParameter_triggered(); break;
-        case 16: _t->on_actionHalt_triggered(); break;
+        case 14: _t->on_actionSetParameter_triggered(); break;
+        case 15: _t->on_actionHalt_triggered(); break;
+        case 16: _t->on_saveDataButton_pressed(); break;
         default: ;
         }
     }
