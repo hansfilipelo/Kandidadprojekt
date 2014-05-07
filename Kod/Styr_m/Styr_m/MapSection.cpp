@@ -156,7 +156,7 @@ Robot::Robot(int xPos, int yPos, Map* inMom, Communication* inComm) : MapSection
 	
 	Kd = 26;
 	Kp = 7;
-	Ref = 10;
+	Ref = 14;
 	
 	trimRight = 15;
 	trimLeft = 0;
@@ -1013,7 +1013,7 @@ void Robot::setUserSpeed(int inSpeed)
 
 bool Robot::isWallRight(){
     
-    if ( (rightFrontSensor < 30 || rightBackSensor < 30) ){
+    if ( (rightFrontSensor < 30 && rightBackSensor < 30) ){
 		volatile bool benny = true;
         return benny;
     }
