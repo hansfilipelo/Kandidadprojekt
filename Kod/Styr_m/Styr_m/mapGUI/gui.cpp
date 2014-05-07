@@ -378,14 +378,21 @@ void Gui::on_actionRight_triggered()
 void Gui::on_stopButton_pressed()
 {
     if(connectStatus){
-        bluetooth->halt(speedMultiplier);
+        bluetooth->halt();
     }
 }
 
 void Gui::on_actionStop_triggered()
 {
     if(connectStatus){
-        bluetooth->halt(speedMultiplier);
+        bluetooth->halt();
+    }
+}
+
+void Gui::on_actionHalt_triggered()
+{
+    if(connectStatus){
+        bluetooth->autonom(speedMultiplier);
     }
 }
 
@@ -439,9 +446,4 @@ void Gui::on_actionSetParameter_triggered()
 void Gui::on_saveDataButton_pressed()
 {
     saveToFile();
-}
-
-void Gui::on_actionHalt_triggered()
-{
-    bluetooth->autonom();
 }

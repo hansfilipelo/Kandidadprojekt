@@ -215,6 +215,11 @@ void Robot::changeGear(char inGear){
 }
 
 // ------------------------------------
+void Robot::setRFID(){
+	previousSection->setType('f');
+}
+
+
 // Drives 
 
 void Robot::drive(){
@@ -455,7 +460,6 @@ void Robot::setFwdClosed(){
 	// Set closed section output + 1 steps away from robot.
 	// Direction 0->y->17, "fwd"
 	if (direction == 'f'){
-		//mom->convertSection(xCoord,yCoord + output + 1, 'c');
         
         // Set every section between robot and wall as empty
 		for (int i = 0; i < output; i++) {
@@ -787,19 +791,27 @@ void Robot::updateRobotPosition(){
     
     if ((sensorDifference > 39)||(sensorDifference < -39)){
 		//om inte rfid så gör detta:
-		mom->convertSection(previousSection->getX(),previousSection->getY(), 'e');
+		if(previousSection->getType() != 'f'){
+			previousSection->setType('e');
+		}
 		switch (direction)
 		{
             
 //-------------------------Direction is forwards in map-------------------
 			case 'f':
+				
 				// Place back the section we stand in
-				mom->setSection(previousSection->getX(), previousSection->getY(), previousSection);
-				// Get a new prev section
+                MapSection* tempPrev;
+				tempPrev = previousSection;
+                
+                // Get a new prev section
 				previousSection = mom->getPos(xCoord, yCoord + 1);
 				// Put robot in place
 				mom->setSection(xCoord,yCoord + 1, this);
 				// Update robot info about position
+                
+				mom->setSection(tempPrev->getX(), tempPrev->getY(), tempPrev);
+                
 				yCoord++;
             
 				break;
@@ -862,10 +874,10 @@ void Robot::updateRobotPosition(){
 			this->setBwdReference();
 			this->setFwdReference();
 		}
-		setFwdClosed();
-		setBwdClosed();
-		setRightClosed();
-		setLeftClosed();
+		//setFwdClosed();
+		//setBwdClosed();
+		//setRightClosed();
+		//setLeftClosed();
 	}
 }
 /*

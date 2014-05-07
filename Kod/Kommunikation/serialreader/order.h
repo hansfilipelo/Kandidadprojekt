@@ -25,12 +25,12 @@ public:
     void rotateLeft(int);
     void rotateRight(int);
     void turnDone();
-    void halt(int);
+    void halt();
     void forward(int);
     void backward(int);
     void test();
     void fetchMap();
-    void autonom();
+    void autonom(int);
     void setControlParameters(double, double, int, int, int);
     
     int getTen(double); //Returns ex. 1 if the number is 10

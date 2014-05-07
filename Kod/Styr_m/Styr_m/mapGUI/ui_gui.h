@@ -79,7 +79,7 @@ public:
     QCustomPlot *sensorPlot0;
     QLabel *sensor0;
     QLabel *sensor0data;
-    QPushButton *temp90Button;
+    QPushButton *saveDataButton;
     QLabel *trimLeftLabel;
     QLabel *trimRightLabel;
     QSpinBox *trimValueLeft;
@@ -237,9 +237,9 @@ public:
         sensor0data = new QLabel(centralWidget);
         sensor0data->setObjectName(QStringLiteral("sensor0data"));
         sensor0data->setGeometry(QRect(460, 310, 81, 20));
-        temp90Button = new QPushButton(centralWidget);
-        temp90Button->setObjectName(QStringLiteral("temp90Button"));
-        temp90Button->setGeometry(QRect(170, 430, 115, 32));
+        saveDataButton = new QPushButton(centralWidget);
+        saveDataButton->setObjectName(QStringLiteral("saveDataButton"));
+        saveDataButton->setGeometry(QRect(170, 430, 115, 32));
         trimLeftLabel = new QLabel(centralWidget);
         trimLeftLabel->setObjectName(QStringLiteral("trimLeftLabel"));
         trimLeftLabel->setGeometry(QRect(190, 540, 111, 21));
@@ -332,7 +332,7 @@ public:
         setParameterButton->setText(QApplication::translate("Gui", "Set parameters", 0));
         sensor0->setText(QApplication::translate("Gui", "Front long", 0));
         sensor0data->setText(QApplication::translate("Gui", "sensor0data", 0));
-        temp90Button->setText(QApplication::translate("Gui", "90 turn done", 0));
+        saveDataButton->setText(QApplication::translate("Gui", "Save data", 0));
         trimLeftLabel->setText(QApplication::translate("Gui", "Trim value left", 0));
         trimRightLabel->setText(QApplication::translate("Gui", "Trim value right", 0));
         menuCommands->setTitle(QApplication::translate("Gui", "Commands", 0));
