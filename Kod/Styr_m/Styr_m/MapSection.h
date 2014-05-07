@@ -83,6 +83,9 @@ public:
     Robot(int xPos, int yPos, Map* inMom, Communication* inComm);
     ~Robot();
     
+	// RFID
+	void setRFID();
+	
 	// Driving
     void changeGear(char direction);
     void drive();

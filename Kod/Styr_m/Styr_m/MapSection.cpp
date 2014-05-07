@@ -212,6 +212,11 @@ void Robot::changeGear(char inGear){
 }
 
 // ------------------------------------
+void Robot::setRFID(){
+	previousSection->setType('f');
+}
+
+
 // Drives 
 
 void Robot::drive(){
@@ -782,7 +787,9 @@ void Robot::updateRobotPosition(){
     
     if ((sensorDifference > 39)||(sensorDifference < -39)){
 		//om inte rfid så gör detta:
-		mom->convertSection(previousSection->getX(),previousSection->getY(), 'e');
+		if(previousSection->getType() != 'f'){
+			previousSection->setType('e');
+		}
 		switch (direction)
 		{
             

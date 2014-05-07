@@ -111,6 +111,11 @@ void Communication::handleData(){
     if (this->inData[1] == 'G') {
         robotPointer->stopRotation();
     }
+	
+	// RFID-detektion, måste kollas på
+    if (this->inData[1] == 'R') {
+	    robotPointer->setRFID();
+    }
     
     // Constants for PD-control
     if(this->inData[1]=='P'){
