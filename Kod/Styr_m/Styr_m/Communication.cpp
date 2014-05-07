@@ -20,7 +20,7 @@ void Communication::handleData(){
 	if (this->inData[1]=='a') {
 		manual = false;
 		robotPointer->setUserSpeed(speed);
-		robotPointer->setSpeed(speed);
+		robotPointer->stopRotation();
 		robotPointer->drive();
 	}
 	if (this->inData[1]=='q') {
@@ -55,6 +55,7 @@ void Communication::handleData(){
 	else if (this->inData[1] == 'h'){
 		
 			robotPointer->setUserSpeed(0);
+			robotPointer->stopRotation();
 			robotPointer->drive();
 				
 	}
