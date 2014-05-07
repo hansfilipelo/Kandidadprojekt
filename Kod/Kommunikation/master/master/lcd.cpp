@@ -204,20 +204,20 @@ void Lcd::firstDraw(unsigned char location, unsigned char sign){
 void Lcd::drawSensorNames(){
 	
     //rad 1
-	firstDraw(0x87,'L');
-	firstDraw(0x88,'b');
-	firstDraw(0x80,'L');
-	firstDraw(0x81,'1');
+	firstDraw(0x87,'B');
+	firstDraw(0x88,'l');
+	firstDraw(0x80,'B');
+	firstDraw(0x81,'s');
 	
 	//rad 2
 	firstDraw(0xc7,'R');
 	firstDraw(0xc8,'b');
-	firstDraw(0xc0,'L');
-	firstDraw(0xc1,'2');
+	firstDraw(0xc0,'F');
+	firstDraw(0xc1,'l');
 	
 	//rad 3
-	firstDraw(0x97,'L');
-	firstDraw(0x98,'f');
+	firstDraw(0x97,'F');
+	firstDraw(0x98,'s');
 	firstDraw(0x90,'M');
 	firstDraw(0x91,'1');
     
