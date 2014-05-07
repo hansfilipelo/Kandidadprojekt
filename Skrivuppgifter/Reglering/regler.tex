@@ -286,10 +286,6 @@ Mätvärdena körs sedan flera gånger genom filtret tills dess att man med till
 
 De matematiska grunderna för FastSLAM ligger utanför vad denna rapport täcker in - men för den intresserade läsaren rekommenderas David Törnqvists doktorsavhandling \textit{Estimation and Detection with Applications to Navigation}\footnote{David Törnqvist. Estimation and Detection with Applications to Navigation. PhD thesis, Linköping University, 2008. Hämtad 15 april 2014.}.
 
-\subsection{Odometri}
-
-
-
 \newpage
 
 
@@ -330,103 +326,6 @@ Det finns många exempel på implementeringar av SLAM. Robotdammsugare är ett b
 Det här är ett bra exempel på hur moderna, små mikrokontrollers kan göra det möjligt att använda SLAM för att förenkla vår vardag.
 
 SLAM används, och har använts under längre tid, också i rymdexpeditioner där robotar skickas upp i rymden för att upptäcka och kartlägga ställen som vi människor inte har möjlighet att besöka. 
-
-%------------------------------------------------
-%--------------------Fördjupning-----------------
-%------------------------------------------------
-\newpage
-\section{Förslag till implementering}
-
-För att rita en karta krävs det att mjukvara och hårdvara sammarbetar. Sensorerna och deras värden behöver översättas till något som kan behandlas av en dator. 
-
-% --------------------------------------
-
-\subsection{Skattning av parametrar}
-
-I ett SLAM-problem likt det i rapportens problemställning, kommer positionen att skattas med hjälp av sensorvärden i form av vinkel och avstånd i kombination med enkla algoritmer. Eftersom området är slutet kan det upskattas klart mycket enklare än ett godtyckligt stort område. 
-
-Alla typer av optiska sensorer har en begränsad räckvidd. Vi antar att det finns två stycken avståndssensorer riktade framåt och bakåt, här kallade $S_{front}$ \& $S_{back}$. Mätvärdena kommer i största möjliga mån plockas ut som medelvärdet, $\bar{S}$, av den senaste mätdatan. Om båda sensorerna ger odefinierade utslag kan antagandet göras att de har gått utanför sitt mätområde och kommer då skattas som nedan. 
-
-\begin{gather}
-	S_{front}=S_{max}\\
-	S_{back}=S_{max}
-\end{gather}
-
-där $S_{max}$ är sensorns maximala mätdistans.
-
-Om endast den ena av sensorerna, i detta exempel $S_{back}$, befinner sig utanför sitt mätområde kommer den att skattas med hjälp av nedanstående ekvation. Om istället $S_{front}$ är okänd kommer den skattas på samma sätt. 
-
-\begin{gather}
-	S_{back}=6,00-S_{front}
-\end{gather}
-
-Där 6,00 m är den maximala längden som kan uppstå i området. Dessa sensorvärden kommer sedan användas för att skatta robotens position.
-
-
-% --------------------------------------
-
-\subsection{Positionsskattning}
-
-För att uppskatta hur långt roboten har färdats kommer referensvärden $S_{ref}$ på sensorerna sparas innan roboten rör sig. Dessa värden kommer sedan uppdateras varje gång roboten har färdats 40 cm (ett segment av området). För att veta när roboten färdats 40 cm kommer ett nuvarande sensorvärde jämföras med referensen, till exempel om roboten färdas framåt kommer differensen mellan $S_{front}$ \& $S_{frontref}$ beräknas. Förflyttningen har åstadkommits då ekvationen nedan är uppfylld. 
-
-\begin{gather}
-	S_{frontref} - S_{front} = 40
-\end{gather}
-
-Utöver detta går det att med hjälp av data från gyrot få ut vinkelhastigheten $\omega$. Problemet med vinkelhastigheten är att den inte bidrar till att beskriva robotens positionering utan att omvandlas till robotens vinkel relativt ursprungsriktningen, här kallad $\phi$. Omvandlingen sker utifrån (11) där $n_{clock}$ är antalet klockcykler på processorn sedan roboten börjat rotera och där $f$ är processorns klockfrekvens.
-
-\begin{gather}
-	\phi = \omega \cdot \frac{n_{clock}}{f}
-\end{gather} 
-
-\subsection{Kartabstraktion}
-
-En karta kan abstraheras i form av en rektangel med ett rutnät med dimensionen 33x17 rutor med koordinaterna (0,0) i det övre vänstra hörnet. Det definierade området i problemformuleringen, det vill säga det verkliga området, skulle med liknande rutnät bli 15x15 rutor. För att kompensera för eventuella mätfel utökas matrisen något för att underlätta uppritningen. Felaktigheter i avläsning kan leda till att roboten i abstraktionen tillfälligt är utanför sitt givna område. Roboten kommer i början att placeras i punkten (16,0) och rita upp kartan utifrån detta. Det kommer då inte spela någon roll hur roboten är placerad i det verkliga systemet eftersom det finns utrymme för 15 rutor åt båda hållen inklusive marginaler. 
-
-Hur skapar man då en matris i mjukvara? Beroende på språk, utvecklingsmiljö och abstraktionslager/bilbiotek görs det såklart med olika syntax - men den övergripande designen är densamma oberoende av utvecklingsmiljö. 
-
-En abstraktion av en matris i mjukvara skapas med hjälp utav nästlade arrayer, eller någon modern motsvarighet. I utvecklingsmiljön Atmel Studio finns språket C++ tillgängligt, men däremot ej C++ standardbibliotek med abstraktioner. I den här rapporten kommer vi därför att behandla arrayer istället för vektorer som kanske är vanligare i C++. 
-
-\paragraph{Objektklasser}
-~\\
-Kartmatrisen hålls inne i en containerklass med funktioner för att abstrahera acess till den. I modern programmering är objekthantering ett kraftfullt verktyg för abstraktion. Klasser tänkbara att implementera för SLAM följer nedan, med engelska namnet inom parantes. Detta då programmering görs bäst på engelska tack vare att programmeringsspråken härstammar från engelskan. 
-
-\begin{itemize}
-	\item Karta (Map)
-	\item Kartsektion (MapSection)
-	\item Robot (Robot)
-\end{itemize}
-
-I en C++-implementering är Robot en dotterklass till MapSection. Detta då alla objekt i en matris måste vara av samma objekttyp. Roboten ärver då vissa egenskaper från MapSection - men innehåller klart mer logik för att hantera positionering och kartläggning. 
-
-MapSection kan anta ett antal olika tillstånd för att markera vilken typ av område det är. Nedan följer några tänkbara tillstånd att implementera i klassen MapSection: 
-
-\begin{itemize}
-	\item Stängt område (Closed)
-	\item Outforskat område (Unexplored)
-	\item Tomt område (Empty)
-\end{itemize}
-
-Till en början är alla områden outforskade. I takt med att sensordata kommer in och beräknas kan sedan roboten omvandla tillstånden hos objekten i kartan utefter given logik. 
-
-% --------------------------------------
-
-\newpage
-\subsection{Kartläggningsalgoritmer}
-
-Antag att roboten har en kartabstraktion, kan ta in sensordata och göra en uppskattning av sin omgivning - hur implementerar man sedan en bra och snabb kartläggningsalgoritm? Hur ska man utforska sin omgivning och i vilken ordning? 
-
-Beroende på hur omgivningen ser ut finns det olika svar på frågorna. Omfattningen för den här rapporten gäller insidan av ett rum i en byggnad, där alla hörn kan antas vara ortogonala. En enkel implementering är då att enbart köra roboten i ett rutnät - med ortogonala sökriktningar. Detta förenklar markant modellen då vinklar enbart behöver mätas vid rotationer, alltså riktningsändringar, istället för konstant under körning. En enkel implementering är ofta också en snabb implementering, både att realisera och att optimera. 
-
-Nedan syns ett flödesschema över hur en tänkt kartläggningsalgoritm skulle kunna se ut. Kartläggningalgoritmen utför sina kommandon genom att anropa funktioner i robotobjektet. Robotobjektet kan ses som operationens hjärna medan algoritmen är den övergripande handen som ser till att roboten arbetar i rätt ordning. 
-
-\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
-  \begin{center}
-  \includegraphics[keepaspectratio=true,scale=0.5]{../../Designspec/Flode_kartritning.jpg}  %skala och filnamn. 
-  \end{center}
-  \caption{Flödesschema kartläggning} %figurtext.
-  \label{fig:algoritm} %glöm inte att uppdatera era labels
-\end{figure}
 
 %------------------------------------------------
 %------------Resultat och slutsatser-------------

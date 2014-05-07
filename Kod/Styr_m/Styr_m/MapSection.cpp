@@ -160,6 +160,9 @@ Robot::Robot(int xPos, int yPos, Map* inMom, Communication* inComm) : MapSection
 	
 	trimRight = 15;
 	trimLeft = 0;
+	
+	rotateRightActive = false;
+	rotateLeftActive = false; 
     
     commObj = inComm;
     previousSection = mom->getPos(xPos,yPos);
@@ -256,6 +259,7 @@ void Robot::driveBackward(int speed){
 
 void Robot::rotateLeft(){
 	// Rotate mode
+	rotateLeftActive = false;
 	rotateActive = true;
 	// Seft diffs to 0
 	fwdDiff = 0;
@@ -302,6 +306,7 @@ void Robot::stopRotation(){
 
 void Robot::rotateRight(){
 	// Rotate mode
+	rotateRightActive = false;
 	rotateActive = true;
 	// Seft diffs to 0
 	fwdDiff = 0;
@@ -780,7 +785,9 @@ void Robot::updateRobotPosition(){
 		sensorDifference = getFwdDistance() - ref*40;
     }
     
-    if ((sensorDifference > 35)||(sensorDifference < -35)){
+    if ((sensorDifference > 39)||(sensorDifference < -39)){
+		//om inte rfid så gör detta:
+		mom->convertSection(previousSection->getX(),previousSection->getY(), 'e');
 		switch (direction)
 		{
             
@@ -841,8 +848,6 @@ void Robot::updateRobotPosition(){
 				//would like to throw some kind of error here.
 				return;
 		}
-		//om inte rfid så gör detta:
-		//mom->convertSection(previousSection->getX(),previousSection->getY(), 'e');
 		//update which sensor that is valid and should be measured.
 		//and update the references on that sensor.
 		validSensor = determineValidSensor();
@@ -1187,12 +1192,37 @@ bool Robot::isWallFwdClose()
 	    }
 }
 
+// ----------------
 
+void Robot::setRotateRightActive()
+{
+	
+	rotateRightActive = true;
+	rotateActive = true;
+}
 
+// -----------------
 
+bool Robot::getRotateRightActive()
+{
+	return rotateRightActive;
+}
 
+// ------------------
 
+void Robot::setRotateLeftActive()
+{
+	rotateLeftActive = true;
+	rotateActive = true;
+}
 
+// ------------------
 
+bool Robot::getRotateLeftActive()
+{
+	return rotateLeftActive;
+}
+
+// ----------------------
 
 

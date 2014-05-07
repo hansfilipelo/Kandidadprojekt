@@ -19,9 +19,13 @@ void Communication::handleData(){
 	//checks manual/auto
 	if (this->inData[1]=='a') {
 		manual = false;
+		robotPointer->setUserSpeed(speed);
+		robotPointer->drive();
 	}
 	if (this->inData[1]=='q') {
 		manual = true;
+		robotPointer->setUserSpeed(0);
+		robotPointer->drive();
 	}
 	//request to send map
 	if (this->inData[1]=='m') {
@@ -31,10 +35,10 @@ void Communication::handleData(){
 	}
 	
 	if (this->inData[1]=='r' && inData[2]==0) {
-		robotPointer->rotateLeft();
+		robotPointer->setRotateLeftActive();
 	}
 	else if (this->inData[1]=='r' && inData[2]==1) {
-		robotPointer->rotateRight();
+		robotPointer->setRotateRightActive();
 	}
 	else if (this->inData[1]=='f'){
 		robotPointer->changeGear('f');
