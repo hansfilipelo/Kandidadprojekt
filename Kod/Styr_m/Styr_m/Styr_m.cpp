@@ -212,12 +212,12 @@ int main(void)
 				robotPointer->rotateRight();
 				while ( !robotPointer->isWallRight() && !(abstractionObject->getManual())) {
 					robotPointer->changeGear('f');
-					robotPointer->setSpeed(25);
+					robotPointer->setSpeed(15);
 					robotPointer->drive();
 				}
 			}
             else if(robotPointer->isWallFwd()){
-				robotPointer->setSpeed(20);
+				robotPointer->setSpeed(15);
 				robotPointer->changeGear('f');
 				while (!robotPointer->isWallFwdClose() && !(abstractionObject->getManual()))
 				{
@@ -232,7 +232,7 @@ int main(void)
 			//kör framåt tills roboten åkt in i korridoren
 					while (!robotPointer->isWallRight() && !(abstractionObject->getManual())) {
 						robotPointer->changeGear('f');
-						robotPointer->setSpeed(25);
+						robotPointer->setSpeed(15);
 						robotPointer->drive();
 					}
 				}
