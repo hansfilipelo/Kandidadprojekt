@@ -206,7 +206,7 @@ int main(void)
 			if(robotPointer->isCornerRight()){
 				while ( robotPointer->isWallRight()) {
 					robotPointer->changeGear('f');
-					robotPointer->setSpeed(25);
+					robotPointer->setSpeed(15);
 					robotPointer->drive();
 				}
 				robotPointer->rotateRight();
