@@ -786,13 +786,18 @@ void Robot::updateRobotPosition(){
             
 //-------------------------Direction is forwards in map-------------------
 			case 'f':
+				
 				// Place back the section we stand in
-				mom->setSection(previousSection->getX(), previousSection->getY(), previousSection);
-				// Get a new prev section
+                MapSection* tempPrev = previousSection;
+                
+                // Get a new prev section
 				previousSection = mom->getPos(xCoord, yCoord + 1);
 				// Put robot in place
 				mom->setSection(xCoord,yCoord + 1, this);
 				// Update robot info about position
+                
+				mom->setSection(tempPrev->getX(), tempPrev->getY(), tempPrev);
+                
 				yCoord++;
             
 				break;

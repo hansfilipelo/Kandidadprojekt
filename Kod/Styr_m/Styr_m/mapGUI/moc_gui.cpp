@@ -20,7 +20,7 @@
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_Gui_t {
     QByteArrayData data[19];
-    char stringdata[418];
+    char stringdata[420];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -46,8 +46,8 @@ QT_MOC_LITERAL(13, 263, 21),
 QT_MOC_LITERAL(14, 285, 23),
 QT_MOC_LITERAL(15, 309, 22),
 QT_MOC_LITERAL(16, 332, 29),
-QT_MOC_LITERAL(17, 362, 23),
-QT_MOC_LITERAL(18, 386, 31)
+QT_MOC_LITERAL(17, 362, 31),
+QT_MOC_LITERAL(18, 394, 25)
     },
     "Gui\0on_speedSlider_valueChanged\0\0value\0"
     "on_speedSlider_sliderReleased\0"
@@ -59,8 +59,8 @@ QT_MOC_LITERAL(18, 386, 31)
     "on_pushButton_clicked\0on_stopButton_pressed\0"
     "on_actionStop_triggered\0on_fetchButton_pressed\0"
     "on_setParameterButton_pressed\0"
-    "on_temp90Button_clicked\0"
-    "on_actionSetParameter_triggered"
+    "on_actionSetParameter_triggered\0"
+    "on_saveDataButton_pressed"
 };
 #undef QT_MOC_LITERAL
 
@@ -135,8 +135,8 @@ void Gui::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **
         case 11: _t->on_actionStop_triggered(); break;
         case 12: _t->on_fetchButton_pressed(); break;
         case 13: _t->on_setParameterButton_pressed(); break;
-        case 14: _t->on_temp90Button_clicked(); break;
-        case 15: _t->on_actionSetParameter_triggered(); break;
+        case 14: _t->on_actionSetParameter_triggered(); break;
+        case 15: _t->on_saveDataButton_pressed(); break;
         default: ;
         }
     }
