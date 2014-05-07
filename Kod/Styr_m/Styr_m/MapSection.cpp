@@ -793,7 +793,7 @@ void Robot::updateRobotPosition(){
 		//om inte rfid så gör detta:
 		if(previousSection->getType() != 'f'){
 			previousSection->setType('e');
-		}
+		} // denna kŠnns onšdig.
 		switch (direction)
 		{
             
@@ -810,7 +810,7 @@ void Robot::updateRobotPosition(){
 				// Update robot info about position
                 
 				mom->setSection(tempPrev->getX(), tempPrev->getY(), tempPrev);
-                
+                //This does not seem to work. Gives green square in corner.
 				yCoord++;
             
 				break;
