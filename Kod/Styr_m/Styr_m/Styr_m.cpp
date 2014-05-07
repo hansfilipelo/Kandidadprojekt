@@ -191,12 +191,11 @@ int main(void)
 			else if ( robotPointer->getRotateLeftActive() ){
 				robotPointer->rotateLeft();
 			}
-			
-
         }
         // Automatic mode
         else {
-			if ((!robotPointer->isWallFwd()) && robotPointer->isWallRight())
+			//om ej vägg framåt men vägg höger, följ den
+			if ((!robotPointer->isWallFwd()) && (robotPointer->isWallRight()))
 			{
 				robotPointer->setSpeed(robotPointer->getUserSpeed());
 				robotPointer->changeGear('f');

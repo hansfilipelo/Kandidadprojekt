@@ -327,7 +327,7 @@ void Robot::rotateRight(){
     setSpeed(35);
 	while (rotateActive)
 	{
-		drive();
+ 		drive();
 	}
 	
 	// Stop rotation and set gear to forward
@@ -810,7 +810,7 @@ void Robot::updateRobotPosition(){
 				mom->setSection(xCoord,yCoord + 1, this);
 				// Update robot info about position
                 
-				mom->setSection(tempPrev->getX(), tempPrev->getY(), tempPrev);
+				//mom->setSection(tempPrev->getX(), tempPrev->getY(), tempPrev);
                 
 				yCoord++;
             
@@ -874,10 +874,10 @@ void Robot::updateRobotPosition(){
 			this->setBwdReference();
 			this->setFwdReference();
 		}
-		//setFwdClosed();
-		//setBwdClosed();
-		//setRightClosed();
-		//setLeftClosed();
+		setFwdClosed();
+		setBwdClosed();
+		setRightClosed();
+		setLeftClosed();
 	}
 }
 /*

@@ -122,6 +122,13 @@ ISR(INT0_vect){
 	if(!Firefly.autonom){
 		Bus.outDataArray[1]= 'a';
 		Firefly.autonom = true;
+		Bus.sendArray(1);
+		
+		Bus.outDataArray[0] = 2;
+		Bus.outDataArray[1] = 'g';
+		Bus.outDataArray[2] = 2;
+		Bus.sendArray(0);
+		
 	}
 	else{
 		Bus.outDataArray[1]= 'q';

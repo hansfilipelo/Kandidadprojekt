@@ -20,11 +20,13 @@ void Communication::handleData(){
 	if (this->inData[1]=='a') {
 		manual = false;
 		robotPointer->setUserSpeed(speed);
+		robotPointer->setSpeed(speed);
 		robotPointer->drive();
 	}
 	if (this->inData[1]=='q') {
 		manual = true;
 		robotPointer->setUserSpeed(0);
+		robotPointer->stopRotation();
 		robotPointer->drive();
 	}
 	//request to send map

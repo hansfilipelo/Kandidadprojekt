@@ -103,7 +103,9 @@ volatile void Bluetooth::handle(){
 			spiPointer->outDataArray[1] = 'q';
 			autonom = false;
 		}
-		spiPointer->outDataArray[0] = 1;
+		spiPointer->outDataArray[0] =  pcHandle[0];
+		spiPointer->outDataArray[2] =  pcHandle[2];
+		spiPointer->outDataArray[3] =  pcHandle[3];
 		spiPointer->sendArray(1);
 	}
 
