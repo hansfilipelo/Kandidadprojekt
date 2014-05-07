@@ -136,25 +136,6 @@ void Lcd::init(){
 }
 
 void Lcd::command(unsigned char var){
-	/*
- * lcd.cpp
- *
- * Created: 4/14/2014 11:13:42 AM
- *  Author: davha227
- *
- *  Virat kablage
- *  Rs -> PORTA5
- *  R/W -> PORTA6
- *  E -> PORTA7
- *  DB0 -> PORTC0
- *  DB1 -> PORTC1
- *  DB2 -> PORTD4
- *  DB3 -> PORTD5
- *  DB4 -> PORTD6
- *  DB5 -> PORTD7
- *  DB6 -> PORTC6
- *  DB7 -> PORTC7
- */
 	
 	DDRC |=(1<<PORTC0)|(1<<PORTC1)|(1<<PORTC6)|(1<<PORTC7);
 	DDRD |=(1<<PORTD4)|(1<<PORTD5)|(1<<PORTD6)|(1<<PORTD7);
@@ -204,29 +185,29 @@ void Lcd::firstDraw(unsigned char location, unsigned char sign){
 void Lcd::drawSensorNames(){
 	
     //rad 1
-	firstDraw(0x87,'B');
-	firstDraw(0x88,'l');
-	firstDraw(0x80,'B');
-	firstDraw(0x81,'s');
+	firstDraw(0x80,'F');
+	firstDraw(0x81,'l');
+	firstDraw(0x87,'R');
+	firstDraw(0x88,'f');
 	
 	//rad 2
+	firstDraw(0xc0,'F');
+	firstDraw(0xc1,'b');	
 	firstDraw(0xc7,'R');
 	firstDraw(0xc8,'b');
-	firstDraw(0xc0,'F');
-	firstDraw(0xc1,'l');
-	
+
 	//rad 3
-	firstDraw(0x97,'F');
-	firstDraw(0x98,'s');
-	firstDraw(0x90,'M');
-	firstDraw(0x91,'1');
+	firstDraw(0x97,'M');
+	firstDraw(0x98,'l');
+	firstDraw(0x90,'B');
+	firstDraw(0x91,'l');
     
 	//rad 4
 	//prints S4
-	firstDraw(0xd7,'R');
-	firstDraw(0xd8,'f');
-	firstDraw(0xd0,'I');
-	firstDraw(0xd1,'D');
+	firstDraw(0xd7,'I');
+	firstDraw(0xd8,'D');
+	firstDraw(0xd0,'B');
+	firstDraw(0xd1,'s');
 }
 
 unsigned int Lcd::getNewPosition(int col, int row){
@@ -295,26 +276,26 @@ void Lcd::insertSensorValuesToBuffer(unsigned char* inArray){
 			case 1 :	r = 0;
 						c = 3;	
 						break;
-			case 2 :	r = 1;
+			case 2 :	r = 2;
 						c = 3;
 						break;
-			case 3 :	r = 0;
-						c = 10;
+			case 3 :	r = 3;
+						c = 3;
 						break;
 			case 4 :	r = 1;
 						c = 10;
 						break;
-			case 5 :	r = 2;
-						c = 10;
+			case 5 :	r = 1;
+						c = 3;
 						break;
-			case 6 :	r = 3;
+			case 6 :	r = 0;
 						c = 10;
 						break;
 			case 7 :	r = 2;
-						c = 3;
+						c = 10;
 						break;
 			case 8 :	r = 3;
-						c = 3;
+						c = 10;
 						break;
 		}				
 		writeBuffer[r][c] = 0x30 + (int)inArray[i*3];
@@ -325,7 +306,7 @@ void Lcd::insertSensorValuesToBuffer(unsigned char* inArray){
 
 int Lcd::getCol(int sensor){
     int col = 0;
-    if((sensor <= 1) || (sensor == 6) || (sensor == 7)){
+    if((sensor <= 2) || (sensor == 4)){
         col = 3;
     }
     else{
@@ -336,13 +317,13 @@ int Lcd::getCol(int sensor){
 
 int Lcd::getRow(int sensor){
     int row;
-    if((sensor == 0) || (sensor == 2)){
+    if((sensor == 0) || (sensor == 5)){
         row = 0;
     }
-    else if((sensor == 1) || (sensor == 3)){
+    else if((sensor == 3) || (sensor == 4)){
         row = 1;
     }
-    else if((sensor == 4) || (sensor == 6)){
+    else if((sensor == 1) || (sensor == 6)){
         row = 2;
     }
     else{
@@ -353,25 +334,6 @@ int Lcd::getRow(int sensor){
 
 bool Lcd::ready(){
 
-/*
- * lcd.cpp
- *
- * Created: 4/14/2014 11:13:42 AM
- *  Author: davha227
- *
- *  Virat kablage
- *  Rs -> PORTA5
- *  R/W -> PORTA6
- *  E -> PORTA7
- *  DB0 -> PORTC0
- *  DB1 -> PORTC1
- *  DB2 -> PORTD4
- *  DB3 -> PORTD5
- *  DB4 -> PORTD6
- *  DB5 -> PORTD7
- *  DB6 -> PORTC6
- *  DB7 -> PORTC7
- */
 	PORTA &=~(1<<PORTA5);
 	PORTA |=(1<<PORTA6);
 	_delay_us(1);
