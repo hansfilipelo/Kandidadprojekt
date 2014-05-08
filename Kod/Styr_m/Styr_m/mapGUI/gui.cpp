@@ -455,13 +455,3 @@ void Gui::on_saveDataButton_pressed()
 {
     saveToFile();
 }
-
-void Gui::on_actionReview_Data_triggered()
-{
-
-}
-
-void Gui::on_actionSave_Data_triggered()
-{
-    saveToFile();
-}
