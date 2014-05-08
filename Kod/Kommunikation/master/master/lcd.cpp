@@ -192,7 +192,7 @@ void Lcd::drawSensorNames(){
 	
 	//rad 2
 	firstDraw(0xc0,'F');
-	firstDraw(0xc1,'b');	
+	firstDraw(0xc1,'s');	
 	firstDraw(0xc7,'R');
 	firstDraw(0xc8,'b');
 
