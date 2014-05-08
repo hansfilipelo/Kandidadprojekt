@@ -792,11 +792,19 @@ int Robot::meanValueArray(char* inputArray, int iterations) {
 // -----------------------------------------
 //Sets reference values and moves robot in map abstraction if robot has moved one square
 void Robot::updateRobotPosition(){
-    if(validSensor == 'N'){
+    newData = false;
+		while(!newData){
+			asm("");
+			volatile int p;
+			p++;
+		}
+	
+	
+	if(validSensor == 'N'){
         validSensor = determineValidSensor();
     }
-    int sensorDifference = 0;
-    
+	
+    //båda måste ske flera gånger för att byta segment, sensorerna kan ge extremvärden som leder till för tidigt bytt ruta
     if (validSensor == 'b'){
 		int ref = bwdReference/40;
         sensorDifference = getBwdDistance() - ref*40;
@@ -806,7 +814,9 @@ void Robot::updateRobotPosition(){
 		sensorDifference = getFwdDistance() - ref*40;
     }
     
-    if ((sensorDifference > 36)||(sensorDifference < -36)){
+    if ((sensorDifference > 28)||(sensorDifference < -8)){
+		this->setUserSpeed(0);
+		drive();
 		commObj->reactivateRFID();	
 		MapSection* tempSection;
 		switch (direction)
@@ -878,6 +888,14 @@ void Robot::updateRobotPosition(){
 		}
 		//update which sensor that is valid and should be measured.
 		//and update the references on that sensor.
+		
+		newData = false;
+		while(!newData){
+			asm("");
+			volatile int p;
+			p++;
+		}
+		
 		validSensor = determineValidSensor();
 		if(validSensor == 'f'){
 			this->setFwdReference();
@@ -901,7 +919,7 @@ void Robot::updateRobotPosition(){
 
 char Robot::determineValidSensor(){
     
-    if( getFwdDistance() >= getBwdDistance()){ // bwd sensor is smaller than fwd.
+    if( getFwdDistance() > getBwdDistance()){ // bwd sensor is smaller than fwd.
         return 'b';
     }
     else{                   //fwd sensor is smaller than bwd.
@@ -952,19 +970,23 @@ char* Robot::getColAsChar(int col){
 
 // ----------------------------------------
 int Robot::getFwdDistance(){
-	if(fwdShortSensor < 60){
+	if(fwdShortSensor < 75){
+		asm("");
 		return fwdShortSensor;
 	}
 	else{
+		asm("");
 		return fwdLongSensor;	
 	}
 }
 
 int Robot::getBwdDistance(){
-	if(bwdShortSensor < 60){
+	if(bwdShortSensor < 75){
+		asm("");
 		return bwdShortSensor;
 	}
 	else{
+		asm("");
 		return bwdLongSensor;
 	}
 }
