@@ -156,7 +156,7 @@ Robot::Robot(int xPos, int yPos, Map* inMom, Communication* inComm) : MapSection
 	
 	Kd = 26;
 	Kp = 7;
-	Ref = 10;
+	Ref = 8;
 	
 	trimRight = 15;
 	trimLeft = 0;
@@ -1041,7 +1041,7 @@ bool Robot::isWallRight(){
 
 bool Robot::isCornerRight(){
     
-    if ( rightFrontSensor > 40 && rightBackSensor < 25 ){
+    if ( rightFrontSensor > 40 && rightBackSensor < 30 ){
 		volatile bool shitFace = true;
         return shitFace;
     }
@@ -1057,7 +1057,7 @@ bool Robot::isWallFwd(){
     if ( getFwdDistance() == 0 ) {
         return false;
     }
-    if ( getFwdDistance() < 40 ){
+    if ( getFwdDistance() < 30 ){
         return true;
     }
     else{
