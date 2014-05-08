@@ -777,6 +777,7 @@ void Robot::updateRobotPosition(){
     }
     
     if ((sensorDifference > 38)||(sensorDifference < -38)){
+		commObj->reactivateRFID();	
 		MapSection* tempSection;
 		switch (direction)
 		{

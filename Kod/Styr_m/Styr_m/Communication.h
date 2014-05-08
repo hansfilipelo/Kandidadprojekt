@@ -20,6 +20,7 @@ public:
     
     void sendMap();
     void sendRotateRequest();
+	void reactivateRFID();
     
 //flyttade från protected
 	unsigned char inData[27];

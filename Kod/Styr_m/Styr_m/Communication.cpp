@@ -53,7 +53,6 @@ void Communication::handleData(){
 		robotPointer->drive();
 	}
 	else if (this->inData[1] == 'h'){
-		
 			robotPointer->setUserSpeed(0);
 			robotPointer->stopRotation();
 			robotPointer->drive();
@@ -115,7 +114,7 @@ void Communication::handleData(){
         robotPointer->stopRotation();
     }
 	
-	// RFID-detektion, måste kollas på
+	// RFID-detektion
     if (this->inData[1] == 'R') {
 	    robotPointer->setRFID();
     }
@@ -183,4 +182,8 @@ double Communication::assembleDouble(char ten, char one, char tenth, char hundre
     
 }
 
-
+void Communication::reactivateRFID(){
+	    slavePointer->outDataArray[0] = 1;
+	    slavePointer->outDataArray[1] = 'r';
+	    slavePointer->SPI_Send();
+}
