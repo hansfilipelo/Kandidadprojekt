@@ -43,8 +43,8 @@ void handleDataFromSteer(){
 	ReceiveFromSteer=false;
 	memcpy(Bus.buffer, Bus.inDataArray,27);
 	if(Bus.buffer[1]=='M'){
-		
-		memcpy(buffer.mapArea[Firefly.outDataArray[2]],Bus.buffer,27);
+		memcpy(Firefly.outDataArray, Bus.buffer,27);
+		memcpy(buffer.mapArea[Firefly.outDataArray[2]],Firefly.outDataArray,27);
 		if((int)Firefly.mapNumber==31){
 			Firefly.sendMap();
 			Firefly.getMap = false;
