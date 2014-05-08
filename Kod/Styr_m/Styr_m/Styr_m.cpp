@@ -206,14 +206,14 @@ int main(void)
 			if(robotPointer->isCornerRight()){
 				while ( robotPointer->isWallRight() && !(abstractionObject->getManual())) {
 					robotPointer->changeGear('f');
-					robotPointer->setSpeed(50);
+					robotPointer->setSpeed(25);
 					robotPointer->drive();
 				}
 				_delay_ms(100);
 				robotPointer->rotateRight();
 				while ( !robotPointer->isWallRight() && !(abstractionObject->getManual())) {
 					robotPointer->changeGear('f');
-					robotPointer->setSpeed(50);
+					robotPointer->setSpeed(25);
 					robotPointer->drive();
 				}
 			}
