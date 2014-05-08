@@ -106,12 +106,14 @@ void Communication::handleData(){
             temp[it] = inData[it+21];
         }
         robotPointer->leftLongValueIn(temp);
+		robotPointer->newData = true;
         
     }
     
     // Gyro interrupt
     if (this->inData[1] == 'G') {
         robotPointer->stopRotation();
+		robotPointer->robotRotated();
     }
 	
 	// RFID-detektion

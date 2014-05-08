@@ -156,7 +156,7 @@ Robot::Robot(int xPos, int yPos, Map* inMom, Communication* inComm) : MapSection
 	
 	Kd = 26;
 	Kp = 7;
-	Ref = 14;
+	Ref = 12;
 	
 	trimRight = 15;
 	trimLeft = 0;
@@ -266,6 +266,7 @@ void Robot::rotateLeft(){
 	// Rotate mode
 	rotateLeftActive = false;
 	rotateActive = true;
+	newData = false;
 	// Seft diffs to 0
 	fwdDiff = 0;
 	bwdDiff = 0;
@@ -300,6 +301,12 @@ void Robot::rotateLeft(){
     else if (direction == 'r') {
         changeDirection('f');
     }
+	
+	while(!newData){
+		
+	}
+	this->robotRotated();
+		
 }
 
 // Stops rotation
@@ -313,6 +320,7 @@ void Robot::rotateRight(){
 	// Rotate mode
 	rotateRightActive = false;
 	rotateActive = true;
+	newData = false;
 	// Seft diffs to 0
 	fwdDiff = 0;
 	bwdDiff = 0;
@@ -348,6 +356,12 @@ void Robot::rotateRight(){
     else if (direction == 'l') {
         changeDirection('f');
     }
+	
+	while(!newData){
+		asm("");
+	}
+	this->robotRotated();
+	
 }
 
 //-----------------------------------------
@@ -487,7 +501,7 @@ void Robot::setFwdClosed(){
 		}
 	}
 	// Direction 32->x->0, "left"
-	else if (direction == 'l'){									//left right kan vara omvänt, måste testas
+	else if (direction == 'r'){									//left right kan vara omvänt, måste testas
         
         // Set every section between robot and wall as empty
         for (int i = 0; i < output; i++) {
@@ -501,7 +515,7 @@ void Robot::setFwdClosed(){
 		}
 	}
 	// Direction 0->x->32, "right"
-	else if (direction == 'r'){
+	else if (direction == 'l'){
         
         // Set every section between robot and wall as empty
         for (int i = 0; i < output; i++) {
@@ -559,7 +573,7 @@ void Robot::setBwdClosed(){
 		}
 	}
 	// Direction 0->x->32, "right"
-	else if (direction == 'l'){
+	else if (direction == 'r'){
         
         // Set every section between robot and wall as empty
         for (int i = 0; i < output; i++) {
@@ -573,7 +587,7 @@ void Robot::setBwdClosed(){
 		}
 	}
 	// Direction 32->x->0, "left"
-	else if (direction == 'r'){
+	else if (direction == 'l'){
         
         // Set every section between robot and wall as empty
         for (int i = 0; i < output; i++) {
@@ -637,7 +651,7 @@ void Robot::setLeftClosed(){
 		}
 	}
 	// Direction 0->x->32, "right"
-	else if (direction == 'l'){
+	else if (direction == 'r'){
         
         // Set every section between robot and wall as empty
         for (int i = 0; i < output; i++) {
@@ -651,7 +665,7 @@ void Robot::setLeftClosed(){
 		}
 	}
 	// Direction 32->x->0, "left"
-	else if (direction == 'r'){
+	else if (direction == 'l'){
         
         // Set every section between robot and wall as empty
         for (int i = 0; i < output; i++) {
@@ -714,7 +728,7 @@ void Robot::setRightClosed(){
         }
 	}
 	// Direction 0->x->32, "right"
-	else if (direction == 'l'){
+	else if (direction == 'r'){
         
         // Set every section between robot and wall as empty
         for (int i = 0; i < output; i++) {
@@ -729,7 +743,7 @@ void Robot::setRightClosed(){
         
 	}
 	// Direction 32->x->0, "left"
-	else if (direction == 'r'){
+	else if (direction == 'l'){
         
         // Set every section between robot and wall as empty
         for (int i = 0; i < output; i++) {
@@ -776,7 +790,7 @@ void Robot::updateRobotPosition(){
 		sensorDifference = getFwdDistance() - ref*40;
     }
     
-    if ((sensorDifference > 38)||(sensorDifference < -38)){
+    if ((sensorDifference > 36)||(sensorDifference < -36)){
 		commObj->reactivateRFID();	
 		MapSection* tempSection;
 		switch (direction)
@@ -831,7 +845,7 @@ void Robot::updateRobotPosition(){
 				//save section about to move into to temp container
 				tempSection = mom->getPos(xCoord+1,yCoord);
 				//move robot to new section
-				mom->setSection(xCoord,yCoord+1,this);
+				mom->setSection(xCoord+1,yCoord,this);
 				//put previousSection back to last position.
 				mom->setSection(xCoord,yCoord,previousSection);
 				//save temp section to previous section
@@ -1084,6 +1098,27 @@ bool Robot::isWallFwdClose()
 }
 
 // ----------------
+
+void Robot::robotRotated(){
+	validSensor = determineValidSensor();
+	if(validSensor == 'f'){
+		this->setFwdReference();
+	}
+	else if(validSensor == 'b'){
+		this->setBwdReference();
+	}
+	else{
+		validSensor = 'N';
+		this->setBwdReference();
+		this->setFwdReference();
+	}
+	setFwdClosed();
+	setBwdClosed();
+	setRightClosed();
+	setLeftClosed();
+}
+
+//-----------------
 
 void Robot::setRotateRightActive()
 {

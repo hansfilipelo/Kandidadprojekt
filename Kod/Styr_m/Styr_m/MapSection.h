@@ -96,6 +96,7 @@ public:
 	void rotateLeft();
 	void rotateRight();
     void stopRotation();
+	void robotRotated();
 	void setRotateRightActive();
 	bool getRotateRightActive();
 	void setRotateLeftActive();
@@ -139,6 +140,8 @@ public:
     void adjustPosition();
     
     void setControlParameters(double, double, int, int, int);
+	
+	volatile bool newData = false;
     
 protected:
     int getRightDistance();
