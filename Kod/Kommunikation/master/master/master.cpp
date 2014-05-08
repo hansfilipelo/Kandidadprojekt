@@ -41,26 +41,30 @@ Lcd Display;
 void handleDataFromSteer(){
 	
 	ReceiveFromSteer=false;
-	memcpy(Firefly.outDataArray, Bus.inDataArray,27);
-	
-	if(Firefly.outDataArray[1]=='M'){
-		
+	memcpy(Bus.buffer, Bus.inDataArray,27);
+	if(Bus.buffer[1]=='M'){
+		memcpy(Firefly.outDataArray, Bus.buffer,27);
 		memcpy(buffer.mapArea[Firefly.outDataArray[2]],Firefly.outDataArray,27);
-		
 		if((int)Firefly.mapNumber==31){
 			Firefly.sendMap();
 			Firefly.getMap = false;
 			Firefly.mapNumber = 0;
-		}else{
+		}
+		else{
 			Firefly.mapNumber++;
 			Firefly.getMap = true;
 		}
 	}
-	if(Firefly.outDataArray[1]=='g'){
+	if(Bus.buffer[1]=='g'){
 		Bus.outDataArray[0] = 2;
 		Bus.outDataArray[1] = 'g';
 		Bus.outDataArray[2] = 1;
 		Bus.sendArray(0);	
+	}
+	if(Bus.buffer[1]=='r'){
+		Bus.outDataArray[0] = 1;
+		Bus.outDataArray[1] = 'r';
+		Bus.sendArray(0);
 	}
 }	
 
@@ -87,8 +91,8 @@ void handleDataFromSensor(){
 	}
 	if(Bus.buffer[1] == 'R'){
 		Bus.outDataArray[0] = 1;
-		Bus.outDataArray[1] = 'r';
-		Bus.sendArray(0);
+		Bus.outDataArray[1] = 'R';
+		Bus.sendArray(1);
 	}
 }
 
@@ -132,7 +136,6 @@ ISR(INT0_vect){
 		
 	}
 	else{
-		
 		Bus.outDataArray[1]= 'q';
 		Bus.outDataArray[3] = 0;
 		Firefly.autonom = false;
@@ -170,8 +173,11 @@ int main(void)
 		}
 		Display.update();
 		
+		
+		
+		 // lampan tänds vid autonom körning
 		if(Firefly.autonom){
-			PORTA |=(1<<PORTA4); // tänds lampan vid autnom körning
+			PORTA |=(1<<PORTA4);
 		}
 		else{
 			PORTA &= ~(1<<PORTA4);
