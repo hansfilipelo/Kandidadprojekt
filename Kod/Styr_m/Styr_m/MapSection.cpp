@@ -156,7 +156,7 @@ Robot::Robot(int xPos, int yPos, Map* inMom, Communication* inComm) : MapSection
 	
 	Kd = 26;
 	Kp = 7;
-	Ref = 14;
+	Ref = 12;
 	
 	trimRight = 15;
 	trimLeft = 0;
