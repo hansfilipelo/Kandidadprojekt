@@ -28,7 +28,7 @@ void Spi::init(){
 	PORTA |= (1<<PORTA1);
 	PORTB |= (1<<PORTB4);
     
-	/* Enable SPI, Master, set clock rate fck/16 */
+	/* Enable SPI, Master, set clock rate fck/8 */
 	SPCR |= (1<<SPE)|(1<<MSTR)|(1<<SPR0)|(1<<SPI2X);
     
 	//Enable interupts
