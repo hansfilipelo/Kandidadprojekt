@@ -610,7 +610,15 @@
     <addaction name="actionSetParameter"/>
     <addaction name="actionHalt"/>
    </widget>
+   <widget class="QMenu" name="menuData">
+    <property name="title">
+     <string>Data</string>
+    </property>
+    <addaction name="actionSave_Data"/>
+    <addaction name="actionReview_Data"/>
+   </widget>
    <addaction name="menuCommands"/>
+   <addaction name="menuData"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -691,6 +699,16 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+X</string>
+   </property>
+  </action>
+  <action name="actionSave_Data">
+   <property name="text">
+    <string>Save Data</string>
+   </property>
+  </action>
+  <action name="actionReview_Data">
+   <property name="text">
+    <string>Review Data</string>
    </property>
   </action>
  </widget>

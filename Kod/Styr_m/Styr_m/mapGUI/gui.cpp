@@ -18,10 +18,6 @@ Gui::Gui(QWidget *parent) :
     ui->setupUi(this);
     setupPlots();
     ui->speedPercent->setText(0);
-    /*connect(timer, SIGNAL(timeout()), this, SLOT(updateTimeVector()));
-    timeVector.insert(0,0);
-    timer->start(1000);
-    */
     ui->mapView->setScene(scene);
     //alla keys förutom pilarna kräver manuell connection, bör rensas upp då alla slots inte behövs. Har atm flera slots som gör samma saker
     // via shortcuts samt knappar i UI:n
@@ -452,6 +448,20 @@ void Gui::on_actionSetParameter_triggered()
 }
 
 void Gui::on_saveDataButton_pressed()
+{
+    saveToFile();
+}
+
+void Gui::on_actionReview_Data_triggered()
+{
+    if (graph != nullptr){
+        delete graph;
+    }
+    graph = new graphWindow;
+    graph->show();
+}
+
+void Gui::on_actionSave_Data_triggered()
 {
     saveToFile();
 }

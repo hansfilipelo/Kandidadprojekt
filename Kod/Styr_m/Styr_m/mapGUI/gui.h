@@ -10,8 +10,9 @@
 #include <QGraphicsScene>
 #include <QtAlgorithms>
 #include <QtSerialPort/QtSerialPort>
+#include <graphwindow.h>
 
-
+class graphWindow;
 class SerialPort;
 class Order;
 namespace Ui {
@@ -73,7 +74,12 @@ private slots:
     void on_saveDataButton_pressed();
 
 
+    void on_actionReview_Data_triggered();
+
+    void on_actionSave_Data_triggered();
+
 private:
+    graphWindow* graph;
     QTime time;
     int val = 0;
     Ui::Gui *ui;
