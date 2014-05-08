@@ -651,7 +651,7 @@ void Robot::setLeftClosed(){
 		}
 	}
 	// Direction 0->x->32, "right"
-	else if (direction == 'r'){
+	else if (direction == 'l'){
         
         // Set every section between robot and wall as empty
         for (int i = 0; i < output; i++) {
@@ -665,7 +665,7 @@ void Robot::setLeftClosed(){
 		}
 	}
 	// Direction 32->x->0, "left"
-	else if (direction == 'l'){
+	else if (direction == 'r'){
         
         // Set every section between robot and wall as empty
         for (int i = 0; i < output; i++) {
@@ -728,7 +728,7 @@ void Robot::setRightClosed(){
         }
 	}
 	// Direction 0->x->32, "right"
-	else if (direction == 'r'){
+	else if (direction == 'l'){
         
         // Set every section between robot and wall as empty
         for (int i = 0; i < output; i++) {
@@ -743,7 +743,7 @@ void Robot::setRightClosed(){
         
 	}
 	// Direction 32->x->0, "left"
-	else if (direction == 'l'){
+	else if (direction == 'r'){
         
         // Set every section between robot and wall as empty
         for (int i = 0; i < output; i++) {
