@@ -952,7 +952,7 @@ char* Robot::getColAsChar(int col){
 
 // ----------------------------------------
 int Robot::getFwdDistance(){
-	if(fwdShortSensor < 60){
+	if(fwdShortSensor < 80){
 		return fwdShortSensor;
 	}
 	else{
@@ -961,7 +961,7 @@ int Robot::getFwdDistance(){
 }
 
 int Robot::getBwdDistance(){
-	if(bwdShortSensor < 60){
+	if(bwdShortSensor < 80){
 		return bwdShortSensor;
 	}
 	else{
@@ -1057,7 +1057,7 @@ bool Robot::isWallFwd(){
     if ( getFwdDistance() == 0 ) {
         return false;
     }
-    if ( getFwdDistance() < 30 ){
+    if ( getFwdDistance() < 35 ){
         return true;
     }
     else{
@@ -1088,7 +1088,7 @@ bool Robot::isWallFwdClose()
 	    if ( getFwdDistance() == 0 ) {
 		    return false;
 	    }
-	    if ( getFwdDistance() < 30 ){
+	    if ( getFwdDistance() < 20 ){
 		    return true;
 	    }
 	    else{

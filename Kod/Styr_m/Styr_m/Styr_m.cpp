@@ -193,15 +193,7 @@ int main(void)
 			}
         }
         // Automatic mode
-        else {
-			//om ej vägg framåt men vägg höger, följ den
-			if ((!robotPointer->isWallFwd()) && (robotPointer->isWallRight()))
-			{
-				robotPointer->setSpeed(robotPointer->getUserSpeed());
-				robotPointer->changeGear('f');
-				robotPointer->adjustPosition();
-			}
-            
+        else {            
 			//----------------------Om kortdistans flyttas fram----------
 			if(robotPointer->isCornerRight()){
 				while ( robotPointer->isWallRight() && !(abstractionObject->getManual())) {

@@ -179,6 +179,12 @@ void sendSensors(){
 	sensormodul.outDataArray[24] = (RfidCount/100);
 	sensormodul.outDataArray[25] = ((RfidCount/10) %10);
 	sensormodul.outDataArray[26] = (RfidCount % 10);
+	
+	
+	if (sensormodul.outDataArray[9] == 0){
+		volatile int p = 0;
+		p++;
+	}
 
     sensormodul.SPI_Send();			//send outDataArray
 }
