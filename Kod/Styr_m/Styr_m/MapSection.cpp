@@ -480,7 +480,9 @@ void Robot::setFwdClosed(){
             if(yCoord+i+1>16){
                 break;
             }
-            mom->convertSection(xCoord,yCoord + i + 1, 'e');
+			if(mom->getPos(xCoord,yCoord + i + 1)->getType() != 'f'){
+				 mom->convertSection(xCoord,yCoord + i + 1, 'e');
+			}
 		}
         if(output == 0){
 	        mom->convertSection(xCoord,yCoord + 1, 'c');
@@ -494,7 +496,9 @@ void Robot::setFwdClosed(){
             if(yCoord-i-1<0){
                 break;
             }
-            mom->convertSection(xCoord,yCoord - i - 1, 'e');
+			if(mom->getPos(xCoord,yCoord - i - 1)->getType() != 'f'){
+				mom->convertSection(xCoord,yCoord - i - 1, 'e');
+			}
         }
 		if(output == 0){
 			mom->convertSection(xCoord,yCoord - 1, 'c');
@@ -508,7 +512,9 @@ void Robot::setFwdClosed(){
             if(xCoord+i+1>31){
                 break;
             }
-            mom->convertSection(xCoord + i + 1,yCoord, 'e');
+			if(mom->getPos(xCoord + i + 1,yCoord)->getType() != 'f'){
+				mom->convertSection(xCoord + i + 1,yCoord, 'e');
+			}
         }
 		if(output == 0){
 			mom->convertSection(xCoord + 1,yCoord, 'c');
@@ -522,7 +528,9 @@ void Robot::setFwdClosed(){
             if(xCoord-i-1<0){
                 break;
             }
+			if(mom->getPos(xCoord - i - 1,yCoord)->getType() != 'f'){
             mom->convertSection(xCoord - i - 1,yCoord, 'e');
+			}
         }
 		if(output == 0){
 			mom->convertSection(xCoord - 1,yCoord, 'c');
@@ -552,7 +560,9 @@ void Robot::setBwdClosed(){
             if(yCoord-1-i < 0){
                 break;
             }
-            mom->convertSection(xCoord,yCoord - i - 1, 'e');
+			if(mom->getPos(xCoord,yCoord - i - 1)->getType() != 'f'){
+				mom->convertSection(xCoord,yCoord - i - 1, 'e');
+			}
         }
 		if(output == 0){
 			mom->convertSection(xCoord,yCoord - 1, 'c');
@@ -566,8 +576,10 @@ void Robot::setBwdClosed(){
             if(yCoord +1 +i >16){
                 break;
             }
-            mom->convertSection(xCoord,yCoord + i + 1, 'e');
-        }
+			if(mom->getPos(xCoord,yCoord + i + 1)->getType() != 'f'){
+				mom->convertSection(xCoord,yCoord + i + 1, 'e');
+			}
+		}
 		if(output == 0){
 			mom->convertSection(xCoord,yCoord + 1, 'c');
 		}
@@ -580,7 +592,9 @@ void Robot::setBwdClosed(){
             if(xCoord-1-i < 0){
                 break;
             }
-            mom->convertSection(xCoord - i - 1,yCoord, 'e');
+			if(mom->getPos(xCoord - i - 1,yCoord)->getType() != 'f'){
+				mom->convertSection(xCoord - i - 1,yCoord, 'e');
+			}
         }
 		if(output == 0){
 			mom->convertSection(xCoord - 1,yCoord, 'c');
@@ -594,7 +608,9 @@ void Robot::setBwdClosed(){
             if(xCoord+1+i > 31){
                 break;
             }
-            mom->convertSection(xCoord + i + 1,yCoord, 'e');
+			if(mom->getPos(xCoord + i + 1,yCoord)->getType() != 'f'){
+				mom->convertSection(xCoord + i + 1,yCoord, 'e');
+			}
         }
 		if(output == 0){
 			mom->convertSection(xCoord + 1,yCoord, 'c');
@@ -905,33 +921,16 @@ void Robot::adjustPosition(){
 	volatile int error = 0;
 	volatile int both = 0;
 	
-    if (rightFrontSensor > 80) { //right sensor out of range
-        frontError=Ref-fwdShortSensor;
-		backError=Ref-getBwdDistance();
-		
-		both = frontError + backError;
-		error = both/2;
-		
-        derivError=frontError - backError;
-		pd= Kp*error + Kd*derivError;
-        
-        turn(-pd);
-    }
-    else { //right Sensor in range
-        frontError=Ref-rightFrontSensor;
-		backError=Ref-rightBackSensor;
-		
-        derivError = frontError - backError;
-		
-		both = frontError + backError;
-		error = both/2;
-		
-        pd= Kp*error + Kd*derivError;
-		robotTempPd = pd;
-        
-        // Turn
-        turn(pd);
-    }
+    frontError=Ref-rightFrontSensor;
+	backError=Ref-rightBackSensor;
+	
+	both = frontError + backError;
+	error = both/2;
+	
+    derivError=frontError - backError;
+	pd= Kp*error + Kd*derivError;
+    
+	turn(pd);
     
 }
 
