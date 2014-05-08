@@ -320,7 +320,6 @@ void Robot::rotateRight(){
 	// Rotate mode
 	rotateRightActive = false;
 	rotateActive = true;
-	newData = false;
 	// Seft diffs to 0
 	fwdDiff = 0;
 	bwdDiff = 0;
@@ -333,6 +332,7 @@ void Robot::rotateRight(){
     // Turns
     changeGear('r');
     setSpeed(35);
+    newData = false;
 	while (rotateActive)
 	{
  		drive();
