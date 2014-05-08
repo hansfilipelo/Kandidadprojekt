@@ -501,7 +501,7 @@ void Robot::setFwdClosed(){
 		}
 	}
 	// Direction 32->x->0, "left"
-	else if (direction == 'r'){									//left right kan vara omvänt, måste testas
+	else if (direction == 'l'){									//left right kan vara omvänt, måste testas
         
         // Set every section between robot and wall as empty
         for (int i = 0; i < output; i++) {
@@ -515,7 +515,7 @@ void Robot::setFwdClosed(){
 		}
 	}
 	// Direction 0->x->32, "right"
-	else if (direction == 'l'){
+	else if (direction == 'r'){
         
         // Set every section between robot and wall as empty
         for (int i = 0; i < output; i++) {
@@ -573,7 +573,7 @@ void Robot::setBwdClosed(){
 		}
 	}
 	// Direction 0->x->32, "right"
-	else if (direction == 'r'){
+	else if (direction == 'l'){
         
         // Set every section between robot and wall as empty
         for (int i = 0; i < output; i++) {
@@ -587,7 +587,7 @@ void Robot::setBwdClosed(){
 		}
 	}
 	// Direction 32->x->0, "left"
-	else if (direction == 'l'){
+	else if (direction == 'r'){
         
         // Set every section between robot and wall as empty
         for (int i = 0; i < output; i++) {
