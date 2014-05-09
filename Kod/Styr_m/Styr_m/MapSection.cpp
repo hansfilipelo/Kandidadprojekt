@@ -824,11 +824,11 @@ void Robot::updateRobotPosition(){
     if ((sensorDifference > 36)||(sensorDifference < -36)){
 		commObj->reactivateRFID();	
 		MapSection* tempSection;
-		switch (direction)
 		if(haltAfterSection){
 			setUserSpeed(0);
 			drive();
 		}
+		switch (direction)
 		{
             
 //-------------------------Direction is forwards in map-------------------
