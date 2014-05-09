@@ -11,10 +11,14 @@
 #include <QtAlgorithms>
 #include <QtSerialPort/QtSerialPort>
 #include <graphwindow.h>
+#include <paramwindow.h>
 
 class graphWindow;
 class SerialPort;
 class Order;
+class ParamWindow;
+
+
 namespace Ui {
 class Gui;
 }
@@ -71,12 +75,10 @@ private slots:
 
     void on_actionHalt_triggered();
 
-    void on_saveDataButton_pressed();
-
-
     void on_actionReview_Data_triggered();
 
     void on_actionSave_Data_triggered();
+
 
 private:
     graphWindow* graph;
@@ -97,6 +99,7 @@ private:
     QGraphicsScene* scene = new QGraphicsScene();
     Order* bluetooth;
     SerialPort* serPort;
+    ParamWindow* parWindow;
 
     int speedMultiplier;
     //testvariabler
