@@ -1,24 +1,33 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef GRAPHWINDOW_H
+#define GRAPHWINDOW_H
 
-#include <QMainWindow>
+#include <QDialog>
+#include "gui.h"
 #include "qcustomplot.h"
 
+class Gui;
+
 namespace Ui {
-class MainWindow;
+class graphWindow;
 }
 
-class MainWindow : public QMainWindow
+class graphWindow : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
+    explicit graphWindow(QWidget *parent = 0);
+    ~graphWindow();
+
+private slots:
+    void on_pushButton_pressed();
+
+private:
+    Ui::graphWindow *ui;
+
     void fetchData();
     void drawPlots();
 
-private:
     QVector<double> sensorVector0;
     QVector<double> sensorVector1;
     QVector<double> sensorVector2;
@@ -35,8 +44,7 @@ private:
     QCustomPlot* customPlot4;
     QCustomPlot* customPlot5;
     QCustomPlot* customPlot6;
-    Ui::MainWindow *ui;
 
 };
 
-#endif // MAINWINDOW_H
+#endif // GRAPHWINDOW_H

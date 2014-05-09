@@ -34,7 +34,7 @@
     <property name="geometry">
      <rect>
       <x>220</x>
-      <y>500</y>
+      <y>460</y>
       <width>160</width>
       <height>22</height>
      </rect>
@@ -209,7 +209,7 @@
     <property name="geometry">
      <rect>
       <x>250</x>
-      <y>470</y>
+      <y>430</y>
       <width>62</width>
       <height>19</height>
      </rect>
@@ -222,7 +222,7 @@
     <property name="geometry">
      <rect>
       <x>300</x>
-      <y>470</y>
+      <y>430</y>
       <width>62</width>
       <height>19</height>
      </rect>
@@ -330,10 +330,10 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>70</x>
+      <x>90</x>
       <y>390</y>
       <width>91</width>
-      <height>20</height>
+      <height>30</height>
      </rect>
     </property>
     <property name="text">
@@ -343,7 +343,7 @@
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>170</x>
+      <x>180</x>
       <y>390</y>
       <width>115</width>
       <height>32</height>
@@ -358,7 +358,7 @@
      <rect>
       <x>300</x>
       <y>390</y>
-      <width>115</width>
+      <width>111</width>
       <height>32</height>
      </rect>
     </property>
@@ -367,6 +367,9 @@
     </property>
    </widget>
    <widget class="QLabel" name="kpLabel">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -380,6 +383,9 @@
     </property>
    </widget>
    <widget class="QLabel" name="kdLabel">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -393,6 +399,9 @@
     </property>
    </widget>
    <widget class="QLabel" name="refLabel">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -406,6 +415,9 @@
     </property>
    </widget>
    <widget class="QDoubleSpinBox" name="doubleSpinBox">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>40</x>
@@ -419,6 +431,9 @@
     </property>
    </widget>
    <widget class="QDoubleSpinBox" name="doubleSpinBox_2">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>40</x>
@@ -432,6 +447,9 @@
     </property>
    </widget>
    <widget class="QSpinBox" name="spinBox">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>40</x>
@@ -445,6 +463,9 @@
     </property>
    </widget>
    <widget class="QLabel" name="pdControlLabel">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -512,20 +533,10 @@
      <string>sensor0data</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="saveDataButton">
-    <property name="geometry">
-     <rect>
-      <x>170</x>
-      <y>430</y>
-      <width>115</width>
-      <height>32</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Save data</string>
-    </property>
-   </widget>
    <widget class="QLabel" name="trimLeftLabel">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>190</x>
@@ -539,6 +550,9 @@
     </property>
    </widget>
    <widget class="QLabel" name="trimRightLabel">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>190</x>
@@ -552,6 +566,9 @@
     </property>
    </widget>
    <widget class="QSpinBox" name="trimValueLeft">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>310</x>
@@ -568,6 +585,9 @@
     </property>
    </widget>
    <widget class="QSpinBox" name="trimValueRight">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>310</x>
@@ -584,6 +604,19 @@
     </property>
     <property name="value">
      <number>15</number>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="radioButton">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>390</y>
+      <width>21</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
     </property>
    </widget>
   </widget>
@@ -610,7 +643,15 @@
     <addaction name="actionSetParameter"/>
     <addaction name="actionHalt"/>
    </widget>
+   <widget class="QMenu" name="menuData">
+    <property name="title">
+     <string>Data</string>
+    </property>
+    <addaction name="actionSave_Data"/>
+    <addaction name="actionReview_Data"/>
+   </widget>
    <addaction name="menuCommands"/>
+   <addaction name="menuData"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -691,6 +732,16 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+X</string>
+   </property>
+  </action>
+  <action name="actionSave_Data">
+   <property name="text">
+    <string>Save Data</string>
+   </property>
+  </action>
+  <action name="actionReview_Data">
+   <property name="text">
+    <string>Review Data</string>
    </property>
   </action>
  </widget>
