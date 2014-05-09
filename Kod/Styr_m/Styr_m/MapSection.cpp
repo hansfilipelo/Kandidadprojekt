@@ -800,11 +800,19 @@ int Robot::meanValueArray(char* inputArray, int iterations) {
 // -----------------------------------------
 //Sets reference values and moves robot in map abstraction if robot has moved one square
 void Robot::updateRobotPosition(){
-    if(validSensor == 'N'){
+    newData = false;
+		while(!newData){
+			asm("");
+			volatile int p;
+			p++;
+		}
+	
+	
+	if(validSensor == 'N'){
         validSensor = determineValidSensor();
     }
-    int sensorDifference = 0;
-    
+	
+    //båda måste ske flera gånger för att byta segment, sensorerna kan ge extremvärden som leder till för tidigt bytt ruta
     if (validSensor == 'b'){
 		int ref = bwdReference/40;
         sensorDifference = getBwdDistance() - ref*40;
@@ -813,106 +821,135 @@ void Robot::updateRobotPosition(){
 		int ref = fwdReference/40;
 		sensorDifference = getFwdDistance() - ref*40;
     }
-	
+
+
 	/* The paramaters for sensor differences (references?) are called:
 	fwdRefLong;
 	bwdRefLong;
 	fwdRefShort;
 	bwdRefShort;
 	*/
-    
-    if ((sensorDifference > 36)||(sensorDifference < -36)){
-		commObj->reactivateRFID();	
-		MapSection* tempSection;
-		if(haltAfterSection){
-			setUserSpeed(0);
-			drive();
-		}
-		switch (direction)
-		{
-            
-//-------------------------Direction is forwards in map-------------------
-			case 'f':
-				//save section about to move into to temp container
-				tempSection = mom->getPos(xCoord,yCoord+1);
-				//move robot to new section
-				mom->setSection(xCoord,yCoord+1,this);
-				//put previousSection back to last position. 
-				mom->setSection(xCoord,yCoord,previousSection);
-				//save temp section to previous section
-				previousSection = tempSection;
-				
-				yCoord++;
-				break;
-            
-//-------------------------Direction is backwards in map-------------------
-			case 'b':
-				//save section about to move into to temp container
-				tempSection = mom->getPos(xCoord,yCoord-1);
-				//move robot to new section
-				mom->setSection(xCoord,yCoord-1,this);
-				//put previousSection back to last position.
-				mom->setSection(xCoord,yCoord,previousSection);
-				//save temp section to previous section
-				previousSection = tempSection;
-				
-				yCoord--;
-            
-				break;
-            
-//-------------------------Direction is right in map-----------------------
-			case 'r':
-				//save section about to move into to temp container
-				tempSection = mom->getPos(xCoord-1,yCoord);
-				//move robot to new section
-				mom->setSection(xCoord-1,yCoord,this);
-				//put previousSection back to last position.
-				mom->setSection(xCoord,yCoord,previousSection);
-				//save temp section to previous section
-				previousSection = tempSection;
-				
-				xCoord--;
-  
-				break;
-            
-//-------------------------Direction is left in map------------------------
-			case 'l':
-				//save section about to move into to temp container
-				tempSection = mom->getPos(xCoord+1,yCoord);
-				//move robot to new section
-				mom->setSection(xCoord+1,yCoord,this);
-				//put previousSection back to last position.
-				mom->setSection(xCoord,yCoord,previousSection);
-				//save temp section to previous section
-				previousSection = tempSection;
-				
-				xCoord++;
-            
-				break;
-            
-	//-------------------------Direction is undefined.-------------------------
-			default :
-				//would like to throw some kind of error here.
-				return;
-		}
-		//update which sensor that is valid and should be measured.
-		//and update the references on that sensor.
-		validSensor = determineValidSensor();
-		if(validSensor == 'f'){
-			this->setFwdReference();
-		}
-		else if(validSensor == 'b'){
-			this->setBwdReference();
+	
+	int fwdref = 0;
+	int bwdref = 0;
+	
+	if(usingLong){
+		fwdref = 38;
+		bwdref = 2;
+	}
+	else{
+		fwdref = 22;
+		bwdref = 4;
+	}
+    if ((sensorDifference > fwdref)||(sensorDifference < bwdref)){
+		if(movedToNewPosition < 2){
+			movedToNewPosition++;
+			return;
 		}
 		else{
-			validSensor = 'N';
-			this->setBwdReference();
-			this->setFwdReference();
+			movedToNewPosition = 0;
+			
+			if(haltAfterSection){
+			this->setUserSpeed(0);
+			drive();
+			}
+			commObj->reactivateRFID();
+				
+			MapSection* tempSection;
+			switch (direction)
+			{
+            
+	//-------------------------Direction is forwards in map-------------------
+				case 'f':
+					//save section about to move into to temp container
+					tempSection = mom->getPos(xCoord,yCoord+1);
+					//move robot to new section
+					mom->setSection(xCoord,yCoord+1,this);
+					//put previousSection back to last position. 
+					mom->setSection(xCoord,yCoord,previousSection);
+					//save temp section to previous section
+					previousSection = tempSection;
+				
+					yCoord++;
+					break;
+            
+	//-------------------------Direction is backwards in map-------------------
+				case 'b':
+					//save section about to move into to temp container
+					tempSection = mom->getPos(xCoord,yCoord-1);
+					//move robot to new section
+					mom->setSection(xCoord,yCoord-1,this);
+					//put previousSection back to last position.
+					mom->setSection(xCoord,yCoord,previousSection);
+					//save temp section to previous section
+					previousSection = tempSection;
+				
+					yCoord--;
+            
+					break;
+            
+	//-------------------------Direction is right in map-----------------------
+				case 'r':
+					//save section about to move into to temp container
+					tempSection = mom->getPos(xCoord-1,yCoord);
+					//move robot to new section
+					mom->setSection(xCoord-1,yCoord,this);
+					//put previousSection back to last position.
+					mom->setSection(xCoord,yCoord,previousSection);
+					//save temp section to previous section
+					previousSection = tempSection;
+				
+					xCoord--;
+  
+					break;
+            
+	//-------------------------Direction is left in map------------------------
+				case 'l':
+					//save section about to move into to temp container
+					tempSection = mom->getPos(xCoord+1,yCoord);
+					//move robot to new section
+					mom->setSection(xCoord+1,yCoord,this);
+					//put previousSection back to last position.
+					mom->setSection(xCoord,yCoord,previousSection);
+					//save temp section to previous section
+					previousSection = tempSection;
+				
+					xCoord++;
+            
+					break;
+            
+		//-------------------------Direction is undefined.-------------------------
+				default :
+					//would like to throw some kind of error here.
+					return;
+			}
+			//update which sensor that is valid and should be measured.
+			//and update the references on that sensor.
+		
+			newData = false;
+			while(!newData){
+				asm("");
+				volatile int p;
+				p++;
+			}
+		
+			validSensor = determineValidSensor();
+			if(validSensor == 'f'){
+				this->setFwdReference();
+			}
+			else if(validSensor == 'b'){
+				this->setBwdReference();
+			}
+			else{
+				validSensor = 'N';
+				this->setBwdReference();
+				this->setFwdReference();
+			}
+			setFwdClosed();
+			setBwdClosed();
+			setRightClosed();
+			setLeftClosed();
 		}
-		setFwdClosed();
-		setBwdClosed();
-		setRightClosed();
-		setLeftClosed();
 	}
 }
 
@@ -920,7 +957,7 @@ void Robot::updateRobotPosition(){
 
 char Robot::determineValidSensor(){
     
-    if( getFwdDistance() >= getBwdDistance()){ // bwd sensor is smaller than fwd.
+    if( getFwdDistance() > getBwdDistance()){ // bwd sensor is smaller than fwd.
         return 'b';
     }
     else{                   //fwd sensor is smaller than bwd.
@@ -971,19 +1008,27 @@ char* Robot::getColAsChar(int col){
 
 // ----------------------------------------
 int Robot::getFwdDistance(){
-	if(fwdShortSensor < 80){
+	if(fwdShortSensor < 75){
+		asm("");
+		usingLong = false;
 		return fwdShortSensor;
 	}
 	else{
+		asm("");
+		usingLong = true;
 		return fwdLongSensor;	
 	}
 }
 
 int Robot::getBwdDistance(){
-	if(bwdShortSensor < 80){
+	if(bwdShortSensor < 75){
+		asm("");
+		usingLong = false;
 		return bwdShortSensor;
 	}
 	else{
+		asm("");
+		usingLong = true;
 		return bwdLongSensor;
 	}
 }
@@ -1090,7 +1135,7 @@ bool Robot::isWallFwd(){
     if ( getFwdDistance() == 0 ) {
         return false;
     }
-    if ( getFwdDistance() < 35 ){
+    if ( getFwdDistance() < 40 ){
         return true;
     }
     else{
@@ -1121,7 +1166,7 @@ bool Robot::isWallFwdClose()
 	    if ( getFwdDistance() == 0 ) {
 		    return false;
 	    }
-	    if ( getFwdDistance() < 20 ){
+	    if ( getFwdDistance() < 30 ){
 		    return true;
 	    }
 	    else{

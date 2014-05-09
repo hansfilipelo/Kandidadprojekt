@@ -177,12 +177,7 @@ int main(void)
         // Manual mode
         if (abstractionObject->getManual()) {
             asm("");
-
-			if (i == 500)
-			{
-				robotPointer->updateRobotPosition();
-			}
-			i++;
+			
 			if (robotPointer->getRotateRightActive())
 			{
 				robotPointer->rotateRight();
@@ -260,7 +255,7 @@ int main(void)
 		}
     
     // Look for walls every 500th turn of main loop
-    if (i == 500) {
+    if (i == 250) {
               // Update position in map
         robotPointer->updateRobotPosition();
         
