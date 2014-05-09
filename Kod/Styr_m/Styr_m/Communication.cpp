@@ -121,15 +121,29 @@ void Communication::handleData(){
 	    robotPointer->setRFID();
     }
     
-    // Constants for PD-control
+    // Constants for PD-control, mapping and wall follower
     if(this->inData[1]=='P'){
+		// PD-control
         double kp=assembleDouble(inData[3],inData[4],inData[5],inData[6]);
         double kd=assembleDouble(inData[7],inData[8],inData[9],inData[10]);
         int ref=(int)inData[11];
         int trimLeft = (int)inData[12];
         int trimRight = (int)inData[13];
 		
-        robotPointer->setControlParameters(kp,kd,ref,trimLeft,trimRight);
+		// Mapping
+		int fwdRefLong = (int)inData[14];
+		int bwdRefLong = (int)inData[15];
+		int fwdRefShort = (int)inData[16];
+		int bwdRefShort = (int)inData[16];
+		
+		// Wall follower
+		int rightCornerFront = (int)inData[17];
+		int rightCornerBack = (int)inData[18];
+		int rightWallFront = (int)inData[19];
+		int rightWallBack = (int)inData[20];
+		int haltAfterSection = (int)inData[21];
+		
+        robotPointer->setControlParameters(kp,kd,ref,trimLeft,trimRight, fwdRefLong, bwdRefLong, fwdRefShort, bwdRefShort, rightCornerFront, rightCornerBack, rightWallFront, rightWallBack, haltAfterSection);
     }
     
 }

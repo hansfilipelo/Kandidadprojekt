@@ -139,7 +139,7 @@ public:
     void turn(int pd); //Positive or negative value will decide left or right
     void adjustPosition();
     
-    void setControlParameters(double, double, int, int, int);
+    void setControlParameters(double inputKp, double inputKd, int inputRef, int inTrimLeft, int inTrimRight, int inFwdRefLong, int inBwdRefLong, int inFwdRefShort, int inBwdRefShort, int inRightCornerFront, int inRightCornerBack, int inRightWallFront, int inRightWallBack, int inHaltAfterSection);
 	
 	volatile bool newData = false;
     
