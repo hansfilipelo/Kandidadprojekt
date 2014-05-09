@@ -161,6 +161,14 @@ Robot::Robot(int xPos, int yPos, Map* inMom, Communication* inComm) : MapSection
 	trimRight = 15;
 	trimLeft = 0;
 	
+	fwdRefLong = 38;
+	bwdRefLong = 2;
+	
+	fwdRefShort = 22;
+	bwdRefShort = 4; 
+	
+	
+	
 	rotateRightActive = false;
 	rotateLeftActive = false; 
     
@@ -805,10 +813,21 @@ void Robot::updateRobotPosition(){
 		int ref = fwdReference/40;
 		sensorDifference = getFwdDistance() - ref*40;
     }
+	
+	/* The paramaters for sensor differences (references?) are called:
+	fwdRefLong;
+	bwdRefLong;
+	fwdRefShort;
+	bwdRefShort;
+	*/
     
     if ((sensorDifference > 36)||(sensorDifference < -36)){
 		commObj->reactivateRFID();	
 		MapSection* tempSection;
+		if(haltAfterSection){
+			setUserSpeed(0);
+			drive();
+		}
 		switch (direction)
 		{
             
@@ -987,11 +1006,25 @@ int Robot::getLeftDistance(){
 	}
 }
 
-void Robot::setControlParameters(double inputKp, double inputKd, int inputRef, int trimLeft, int trimRight){
+void Robot::setControlParameters(double inputKp, double inputKd, int inputRef, int inTrimLeft, int inTrimRight, int inFwdRefLong, int inBwdRefLong, int inFwdRefShort, int inBwdRefShort, int inRightCornerFront, int inRightCornerBack, int inRightWallFront, int inRightWallBack, int inHaltAfterSection){
     Kp=inputKp;
     Kd=inputKd;
     
     Ref=inputRef;
+	
+	fwdRefLong = inFwdRefLong;
+	bwdRefLong = inBwdRefLong;
+	fwdRefShort = inFwdRefShort;
+	bwdRefShort = inBwdRefShort;
+	
+	rightCornerFront = inRightCornerFront;
+	rightCornerBack = inRightCornerBack;
+	rightWallFront = inRightWallFront;
+	rightWallBack = inRightWallBack;
+	
+	haltAfterSection = (bool)inHaltAfterSection;
+	
+	// Trimming wall param
     
     this->trimLeft = trimLeft;
     this->trimRight = trimRight;
@@ -1026,8 +1059,8 @@ void Robot::setUserSpeed(int inSpeed)
 // -----------------------
 
 bool Robot::isWallRight(){
-    
-    if ( (rightFrontSensor < 30 && rightBackSensor < 30) ){
+	
+    if ( (rightFrontSensor < rightWallFront && rightBackSensor < rightWallBack) ){
 		volatile bool benny = true;
         return benny;
     }
@@ -1040,8 +1073,8 @@ bool Robot::isWallRight(){
 // --------------------------
 
 bool Robot::isCornerRight(){
-    
-    if ( rightFrontSensor > 40 && rightBackSensor < 30 ){
+	
+    if ( rightFrontSensor > rightCornerFront && rightBackSensor < rightCornerBack ){
 		volatile bool shitFace = true;
         return shitFace;
     }
