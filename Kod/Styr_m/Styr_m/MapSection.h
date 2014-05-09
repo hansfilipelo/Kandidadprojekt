@@ -190,6 +190,21 @@ protected:
     MapSection* previousSection = NULL;
     Communication* commObj = NULL;
 	
+	// Parameters for detecting map sections
+	int fwdRefLong;
+	int bwdRefLong;
+	int fwdRefShort;
+	int bwdRefShort;
+	
+	//Paramater that determines if robot should stop after one segment.
+	bool haltAfterSection = false;
+	
+	//Paramaters for wall and corner detection
+	int rightCornerFront = 40;
+	int rightCornerBack = 30;
+	int rightWallFront = 30;
+	int rightWallBack = 30;
+	
 	int speed = 0;
 	int userSpeed = 0;
     int trimLeft;
