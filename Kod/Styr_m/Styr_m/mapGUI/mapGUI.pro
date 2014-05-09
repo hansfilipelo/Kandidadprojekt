@@ -17,13 +17,16 @@ SOURCES += main.cpp \
     gui.cpp \
     qcustomplot.cpp \
     ../../../Kommunikation/serialreader/order.cpp \
-    ../../../Kommunikation/serialreader/serialport.cpp
+    ../../../Kommunikation/serialreader/serialport.cpp \
+    graphwindow.cpp
 
 HEADERS  += \
     gui.h \
     qcustomplot.h \
     ../../../Kommunikation/serialreader/serialport.h \
-    ../../../Kommunikation/serialreader/order.h
+    ../../../Kommunikation/serialreader/order.h \
+    graphwindow.h
 
 FORMS    += \
-    gui.ui
+    gui.ui \
+    graphwindow.ui

@@ -10,8 +10,9 @@
 #include <QGraphicsScene>
 #include <QtAlgorithms>
 #include <QtSerialPort/QtSerialPort>
+#include <graphwindow.h>
 
-
+class graphWindow;
 class SerialPort;
 class Order;
 namespace Ui {
@@ -73,7 +74,12 @@ private slots:
     void on_saveDataButton_pressed();
 
 
+    void on_actionReview_Data_triggered();
+
+    void on_actionSave_Data_triggered();
+
 private:
+    graphWindow* graph;
     QTime time;
     int val = 0;
     Ui::Gui *ui;
@@ -94,16 +100,7 @@ private:
 
     int speedMultiplier;
     //testvariabler
-    char map[10][17]={{'U','U','U','U','U','U','U','F','U','E','E','R','E','E','E','E','U'},
-                      {'U','U','U','E','U','U','U','F','U','E','E','R','E','E','E','E','U'},
-                      {'U','U','E','E','U','U','U','F','U','E','E','R','E','E','E','E','U'},
-                      {'U','U','U','E','U','U','U','F','U','E','E','R','E','E','E','E','U'},
-                      {'F','U','U','E','U','U','U','F','U','E','E','R','E','E','E','E','U'},
-                      {'U','U','U','E','U','U','U','F','U','E','E','R','E','E','E','E','U'},
-                      {'U','R','U','E','E','U','U','F','U','E','E','R','E','E','E','E','U'},
-                      {'U','U','U','U','E','U','U','F','U','E','E','R','E','E','E','E','U'},
-                      {'U','U','U','U','U','U','U','F','U','E','E','R','E','E','E','E','U'},
-                      {'U','U','U','U','U','U','U','F','U','E','E','R','E','E','E','E','U'}};
+    char map[32][27];
     char testArray[25] = {24,'M',9,'F','F','F','F','F','F','F','F','F','F','F','F','F','F','F','F','F',0,0,0,0,0};
 };
 

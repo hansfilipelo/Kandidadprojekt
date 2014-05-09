@@ -156,7 +156,7 @@ Robot::Robot(int xPos, int yPos, Map* inMom, Communication* inComm) : MapSection
 	
 	Kd = 26;
 	Kp = 7;
-	Ref = 14;
+	Ref = 8;
 	
 	trimRight = 15;
 	trimLeft = 0;
@@ -320,7 +320,6 @@ void Robot::rotateRight(){
 	// Rotate mode
 	rotateRightActive = false;
 	rotateActive = true;
-	newData = false;
 	// Seft diffs to 0
 	fwdDiff = 0;
 	bwdDiff = 0;
@@ -333,6 +332,7 @@ void Robot::rotateRight(){
     // Turns
     changeGear('r');
     setSpeed(35);
+    newData = false;
 	while (rotateActive)
 	{
  		drive();
@@ -480,7 +480,9 @@ void Robot::setFwdClosed(){
             if(yCoord+i+1>16){
                 break;
             }
-            mom->convertSection(xCoord,yCoord + i + 1, 'e');
+			if(mom->getPos(xCoord,yCoord + i + 1)->getType() != 'f'){
+				 mom->convertSection(xCoord,yCoord + i + 1, 'e');
+			}
 		}
         if(output == 0){
 	        mom->convertSection(xCoord,yCoord + 1, 'c');
@@ -494,35 +496,41 @@ void Robot::setFwdClosed(){
             if(yCoord-i-1<0){
                 break;
             }
-            mom->convertSection(xCoord,yCoord - i - 1, 'e');
+			if(mom->getPos(xCoord,yCoord - i - 1)->getType() != 'f'){
+				mom->convertSection(xCoord,yCoord - i - 1, 'e');
+			}
         }
 		if(output == 0){
 			mom->convertSection(xCoord,yCoord - 1, 'c');
 		}
 	}
 	// Direction 32->x->0, "left"
-	else if (direction == 'r'){									//left right kan vara omvänt, måste testas
+	else if (direction == 'l'){									//left right kan vara omvänt, måste testas
         
         // Set every section between robot and wall as empty
         for (int i = 0; i < output; i++) {
             if(xCoord+i+1>31){
                 break;
             }
-            mom->convertSection(xCoord + i + 1,yCoord, 'e');
+			if(mom->getPos(xCoord + i + 1,yCoord)->getType() != 'f'){
+				mom->convertSection(xCoord + i + 1,yCoord, 'e');
+			}
         }
 		if(output == 0){
 			mom->convertSection(xCoord + 1,yCoord, 'c');
 		}
 	}
 	// Direction 0->x->32, "right"
-	else if (direction == 'l'){
+	else if (direction == 'r'){
         
         // Set every section between robot and wall as empty
         for (int i = 0; i < output; i++) {
             if(xCoord-i-1<0){
                 break;
             }
+			if(mom->getPos(xCoord - i - 1,yCoord)->getType() != 'f'){
             mom->convertSection(xCoord - i - 1,yCoord, 'e');
+			}
         }
 		if(output == 0){
 			mom->convertSection(xCoord - 1,yCoord, 'c');
@@ -552,7 +560,9 @@ void Robot::setBwdClosed(){
             if(yCoord-1-i < 0){
                 break;
             }
-            mom->convertSection(xCoord,yCoord - i - 1, 'e');
+			if(mom->getPos(xCoord,yCoord - i - 1)->getType() != 'f'){
+				mom->convertSection(xCoord,yCoord - i - 1, 'e');
+			}
         }
 		if(output == 0){
 			mom->convertSection(xCoord,yCoord - 1, 'c');
@@ -566,35 +576,41 @@ void Robot::setBwdClosed(){
             if(yCoord +1 +i >16){
                 break;
             }
-            mom->convertSection(xCoord,yCoord + i + 1, 'e');
-        }
+			if(mom->getPos(xCoord,yCoord + i + 1)->getType() != 'f'){
+				mom->convertSection(xCoord,yCoord + i + 1, 'e');
+			}
+		}
 		if(output == 0){
 			mom->convertSection(xCoord,yCoord + 1, 'c');
 		}
 	}
 	// Direction 0->x->32, "right"
-	else if (direction == 'r'){
+	else if (direction == 'l'){
         
         // Set every section between robot and wall as empty
         for (int i = 0; i < output; i++) {
             if(xCoord-1-i < 0){
                 break;
             }
-            mom->convertSection(xCoord - i - 1,yCoord, 'e');
+			if(mom->getPos(xCoord - i - 1,yCoord)->getType() != 'f'){
+				mom->convertSection(xCoord - i - 1,yCoord, 'e');
+			}
         }
 		if(output == 0){
 			mom->convertSection(xCoord - 1,yCoord, 'c');
 		}
 	}
 	// Direction 32->x->0, "left"
-	else if (direction == 'l'){
+	else if (direction == 'r'){
         
         // Set every section between robot and wall as empty
         for (int i = 0; i < output; i++) {
             if(xCoord+1+i > 31){
                 break;
             }
-            mom->convertSection(xCoord + i + 1,yCoord, 'e');
+			if(mom->getPos(xCoord + i + 1,yCoord)->getType() != 'f'){
+				mom->convertSection(xCoord + i + 1,yCoord, 'e');
+			}
         }
 		if(output == 0){
 			mom->convertSection(xCoord + 1,yCoord, 'c');
@@ -651,7 +667,7 @@ void Robot::setLeftClosed(){
 		}
 	}
 	// Direction 0->x->32, "right"
-	else if (direction == 'r'){
+	else if (direction == 'l'){
         
         // Set every section between robot and wall as empty
         for (int i = 0; i < output; i++) {
@@ -665,7 +681,7 @@ void Robot::setLeftClosed(){
 		}
 	}
 	// Direction 32->x->0, "left"
-	else if (direction == 'l'){
+	else if (direction == 'r'){
         
         // Set every section between robot and wall as empty
         for (int i = 0; i < output; i++) {
@@ -728,7 +744,7 @@ void Robot::setRightClosed(){
         }
 	}
 	// Direction 0->x->32, "right"
-	else if (direction == 'r'){
+	else if (direction == 'l'){
         
         // Set every section between robot and wall as empty
         for (int i = 0; i < output; i++) {
@@ -743,7 +759,7 @@ void Robot::setRightClosed(){
         
 	}
 	// Direction 32->x->0, "left"
-	else if (direction == 'l'){
+	else if (direction == 'r'){
         
         // Set every section between robot and wall as empty
         for (int i = 0; i < output; i++) {
@@ -791,6 +807,7 @@ void Robot::updateRobotPosition(){
     }
     
     if ((sensorDifference > 36)||(sensorDifference < -36)){
+		commObj->reactivateRFID();	
 		MapSection* tempSection;
 		switch (direction)
 		{
@@ -904,33 +921,16 @@ void Robot::adjustPosition(){
 	volatile int error = 0;
 	volatile int both = 0;
 	
-    if (rightFrontSensor > 80) { //right sensor out of range
-        frontError=Ref-fwdShortSensor;
-		backError=Ref-getBwdDistance();
-		
-		both = frontError + backError;
-		error = both/2;
-		
-        derivError=frontError - backError;
-		pd= Kp*error + Kd*derivError;
-        
-        turn(-pd);
-    }
-    else { //right Sensor in range
-        frontError=Ref-rightFrontSensor;
-		backError=Ref-rightBackSensor;
-		
-        derivError = frontError - backError;
-		
-		both = frontError + backError;
-		error = both/2;
-		
-        pd= Kp*error + Kd*derivError;
-		robotTempPd = pd;
-        
-        // Turn
-        turn(pd);
-    }
+    frontError=Ref-rightFrontSensor;
+	backError=Ref-rightBackSensor;
+	
+	both = frontError + backError;
+	error = both/2;
+	
+    derivError=frontError - backError;
+	pd= Kp*error + Kd*derivError;
+    
+	turn(pd);
     
 }
 
@@ -952,7 +952,7 @@ char* Robot::getColAsChar(int col){
 
 // ----------------------------------------
 int Robot::getFwdDistance(){
-	if(fwdShortSensor < 60){
+	if(fwdShortSensor < 80){
 		return fwdShortSensor;
 	}
 	else{
@@ -961,7 +961,7 @@ int Robot::getFwdDistance(){
 }
 
 int Robot::getBwdDistance(){
-	if(bwdShortSensor < 60){
+	if(bwdShortSensor < 80){
 		return bwdShortSensor;
 	}
 	else{
@@ -1041,7 +1041,7 @@ bool Robot::isWallRight(){
 
 bool Robot::isCornerRight(){
     
-    if ( rightFrontSensor > 40 && rightBackSensor < 25 ){
+    if ( rightFrontSensor > 40 && rightBackSensor < 30 ){
 		volatile bool shitFace = true;
         return shitFace;
     }
@@ -1057,7 +1057,7 @@ bool Robot::isWallFwd(){
     if ( getFwdDistance() == 0 ) {
         return false;
     }
-    if ( getFwdDistance() < 40 ){
+    if ( getFwdDistance() < 35 ){
         return true;
     }
     else{
@@ -1088,7 +1088,7 @@ bool Robot::isWallFwdClose()
 	    if ( getFwdDistance() == 0 ) {
 		    return false;
 	    }
-	    if ( getFwdDistance() < 30 ){
+	    if ( getFwdDistance() < 20 ){
 		    return true;
 	    }
 	    else{

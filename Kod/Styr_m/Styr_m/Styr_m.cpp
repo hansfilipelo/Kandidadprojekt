@@ -193,15 +193,7 @@ int main(void)
 			}
         }
         // Automatic mode
-        else {
-			//om ej vägg framåt men vägg höger, följ den
-			if ((!robotPointer->isWallFwd()) && (robotPointer->isWallRight()))
-			{
-				robotPointer->setSpeed(robotPointer->getUserSpeed());
-				robotPointer->changeGear('f');
-				robotPointer->adjustPosition();
-			}
-            
+        else {            
 			//----------------------Om kortdistans flyttas fram----------
 			if(robotPointer->isCornerRight()){
 				while ( robotPointer->isWallRight() && !(abstractionObject->getManual())) {
@@ -209,6 +201,7 @@ int main(void)
 					robotPointer->setSpeed(25);
 					robotPointer->drive();
 				}
+				_delay_ms(200);
 				robotPointer->rotateRight();
 				while ( !robotPointer->isWallRight() && !(abstractionObject->getManual())) {
 					robotPointer->changeGear('f');
@@ -217,7 +210,7 @@ int main(void)
 				}
 			}
             else if(robotPointer->isWallFwd()){
-				robotPointer->setSpeed(15);
+				robotPointer->setSpeed(20);
 				robotPointer->changeGear('f');
 				while (!robotPointer->isWallFwdClose() && !(abstractionObject->getManual()))
 				{
