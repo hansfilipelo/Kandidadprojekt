@@ -113,7 +113,9 @@ public:
 	void phiDotValueIn(char phi[3]);
     
 	// SLAM (mapping, positioning)
+	volatile int movedToNewPosition = 0;
 	volatile int sensorDifference = 0;
+	bool usingLong = false;
 	void setFwdClosed();
 	void setBwdClosed();
     void setRightClosed();
