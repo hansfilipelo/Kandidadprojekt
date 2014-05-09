@@ -333,7 +333,7 @@ void Gui::updateMap(){
                 scene->addItem(temp);
             }
             else if(mapArea[rad][kol]=='c'){
-                temp->setBrush(Qt::yellow);
+                temp->setBrush(Qt::lightGray);
                 scene->addItem(temp);
             }
             else if(mapArea[rad][kol]=='r'){
