@@ -29,6 +29,14 @@
 Kod/Styr/STYR/STYR/styrtest
 */Debug/*
 
+Kod/Styr_m/Styr_m/mapGUI/Makefile
+Kod/Styr_m/Styr_m/mapGUI/moc_gui.cpp
+Kod/Styr_m/Styr_m/mapGUI/moc_qcustomplot.cpp
+Kod/Styr_m/Styr_m/mapGUI/moc_serialport.cpp
+Kod/Styr_m/Styr_m/mapGUI/ui_gui.h
+moc_*
+ui_*
+
 # OS generated files #
 ######################
 .DS_Store
