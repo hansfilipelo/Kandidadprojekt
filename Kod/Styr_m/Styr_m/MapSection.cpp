@@ -834,12 +834,12 @@ void Robot::updateRobotPosition(){
 	int bwdref = 0;
 	
 	if(usingLong){
-		fwdref = 38;
-		bwdref = 2;
+		fwdref = 28;
+		bwdref = 0;
 	}
 	else{
-		fwdref = 22;
-		bwdref = 4;
+		fwdref = 28;
+		bwdref = 10;
 	}
     if ((sensorDifference > fwdref)||(sensorDifference < bwdref)){
 		if(movedToNewPosition < 2){
@@ -950,6 +950,10 @@ void Robot::updateRobotPosition(){
 			setRightClosed();
 			setLeftClosed();
 		}
+	}
+	else if (movedToNewPosition == 1)
+	{
+		movedToNewPosition = 0;
 	}
 }
 
