@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>341</width>
-    <height>575</height>
+    <width>244</width>
+    <height>588</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,30 +16,208 @@
   <widget class="QWidget" name="verticalLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>160</x>
-     <y>20</y>
-     <width>160</width>
-     <height>481</height>
+     <x>10</x>
+     <y>10</y>
+     <width>131</width>
+     <height>501</height>
     </rect>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout"/>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QLabel" name="label_1">
+      <property name="text">
+       <string>Kp</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="label_2">
+      <property name="text">
+       <string>Kd</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="label_3">
+      <property name="text">
+       <string>Ref</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="label_4">
+      <property name="text">
+       <string>trimLeft</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="label_5">
+      <property name="text">
+       <string>trimRight</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="label_6">
+      <property name="text">
+       <string>Forward Ref Long</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="label_7">
+      <property name="text">
+       <string>Backward Ref Long</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="label_8">
+      <property name="text">
+       <string>Forward Ref Short</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="label_9">
+      <property name="text">
+       <string>Backward Ref Short</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="label_10">
+      <property name="text">
+       <string>Right Corner Front</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="label_11">
+      <property name="text">
+       <string>Right Corner Back</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="label_12">
+      <property name="text">
+       <string>Right Wall Front</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="label_13">
+      <property name="text">
+       <string>Right Wall Back</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="label_14">
+      <property name="text">
+       <string>Halt After Section</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
   <widget class="QWidget" name="verticalLayoutWidget_2">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>20</y>
-     <width>114</width>
-     <height>481</height>
+     <x>150</x>
+     <y>10</y>
+     <width>81</width>
+     <height>501</height>
     </rect>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout_2"/>
+   <layout class="QVBoxLayout" name="verticalLayout_2">
+    <item>
+     <widget class="QDoubleSpinBox" name="kpSpinBox">
+      <property name="value">
+       <double>8.000000000000000</double>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QDoubleSpinBox" name="kdSpinBox">
+      <property name="value">
+       <double>23.000000000000000</double>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QSpinBox" name="refBox">
+      <property name="value">
+       <number>12</number>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QSpinBox" name="trimLeftBox"/>
+    </item>
+    <item>
+     <widget class="QSpinBox" name="trimRightBox">
+      <property name="value">
+       <number>30</number>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QSpinBox" name="fwdRefLongBox"/>
+    </item>
+    <item>
+     <widget class="QSpinBox" name="bwdRefLongBox"/>
+    </item>
+    <item>
+     <widget class="QSpinBox" name="fwdRefShortBox"/>
+    </item>
+    <item>
+     <widget class="QSpinBox" name="bwdRefShortBox"/>
+    </item>
+    <item>
+     <widget class="QSpinBox" name="rightCornerFrontBox">
+      <property name="value">
+       <number>30</number>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QSpinBox" name="rightCornerBackBox">
+      <property name="value">
+       <number>30</number>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QSpinBox" name="rightWallFrontBox">
+      <property name="value">
+       <number>30</number>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QSpinBox" name="rightWallBackBox">
+      <property name="value">
+       <number>30</number>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QCheckBox" name="haltBox">
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="setParamButton">
    <property name="geometry">
     <rect>
-     <x>170</x>
-     <y>530</y>
+     <x>110</x>
+     <y>520</y>
      <width>131</width>
      <height>32</height>
     </rect>
@@ -48,17 +226,30 @@
     <string>Set Paramaters</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_2">
+  <widget class="QPushButton" name="closeButton">
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>530</y>
-     <width>114</width>
+     <y>520</y>
+     <width>91</width>
      <height>32</height>
     </rect>
    </property>
    <property name="text">
     <string>Close</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="setDefaultButton">
+   <property name="geometry">
+    <rect>
+     <x>110</x>
+     <y>550</y>
+     <width>131</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Set Default</string>
    </property>
   </widget>
  </widget>

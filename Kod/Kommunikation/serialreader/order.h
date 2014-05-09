@@ -31,7 +31,7 @@ public:
     void test();
     void fetchMap();
     void autonom(int);
-    void setControlParameters(double, double, int, int, int);
+    void setControlParameters(double,double,int,int,int,int,int,int,int,int,int,int,int,int);
     
     int getTen(double); //Returns ex. 1 if the number is 10
     int getOne(double); //Returns ex 1 if the number is 1

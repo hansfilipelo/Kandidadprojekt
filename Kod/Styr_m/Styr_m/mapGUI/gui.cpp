@@ -17,6 +17,12 @@ Gui::Gui(QWidget *parent) :
 {
     ui->setupUi(this);
     setupPlots();
+
+
+    parWindow = new ParamWindow;
+    parWindow->setOrder(bluetooth);
+
+
     ui->speedPercent->setText(0);
     ui->mapView->setScene(scene);
     //alla keys förutom pilarna kräver manuell connection, bör rensas upp då alla slots inte behövs. Har atm flera slots som gör samma saker
@@ -27,11 +33,13 @@ Gui::Gui(QWidget *parent) :
     QString s = QString::number(i);
     ui->speedPercent->setText(s);
     speedMultiplier = i;
+
     for(unsigned int i = 0; i<32; i++){
         char array[27] = {0,0,0,'u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u',0,0,0,0,0,0,0};
         memcpy(mapArea[i],array,27);
     }
     updateMap();
+
 
 }
 
@@ -42,6 +50,7 @@ Gui::~Gui()
 
 void Gui::labelSet(QString text){
     ui->label->setText(text);
+
 }
 
 void Gui::saveToFile()
@@ -426,7 +435,11 @@ void Gui::on_fetchButton_pressed()
 
 void Gui::on_setParameterButton_pressed()
 {
-    double kp;
+    //if(connectStatus){
+        parWindow->show();
+    //}    }
+
+    /*double kp;
     double kd;
     int ref;
     int trimLeft;
@@ -440,16 +453,12 @@ void Gui::on_setParameterButton_pressed()
     if(connectStatus){
         bluetooth->setControlParameters(kp, kd, ref,trimLeft,trimRight);
     }
+    */
 }
 
 void Gui::on_actionSetParameter_triggered()
 {
     on_setParameterButton_pressed();
-}
-
-void Gui::on_saveDataButton_pressed()
-{
-    saveToFile();
 }
 
 void Gui::on_actionReview_Data_triggered()

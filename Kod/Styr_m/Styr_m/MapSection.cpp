@@ -824,11 +824,11 @@ void Robot::updateRobotPosition(){
     if ((sensorDifference > 36)||(sensorDifference < -36)){
 		commObj->reactivateRFID();	
 		MapSection* tempSection;
-		switch (direction)
 		if(haltAfterSection){
 			setUserSpeed(0);
 			drive();
 		}
+		switch (direction)
 		{
             
 //-------------------------Direction is forwards in map-------------------
@@ -1006,11 +1006,25 @@ int Robot::getLeftDistance(){
 	}
 }
 
-void Robot::setControlParameters(double inputKp, double inputKd, int inputRef, int trimLeft, int trimRight){
+void Robot::setControlParameters(double inputKp, double inputKd, int inputRef, int inTrimLeft, int inTrimRight, int inFwdRefLong, int inBwdRefLong, int inFwdRefShort, int inBwdRefShort, int inRightCornerFront, int inRightCornerBack, int inRightWallFront, int inRightWallBack, int inHaltAfterSection){
     Kp=inputKp;
     Kd=inputKd;
     
     Ref=inputRef;
+	
+	fwdRefLong = inFwdRefLong;
+	bwdRefLong = inBwdRefLong;
+	fwdRefShort = inFwdRefShort;
+	bwdRefShort = inBwdRefShort;
+	
+	rightCornerFront = inRightCornerFront;
+	rightCornerBack = inRightCornerBack;
+	rightWallFront = inRightWallFront;
+	rightWallBack = inRightWallBack;
+	
+	haltAfterSection = (bool)inHaltAfterSection;
+	
+	// Trimming wall param
     
     this->trimLeft = trimLeft;
     this->trimRight = trimRight;
