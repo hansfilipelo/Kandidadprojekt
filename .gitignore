@@ -36,6 +36,8 @@ Kod/Styr_m/Styr_m/mapGUI/moc_serialport.cpp
 Kod/Styr_m/Styr_m/mapGUI/ui_gui.h
 moc_*
 ui_*
+*/.qmake.stash
+
 
 # OS generated files #
 ######################
