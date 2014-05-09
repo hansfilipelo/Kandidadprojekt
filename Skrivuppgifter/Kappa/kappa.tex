@@ -1,0 +1,149 @@
+\documentclass[a4paper,12pt,fleqn]{article}
+\usepackage{fixltx2e}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{sidecap}
+\usepackage{fancyhdr}
+\usepackage{amssymb,amsmath}
+\usepackage[swedish]{babel}
+\usepackage[margin=1.5in]{geometry}
+\usepackage{abstract}
+\usepackage[parfill]{parskip}
+\usepackage{tocloft}
+\usepackage{adjustbox}
+\usepackage{textcomp}
+\usepackage[T1]{fontenc}
+\usepackage{listings}
+\usepackage{xcolor,colortbl}
+\usepackage{hyperref}
+
+\include{pagestyle}
+
+%-------------------------------------------------------------------
+%Första sidan
+
+\begin{document}
+	\pagestyle{fancy}
+\pagenumbering{roman}
+	\vspace*{\fill}
+		\begingroup
+			\begin{center}
+				\huge{\textbf{MapMaster 2001}}
+				\\
+				\vspace{5pt}
+				\normalsize
+				Kandidatprojekt Y - Grupp 8 - VT2014
+				\\
+				Version 1.0
+				\end{center}
+		\endgroup
+	\vspace*{\fill}
+	
+	\begin{center} %Börjar centrering 
+		Status
+		\\
+		\vspace{3pt} %Whitespace 3 pts
+	    \begin{tabular}{| p{3cm} | p{3cm} | p{3cm} |} %tabell, 4 horizontella |, 3 cm emellan dem.
+	    \hline %översta horizontella linjen.
+	    Granskad & - & \today \\ \hline % & -tecken för att "gå till nästa ruta" 
+		Godkänd & - & - \\ \hline % avslutas med \\ och \hline.
+
+	    \end{tabular}
+	\end{center}
+	\vspace{2cm}
+	\newpage
+%-----------------------------------------------------------------
+%Projektidentitet
+	
+	\vspace*{\fill}
+		\begingroup
+			\begin{center}
+				\LARGE{\textbf{PROJEKTIDENTITET}}
+				\\
+				\footnotesize
+				Grupp 8, 2014/VT, MapMaster2001
+				\\
+				Linköpings tekniska högskola, ISY
+				\\
+				\vspace{1cm}
+	  \begin{tabular}{| p{3cm} | p{4.3cm} | p{2.4cm} | p{3.8cm} |}
+	    \hline
+		\textbf{Namn} & \textbf{Ansvar} & \textbf{Telefon} & \textbf{E-post} \\ \hline
+	    Jens Edhammer & Dokumentanvsvarig (DOK) & 076-030 67 80 & jened502@student.liu.se \\ \hline
+		Erik Ekelund & Designansvarig (DES) & 073-682 43 06 & eriek984@student.liu.se \\ \hline
+		David Habrman &  & 976-017 71 15 & davha227@student.liu.se \\ \hline 
+		Tobias Grundström & Testansvarig (TES) & 073-830 44 45 & tobgr602@student.liu.se \\ \hline 
+		Hans-Filip Elo &   & 073-385 22 32 & hanel742@student.liu.se \\ \hline 
+		Niklas Ericson & Projektledare (PL) & 073-052 27 05 & niker917@student.liu.se \\ \hline
+	    \end{tabular}
+		
+		\vspace{1cm}
+		\textbf{E-postlista för hela gruppen:} mapmaster2001@cyd.liu.se
+		\\[0.5cm]
+		
+		\textbf{Kund}: Mattias Krysander, Linköpings Universitet, 581 83  LINKÖPING, \\
+		013-28 21 98, matkr@isy.liu.se \\
+		\textbf{Kontaktperson hos kund}: Mattias Krysander, 013-28 21 98,matkr@isy.liu.se 
+		\\
+		\textbf{Kursansvarig}: Tomas Svensson, 3B:528,013 28 21 59,tomass@isy.liu.se
+		\\[0.5cm]
+		\textbf{Handledare}: Peter Johansson, 013-28 1345 peter.a.johansson@liu.se
+
+				\end{center}
+		\endgroup
+	\vspace*{\fill}
+\newpage
+
+%-----------------------------------------------------------------
+%Innehållsföreteckning
+
+\addto\captionsswedish{\renewcommand{\contentsname}{Innehållsförteckning}}
+
+\tableofcontents
+\thispagestyle{fancy}
+\newpage
+
+\pagenumbering{arabic}
+%-----------------------------------------------------------------
+%Översikt
+
+\section{Inledning}
+Ge en översiktlig beskrivning av produkten och uppdraget gärna kopplat till bilder.
+Lyft gärna fram det som ni anser är utmanande/intressant i uppdraget. 
+Beskriv kortfattat dispositionen på rapporten.
+\section{Problemformulering}
+Redogör kort för kravbilden och referera till projektdirektiv och kravspecifikation för att läsa detaljer.
+Lägg återigen mest fokus på det som ni ansåg utmanande/intressant. 
+\section{Kunskapsbas}
+Beskriv kortfattat och referera litteratur, datablad och dokumentation som ni använt er av för att genomföra projektet. 
+\section{Genomförande}
+Beskriv hur projektet har bedrivits och referera bland annat till LIPS-modellen, systemskiss, projektplan och designspecifikation. Observera att designspecifikationen belyser arbetsprocessen och inte den slutliga produkten så om ni uppdaterat designspecifikationen löpande under projektet så kan ni infoga t ex den version som var aktuell vid BP3.
+Teknisk beskrivning
+\section{Teknisk beskrivning}
+Redovisa det tekniska resultatet och skrivuppgifterna på ett lämpligt sätt. Detaljerade beskrivningar på grindnivå i hårdvaran eller på instruktionsnivå i mjukvaran är i detta sammanhang oftast ointressant. Referera den tekniska dokumentationen och skrivuppgifterna för beskrivning av detaljer. Lyft fram egna kreativa lösningar!
+\section{Resultat}
+Beskriv kortfattat hur produkten används, hänvisa till användarmanualen.
+Beskriv vilken prestanda produkten har och hur det har testats, hänvisa till eventuella testprotokoll.
+Kommentera om produkten klarade de kraven som ställdes upp i kravspecifikationen. 
+\section{Slutsatser}
+Slutsatser
+Sammanfatta arbetet. 
+Lyft fram det ni är mest nöjda med.
+Reflektera över resultatet såväl tekniskt som över genomförandet. Referera efterstudien.
+Framtida arbete
+Vad skulle ni göra annorlunda om ni skulle göra om samma uppdrag?
+Vad skulle ni vilja utveckla om ni fick mer tid?
+Hur skulle ni tänka er att ändra uppgiften för att göra den ännu mer intressant?
+\section{Referenser}
+
+
+% ----------------------------- Appendix -----------------------------------------
+% --------------------------------------------------------------------------------
+
+\newpage
+\appendix
+\pagestyle{empty}
+\newgeometry{left=2cm,right=2cm,bottom=2cm,top=2cm}
+\section{Appendix A}
+LIPS-dokument och fördjupningar enligt ovan.
+\end{document}
