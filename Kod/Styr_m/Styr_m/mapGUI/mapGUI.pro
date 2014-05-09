@@ -18,15 +18,18 @@ SOURCES += main.cpp \
     qcustomplot.cpp \
     ../../../Kommunikation/serialreader/order.cpp \
     ../../../Kommunikation/serialreader/serialport.cpp \
-    graphwindow.cpp
+    graphwindow.cpp \
+    paramwindow.cpp
 
 HEADERS  += \
     gui.h \
     qcustomplot.h \
     ../../../Kommunikation/serialreader/serialport.h \
     ../../../Kommunikation/serialreader/order.h \
-    graphwindow.h
+    graphwindow.h \
+    paramwindow.h
 
 FORMS    += \
     gui.ui \
-    graphwindow.ui
+    graphwindow.ui \
+    paramwindow.ui
