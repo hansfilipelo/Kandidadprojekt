@@ -128,7 +128,7 @@
     <rect>
      <x>150</x>
      <y>10</y>
-     <width>81</width>
+     <width>90</width>
      <height>501</height>
     </rect>
    </property>
@@ -136,14 +136,14 @@
     <item>
      <widget class="QDoubleSpinBox" name="kpSpinBox">
       <property name="value">
-       <double>8.000000000000000</double>
+       <double>7.000000000000000</double>
       </property>
      </widget>
     </item>
     <item>
      <widget class="QDoubleSpinBox" name="kdSpinBox">
       <property name="value">
-       <double>23.000000000000000</double>
+       <double>26.000000000000000</double>
       </property>
      </widget>
     </item>
@@ -165,28 +165,44 @@
      </widget>
     </item>
     <item>
-     <widget class="QSpinBox" name="fwdRefLongBox"/>
+     <widget class="QSpinBox" name="fwdRefLongBox">
+      <property name="value">
+       <number>28</number>
+      </property>
+     </widget>
     </item>
     <item>
-     <widget class="QSpinBox" name="bwdRefLongBox"/>
+     <widget class="QSpinBox" name="bwdRefLongBox">
+      <property name="value">
+       <number>0</number>
+      </property>
+     </widget>
     </item>
     <item>
-     <widget class="QSpinBox" name="fwdRefShortBox"/>
+     <widget class="QSpinBox" name="fwdRefShortBox">
+      <property name="value">
+       <number>28</number>
+      </property>
+     </widget>
     </item>
     <item>
-     <widget class="QSpinBox" name="bwdRefShortBox"/>
+     <widget class="QSpinBox" name="bwdRefShortBox">
+      <property name="value">
+       <number>10</number>
+      </property>
+     </widget>
     </item>
     <item>
      <widget class="QSpinBox" name="rightCornerFrontBox">
       <property name="value">
-       <number>30</number>
+       <number>40</number>
       </property>
      </widget>
     </item>
     <item>
      <widget class="QSpinBox" name="rightCornerBackBox">
       <property name="value">
-       <number>30</number>
+       <number>25</number>
       </property>
      </widget>
     </item>
