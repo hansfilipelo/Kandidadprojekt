@@ -62,11 +62,10 @@ void Bluetooth::sendArray(){
 }
 
 void Bluetooth::sendMap(){
-	for(unsigned int i = 0; i<32;i++){
-		memcpy(outDataArray,mapPointer->mapArea[i],27);
-		sendArray();
-		_delay_ms(27);
-	}
+	memcpy(outDataArray,mapPointer->mapArea[rowToSend],27);
+	sendArray();
+	_delay_ms(22);
+	rowToSend++;
 }
 
 volatile void Bluetooth::handle(){
@@ -124,7 +123,7 @@ volatile void Bluetooth::handle(){
 	}
     if(inDataArray[1]=='P'){
         asm("");
-		memcpy(spiPointer->outDataArray,pcHandle,(int)pcHandle[1]+1);
+		memcpy(spiPointer->outDataArray,pcHandle,(int)pcHandle[0]+1);
 		asm("");
 		spiPointer->sendArray(1); //send data to module 1 (steer)
 		asm("");

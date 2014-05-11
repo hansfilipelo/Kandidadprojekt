@@ -173,7 +173,7 @@ int main(void)
     robotPointer->setRightClosed();
     robotPointer->setLeftClosed();
     for (;;) {
-        
+		
         // Manual mode
         if (abstractionObject->getManual()) {
             asm("");

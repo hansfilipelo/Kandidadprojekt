@@ -200,19 +200,19 @@ protected:
 	int bwdRefShort;
 	
 	//Paramater that determines if robot should stop after one segment.
-	bool haltAfterSection = false;
+	volatile bool haltAfterSection;
 	
 	//Paramaters for wall and corner detection
-	int rightCornerFront = 40;
-	int rightCornerBack = 30;
-	int rightWallFront = 30;
-	int rightWallBack = 30;
+	int rightCornerFront;
+	int rightCornerBack;
+	int rightWallFront;
+	int rightWallBack;
 	
-	int speed = 0;
-	int userSpeed = 0;
+	int speed;
+	int userSpeed;
     int trimLeft;
     int trimRight;
-    char currentGear = 'f';
+    char currentGear;
 	
 	bool rotateRightActive;
 	bool rotateLeftActive;

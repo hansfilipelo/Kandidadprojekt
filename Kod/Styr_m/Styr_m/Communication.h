@@ -21,7 +21,9 @@ public:
     void sendMap();
     void sendRotateRequest();
 	void reactivateRFID();
-    
+    void initSendMap();
+	
+	
 //flyttade från protected
 	unsigned char inData[27];
     unsigned char outData[27];
@@ -33,11 +35,12 @@ public:
     
 protected:
     
-    
+    void sendRow(unsigned int);
 	bool manual = true;
     int dataLength;
     Slave* slavePointer;
     Robot* robotPointer;
+	volatile bool mapConfirmation = false;
 	
 };
 
