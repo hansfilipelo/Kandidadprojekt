@@ -137,6 +137,8 @@ public:
     
     int getRightDifference();
     int getUserSpeed();
+	
+	void waitForNewData();
     
     // Automatic control
     void turn(int pd); //Positive or negative value will decide left or right

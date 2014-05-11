@@ -240,7 +240,7 @@ int main(void)
 				{
 					robotPointer->rotateRight();
 #if DEBUG == 0
-					_delay_ms(500);
+				_delay_ms(500);
 #endif
 					
 				}

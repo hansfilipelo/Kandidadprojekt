@@ -817,13 +817,8 @@ int Robot::meanValueArray(char* inputArray, int iterations) {
 // -----------------------------------------
 //Sets reference values and moves robot in map abstraction if robot has moved one square
 void Robot::updateRobotPosition(){
-    newData = false;
-		while(!newData){
-			asm("");
-			volatile int p;
-			p++;
-		}
 	
+	waitForNewData();
 	
 	if(validSensor == 'N'){
         validSensor = determineValidSensor();
@@ -1245,6 +1240,16 @@ void Robot::setRotateLeftActive()
 bool Robot::getRotateLeftActive()
 {
 	return rotateLeftActive;
+}
+
+void Robot::waitForNewData()
+{
+	newData = false;
+	while(!newData){
+		asm("");
+		volatile int p;
+		p++;
+	}
 }
 
 // ----------------------
