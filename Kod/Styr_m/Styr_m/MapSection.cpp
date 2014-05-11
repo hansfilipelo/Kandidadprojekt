@@ -156,18 +156,24 @@ Robot::Robot(int xPos, int yPos, Map* inMom, Communication* inComm) : MapSection
 	
 	Kd = 26;
 	Kp = 7;
-	Ref = 8;
+	Ref = 12;
 	
-	trimRight = 15;
+	trimRight = 30;
 	trimLeft = 0;
 	
-	fwdRefLong = 38;
-	bwdRefLong = 2;
+	fwdRefLong = 28;
+	bwdRefLong = 0;
 	
-	fwdRefShort = 22;
-	bwdRefShort = 4; 
+	fwdRefShort = 28;
+	bwdRefShort = 10; 
 	
+	rightCornerFront = 40;
+	rightCornerBack = 25;
 	
+	rightWallFront = 30;
+	rightWallBack = 30;
+	
+	haltAfterSection = false;
 	
 	rotateRightActive = false;
 	rotateLeftActive = false; 
@@ -279,6 +285,11 @@ void Robot::rotateLeft(){
 	fwdDiff = 0;
 	bwdDiff = 0;
 	
+	// Send map before rotating since it's the least critical point during mapping run
+	setSpeed(0);
+	drive();
+	commObj->sendMap();
+	
     // Send request to sensor module to measure angle
     commObj->sendRotateRequest();
 	
@@ -331,6 +342,12 @@ void Robot::rotateRight(){
 	// Seft diffs to 0
 	fwdDiff = 0;
 	bwdDiff = 0;
+	
+	// Send map before rotating since it's the least critical point during mapping run
+	setSpeed(0);
+	drive();
+	commObj->sendMap();
+	
 	//---------
 	// First send stuff to sensor module
 	// When we have rotated 90 degrees sensor module will send a signal which will deactivate rotate
@@ -800,13 +817,8 @@ int Robot::meanValueArray(char* inputArray, int iterations) {
 // -----------------------------------------
 //Sets reference values and moves robot in map abstraction if robot has moved one square
 void Robot::updateRobotPosition(){
-    newData = false;
-		while(!newData){
-			asm("");
-			volatile int p;
-			p++;
-		}
 	
+	waitForNewData();
 	
 	if(validSensor == 'N'){
         validSensor = determineValidSensor();
@@ -834,12 +846,12 @@ void Robot::updateRobotPosition(){
 	int bwdref = 0;
 	
 	if(usingLong){
-		fwdref = 28;
-		bwdref = 0;
+		fwdref = fwdRefLong;
+		bwdref = bwdRefLong;
 	}
 	else{
-		fwdref = 28;
-		bwdref = 10;
+		fwdref = fwdRefShort;
+		bwdref = bwdRefShort;
 	}
     if ((sensorDifference > fwdref)||(sensorDifference < bwdref)){
 		if(movedToNewPosition < 2){
@@ -1228,6 +1240,16 @@ void Robot::setRotateLeftActive()
 bool Robot::getRotateLeftActive()
 {
 	return rotateLeftActive;
+}
+
+void Robot::waitForNewData()
+{
+	newData = false;
+	while(!newData){
+		asm("");
+		volatile int p;
+		p++;
+	}
 }
 
 // ----------------------

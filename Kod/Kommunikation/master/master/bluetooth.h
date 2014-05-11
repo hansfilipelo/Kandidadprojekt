@@ -36,6 +36,9 @@ public:
     unsigned char inDataArray[27] = {'0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0'};
     unsigned char outDataArray[27] = {'0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0'};
     
+	volatile bool mapDone = false;
+	unsigned int rowToSend = 0; 
+	
 private:
     unsigned int position = 0;
 	
