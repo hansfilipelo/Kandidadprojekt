@@ -20,7 +20,6 @@ Gui::Gui(QWidget *parent) :
 
 
     parWindow = new ParamWindow;
-    parWindow->setOrder(bluetooth);
 
 
     ui->speedPercent->setText(0);
@@ -139,6 +138,7 @@ int Gui::startPort(){
     port->setGui(this);
     Order * order = new Order(port);
     bluetooth = order;
+    parWindow->setOrder(bluetooth);
     return 0;
 }
 
