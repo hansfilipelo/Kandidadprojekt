@@ -139,7 +139,7 @@ International Journal of Robotics Research, 5(4), sida 56–68. Hämtad 28 mars 
 Utvecklingen på området har sedan dess accelererat kraftigt tack vare
 mikrokontrollers förmåga att hantera mer data. Då sannolikhetsberäkningarna SLAM innefattar gynnas kraftigt av att arbeta med stora stickprov. 
 
-På senare år har man, precis som inom många andra vetenskapliga områden, sett utvecklingen ta ytterligare ett kliv tack vare internet och öppna källkodsprojekt som Github och OpenSLAM. Att göra en sökning på SLAM på Github resulterar i en mängd aktiva projekt på området. Eftersom källkoden där också finns tillgänglig är detta ett utmärkt exempel för de som vill läsa på om SLAM-algoritmer. 
+På senare år har man, precis som inom många andra vetenskapliga områden, sett utvecklingen ta ytterligare ett kliv tack vare internet och öppna källkodsprojekt som Github och OpenSLAM. Att göra en sökning på SLAM på Github resulterar i en mängd aktiva projekt på området. Eftersom källkoden där också finns tillgänglig är detta ett utmärkt exempel för de som vill studera implementeringar av SLAM-algoritmer. 
 
 %------------------------------------------------
 %-------------Problemformulering-----------------
@@ -147,52 +147,59 @@ På senare år har man, precis som inom många andra vetenskapliga områden, set
 
 \section{Problemformulering}
 
-En robot med tillgång till ett antal avståndssensorer och ett gyro placeras i ett okänt slutet område. Den ska, med en vägg som startpunkt, helt autonomt kartlägga området genom att markera ut var väggar finns och var det finns områden som inte går att nå. Om inte hela det slutna området är kartlagt ska den upptäcka vilka segment som är oupptäckta, färdas dit och lägga till det i kartan. När området är kartlagt ska roboten ta sig tillbaka till startpunkten för att kunna återhämtas och på så sätt avsluta arbetet. 
+Vanligtvis där SLAM implementeras ska en robot försöka kartlägga sin omgivning och utföra en uppgift. Antag att en robot med tillgång till ett antal avståndssensorer och ett gyro placeras i ett okänt slutet område. Den ska, med en vägg som startpunkt, helt autonomt kartlägga området genom att markera ut var väggar finns och var det finns områden som inte går att nå. Om inte hela det slutna området är kartlagt ska den upptäcka vilka segment som är oupptäckta, färdas dit och lägga till det i kartan. När området är kartlagt ska roboten ta sig tillbaka till startpunkten för att kunna återhämtas och på så sätt avsluta arbetet. 
 
-SLAM är en teknik där ett system visuellt kan uppfatta landmärken. Med landmärken menas alla typer av objekt eller liknande som kan användas som referenser. Landmärkenas position i förhållande till roboten ska noteras och uppmätas med regelbundna samplingar. Genom att positionsbestämma dessa landmärken kan roboten snabbare bestämma sin position. 
+SLAM är en teknik där ett system på något sätt kan uppfatta landmärken. Med landmärken menas alla typer av objekt eller liknande som kan användas som referenser. Landmärkenas position i förhållande till roboten ska noteras och uppmätas med regelbundna samplingar. Genom att positionsbestämma dessa landmärken kan roboten snabbare bestämma sin position. 
 
-Denna rapport kommer behandla en del av problemen som uppstår vid SLAM och vad som behövs för att lösa dem.
+Tänkbar definition av problemet kan vara. 
 
+\begin{gather}
+x_{t}^r = \{ \text{robotens position i föhållande till utgångspunkt, r, vid tidpunkten t} \} \\
+m = \{ \text{landmärkens position} \} \\
+u_{t} = \{ \text{styrsignaler} \} \\
+y_{t} = \{ \text{mätningar med sensorer} \}
+\end{gather}
 
-%------------------------------------------------
-%--------------------Fördjupning-----------------
-%------------------------------------------------
-\newpage
-\section{Simultaneous Localization And Mapping}
-I denna fördjupande del går vi igenom förkunskaper som krävs för att beskriva en implementering som kan utföra SLAM i en miljö lik den i problemställningen. Bland annat kommer tillståndsrepresentation, skattning av tillstånd med hjälp av observatörer och Kalmanfilter tas upp.
+Där robotens position ska skattas utifrån föregående position, givna styrsignaler samt eventuella styrstörningar ($v$) och mätstörninger ($e$). Landmärken antas ha statisk position. 
 
-För att kunna utföra SLAM krävs det att man gör odometri, det vill säga att man kontinuerligt uppskattar vägen som färdats. Odometri kan göras på olika sätt - exempelvis genom att optiskt mäta avstånd till objekt i sin omgivning, vinkelhastigheter på hjul med känd storlek eller steg med given längd. Många robotar nyttjar förmågan att optiskt mäta objekt i sin omgivning, men det förekommer även implementeringar med radar, sonar eller GPS. Uppskattandet av färdvägen är aldrig en exakt lära. Det finns alltid en viss osäkerhet i sensorer. Det är av denna anledning som SLAM är en sannolikhetslära mer än en exakt vetenskap. 
+\begin{gather}
+x_{t}^r = f(x_{t-1}^r, u_{t-1}, v_{t-1}) \\
+m_{t} = m_{t-1} \\
+y_{t} = h(x_{t}^r,m_{t}^i) + e_{t}^i
+\end{gather}
 
-Med optisk avläsning av omvärlden finns alltid möjligheten att korrigera tidigare felaktiga mätvärden genom att samla in mer mätdata för att på ett korrektare sätt kunna beskriva sin omgivning. Av den anledningen är all typ av SLAM beroende av att på något sätt granska sin omgivning. 
+% Gneta ihop det lite här /H-F
+%
+Vad är det då för typ av mätningar som kan tas in? För att kunna utföra SLAM krävs det att man gör någon form av odometri, det vill säga att man kontinuerligt uppskattar vägen som färdats relativt sin senaste position. Odometri kan göras på olika sätt - exempelvis genom att visuellt mäta avstånd till objekt i sin omgivning, vinkelhastigheter på hjul med känd storlek eller steg med given längd. 
+
+Utöver relativa mätningar över kortare används också absoluta mätningar till sin omgivning för att korrigera de fel som relativa mätningar orsakar över tid. Många robotar nyttjar förmågan att optiskt mäta objekt i sin omgivning, men det förekommer även implementeringar med radar, sonar eller GPS. 
+
+Med absolutna mätningar till omvärlden finns alltid möjligheten att korrigera tidigare felaktiga mätvärden genom att samla in mer mätdata för att på ett korrektare sätt kunna beskriva sin omgivning. Av den anledningen är all typ av SLAM beroende av att på något sätt granska sin omgivning. 
 
 \subsection{Mätningar}
 
-För att kunna avgöra var roboten befinner sig behövs ett eller flera sätt för att känna av omgivningen. Den kan till exmepel behöva utföra mätningar på avstånd, hastighet och vinkelhastighet för att åstadkomma detta. Dessa mätningar och uppskattningar kan göras på många sätt, men görs mestadels med olika typer av sensorer så som avståndssensorer, accelerometrar och gyroskop i kombination med en dator som processerar datan.
+För att kunna avgöra var roboten befinner sig behövs ett eller flera sätt för att känna sin omgivning och sitt tillstånd. Roboten kan till exmepel behöva utföra mätningar på avstånd, hastighet och vinkelhastighet för att åstadkomma detta. 
 
 \subsubsection{Avståndssensor}
 
-Som avståndsmätare kan någon typ av optisk sensor användas. Att sensorn är optisk innebär att den använder sig av ljus för att utföra mätningarna. De finns till exempel sensorer som belyser en yta som avstånd ska mätas till, tar emot reflekterat ljus och sedan med hjälp av tiden det tagit för ljuset att färdas beräkna avståndet. Denna metod kallas time-of-flight. Ytterligare en metod som används kallas optisk triangulering och det innebär att med hjälp av vinkeln mellan sändare och mottagare bestämma avståndet till objektet\footnote{Hägg, M. Avståndskamera för utomhusbruk, LTU http://epubl.ltu.se/1402-1617/2000/317/LTU-EX-00317-SE.pdf, hämtad 2014-05-06}.
+Som avståndsmätare kan någon typ av optisk sensor användas. Att sensorn är optisk innebär att den använder sig av ljus för att utföra mätningarna. De finns till exempel sensorer som belyser en yta som avstånd ska mätas till, tar emot reflekterat ljus och sedan med hjälp av tiden det tagit för ljuset att färdas beräkna avståndet. Denna metod kallas time-of-flight. Ytterligare en metod som används kallas optisk triangulering och det innebär att med hjälp av vinkeln mellan sändare och mottagare bestämma avståndet till objektet\footnote{Hägg, M. Avståndskamera för utomhusbruk, LTU \url{http://epubl.ltu.se/1402-1617/2000/317/LTU-EX-00317-SE.pdf}, hämtad 2014-05-06}.
 
-\subsubsection{Gyroskop}
+\subsubsection{Gyroskop och accelerometer}
 
 För att mäta vinkelhastighet går det att använda ett gyroskop även kallat gyro. En gyrosensor av MEMS-typ (Micro Electro-Mechanical System) utnyttjar att två lika stora massor som oscillerar konstant i motsatta riktningar påverkas av Korioliskraften vid rotation. Kraften verkar i olika riktningar på de två massorna och det leder till en förändring i kapacitans.
 Skillnaden i kapacitans har visat sig vara proportionell mot vinkelhastigheten, därav går det att bestämma den med hjälp av ett gyro \footnote{http://electroiq.com/blog/2010/11/introduction-to-mems-gyroscopes/, hämtad 2014-05-06}.
 
-\subsubsection{Processering av data}
+\subsubsection{Hjulsensorer}
 
-Sensorerna producerar mängder med data, data som kan variera något vid varje mätning. Om det då utgås från att närliggande mätningar görs kring samma position för roboten kan mätningarna antas vara normalfördelade.
+Vid vissa tillfällen kan det vara så att avståndssensorer ej kan användas för att skatta rörelse relativt landmärken, exempelvis om alla landmärken är utanför sensorernas räckvidd. Man kan då behöva skatta sin rörelse med hjälp av någon annan sensor. En vanlig typ av sensor är då hjulsensorer. Hjulsensorer räknar hur många varv hjulen snurrat och skattar sedan avståndet roboten färdats utifrån detta. 
 
-\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
-  \begin{center}
-  \includegraphics[keepaspectratio=true,scale=0.5]{normalfordelning.png}  %skala och filnamn. 
-  \end{center}
-  \caption{Normalfördelning} %figurtext.
-  \label{fig:fire} %glöm inte att uppdatera era labels
-\end{figure}
+Ett problem med hjulsensorer är att de ej ger en helt korrekt hastighets- och distansskattning då hjulen ofta slirar mot underlaget. 
 
-En mer korrekt bild av till exempel avståndet kan sedan fås med mätningarnas väntevärde, $\mu$. Då mätningarna är normalfördelade ges väntevärdet av mätningarnas medelvärde, $\bar{x}$, vilket kan ses i figur ovan\footnote{Wikipedia, \url{http://sv.wikipedia.org/wiki/Normalf\%C3\%B6rdelning}, hämtad 2014-05-02.}. 
+\subsubsection{Databehandling}
 
-\newpage
+Sensorerna producerar mängder med data, data som kan variera något vid varje mätning. Mätningar från sensorerna kan antagligen hämtas väldigt fort. Om man utgår från att en klump närliggande mätningar görs kring samma position för roboten kan den klumpen av mätningar, eller stickprovet, antas vara normalfördelade kring korrekta värdet. 
+
+Korrekta avståndet kan alltså skattas med hjälp av stickprovets medelvärde, $\mu$.
 
 \subsubsection{Andra typer av sensorer}
 
@@ -205,6 +212,13 @@ Något som också provats är SLAM utan användning av någon typ av optisk utru
 
 Tidigare nämndes till exempel metoder som använder sig av GPS. Detta i kombination med WiFi-signaler har använts till exempel i mobiltelefoner för att avgöra var personer befinner sig. För att WiFi-SLAM ska fungera krävs att accesspunkten har information om positionsdata för sig själv, alternativt att den anslutna enheten har information om var aktuellt WiFi är tillgängligt.
 
+
+%------------------------------------------------
+%--------------------Fördjupning-----------------
+%------------------------------------------------
+\newpage
+\section{Skattningsmetoder för SLAM-problemet}
+I denna fördjupande del går vi igenom metoder som kan användas för att utföra SLAM i en miljö lik den i problemställningen. Bland annat kommer tillståndsrepresentation och skattning av tillstånd med hjälp av observatörer samt Kalmanfilter att tas upp.
 
 %----------------------Tillståndsrepresentation av reglersystem------------------
 
