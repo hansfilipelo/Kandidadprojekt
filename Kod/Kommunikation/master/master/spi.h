@@ -22,7 +22,6 @@ class Spi
     
 public:
 	void requestMap();
-	unsigned char* getInDataArray();
 	Spi(Bluetooth*,Map*);
 	void init();
     char transfer(char, unsigned int);
