@@ -14,7 +14,7 @@
 
 //------------sensorer----------------------
 volatile int numOfSamples = 25;		//number of samples for mean value
-volatile int savepos = 0;			//counter for the storage array
+volatile int savepos = 0;			//segmentsTurned for the storage array
 
 volatile int sensor0[25];			//arrays for sensordata
 volatile int sensor1[25];
@@ -39,7 +39,8 @@ volatile double decadc=0;			//variable used in the ADC-interrupt (decimal adc-va
 volatile bool ADCdone = false;		//Flag for checking if ADC is done
 double spanning = 0;				//ADC-value without 5v ref
 bool mayplus = false;
-int counter = 0;
+int segmentsTurned = 0;
+bool wheelmode = false;
 
 //------------------USART-------------------------
 unsigned char indata;				//data from USART-reading
@@ -89,7 +90,7 @@ void Timer_Init()
 //calibration of reference constant "gyrovila"
 void gyrocal(){
 	ADMUX = 0x27;							//set ADMUX to input 7, ADC gets it's data from gyro
-	volatile int i = 0;						//loopcounter
+	volatile int i = 0;						//loopsegmentsTurned
 	while(i < 100){							//loop
 		asm("");
 		ADCdone = false;					//set ADC flag to false
@@ -97,7 +98,7 @@ void gyrocal(){
 		while(!ADCdone);					//wait until ADC is done
 		cli();
 		gyrovila = spanning + gyrovila;		//sum 100 measurements
-		i++;								//add one to counter
+		i++;								//add one to segmentsTurned
 		sei();
 	}
 	gyrovila = gyrovila/100;				//calculate mean constant
@@ -139,6 +140,11 @@ void handleInDataArray(){
 	//if [r] is received
 	else if(sensormodul.inDataArray[1] == 'r'){
 		UCSR0B |= (1<<RXCIE0);							//enable USART interrups
+	}
+	//reset segmentsTurned
+	else if(sensormodul.inDataArray[1] == 'd'){
+		segmentsTurned = 0;
+		wheelmode = true;
 	}
 }
 
@@ -280,22 +286,24 @@ int main(void)
 			sei();				//allow interrupts
 		}
 		
-		if(ADMUX == 0x20){			//get distance from sensor A0 with conversion formula
+		if((wheelmode)&(ADMUX == 0x20)){		//get distance from sensor A0 with conversion formula
 			asm("");
 			//sen0 = 0;
 			if(decadc > 200) {
 				mayplus = true;
 			}
 			else if((decadc < 120) and mayplus){
-				counter++;
+				segmentsTurned++;
 				mayplus = false;
 			}
-			if(counter > 11){
-				counter = 0;
+			if(segmentsTurned > 11){
+				segmentsTurned = 0;
  				sen0 = sen0 +1;
 				sensormodul.outDataArray[0] = 1;
 				sensormodul.outDataArray[1] = 'D';
 				sensormodul.SPI_Send();		//send 90 degree turn is complete
+				wheelmode = false;
+				segmentsTurned = 0;
 			}
 			asm("");
 		}

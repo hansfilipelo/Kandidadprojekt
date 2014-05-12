@@ -261,16 +261,12 @@ int main(void)
 				}
 			}
 		}
-    
-    // Look for walls every 500th turn of main loop
-    if (i == 250) {
-              // Update position in map
-        robotPointer->updateRobotPosition();
-        
-        i = 0;
-    }
-    i++;
-    
+	if(i > 250){
+		i = 0;
+		robotPointer->updateRobotPosition();
+	}
+	i++;
+	
     
     if(abstractionObject->sendMapNow){
         asm("");

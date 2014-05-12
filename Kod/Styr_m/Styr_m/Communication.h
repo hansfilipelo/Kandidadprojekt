@@ -21,6 +21,7 @@ public:
     void sendMap();
     void sendRotateRequest();
 	void reactivateRFID();
+	void activateWheelSensor();
     
 //flyttade från protected
 	unsigned char inData[27];
