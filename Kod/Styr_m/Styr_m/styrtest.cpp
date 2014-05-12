@@ -24,7 +24,7 @@ int main(){
     mom->initMap();
     mom->printMap();
     
-    cout << mom->getPos(0,10)->isClosed(0,10) << endl;
+    cout << mom->getPos(1,1)->isClosed(1,1) << endl;
     
     delete testRobot;
     delete mom;

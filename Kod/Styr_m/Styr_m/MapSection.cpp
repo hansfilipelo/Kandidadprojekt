@@ -152,40 +152,39 @@ bool MapSection::isClosed(int origX, int origY){
     
     // Using clock as direction pointer in comments
     // Check 9
-    
-    
-    if ( mom->getPos(xCoord - 1, yCoord)->getType() == 'c' && !mom->getPos(xCoord - 1, yCoord)->hasBeenClosed ) {
+    if ((xCoord - 1 > 0) && (yCoord > 0) && mom->getPos(xCoord - 1, yCoord)->getType() == 'c' && !mom->getPos(xCoord - 1, yCoord)->hasBeenClosed ) {
         mom->getPos(xCoord-1, yCoord)->isClosed(origX, origY);
     }
     // Check 10,5
-    else if ( mom->getPos(xCoord - 1, yCoord - 1)->getType() == 'c' && !mom->getPos(xCoord - 1, yCoord - 1)->hasBeenClosed ) {
+    else if ( (xCoord - 1 > 0) && (yCoord -1 > 0) && mom->getPos(xCoord - 1, yCoord - 1)->getType() == 'c' && !mom->getPos(xCoord - 1, yCoord - 1)->hasBeenClosed ) {
         mom->getPos(xCoord-1, yCoord-1)->isClosed(origX, origY);
     }
     // Check 12
-    else if ( mom->getPos(xCoord, yCoord - 1)->getType() == 'c' && !mom->getPos(xCoord, yCoord - 1)->hasBeenClosed ) {
+    else if ( (xCoord > 0) && (yCoord -1 > 0) && mom->getPos(xCoord, yCoord - 1)->getType() == 'c' && !mom->getPos(xCoord, yCoord - 1)->hasBeenClosed ) {
         mom->getPos(xCoord, yCoord-1)->isClosed(origX, origY);
     }
     // Check 1,5
-    else if ( mom->getPos(xCoord + 1, yCoord - 1)->getType() == 'c' && !mom->getPos(xCoord + 1, yCoord - 1)->hasBeenClosed ) {
+    else if ((xCoord + 1 > 0) && (yCoord -1 > 0) && mom->getPos(xCoord + 1, yCoord - 1)->getType() == 'c' && !mom->getPos(xCoord + 1, yCoord - 1)->hasBeenClosed ) {
         mom->getPos(xCoord + 1, yCoord - 1)->isClosed(origX, origY);
     }
     // Check 3
-    else if ( mom->getPos(xCoord + 1, yCoord)->getType() == 'c' && !mom->getPos(xCoord + 1, yCoord)->hasBeenClosed ) {
+    else if ((xCoord + 1 > 0) && (yCoord > 0) && mom->getPos(xCoord + 1, yCoord)->getType() == 'c' && !mom->getPos(xCoord + 1, yCoord)->hasBeenClosed ) {
         mom->getPos(xCoord + 1, yCoord)->isClosed(origX, origY);
     }
     // Check 4,5
-    else if ( mom->getPos(xCoord + 1, yCoord + 1)->getType() == 'c' && !mom->getPos(xCoord + 1, yCoord + 1)->hasBeenClosed ) {
+    else if ((xCoord + 1 > 0) && (yCoord + 1 > 0) && mom->getPos(xCoord + 1, yCoord + 1)->getType() == 'c' && !mom->getPos(xCoord + 1, yCoord + 1)->hasBeenClosed ) {
         mom->getPos(xCoord + 1, yCoord + 1)->isClosed(origX, origY);
     }
     // Check 6
-    else if ( mom->getPos(xCoord, yCoord + 1)->getType() == 'c' && !mom->getPos(xCoord, yCoord + 1)->hasBeenClosed ) {
+    else if ((xCoord > 0) && (yCoord + 1 > 0) && mom->getPos(xCoord, yCoord + 1)->getType() == 'c' && !mom->getPos(xCoord, yCoord + 1)->hasBeenClosed ) {
         mom->getPos(xCoord, yCoord + 1)->isClosed(origX, origY);
     }
     // Check 7,5
-    else if ( mom->getPos(xCoord - 1, yCoord + 1)->getType() == 'c' && !mom->getPos(xCoord - 1, yCoord + 1)->hasBeenClosed ) {
+    else if ((xCoord - 1 > 0) && (yCoord + 1 > 0) && mom->getPos(xCoord - 1, yCoord + 1)->getType() == 'c' && !mom->getPos(xCoord - 1, yCoord + 1)->hasBeenClosed ) {
         mom->getPos(xCoord - 1, yCoord + 1)->isClosed(origX, origY);
     }
     else {
+        std::cout << xCoord << " " << yCoord << std::endl;
         return false;
     }
 }
