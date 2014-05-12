@@ -958,6 +958,7 @@ void Robot::updateRobotPosition(){
 	{
 		movedToNewPosition = 0;
 	}
+	backToStart();
 }
 
 // -----------------------------------------
@@ -1243,6 +1244,13 @@ void Robot::waitForNewData()
             p++;
         }
     }
+}
+
+void Robot::backToStart()
+{
+	if((previousSection->getX() == 16) &&	(previousSection->getY()==1)){
+		mom->fillClosedArea();
+	}
 }
 
 // ----------------------
