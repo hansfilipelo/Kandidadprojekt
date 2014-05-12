@@ -38,6 +38,8 @@ volatile int RfidCount = 0;
 volatile double decadc=0;			//variable used in the ADC-interrupt (decimal adc-value, ADC-value with 5 V ref)
 volatile bool ADCdone = false;		//Flag for checking if ADC is done
 double spanning = 0;				//ADC-value without 5v ref
+bool mayplus = false;
+int counter = 0;
 
 //------------------USART-------------------------
 unsigned char indata;				//data from USART-reading
@@ -280,13 +282,22 @@ int main(void)
 		
 		if(ADMUX == 0x20){			//get distance from sensor A0 with conversion formula
 			asm("");
-			sensor0[savepos]	= round(45.64*pow(spanning,4)-320.2*pow(spanning,3)+830.3*pow(spanning,2)-984.9*spanning+524.4);
+			if(decadc > 200) {
+				mayplus = true;
+			}
+			else if((decadc < 120) and mayplus){
+				counter++;
+				mayplus = false;
+			}
+			if(counter > 5){
+				PORTB = 0x22;
+			}
 			asm("");
 		}
 		
 		if(ADMUX == 0x21){		//get distance from sensor A1 with conversion formula
 			asm("");
-			sensor1[savepos]	= round(1.031*pow(spanning,4)-68*pow(spanning,3)+364.8*pow(spanning,2)-683.2*spanning+492.2);
+			sensor1[savepos]	= round(11.2*pow(spanning,4)-119.5*pow(spanning,3)+422.2*pow(spanning,2)-645*spanning+427.3);
 		}
 				
 		if( (ADMUX == 0x22)){	//get distance from sensor A2 with conversion formula
@@ -324,7 +335,7 @@ int main(void)
 		}
 		
         if(savepos == numOfSamples){	//if all readings are done
-            sen0 = average(sensor0);	//get average distance from sensors
+            sen0 = 0;	//get average distance from sensors
             sen1 = average(sensor1);
             sen2 = average(sensor2);
             sen3 = average(sensor3);

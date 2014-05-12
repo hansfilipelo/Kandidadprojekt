@@ -818,7 +818,7 @@ void Robot::updateRobotPosition(){
 	int bwdref = 0;
 	
 	if(usingLong){
-		fwdref = 28;
+		fwdref = 29;
 		bwdref = 0;
 	}
 	else{
@@ -992,7 +992,7 @@ char* Robot::getColAsChar(int col){
 
 // ----------------------------------------
 int Robot::getFwdDistance(){
-	if(fwdShortSensor < 75){
+	if(fwdShortSensor < 50){
 		asm("");
 		usingLong = false;
 		return fwdShortSensor;
@@ -1005,7 +1005,7 @@ int Robot::getFwdDistance(){
 }
 
 int Robot::getBwdDistance(){
-	if(bwdShortSensor < 75){
+	if(bwdShortSensor < 50){
 		asm("");
 		usingLong = false;
 		return bwdShortSensor;
