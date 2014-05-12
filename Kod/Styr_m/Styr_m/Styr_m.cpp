@@ -197,7 +197,7 @@ int main(void)
 					robotPointer->drive();
 				}
 #if DEBUG == 0
-				_delay_ms(200);
+				_delay_ms(200); // This delay ensures that we enter next segment.
 #endif
 				robotPointer->rotateRight();
 				while ( !robotPointer->isWallRight() && !(abstractionObject->getManual())) {
@@ -219,7 +219,7 @@ int main(void)
 				if(!robotPointer->isWallRight())
 				{
 					robotPointer->rotateRight();
-			//kör framåt tills roboten åkt in i korridoren
+                    //Drive forward untill robot has entered
 					while (!robotPointer->isWallRight() && !(abstractionObject->getManual())) {
 						robotPointer->changeGear('f');
 						robotPointer->setSpeed(25);
@@ -232,6 +232,7 @@ int main(void)
 					robotPointer->rotateLeft();
 #if DEBUG == 0
 					_delay_ms(500);
+                    //waitForSensors? rotations automatically wait for new fresh data, check all delays if they are necessary
 #endif
 				}
                 
@@ -243,6 +244,7 @@ int main(void)
 					robotPointer->rotateRight();
 #if DEBUG == 0
 				_delay_ms(500);
+                //waitForSensors?
 #endif
 					
 				}
