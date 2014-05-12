@@ -35,6 +35,7 @@ public:
     
 protected:
     
+    void sensorArrayToVariables();
     void sendRow(unsigned int);
 	bool manual = true;
     int dataLength;

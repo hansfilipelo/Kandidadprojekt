@@ -6,6 +6,10 @@ Communication::Communication(Slave* pointer){
     slavePointer=pointer;
 }
 
+/*
+ *  Data handling for steermodule.
+ */
+
 void Communication::handleData(){
     
 	memcpy(inData,slavePointer->inDataArray,27);
@@ -66,50 +70,7 @@ void Communication::handleData(){
     
     if ( this->inData[1]=='S' ) {
         
-        // Front sensor
-        char temp[3];
-        
-        for (int it = 0; it < 3; it++) {
-            temp[it] = inData[it+3];
-        }
-        robotPointer->fwdLongValueIn(temp);
-        
-        // Back sensor
-        for (int it = 0; it < 3; it++) {
-            temp[it] = inData[it+6];
-        }
-        robotPointer->bwdLongValueIn(temp);
-        
-        // Left back short sensor
-        for (int it = 0; it < 3; it++) {
-            temp[it] = inData[it+9];
-        }
-        robotPointer->bwdShortValueIn(temp);
-        
-        // Right back sensor
-        for (int it = 0; it < 3; it++) {
-            temp[it] = inData[it+12];
-        }
-        robotPointer->rightBackValueIn(temp);
-        
-        // Left front sensor
-        for (int it = 0; it < 3 ; it++) {
-            temp[it] = inData[it+15];
-        }
-        robotPointer->fwdShortValueIn(temp);
-        
-        // Right front sensor
-        for (int it = 0; it < 3; it++) {
-            temp[it] = inData[it+18];
-        }
-        robotPointer->rightFrontValueIn(temp);
-        
-        
-        // Right back sensor
-        for (int it = 0; it < 3; it++) {
-            temp[it] = inData[it+21];
-        }
-        robotPointer->leftLongValueIn(temp);
+        sensorArrayToVariables();
 		robotPointer->newData = true;
         
     }
@@ -153,21 +114,26 @@ void Communication::handleData(){
     
 }
 
-// -------------------
-
+// ----------Manual accessfunction ----------------
 bool Communication::getManual(){
     return manual;
 }
 
 
-// -------------------
+// -----------------------------------------------
 
 
 void Communication::setRobot(Robot* inRobot){
     robotPointer = inRobot;
 }
 
-// -------------------
+
+// -----------------------------------------------
+/*
+ *  sendMap(), send all 31 rows, after each transfer wait for a mapConfirmation.
+ *  When we've received the confirmation we set it to false and reiterate.
+ */
+
 void Communication::sendMap(){
 	for(unsigned int i = 0; i < 32; i++){
 		sendRow(i);
@@ -178,7 +144,11 @@ void Communication::sendMap(){
 	}
 }
 
+// -----------------------------------------------
 
+/*
+ *  copy the row into the outDataArray and send the transmission interrupt to master.
+ */
 
 void Communication::sendRow(unsigned int inRow){
     memcpy(slavePointer->outDataArray,robotPointer->getColAsChar(inRow),25);
@@ -206,6 +176,11 @@ void Communication::sendRotateRequest(){
     slavePointer->SPI_Send();
 }
 
+/*
+ *  The doubles are sent in separate chars (tens, ones, tenths and hundreths) 
+ *  this function reassembles the double.
+ */
+
 double Communication::assembleDouble(char ten, char one, char tenth, char hundreth){
     double tenNumber=(double)ten*10;
     
@@ -223,8 +198,66 @@ double Communication::assembleDouble(char ten, char one, char tenth, char hundre
     
 }
 
+/*
+ *  When a rfid is detected to avoid detecting multiple in same square the rfid
+ *  detection is deactivated. This command reactivates RFID-detection
+ */
+
 void Communication::reactivateRFID(){
 	    slavePointer->outDataArray[0] = 1;
 	    slavePointer->outDataArray[1] = 'r';
 	    slavePointer->SPI_Send();
+}
+
+/*
+ *  Function for reassembling of sensorvalues from array to internal variables.
+ */
+
+
+void Communication::sensorArrayToVariables(){
+    
+    // Front sensor
+    char temp[3];
+    
+    for (int it = 0; it < 3; it++) {
+        temp[it] = inData[it+3];
+    }
+    robotPointer->fwdLongValueIn(temp);
+    
+    // Back sensor
+    for (int it = 0; it < 3; it++) {
+        temp[it] = inData[it+6];
+    }
+    robotPointer->bwdLongValueIn(temp);
+    
+    // Left back short sensor
+    for (int it = 0; it < 3; it++) {
+        temp[it] = inData[it+9];
+    }
+    robotPointer->bwdShortValueIn(temp);
+    
+    // Right back sensor
+    for (int it = 0; it < 3; it++) {
+        temp[it] = inData[it+12];
+    }
+    robotPointer->rightBackValueIn(temp);
+    
+    // Left front sensor
+    for (int it = 0; it < 3 ; it++) {
+        temp[it] = inData[it+15];
+    }
+    robotPointer->fwdShortValueIn(temp);
+    
+    // Right front sensor
+    for (int it = 0; it < 3; it++) {
+        temp[it] = inData[it+18];
+    }
+    robotPointer->rightFrontValueIn(temp);
+    
+    
+    // Right back sensor
+    for (int it = 0; it < 3; it++) {
+        temp[it] = inData[it+21];
+    }
+    robotPointer->leftLongValueIn(temp);
 }

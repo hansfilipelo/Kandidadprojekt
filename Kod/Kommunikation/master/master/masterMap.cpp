@@ -4,30 +4,6 @@ using namespace std;
 
 // ------------------------------------------
 
-// ------------------------------------------
-/*
-char* Map::getPos(int x, int y){
-    return mapArea[x][y];
-}
-
-// ---------------- getColAsChar ------------
-
-
-// --------- SET COL ------------
-void Map::setColAsChar(char* inCol)
-{
-	char* ptr = mapArea[inCol[2]][1];
-	memcpy(ptr, inCol,27);
-}
-
-// --------- SET POS ------------
-
-void Map::setSection(int xPos, int yPos, char* inSection){
-    mapArea[xPos][yPos] = inSection;
-}
-
-// --------- DEBUG --------------
-*/
 #if DEBUG == 1
 void Map::printMap(){    
     for (int it = 0; it < 17; it++) {
@@ -39,18 +15,3 @@ void Map::printMap(){
 }
 
 #endif
-/*
-char* Map::getColAsChar(int col)
-{
-	// Char sent to computer
-	char* output = new char[27];
-	
-	for (int it = 0; it < 27; it++){
-		// Type of the block we are looking at
-		output[it] = *this->getPos(col,it);
-	}
-	
-	return output;
-	
-}
-*/

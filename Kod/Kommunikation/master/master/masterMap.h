@@ -19,19 +19,6 @@ class Map
 {
 public:
 	char mapArea[32][27];
-	//unsigned char** mapPtr[14];
-	
-	//char* getColAsChar(int);
-    //void setColAsChar(char*);
-    //void setSection(int, int, char*);
-    //char* getPos(int x, int y);
-    
-#if DEBUG == 1
-    void printMap();
-#endif
-	
-protected:
-	
 };
 
 #endif

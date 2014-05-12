@@ -85,54 +85,6 @@ void pwm_init()
 	// Initiate gear as 00
 	PORTD |= (0<<PORTD4) | (0<<PORTD5);
 }
-
-/*
- // Gearbox, port 17
- ISR(INT0_vect){
- cli();
- if (gear == 0){
- PORTD |= 0x10;
- PORTD &= ~0x20;
- gear = gear + 1;
- }
- else if (gear == 1){
- PORTD &= ~0x10;
- PORTD |= 0x20;
- gear = gear + 1;
- }
- else if (gear == 2){
- PORTD |= 0x10;
- PORTD |= 0x20;
- gear = gear + 1;
- }
- else {
- PORTD &= ~0x10;
- PORTD &= ~0x20;
- gear = 0;
- }
- 
- sei();
- }
- */
-
-/*
- // Drive, port 16
- ISR(INT1_vect){
- cli();
- if (speed == 0){
- speed = 25;
- }
- else{
- speed = 0;
- }
- int output = floor(speed * 255 / 100);
- 
- OCR2A = output;
- OCR2B = output;
- 
- sei();
- }
- */
 #endif
 
 // ----------------------------------------
@@ -261,7 +213,7 @@ int main(void)
 			}
 		}
     
-    // Look for walls every 500th turn of main loop
+    // Look for walls every 250th turn of main loop
     if (i == 250) {
               // Update position in map
         robotPointer->updateRobotPosition();

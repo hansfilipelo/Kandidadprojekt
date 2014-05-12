@@ -1233,6 +1233,11 @@ bool Robot::getRotateLeftActive()
 	return rotateLeftActive;
 }
 
+/*
+ *  Wait until two new sensor arrays have been delivered. Two so that we are sure 
+ *  that we have good values on the steermodule for decision making. 
+ */
+
 void Robot::waitForNewData()
 {
     for (unsigned int i = 0; i < 2; i++) {
