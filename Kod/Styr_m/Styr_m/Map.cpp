@@ -70,8 +70,33 @@ char* Map::getColAsChar(int col)
     return output;
 }
 
+void Map::fillClosedArea()
+{
+	int countc = 0;
+	// fill map with closed area from left
+	 for (int y = 0; y < 17; y++) {
+		for (int x = 0; x < 32; x++) {
+			if((this->getPos(x,y)->getType() != 'c') && (countc==0)){
+				 convertSection(x,y,'c');
+			}
+			else{
+				countc++;
+			}
+			
+			if(this->getPos(x,y)->getType() == 'e'){
+				countc = 0;
+			}
+			if((countc >1) && (this->getPos(x,y)->getType() == 'u'))
+				convertSection(x,y,'c');
+				countc = 0;
+        }
+    }
+}
+
+// -------------------- DEBUG --------------------
+
 #if DEBUG == 1
-void Map::printMap(){    
+void Map::printMap(){
     for (int it = 0; it < 17; it++) {
         for (int i = 0; i < 32; i++) {
             cout << this->getPos(i,it)->getType() << " ";
@@ -79,4 +104,52 @@ void Map::printMap(){
         cout << endl;
     }
 }
+
+void Map::initMap(){
+    char tempMap[32][17]={
+        {'u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u'},
+        {'u','c','c','c','c','c','c','c','c','c','c','c','c','c','c','u','u'},
+        {'u','c','u','u','u','u','u','u','u','u','u','u','u','u','c','u','u'},
+        {'u','c','u','u','u','u','u','u','u','u','u','u','u','u','c','u','u'},
+        {'u','c','u','u','u','u','u','u','u','u','u','u','u','u','c','u','u'},
+        {'u','c','u','u','u','u','u','u','u','u','u','u','u','u','c','u','u'},
+        {'u','c','u','u','u','u','u','u','u','u','u','u','u','u','c','u','u'},
+        {'u','c','u','u','u','u','u','u','u','u','u','u','u','u','c','u','u'},
+        {'u','c','u','u','u','u','u','u','u','u','u','u','u','u','c','u','u'},
+        {'u','c','u','u','u','u','u','u','u','u','u','u','u','u','c','u','u'},
+        {'u','c','u','u','u','u','u','u','u','u','u','u','u','u','c','u','u'},
+        {'u','c','u','u','u','u','u','u','u','u','u','u','u','u','c','u','u'},
+        {'u','c','u','u','u','u','u','u','u','u','u','u','u','u','c','u','u'},
+        {'u','c','u','u','u','u','u','u','u','u','u','u','u','u','c','u','u'},
+        {'u','c','u','u','u','u','u','u','u','u','u','u','u','u','c','u','u'},
+        {'u','c','u','u','u','u','u','u','u','u','u','u','u','u','c','u','u'},
+        {'u','c','u','u','u','u','u','u','u','u','u','u','u','u','c','u','u'},
+        {'u','c','u','u','u','u','u','u','u','u','u','u','u','u','c','u','u'},
+        {'u','c','u','u','u','u','u','u','u','u','u','u','u','u','c','u','u'},
+        {'u','c','u','u','u','u','u','u','u','u','u','u','u','u','c','u','u'},
+        {'u','c','u','u','u','u','u','u','u','u','u','u','u','u','c','u','u'},
+        {'u','c','u','u','u','u','u','u','u','u','u','u','u','u','c','u','u'},
+        {'u','c','u','u','u','u','u','u','u','u','u','u','u','u','c','u','u'},
+        {'u','c','u','u','u','u','u','u','u','u','u','u','u','u','c','u','u'},
+        {'u','c','u','u','u','u','u','u','u','u','u','u','u','u','c','u','u'},
+        {'u','c','u','u','u','u','u','u','u','u','u','u','u','u','c','u','u'},
+        {'u','c','u','u','u','u','u','u','u','u','u','u','u','u','c','u','u'},
+        {'u','c','u','u','u','u','u','u','u','u','u','u','u','u','c','u','u'},
+        {'u','c','u','u','u','u','u','u','u','u','u','u','u','u','c','u','u'},
+        {'u','c','u','u','u','u','u','u','u','u','u','u','u','u','c','u','u'},
+        {'u','c','c','c','c','c','c','c','c','c','c','c','c','c','c','u','u'},
+        {'u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u'}
+    };
+    
+    for (int it = 0; it < 17; it++) {
+        for (int i = 0; i < 32; i++) {
+            mapArea[i][it] = new MapSection(i,it,this); // it, i to i, it
+            
+            if (tempMap[it][i] == 'c') {
+                this->getPos(i,it)->setType('c');
+            }
+        }
+    }
+}
+
 #endif

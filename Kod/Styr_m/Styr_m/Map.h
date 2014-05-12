@@ -28,11 +28,14 @@ public:
 	void setSection(int, int, MapSection*);
 	void convertSection(int,int,char);
 	char* getColAsChar(int);
+	void fillClosedArea();
 	
 	MapSection* getPos(int,int);
     
 #if DEBUG == 1
     void printMap();
+    
+    void initMap();
 #endif
 	
 protected:

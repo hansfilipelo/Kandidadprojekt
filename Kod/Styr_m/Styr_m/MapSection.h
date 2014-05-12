@@ -56,8 +56,12 @@ public:
     
     virtual bool isUnexplored();
     virtual int findUnexplored();
+    virtual bool isClosed(int origX, int origY);
 	
+    volatile bool hasBeenClosed = false;
+    
 protected:
+    
 	int xCoord;
 	int yCoord;
 	int step;
@@ -139,6 +143,7 @@ public:
     int getUserSpeed();
 	
 	void waitForNewData();
+	void backToStart();
     
     // Automatic control
     void turn(int pd); //Positive or negative value will decide left or right
@@ -203,6 +208,7 @@ protected:
 	
 	//Paramater that determines if robot should stop after one segment.
 	volatile bool haltAfterSection;
+    volatile bool startExplore = false;
 	
 	//Paramaters for wall and corner detection
 	int rightCornerFront;
