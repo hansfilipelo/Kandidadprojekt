@@ -321,9 +321,9 @@ y[n] = Cx[n] + Du[n] + e
 och skattningen ges av
 \begin{gather}
 	\hat{x}[n+1|n] = A\hat{x}[n|n-1] + K[n](y[n]-C_n) \\
-	K[n]=AP[t|t-1]C^T([CP[t|t-1]C^T+R)^{-1}	\\
-	P[n+1|n]=AP[t|t-1]A^T+Q 
-	        -AP[t|t-1]C^T(CP[t|t-1]C^T+R)^{-1}CP[t|t-1]A^T
+	K[n]=AP[n|n-1]C^T([CP[n|n-1]C^T+R)^{-1}	\\
+	P[n+1|n]=AP[n|n-1]A^T+R_{1} 
+	        -AP[n|n-1]C^T(CP[n|n-1]C^T+R)^{-1}CP[n|n-1]A^T
 \end{gather}
 där $R_1$ och $R_2$ är kovariansmatriserna för e respektive v. $A$-,$B$-,$C$- och $D$-matriserna varierar med tiden.  
 
