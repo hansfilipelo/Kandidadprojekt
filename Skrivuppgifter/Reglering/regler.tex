@@ -181,8 +181,7 @@ För att kunna avgöra var roboten befinner sig behövs ett eller flera sätt f�
 
 \subsubsection{Avståndssensor}
 
-Som avståndsmätare kan någon typ av optisk sensor användas. Att sensorn är optisk innebär att den använder sig av ljus för att utföra mätningarna. De finns till exempel sensorer som belyser en yta som avstånd ska mätas till, tar emot reflekterat ljus och sedan med hjälp av tiden det tagit för ljuset att färdas beräkna avståndet. Denna metod kallas time-of-flight. Ytterligare en metod som används kallas optisk triangulering och det innebär att med hjälp av vinkeln mellan sändare och mottagare bestämma avståndet till objektet\footnote{Hägg, M. Avståndskamera för utomhusbruk, LTU \url{http://epubl.ltu.se/1402-1617/2000/317/LTU-EX-00317-SE.pdf}, hämtad 2014-05-06}.
-
+Som avståndsmätare kan någon typ av optisk sensor användas. Att sensorn är optisk innebär att den använder sig av ljus för att utföra mätningarna. De finns till exempel sensorer som belyser en yta som avstånd ska mätas till, tar emot reflekterat ljus och sedan med hjälp av tiden det tagit för ljuset att färdas beräkna avståndet. Denna metod kallas time-of-flight. Ytterligare en metod som används kallas optisk triangulering och det innebär att med hjälp av vinkeln mellan sändare och mottagare bestämma avståndet till objektet.
 \newpage
 
 \subsubsection{Gyroskop och accelerometer}
@@ -243,16 +242,16 @@ I denna fördjupande del går vi igenom metoder som kan användas för att utfö
 
 Inom reglerteknik kan linjära system beskrivas på så kallad tillståndsform\footnote{Glad, Torkel och Ljung, Lennart (2006), \textit{Reglerteknik - Grundläggande teori}.}. I fallet med SLAM för en robot använder man robotens position som tillstånd , som beskrivs i ekvation (1). Ett tidskontinuerligt linjärsystem kan beskrivas på tillståndsform enligt
 \begin{gather}
-\dot{x^r_t}=Ax^r_t+Bu_t \\
-y_t=Cx^r_t+Du_t	
+\dot{x}=Ax+Bu \\
+y=Cx+Du	
 \label{equ:tillstand}
 \end{gather}
 där $A$, $B$, $C$ och $D$ är matriser.
 
 Tillstånden för en robot mäts med tidsdiskreta värden då datorer endast hanterar tidsdiskreta mätningar och ej kontinuerliga. I dessa fall är det bättre att använda sig av en tidsdiskret tillståndsbeskrivning.
 \begin{gather}
-x^r[n+1] = Ax^r[n] + Bu[n] \\
-y[n] = Cx^r[n] + Du[n]
+x[n+1] = Ax[n] + Bu[n] \\
+y[n] = Cx[n] + Du[n]
 \label{equ:disktillstand}
 \end{gather}
 
@@ -274,14 +273,14 @@ I ett praktiskt implementerbart system nyttjas till exempel sensorer som mätins
 Inom reglerteknik används en observatör för att verifiera skattade tillståndsvariabler i ett givet system när tillstånden hos systemet ej kan bestämmas med säkerhet. Skattningen av variabler kan utföras genom tillståndsåterkoppling.  Tillståndet för systemet i ekvation (5)-(7) kan skattas med hjälp av observatören
 
 \begin{gather}
-\dot{\hat{x^r_t}} = Ax^r_t + Bu_t + K(y_t - C\hat{x^r_t})
+\dot{\hat{x}} = Ax + Bu + K(y - C\hat{x})
 \label{equ:observer}
 \end{gather}
 
 Skattningsfelet $\tilde{x}= x - \hat{x}$ ges sedan av differentialekvationen: 
 
 \begin{gather}
-\dot{\tilde{x^r_t}} = (A - KC)\tilde{x^r_t}
+\dot{\tilde{x}} = (A - KC)\tilde{x}
 \label{equ:observerError}
 \end{gather}
 
@@ -291,16 +290,16 @@ Genom att sedan välja olika $K$-matriser ges systemet olika egenskaper i form a
 
 Antag att systemet i ekvation \ref{equ:tillstand}-\ref{equ:disktillstand} störs av mätefelet och systemstörningen som specificerades i problemformuleringen
 \begin{gather}
-\dot{x^r_t}=Ax^r_t+Bu_t+e^i_t \\
-y_t=Cx^r_t+Du_t+v_t
+\dot{x}=Ax+Bu+v \\
+y=Cx+Du+e
 \end{gather}
 
 Mätfelet i ekvation \ref{equ:observerError} ges då istället av: 
 \begin{gather}
-\dot{\tilde{x^r_t}} = (A - KC)\tilde{x^r_t} + e^i_t - Kv_t
+\dot{\tilde{x}} = (A - KC)\tilde{x} + e - Kv
 \end{gather}
 
-Då $e^i_t$ och $v_t$ antas vara vita brus kan man, genom att uppskatta störningarnas kovariansmatriser, beräkna mätfelets kovarians. Kovariansen hos mätfelet minimeras sedan genom att välja 
+Då $e$ och $v$ antas vara vita brus kan man, genom att uppskatta störningarnas kovariansmatriser, beräkna mätfelets kovarians. Kovariansen hos mätfelet minimeras sedan genom att välja 
 \begin{gather}
 K = PC^{T}R_{2}^{-1}
 \end{gather}
@@ -313,6 +312,20 @@ AP + PA^{T} + R_{1} - PC^{T}R_{2}^{-1}CP = 0
 I många praktiska tillämpningar antas $R_{1}$ och $R_{2}$ vara diagonalmatriser för att förenkla implementeringar. Dessa matriser viktas sedan beroende på hur mycket systemet påverkas av yttre störningar. 
 
 Inom SLAM är både hastighet och störningskänslighet essentiellt och man använder då en variabel $K$-matris och Kalmanfiltret är tyvärr inte alltid effektivt för detta ändamål, eftersom filtret enbart kan användas för linjära system. Alla tillstånd kan dessutom inte skattas utefter samma förutsättningar som tidigare tillstånd. För att skatta nästkommande tillstånd med variabel $K$-matris används vanligen ett utökat Kalmanfilter vid implementeringar av SLAM. 
+
+För att beskriva det utökade Kalmanfiltret behöver vi först beskriva det tidsdiskreta och tidsvarianta Kalmanfiltret. Systemet beskrivs då som 
+\begin{gather}
+x[n+1] = Ax[n] + Bu[n]+v \\
+y[n] = Cx[n] + Du[n] + e
+\end{gather}
+och skattningen ges av
+\begin{gather}
+	\hat{x}[n+1|n] = A\hat{x}[n|n-1] + K[n](y[n]-C_n) \\
+	K[n]=AP[t|t-1]C^T([CP[t|t-1]C^T+R)^{-1}	\\
+	P[n+1|n]=AP[t|t-1]A^T+Q 
+	        -AP[t|t-1]C^T(CP[t|t-1]C^T+R)^{-1}CP[t|t-1]A^T
+\end{gather}
+där $R_1$ och $R_2$ är kovariansmatriserna för e respektive v. $A$-,$B$-,$C$- och $D$-matriserna varierar med tiden.  
 
 \subsubsection{EKF - Det utökade kalmanfiltret}
 
