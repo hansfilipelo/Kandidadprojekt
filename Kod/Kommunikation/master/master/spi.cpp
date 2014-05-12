@@ -117,21 +117,3 @@ void Spi::requestRow( unsigned int row)
 	sendArray(1);	
 }
 
-/*
- *  This function requests the map from the Steermodule. Due to change this function
- *  is no longer viable or supported. (remove?)
- */
-
-
-void Spi::requestMap()
-{
-	for (unsigned int i= 0; i < 32 ; i++){
-		requestRow(i);
-		while(i != latestRow){
-			asm("");
-			asm("");
-			asm("");
-		}
-	}
-	bluetoothPointer->sendMap();
-}

@@ -21,7 +21,6 @@ class Spi
 {
     
 public:
-	void requestMap();
 	Spi(Bluetooth*,Map*);
 	void init();
     char transfer(char, unsigned int);

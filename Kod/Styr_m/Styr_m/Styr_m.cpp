@@ -175,8 +175,8 @@ int main(void)
     for (;;) {
         
         if (abstractionObject->sendMapNow){
-            robotPointer->sendMap();
-            sendMapNow = false;
+            abstractionObject->sendMap();
+            abstractionObject->sendMapNow = false;
         }
 		
         // Manual mode

@@ -69,11 +69,6 @@ void handleDataFromSteer(){
 		Bus.outDataArray[1] = 'r';
 		Bus.sendArray(0);
 	}
-    
-    //F sent from Steer. Time to
-    if(Bus.buffer[1] == 'F'){
-		Bus.requestMap();
-	}
 }	
 
 void handleDataFromSensor(){
