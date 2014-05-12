@@ -7,8 +7,10 @@ framåt          //  fix 3       //  f   //  0   // [Var1] (speed)
 bakåt           //  fix 3       //  b   //  0   // [Var1] (speed)
 
 FetchMap	//  fix 1	//  F	// ’DNC’// ’DNC’
+(denna fungerar nu annorlunda. denna skickar 
 
-PIDVarSet       // Varierande   //  P   //  0   // [10tal,1tal,10del,100del,10tal, 1tal,10del,100del, Var1]
+
+PIDVarSet       // Varierande   //  P   //  0   // [10tal,1tal,10del,100del,10tal, 1tal,10del,100del, Var1] (NOTERA) Dessa sätter även andra parametrar såsom konstanter för högerföljning och positionsskattning. 
 
 gyrokalibrering	//  fix 2       //  g	//  0  //  ’DNC’
 svängberäkning	//  fix 2       //  g	//  1  //  ’DNC'
@@ -23,6 +25,7 @@ Tillåt RFID	//  fix 1	//  r  	// 'DNC'// 'DNC'		//skickas från styrmodul till 
 
 Kartkolumn      //  fix 19      //  M   //  COL // CHARS
 requestCol	//  fix 2	//  m	//  COL // ’DNC’
+(denna bekräftar att en kartrad har kommit över, COL är för tillfället onödig.)
 
 Man/Auto	// fix 1	// a/q	// ’DNC’
 
