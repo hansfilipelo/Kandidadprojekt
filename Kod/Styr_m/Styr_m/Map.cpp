@@ -99,9 +99,8 @@ void Map::fillClosedArea()
 			if((countc >1) && (this->getPos(x,y)->getType() == 'u'))
 				convertSection(x,y,'c');
 				countc = 0;
-			}
-		}
-	}
+        }
+    }
 }
 
 #endif

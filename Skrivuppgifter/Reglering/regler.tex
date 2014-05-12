@@ -320,22 +320,13 @@ Kalmanfiltret är tyvärr inte särskilt effektivt vid SLAM. Detta då filtret e
 Det utökade kalmanfiltret, Extended Kalman Filter (EKF), är vad som vanligtvis används då man implementerar SLAM-algoritmer. Till skillnad från Kalmanfiltret kan EKF lösa icke-linjära SLAM-problem. Detta då filtrets matriser beräknas om för varje nytt tillstånd. Matriserna beräknas med hjälp av jacobianer, och linjäriseras därmed kring varje tillstånd för att kunna skatta nästa tillstånd. 
 
 \subsection{FastSLAM}
-FastSLAM är en relativt modern teknik som använder ett så kallat partikelfilter för att filtrera givet mätdata, där varje värde i mätdatat ses som en partikel. De mest sannolika värdena sparas och de minst sannolika värdena förkastas. Man kallar det här för en omsapling av datat då man utgår från en sampelmängd av mätvärden och sedan minskar denna. 
+FastSLAM är en relativt modern teknik som använder ett så kallat partikelfilter för att filtrera givet mätdata, där varje tilstånd för systemet ses som en partikel. De mest sannolika värdena sparas och de minst sannolika tillstånden förkastas. Man kallar det här för en omsapling av datat då man utgår från en sampelmängd av mätvärden och sedan minskar denna. 
 
 För att effektivisera filtreringen av mätvärden delas olika distinkt upptäckta objekt i robotens miljö in i olika zoner. Dessa zoner filtreras sedan individuellt för att få fram den mest sannolika positionen för objektet i zonen. 
 
 Mätvärdena körs sedan flera gånger genom filtret tills dess att man med tillräckligt stor sannolikhet kan bestämma kartans utseende. Metoden har visat sig väldigt effektiv i praktiken. Nackdelen med metoden är att man genom omsampling av mätvärdena förlorar mätinformation som skulle kunna vara korrekt. Beroende på hur filtret prioriterar är det möjligt att man får en skev bild av omgivningen.
 
 De matematiska grunderna för FastSLAM ligger utanför vad denna rapport täcker in - men för den intresserade läsaren rekommenderas David Törnqvists doktorsavhandling \textit{Estimation and Detection with Applications to Navigation}\footnote{David Törnqvist. Estimation and Detection with Applications to Navigation. PhD thesis, Linköping University, 2008. Hämtad 15 april 2014.}.
-
-\newpage
-\section{Exempel på andra implementeringar}
-
-Det finns många exempel på implementeringar av SLAM. Robotdammsugare är ett bra exempel på en modern tillämpning som kan använda sig av SLAM. Det är då en liten enhet som kan utnyttja en modifierad version av VSLAM som kallas CV-SLAM. Detta står för Ceiling Visual SLAM, det vill säga att roboten har kameror som är riktade uppåt och använder landmärken i taket för att rita upp en karta över rummet den städar. Det gör att den dammsuger alla platser i rummet istället för att städa samma punkt flera gånger. 
-
-Det här är ett bra exempel på hur moderna, små mikrokontrollers kan göra det möjligt att använda SLAM för att förenkla vår vardag. 
-
-SLAM används, och har använts under längre tid, också i rymdexpeditioner där robotar skickas upp i rymden för att upptäcka och kartlägga ställen som vi människor inte har möjlighet att besöka. 
 
 %------------------------------------------------
 %------------Resultat och slutsatser-------------
