@@ -937,6 +937,9 @@ void Robot::updateRobotPosition(){
             
 	//-------------------------Direction is forwards in map-------------------
 				case 'f':
+                    
+                    //moveForward();
+                    
 					//save section about to move into to temp container
 					tempSection = mom->getPos(xCoord,yCoord+1);
 					//move robot to new section
@@ -951,6 +954,9 @@ void Robot::updateRobotPosition(){
             
 	//-------------------------Direction is backwards in map-------------------
 				case 'b':
+                    
+                    //moveBackward();
+                    
 					//save section about to move into to temp container
 					tempSection = mom->getPos(xCoord,yCoord-1);
 					//move robot to new section
@@ -966,6 +972,9 @@ void Robot::updateRobotPosition(){
             
 	//-------------------------Direction is right in map-----------------------
 				case 'r':
+                    
+                    //moveRight();
+                    
 					//save section about to move into to temp container
 					tempSection = mom->getPos(xCoord-1,yCoord);
 					//move robot to new section
@@ -981,6 +990,9 @@ void Robot::updateRobotPosition(){
             
 	//-------------------------Direction is left in map------------------------
 				case 'l':
+                    
+                    //moveLeft();
+                    
 					//save section about to move into to temp container
 					tempSection = mom->getPos(xCoord+1,yCoord);
 					//move robot to new section
@@ -999,11 +1011,13 @@ void Robot::updateRobotPosition(){
 					//would like to throw some kind of error here.
 					return;
 			}
-			//update which sensor that is valid and should be measured.
-			//and update the references on that sensor.
-		
+			
 			waitForNewData();
 		
+            
+            //update which sensor that is valid and should be measured.
+			//and update the references on that sensor.
+            
 			validSensor = determineValidSensor();
 			if(validSensor == 'f'){
 				this->setFwdReference();
@@ -1026,8 +1040,75 @@ void Robot::updateRobotPosition(){
 	{
 		movedToNewPosition = 0;
 	}
-	backToStart();
+	backToStart(); // not tested fully, could still give nonsense.
 }
+
+
+// ------------Move Functions------------------
+
+
+/*
+ void Robot::moveForward(){
+ tempSection = mom->getPos(xCoord,yCoord+1);
+ //move robot to new section
+ mom->setSection(xCoord,yCoord+1,this);
+ //put previousSection back to last position.
+ mom->setSection(xCoord,yCoord,previousSection);
+ //save temp section to previous section
+ previousSection = tempSection;
+ 
+ yCoord++;
+ 
+ }
+ 
+ void Robot::moveBackward(){
+
+ 
+ //save section about to move into to temp container
+ tempSection = mom->getPos(xCoord,yCoord-1);
+ //move robot to new section
+ mom->setSection(xCoord,yCoord-1,this);
+ //put previousSection back to last position.
+ mom->setSection(xCoord,yCoord,previousSection);
+ //save temp section to previous section
+ previousSection = tempSection;
+ 
+ yCoord--;
+ 
+ }
+ 
+ 
+ void Robot::moveRight(){
+ 
+ //save section about to move into to temp container
+ tempSection = mom->getPos(xCoord-1,yCoord);
+ //move robot to new section
+ mom->setSection(xCoord-1,yCoord,this);
+ //put previousSection back to last position.
+ mom->setSection(xCoord,yCoord,previousSection);
+ //save temp section to previous section
+ previousSection = tempSection;
+ 
+ xCoord--;
+ 
+ }
+ 
+ void Robot::moveLeft(){
+ 
+ //save section about to move into to temp container
+ tempSection = mom->getPos(xCoord+1,yCoord);
+ //move robot to new section
+ mom->setSection(xCoord+1,yCoord,this);
+ //put previousSection back to last position.
+ mom->setSection(xCoord,yCoord,previousSection);
+ //save temp section to previous section
+ previousSection = tempSection;
+ 
+ xCoord++;
+ 
+ }
+ 
+ */
 
 // -----------------------------------------
 
@@ -1037,7 +1118,7 @@ char Robot::determineValidSensor(){
         return 'b';
     }
     else{                   //fwd sensor is smaller than bwd.
-        return 'f';
+        return 'f';         //Doesnt this case happen alot more now that we only have a short sensor in the front?
     }
 }
 
