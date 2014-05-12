@@ -319,7 +319,11 @@ Inom SLAM är både hastighet och störningskänslighet essentiellt och man anv�
 Till skillnad från Kalmanfiltret kan EKF lösa icke-linjära SLAM-problem. Detta då filtrets matriser beräknas om för varje nytt tillstånd. Matriserna beräknas med hjälp av Jacobianer, och linjäriseras därmed kring varje tillstånd för att kunna skatta nästa tillstånd. 
 
 \subsection{FastSLAM}
-FastSLAM är en relativt modern teknik som använder ett så kallat partikelfilter för att filtrera givet mätdata, där varje tilstånd för systemet ses som en partikel. De mest sannolika värdena sparas och de minst sannolika tillstånden förkastas. Man kallar det här för en omsapling av datat då man utgår från en sampelmängd av mätvärden och sedan minskar denna. 
+FastSLAM är en relativt modern teknik som använder ett så kallat partikelfilter för att filtrera givet mätdata, där varje tilstånd för systemet ses som en partikel. De mest sannolika värdena sparas och de minst sannolika tillstånden förkastas. Man kallar det här för en omsampling av data då man utgår från en sampelmängd av tillstånd och sedan filtrerar denna till en än mindre mängd tillstånd. Antag att partikelfiltret plockar ut $N$ tillstånd ur den totala mängden tillstånd. 
+
+\begin{gather}
+x^i[n] \sim p(x[n]|y[1:n]),\;\;\;\;\;\; i = 1, ..., N
+\end{gather}
 
 För att effektivisera filtreringen av mätvärden delas olika distinkt upptäckta objekt i robotens miljö in i olika zoner. Dessa zoner filtreras sedan individuellt för att få fram den mest sannolika positionen för objektet i zonen. 
 
