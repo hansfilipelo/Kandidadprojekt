@@ -322,8 +322,8 @@ och skattningen ges av
 \begin{gather}
 	\hat{x}[n+1|n] = A\hat{x}[n|n-1] + K[n](y[n]-C_n) \\
 	K[n]=AP[t|t-1]C^T([CP[t|t-1]C^T+R)^{-1}	\\
-	P[n+1|n]=AP[t|t-1]A^T+Q 
-	        -AP[t|t-1]C^T(CP[t|t-1]C^T+R)^{-1}CP[t|t-1]A^T
+	P[n+1|n]=AP[t|t-1]A^T+R_1 
+	        -AP[t|t-1]C^T(CP[t|t-1]C^T+R_2)^{-1}CP[t|t-1]A^T
 \end{gather}
 där $R_1$ och $R_2$ är kovariansmatriserna för e respektive v. $A$-,$B$-,$C$- och $D$-matriserna varierar med tiden.  
 
@@ -374,7 +374,9 @@ Fox, C.; Evans, M.; Pearson, M.; Prescott, T. (2012)
 ''Tactile SLAM with a biomimetic whiskered robot''. 2012 IEEE International Conference on Robotics and Automation. Hämtad 28 mars 2014.
 \url{http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6224813}
 
-Glad, Torkel och Ljung, Lennart. 2006. \textit{Reglerteknik - Grundläggande teori}. Upplaga 4:10. Lund. Studentlitteratur AB.
+Glad, Torkel och Ljung, Lennart. 2006. \textit{Reglerteknik - Grundläggande teori}. Upplaga 4:10. Lund. Studentlitteratur.
+
+Gustavsson, Fredrik; Ljung, Lennart; Millnert, Mille. 2000. \textit{Signalbehandling}. Andra upplagan. Lund. Studentlitteratur.
 
 Kandidatprojekt Y: Elektronikprojekt, Tävlingsregler för katläggningsrobot. Hämtad 28 mars 2014.  \url{https://drive.google.com/file/d/0B758zzcy4ZrTeG1wRTY4WG9lTDQ/edit?usp=sharing}
 
