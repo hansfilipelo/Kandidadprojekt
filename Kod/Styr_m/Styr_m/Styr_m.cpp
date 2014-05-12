@@ -173,16 +173,11 @@ int main(void)
     robotPointer->setRightClosed();
     robotPointer->setLeftClosed();
     for (;;) {
-        
+		
         // Manual mode
         if (abstractionObject->getManual()) {
             asm("");
-
-			if (i == 500)
-			{
-				robotPointer->updateRobotPosition();
-			}
-			i++;
+			
 			if (robotPointer->getRotateRightActive())
 			{
 				robotPointer->rotateRight();
@@ -193,15 +188,7 @@ int main(void)
 			}
         }
         // Automatic mode
-        else {
-			//om ej vägg framåt men vägg höger, följ den
-			if ((!robotPointer->isWallFwd()) && (robotPointer->isWallRight()))
-			{
-				robotPointer->setSpeed(robotPointer->getUserSpeed());
-				robotPointer->changeGear('f');
-				robotPointer->adjustPosition();
-			}
-            
+        else {            
 			//----------------------Om kortdistans flyttas fram----------
 			if(robotPointer->isCornerRight()){
 				while ( robotPointer->isWallRight() && !(abstractionObject->getManual())) {
@@ -209,6 +196,9 @@ int main(void)
 					robotPointer->setSpeed(25);
 					robotPointer->drive();
 				}
+#if DEBUG == 0
+				_delay_ms(200);
+#endif
 				robotPointer->rotateRight();
 				while ( !robotPointer->isWallRight() && !(abstractionObject->getManual())) {
 					robotPointer->changeGear('f');
@@ -217,7 +207,7 @@ int main(void)
 				}
 			}
             else if(robotPointer->isWallFwd()){
-				robotPointer->setSpeed(15);
+				robotPointer->setSpeed(20);
 				robotPointer->changeGear('f');
 				while (!robotPointer->isWallFwdClose() && !(abstractionObject->getManual()))
 				{
@@ -252,7 +242,7 @@ int main(void)
 				{
 					robotPointer->rotateRight();
 #if DEBUG == 0
-					_delay_ms(500);
+				_delay_ms(500);
 #endif
 					
 				}
@@ -267,7 +257,7 @@ int main(void)
 		}
     
     // Look for walls every 500th turn of main loop
-    if (i == 500) {
+    if (i == 250) {
               // Update position in map
         robotPointer->updateRobotPosition();
         

@@ -13,16 +13,16 @@
 #include "slave.h"
 
 //------------sensorer----------------------
-volatile int numOfSamples = 50;		//number of samples for mean value
+volatile int numOfSamples = 30;		//number of samples for mean value
 volatile int savepos = 0;			//counter for the storage array
 
-volatile int sensor0[50];			//arrays for sensordata
-volatile int sensor1[50];
-volatile int sensor2[50];
-volatile int sensor3[50];
-volatile int sensor4[50];
-volatile int sensor5[50];
-volatile int sensor6[50];
+volatile int sensor0[30];			//arrays for sensordata
+volatile int sensor1[30];
+volatile int sensor2[30];
+volatile int sensor3[30];
+volatile int sensor4[30];
+volatile int sensor5[30];
+volatile int sensor6[30];
 
 
 volatile long int sen0;				//integers for mean distance
@@ -179,6 +179,12 @@ void sendSensors(){
 	sensormodul.outDataArray[24] = (RfidCount/100);
 	sensormodul.outDataArray[25] = ((RfidCount/10) %10);
 	sensormodul.outDataArray[26] = (RfidCount % 10);
+	
+	
+	if (sensormodul.outDataArray[9] == 0){
+		volatile int p = 0;
+		p++;
+	}
 
     sensormodul.SPI_Send();			//send outDataArray
 }

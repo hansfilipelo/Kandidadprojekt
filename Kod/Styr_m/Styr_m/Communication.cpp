@@ -31,9 +31,9 @@ void Communication::handleData(){
 	}
 	//request to send map
 	if (this->inData[1]=='m') {
-		sendMapNow = true;
-		this->row = inData[2];
-		asm("");
+		/*this->row = inData[2];
+		sendMap();*/
+		mapConfirmation = true;
 	}
 	
 	if (this->inData[1]=='r' && inData[2]==0) {
@@ -121,15 +121,30 @@ void Communication::handleData(){
 	    robotPointer->setRFID();
     }
     
-    // Constants for PD-control
+    // Constants for PD-control, mapping and wall follower
     if(this->inData[1]=='P'){
+		// PD-control
         double kp=assembleDouble(inData[3],inData[4],inData[5],inData[6]);
         double kd=assembleDouble(inData[7],inData[8],inData[9],inData[10]);
         int ref=(int)inData[11];
         int trimLeft = (int)inData[12];
         int trimRight = (int)inData[13];
 		
-        robotPointer->setControlParameters(kp,kd,ref,trimLeft,trimRight);
+		// Mapping
+		int fwdRefLong = (int)inData[14];
+		int bwdRefLong = (int)inData[15];
+		int fwdRefShort = (int)inData[16];
+		int bwdRefShort = (int)inData[17];
+		
+		// Wall follower
+		int rightCornerFront = (int)inData[18];
+		int rightCornerBack = (int)inData[19];
+		int rightWallFront = (int)inData[20];
+		int rightWallBack = (int)inData[21];
+		int haltAfterSection = (int)inData[22];
+		
+		asm("");
+        robotPointer->setControlParameters(kp,kd,ref,trimLeft,trimRight, fwdRefLong, bwdRefLong, fwdRefShort, bwdRefShort, rightCornerFront, rightCornerBack, rightWallFront, rightWallBack, haltAfterSection);
     }
     
 }
@@ -149,11 +164,28 @@ void Communication::setRobot(Robot* inRobot){
 }
 
 // -------------------
-
 void Communication::sendMap(){
-    memcpy(slavePointer->outDataArray,robotPointer->getColAsChar(row),25);
+	for(unsigned int i = 0; i < 32; i++){
+		sendRow(i);
+		while(!mapConfirmation){
+			asm("");
+		}
+		mapConfirmation = false;
+	}
+}
+
+
+
+void Communication::sendRow(unsigned int inRow){
+    memcpy(slavePointer->outDataArray,robotPointer->getColAsChar(inRow),25);
     asm("");
     slavePointer->SPI_Send();
+}
+
+void Communication::initSendMap(){
+	slavePointer->outDataArray[0] = 1;
+	slavePointer->outDataArray[1] = 'F';
+	slavePointer->SPI_Send();
 }
 
 // --------------------------

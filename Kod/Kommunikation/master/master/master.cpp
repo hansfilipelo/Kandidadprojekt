@@ -43,16 +43,15 @@ void handleDataFromSteer(){
 	ReceiveFromSteer=false;
 	memcpy(Bus.buffer, Bus.inDataArray,27);
 	if(Bus.buffer[1]=='M'){
-		
-		memcpy(buffer.mapArea[Firefly.outDataArray[2]],Bus.buffer,27);
-		if((int)Firefly.mapNumber==31){
-			Firefly.sendMap();
-			Firefly.getMap = false;
-			Firefly.mapNumber = 0;
-		}
-		else{
-			Firefly.mapNumber++;
-			Firefly.getMap = true;
+		memcpy(buffer.mapArea[Bus.buffer[2]],Bus.buffer,27);
+		Bus.latestRow = Bus.buffer[2];
+		//Confirm received map section
+		Bus.outDataArray[0] = 1;
+		Bus.outDataArray[1] = 'm';
+		Bus.sendArray(1);
+		//If last row, send it to PC.
+		if(Bus.latestRow == 31){
+			Firefly.mapDone = true;
 		}
 	}
 	if(Bus.buffer[1]=='g'){
@@ -65,6 +64,9 @@ void handleDataFromSteer(){
 		Bus.outDataArray[0] = 1;
 		Bus.outDataArray[1] = 'r';
 		Bus.sendArray(0);
+	}
+	if(Bus.buffer[1] == 'F'){
+		Bus.requestMap();
 	}
 }	
 
@@ -167,9 +169,12 @@ int main(void)
 		if(ReceiveFromSensor){
 			handleDataFromSensor();
 		}
-		if(Firefly.getMap){
-		Bus.requestRow(Firefly.mapNumber);
-		Firefly.getMap = false;
+		if(Firefly.mapDone){
+			Firefly.sendMap();
+			if(Firefly.rowToSend > 31){
+				Firefly.mapDone = false;
+				Firefly.rowToSend = 0;
+			}
 		}
 		Display.update();
 		

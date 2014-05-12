@@ -113,6 +113,9 @@ public:
 	void phiDotValueIn(char phi[3]);
     
 	// SLAM (mapping, positioning)
+	volatile int movedToNewPosition = 0;
+	volatile int sensorDifference = 0;
+	bool usingLong = false;
 	void setFwdClosed();
 	void setBwdClosed();
     void setRightClosed();
@@ -134,12 +137,14 @@ public:
     
     int getRightDifference();
     int getUserSpeed();
+	
+	void waitForNewData();
     
     // Automatic control
     void turn(int pd); //Positive or negative value will decide left or right
     void adjustPosition();
     
-    void setControlParameters(double, double, int, int, int);
+    void setControlParameters(double inputKp, double inputKd, int inputRef, int inTrimLeft, int inTrimRight, int inFwdRefLong, int inBwdRefLong, int inFwdRefShort, int inBwdRefShort, int inRightCornerFront, int inRightCornerBack, int inRightWallFront, int inRightWallBack, int inHaltAfterSection);
 	
 	volatile bool newData = false;
     
@@ -190,11 +195,26 @@ protected:
     MapSection* previousSection = NULL;
     Communication* commObj = NULL;
 	
-	int speed = 0;
-	int userSpeed = 0;
+	// Parameters for detecting map sections
+	int fwdRefLong;
+	int bwdRefLong;
+	int fwdRefShort;
+	int bwdRefShort;
+	
+	//Paramater that determines if robot should stop after one segment.
+	volatile bool haltAfterSection;
+	
+	//Paramaters for wall and corner detection
+	int rightCornerFront;
+	int rightCornerBack;
+	int rightWallFront;
+	int rightWallBack;
+	
+	int speed;
+	int userSpeed;
     int trimLeft;
     int trimRight;
-    char currentGear = 'f';
+    char currentGear;
 	
 	bool rotateRightActive;
 	bool rotateLeftActive;
