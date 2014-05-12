@@ -369,7 +369,9 @@ De matematiska grunderna för FastSLAM ligger utanför vad denna rapport täcker
 
 Till slut kan vi konstatera att SLAM används i många tillämpningar man kanske inte tänker på. Man kan också konstatera att algoritmerna, filtren och mjukvaran som används för att implementera SLAM ibland kan vara väldigt komplexa. Algoritmerna som viktar vilka partiklar ska sparas respektive förkastas kan byggas ut i stort sett hur mycket som helst. 
 
-I ett SLAM-problem likt det i rapportens problemställning, skulle positionen att skattas med hjälp av sensorvärden i form av medelvärden för vinkel- och avståndssensorer. Eftersom området är slutet kan det upskattas klart mycket enklare än ett godtyckligt stort område. 
+I ett SLAM-problem likt det i rapportens problemställning, skulle positionen kunna skattas med hjälp av sensorvärden i form av medelvärden för vinkel- och avståndssensorer. Eftersom området är slutet kan det upskattas klart mycket enklare än ett godtyckligt stort område. 
+
+En sådan lösning skulle kunna baseras på en tillståndsrepresentation med ett tidsvariant, tidsdiskret Kalmanfilter. Genom att medelvärdesbilda sensordata kan man antagligen försumma mätstörningar och ändå få en acceptabel skattning av omgivningen utan partikelfilter. Reglerfel kan i sin tur sedan minimeras med bra modellering av hårdvaran implementeringen nyttjar. 
 
 \section{Reflektion}
 
