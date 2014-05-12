@@ -35,8 +35,12 @@ Spi Bus(&Firefly,&buffer);
 Lcd Display;
 
 /*
-*	Handeling data from modules
-*/
+ *	Handeling data from modules
+ *  The specific codewords are specified in the document kodord.txt.
+ *  sendArray(i) sends to the i:th module. 
+ *  i=0 is the sensorModule and i=1 is the steerModule.
+ *  These functions are not called on from interrupts.
+ */
 
 void handleDataFromSteer(){
 	
@@ -49,7 +53,7 @@ void handleDataFromSteer(){
 		Bus.outDataArray[0] = 1;
 		Bus.outDataArray[1] = 'm';
 		Bus.sendArray(1);
-		//If last row, send it to PC.
+		//If last row, start sending it to PC.
 		if(Bus.latestRow == 31){
 			Firefly.mapDone = true;
 		}
@@ -65,7 +69,9 @@ void handleDataFromSteer(){
 		Bus.outDataArray[1] = 'r';
 		Bus.sendArray(0);
 	}
-	if(Bus.buffer[1] == 'F'){
+    
+    //F sent from Steer. Time to
+    if(Bus.buffer[1] == 'F'){
 		Bus.requestMap();
 	}
 }	
@@ -102,27 +108,45 @@ void handleDataFromSensor(){
 /*
 *	INTERUPTS
 */
-//bluetooth interupt
+
+
+/*
+ *  Interrupt fires when data from BT-module arrive.
+ */
+
+
 ISR(USART0_RX_vect)
 {
 	Firefly.receiveArray();
 }
 
-//Steer module wants to send data
+/*
+ *  Interrupt from steermodule telling us to fetch data from them.
+ *  Sets bool fro receiving true so data can be handled in main.
+ */
+
 ISR(INT2_vect){
 	cli();
 	Bus.receiveArray(1);
 	ReceiveFromSteer = true;
 	sei();
 }
-//Sensor module wants to send data
+/*
+ *  Interrupt from sensormodule telling us to fetch data from them.
+ *  Sets bool fro receiving true so data can be handled in main.
+ */
+
 ISR(INT1_vect){
 	cli();
 	Bus.receiveArray(0);
 	ReceiveFromSensor = true;
 	sei();
 }
-//Handle auto/manual button event
+
+/*
+ *  Interrupt from manual/auto button. Switches mode.
+ */
+
 ISR(INT0_vect){
 	cli();
 	if(!Firefly.autonom){
@@ -153,7 +177,12 @@ ISR(INT0_vect){
 
 #endif
 
-
+/*
+ *  MainLoop, checks which receive bool that is true and handles the data. 
+ *  also once per iteration updates the display (either position or character, see
+ *  lcd.cpp for details). If the bool mapDone = true the mainloop also sends one 
+ *  row of map-data to PC.
+ */
 int main(void)
 {
 	DDRA |= (1<<PORTA4);
@@ -180,7 +209,7 @@ int main(void)
 		
 		
 		
-		 // lampan tänds vid autonom körning
+		 // this turns on a LED when in auto-mode.
 		if(Firefly.autonom){
 			PORTA |=(1<<PORTA4);
 		}

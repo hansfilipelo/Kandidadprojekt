@@ -16,7 +16,7 @@ Spi::Spi(Bluetooth* ptr, Map* inMap){
 
 void Spi::init(){
     
-    //Enable SPI, sets it low
+    //Enable SPI, set it low
 	PRR0 &= ~(1<<PRSPI);
     
 	//Sets slave select
@@ -35,6 +35,11 @@ void Spi::init(){
 	EIMSK |= (1<<INT0)|(1<<INT2)|(1<<INT1);
 	EICRA |= (1<<ISC01)|(1<<ISC00)|(1<<ISC11)|(1<<ISC10)|(1<<ISC21)|(1<<ISC20);
 }
+
+/*
+ *  Exchange char with selected slave. SlaveSelect is pulled low.
+ */
+
 
 char Spi::transfer(char outData, unsigned int slave)
 {
@@ -62,6 +67,10 @@ char Spi::transfer(char outData, unsigned int slave)
 	return inData;
 }
 
+/*
+ *  Send the complete array stored in outDataArray
+ */
+
 void Spi::sendArray(unsigned int slave){
 	
 	unsigned int length = 0;
@@ -73,11 +82,19 @@ void Spi::sendArray(unsigned int slave){
 	}
 }
 
+/*
+ *  ReceiveArray from slave by sending them zeros and saving data we recieve back.
+ *  The delay is necessary to ensure no data-"enveloping" and that both units 
+ *  has processed and readied the necessary data. Strange behaviour on
+ *  transmissions? Try increasing the delays before anything else.
+ */
+
+
 void Spi::receiveArray(unsigned int slave){
 	
 	inDataArray[0] = transfer(0x00,slave);
 	unsigned int length = inDataArray[0];
-	_delay_us(3);//om data inte kommer fram korrekt, testa dÂ att hˆja denna.
+	_delay_us(3);
 	for (unsigned int i=1; i<=length; i++)
 	{
 		inDataArray[i] = transfer(0x00, slave);
@@ -85,18 +102,11 @@ void Spi::receiveArray(unsigned int slave){
 	}
 }
 
+/*
+ *  This function requests a row from the Steermodule. Due to change this function
+ *  is no longer viable or supported. (remove?)
+ */
 
-
-unsigned char* Spi::getInDataArray()
-{
-	unsigned char* outPtr = new unsigned char;
-	
-	for (int i = 0; i < 27; i++)
-	{
-		outPtr[i] = inDataArray[i];
-	}
-	return outPtr;
-}
 
 void Spi::requestRow( unsigned int row)
 {
@@ -106,6 +116,12 @@ void Spi::requestRow( unsigned int row)
 	
 	sendArray(1);	
 }
+
+/*
+ *  This function requests the map from the Steermodule. Due to change this function
+ *  is no longer viable or supported. (remove?)
+ */
+
 
 void Spi::requestMap()
 {
