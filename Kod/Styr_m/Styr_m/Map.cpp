@@ -145,7 +145,7 @@ void Map::initMap(){
         for (int i = 0; i < 32; i++) {
             mapArea[i][it] = new MapSection(i,it,this); // it, i to i, it
             
-            if (tempMap[it][i] == 'c') {
+            if (tempMap[i][it] == 'c') {
                 this->getPos(i,it)->setType('c');
             }
         }
