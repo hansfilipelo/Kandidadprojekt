@@ -59,6 +59,10 @@ void Communication::handleData(){
 				
 	}
     
+    if( this->inData[1] == 'F' ){
+        sendMapNow = true;
+    }
+    
     
     if ( this->inData[1]=='S' ) {
         
@@ -182,11 +186,14 @@ void Communication::sendRow(unsigned int inRow){
     slavePointer->SPI_Send();
 }
 
+/* Not used in current implementation.
 void Communication::initSendMap(){
 	slavePointer->outDataArray[0] = 1;
 	slavePointer->outDataArray[1] = 'F';
 	slavePointer->SPI_Send();
 }
+ 
+*/
 
 // --------------------------
 // Asks for measure of angles

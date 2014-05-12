@@ -79,4 +79,28 @@ void Map::printMap(){
         cout << endl;
     }
 }
+
+void Map::fillClosedArea()
+{
+	int countc = 0;
+	// fill map with closed area from left
+	 for (int y = 0; y < 17; y++) {
+		for (int x = 0; x < 32; x++) {
+			if((this->getPos(x,y)->getType() != 'c') && (countc==0)){
+				 convertSection(x,y,'c');
+			}
+			else{
+				countc++;
+			}
+			
+			if(this->getPos(x,y)->getType() == 'e'){
+				countc = 0;
+			}
+			if((countc >1) && (this->getPos(x,y)->getType() == 'u'))
+				convertSection(x,y,'c');
+				countc = 0;
+        }
+    }
+}
+
 #endif

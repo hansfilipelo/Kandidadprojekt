@@ -321,9 +321,7 @@ void Robot::rotateLeft(){
         changeDirection('f');
     }
 	
-	while(!newData){
-		
-	}
+	waitForNewData();
 	this->robotRotated();
 		
 }
@@ -382,9 +380,7 @@ void Robot::rotateRight(){
         changeDirection('f');
     }
 	
-	while(!newData){
-		asm("");
-	}
+	waitForNewData();
 	this->robotRotated();
 	
 }
@@ -938,12 +934,7 @@ void Robot::updateRobotPosition(){
 			//update which sensor that is valid and should be measured.
 			//and update the references on that sensor.
 		
-			newData = false;
-			while(!newData){
-				asm("");
-				volatile int p = 0;
-				p++;
-			}
+			waitForNewData();
 		
 			validSensor = determineValidSensor();
 			if(validSensor == 'f'){
@@ -967,6 +958,7 @@ void Robot::updateRobotPosition(){
 	{
 		movedToNewPosition = 0;
 	}
+	backToStart();
 }
 
 // -----------------------------------------
@@ -1244,7 +1236,7 @@ bool Robot::getRotateLeftActive()
 
 void Robot::waitForNewData()
 {
-    for (unsigned int i = 0; i < 3; i++) {
+    for (unsigned int i = 0; i < 2; i++) {
         newData = false;
         while(!newData){
             asm("");
@@ -1252,6 +1244,13 @@ void Robot::waitForNewData()
             p++;
         }
     }
+}
+
+void Robot::backToStart()
+{
+	if((previousSection->getX() == 16) &&	(previousSection->getY()==1)){
+		mom->fillClosedArea();
+	}
 }
 
 // ----------------------

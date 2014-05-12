@@ -32,7 +32,7 @@ public:
 	bool autonom = false;
     
     unsigned char pcHandle[27];
-     // Data arrives in order, datalength (data.length + codeword + arg), codeword, arg, data.
+     // Data arrives in the following order datalength (data.length + codeword + arg), codeword, arg, data.
     unsigned char inDataArray[27] = {'0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0'};
     unsigned char outDataArray[27] = {'0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0'};
     

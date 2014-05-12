@@ -126,7 +126,6 @@ bygger på sannolikhetsteori i kombination med att moderna processorer
 och minnen kan hantera en stor mängd data. Moderna processorer möjliggör
 alltså ett stort stickprov vilket kan leda till en mindre osäkerhet.
 
-
 \subsection{Syfte}
 Syftet med denna rapport är att ge läsaren en introduktion till de algoritmer och tekniker som används för kartläggning och positionsbestämning i ett mikroprocessorsystem.
 
@@ -184,16 +183,32 @@ För att kunna avgöra var roboten befinner sig behövs ett eller flera sätt f�
 
 Som avståndsmätare kan någon typ av optisk sensor användas. Att sensorn är optisk innebär att den använder sig av ljus för att utföra mätningarna. De finns till exempel sensorer som belyser en yta som avstånd ska mätas till, tar emot reflekterat ljus och sedan med hjälp av tiden det tagit för ljuset att färdas beräkna avståndet. Denna metod kallas time-of-flight. Ytterligare en metod som används kallas optisk triangulering och det innebär att med hjälp av vinkeln mellan sändare och mottagare bestämma avståndet till objektet\footnote{Hägg, M. Avståndskamera för utomhusbruk, LTU \url{http://epubl.ltu.se/1402-1617/2000/317/LTU-EX-00317-SE.pdf}, hämtad 2014-05-06}.
 
+\newpage
+
 \subsubsection{Gyroskop och accelerometer}
 
-För att mäta vinkelhastighet går det att använda ett gyroskop även kallat gyro. En gyrosensor av MEMS-typ (Micro Electro-Mechanical System) utnyttjar att två lika stora massor som oscillerar konstant i motsatta riktningar påverkas av Korioliskraften vid rotation. Kraften verkar i olika riktningar på de två massorna och det leder till en förändring i kapacitans.
-Skillnaden i kapacitans har visat sig vara proportionell mot vinkelhastigheten, därav går det att bestämma den med hjälp av ett gyro \footnote{http://electroiq.com/blog/2010/11/introduction-to-mems-gyroscopes/, hämtad 2014-05-06}.
+Gyroskop och accelerometrar kan användas i samverkan för att bestämma relativ rörelse. Ett gyroskop kan känna av ett objekts vinkelhastighet, kring tre axlar. En accelerometer kan i sin tur känna av ett objekts förändring i hastighet i alla tre dimensioner. Förutsatt att initiala hastigheten är känd kan en accelerometer användas för att beräkna färdad sträcka genom två stegs tidsintegration. 
+
+Gemensamt för gyroskop och accelerometrar är att de använder sig av liknande tekniker. Antingen består de av en eller flera massor i ledande materiel som i kombination med ett hålrum skapar en kapacitans\footnote{Weinberg, Harvey (1999), ''Dual Axis, Low g, Fully Integrated Accelerometers'', \url{http://www.analog.com/library/analogdialogue/archives/33-01/accel/index.html}. Hämtad 2014-05-12.}. En annan teknik är att använda piezoelektriska material \footnote{Piezoelectricity, Wikipedia. \url{http://en.wikipedia.org/wiki/Piezoelectricity}. Hämtad 2014-05-12.} för att generera en förändring i kapacitans då en kraft verkar på en massa. 
+
+För en accelerometer används en massa som hålls fast av en arm med en viss elasticitet. Massan omges av strömförande ledare och skapar tillsammans med dem en induktans. Då accelerometern rör sig förändras kapacitansen - vilket är mätbart. Principen illustreras väldigt enkelt i bilden nedan.
+
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,scale=0.5]{accelerometer.png}  %skala och filnamn. 
+  \end{center}
+  \caption{Modell av accelerometer} %figurtext.
+  \label{fig:accelerometer}
+\end{figure}
+
+En gyrosensor av MEMS-typ (Micro Electro-Mechanical System) utnyttjar att två lika stora massor som oscillerar konstant i motsatta riktningar, och sedan påverkas av Korioliskraften vid rotation. Kraften verkar i olika riktningar på de två massorna vilket leder till en förändring i kapacitans.
+Skillnaden i kapacitans har visat sig vara proportionell mot vinkelhastigheten, och därför går det att bestämma vinkelhastigheten med hjälp av ett gyro \footnote{http://electroiq.com/blog/2010/11/introduction-to-mems-gyroscopes/, hämtad 2014-05-06}. 
 
 \subsubsection{Hjulsensorer}
 
 Vid vissa tillfällen kan det vara så att avståndssensorer ej kan användas för att skatta rörelse relativt landmärken, exempelvis om alla landmärken är utanför sensorernas räckvidd. Man kan då behöva skatta sin rörelse med hjälp av någon annan sensor. En vanlig typ av sensor är då hjulsensorer. Hjulsensorer räknar hur många varv hjulen snurrat och skattar sedan avståndet roboten färdats utifrån detta. 
 
-Ett problem med hjulsensorer är att de ej ger en helt korrekt hastighets- och distansskattning då hjulen ofta slirar mot underlaget. 
+Ett problem med hjulsensorer är att de ej ger en helt korrekt hastighets- och distansskattning då hjulen ofta slirar mot underlaget. Om underlaget är väldigt poröst är hjulsensorer ej särskilt tillämpbara. Det är då istället bättre att använda sig av en accelerometer för att skatta sin relativa rörelse. 
 
 \subsubsection{Databehandling}
 
@@ -208,9 +223,11 @@ I denna rapport berör vi mest området där SLAM baseras på optiska avståndss
 Något som också provats är SLAM utan användning av någon typ av optisk utrustning och istället förlita sig på känsel, med hjälp av känselsensorer som efterliknar djurs morrhår, för att kunna kartlägga ett helt mörklagt rum. Denna metod ger dock inte så bra resultat med de tekniker som existerar i dag\footnote{Fox, C.; Evans, M.; Pearson, M.; Prescott, T. (2012)
 ''Tactile SLAM with a biomimetic whiskered robot''. 2012 IEEE International Conference on Robotics and Automation. Hämtad 28 mars 2014.
 \url{http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6224813}
-}.
+}. 
 
-Tidigare nämndes till exempel metoder som använder sig av GPS. Detta i kombination med WiFi-signaler har använts till exempel i mobiltelefoner för att avgöra var personer befinner sig. För att WiFi-SLAM ska fungera krävs att accesspunkten har information om positionsdata för sig själv, alternativt att den anslutna enheten har information om var aktuellt WiFi är tillgängligt.
+\paragraph{Absolut positionsskattning}Tidigare nämndes exempel på metoder som använder sig av GPS. Detta i kombination med WiFi-signaler har använts till exempel i mobiltelefoner för att ge en positionsskattning med absolut referens för var enheten befinner sig. För att WiFi-SLAM ska fungera krävs att accesspunkten har information om positionsdata för sig själv, alternativt att den anslutna enheten har information om var aktuellt WiFi är tillgängligt.
+
+I tillämpningar där positionen inte behöver skattas med så hög nogrannhet är en GPS fullt tillräcklig - och SLAM-algoritmer behöver därav inte implementeras. Om man däremot behöver mer nogrannhet än GPS kan uppnå kan GPS användas som ett hjälpmedel för att snabbt uppskatta inom vilket område man befinner sig. Detta för att kraftigt förenkla SLAM-algoritmer. 
 
 
 %------------------------------------------------
@@ -302,22 +319,13 @@ Inom SLAM är både hastighet och störningskänslighet essentiellt och man anv�
 Till skillnad från Kalmanfiltret kan EKF lösa icke-linjära SLAM-problem. Detta då filtrets matriser beräknas om för varje nytt tillstånd. Matriserna beräknas med hjälp av Jacobianer, och linjäriseras därmed kring varje tillstånd för att kunna skatta nästa tillstånd. 
 
 \subsection{FastSLAM}
-FastSLAM är en relativt modern teknik som använder ett så kallat partikelfilter för att filtrera givet mätdata, där varje värde i mätdatat ses som en partikel. De mest sannolika värdena sparas och de minst sannolika värdena förkastas. Man kallar det här för en omsapling av datat då man utgår från en sampelmängd av mätvärden och sedan minskar denna. 
+FastSLAM är en relativt modern teknik som använder ett så kallat partikelfilter för att filtrera givet mätdata, där varje tilstånd för systemet ses som en partikel. De mest sannolika värdena sparas och de minst sannolika tillstånden förkastas. Man kallar det här för en omsapling av datat då man utgår från en sampelmängd av mätvärden och sedan minskar denna. 
 
 För att effektivisera filtreringen av mätvärden delas olika distinkt upptäckta objekt i robotens miljö in i olika zoner. Dessa zoner filtreras sedan individuellt för att få fram den mest sannolika positionen för objektet i zonen. 
 
 Mätvärdena körs sedan flera gånger genom filtret tills dess att man med tillräckligt stor sannolikhet kan bestämma kartans utseende. Metoden har visat sig väldigt effektiv i praktiken. Nackdelen med metoden är att man genom omsampling av mätvärdena förlorar mätinformation som skulle kunna vara korrekt. Beroende på hur filtret prioriterar är det möjligt att man får en skev bild av omgivningen.
 
 De matematiska grunderna för FastSLAM ligger utanför vad denna rapport täcker in - men för den intresserade läsaren rekommenderas David Törnqvists doktorsavhandling \textit{Estimation and Detection with Applications to Navigation}\footnote{David Törnqvist. Estimation and Detection with Applications to Navigation. PhD thesis, Linköping University, 2008. Hämtad 15 april 2014.}.
-
-\newpage
-\section{Exempel på andra implementeringar}
-
-Det finns många exempel på implementeringar av SLAM. Robotdammsugare är ett bra exempel på en modern tillämpning som kan använda sig av SLAM. Det är då en liten enhet som kan utnyttja en modifierad version av VSLAM som kallas CV-SLAM. Detta står för Ceiling Visual SLAM, det vill säga att roboten har kameror som är riktade uppåt och använder landmärken i taket för att rita upp en karta över rummet den städar. Det gör att den dammsuger alla platser i rummet istället för att städa samma punkt flera gånger. 
-
-Det här är ett bra exempel på hur moderna, små mikrokontrollers kan göra det möjligt att använda SLAM för att förenkla vår vardag. 
-
-SLAM används, och har använts under längre tid, också i rymdexpeditioner där robotar skickas upp i rymden för att upptäcka och kartlägga ställen som vi människor inte har möjlighet att besöka. 
 
 %------------------------------------------------
 %------------Resultat och slutsatser-------------
@@ -339,6 +347,8 @@ Slutligen kan man säga att denna djupdykning inom SLAM givit oss bra förutsät
 \newpage 
 \section*{Källförteckning} 
 \addcontentsline{toc}{section}{Källförteckning}
+
+Weinberg, Harvey (1999), ''Dual Axis, Low g, Fully Integrated Accelerometers'', \url{http://www.analog.com/library/analogdialogue/archives/33-01/accel/index.html}. Hämtad 2014-05-12.
 
 David Törnqvist. Estimation and Detection with Applications to Navigation. PhD thesis, Linköping University, 2008. Hämtad 15 april 2014.
 \url{http://urn.kb.se/resolve?urn=urn:nbn:se:liu:diva-14956}
@@ -372,9 +382,6 @@ International Journal of Robotics Research, 5(4), sida 56–68. Hämtad
 28 mars 2014:
 \url{http://www.frc.ri.cmu.edu/~hpm/project.archive/reference.file/Smith&Cheeseman.pdf}
 
-
-
-
-
+Piezoelectricity, Wikipedia. \url{http://en.wikipedia.org/wiki/Piezoelectricity}. Hämtad 2014-05-12.
 
 \end{document}
