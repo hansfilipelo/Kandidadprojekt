@@ -152,6 +152,8 @@ bool MapSection::isClosed(int origX, int origY){
     
     // Using clock as direction pointer in comments
     // Check 9
+    
+    
     if ( mom->getPos(xCoord - 1, yCoord)->getType() == 'c' && !mom->getPos(xCoord - 1, yCoord)->hasBeenClosed ) {
         mom->getPos(xCoord-1, yCoord)->isClosed(origX, origY);
     }

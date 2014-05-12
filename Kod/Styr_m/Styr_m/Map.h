@@ -34,6 +34,8 @@ public:
     
 #if DEBUG == 1
     void printMap();
+    
+    void initMap();
 #endif
 	
 protected:
