@@ -941,7 +941,7 @@ void Robot::updateRobotPosition(){
 			newData = false;
 			while(!newData){
 				asm("");
-				volatile int p;
+				volatile int p = 0;
 				p++;
 			}
 		
@@ -1087,8 +1087,8 @@ void Robot::setControlParameters(double inputKp, double inputKd, int inputRef, i
 	
 	// Trimming wall param
     
-    this->trimLeft = trimLeft;
-    this->trimRight = trimRight;
+    this->trimLeft = inTrimLeft;
+    this->trimRight = inTrimRight;
 }
 
 void Robot::setSpeed(int inSpeed)
@@ -1248,7 +1248,7 @@ void Robot::waitForNewData()
         newData = false;
         while(!newData){
             asm("");
-            volatile int p;
+            volatile int p = 0;
             p++;
         }
     }
