@@ -282,6 +282,7 @@ int main(void)
 		
 		if(ADMUX == 0x20){			//get distance from sensor A0 with conversion formula
 			asm("");
+			//sen0 = 0;
 			if(decadc > 200) {
 				mayplus = true;
 			}
@@ -290,7 +291,8 @@ int main(void)
 				mayplus = false;
 			}
 			if(counter > 5){
-				PORTB = 0x22;
+				counter = 0;
+				sen0 = sen0 +1;
 			}
 			asm("");
 		}
@@ -335,8 +337,7 @@ int main(void)
 		}
 		
         if(savepos == numOfSamples){	//if all readings are done
-            sen0 = 0;	//get average distance from sensors
-            sen1 = average(sensor1);
+            sen1 = average(sensor1);	//get average distance from sensors
             sen2 = average(sensor2);
             sen3 = average(sensor3);
             sen4 = average(sensor4);
