@@ -1248,9 +1248,13 @@ void Robot::waitForNewData()
 
 void Robot::backToStart()
 {
+	//detta bör kontrolleras mycket mera
 	if((previousSection->getX() == 16) &&	(previousSection->getY()==1)){
 		mom->fillClosedArea();
 	}
+	
+	
+	
 }
 
 // ----------------------
