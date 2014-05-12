@@ -80,6 +80,8 @@ void Map::printMap(){
     }
 }
 
+#endif
+
 void Map::fillClosedArea()
 {
 	int countc = 0;
@@ -102,5 +104,3 @@ void Map::fillClosedArea()
         }
     }
 }
-
-#endif
