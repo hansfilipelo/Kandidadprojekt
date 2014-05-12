@@ -290,9 +290,12 @@ int main(void)
 				counter++;
 				mayplus = false;
 			}
-			if(counter > 5){
+			if(counter > 11){
 				counter = 0;
-				sen0 = sen0 +1;
+ 				sen0 = sen0 +1;
+				sensormodul.outDataArray[0] = 1;
+				sensormodul.outDataArray[1] = 'D';
+				sensormodul.SPI_Send();		//send 90 degree turn is complete
 			}
 			asm("");
 		}
