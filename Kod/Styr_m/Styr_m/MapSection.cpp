@@ -1244,12 +1244,14 @@ bool Robot::getRotateLeftActive()
 
 void Robot::waitForNewData()
 {
-	newData = false;
-	while(!newData){
-		asm("");
-		volatile int p;
-		p++;
-	}
+    for (unsigned int i = 0; i < 3; i++) {
+        newData = false;
+        while(!newData){
+            asm("");
+            volatile int p;
+            p++;
+        }
+    }
 }
 
 // ----------------------
