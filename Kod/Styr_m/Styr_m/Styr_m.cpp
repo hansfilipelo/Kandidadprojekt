@@ -173,6 +173,11 @@ int main(void)
     robotPointer->setRightClosed();
     robotPointer->setLeftClosed();
     for (;;) {
+        
+        if (abstractionObject->sendMapNow){
+            abstractionObject->sendMap();
+            abstractionObject->sendMapNow = false;
+        }
 		
         // Manual mode
         if (abstractionObject->getManual()) {
@@ -231,8 +236,7 @@ int main(void)
 				{
 					robotPointer->rotateLeft();
 #if DEBUG == 0
-					_delay_ms(500);
-                    //waitForSensors? rotations automatically wait for new fresh data, check all delays if they are necessary
+                //was a delay here previously, now it waits in rotate instead.
 #endif
 				}
                 
@@ -243,8 +247,7 @@ int main(void)
 				{
 					robotPointer->rotateRight();
 #if DEBUG == 0
-				_delay_ms(500);
-                //waitForSensors?
+				 //was a delay here previously, now it waits in rotate instead.
 #endif
 					
 				}
