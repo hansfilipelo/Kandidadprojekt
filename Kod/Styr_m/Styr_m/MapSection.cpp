@@ -144,48 +144,65 @@ int MapSection::findUnexplored(){
 
 bool MapSection::isClosed(int origX, int origY){
     
-    if (xCoord == origX && yCoord == origY && hasBeenClosed) {
+    if (xCoord  == origX && yCoord == origY && hasBeenClosed){
         return true;
     }
     
     this->hasBeenClosed = true;
-    
+
     // Using clock as direction pointer in comments
     // Check 9
-    
-    
-    if ( mom->getPos(xCoord - 1, yCoord)->getType() == 'c' && !mom->getPos(xCoord - 1, yCoord)->hasBeenClosed ) {
+    if ((xCoord - 1 > 0) && (yCoord > 0) && mom->getPos(xCoord - 1, yCoord)->getType() == 'c' && !mom->getPos(xCoord - 1, yCoord)->hasBeenClosed ) {
         mom->getPos(xCoord-1, yCoord)->isClosed(origX, origY);
+        std::cout << "testar1" << std::endl;
+        std::cout << xCoord << " " << yCoord << std::endl;
     }
     // Check 10,5
-    else if ( mom->getPos(xCoord - 1, yCoord - 1)->getType() == 'c' && !mom->getPos(xCoord - 1, yCoord - 1)->hasBeenClosed ) {
+    else if ( (xCoord - 1 > 0) && (yCoord -1 > 0) && mom->getPos(xCoord - 1, yCoord - 1)->getType() == 'c' && !mom->getPos(xCoord - 1, yCoord - 1)->hasBeenClosed ) {
         mom->getPos(xCoord-1, yCoord-1)->isClosed(origX, origY);
+        std::cout << "testar2" << std::endl;
+        std::cout << xCoord << " " << yCoord << std::endl;
     }
     // Check 12
-    else if ( mom->getPos(xCoord, yCoord - 1)->getType() == 'c' && !mom->getPos(xCoord, yCoord - 1)->hasBeenClosed ) {
+    else if ( (xCoord > 0) && (yCoord -1 > 0) && mom->getPos(xCoord, yCoord - 1)->getType() == 'c' && !mom->getPos(xCoord, yCoord - 1)->hasBeenClosed ) {
         mom->getPos(xCoord, yCoord-1)->isClosed(origX, origY);
+        std::cout << "testar3" << std::endl;
+        std::cout << xCoord << " " << yCoord << std::endl;
     }
     // Check 1,5
-    else if ( mom->getPos(xCoord + 1, yCoord - 1)->getType() == 'c' && !mom->getPos(xCoord + 1, yCoord - 1)->hasBeenClosed ) {
+    else if ((xCoord + 1 > 0) && (yCoord - 1 > 0) && mom->getPos(xCoord + 1, yCoord - 1)->getType() == 'c' && !mom->getPos(xCoord + 1, yCoord - 1)->hasBeenClosed ) {
         mom->getPos(xCoord + 1, yCoord - 1)->isClosed(origX, origY);
+        std::cout << "testar4" << std::endl;
+        std::cout << xCoord << " " << yCoord << std::endl;
     }
     // Check 3
-    else if ( mom->getPos(xCoord + 1, yCoord)->getType() == 'c' && !mom->getPos(xCoord + 1, yCoord)->hasBeenClosed ) {
+    else if ((xCoord + 1 > 0) && (yCoord > 0) && mom->getPos(xCoord + 1, yCoord)->getType() == 'c' && !mom->getPos(xCoord + 1, yCoord)->hasBeenClosed ) {
         mom->getPos(xCoord + 1, yCoord)->isClosed(origX, origY);
+        std::cout << "testar5" << std::endl;
+        std::cout << xCoord << " " << yCoord << std::endl;
     }
     // Check 4,5
-    else if ( mom->getPos(xCoord + 1, yCoord + 1)->getType() == 'c' && !mom->getPos(xCoord + 1, yCoord + 1)->hasBeenClosed ) {
+    else if ((xCoord + 1 > 0) && (yCoord + 1 > 0) && mom->getPos(xCoord + 1, yCoord + 1)->getType() == 'c' && !mom->getPos(xCoord + 1, yCoord + 1)->hasBeenClosed ) {
         mom->getPos(xCoord + 1, yCoord + 1)->isClosed(origX, origY);
+        std::cout << "testar6" << std::endl;
+        std::cout << xCoord << " " << yCoord << std::endl;
     }
     // Check 6
-    else if ( mom->getPos(xCoord, yCoord + 1)->getType() == 'c' && !mom->getPos(xCoord, yCoord + 1)->hasBeenClosed ) {
+    else if ((xCoord > 0) && (yCoord + 1 > 0) && mom->getPos(xCoord, yCoord + 1)->getType() == 'c' && !mom->getPos(xCoord, yCoord + 1)->hasBeenClosed ) {
         mom->getPos(xCoord, yCoord + 1)->isClosed(origX, origY);
+        std::cout << "testar7" << std::endl;
+        std::cout << xCoord << " " << yCoord << std::endl;
     }
     // Check 7,5
-    else if ( mom->getPos(xCoord - 1, yCoord + 1)->getType() == 'c' && !mom->getPos(xCoord - 1, yCoord + 1)->hasBeenClosed ) {
+    else if ((xCoord - 1 > 0) && (yCoord + 1 > 0) && mom->getPos(xCoord - 1, yCoord + 1)->getType() == 'c' && !mom->getPos(xCoord - 1, yCoord + 1)->hasBeenClosed ) {
         mom->getPos(xCoord - 1, yCoord + 1)->isClosed(origX, origY);
+        std::cout << "testar8" << std::endl;
+        std::cout << xCoord << " " << yCoord << std::endl;
+
     }
     else {
+        std::cout<<"nu "<< xCoord << " " << yCoord << std::endl;
+        std::cout<<"ursprung "<< origX << " " << origY << std::endl;
         return false;
     }
 }

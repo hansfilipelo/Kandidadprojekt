@@ -146,7 +146,7 @@ På senare år har man, precis som inom många andra vetenskapliga områden, set
 
 \section{Problemformulering}
 
-Vanligtvis där SLAM implementeras ska en robot försöka kartlägga sin omgivning och utföra en uppgift. Antag att en robot med tillgång till ett antal avståndssensorer och ett gyro placeras i ett okänt slutet område. Den ska, med en vägg som startpunkt, helt autonomt kartlägga området genom att markera ut var väggar finns och var det finns områden som inte går att nå. Om inte hela det slutna området är kartlagt ska den upptäcka vilka segment som är oupptäckta, färdas dit och lägga till det i kartan. När området är kartlagt ska roboten ta sig tillbaka till startpunkten för att kunna återhämtas och på så sätt avsluta arbetet. 
+Vanligtvis där SLAM implementeras ska en robot försöka kartlägga sin omgivning och utföra en uppgift. Antag att en robot med fyra hjul och tillgång till ett antal avståndssensorer och ett gyro placeras i ett okänt slutet område. Den ska, med en vägg som startpunkt, helt autonomt kartlägga området genom att markera ut var väggar finns och var det finns områden som inte går att nå. Om inte hela det slutna området är kartlagt ska den upptäcka vilka segment som är oupptäckta, färdas dit och lägga till det i kartan. När området är kartlagt ska roboten ta sig tillbaka till startpunkten för att kunna återhämtas och på så sätt avsluta arbetet. Marken under roboten antas vara slät med förhållandevis stor friktion mot robotens däck. 
 
 SLAM är en teknik där ett system på något sätt kan uppfatta landmärken. Med landmärken menas alla typer av objekt eller liknande som kan användas som referenser. Landmärkenas position i förhållande till roboten ska noteras och uppmätas med regelbundna samplingar. Genom att positionsbestämma dessa landmärken kan roboten snabbare bestämma sin position. 
 
@@ -171,7 +171,7 @@ y_{t} = h(x_{t}^r,m_{t}^i) + e_{t}^i
 %
 Vad är det då för typ av mätningar som kan tas in? För att kunna utföra SLAM krävs det att man gör någon form av odometri, det vill säga att man kontinuerligt uppskattar vägen som färdats relativt sin senaste position. Odometri kan göras på olika sätt - exempelvis genom att visuellt mäta avstånd till objekt i sin omgivning, vinkelhastigheter på hjul med känd storlek eller steg med given längd. 
 
-Utöver relativa mätningar över kortare används också absoluta mätningar till sin omgivning för att korrigera de fel som relativa mätningar orsakar över tid. Många robotar nyttjar förmågan att optiskt mäta objekt i sin omgivning, men det förekommer även implementeringar med radar, sonar eller GPS. 
+Utöver relativa mätningar över kortare stunder används också absoluta mätningar till sin omgivning för att korrigera de fel som relativa mätningar orsakar över tid. Många robotar nyttjar förmågan att optiskt mäta objekt i sin omgivning, men det förekommer även implementeringar med radar, sonar eller GPS. 
 
 Med absolutna mätningar till omvärlden finns alltid möjligheten att korrigera tidigare felaktiga mätvärden genom att samla in mer mätdata för att på ett korrektare sätt kunna beskriva sin omgivning. Av den anledningen är all typ av SLAM beroende av att på något sätt granska sin omgivning. 
 
@@ -181,8 +181,7 @@ För att kunna avgöra var roboten befinner sig behövs ett eller flera sätt f�
 
 \subsubsection{Avståndssensor}
 
-Som avståndsmätare kan någon typ av optisk sensor användas. Att sensorn är optisk innebär att den använder sig av ljus för att utföra mätningarna. De finns till exempel sensorer som belyser en yta som avstånd ska mätas till, tar emot reflekterat ljus och sedan med hjälp av tiden det tagit för ljuset att färdas beräkna avståndet. Denna metod kallas time-of-flight. Ytterligare en metod som används kallas optisk triangulering och det innebär att med hjälp av vinkeln mellan sändare och mottagare bestämma avståndet till objektet\footnote{Hägg, M. Avståndskamera för utomhusbruk, LTU \url{http://epubl.ltu.se/1402-1617/2000/317/LTU-EX-00317-SE.pdf}, hämtad 2014-05-06}.
-
+Som avståndsmätare kan någon typ av optisk sensor användas. Att sensorn är optisk innebär att den använder sig av ljus för att utföra mätningarna. De finns till exempel sensorer som belyser en yta som avstånd ska mätas till, tar emot reflekterat ljus och sedan med hjälp av tiden det tagit för ljuset att färdas beräkna avståndet. Denna metod kallas time-of-flight. Ytterligare en metod som används kallas optisk triangulering och det innebär att med hjälp av vinkeln mellan sändare och mottagare bestämma avståndet till objektet.
 \newpage
 
 \subsubsection{Gyroskop och accelerometer}
@@ -243,16 +242,16 @@ I denna fördjupande del går vi igenom metoder som kan användas för att utfö
 
 Inom reglerteknik kan linjära system beskrivas på så kallad tillståndsform\footnote{Glad, Torkel och Ljung, Lennart (2006), \textit{Reglerteknik - Grundläggande teori}.}. I fallet med SLAM för en robot använder man robotens position som tillstånd , som beskrivs i ekvation (1). Ett tidskontinuerligt linjärsystem kan beskrivas på tillståndsform enligt
 \begin{gather}
-\dot{x^r_t}=Ax^r_t+Bu_t \\
-y_t=Cx^r_t+Du_t	
+\dot{x}=Ax+Bu \\
+y=Cx+Du	
 \label{equ:tillstand}
 \end{gather}
 där $A$, $B$, $C$ och $D$ är matriser.
 
 Tillstånden för en robot mäts med tidsdiskreta värden då datorer endast hanterar tidsdiskreta mätningar och ej kontinuerliga. I dessa fall är det bättre att använda sig av en tidsdiskret tillståndsbeskrivning.
 \begin{gather}
-x^r[n+1] = Ax^r[n] + Bu[n] \\
-y[n] = Cx^r[n] + Du[n]
+x[n+1] = Ax[n] + Bu[n] \\
+y[n] = Cx[n] + Du[n]
 \label{equ:disktillstand}
 \end{gather}
 
@@ -263,6 +262,7 @@ Om systemet istället skulle vara icke-linjärt så går det inte att beskriva d
 	  							\vdots &       & \vdots \\
 	  \frac{\partial f_1}{\partial x_n} & \dots & \frac{\partial f_n}{\partial x_n}
 	  \end{pmatrix}
+	  \label{equ:jacobian}
 \end{gather}
 
 
@@ -274,14 +274,14 @@ I ett praktiskt implementerbart system nyttjas till exempel sensorer som mätins
 Inom reglerteknik används en observatör för att verifiera skattade tillståndsvariabler i ett givet system när tillstånden hos systemet ej kan bestämmas med säkerhet. Skattningen av variabler kan utföras genom tillståndsåterkoppling.  Tillståndet för systemet i ekvation (5)-(7) kan skattas med hjälp av observatören
 
 \begin{gather}
-\dot{\hat{x^r_t}} = Ax^r_t + Bu_t + K(y_t - C\hat{x^r_t})
+\dot{\hat{x}} = Ax + Bu + K(y - C\hat{x})
 \label{equ:observer}
 \end{gather}
 
 Skattningsfelet $\tilde{x}= x - \hat{x}$ ges sedan av differentialekvationen: 
 
 \begin{gather}
-\dot{\tilde{x^r_t}} = (A - KC)\tilde{x^r_t}
+\dot{\tilde{x}} = (A - KC)\tilde{x}
 \label{equ:observerError}
 \end{gather}
 
@@ -291,16 +291,16 @@ Genom att sedan välja olika $K$-matriser ges systemet olika egenskaper i form a
 
 Antag att systemet i ekvation \ref{equ:tillstand}-\ref{equ:disktillstand} störs av mätefelet och systemstörningen som specificerades i problemformuleringen
 \begin{gather}
-\dot{x^r_t}=Ax^r_t+Bu_t+e^i_t \\
-y_t=Cx^r_t+Du_t+v_t
+\dot{x}=Ax+Bu+v \\
+y=Cx+Du+e
 \end{gather}
 
 Mätfelet i ekvation \ref{equ:observerError} ges då istället av: 
 \begin{gather}
-\dot{\tilde{x^r_t}} = (A - KC)\tilde{x^r_t} + e^i_t - Kv_t
+\dot{\tilde{x}} = (A - KC)\tilde{x} + e - Kv
 \end{gather}
 
-Då $e^i_t$ och $v_t$ antas vara vita brus kan man, genom att uppskatta störningarnas kovariansmatriser, beräkna mätfelets kovarians. Kovariansen hos mätfelet minimeras sedan genom att välja 
+Då $e$ och $v$ antas vara vita brus kan man, genom att uppskatta störningarnas kovariansmatriser, beräkna mätfelets kovarians. Kovariansen hos mätfelet minimeras sedan genom att välja 
 \begin{gather}
 K = PC^{T}R_{2}^{-1}
 \end{gather}
@@ -312,18 +312,52 @@ AP + PA^{T} + R_{1} - PC^{T}R_{2}^{-1}CP = 0
 
 I många praktiska tillämpningar antas $R_{1}$ och $R_{2}$ vara diagonalmatriser för att förenkla implementeringar. Dessa matriser viktas sedan beroende på hur mycket systemet påverkas av yttre störningar. 
 
-Inom SLAM är både hastighet och störningskänslighet essentiellt och man använder då en variabel $K$-matris och Kalmanfiltret är tyvärr inte alltid effektivt för detta ändamål, eftersom filtret enbart kan användas för linjära system. Alla tillstånd kan dessutom inte skattas utefter samma förutsättningar som tidigare tillstånd. För att skatta nästkommande tillstånd med variabel $K$-matris används vanligen ett utökat Kalmanfilter vid implementeringar av SLAM. 
+\paragraph{Tidsdiskret och tidsinvariant Kalmanfilter} Inom SLAM är både hastighet och störningskänslighet essentiellt och man använder då en variabel $K$-matris. Kalmanfiltret är tyvärr inte effektivt vid SLAM, eftersom filtret enbart kan användas för linjära system. Alla tillstånd kan dessutom inte skattas utefter samma förutsättningar som tidigare tillstånd. För att skatta nästkommande tillstånd med variabel $K$-matris används vanligen ett utökat Kalmanfilter vid implementeringar av SLAM. 
+
+För att beskriva det utökade Kalmanfiltret behöver vi först beskriva det tidsdiskreta och tidsvarianta Kalmanfiltret. Systemet beskrivs då som 
+\begin{gather}
+x[n+1] = Ax[n] + Bu[n]+v \\
+y[n] = Cx[n] + Du[n] + e
+\end{gather}
+och skattningen ges av
+\begin{gather}
+	\hat{x}[n+1|n] = A\hat{x}[n|n-1] + K[n](y[n]-C_n) \\
+	K[n]=AP[n|n-1]C^T([CP[n|n-1]C^T+R)^{-1}	\\
+	P[n+1|n]=AP[n|n-1]A^T+R_{1} 
+	        -AP[n|n-1]C^T(CP[n|n-1]C^T+R)^{-1}CP[n|n-1]A^T
+\end{gather}
+där $R_1$ och $R_2$ är kovariansmatriserna för e respektive v. $A$-,$B$-,$C$- och $D$-matriserna varierar med tiden.  
 
 \subsubsection{EKF - Det utökade kalmanfiltret}
 
-Till skillnad från Kalmanfiltret kan EKF lösa icke-linjära SLAM-problem. Detta då filtrets matriser beräknas om för varje nytt tillstånd. Matriserna beräknas med hjälp av Jacobianer, och linjäriseras därmed kring varje tillstånd för att kunna skatta nästa tillstånd. 
+Till skillnad från Kalmanfiltret kan EKF lösa icke-linjära SLAM-problem. Detta då filtrets matriser beräknas om för varje nytt tillstånd. Matriserna för filtret beräknas med hjälp av jacobianer, se ekvation \ref{equ:jacobian}, och linjäriseras därmed kring varje tillstånd för att kunna skatta nästa tillstånd. 
+
+Initalt sätts kovariansen, $R$,till ett väldigt stort värde innan man vet vilken kovarians sina mätningar i miljön har. Därefter plockas mätdata in och man beräknar sin K-matris för att beräkna nästkommande tillstånd enligt: 
+
+\begin{gather}
+K[n+1] =  P[n]J[n]^{T}(J[n]P[n]J[n]^{T}+R[n])^{-1}
+\end{gather}
+
+Där J är jacobianen\label{equ:jacobian} som ges av partiella derivatorna hos mätdatat för avstånd till landmärken, $y[n] = h(x[n]^{r},m[n])$. \footnote{David Törnqvist. Estimation and Detection with Applications to Navigation. PhD thesis, Linköping University, 2008, \url{http://urn.kb.se/resolve?urn=urn:nbn:se:liu:diva-14956}. Hämtad 15 april 2014.}
+
+\newpage
 
 \subsection{FastSLAM}
-FastSLAM är en relativt modern teknik som använder ett så kallat partikelfilter för att filtrera givet mätdata, där varje tilstånd för systemet ses som en partikel. De mest sannolika värdena sparas och de minst sannolika tillstånden förkastas. Man kallar det här för en omsapling av datat då man utgår från en sampelmängd av mätvärden och sedan minskar denna. 
+FastSLAM är en relativt modern teknik som använder ett så kallat partikelfilter för att filtrera givet mätdata, där varje tilstånd för systemet ses som en partikel. De mest sannolika värdena sparas och de minst sannolika tillstånden förkastas. Man kallar det här för en omsampling av data då man utgår från en sampelmängd av tillstånd och sedan filtrerar denna till en än mindre mängd tillstånd. Antag att partikelfiltret plockar ut $N$ tillstånd ur den totala mängden tillstånd. 
 
-För att effektivisera filtreringen av mätvärden delas olika distinkt upptäckta objekt i robotens miljö in i olika zoner. Dessa zoner filtreras sedan individuellt för att få fram den mest sannolika positionen för objektet i zonen. 
+\begin{gather}
+x^i[n] \sim p(x[n]|y[1:n]),\;\;\;\;\;\; i = 1, ..., N
+\end{gather}
 
-Mätvärdena körs sedan flera gånger genom filtret tills dess att man med tillräckligt stor sannolikhet kan bestämma kartans utseende. Metoden har visat sig väldigt effektiv i praktiken. Nackdelen med metoden är att man genom omsampling av mätvärdena förlorar mätinformation som skulle kunna vara korrekt. Beroende på hur filtret prioriterar är det möjligt att man får en skev bild av omgivningen.
+För att effektivisera filtreringen av mätvärden delas olika distinkt upptäckta objekt i robotens miljö in i olika zoner. Dessa zoner filtreras sedan individuellt för att få fram den mest sannolika positionen för objektet i zonen. Totala sannolikheten för tillståndet kan alltså delas upp enligt: 
+
+\begin{gather}
+p(x[n],m) = p(x[n]|y[n])p(m|y[n])
+\end{gather}
+
+Där, som tidigare nämts, $x$ är robotens tillstånd, $m$ är landmärkens position och $y$ är mätningarna för givet tillstånd.  
+
+Tillstånden körs sedan flera gånger genom filtret tills dess att man med tillräckligt stor sannolikhet kan bestämma kartans utseende. Metoden har visat sig väldigt effektiv i praktiken. Nackdelen med metoden är att man genom omsampling av mätvärdena förlorar mätinformation som skulle kunna vara korrekt. Beroende på hur filtret prioriterar är det möjligt att man får en skev bild av omgivningen. 
 
 De matematiska grunderna för FastSLAM ligger utanför vad denna rapport täcker in - men för den intresserade läsaren rekommenderas David Törnqvists doktorsavhandling \textit{Estimation and Detection with Applications to Navigation}\footnote{David Törnqvist. Estimation and Detection with Applications to Navigation. PhD thesis, Linköping University, 2008. Hämtad 15 april 2014.}.
 
@@ -333,13 +367,15 @@ De matematiska grunderna för FastSLAM ligger utanför vad denna rapport täcker
 \newpage
 \section{Slutsats}
 
-Till slut kan vi konstatera att SLAM används i många tillämpningar man kanske inte tänker på. Man kan också konstatera att algoritmerna, filtren och mjukvaran som används för att implementera SLAM ibland kan vara väldigt komplexa. 
+Till slut kan vi konstatera att SLAM används i många tillämpningar man kanske inte tänker på. Man kan också konstatera att algoritmerna, filtren och mjukvaran som används för att implementera SLAM ibland kan vara väldigt komplexa. Algoritmerna som viktar vilka partiklar ska sparas respektive förkastas kan byggas ut i stort sett hur mycket som helst. 
 
-FastSLAM-tekniker med partikelfiltrering kan göras väldigt effektiva - men också svåra att implementera. Algoritmerna som viktar vilka partiklar ska sparas respektive förkastas kan byggas ut i stort sett hur mycket som helst. 
+I ett SLAM-problem likt det i rapportens problemställning, skulle positionen kunna skattas med hjälp av sensorvärden i form av medelvärden för vinkel- och avståndssensorer. Eftersom området är slutet kan det upskattas klart mycket enklare än ett godtyckligt stort område. 
 
-I ett SLAM-problem likt det i rapportens problemställning, kommer positionen att skattas med hjälp av sensorvärden i form av vinkel och avstånd i kombination med enkla algoritmer. Eftersom området är slutet kan det upskattas klart mycket enklare än ett godtyckligt stort område. 
+En sådan lösning skulle kunna baseras på en tillståndsrepresentation med ett tidsvariant, tidsdiskret Kalmanfilter. Genom att medelvärdesbilda sensordata kan man antagligen försumma mätstörningar och ändå få en acceptabel skattning av omgivningen utan partikelfilter. Reglerfel kan i sin tur sedan minimeras med bra modellering av hårdvaran implementeringen nyttjar. 
 
-Sett från det perspektiv vi granskar SLAM-problemet, genom ögonen på en grupp människor som gör ett kandidatprojekt på 16 hp, är avancerade FastSLAM-algoritmer för stora att implementera. Det måste däremot alltid finnas någon typ av filter i en SLAM-implementering. Då beräkningar man gjort tidigare under kartläggningen ger konflikt med nuvarande mätning om huruvida en vägg faktiskt finns där eller ej. Enklare fall av partikelfiltrering kommer alltså behöva lösas vid vår framtida implementering. Vi kommer då att lösa det genom att låta roboten besöka området på nytt och ta ett beslut utifrån de nya mätdata vi får in. 
+\section{Reflektion}
+
+Sett från det perspektiv vi granskar SLAM-problemet, genom ögonen på en grupp människor som gör ett kandidatprojekt, är avancerade FastSLAM-algoritmer för stora att implementera. Det måste däremot alltid finnas någon typ av filter i en SLAM-implementering. Då beräkningar man gjort tidigare under kartläggningen ger konflikt med nuvarande mätning om huruvida en vägg faktiskt finns där eller ej. Enklare fall av partikelfiltrering kommer alltså behöva lösas vid vår framtida implementering. Vi kommer då att lösa det genom att låta roboten besöka området på nytt och ta ett beslut utifrån de nya mätdata vi får in. 
 
 Slutligen kan man säga att denna djupdykning inom SLAM givit oss bra förutsättningar att skapa en implementerbar modell för hur vår robot ska kartlägga sitt slutna område. Särskilt sektionen om Kalmanfilter och tillståndsrepresentering känns relevant vid en enklare implementering. 
 
@@ -350,8 +386,7 @@ Slutligen kan man säga att denna djupdykning inom SLAM givit oss bra förutsät
 
 Weinberg, Harvey (1999), ''Dual Axis, Low g, Fully Integrated Accelerometers'', \url{http://www.analog.com/library/analogdialogue/archives/33-01/accel/index.html}. Hämtad 2014-05-12.
 
-David Törnqvist. Estimation and Detection with Applications to Navigation. PhD thesis, Linköping University, 2008. Hämtad 15 april 2014.
-\url{http://urn.kb.se/resolve?urn=urn:nbn:se:liu:diva-14956}
+David Törnqvist. Estimation and Detection with Applications to Navigation. PhD thesis, Linköping University, 2008, \url{http://urn.kb.se/resolve?urn=urn:nbn:se:liu:diva-14956}. Hämtad 15 april 2014.
 
 FastSLAM: A Factored Solution to the Simultaneous
 Localization and Mapping Problem, Stanford University. Hämtad 28 mars 2014.
@@ -361,7 +396,9 @@ Fox, C.; Evans, M.; Pearson, M.; Prescott, T. (2012)
 ''Tactile SLAM with a biomimetic whiskered robot''. 2012 IEEE International Conference on Robotics and Automation. Hämtad 28 mars 2014.
 \url{http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6224813}
 
-Glad, Torkel och Ljung, Lennart. 2006. \textit{Reglerteknik - Grundläggande teori}. Upplaga 4:10. Lund. Studentlitteratur AB.
+Glad, Torkel och Ljung, Lennart. 2006. \textit{Reglerteknik - Grundläggande teori}. Upplaga 4:10. Lund. Studentlitteratur.
+
+Gustavsson, Fredrik; Ljung, Lennart; Millnert, Mille. 2000. \textit{Signalbehandling}. Andra upplagan. Lund. Studentlitteratur.
 
 Kandidatprojekt Y: Elektronikprojekt, Tävlingsregler för katläggningsrobot. Hämtad 28 mars 2014.  \url{https://drive.google.com/file/d/0B758zzcy4ZrTeG1wRTY4WG9lTDQ/edit?usp=sharing}
 
