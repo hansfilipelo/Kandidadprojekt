@@ -24,6 +24,8 @@ public:
     void initSendMap();
 	
 	
+	void activateWheelSensor();
+    
 //flyttade från protected
 	unsigned char inData[27];
     unsigned char outData[27];

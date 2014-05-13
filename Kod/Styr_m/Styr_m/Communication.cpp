@@ -85,6 +85,11 @@ void Communication::handleData(){
     if (this->inData[1] == 'R') {
 	    robotPointer->setRFID();
     }
+	
+	//Åkt 40 cm
+    if (this->inData[1] == 'D') {
+	    robotPointer->moveRobot();
+    }
     
     // Constants for PD-control, mapping and wall follower
     if(this->inData[1]=='P'){
@@ -260,4 +265,11 @@ void Communication::sensorArrayToVariables(){
         temp[it] = inData[it+21];
     }
     robotPointer->leftLongValueIn(temp);
+}
+
+//activera hjulräknaren
+void Communication::activateWheelSensor(){
+	slavePointer->outDataArray[0] = 1;
+	slavePointer->outDataArray[1] = 'd';
+	slavePointer->SPI_Send();
 }
