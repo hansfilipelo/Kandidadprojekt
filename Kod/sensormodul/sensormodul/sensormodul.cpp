@@ -297,13 +297,12 @@ int main(void)
 				mayplus = false;
 			}
 			if(segmentsTurned > 11){
-				segmentsTurned = 0;
- 				sen0 = sen0 +1;
 				sensormodul.outDataArray[0] = 1;
 				sensormodul.outDataArray[1] = 'D';
 				sensormodul.SPI_Send();		//send 90 degree turn is complete
 				wheelmode = false;
 				segmentsTurned = 0;
+				sen0 = sen0 +1;
 			}
 			asm("");
 		}

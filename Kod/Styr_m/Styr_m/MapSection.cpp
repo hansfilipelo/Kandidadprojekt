@@ -793,12 +793,12 @@ int Robot::meanValueArray(char* inputArray, int iterations) {
 
 //Sets reference values and moves robot in map abstraction if robot has moved one square
 void Robot::updateRobotPosition(){
-	newData = false;
+	/*newData = false;
 	while(!newData){
 		asm("");
 		volatile int p;
 		p++;
-	}
+	}*/
 	
 	if(validSensor == 'N'){
 		validSensor = determineValidSensor();
@@ -822,6 +822,7 @@ void Robot::updateRobotPosition(){
 	int bwdref = 0;
 	
 	if(usingLong){
+		fwdref = 26;
 		bwdref = 0;
 	}
 	else{
@@ -942,7 +943,7 @@ void Robot::moveRobot(){
 // -----------------------------------------
 
 char Robot::determineValidSensor(){
-	if((getBwdDistance()>200) & (getFwdDistance()>80)){
+	if((getBwdDistance()>0) & (getFwdDistance()>0)){
 		return 'w';
 	}
     else if( getFwdDistance() > getBwdDistance()){ // bwd sensor is smaller than fwd.
