@@ -232,7 +232,7 @@ Robot::Robot(int xPos, int yPos, Map* inMom, Communication* inComm) : MapSection
 	trimRight = 30;
 	trimLeft = 0;
 	
-	fwdRefLong = 28;
+	fwdRefLong = 26;
 	bwdRefLong = 0;
 	
 	fwdRefShort = 28;
@@ -1136,7 +1136,7 @@ void Robot::adjustPosition(){
 	error = both/2;
 	
     derivError=frontError - backError;
-	pd= Kp*error + Kd*derivError;
+	pd = Kp*error + Kd*derivError;
     
 	turn(pd);
     

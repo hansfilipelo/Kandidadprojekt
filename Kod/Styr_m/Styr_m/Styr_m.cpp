@@ -122,7 +122,7 @@ int main(void)
 #endif
 	
 	abstractionObject->setRobot(robotPointer);
-	robotPointer->changeDirection('f');
+	robotPointer->changeGear('f');
 	
 	robotPointer->setFwdReference();
 	robotPointer->setBwdReference();
