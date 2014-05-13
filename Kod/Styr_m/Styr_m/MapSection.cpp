@@ -931,80 +931,32 @@ void Robot::updateRobotPosition(){
 			}
 			commObj->reactivateRFID();
 				
-			MapSection* tempSection;
 			switch (direction)
 			{
             
 	//-------------------------Direction is forwards in map-------------------
 				case 'f':
                     
-                    //moveForward();
-                    
-					//save section about to move into to temp container
-					tempSection = mom->getPos(xCoord,yCoord+1);
-					//move robot to new section
-					mom->setSection(xCoord,yCoord+1,this);
-					//put previousSection back to last position. 
-					mom->setSection(xCoord,yCoord,previousSection);
-					//save temp section to previous section
-					previousSection = tempSection;
-				
-					yCoord++;
+                    moveForward();
 					break;
             
 	//-------------------------Direction is backwards in map-------------------
 				case 'b':
                     
-                    //moveBackward();
-                    
-					//save section about to move into to temp container
-					tempSection = mom->getPos(xCoord,yCoord-1);
-					//move robot to new section
-					mom->setSection(xCoord,yCoord-1,this);
-					//put previousSection back to last position.
-					mom->setSection(xCoord,yCoord,previousSection);
-					//save temp section to previous section
-					previousSection = tempSection;
-				
-					yCoord--;
-            
+                    moveBackward();
 					break;
             
 	//-------------------------Direction is right in map-----------------------
 				case 'r':
                     
-                    //moveRight();
-                    
-					//save section about to move into to temp container
-					tempSection = mom->getPos(xCoord-1,yCoord);
-					//move robot to new section
-					mom->setSection(xCoord-1,yCoord,this);
-					//put previousSection back to last position.
-					mom->setSection(xCoord,yCoord,previousSection);
-					//save temp section to previous section
-					previousSection = tempSection;
-				
-					xCoord--;
-  
+                    moveRight();
 					break;
             
 	//-------------------------Direction is left in map------------------------
 				case 'l':
                     
-                    //moveLeft();
-                    
-					//save section about to move into to temp container
-					tempSection = mom->getPos(xCoord+1,yCoord);
-					//move robot to new section
-					mom->setSection(xCoord+1,yCoord,this);
-					//put previousSection back to last position.
-					mom->setSection(xCoord,yCoord,previousSection);
-					//save temp section to previous section
-					previousSection = tempSection;
-				
-					xCoord++;
-            
-					break;
+                    moveLeft();
+                    break;
             
 		//-------------------------Direction is undefined.-------------------------
 				default :
@@ -1012,9 +964,9 @@ void Robot::updateRobotPosition(){
 					return;
 			}
 			
-			waitForNewData();
-		
-            
+					
+            waitForNewData();
+
             //update which sensor that is valid and should be measured.
 			//and update the references on that sensor.
             
@@ -1047,68 +999,70 @@ void Robot::updateRobotPosition(){
 // ------------Move Functions------------------
 
 
-/*
- void Robot::moveForward(){
- tempSection = mom->getPos(xCoord,yCoord+1);
- //move robot to new section
- mom->setSection(xCoord,yCoord+1,this);
- //put previousSection back to last position.
- mom->setSection(xCoord,yCoord,previousSection);
- //save temp section to previous section
- previousSection = tempSection;
- 
- yCoord++;
- 
- }
- 
- void Robot::moveBackward(){
+void Robot::moveForward(){
+    MapSection* tempSection;
+    
+    tempSection = mom->getPos(xCoord,yCoord+1);
+    //move robot to new section
+    mom->setSection(xCoord,yCoord+1,this);
+    //put previousSection back to last position.
+    mom->setSection(xCoord,yCoord,previousSection);
+    //save temp section to previous section
+    previousSection = tempSection;
+    
+    yCoord++;
+    
+}
 
- 
- //save section about to move into to temp container
- tempSection = mom->getPos(xCoord,yCoord-1);
- //move robot to new section
- mom->setSection(xCoord,yCoord-1,this);
- //put previousSection back to last position.
- mom->setSection(xCoord,yCoord,previousSection);
- //save temp section to previous section
- previousSection = tempSection;
- 
- yCoord--;
- 
- }
- 
- 
- void Robot::moveRight(){
- 
- //save section about to move into to temp container
- tempSection = mom->getPos(xCoord-1,yCoord);
- //move robot to new section
- mom->setSection(xCoord-1,yCoord,this);
- //put previousSection back to last position.
- mom->setSection(xCoord,yCoord,previousSection);
- //save temp section to previous section
- previousSection = tempSection;
- 
- xCoord--;
- 
- }
- 
- void Robot::moveLeft(){
- 
- //save section about to move into to temp container
- tempSection = mom->getPos(xCoord+1,yCoord);
- //move robot to new section
- mom->setSection(xCoord+1,yCoord,this);
- //put previousSection back to last position.
- mom->setSection(xCoord,yCoord,previousSection);
- //save temp section to previous section
- previousSection = tempSection;
- 
- xCoord++;
- 
- }
- 
- */
+void Robot::moveBackward(){
+    
+    MapSection* tempSection;
+    //save section about to move into to temp container
+    tempSection = mom->getPos(xCoord,yCoord-1);
+    //move robot to new section
+    mom->setSection(xCoord,yCoord-1,this);
+    //put previousSection back to last position.
+    mom->setSection(xCoord,yCoord,previousSection);
+    //save temp section to previous section
+    previousSection = tempSection;
+    
+    yCoord--;
+    
+}
+
+
+void Robot::moveRight(){
+    
+    MapSection* tempSection;
+    //save section about to move into to temp container
+    tempSection = mom->getPos(xCoord-1,yCoord);
+    //move robot to new section
+    mom->setSection(xCoord-1,yCoord,this);
+    //put previousSection back to last position.
+    mom->setSection(xCoord,yCoord,previousSection);
+    //save temp section to previous section
+    previousSection = tempSection;
+    
+    xCoord--;
+    
+}
+
+void Robot::moveLeft(){
+    
+    MapSection* tempSection;
+    //save section about to move into to temp container
+    tempSection = mom->getPos(xCoord+1,yCoord);
+    //move robot to new section
+    mom->setSection(xCoord+1,yCoord,this);
+    //put previousSection back to last position.
+    mom->setSection(xCoord,yCoord,previousSection);
+    //save temp section to previous section
+    previousSection = tempSection;
+    
+    xCoord++;
+    
+}
+
 
 // -----------------------------------------
 

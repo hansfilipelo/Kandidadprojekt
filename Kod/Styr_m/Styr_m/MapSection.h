@@ -154,6 +154,14 @@ public:
 	volatile bool newData = false;
     
 protected:
+    //move robot functions based on direction
+    
+    void moveForward();
+    void moveBackward();
+    void moveRight();
+    void moveLeft();
+    
+    
     int getRightDistance();
 	int getLeftDistance();
 	int getFwdDistance();
