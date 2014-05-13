@@ -33,9 +33,7 @@ public:
     ~Gui();
     void setupPlots();
     void updateSensorValues(int value0,int value1, int value2, int value3, int value4, int value5, int value6,int value7);
-    void updatePlots();
     void updateMap();
-    void insertRow(char inArray[27]);
     int startPort();
     int connectStatus;
     void labelSet(QString);
@@ -46,8 +44,6 @@ private slots:
     void on_speedSlider_valueChanged(int value);
 
     void on_speedSlider_sliderReleased();
-
-    void updateTimeVector();
 
     void on_actionForward_triggered();
 

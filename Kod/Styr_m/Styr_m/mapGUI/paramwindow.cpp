@@ -1,6 +1,12 @@
 #include "paramwindow.h"
 #include "ui_paramwindow.h"
 
+/*
+ *  The constructor of ParamWindow reads the current values,
+ *  in the various value containers. these are set as the default
+ *  parameters.
+ */
+
 ParamWindow::ParamWindow(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::ParamWindow)
@@ -38,6 +44,11 @@ void ParamWindow::on_closeButton_pressed()
 {
     this->hide();
 }
+
+
+/*
+ *  Send all values to bluetooth (Order). 
+ */
 
 void ParamWindow::on_setParamButton_pressed()
 {

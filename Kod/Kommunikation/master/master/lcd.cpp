@@ -102,10 +102,10 @@ void Lcd::SetData(unsigned char var){
 }
 
 void Lcd::init(){
-    DDRC |= 0xC3; //portC pin 0,1,6,7 till utgångar
-	DDRD |= 0xF0;	//portD pin 4-7 som utgångar
-	DDRA |= 0xE0; //port A pin 5-7 sätt till utgång
-	PORTA |= (1<<PORTA7); // enable till 1
+    DDRC |= 0xC3; //portC pin 0,1,6,7 set as output
+	DDRD |= 0xF0;	//portD pin 4-7 set as output
+	DDRA |= 0xE0; //port A pin 5-7 set as output
+	PORTA |= (1<<PORTA7); // enable
     
 	SetData(0x38);
     //Function set: 2 Line, 8-bit, 5x8 dots
@@ -115,7 +115,7 @@ void Lcd::init(){
 	_delay_ms(100);
 	
 	SetData(0x0F);
-	//Display on, Curson blinking command
+	//Display on, Cursor blinking command
 	PORTA &= ~(1<<PORTA5)|(1<<PORTA6);
 	PORTA |= (1<<PORTA7); //enable
 	PORTA &= ~(1<<PORTA7); //disable
@@ -155,10 +155,18 @@ void Lcd::senddata(unsigned char var){
 	SetData(var); //Function set: 2 Line, 8-bit, 5x7 dots
 	
 	PORTA &= ~(1<<PORTA6);
-	PORTA |= (1<<PORTA5); //Rs till 1
+	PORTA |= (1<<PORTA5); //Rs high.
 	PORTA |= (1<<PORTA7); //enable
 	PORTA &= ~(1<<PORTA7); //disable
 }
+
+/*
+ *  Draw alternates between moving the cursor and drawing the sign. It 
+ *  always waits for ready() to be true. This function does nothing if
+ *  ready is not true. This is an intentional design to avoid delays on our 
+ *  processor.
+ */
+
 
 void Lcd::draw(unsigned char location, unsigned char sign){
 	
@@ -175,12 +183,23 @@ void Lcd::draw(unsigned char location, unsigned char sign){
 		}
 }
 
+/*
+ *  The first draw does all the drawing before the final initialisation of the
+ *  processor. So we allow delays in these functions.
+ */
+
+
 void Lcd::firstDraw(unsigned char location, unsigned char sign){
     _delay_us(40);
     command(location);
     _delay_us(40);
     senddata(sign);
 }
+
+/*
+ *  Prints out the sensornames in the correct positions.
+ */
+
 
 void Lcd::drawSensorNames(){
 	
@@ -210,6 +229,11 @@ void Lcd::drawSensorNames(){
 	firstDraw(0xd1,'s');
 }
 
+/*
+ *  Convert the buffer position to the LCD-display position.
+ */
+
+
 unsigned int Lcd::getNewPosition(int col, int row){
 	unsigned int position;
 	
@@ -231,6 +255,14 @@ unsigned int Lcd::getNewPosition(int col, int row){
 	}
 	return position;
 }
+
+
+/*
+ *  The main update funciton. This function runs once per mainloop.
+ *  If the last draw was successful it changes the position and char
+ *  otherwise it tries to draw it again.
+ */
+
 
 void Lcd::update(){
 	char nextChar;
@@ -264,6 +296,12 @@ void Lcd::update(){
 	}
 	draw(position,nextChar);	
 }
+
+
+/*
+ *  Put values in buffer. This function runs when new sensordata arrives 
+ *  and we have printed the whole buffer to the display.
+ */
 
 void Lcd::insertSensorValuesToBuffer(unsigned char* inArray){
 	//places sensorvalues in the correct position in the buffer
@@ -304,6 +342,11 @@ void Lcd::insertSensorValuesToBuffer(unsigned char* inArray){
 	}
 }
 
+/*
+ *  Returns the column for a certain sensor.
+ */
+
+
 int Lcd::getCol(int sensor){
     int col = 0;
     if((sensor <= 2) || (sensor == 4)){
@@ -314,6 +357,12 @@ int Lcd::getCol(int sensor){
     }
     return col;
 }
+
+/*
+ *  Returns a row for a certain sensor.
+ */
+
+
 
 int Lcd::getRow(int sensor){
     int row;
@@ -331,6 +380,13 @@ int Lcd::getRow(int sensor){
     }
     return row;
 }
+
+/*
+ *  The ready function.
+ *  By sending the display the Busy command we can check the internal
+ *  busy-flag to determine if display is working or is ready.
+ */
+
 
 bool Lcd::ready(){
 

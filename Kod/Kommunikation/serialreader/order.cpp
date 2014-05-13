@@ -1,10 +1,12 @@
-//
-//  commander.cpp
-//  
-//
-//  Created by Jens Edhammer on 2014-04-08.
-//
-//
+/*
+ *  MapMaster2001
+ *  Erik Ekelund, David Habrman, Tobias Grundström, 
+ *  Hans-Filip Elo, Niklas Ericsson, Jens Edhammer
+ *
+ *  TSEA56 2014.
+ *
+ */
+
 #include "order.h"
 
 Order::Order(SerialPort *inPort){
@@ -16,11 +18,6 @@ Order::~Order(){
 
 /*Constructs the array that are to be sent to AVR processor.
  */
-
-//void Order::setPID(int kp, int kd){
-//    char data[27] = {4,'P',0,(char)kp,(char)kd,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30};
-//    serport->sendArray(data);
-//}
 
 void Order::rotateLeft(int speed){
 

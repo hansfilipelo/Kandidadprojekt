@@ -1,10 +1,12 @@
-//
-//  order.h
-//  
-//
-//  Created by Jens Edhammer on 2014-04-08.
-//
-//
+/*
+ *  MapMaster2001
+ *  Erik Ekelund, David Habrman, Tobias Grundström,
+ *  Hans-Filip Elo, Niklas Ericsson, Jens Edhammer
+ *
+ *  TSEA56 2014.
+ *
+ */
+
 
 class SerialPort;
 
