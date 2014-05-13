@@ -33,6 +33,9 @@ int main(){
         cout << "False... " << endl;
     }
     
+    mom->fillClosedArea();
+    mom->printMap();
+    
     delete testRobot;
     delete mom;
     
