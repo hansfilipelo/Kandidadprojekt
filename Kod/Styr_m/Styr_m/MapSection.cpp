@@ -936,8 +936,12 @@ void Robot::updateRobotPosition(){
 }
 
 void Robot::moveRobot(){
-	this->setUserSpeed(0);
-	drive();
+    
+    if (haltAfterSection) {
+        this->setSpeed(0);
+        drive();
+    }
+	
 	commObj->reactivateRFID();
 	MapSection* tempSection;
 	
