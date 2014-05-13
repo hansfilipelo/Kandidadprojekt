@@ -93,11 +93,11 @@ void Spi::receiveArray(unsigned int slave){
 	
 	inDataArray[0] = transfer(0x00,slave);
 	unsigned int length = inDataArray[0];
-	_delay_us(3);
+	_delay_us(4);
 	for (unsigned int i=1; i<=length; i++)
 	{
 		inDataArray[i] = transfer(0x00, slave);
-		_delay_us(3);
+		_delay_us(4);
 	}
 }
 

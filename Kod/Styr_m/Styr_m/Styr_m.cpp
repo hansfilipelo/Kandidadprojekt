@@ -136,12 +136,6 @@ int main(void)
     robotPointer->setRightClosed();
     robotPointer->setLeftClosed();
     for (;;) {
-        
-        if (abstractionObject->sendMapNow){
-            abstractionObject->sendMap();
-            abstractionObject->sendMapNow = false;
-        }
-		
         // Manual mode
         if (abstractionObject->getManual()) {
             asm("");
@@ -164,9 +158,7 @@ int main(void)
 					robotPointer->setSpeed(25);
 					robotPointer->drive();
 				}
-#if DEBUG == 0
 				_delay_ms(200); // This delay ensures that we enter next segment.
-#endif
 				robotPointer->rotateRight();
 				while ( !robotPointer->isWallRight() && !(abstractionObject->getManual())) {
 					robotPointer->changeGear('f');
@@ -198,9 +190,6 @@ int main(void)
 				else
 				{
 					robotPointer->rotateLeft();
-#if DEBUG == 0
-                //was a delay here previously, now it waits in rotate instead.
-#endif
 				}
                 
             }
@@ -209,10 +198,6 @@ int main(void)
 				if(!robotPointer->isWallRight())
 				{
 					robotPointer->rotateRight();
-#if DEBUG == 0
-				 //was a delay here previously, now it waits in rotate instead.
-#endif
-					
 				}
 				else
 				{
@@ -226,20 +211,21 @@ int main(void)
     
     // Look for walls every 250th turn of main loop
     if (i == 250) {
-              // Update position in map
+        // Update position in map
         robotPointer->updateRobotPosition();
         
         i = 0;
     }
     i++;
     
-    
+   /* 
     if(abstractionObject->sendMapNow){
         asm("");
         abstractionObject->sendMapNow=false;
         abstractionObject->sendMap();
         asm("");
     }
+	*/
 }
 
 return 0;

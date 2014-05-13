@@ -86,12 +86,11 @@ void Timer_Init()
 }
 
 //determines color of starsegment on wheel
-Wheel_Init(){
+void Wheel_Init()
+{
 	int saveADMUX = ADMUX;
 	ADMUX = 0x20;
-	ADCdone = false;
-	ADCSRA |= 1<<ADSC;
-	while(!ADCdone);
+	asm("");
 	if (decadc>200)
 	{
 		blacksegment = true;
