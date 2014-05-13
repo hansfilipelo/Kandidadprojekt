@@ -23,6 +23,7 @@
 #include <string.h>
 #include "Abstraction.h"
 #include "Communication.h"
+#include <stdlib.h>
 
 class Map;
 class Communication;
@@ -56,9 +57,10 @@ public:
     
     virtual bool isUnexplored();
     virtual int findUnexplored();
-    virtual bool isClosed(int origX, int origY);
+    virtual bool isClosed(int origX, int origY, int counter);
 	
     volatile bool hasBeenClosed = false;
+    volatile bool isOrigClosed = false;
     
 protected:
     

@@ -1,5 +1,7 @@
-#ifdef __APPLE__
+#ifndef __AVR_ATmega1284P__
 #define DEBUG 1
+#else
+#define DEBUG 0
 #endif
 
 #include <stdio.h>
@@ -24,7 +26,12 @@ int main(){
     mom->initMap();
     mom->printMap();
     
-    cout << mom->getPos(1,1)->isClosed(1,1) << endl;
+    if (mom->getPos(1,1)->isClosed(1,1,0)) {
+        cout << "True!" << endl;
+    }
+    else {
+        cout << "False... " << endl;
+    }
     
     delete testRobot;
     delete mom;

@@ -142,86 +142,72 @@ int MapSection::findUnexplored(){
 // ------------------------
 // Checks if closed area is closed
 
-bool MapSection::isClosed(int origX, int origY){
+bool MapSection::isClosed(int origX, int origY, int counter){
     
-    if (xCoord  == origX && yCoord == origY && hasBeenClosed){
+    if ( ((abs(xCoord-origX) < 2) && (abs(yCoord-origY) < 2)) && counter > 10 ) {
         return true;
     }
+    
+    int nextX;
+    int nextY;
     
     this->hasBeenClosed = true;
 
     // Using clock as direction pointer in comments
     // Check 9
     if ((xCoord - 1 > 0) && (yCoord > 0) && mom->getPos(xCoord - 1, yCoord)->getType() == 'c' && !mom->getPos(xCoord - 1, yCoord)->hasBeenClosed ) {
-        mom->getPos(xCoord-1, yCoord)->isClosed(origX, origY);
-        #if DEBUG == 1
-		std::cout << "testar1" << std::endl;
-        std::cout << xCoord << " " << yCoord << std::endl;
-		#endif
+        
+        nextX = xCoord - 1;
+        nextY = yCoord;
 	}
     // Check 10,5
-    else if ( (xCoord - 1 > 0) && (yCoord -1 > 0) && mom->getPos(xCoord - 1, yCoord - 1)->getType() == 'c' && !mom->getPos(xCoord - 1, yCoord - 1)->hasBeenClosed ) {
-        mom->getPos(xCoord-1, yCoord-1)->isClosed(origX, origY);
-        #if DEBUG == 1
-		std::cout << "testar2" << std::endl;
-        std::cout << xCoord << " " << yCoord << std::endl;
-		#endif
+    else if ( (xCoord - 1 > 0) && (yCoord - 1 > 0) && mom->getPos(xCoord - 1, yCoord - 1)->getType() == 'c' && !mom->getPos(xCoord - 1, yCoord - 1)->hasBeenClosed ) {
+        
+        nextX = xCoord - 1;
+        nextY = yCoord - 1;
 	}
     // Check 12
-    else if ( (xCoord > 0) && (yCoord -1 > 0) && mom->getPos(xCoord, yCoord - 1)->getType() == 'c' && !mom->getPos(xCoord, yCoord - 1)->hasBeenClosed ) {
-        mom->getPos(xCoord, yCoord-1)->isClosed(origX, origY);
-        #if DEBUG == 1
-		std::cout << "testar3" << std::endl;
-        std::cout << xCoord << " " << yCoord << std::endl;
-		#endif
+    else if ( (xCoord > 0) && (yCoord - 1 > 0) && mom->getPos(xCoord, yCoord - 1)->getType() == 'c' && !mom->getPos(xCoord, yCoord - 1)->hasBeenClosed ) {
+        
+        nextX = xCoord;
+        nextY = yCoord - 1;
 	}
     // Check 1,5
     else if ((xCoord + 1 > 0) && (yCoord - 1 > 0) && mom->getPos(xCoord + 1, yCoord - 1)->getType() == 'c' && !mom->getPos(xCoord + 1, yCoord - 1)->hasBeenClosed ) {
-        mom->getPos(xCoord + 1, yCoord - 1)->isClosed(origX, origY);
-        #if DEBUG == 1
-		std::cout << "testar4" << std::endl;
-        std::cout << xCoord << " " << yCoord << std::endl;
-		#endif
+        
+        nextX = xCoord + 1;
+        nextY = yCoord - 1;
 	}
     // Check 3
     else if ((xCoord + 1 > 0) && (yCoord > 0) && mom->getPos(xCoord + 1, yCoord)->getType() == 'c' && !mom->getPos(xCoord + 1, yCoord)->hasBeenClosed ) {
-        mom->getPos(xCoord + 1, yCoord)->isClosed(origX, origY);
-        #if DEBUG == 1
-		std::cout << "testar5" << std::endl;
-        std::cout << xCoord << " " << yCoord << std::endl;
-		#endif
+        
+        nextX = xCoord + 1;
+        nextY = yCoord;
 	}
     // Check 4,5
     else if ((xCoord + 1 > 0) && (yCoord + 1 > 0) && mom->getPos(xCoord + 1, yCoord + 1)->getType() == 'c' && !mom->getPos(xCoord + 1, yCoord + 1)->hasBeenClosed ) {
-        mom->getPos(xCoord + 1, yCoord + 1)->isClosed(origX, origY);
-        #if DEBUG == 1
-		std::cout << "testar6" << std::endl;
-        std::cout << xCoord << " " << yCoord << std::endl;
-		#endif
+        
+        nextX = xCoord + 1;
+        nextY = yCoord + 1;
 	}
     // Check 6
     else if ((xCoord > 0) && (yCoord + 1 > 0) && mom->getPos(xCoord, yCoord + 1)->getType() == 'c' && !mom->getPos(xCoord, yCoord + 1)->hasBeenClosed ) {
-        mom->getPos(xCoord, yCoord + 1)->isClosed(origX, origY);
-		#if DEBUG == 1
-		std::cout << "testar7" << std::endl;
-        std::cout << xCoord << " " << yCoord << std::endl;
-		#endif
+        
+        nextX = xCoord;
+        nextY = yCoord + 1;
 	}
     // Check 7,5
     else if ((xCoord - 1 > 0) && (yCoord + 1 > 0) && mom->getPos(xCoord - 1, yCoord + 1)->getType() == 'c' && !mom->getPos(xCoord - 1, yCoord + 1)->hasBeenClosed ) {
-        mom->getPos(xCoord - 1, yCoord + 1)->isClosed(origX, origY);
-        #if DEBUG == 1
-		std::cout << "testar8" << std::endl;
-        std::cout << xCoord << " " << yCoord << std::endl;
-		#endif
+        
+        nextX = xCoord - 1;
+        nextY = yCoord + 1;
     }
     else {
-		#if DEBUG == 1
-        std::cout<<"nu "<< xCoord << " " << yCoord << std::endl;
-        std::cout<<"ursprung "<< origX << " " << origY << std::endl;
-        #endif
 		return false;
     }
+    
+    return mom->getPos(nextX, nextY)->isClosed(origX, origY, counter+1);
+    
 }
 
 
@@ -1374,7 +1360,7 @@ void Robot::waitForNewData()
 void Robot::backToStart()
 {
 	if((previousSection->getX() == 16) &&	(previousSection->getY()==1)){
-        if ( mom->getPos(xCoord,yCoord - 1)->isClosed(xCoord,yCoord - 1) ){
+        if ( mom->getPos(xCoord,yCoord - 1)->isClosed(xCoord,yCoord - 1, 0) ){
             mom->fillClosedArea();
             
             startExplore = true;
