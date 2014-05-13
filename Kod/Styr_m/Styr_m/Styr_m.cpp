@@ -44,6 +44,12 @@ Robot* robotPointer = new Robot(16,1,mapPointer,abstractionObject);
 
 // Interreupt for bus comm
 // -----------------------------
+/*
+ *  When the interrupt fires put your current outData on the SPDR and read from it to the inData.
+ *  If we receieved as many bytes as the length specifies fire another interrupt for data handling.
+ *  When the slave sends to master it needs to check the outDataArray's length instead.
+ */
+
 
 ISR(SPI_STC_vect){
 	steerModuleSlave.position++;
@@ -60,6 +66,11 @@ ISR(SPI_STC_vect){
 		steerModuleSlave.position = 0;
 	}
 }
+
+/*
+ *  Datahandling interrupt fired from within SPI interrupt.
+ */
+
 
 ISR(PCINT2_vect){
 	abstractionObject->handleData();
