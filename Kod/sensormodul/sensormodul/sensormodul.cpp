@@ -38,7 +38,7 @@ volatile int RfidCount = 0;
 volatile double decadc=0;			//variable used in the ADC-interrupt (decimal adc-value, ADC-value with 5 V ref)
 volatile bool ADCdone = false;		//Flag for checking if ADC is done
 double spanning = 0;				//ADC-value without 5v ref
-bool mayplus = false;
+bool blacksegment = false;
 int segmentsTurned = 0;
 bool wheelmode = false;
 
@@ -85,6 +85,22 @@ void Timer_Init()
 	TIMSK0 = 0x00;			//dont't allow time-interrups
 }
 
+//determines color of starsegment on wheel
+Wheel_Init(){
+	int saveADMUX = ADMUX;
+	ADMUX = 0x20;
+	ADCdone = false;
+	ADCSRA |= 1<<ADSC;
+	while(!ADCdone);
+	if (decadc>200)
+	{
+		blacksegment = true;
+	}
+	else{
+		blacksegment = false;
+	}
+	ADMUX = saveADMUX;
+}
 
 //------------------------------------------------------------------------------
 //calibration of reference constant "gyrovila"
@@ -144,6 +160,7 @@ void handleInDataArray(){
 	//reset segmentsTurned
 	else if(sensormodul.inDataArray[1] == 'd'){
 		segmentsTurned = 0;
+		Wheel_Init();
 		wheelmode = true;
 	}
 }
@@ -264,6 +281,7 @@ int main(void)
 	
 	sei();					// Enable Global Interrupts
 	gyrocal();				//run gyro calibration
+	Wheel_Init();
 	ADCSRA |= 1<<ADSC;		// Start Conversion
 	
 	while(1){				// Wait forever
@@ -289,14 +307,15 @@ int main(void)
 		if((wheelmode)&(ADMUX == 0x20)){		//get distance from sensor A0 with conversion formula
 			asm("");
 			//sen0 = 0;
-			if(decadc > 200) {
-				mayplus = true;
-			}
-			else if((decadc < 120) and mayplus){
+			if((decadc > 200)&(!blacksegment)) {
 				segmentsTurned++;
-				mayplus = false;
+				blacksegment = true;
 			}
-			if(segmentsTurned > 11){
+			else if((decadc < 120) and blacksegment){
+				segmentsTurned++;
+				blacksegment = false;
+			}
+			if(segmentsTurned > 21){
 				sensormodul.outDataArray[0] = 1;
 				sensormodul.outDataArray[1] = 'D';
 				sensormodul.SPI_Send();		//send 90 degree turn is complete
