@@ -155,49 +155,49 @@ bool MapSection::isClosed(int origX, int origY, int counter){
 
     // Using clock as direction pointer in comments
     // Check 9
-    if ((xCoord - 1 > 0) && (yCoord > 0) && mom->getPos(xCoord - 1, yCoord)->getType() == 'c' && !mom->getPos(xCoord - 1, yCoord)->hasBeenClosed ) {
+    if ((xCoord - 1 > 0) && (yCoord > 0) && (xCoord - 1 < 18) && (yCoord < 32) && mom->getPos(xCoord - 1, yCoord)->getType() == 'c' && !mom->getPos(xCoord - 1, yCoord)->hasBeenClosed ) {
         
         nextX = xCoord - 1;
         nextY = yCoord;
 	}
     // Check 10,5
-    else if ( (xCoord - 1 > 0) && (yCoord - 1 > 0) && mom->getPos(xCoord - 1, yCoord - 1)->getType() == 'c' && !mom->getPos(xCoord - 1, yCoord - 1)->hasBeenClosed ) {
+    else if ( (xCoord - 1 > 0) && (yCoord - 1 > 0) && (xCoord - 1 < 18) && (yCoord - 1 < 32) && mom->getPos(xCoord - 1, yCoord - 1)->getType() == 'c' && !mom->getPos(xCoord - 1, yCoord - 1)->hasBeenClosed ) {
         
         nextX = xCoord - 1;
         nextY = yCoord - 1;
 	}
     // Check 12
-    else if ( (xCoord > 0) && (yCoord - 1 > 0) && mom->getPos(xCoord, yCoord - 1)->getType() == 'c' && !mom->getPos(xCoord, yCoord - 1)->hasBeenClosed ) {
+    else if ( (xCoord > 0) && (yCoord - 1 > 0) && (xCoord < 18) && (yCoord - 1 < 32) && mom->getPos(xCoord, yCoord - 1)->getType() == 'c' && !mom->getPos(xCoord, yCoord - 1)->hasBeenClosed ) {
         
         nextX = xCoord;
         nextY = yCoord - 1;
 	}
     // Check 1,5
-    else if ((xCoord + 1 > 0) && (yCoord - 1 > 0) && mom->getPos(xCoord + 1, yCoord - 1)->getType() == 'c' && !mom->getPos(xCoord + 1, yCoord - 1)->hasBeenClosed ) {
+    else if ((xCoord + 1 > 0) && (yCoord - 1 > 0) && (xCoord + 1 < 18) && (yCoord - 1 < 32) && mom->getPos(xCoord + 1, yCoord - 1)->getType() == 'c' && !mom->getPos(xCoord + 1, yCoord - 1)->hasBeenClosed ) {
         
         nextX = xCoord + 1;
         nextY = yCoord - 1;
 	}
     // Check 3
-    else if ((xCoord + 1 > 0) && (yCoord > 0) && mom->getPos(xCoord + 1, yCoord)->getType() == 'c' && !mom->getPos(xCoord + 1, yCoord)->hasBeenClosed ) {
+    else if ((xCoord + 1 > 0) && (yCoord > 0) && (xCoord + 1 < 18) && (yCoord < 32) && mom->getPos(xCoord + 1, yCoord)->getType() == 'c' && !mom->getPos(xCoord + 1, yCoord)->hasBeenClosed ) {
         
         nextX = xCoord + 1;
         nextY = yCoord;
 	}
     // Check 4,5
-    else if ((xCoord + 1 > 0) && (yCoord + 1 > 0) && mom->getPos(xCoord + 1, yCoord + 1)->getType() == 'c' && !mom->getPos(xCoord + 1, yCoord + 1)->hasBeenClosed ) {
+    else if ((xCoord + 1 > 0) && (yCoord + 1 > 0) && (xCoord + 1 < 18) && (yCoord + 1 < 32) && mom->getPos(xCoord + 1, yCoord + 1)->getType() == 'c' && !mom->getPos(xCoord + 1, yCoord + 1)->hasBeenClosed ) {
         
         nextX = xCoord + 1;
         nextY = yCoord + 1;
 	}
     // Check 6
-    else if ((xCoord > 0) && (yCoord + 1 > 0) && mom->getPos(xCoord, yCoord + 1)->getType() == 'c' && !mom->getPos(xCoord, yCoord + 1)->hasBeenClosed ) {
+    else if ((xCoord > 0) && (yCoord + 1 > 0) && (xCoord < 18) && (yCoord + 1 < 32) && mom->getPos(xCoord, yCoord + 1)->getType() == 'c' && !mom->getPos(xCoord, yCoord + 1)->hasBeenClosed ) {
         
         nextX = xCoord;
         nextY = yCoord + 1;
 	}
     // Check 7,5
-    else if ((xCoord - 1 > 0) && (yCoord + 1 > 0) && mom->getPos(xCoord - 1, yCoord + 1)->getType() == 'c' && !mom->getPos(xCoord - 1, yCoord + 1)->hasBeenClosed ) {
+    else if ((xCoord - 1 > 0) && (yCoord + 1 > 0) && (xCoord - 1 < 18) && (yCoord + 1 < 32) && mom->getPos(xCoord - 1, yCoord + 1)->getType() == 'c' && !mom->getPos(xCoord - 1, yCoord + 1)->hasBeenClosed ) {
         
         nextX = xCoord - 1;
         nextY = yCoord + 1;
@@ -882,32 +882,29 @@ int Robot::meanValueArray(char* inputArray, int iterations) {
 
 
 // -----------------------------------------
+
 //Sets reference values and moves robot in map abstraction if robot has moved one square
 void Robot::updateRobotPosition(){
 	
 	waitForNewData();
 	
 	if(validSensor == 'N'){
-        validSensor = determineValidSensor();
-    }
+		validSensor = determineValidSensor();
+	}
 	
-    //båda måste ske flera gånger för att byta segment, sensorerna kan ge extremvärden som leder till för tidigt bytt ruta
-    if (validSensor == 'b'){
+	//båda måste ske flera gånger för att byta segment, sensorerna kan ge extremvärden som leder till för tidigt bytt ruta
+	if (validSensor == 'w'){
+		return;
+	}
+	
+	if (validSensor == 'b'){
 		int ref = bwdReference/40;
-        sensorDifference = getBwdDistance() - ref*40;
-    }
-    else if(validSensor == 'f'){
+		sensorDifference = getBwdDistance() - ref*40;
+	}
+	else if(validSensor == 'f'){
 		int ref = fwdReference/40;
 		sensorDifference = getFwdDistance() - ref*40;
-    }
-
-
-	/* The paramaters for sensor differences (references?) are called:
-	fwdRefLong;
-	bwdRefLong;
-	fwdRefShort;
-	bwdRefShort;
-	*/
+	}
 	
 	int fwdref = 0;
 	int bwdref = 0;
@@ -928,75 +925,113 @@ void Robot::updateRobotPosition(){
 		else{
 			movedToNewPosition = 0;
 			
-			if(haltAfterSection){
-			this->setUserSpeed(0);
-			drive();
-			}
-			commObj->reactivateRFID();
-				
-			switch (direction)
-			{
-            
-	//-------------------------Direction is forwards in map-------------------
-				case 'f':
-                    
-                    moveForward();
-					break;
-            
-	//-------------------------Direction is backwards in map-------------------
-				case 'b':
-                    
-                    moveBackward();
-					break;
-            
-	//-------------------------Direction is right in map-----------------------
-				case 'r':
-                    
-                    moveRight();
-					break;
-            
-	//-------------------------Direction is left in map------------------------
-				case 'l':
-                    
-                    moveLeft();
-                    break;
-            
-		//-------------------------Direction is undefined.-------------------------
-				default :
-					//would like to throw some kind of error here.
-					return;
-			}
-			
-					
-            waitForNewData();
-
-            //update which sensor that is valid and should be measured.
-			//and update the references on that sensor.
-            
-			validSensor = determineValidSensor();
-			if(validSensor == 'f'){
-				this->setFwdReference();
-			}
-			else if(validSensor == 'b'){
-				this->setBwdReference();
-			}
-			else{
-				validSensor = 'N';
-				this->setBwdReference();
-				this->setFwdReference();
-			}
-			setFwdClosed();
-			setBwdClosed();
-			setRightClosed();
-			setLeftClosed();
+			moveRobot();
 		}
 	}
 	else if (movedToNewPosition == 1)
 	{
 		movedToNewPosition = 0;
 	}
-	backToStart(); // not tested fully, could still give nonsense.
+	//backToStart(); // not tested fully, could still give nonsense.
 }
+
+void Robot::moveRobot(){
+    
+    if (haltAfterSection) {
+        this->setSpeed(0);
+        drive();
+    }
+	
+	commObj->reactivateRFID();
+	MapSection* tempSection;
+	
+	switch (direction)
+	{
+		//-------------------------Direction is forwards in map-------------------
+		case 'f':
+		//save section about to move into to temp container
+		tempSection = mom->getPos(xCoord,yCoord+1);
+		//move robot to new section
+		mom->setSection(xCoord,yCoord+1,this);
+		//put previousSection back to last position.
+		mom->setSection(xCoord,yCoord,previousSection);
+		//save temp section to previous section
+		previousSection = tempSection;
+		
+		yCoord++;
+		break;
+		
+		//-------------------------Direction is backwards in map-------------------
+		case 'b':
+		//save section about to move into to temp container
+		tempSection = mom->getPos(xCoord,yCoord-1);
+		//move robot to new section
+		mom->setSection(xCoord,yCoord-1,this);
+		//put previousSection back to last position.
+		mom->setSection(xCoord,yCoord,previousSection);
+		//save temp section to previous section
+		previousSection = tempSection;
+		
+		yCoord--;
+		
+		break;
+		
+		//-------------------------Direction is right in map-----------------------
+		case 'r':
+		//save section about to move into to temp container
+		tempSection = mom->getPos(xCoord-1,yCoord);
+		//move robot to new section
+		mom->setSection(xCoord-1,yCoord,this);
+		//put previousSection back to last position.
+		mom->setSection(xCoord,yCoord,previousSection);
+		//save temp section to previous section
+		previousSection = tempSection;
+		
+		xCoord--;
+		
+		break;
+		
+		//-------------------------Direction is left in map------------------------
+		case 'l':
+		//save section about to move into to temp container
+		tempSection = mom->getPos(xCoord+1,yCoord);
+		//move robot to new section
+		mom->setSection(xCoord+1,yCoord,this);
+		//put previousSection back to last position.
+		mom->setSection(xCoord,yCoord,previousSection);
+		//save temp section to previous section
+		previousSection = tempSection;
+		
+		xCoord++;
+		
+		break;
+		
+		//-------------------------Direction is undefined.-------------------------
+		default :
+		//would like to throw some kind of error here.
+		return;
+	}
+	setFwdClosed();
+	setBwdClosed();
+	setRightClosed();
+	setLeftClosed();
+	validSensor = determineValidSensor();
+	if (validSensor == 'w'){
+		commObj->activateWheelSensor();
+	}
+	if(validSensor == 'f'){
+		this->setFwdReference();
+	}
+	else if(validSensor == 'b'){
+		this->setBwdReference();
+	}
+	else{
+		validSensor = 'N';
+		this->setBwdReference();
+		this->setFwdReference();
+	}
+}
+
 
 
 // ------------Move Functions------------------
@@ -1070,8 +1105,11 @@ void Robot::moveLeft(){
 // -----------------------------------------
 
 char Robot::determineValidSensor(){
-    
-    if( getFwdDistance() > getBwdDistance()){ // bwd sensor is smaller than fwd.
+	if((getBwdDistance()>0) & (getFwdDistance()>0)){
+		commObj->activateWheelSensor();
+		return 'w';
+	}
+    else if( getFwdDistance() > getBwdDistance()){ // bwd sensor is smaller than fwd.
         return 'b';
     }
     else{                   //fwd sensor is smaller than bwd.
@@ -1122,20 +1160,12 @@ char* Robot::getColAsChar(int col){
 
 // ----------------------------------------
 int Robot::getFwdDistance(){
-	if(fwdShortSensor < 75){
-		asm("");
-		usingLong = false;
-		return fwdShortSensor;
-	}
-	else{
-		asm("");
-		usingLong = true;
-		return fwdLongSensor;	
-	}
+	usingLong = false;
+	return fwdShortSensor;
 }
 
 int Robot::getBwdDistance(){
-	if(bwdShortSensor < 75){
+	if(bwdShortSensor < 50){
 		asm("");
 		usingLong = false;
 		return bwdShortSensor;
@@ -1359,6 +1389,7 @@ void Robot::waitForNewData()
 
 void Robot::backToStart()
 {
+	//detta bör kontrolleras mycket mera
 	if((previousSection->getX() == 16) &&	(previousSection->getY()==1)){
         if ( mom->getPos(xCoord,yCoord - 1)->isClosed(xCoord,yCoord - 1, 0) ){
             mom->fillClosedArea();
@@ -1366,6 +1397,9 @@ void Robot::backToStart()
             startExplore = true;
         }
 	}
+	
+	
+	
 }
 
 // ----------------------

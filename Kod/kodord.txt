@@ -1,4 +1,4 @@
-Beskrivning     // Datalängd (dec)//  KodOrd (char) // ev Arg (dec)  //  Data (dec/char)
+﻿Beskrivning     // Datalängd (dec)//  KodOrd (char) // ev Arg (dec)  //  Data (dec/char)
 
 rotera vänster  //  fix 3       //  r   //  0   // [Var1] (speed)
 rotera höger    //  fix 3       //  r   //  1   // [Var1] (speed)
@@ -20,6 +20,7 @@ gyro moturskonst//  fix 5	//  k	//   1 //  [100tal, 10tal, 1tal]
 sensor 0-9      //  fix 26      //  S   // ’DNC’//  
 [100tal sens0, 10talsens0, 1talsens0, 100 tal sens1, 10tal sens1, 1talsens1 … ]
 gyro-sensor-styr//  fix 1       //  G   // 'DNC'// 'DNC'
+åkt 40cm	//  fix 1	//  D	// 'DNC'// 'DNC'
 RFID            //  fix 1       //  R   // 'DNC'// 'DNC'
 Tillåt RFID	//  fix 1	//  r  	// 'DNC'// 'DNC'		//skickas från styrmodul till sensormodul
 

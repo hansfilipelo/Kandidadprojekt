@@ -27,7 +27,6 @@ public:
     volatile void handle();
     volatile bool Btrec = false; 
 	void sendMap();
-	volatile bool getMap = false; 
 	volatile int mapNumber = 0;
 	bool autonom = false;
     

@@ -138,6 +138,7 @@ public:
     
     int meanValueArray(char* inputArray, int iterations);
     void updateRobotPosition();
+	void moveRobot();
 	void setFwdReference();
 	void setBwdReference();
     
