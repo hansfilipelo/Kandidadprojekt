@@ -69,6 +69,11 @@ void handleDataFromSteer(){
 		Bus.outDataArray[1] = 'r';
 		Bus.sendArray(0);
 	}
+	if(Bus.buffer[1]=='d'){
+		Bus.outDataArray[0] = 1;
+		Bus.outDataArray[1] = 'd';
+		Bus.sendArray(0);
+	}
 }	
 
 void handleDataFromSensor(){
@@ -95,6 +100,11 @@ void handleDataFromSensor(){
 	if(Bus.buffer[1] == 'R'){
 		Bus.outDataArray[0] = 1;
 		Bus.outDataArray[1] = 'R';
+		Bus.sendArray(1);
+	}
+	if(Bus.buffer[1] == 'D'){
+		Bus.outDataArray[0] = 1;
+		Bus.outDataArray[1] = 'D';
 		Bus.sendArray(1);
 	}
 }

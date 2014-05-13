@@ -995,7 +995,7 @@ void Robot::updateRobotPosition(){
 	{
 		movedToNewPosition = 0;
 	}
-	backToStart(); // not tested fully, could still give nonsense.
+	//backToStart(); // not tested fully, could still give nonsense.
 }
 
 

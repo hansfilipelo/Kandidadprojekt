@@ -76,7 +76,6 @@ void Map::fillClosedArea()
     bool eAfterC = false;
 	// fill map with closed area from left
     for (int y = 0; y < 17; y++) {
-        std::cout << "row: " << y << std::endl;
 		for (int x = 0; x < 32; x++) {
             
 			if((this->getPos(x,y)->getType() != 'c' && !firstC)){
