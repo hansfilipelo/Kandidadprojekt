@@ -1106,6 +1106,7 @@ void Robot::moveLeft(){
 
 char Robot::determineValidSensor(){
 	if((getBwdDistance()>0) & (getFwdDistance()>0)){
+		commObj->activateWheelSensor();
 		return 'w';
 	}
     else if( getFwdDistance() > getBwdDistance()){ // bwd sensor is smaller than fwd.
