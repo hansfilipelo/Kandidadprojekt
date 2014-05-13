@@ -225,7 +225,7 @@ Robot::Robot(int xPos, int yPos, Map* inMom, Communication* inComm) : MapSection
 	type = 'r';
 	direction = 'f';
 	
-	Kd = 26;
+	Kd = 23;
 	Kp = 7;
 	Ref = 12;
 	
