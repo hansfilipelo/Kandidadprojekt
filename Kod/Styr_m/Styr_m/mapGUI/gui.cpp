@@ -24,8 +24,7 @@ Gui::Gui(QWidget *parent) :
 
     ui->speedPercent->setText(0);
     ui->mapView->setScene(scene);
-    //alla keys förutom pilarna kräver manuell connection, bör rensas upp då alla slots inte behövs. Har atm flera slots som gör samma saker
-    // via shortcuts samt knappar i UI:n
+    //Due to a bug space key needs to be slot-mapped manually.
     new QShortcut(QKeySequence(Qt::Key_Space), this, SLOT(on_actionStop_triggered()));
     time.start();
     int i = ui->speedSlider->value();
@@ -52,6 +51,10 @@ void Gui::labelSet(QString text){
 
 }
 
+/*
+ *  Saves the current sensordata to a file that is created in the users homefolder.
+ */
+
 void Gui::saveToFile()
 {
     QDir Dir = QDir::homePath();
@@ -66,7 +69,7 @@ void Gui::saveToFile()
     QFile outputFile(outputFilename);
     outputFile.open(QIODevice::WriteOnly);
 
-    /* Check it opened OK */
+    /* Check if opened OK */
     if(!outputFile.isOpen()){
         qDebug() << "- Error, unable to open" << outputFilename << "for output";
         return;
@@ -93,6 +96,11 @@ void Gui::saveToFile()
 }
 
 
+/*
+ *  Sets all options for the serialPort interface (bluetooth)
+ *  and then passes the object on to the classes who need it.
+ */
+
 int Gui::startPort(){
 
     QTextStream standardOutput(stdout);
@@ -107,7 +115,7 @@ int Gui::startPort(){
         return 1;
     }
 
-    int serialPortBaudRate = 115200; // kanske inte fungerar just nu
+    int serialPortBaudRate = 115200;
     if (!serialPort->setBaudRate(serialPortBaudRate)) {
         standardOutput << QObject::tr("Failed to set 115200 baud for port %1, error: %2").arg(serialPortName).arg(serialPort->errorString()) << endl;
         return 1;
@@ -142,14 +150,9 @@ int Gui::startPort(){
     return 0;
 }
 
-void Gui::updateTimeVector(){
-    updatePlots();
-    timeVector.push_front(timeVector.at(0)+1);
-    if (timeVector.size()==10){
-        timeVector.pop_back();
-    }
-    timer->start(1000);
-}
+/*
+ *  Update the text for the slider when the slider changes.
+ */
 
 void Gui::on_speedSlider_valueChanged(int value)
 {
@@ -157,6 +160,11 @@ void Gui::on_speedSlider_valueChanged(int value)
     ui->speedPercent->setText(integer);
 }
 
+
+
+/*
+ *  Plotting settings.
+ */
 
 void Gui::setupPlots(){
     ui->sensorPlot0->addGraph();
@@ -195,8 +203,8 @@ void Gui::setupPlots(){
     ui->sensorPlot2->graph(0)->setData(timeVector,sensorVector1);
     ui->sensorPlot2->yAxis->setRange(0,130);
     ui->sensorPlot2->xAxis->setRange(0,10);
-    ui->sensorPlot1->xAxis->setAutoTickStep(false);
-    ui->sensorPlot1->xAxis->setTickStep(2);
+    ui->sensorPlot2->xAxis->setAutoTickStep(false);
+    ui->sensorPlot2->xAxis->setTickStep(2);
 
     ui->sensorPlot3->addGraph();
     ui->sensorPlot3->graph(0)->setPen(QPen(Qt::blue));
@@ -207,6 +215,9 @@ void Gui::setupPlots(){
     //ui->sensorPlot3->graph(0)->setScatterStyle(QCPScatterStyle::ssDisc);
     ui->sensorPlot3->graph(0)->setData(timeVector,sensorVector3);
     ui->sensorPlot3->yAxis->setRange(0,160);
+    ui->sensorPlot3->xAxis->setAutoTickStep(false);
+    ui->sensorPlot3->xAxis->setTickStep(2);
+    
 
     ui->sensorPlot4->addGraph();
     ui->sensorPlot4->graph(0)->setPen(QPen(Qt::blue));
@@ -217,6 +228,9 @@ void Gui::setupPlots(){
    // ui->sensorPlot4->graph(0)->setScatterStyle(QCPScatterStyle::ssDisc);
     ui->sensorPlot4->graph(0)->setData(timeVector,sensorVector4);
     ui->sensorPlot4->yAxis->setRange(0,160);
+    ui->sensorPlot4->xAxis->setAutoTickStep(false);
+    ui->sensorPlot4->xAxis->setTickStep(2);
+
 
     ui->sensorPlot5->addGraph();
     ui->sensorPlot5->graph(0)->setPen(QPen(Qt::blue));
@@ -227,6 +241,9 @@ void Gui::setupPlots(){
     //ui->sensorPlot5->graph(0)->setScatterStyle(QCPScatterStyle::ssDisc);
     ui->sensorPlot5->graph(0)->setData(timeVector,sensorVector5);
     ui->sensorPlot5->yAxis->setRange(0,160);
+    ui->sensorPlot5->xAxis->setAutoTickStep(false);
+    ui->sensorPlot5->xAxis->setTickStep(2);
+
 
     ui->sensorPlot6->addGraph();
     ui->sensorPlot6->graph(0)->setPen(QPen(Qt::blue));
@@ -237,6 +254,9 @@ void Gui::setupPlots(){
     //ui->sensorPlot6->graph(0)->setScatterStyle(QCPScatterStyle::ssDisc);
     ui->sensorPlot6->graph(0)->setData(timeVector,sensorVector6);
     ui->sensorPlot6->yAxis->setRange(0,160);
+    ui->sensorPlot6->xAxis->setAutoTickStep(false);
+    ui->sensorPlot6->xAxis->setTickStep(2);
+
 }
 
 
@@ -260,6 +280,12 @@ void Gui::giveValues(int inInt){
         std::cout << "Waited 750 ms\n";
     }
 }
+
+/*
+ *  Insert the sensorvalues and then update the plots. 
+ *  Also puts a text label next to the plot with the exact value
+ *  of the latest element.
+ */
 
 void Gui::updateSensorValues(int value0, int value1, int value2, int value3, int value4, int value5, int value6, int value7){
     sensorVector0.push_back(value0);
@@ -308,26 +334,17 @@ void Gui::updateSensorValues(int value0, int value1, int value2, int value3, int
     ui->sensor6data->setText(QString::number(sensorVector6.last()));
 }
 
-void Gui::updatePlots(){
-    ui->sensor1data->setText(QString::number(timeVector.at(0)));
-    ui->sensorPlot1->graph(0)->setData(timeVector, testVector);
-    ui->sensorPlot1->xAxis->setRange(timeVector.at(timeVector.size()-1),timeVector.at(0));
-    ui->sensorPlot1->replot();
-}
-void Gui::insertRow(char inArray[25])
-{
-    int row = inArray[2];
-    for(int i=0; i < 17; i++ ){
-        map[row][i] = inArray[i+3];
-        std::cout << map[row][i] << std::endl;
-    }
+/*
+ *  Iterates through mapArea and draws the map accordingly. 
+ *  e = explored. u = unknown. f = fire. c = closed. r = robot.
+ */
 
-}
+
 void Gui::updateMap(){
     qDeleteAll( scene->items());
     for (int rad = 0; rad < 32; rad++){
         for(int kol = 3; kol < 20; kol ++){
-            QGraphicsRectItem*   temp = new QGraphicsRectItem(31-(kol-3)*10,rad*10,10,10);
+            QGraphicsRectItem*   temp = new QGraphicsRectItem(31-(kol-3)*15,rad*15,15,15);
             if(mapArea[rad][kol]=='e'){
                 temp->setBrush(Qt::green);
                 scene->addItem(temp);
@@ -346,7 +363,7 @@ void Gui::updateMap(){
                 scene->addItem(temp);
             }
             else if(mapArea[rad][kol]=='r'){
-                QGraphicsEllipseItem* robot = new QGraphicsEllipseItem(31-(kol-3)*10,rad*10,10,10);
+                QGraphicsEllipseItem* robot = new QGraphicsEllipseItem(31-(kol-3)*15,rad*15,15,15);
                 robot->setBrush(Qt::black);
                 temp->setBrush(Qt::green);
                 scene->addItem(temp);
@@ -359,6 +376,11 @@ void Gui::updateMap(){
 
     }
 }
+
+/*
+ *  All functions below are functions that trigger on certain events.
+ *  like speedSlider_sliderReleased, that runs when the slider is released.
+ */
 
 void Gui::on_speedSlider_sliderReleased(){
     speedMultiplier = ui->speedSlider->value();
@@ -435,25 +457,9 @@ void Gui::on_fetchButton_pressed()
 
 void Gui::on_setParameterButton_pressed()
 {
-    //if(connectStatus){
-        parWindow->show();
-    //}    }
-
-    /*double kp;
-    double kd;
-    int ref;
-    int trimLeft;
-    int trimRight;
-
-    trimLeft = ui->trimValueLeft->value();
-    trimRight = ui->trimValueRight->value();
-    kp=ui->doubleSpinBox->value();
-    kd=ui->doubleSpinBox_2->value();
-    ref=ui->spinBox->value();
     if(connectStatus){
-        bluetooth->setControlParameters(kp, kd, ref,trimLeft,trimRight);
+        parWindow->show();
     }
-    */
 }
 
 void Gui::on_actionSetParameter_triggered()

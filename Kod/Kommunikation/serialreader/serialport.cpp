@@ -1,3 +1,13 @@
+/*
+ *  MapMaster2001
+ *  Erik Ekelund, David Habrman, Tobias Grundström,
+ *  Hans-Filip Elo, Niklas Ericsson, Jens Edhammer
+ *
+ *  TSEA56 2014.
+ *
+ */
+
+
 #include "serialport.h"
 
 #include <QCoreApplication>
@@ -20,8 +30,9 @@ SerialPort::~SerialPort()
 {
 }
 
-/* Write exactly 27 bytes of data to port. Our char arrays are not nullterminated. Will cause issue if not for 27 bytes max.
- * Wait for a maximum och 0.6 seconds for successful transmission.
+/* 
+ *  Write exactly 27 bytes of data to port. Our char arrays are not nullterminated. Will cause issue if not for 27 bytes max.
+ *  Wait for a maximum och 0.6 seconds for successful transmission.
  */
 
 
@@ -31,10 +42,10 @@ void SerialPort::sendArray(const char inArray[27]){
 }
 
 
-/*handleReadyRead(). tempData is the data from potential previous transmission. if the current transmission added with the previous
- * transmission has a length of less than 27 it is saved in tempData and we leave the readyread to accept more data.
- * On 27 or more bytes 27 bytes of data are sent to handleData, excess is stored in tempData for future transmissiondata.
- * This function is not fully tested yet.
+/*
+ *  handleReadyRead(). tempData is the data from potential previous transmission. if the current transmission added with the previous
+ *  transmission has a length of less than 27 it is saved in tempData and we leave the readyread to accept more data.
+ *  On 27 or more bytes, 27 bytes of data are sent to handleData, excess is stored in tempData for future transmissiondata.
  */
 
 void SerialPort::handleReadyRead() {
@@ -71,7 +82,8 @@ void SerialPort::handleReadyRead() {
 }
 
 
-/*Function for conversion and deepcopy from QByteArray to char array.
+/*
+ *  Function for conversion and deepcopy from QByteArray to char array.
  */
 
 char* SerialPort::QByteToArray(QByteArray inArray)
@@ -82,25 +94,27 @@ char* SerialPort::QByteToArray(QByteArray inArray)
     return outData;
 }
 
-/*Pointer to gui neccessary for handleData.
+/*
+ *  Pointer to gui neccessary for handleData.
  */
 
 void SerialPort::setGui(Gui* ptr){
     GUI = ptr;
 }
 
-/*Errorhandling of serialport. Currently only informs. Improvement would be to have it reconnect.
+/*
+ *  Errorhandling of serialport. Currently only informs.
  */
 
 void SerialPort::handleError(QSerialPort::SerialPortError serialPortError)
 {
     if (serialPortError == QSerialPort::ReadError) {
         m_standardOutput << QObject::tr("An I/O error occurred while reading the data from port %1, error: %2").arg(port->portName()).arg(port->errorString()) << endl;
-        //QCoreApplication::exit(1);
     }
 }
 
-/*Passing and preformatting data that arrives from serialport and handleReadyRead.
+/*
+ *  Passing and preformatting data that arrives from serialport and handleReadyRead.
  */
 
 void SerialPort::handleData(QByteArray inData){
@@ -125,8 +139,5 @@ void SerialPort::handleData(QByteArray inData){
         int sen7 = 100*inData[24]+10*inData[25]+inData[26];
 
         GUI->updateSensorValues(sen0,sen1,sen2,sen3,sen4,sen5,sen6,sen7);
-
-        //std::cout << sen0 << '\n' << sen1 << '\n' << sen2 << '\n' << sen3 << '\n' << sen4 << '\n' << sen5 << '\n' << sen6 << '\n' << sen7 << std::endl;
-
     }
 }

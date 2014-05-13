@@ -23,6 +23,7 @@
 #include <string.h>
 #include "Abstraction.h"
 #include "Communication.h"
+#include <stdlib.h>
 
 class Map;
 class Communication;
@@ -56,8 +57,13 @@ public:
     
     virtual bool isUnexplored();
     virtual int findUnexplored();
+    virtual bool isClosed(int origX, int origY, int counter);
 	
+    volatile bool hasBeenClosed = false;
+    volatile bool isOrigClosed = false;
+    
 protected:
+    
 	int xCoord;
 	int yCoord;
 	int step;
@@ -150,6 +156,14 @@ public:
 	volatile bool newData = false;
     
 protected:
+    //move robot functions based on direction
+    
+    void moveForward();
+    void moveBackward();
+    void moveRight();
+    void moveLeft();
+    
+    
     int getRightDistance();
 	int getLeftDistance();
 	int getFwdDistance();
@@ -204,6 +218,7 @@ protected:
 	
 	//Paramater that determines if robot should stop after one segment.
 	volatile bool haltAfterSection;
+    volatile bool startExplore = false;
 	
 	//Paramaters for wall and corner detection
 	int rightCornerFront;
