@@ -122,7 +122,7 @@ int main(void)
 #endif
 	
 	abstractionObject->setRobot(robotPointer);
-	robotPointer->changeDirection('f');
+	robotPointer->changeGear('f');
 	
 	robotPointer->setFwdReference();
 	robotPointer->setBwdReference();
@@ -209,24 +209,23 @@ int main(void)
 			}
 		}
     
-    // Look for walls every 250th turn of main loop
-    if (i == 250) {
-        // Update position in map
-        robotPointer->updateRobotPosition();
+        // Look for walls every 250th turn of main loop
+        if (i == 250) {
+            // Update position in map
+            robotPointer->updateRobotPosition();
+            
+            i = 0;
+        }
+        i++;
         
-        i = 0;
+        
+        if(abstractionObject->sendMapNow){
+            asm("");
+            abstractionObject->sendMapNow=false;
+            abstractionObject->sendMap();
+            asm("");
+        }
     }
-    i++;
     
-   /* 
-    if(abstractionObject->sendMapNow){
-        asm("");
-        abstractionObject->sendMapNow=false;
-        abstractionObject->sendMap();
-        asm("");
-    }
-	*/
-}
-
-return 0;
+    return 0;
 }
