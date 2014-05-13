@@ -124,6 +124,8 @@ int main(void)
 	abstractionObject->setRobot(robotPointer);
 	robotPointer->changeGear('f');
 	
+    // Wait for sensordata before mapping stuff.
+    robotPointer->waitForNewData();
 	robotPointer->setFwdReference();
 	robotPointer->setBwdReference();
     
