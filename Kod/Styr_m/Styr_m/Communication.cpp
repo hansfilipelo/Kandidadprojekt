@@ -71,8 +71,10 @@ void Communication::handleData(){
     if ( this->inData[1]=='S' ) {
         
         sensorArrayToVariables();
-		robotPointer->newData = true;
-        
+		if(robotPointer->newData == false){
+			robotPointer->newData = true;
+		}
+		
     }
     
     // Gyro interrupt
@@ -88,7 +90,7 @@ void Communication::handleData(){
 	
 	//Åkt 40 cm
     if (this->inData[1] == 'D') {
-	    robotPointer->moveRobot();
+	    //robotPointer->moveRobot(); //this function currently calls 
     }
     
     // Constants for PD-control, mapping and wall follower

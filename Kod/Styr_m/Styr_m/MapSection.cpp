@@ -351,7 +351,6 @@ void Robot::rotateLeft(){
 	// Rotate mode
 	rotateLeftActive = false;
 	rotateActive = true;
-	newData = false;
 	// Seft diffs to 0
 	fwdDiff = 0;
 	bwdDiff = 0;
@@ -392,7 +391,7 @@ void Robot::rotateLeft(){
         changeDirection('f');
     }
 	
-	waitForNewData();
+	//waitForNewData();
 	this->robotRotated();
 		
 }
@@ -426,7 +425,6 @@ void Robot::rotateRight(){
     // Turns
     changeGear('r');
     setSpeed(35);
-    newData = false;
 	while (rotateActive)
 	{
  		drive();
@@ -450,8 +448,7 @@ void Robot::rotateRight(){
     else if (direction == 'l') {
         changeDirection('f');
     }
-	
-	waitForNewData();
+	//waitForNewData();
 	this->robotRotated();
 	
 }
@@ -886,7 +883,7 @@ int Robot::meanValueArray(char* inputArray, int iterations) {
 //Sets reference values and moves robot in map abstraction if robot has moved one square
 void Robot::updateRobotPosition(){
 	
-	waitForNewData();
+	//waitForNewData();
 	
 	if(validSensor == 'N'){
 		validSensor = determineValidSensor();
@@ -942,7 +939,7 @@ void Robot::moveRobot(){
         drive();
     }
 	
-	commObj->reactivateRFID();
+	commObj->reactivateRFID(); // this cannot be called upon from within a interrupt 
 	MapSection* tempSection;
 	
 	switch (direction)
@@ -1106,7 +1103,7 @@ void Robot::moveLeft(){
 
 char Robot::determineValidSensor(){
 	if((getBwdDistance()>0) & (getFwdDistance()>0)){
-		commObj->activateWheelSensor();
+		commObj->activateWheelSensor(); // this might not be able to be called upon from within an interrupt 
 		return 'w';
 	}
     else if( getFwdDistance() > getBwdDistance()){ // bwd sensor is smaller than fwd.

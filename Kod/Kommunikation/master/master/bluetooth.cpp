@@ -68,10 +68,15 @@ void Bluetooth::sendArray(){
  */
 
 void Bluetooth::sendMap(){
-	memcpy(outDataArray,mapPointer->mapArea[rowToSend],27);
-	sendArray();
-	_delay_ms(22);
-	rowToSend++;
+	
+	//if(rdyForRow){
+		
+		memcpy(outDataArray,mapPointer->mapArea[rowToSend],27);
+		sendArray();
+		rdyForRow = false;
+		rowToSend++;
+		_delay_ms(25);
+	//}
 }
 
 
@@ -119,7 +124,11 @@ volatile void Bluetooth::handle(){
 		
 		spiPointer->sendArray(0);
 	}
-
+	
+	if(pcHandle[1] == 'Y'){
+		rdyForRow = true;
+	}
+	
 	if(pcHandle[1] == 'a'){
 		if(!autonom){
 			spiPointer->outDataArray[1] = 'a';

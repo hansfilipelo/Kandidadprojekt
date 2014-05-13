@@ -37,8 +37,9 @@ public:
     
 	volatile bool mapDone = false;
 	unsigned int rowToSend = 0; 
-	
+	volatile bool rdyForRow = true;
 private:
+	
     unsigned int position = 0;
 	
 	Spi* spiPointer;

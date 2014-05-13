@@ -84,8 +84,10 @@ void handleDataFromSensor(){
 		// copy data to Bus outDataArray
 		memcpy(Bus.outDataArray, Bus.buffer,27);
 		Bus.sendArray(1);
+		
 		memcpy(Firefly.outDataArray, Bus.buffer,27);
 		Firefly.sendArray();
+
 		//inserts data from all sensors into the Display-buffer
 		if (Display.bufferWritten)
 		{
@@ -203,13 +205,21 @@ int main(void)
 		if(ReceiveFromSensor){
 			handleDataFromSensor();
 		}
+		
+		/* In its current implementation this function is delaying the master by 25  ms. 
+				In that time the master might miss to relay for instance the stopRotation command.
+		
 		if(Firefly.mapDone){
 			Firefly.sendMap();
 			if(Firefly.rowToSend > 31){
 				Firefly.mapDone = false;
 				Firefly.rowToSend = 0;
+				Firefly.rdyForRow =true;
 			}
 		}
+		
+		*/
+		
 		Display.update();
 		
 		

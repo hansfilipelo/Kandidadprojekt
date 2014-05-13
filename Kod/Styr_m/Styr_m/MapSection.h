@@ -154,7 +154,7 @@ public:
     
     void setControlParameters(double inputKp, double inputKd, int inputRef, int inTrimLeft, int inTrimRight, int inFwdRefLong, int inBwdRefLong, int inFwdRefShort, int inBwdRefShort, int inRightCornerFront, int inRightCornerBack, int inRightWallFront, int inRightWallBack, int inHaltAfterSection);
 	
-	volatile bool newData = false;
+	volatile bool newData = true;
     
 protected:
     //move robot functions based on direction
