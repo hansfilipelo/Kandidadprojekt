@@ -141,7 +141,9 @@ volatile void Bluetooth::handle(){
 	}
 
 	if(inDataArray[1] == 'F'){
-		getMap = true;
+		spiPointer->outDataArray[0] = 1;
+		spiPointer->outDataArray[1] = 'F';
+		spiPointer->sendArray(1);
 	}
     if(inDataArray[1]=='P'){
         asm("");
