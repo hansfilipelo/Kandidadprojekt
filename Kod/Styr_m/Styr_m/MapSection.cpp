@@ -147,6 +147,7 @@ int MapSection::findUnexplored(){
 bool MapSection::isClosed(int origX, int origY, int counter){
     
     if ( ((abs(xCoord-origX) < 2) && (abs(yCoord-origY) < 2)) && counter > 10 ) {
+        hasBeenClosed = false;
         return true;
     }
     
@@ -205,10 +206,37 @@ bool MapSection::isClosed(int origX, int origY, int counter){
         nextY = yCoord + 1;
     }
     else {
+        hasBeenClosed = false;
 		return false;
     }
     
-    return mom->getPos(nextX, nextY)->isClosed(origX, origY, counter+1);
+    volatile bool output = mom->getPos(nextX, nextY)->isClosed(origX, origY, counter+1);
+    hasBeenClosed = false;
+    return output;
+    
+}
+
+
+// For path finding
+
+bool MapSection::isReachable(){
+    
+    int nextX;
+    int nextY;
+    
+    this->hasBeenReached = true;
+    
+    if (true) {
+        return false;
+    }
+    else {
+        hasBeenReached = false;
+		return false;
+    }
+    
+    volatile bool output = mom->getPos(nextX, nextY)->isReachable();
+    hasBeenReached = false;
+    return output;
     
 }
 

@@ -163,7 +163,9 @@ int main(void)
 					robotPointer->setSpeed(25);
 					robotPointer->drive();
 				}
+#if TESTING == 0
 				_delay_ms(25); // This delay ensures that we enter next segment.
+#endif
 				robotPointer->rotateRight();
 				while ( !robotPointer->isWallRight() && !(abstractionObject->getManual())) {
 					robotPointer->changeGear('f');
