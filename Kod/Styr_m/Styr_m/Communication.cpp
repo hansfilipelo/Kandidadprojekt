@@ -90,7 +90,7 @@ void Communication::handleData(){
 	
 	//Åkt 40 cm
     if (this->inData[1] == 'D') {
-	    //robotPointer->moveRobot(); //this function currently calls 
+	   wheelHasTurned=true; 
     }
     
     // Constants for PD-control, mapping and wall follower

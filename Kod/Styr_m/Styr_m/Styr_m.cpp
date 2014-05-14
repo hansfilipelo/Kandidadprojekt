@@ -218,6 +218,12 @@ int main(void)
             
             i = 0;
         }
+		
+		if(abstractionObject->wheelHasTurned){
+			robotPointer->moveRobot();
+			abstractionObject->wheelHasTurned=false;
+		}
+		
         i++;
         
         

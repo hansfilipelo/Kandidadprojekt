@@ -23,8 +23,8 @@ MapSection::MapSection(int x,int y, Map* inMom, char createType){
 
 MapSection::~MapSection(){};
 
-// ----------------------------
-// Set stuff
+// ---------------------------------------------------------
+// Set and get MapSection coordinates
 
 void MapSection::setX(int coord){
 	xCoord=coord;
@@ -38,8 +38,6 @@ void MapSection::setType(char newType){
 	type=newType;
 }
 
-
-//---------------------------------------------------------
 int MapSection::getX(){
 	return this->xCoord;
 }
@@ -75,6 +73,7 @@ MapSection* MapSection::getRight(){
 
 
 //----------------------------------------------------------
+//Checks if the current MapSection is of type unexplored
 
 bool MapSection::isUnexplored(){
 	if (type == 'u') {
@@ -85,7 +84,10 @@ bool MapSection::isUnexplored(){
 	}
 }
 
-// SLAM algorithms -------------------------------------
+// ----------------------------------------------------------
+// SLAM algorithms
+//Looks at adjacent MapSections and finds the closest unexplored section to optimize pathing.
+//Counters are compared and used to find the shortest path.
 
 int MapSection::findUnexplored(){
 	int topCounter;
@@ -220,6 +222,7 @@ bool MapSection::isClosed(int origX, int origY, int counter){
 // Construct ---------------------------
 // Since this is a subclass - the MapSection constructor runs first.
 // All we need to do is change type and set ourselves on map
+//Also initiates default values on certain parameters used in robot control.
 
 Robot::Robot(int xPos, int yPos, Map* inMom, Communication* inComm) : MapSection(xPos, yPos, inMom){
 	type = 'r';
@@ -259,7 +262,7 @@ Robot::~Robot(){
 }
 
 // -------------------------------------
-// Sets direction to travel
+// Changes the direction robot is moving in by adjusting PWM
 
 void Robot::changeGear(char inGear){
 		
@@ -300,13 +303,14 @@ void Robot::changeGear(char inGear){
 }
 
 // ------------------------------------
+// Changes previous MapSection to typ "fire"
 void Robot::setRFID(){
 	previousSection->setType('f');
 }
 
 
-// Drives 
-
+// Changes the PWM outputs by using the user defined speed and the user set trim values.
+//Trim values are used to adjust how straight the robot drives.
 void Robot::drive(){
 	if (speed < 101)
     {
@@ -334,6 +338,7 @@ void Robot::drive(){
 	}
 }
 
+//Same as drive but backwards
 void Robot::driveBackward(int speed){
     changeGear('b');
 	int output = floor(speed * 255 / 100);
@@ -391,7 +396,7 @@ void Robot::rotateLeft(){
         changeDirection('f');
     }
 	
-	//waitForNewData();
+	waitForNewData();
 	this->robotRotated();
 		
 }
@@ -448,13 +453,13 @@ void Robot::rotateRight(){
     else if (direction == 'l') {
         changeDirection('f');
     }
-	//waitForNewData();
+	waitForNewData();
 	this->robotRotated();
 	
 }
 
 //-----------------------------------------
-
+//
 void Robot::turn(int pd){
     int output = floor(movementSpeed * 255 / 100);
 	
@@ -883,7 +888,7 @@ int Robot::meanValueArray(char* inputArray, int iterations) {
 //Sets reference values and moves robot in map abstraction if robot has moved one square
 void Robot::updateRobotPosition(){
 	
-	//waitForNewData();
+	waitForNewData();
 	
 	if(validSensor == 'N'){
 		validSensor = determineValidSensor();

@@ -33,6 +33,7 @@ public:
 	int row = 0;
     double assembleDouble(char, char, char, char);
 	bool getManual();
+	bool wheelHasTurned=false;
     
     
 protected:
