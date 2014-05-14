@@ -121,6 +121,13 @@
       </property>
      </widget>
     </item>
+    <item>
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>Kp2</string>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
   <widget class="QWidget" name="verticalLayoutWidget_2">
@@ -224,6 +231,13 @@
      <widget class="QCheckBox" name="haltBox">
       <property name="text">
        <string/>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QSpinBox" name="kp2SpinBox">
+      <property name="value">
+       <number>1</number>
       </property>
      </widget>
     </item>
