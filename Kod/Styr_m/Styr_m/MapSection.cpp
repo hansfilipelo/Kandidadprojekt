@@ -467,7 +467,7 @@ void Robot::turn(int pd){
 	int pdOut = pd * movementSpeed * 0.01;
 	
 	#if DEBUG == 0
-	OCR2A = output+pdOut; //Negative value on pd will turn left, positive right
+	OCR2A = output+pdOut;
 	OCR2B = output-pdOut;
 	#endif
 }
@@ -1127,19 +1127,31 @@ char Robot::determineValidSensor(){
 void Robot::adjustPosition(){
 	volatile int pd = 0;
 	volatile int frontError = 0;
-	volatile int derivError = 0;
+	volatile int diff = 0;
 	volatile int backError = 0;
-	volatile int error = 0;
-	volatile int both = 0;
+	volatile int deltaFrontError = 0;
+	volatile int deltaBackError = 0;
+	
+	
+	//front menar högerfram, back höger bak
 	
     frontError=Ref-rightFrontSensor;
 	backError=Ref-rightBackSensor;
 	
-	both = frontError + backError;
-	error = both/2;
 	
-    derivError=frontError - backError;
-	pd = Kp*error + Kd*derivError;
+	//skapar differans som betraktas som derivata
+	deltaFrontError = frontError - previousFrontError;
+	deltaBackError = backError - previousBackError;
+	
+	//nuvarande fel sparas som föregående. Notera att första cykeln ger hög diff då previousError initieras till noll.
+	previousFrontError = frontError;
+	previousBackError = backError;
+	
+	
+	
+	//Båda sensorerna ska reglera hjulparen på samma vis, således kan vi addera ihop parametrarna och relgera samma hjulpar	
+    diff=rightFrontSensor - rightBackSensor
+	pd = Kp*((frontError + backError)/2) + Kd*((deltaFrontError + deltaBackError)/2) - kp2(rightFrontSensor - rightBackSensor);
     
 	turn(pd);
     
