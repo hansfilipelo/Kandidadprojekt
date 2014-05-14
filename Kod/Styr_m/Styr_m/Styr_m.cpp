@@ -106,6 +106,7 @@ void pwm_init()
 
 int main(void)
 {
+	
 #if TESTING == 0
     // Set up interrupts
 	cli();
@@ -153,6 +154,7 @@ int main(void)
 			else if ( robotPointer->getRotateLeftActive() ){
 				robotPointer->rotateLeft();
 			}
+			
         }
         // Automatic mode
         else {            

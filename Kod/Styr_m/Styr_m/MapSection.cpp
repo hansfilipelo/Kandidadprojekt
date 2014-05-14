@@ -255,6 +255,8 @@ Robot::Robot(int xPos, int yPos, Map* inMom, Communication* inComm) : MapSection
     commObj = inComm;
     previousSection = mom->getPos(xPos,yPos);
     mom->setSection(xPos,yPos,this);
+	
+	validSensor = 'N';
 }
 
 Robot::~Robot(){
@@ -1110,11 +1112,11 @@ void Robot::moveLeft(){
 // -----------------------------------------
 
 char Robot::determineValidSensor(){
-	if((getBwdDistance()>0) & (getFwdDistance()>0)){
-		//commObj->activateWheelSensor(); // this might not be able to be called upon from within an interrupt 
+	if((getBwdDistance()>150) && (getFwdDistance()>41)){
+		commObj->activateWheelSensor(); // this might not be able to be called upon from within an interrupt
 		return 'w';
 	}
-    else if( getFwdDistance() > getBwdDistance()){ // bwd sensor is smaller than fwd.
+    else if((getFwdDistance() > getBwdDistance()) || ((getBwdDistance() < 150) && (getFwdDistance() > 41))){ // bwd sensor is smaller than fwd.
         return 'b';
     }
     else{                   //fwd sensor is smaller than bwd.
@@ -1181,7 +1183,7 @@ int Robot::getFwdDistance(){
 }
 
 int Robot::getBwdDistance(){
-	if(bwdShortSensor < 50){
+	if(bwdShortSensor < 41){
 		asm("");
 		usingLong = false;
 		return bwdShortSensor;
