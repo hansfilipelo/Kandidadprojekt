@@ -46,6 +46,11 @@ void handleDataFromSteer(){
 	
 	ReceiveFromSteer=false;
 	memcpy(Bus.buffer, Bus.inDataArray,27);
+	
+	if(Bus.buffer[1] == 'T'){
+		memcpy(Firefly.outDataArray,Bus.buffer,27);
+		Firefly.sendArray();
+	}
 	if(Bus.buffer[1]=='M'){
 		memcpy(buffer.mapArea[Bus.buffer[2]],Bus.buffer,27);
 		Bus.latestRow = Bus.buffer[2];

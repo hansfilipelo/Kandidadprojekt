@@ -34,6 +34,9 @@ public:
     double assembleDouble(char, char, char, char);
 	bool getManual();
 	bool wheelHasTurned=false;
+	
+	void time0();
+	void time1();
     
     
 protected:

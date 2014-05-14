@@ -357,13 +357,14 @@ void Robot::rotateLeft(){
 	rotateLeftActive = false;
 	rotateActive = true;
 	// Seft diffs to 0
+	
 	fwdDiff = 0;
 	bwdDiff = 0;
 	
 	// Send map before rotating since it's the least critical point during mapping run
 	setSpeed(0);
 	drive();
-	commObj->sendMap();
+	//commObj->sendMap();
 	
     // Send request to sensor module to measure angle
     commObj->sendRotateRequest();
@@ -419,7 +420,7 @@ void Robot::rotateRight(){
 	// Send map before rotating since it's the least critical point during mapping run
 	setSpeed(0);
 	drive();
-	commObj->sendMap();
+	//commObj->sendMap();
 	
 	//---------
 	// First send stuff to sensor module
@@ -1108,7 +1109,7 @@ void Robot::moveLeft(){
 
 char Robot::determineValidSensor(){
 	if((getBwdDistance()>0) & (getFwdDistance()>0)){
-		commObj->activateWheelSensor(); // this might not be able to be called upon from within an interrupt 
+		//commObj->activateWheelSensor(); // this might not be able to be called upon from within an interrupt 
 		return 'w';
 	}
     else if( getFwdDistance() > getBwdDistance()){ // bwd sensor is smaller than fwd.
@@ -1398,10 +1399,7 @@ void Robot::backToStart()
             
             startExplore = true;
         }
-	}
-	
-	
-	
+	}	
 }
 
 // ----------------------

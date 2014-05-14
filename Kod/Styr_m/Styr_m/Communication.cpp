@@ -71,9 +71,7 @@ void Communication::handleData(){
     if ( this->inData[1]=='S' ) {
         
         sensorArrayToVariables();
-		if(robotPointer->newData == false){
-			robotPointer->newData = true;
-		}
+		robotPointer->newData = true;
 		
     }
     
@@ -90,8 +88,10 @@ void Communication::handleData(){
 	
 	//Åkt 40 cm
     if (this->inData[1] == 'D') {
-	   wheelHasTurned=true; 
-    }
+		asm("");
+		wheelHasTurned=true; 
+		asm("");
+    }	
     
     // Constants for PD-control, mapping and wall follower
     if(this->inData[1]=='P'){
@@ -179,7 +179,7 @@ void Communication::sendRotateRequest(){
     slavePointer->outDataArray[0] = 2;
     slavePointer->outDataArray[1] = 'g';
 	slavePointer->outDataArray[2] = 1;
-    
+   
     slavePointer->SPI_Send();
 }
 
@@ -211,7 +211,7 @@ double Communication::assembleDouble(char ten, char one, char tenth, char hundre
  */
 
 void Communication::reactivateRFID(){
-	    slavePointer->outDataArray[0] = 1;
+	    slavePointer->outDataArray[0] = 2;
 	    slavePointer->outDataArray[1] = 'r';
 	    slavePointer->SPI_Send();
 }
@@ -271,7 +271,21 @@ void Communication::sensorArrayToVariables(){
 
 //activera hjulräknaren
 void Communication::activateWheelSensor(){
-	slavePointer->outDataArray[0] = 1;
+	slavePointer->outDataArray[0] = 2;
 	slavePointer->outDataArray[1] = 'd';
 	slavePointer->SPI_Send();
+}
+
+void Communication::time0()
+{
+	slavePointer->outDataArray[0] = 2;
+	slavePointer->outDataArray[1] = 'T';
+	slavePointer->outDataArray[2] = 0;
+}
+
+void Communication::time1()
+{
+	slavePointer->outDataArray[0] = 2;
+	slavePointer->outDataArray[1] = 'T';
+	slavePointer->outDataArray[2] = 1;
 }
