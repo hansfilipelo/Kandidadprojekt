@@ -10,7 +10,7 @@
 void Slave::SPI_Init()
 {
     
-#if DEBUG == 0
+#if TESTING == 0
     
 	/* Set MISO output, all others input */
 	DDRB = (1<<DDB6);
@@ -36,7 +36,7 @@ void Slave::SPI_Init()
 void Slave::SPI_Send(){
 	position=0;
 	
-#if DEBUG == 0
+#if TESTING == 0
     SPDR = outDataArray[0];
     slaveSend= true;
 	PORTB |= (1<<PORTB2);	//interrupt to master

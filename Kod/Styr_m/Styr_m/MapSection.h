@@ -129,6 +129,7 @@ public:
     
     bool isWallRight();
     bool isCornerRight();
+	bool isCornerPassed();
     bool isWallFwd();
     bool isWallLeft();
 	bool isWallFwdClose();
@@ -225,6 +226,7 @@ protected:
 	int rightCornerBack;
 	int rightWallFront;
 	int rightWallBack;
+	
 	
 	int speed;
 	int userSpeed;

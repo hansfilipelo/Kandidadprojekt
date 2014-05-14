@@ -25,7 +25,6 @@ void Communication::handleData(){
 		manual = false;
 		robotPointer->setUserSpeed(speed);
 		robotPointer->stopRotation();
-		robotPointer->drive();
 	}
 	if (this->inData[1]=='q') {
 		manual = true;
@@ -72,6 +71,8 @@ void Communication::handleData(){
         
         sensorArrayToVariables();
 		robotPointer->newData = true;
+		asm("");
+		asm("");
 		
     }
     
@@ -281,6 +282,7 @@ void Communication::time0()
 	slavePointer->outDataArray[0] = 2;
 	slavePointer->outDataArray[1] = 'T';
 	slavePointer->outDataArray[2] = 0;
+	slavePointer->SPI_Send();
 }
 
 void Communication::time1()
@@ -288,4 +290,5 @@ void Communication::time1()
 	slavePointer->outDataArray[0] = 2;
 	slavePointer->outDataArray[1] = 'T';
 	slavePointer->outDataArray[2] = 1;
+	slavePointer->SPI_Send();
 }
