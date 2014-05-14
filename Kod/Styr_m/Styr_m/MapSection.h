@@ -154,7 +154,7 @@ public:
     void turn(int pd); //Positive or negative value will decide left or right
     void adjustPosition();
     
-    void setControlParameters(double inputKp, double inputKd, int inputRef, int inTrimLeft, int inTrimRight, int inFwdRefLong, int inBwdRefLong, int inFwdRefShort, int inBwdRefShort, int inRightCornerFront, int inRightCornerBack, int inRightWallFront, int inRightWallBack, int inHaltAfterSection);
+    void setControlParameters(double inputKp, double inputKd, int inputRef, int inTrimLeft, int inTrimRight, int inFwdRefLong, int inBwdRefLong, int inFwdRefShort, int inBwdRefShort, int inRightCornerFront, int inRightCornerBack, int inRightWallFront, int inRightWallBack, int inHaltAfterSection,int inKp2);
 	
 	volatile bool newData = true;
     
@@ -205,6 +205,7 @@ protected:
     int Ref; //Reference value for control
     volatile double Kd; //Differentiation coeff.
     volatile double Kp; //Proportional coeff.
+	volatile int Kp2;
     
     int previousFrontError = 0;
     int previousBackError = 0;

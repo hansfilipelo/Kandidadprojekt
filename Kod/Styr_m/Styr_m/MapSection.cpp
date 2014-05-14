@@ -230,6 +230,7 @@ Robot::Robot(int xPos, int yPos, Map* inMom, Communication* inComm) : MapSection
 	
 	Kd = 23;
 	Kp = 7;
+	Kp2 = 1;
 	Ref = 12;
 	
 	trimRight = 30;
@@ -1132,7 +1133,7 @@ void Robot::adjustPosition(){
 	volatile int backError = 0;
 	volatile int deltaFrontError = 0;
 	volatile int deltaBackError = 0;
-	volatile int kp2 = 4;
+	
 	
 	
 	//front menar högerfram, back höger bak
@@ -1152,7 +1153,7 @@ void Robot::adjustPosition(){
 	
 	
 	//Båda sensorerna ska reglera hjulparen på samma vis, således kan vi addera ihop parametrarna och relgera samma hjulpar	
-	pd = Kp*((frontError + backError)/2) + Kd*((deltaFrontError + deltaBackError)/2) - kp2*(rightFrontSensor - rightBackSensor);
+	pd = Kp*((frontError + backError)/2) + Kd*((deltaFrontError + deltaBackError)/2) - Kp2*(rightFrontSensor - rightBackSensor);
     
 	turn(pd);
     
@@ -1211,9 +1212,10 @@ int Robot::getLeftDistance(){
 	}
 }
 
-void Robot::setControlParameters(double inputKp, double inputKd, int inputRef, int inTrimLeft, int inTrimRight, int inFwdRefLong, int inBwdRefLong, int inFwdRefShort, int inBwdRefShort, int inRightCornerFront, int inRightCornerBack, int inRightWallFront, int inRightWallBack, int inHaltAfterSection){
+void Robot::setControlParameters(double inputKp, double inputKd, int inputRef, int inTrimLeft, int inTrimRight, int inFwdRefLong, int inBwdRefLong, int inFwdRefShort, int inBwdRefShort, int inRightCornerFront, int inRightCornerBack, int inRightWallFront, int inRightWallBack, int inHaltAfterSection,int inKp2){
     Kp=inputKp;
     Kd=inputKd;
+	Kp2=inKp2;
     
     Ref=inputRef;
 	
