@@ -42,6 +42,21 @@ Lcd Display;
  *  These functions are not called on from interrupts.
  */
 
+//Timer initialization
+void Timer_Init()
+{
+	TCNT0 = 0x00;			//set timer to 0
+	TCCR0B = 0x04;			//pre-scalar 256 på timer
+	TIMSK0 = 0x00;			//dont't allow time-interrups
+}
+
+//Timer overflow interrupt
+ISR(TIMER0_OVF_vect){
+	asm("");
+	Firefly.rdyForRow = true;
+	TIMSK0 = 0x00;		//don't allow time-interrups
+}
+
 void handleDataFromSteer(){
 	
 	ReceiveFromSteer=false;
@@ -197,6 +212,7 @@ ISR(INT0_vect){
  */
 int main(void)
 {
+	Timer_Init();
 	DDRA |= (1<<PORTA4);
     Firefly.setPointer(&Bus,&buffer);
 	sei();
@@ -212,18 +228,19 @@ int main(void)
 		}
 		
 		/* In its current implementation this function is delaying the master by 25  ms. 
-				In that time the master might miss to relay for instance the stopRotation command.
+				In that time the master might miss to relay for instance the stopRotation command.*/
 		
-		if(Firefly.mapDone){
+		if(Firefly.mapDone && Firefly.rdyForRow ){
 			Firefly.sendMap();
+			
+			// When all sent - do this
 			if(Firefly.rowToSend > 31){
 				Firefly.mapDone = false;
 				Firefly.rowToSend = 0;
-				Firefly.rdyForRow =true;
+				Firefly.rdyForRow = true;
 			}
 		}
 		
-		*/
 		
 		Display.update();
 		
@@ -237,4 +254,5 @@ int main(void)
 			PORTA &= ~(1<<PORTA4);
 		}
 	}
+	
 }
