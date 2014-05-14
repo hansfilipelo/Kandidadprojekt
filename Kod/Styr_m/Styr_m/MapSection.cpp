@@ -1403,9 +1403,11 @@ bool Robot::getRotateLeftActive()
 
 void Robot::waitForNewData()
 {
+#if TESTING == 0
 	asm("");
 	_delay_ms(300);
 	asm("");
+#endif
     
 	/* Unclear why, but this function does not work properly
 	for (unsigned int i = 0; i < 2; i++) {
