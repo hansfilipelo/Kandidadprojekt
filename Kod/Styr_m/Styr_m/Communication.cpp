@@ -115,9 +115,10 @@ void Communication::handleData(){
 		int rightWallFront = (int)inData[20];
 		int rightWallBack = (int)inData[21];
 		int haltAfterSection = (int)inData[22];
+		int Kp2 =(int)inData[23];
 		
 		asm("");
-        robotPointer->setControlParameters(kp,kd,ref,trimLeft,trimRight, fwdRefLong, bwdRefLong, fwdRefShort, bwdRefShort, rightCornerFront, rightCornerBack, rightWallFront, rightWallBack, haltAfterSection);
+        robotPointer->setControlParameters(kp,kd,ref,trimLeft,trimRight, fwdRefLong, bwdRefLong, fwdRefShort, bwdRefShort, rightCornerFront, rightCornerBack, rightWallFront, rightWallBack, haltAfterSection,Kp2);
     }
     
 }
