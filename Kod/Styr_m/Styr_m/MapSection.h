@@ -159,6 +159,8 @@ public:
     void setControlParameters(double inputKp, double inputKd, int inputRef, int inTrimLeft, int inTrimRight, int inFwdRefLong, int inBwdRefLong, int inFwdRefShort, int inBwdRefShort, int inRightCornerFront, int inRightCornerBack, int inRightWallFront, int inRightWallBack, int inHaltAfterSection,int inKp2);
 	
 	volatile bool newData = true;
+	
+	char validSensor = 'N'; //No valid from start.
     
 protected:
     //move robot functions based on direction
@@ -190,7 +192,6 @@ protected:
 	
 	char direction = 'f';
     char gear = 'f';
-    char validSensor = 'N'; //No valid from start.
     
     int fwdReference;
     int bwdReference;
