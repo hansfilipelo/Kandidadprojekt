@@ -1129,19 +1129,30 @@ char Robot::determineValidSensor(){
 void Robot::adjustPosition(){
 	volatile int pd = 0;
 	volatile int frontError = 0;
-	volatile int derivError = 0;
 	volatile int backError = 0;
-	volatile int error = 0;
-	volatile int both = 0;
+	volatile int deltaFrontError = 0;
+	volatile int deltaBackError = 0;
+	volatile int kp2 = 4;
+	
+	
+	//front menar högerfram, back höger bak
 	
     frontError=Ref-rightFrontSensor;
 	backError=Ref-rightBackSensor;
 	
-	both = frontError + backError;
-	error = both/2;
 	
-    derivError=frontError - backError;
-	pd = Kp*error + Kd*derivError;
+	//skapar differans som betraktas som derivata
+	deltaFrontError = frontError - previousFrontError;
+	deltaBackError = backError - previousBackError;
+	
+	//nuvarande fel sparas som föregående. Notera att första cykeln ger hög diff då previousError initieras till noll.
+	previousFrontError = frontError;
+	previousBackError = backError;
+	
+	
+	
+	//Båda sensorerna ska reglera hjulparen på samma vis, således kan vi addera ihop parametrarna och relgera samma hjulpar	
+	pd = Kp*((frontError + backError)/2) + Kd*((deltaFrontError + deltaBackError)/2) - kp2*(rightFrontSensor - rightBackSensor);
     
 	turn(pd);
     
@@ -1251,6 +1262,16 @@ void Robot::setUserSpeed(int inSpeed)
 // --------------------------
 
 // -----------------------
+
+bool Robot::isCornerPassed(){
+	if (rightBackSensor > 30)
+	{
+	return true;
+	}
+	return false;
+}
+
+
 
 bool Robot::isWallRight(){
 	

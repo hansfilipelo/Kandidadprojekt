@@ -158,7 +158,7 @@ int main(void)
         else {            
 			//----------------------Om kortdistans flyttas fram----------
 			if(robotPointer->isCornerRight()){
-				while ( robotPointer->isWallRight() && !(abstractionObject->getManual())) {
+				while ( !(robotPointer->isCornerPassed()) && !(abstractionObject->getManual())) {
 					robotPointer->changeGear('f');
 					robotPointer->setSpeed(25);
 					robotPointer->drive();

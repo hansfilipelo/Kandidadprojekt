@@ -130,6 +130,7 @@ public:
     
     bool isWallRight();
     bool isCornerRight();
+	bool isCornerPassed();
     bool isWallFwd();
     bool isWallLeft();
 	bool isWallFwdClose();
@@ -205,9 +206,8 @@ protected:
     volatile double Kd; //Differentiation coeff.
     volatile double Kp; //Proportional coeff.
     
-    int previousRightError = 0;
-    int previousLeftError = 0;
-	long int robotTempPd;
+    int previousFrontError = 0;
+    int previousBackError = 0;
     
     MapSection* previousSection = NULL;
     Communication* commObj = NULL;
