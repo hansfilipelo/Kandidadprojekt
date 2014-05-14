@@ -24,6 +24,7 @@ public:
     ~Order();
 
    // void setPID(int,int);
+    void rowReceived();
     void rotateLeft(int);
     void rotateRight(int);
     void turnDone();

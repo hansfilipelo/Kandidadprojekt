@@ -95,6 +95,11 @@ void Gui::saveToFile()
     outputFile.close();
 }
 
+void Gui::rowReceived()
+{
+    bluetooth->rowReceived();
+}
+
 
 /*
  *  Sets all options for the serialPort interface (bluetooth)

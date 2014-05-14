@@ -16,6 +16,12 @@ Order::Order(SerialPort *inPort){
 Order::~Order(){
 }
 
+void Order::rowReceived()
+{
+    char data[27] = {2,'Y',0,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30};
+    serport->sendArray(data);
+}
+
 /*Constructs the array that are to be sent to AVR processor.
  */
 

@@ -14,6 +14,7 @@
 #include <iostream>
 #include <QDebug>
 #include <QChar>
+#include <QTime>
 
 QT_USE_NAMESPACE
 
@@ -37,8 +38,10 @@ SerialPort::~SerialPort()
 
 
 void SerialPort::sendArray(const char inArray[27]){
+
     port->write(inArray,27);
-    port->waitForBytesWritten(600);
+    port->waitForBytesWritten(400);
+
 }
 
 
@@ -49,8 +52,9 @@ void SerialPort::sendArray(const char inArray[27]){
  */
 
 void SerialPort::handleReadyRead() {
-    
+
     QByteArray inData;
+
     
     int inBytes = port->bytesAvailable();
     int tempBytes = tempData.length();
@@ -63,6 +67,7 @@ void SerialPort::handleReadyRead() {
         handleData(tempData);
         inData.clear();
         tempData.clear();
+        test.start();
         return;
     }
     if(checkBytes < 27){                //too little data to handle, save data and leave rdyread.
@@ -122,11 +127,22 @@ void SerialPort::handleData(QByteArray inData){
         int row = (int)QByteToArray(inData)[2];
         std::cout << row << std::endl;
         memcpy(GUI->mapArea[row],QByteToArray(inData),27);
+        this->rowReceived();
         if(row == 31){
             GUI->updateMap();
         }
         return;
     }
+    if(inData[1] == 'T'){
+        if((int)inData[2] == 0){
+            test.start();
+        }
+        else if((int)inData[2] == 1){
+            std::cout << test.elapsed() << std::endl;
+            test.start();
+        }
+    }
+
     if(inData[1] == 'S'){
 
         int sen0 = 100*inData[3]+10*inData[4]+inData[5];
@@ -140,4 +156,11 @@ void SerialPort::handleData(QByteArray inData){
 
         GUI->updateSensorValues(sen0,sen1,sen2,sen3,sen4,sen5,sen6,sen7);
     }
+}
+
+void SerialPort::rowReceived()
+{
+    char data[27] = {2,'Y',0,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30};
+    sendArray(data);
+
 }

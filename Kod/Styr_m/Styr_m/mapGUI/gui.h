@@ -39,6 +39,7 @@ public:
     void labelSet(QString);
     char mapArea[32][27];
     void saveToFile();
+    void rowReceived();
 
 private slots:
     void on_speedSlider_valueChanged(int value);

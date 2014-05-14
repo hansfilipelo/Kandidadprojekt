@@ -43,11 +43,13 @@ private slots:
 
 private:
     
+    void rowReceived();
     Gui* GUI;
     char* QByteToArray(QByteArray);
     QByteArray  m_readData;
     QTextStream m_standardOutput;
     QByteArray tempData;
+    QTime test;
 };
 
 #endif
