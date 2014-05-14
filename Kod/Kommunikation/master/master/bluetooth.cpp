@@ -158,8 +158,6 @@ volatile void Bluetooth::handle(){
 		asm("");
 		spiPointer->sendArray(1);
 		asm("");
-
-        
     }
 }
 

@@ -4,7 +4,6 @@
 
 Communication::Communication(Slave* pointer){
     slavePointer=pointer;
-	wheelHasTurned = false;
 }
 
 /*
@@ -47,7 +46,6 @@ void Communication::handleData(){
 		robotPointer->setRotateRightActive();
 	}
 	else if (this->inData[1]=='f'){
-		wheelHasTurned=false; 
 		robotPointer->changeGear('f');
 		robotPointer->setUserSpeed(speed);
 		robotPointer->drive();
@@ -117,10 +115,9 @@ void Communication::handleData(){
 		int rightWallFront = (int)inData[20];
 		int rightWallBack = (int)inData[21];
 		int haltAfterSection = (int)inData[22];
-		int Kp2 =(int)inData[23];
 		
 		asm("");
-        robotPointer->setControlParameters(kp,kd,ref,trimLeft,trimRight, fwdRefLong, bwdRefLong, fwdRefShort, bwdRefShort, rightCornerFront, rightCornerBack, rightWallFront, rightWallBack, haltAfterSection,Kp2);
+        robotPointer->setControlParameters(kp,kd,ref,trimLeft,trimRight, fwdRefLong, bwdRefLong, fwdRefShort, bwdRefShort, rightCornerFront, rightCornerBack, rightWallFront, rightWallBack, haltAfterSection);
     }
     
 }
@@ -215,7 +212,7 @@ double Communication::assembleDouble(char ten, char one, char tenth, char hundre
  */
 
 void Communication::reactivateRFID(){
-	    slavePointer->outDataArray[0] = 1;
+	    slavePointer->outDataArray[0] = 2;
 	    slavePointer->outDataArray[1] = 'r';
 	    slavePointer->SPI_Send();
 }
@@ -275,7 +272,7 @@ void Communication::sensorArrayToVariables(){
 
 //activera hjulräknaren
 void Communication::activateWheelSensor(){
-	slavePointer->outDataArray[0] = 1;
+	slavePointer->outDataArray[0] = 2;
 	slavePointer->outDataArray[1] = 'd';
 	slavePointer->SPI_Send();
 }

@@ -33,7 +33,7 @@ public:
 	int row = 0;
     double assembleDouble(char, char, char, char);
 	bool getManual();
-	volatile bool wheelHasTurned;
+	bool wheelHasTurned=false;
 	
 	void time0();
 	void time1();

@@ -28,8 +28,8 @@ void Spi::init(){
 	PORTA |= (1<<PORTA1);
 	PORTB |= (1<<PORTB4);
     
-	/* Enable SPI, Master, set clock rate fck/8 */
-	SPCR |= (1<<SPE)|(1<<MSTR)|(1<<SPR0)|(1<<SPI2X);
+	/* Enable SPI, Master, set clock rate fck/16 */
+	SPCR |= (1<<SPE)|(1<<MSTR)|(1<<SPR1)|(1<<SPI2X);
     
 	//Enable interupts
 	EIMSK |= (1<<INT0)|(1<<INT2)|(1<<INT1);
@@ -91,14 +91,16 @@ void Spi::sendArray(unsigned int slave){
 
 void Spi::receiveArray(unsigned int slave){
 	
+	cli();
 	inDataArray[0] = transfer(0x00,slave);
 	unsigned int length = inDataArray[0];
-	_delay_us(4);
+	_delay_us(12);
 	for (unsigned int i=1; i<=length; i++)
 	{
 		inDataArray[i] = transfer(0x00, slave);
-		_delay_us(4);
+		_delay_us(12);
 	}
+	sei();
 }
 
 /*

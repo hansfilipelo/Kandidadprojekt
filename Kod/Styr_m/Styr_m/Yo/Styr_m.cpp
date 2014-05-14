@@ -5,24 +5,21 @@
  *  Author: hanel742 och tobgr602
  */
 
-
+#define F_CPU 14745600
 
 #ifndef __AVR_ATmega1284P__
-#define TESTING 1
+#define DEBUG 1
 #else
-#define TESTING 0
+#define DEBUG 0
 #endif
 
-#if TESTING == 0
+#if DEBUG == 0
 
 #include <avr/io.h>
-#define F_CPU 14745600
 #include <util/delay.h>
 #include <avr/interrupt.h>
 
 #endif
-
-
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -43,7 +40,7 @@ Communication* abstractionObject = new Communication(slavePointer);
 Map* mapPointer = new Map();
 Robot* robotPointer = new Robot(16,1,mapPointer,abstractionObject);
 
-#if TESTING == 0
+#if DEBUG == 0
 
 // Interreupt for bus comm
 // -----------------------------
@@ -106,8 +103,7 @@ void pwm_init()
 
 int main(void)
 {
-	
-#if TESTING == 0
+#if DEBUG == 0
     // Set up interrupts
 	cli();
 	MCUCR = 0b00000000;
@@ -154,7 +150,6 @@ int main(void)
 			else if ( robotPointer->getRotateLeftActive() ){
 				robotPointer->rotateLeft();
 			}
-			
         }
         // Automatic mode
         else {            
@@ -165,7 +160,7 @@ int main(void)
 					robotPointer->setSpeed(25);
 					robotPointer->drive();
 				}
-				_delay_ms(25); // This delay ensures that we enter next segment.
+				_delay_ms(200); // This delay ensures that we enter next segment.
 				robotPointer->rotateRight();
 				while ( !robotPointer->isWallRight() && !(abstractionObject->getManual())) {
 					robotPointer->changeGear('f');
@@ -182,7 +177,6 @@ int main(void)
 				}
 				robotPointer->setSpeed(0);
 				robotPointer->drive();
-			
 				
 				if(!robotPointer->isWallRight())
 				{
@@ -218,8 +212,8 @@ int main(void)
 		}
     
         // Look for walls every 250th turn of main loop
-        if (i == 300) {
-			//abstractionObject->time1();
+        if (i == 250) {
+			abstractionObject->time1();
             // Update position in map
             robotPointer->updateRobotPosition();
             

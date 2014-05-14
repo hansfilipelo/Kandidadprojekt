@@ -2,27 +2,30 @@
  * sensormodul.cpp
  *
  * Created: 4/7/2014 3:21:49 PM
- *  Author: Erik our grand receiver and David  our conqueror and master!
- *	All snopp åt Erik, vår buttyboy.
+ *
+ *
  */ 
 
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <math.h>
+#include <string.h>
 #include "slave.h"
 
 //------------sensorer----------------------
-volatile int numOfSamples = 30;		//number of samples for mean value
-volatile int savepos = 0;			//counter for the storage array
+volatile int numOfSamples = 75;		//number of samples for mean value
+volatile int savepos = 0;
 
-volatile int sensor0[30];			//arrays for sensordata
-volatile int sensor1[30];
-volatile int sensor2[30];
-volatile int sensor3[30];
-volatile int sensor4[30];
-volatile int sensor5[30];
-volatile int sensor6[30];
+char errorArraySens[27];						//counter for the storage array
+
+volatile int sensor0[75];			//arrays for sensordata
+volatile int sensor1[75];
+volatile int sensor2[75];
+volatile int sensor3[75];
+volatile int sensor4[75];
+volatile int sensor5[75];
+volatile int sensor6[75];
 
 
 volatile long int sen0;				//integers for mean distance
@@ -214,6 +217,12 @@ void sendSensors(){
 //Extremt känslig för tillägg av kod
 ISR(SPI_STC_vect){
 	sensormodul.position++;			//update position
+	
+	if(sensormodul.outDataArray[1] == 'd'){
+		memcpy(errorArraySens, sensormodul.outDataArray,27);
+		asm("");
+		asm("");
+	}
 	SPDR = sensormodul.outDataArray[sensormodul.position];	//set SPDR to current integer in array
 	sensormodul.inDataArray[sensormodul.position-1] = SPDR;	//set inDataArray to SPDR
 	
@@ -314,10 +323,10 @@ int main(void)
 				segmentsTurned++;
 				blacksegment = false;
 			}
-			if(segmentsTurned > 21){
+			if(segmentsTurned > 17){
 				sensormodul.outDataArray[0] = 1;
 				sensormodul.outDataArray[1] = 'D';
-				sensormodul.SPI_Send();		//send 90 degree turn is complete
+				sensormodul.SPI_Send();
 				wheelmode = false;
 				segmentsTurned = 0;
 				sen0 = sen0 +1;

@@ -29,6 +29,10 @@ bool toggle = false;
 bool ReceiveFromSteer = false;
 bool ReceiveFromSensor = false;
 
+char errorArray1[27];
+char errorArray2[27];
+char errorArray3[27];
+
 Map buffer;
 Bluetooth Firefly;
 Spi Bus(&Firefly,&buffer);
@@ -58,17 +62,16 @@ ISR(TIMER0_OVF_vect){
 }
 
 void handleDataFromSteer(){
-	
 	ReceiveFromSteer=false;
-	memcpy(Bus.buffer, Bus.inDataArray,27);
+	memcpy(Bus.bufferSteer, Bus.inDataArray,27);
 	
-	if(Bus.buffer[1] == 'T'){
-		memcpy(Firefly.outDataArray,Bus.buffer,27);
+	if(Bus.bufferSteer[1] == 'T'){
+		memcpy(Firefly.outDataArray,Bus.bufferSteer,27);
 		Firefly.sendArray();
 	}
-	if(Bus.buffer[1]=='M'){
-		memcpy(buffer.mapArea[Bus.buffer[2]],Bus.buffer,27);
-		Bus.latestRow = Bus.buffer[2];
+	if(Bus.bufferSteer[1]=='M'){
+		memcpy(buffer.mapArea[Bus.bufferSteer[2]],Bus.bufferSteer,27);
+		Bus.latestRow = Bus.bufferSteer[2];
 		//Confirm received map section
 		Bus.outDataArray[0] = 1;
 		Bus.outDataArray[1] = 'm';
@@ -78,18 +81,18 @@ void handleDataFromSteer(){
 			Firefly.mapDone = true;
 		}
 	}
-	if(Bus.buffer[1]=='g'){
+	if(Bus.bufferSteer[1]=='g'){
 		Bus.outDataArray[0] = 2;
 		Bus.outDataArray[1] = 'g';
 		Bus.outDataArray[2] = 1;
 		Bus.sendArray(0);	
 	}
-	if(Bus.buffer[1]=='r'){
+	if(Bus.bufferSteer[1]=='r'){
 		Bus.outDataArray[0] = 1;
 		Bus.outDataArray[1] = 'r';
 		Bus.sendArray(0);
 	}
-	if(Bus.buffer[1]=='d'){
+	if(Bus.bufferSteer[1]=='d'){
 		Bus.outDataArray[0] = 1;
 		Bus.outDataArray[1] = 'd';
 		Bus.sendArray(0);
@@ -98,37 +101,33 @@ void handleDataFromSteer(){
 
 void handleDataFromSensor(){
 	ReceiveFromSensor=false;
-	memcpy(Bus.buffer, Bus.inDataArray,27);
+	memcpy(Bus.bufferSensor, Bus.inDataArray,27);
 	
-	if(Bus.buffer[1] == 'S'){
+	if(Bus.notSensorData && ((Bus.bufferNonSensor[1]=='G') || (Bus.bufferNonSensor[1]=='D') || (Bus.bufferNonSensor[1]=='R'))){
+		memcpy(Bus.outDataArray, Bus.bufferNonSensor,Bus.bufferNonSensor[0]+1);
+		Bus.sendArray(1);
+		Bus.notSensorData = false;
+	}
+	else if(!Bus.notSensorData && Bus.bufferSensor[1] == 'S'){
 		// copy data to Bus outDataArray
-		memcpy(Bus.outDataArray, Bus.buffer,27);
+		memcpy(Bus.outDataArray, Bus.bufferSensor,27);
 		Bus.sendArray(1);
 		
-		memcpy(Firefly.outDataArray, Bus.buffer,27);
+		memcpy(Firefly.outDataArray, Bus.bufferSensor,27);
 		Firefly.sendArray();
 
 		//inserts data from all sensors into the Display-buffer
 		if (Display.bufferWritten)
 		{
-			Display.insertSensorValuesToBuffer(Bus.buffer);
+			Display.insertSensorValuesToBuffer(Bus.bufferSensor);
 			Display.bufferWritten = false;
 		}
 	}
-	if(Bus.buffer[1] == 'G'){
-		memcpy(Bus.outDataArray, Bus.buffer,2);
-		Bus.sendArray(1);
-	}
-	if(Bus.buffer[1] == 'R'){
-		Bus.outDataArray[0] = 1;
-		Bus.outDataArray[1] = 'R';
-		Bus.sendArray(1);
-	}
-	if(Bus.buffer[1] == 'D'){
-		Bus.outDataArray[0] = 1;
-		Bus.outDataArray[1] = 'D';
-		Bus.sendArray(1);
-	}
+	else{
+		memcpy(errorArray1,Bus.bufferSensor,27);
+		memcpy(errorArray2,Bus.bufferNonSensor,27);
+		asm("");
+	}	
 }
 
 #if DEBUG == 0
@@ -166,6 +165,15 @@ ISR(INT2_vect){
 ISR(INT1_vect){
 	cli();
 	Bus.receiveArray(0);
+	if(Bus.inDataArray[1] != 83){
+		if(Bus.inDataArray[1] != 'G' && Bus.inDataArray[1] != 'D' && Bus.inDataArray[1] != 'R'){
+		memcpy(errorArray3,Bus.inDataArray,27);
+		asm("");
+		return;
+		}
+		memcpy(Bus.bufferNonSensor,Bus.inDataArray,Bus.inDataArray[0]+1);
+		Bus.notSensorData = true;
+	}
 	ReceiveFromSensor = true;
 	sei();
 }
@@ -181,7 +189,7 @@ ISR(INT0_vect){
 		Bus.outDataArray[3]= 50;
 		Firefly.autonom = true;
 		Bus.sendArray(1);
-		
+		//get out from gyromode
 		Bus.outDataArray[0] = 2;
 		Bus.outDataArray[1] = 'g';
 		Bus.outDataArray[2] = 2;
@@ -193,7 +201,7 @@ ISR(INT0_vect){
 		Bus.outDataArray[3] = 0;
 		Firefly.autonom = false;
 		Bus.sendArray(1);
-		
+		//get out from gyromode
 		Bus.outDataArray[0] = 2;
 		Bus.outDataArray[1] = 'g';
 		Bus.outDataArray[2] = 2;

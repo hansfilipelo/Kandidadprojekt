@@ -31,9 +31,13 @@ public:
     // Data arrives in order, datalength (data.length + codeword + arg), codeword, arg, data.
     unsigned char inDataArray[27];
     unsigned char outDataArray[27];
-	unsigned char buffer[27];
+	unsigned char bufferSteer[27];
+	unsigned char bufferSensor[27];
+	unsigned char bufferNonSensor[27];
+	
    
    volatile unsigned int latestRow = 31; 
+   bool notSensorData = false;
    
 private:
     unsigned int  position = 0;

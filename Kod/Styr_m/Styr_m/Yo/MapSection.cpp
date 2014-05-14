@@ -228,9 +228,8 @@ Robot::Robot(int xPos, int yPos, Map* inMom, Communication* inComm) : MapSection
 	type = 'r';
 	direction = 'f';
 	
-	Kd = 26;
+	Kd = 23;
 	Kp = 7;
-	Kp2 = 1;
 	Ref = 12;
 	
 	trimRight = 30;
@@ -256,8 +255,6 @@ Robot::Robot(int xPos, int yPos, Map* inMom, Communication* inComm) : MapSection
     commObj = inComm;
     previousSection = mom->getPos(xPos,yPos);
     mom->setSection(xPos,yPos,this);
-	
-	validSensor = 'N';
 }
 
 Robot::~Robot(){
@@ -274,7 +271,7 @@ void Robot::changeGear(char inGear){
             
             gear = inGear;
             
-            #if TESTING == 0
+            #if DEBUG == 0
 			PORTD &= ~(1<<PORTD4); //0x10;
 			PORTD &= ~(1<<PORTD5); //0x20;
             #endif
@@ -282,7 +279,7 @@ void Robot::changeGear(char inGear){
 		else if (inGear == 'r'){
             gear = inGear;
             
-            #if TESTING == 0
+            #if DEBUG == 0
 			PORTD &= ~(1<<PORTD5);
 			PORTD |= (1<<PORTD4);
             #endif
@@ -290,7 +287,7 @@ void Robot::changeGear(char inGear){
 		else if (inGear == 'l'){
             gear = inGear;
             
-            #if TESTING == 0
+            #if DEBUG == 0
 			PORTD &= ~(1<<PORTD4);
 			PORTD |= (1<<PORTD5);
             #endif
@@ -298,7 +295,7 @@ void Robot::changeGear(char inGear){
 		else if (inGear == 'f'){
             gear = inGear;
             
-            #if TESTING == 0
+            #if DEBUG == 0
 			PORTD |= (1<<PORTD4);
 			PORTD |= (1<<PORTD5);
             #endif
@@ -328,13 +325,13 @@ void Robot::drive(){
             outputLeft = floor(speed * 255 / 100);
             outputRight = floor(speed * 255 /100);
 		}
-		#if TESTING == 0
+		#if DEBUG == 0
 		OCR2A = outputLeft;
 		OCR2B = outputRight;
 		#endif
 	}
 	else {
-#if TESTING == 0
+#if DEBUG == 0
 		OCR2A = 0;
 		OCR2B = 0;
 #endif
@@ -346,7 +343,7 @@ void Robot::driveBackward(int speed){
     changeGear('b');
 	int output = floor(speed * 255 / 100);
 	
-#if TESTING == 0
+#if DEBUG == 0
     OCR2A = output;
     OCR2B = output;
 #endif
@@ -364,12 +361,10 @@ void Robot::rotateLeft(){
 	fwdDiff = 0;
 	bwdDiff = 0;
 	
-	
-	
 	// Send map before rotating since it's the least critical point during mapping run
 	setSpeed(0);
 	drive();
-	commObj->sendMap();
+	//commObj->sendMap();
 	
     // Send request to sensor module to measure angle
     commObj->sendRotateRequest();
@@ -425,7 +420,7 @@ void Robot::rotateRight(){
 	// Send map before rotating since it's the least critical point during mapping run
 	setSpeed(0);
 	drive();
-	commObj->sendMap();
+	//commObj->sendMap();
 	
 	//---------
 	// First send stuff to sensor module
@@ -471,8 +466,8 @@ void Robot::turn(int pd){
 	
 	int pdOut = pd * movementSpeed * 0.01;
 	
-	#if TESTING == 0
-	OCR2A = output+pdOut; //Negative value on pd will turn left, positive right
+	#if DEBUG == 0
+	OCR2A = output+pdOut;
 	OCR2B = output-pdOut;
 	#endif
 }
@@ -486,7 +481,7 @@ void Robot::fwdLongValueIn(char fwd[3]){
     fwdLongSensor += 10 * fwd[1];
     fwdLongSensor += fwd[2];
 
-#if TESTING == 1
+#if DEBUG == 1
     cout << "fwdValueIn" << endl;
     cout << fwdLongSensor << endl;
 #endif
@@ -497,7 +492,7 @@ void Robot::bwdLongValueIn(char* bwd){
     bwdLongSensor += 10 * bwd[1];
     bwdLongSensor += bwd[2];
     
-#if TESTING == 1
+#if DEBUG == 1
     cout << "bwdValueIn" << endl;
     cout << bwdLongSensor << endl;
 #endif
@@ -508,7 +503,7 @@ void Robot::bwdShortValueIn(char bwdShort[3]){
     bwdShortSensor += 10 * bwdShort[1];
     bwdShortSensor += bwdShort[2];
     
-#if TESTING == 1
+#if DEBUG == 1
     cout << "bwdShortValueIn" << endl;
     cout << bwdShortSensor << endl;
 #endif
@@ -519,7 +514,7 @@ void Robot::fwdShortValueIn(char fwdShort[3]){
     fwdShortSensor += 10 * fwdShort[1];
     fwdShortSensor += fwdShort[2];
     
-#if TESTING == 1
+#if DEBUG == 1
     cout << "fwdShortValueIn" << endl;
     cout << fwdShortSensor << endl;
 #endif
@@ -530,7 +525,7 @@ void Robot::leftLongValueIn(char left[3]){
     leftMidSensor += 10 * left[1];
     leftMidSensor += left[2];
     
-#if TESTING == 1
+#if DEBUG == 1
     cout << "leftLongValueIn" << endl;
     cout << leftMidSensor << endl;
 #endif
@@ -541,7 +536,7 @@ void Robot::rightBackValueIn(char right[3]){
     rightBackSensor += 10 * right[1];
     rightBackSensor += right[2];
     
-#if TESTING == 1
+#if DEBUG == 1
     cout << "rightBackValueIn" << endl;
     cout << rightBackSensor << endl;
 #endif
@@ -552,7 +547,7 @@ void Robot::rightFrontValueIn(char right[3]){
     rightFrontSensor += 10 * right[1];
     rightFrontSensor += right[2];
     
-#if TESTING == 1
+#if DEBUG == 1
     cout << "rightFrontValueIn" << endl;
     cout << rightFrontSensor << endl;
 #endif
@@ -945,10 +940,10 @@ void Robot::updateRobotPosition(){
 
 void Robot::moveRobot(){
     
-    //if (haltAfterSection) {
+    if (haltAfterSection) {
         this->setSpeed(0);
         drive();
-    //}
+    }
 	
 	commObj->reactivateRFID(); // this cannot be called upon from within a interrupt 
 	MapSection* tempSection;
@@ -1113,29 +1108,16 @@ void Robot::moveLeft(){
 // -----------------------------------------
 
 char Robot::determineValidSensor(){
-	commObj->activateWheelSensor(); // this might not be able to be called upon from within an interrupt
-	asm("");
-	return 'w';
-	asm("");
-	
-	/*
-	if((getBwdDistance()>150) && (getFwdDistance()>41)){
-		commObj->activateWheelSensor(); // this might not be able to be called upon from within an interrupt
-		asm("");
+	if((getBwdDistance()>0) & (getFwdDistance()>0)){
+		//commObj->activateWheelSensor(); // this might not be able to be called upon from within an interrupt 
 		return 'w';
-		asm("");
 	}
-    else if((getFwdDistance() > getBwdDistance()) || ((getBwdDistance() < 150) && (getFwdDistance() > 41))){ // bwd sensor is smaller than fwd.
-		asm("");
-	    return 'b';
-		asm("");
+    else if( getFwdDistance() > getBwdDistance()){ // bwd sensor is smaller than fwd.
+        return 'b';
     }
-    else{
-		asm("");                   //fwd sensor is smaller than bwd.
+    else{                   //fwd sensor is smaller than bwd.
         return 'f';         //Doesnt this case happen alot more now that we only have a short sensor in the front?
-		asm("");
-	}
-	*/
+    }
 }
 
 //------------------------------------------
@@ -1148,7 +1130,7 @@ void Robot::adjustPosition(){
 	volatile int backError = 0;
 	volatile int deltaFrontError = 0;
 	volatile int deltaBackError = 0;
-	
+	volatile int kp2 = 4;
 	
 	
 	//front menar högerfram, back höger bak
@@ -1168,7 +1150,7 @@ void Robot::adjustPosition(){
 	
 	
 	//Båda sensorerna ska reglera hjulparen på samma vis, således kan vi addera ihop parametrarna och relgera samma hjulpar	
-	pd = Kp*((frontError + backError)/2) + Kd*((deltaFrontError + deltaBackError)/2) - Kp2*(rightFrontSensor - rightBackSensor);
+	pd = Kp*((frontError + backError)/2) + Kd*((deltaFrontError + deltaBackError)/2) - kp2(rightFrontSensor - rightBackSensor);
     
 	turn(pd);
     
@@ -1192,12 +1174,12 @@ char* Robot::getColAsChar(int col){
 
 // ----------------------------------------
 int Robot::getFwdDistance(){
-	//usingLong = false;
+	usingLong = false;
 	return fwdShortSensor;
 }
 
 int Robot::getBwdDistance(){
-	if(bwdShortSensor < 41){
+	if(bwdShortSensor < 50){
 		asm("");
 		usingLong = false;
 		return bwdShortSensor;
@@ -1227,10 +1209,9 @@ int Robot::getLeftDistance(){
 	}
 }
 
-void Robot::setControlParameters(double inputKp, double inputKd, int inputRef, int inTrimLeft, int inTrimRight, int inFwdRefLong, int inBwdRefLong, int inFwdRefShort, int inBwdRefShort, int inRightCornerFront, int inRightCornerBack, int inRightWallFront, int inRightWallBack, int inHaltAfterSection,int inKp2){
+void Robot::setControlParameters(double inputKp, double inputKd, int inputRef, int inTrimLeft, int inTrimRight, int inFwdRefLong, int inBwdRefLong, int inFwdRefShort, int inBwdRefShort, int inRightCornerFront, int inRightCornerBack, int inRightWallFront, int inRightWallBack, int inHaltAfterSection){
     Kp=inputKp;
     Kd=inputKd;
-	Kp2=inKp2;
     
     Ref=inputRef;
 	
@@ -1287,8 +1268,6 @@ bool Robot::isCornerPassed(){
 	}
 	return false;
 }
-
-
 
 bool Robot::isWallRight(){
 	
@@ -1420,14 +1399,7 @@ bool Robot::getRotateLeftActive()
 
 void Robot::waitForNewData()
 {
-#if TESTING == 0
-	asm("");
-	_delay_ms(300);
-	asm("");
-#endif
-    
-	/* Unclear why, but this function does not work properly
-	for (unsigned int i = 0; i < 2; i++) {
+    for (unsigned int i = 0; i < 2; i++) {
         newData = false;
         while(!newData){
             asm("");
@@ -1435,12 +1407,6 @@ void Robot::waitForNewData()
             p++;
         }
     }
-	asm("");
-	ADMUX = 0x00;
-	
-	*/
-	
-	
 }
 
 void Robot::backToStart()
