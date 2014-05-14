@@ -69,14 +69,12 @@ void Bluetooth::sendArray(){
 
 void Bluetooth::sendMap(){
 	
-	//if(rdyForRow){
-		
 		memcpy(outDataArray,mapPointer->mapArea[rowToSend],27);
 		sendArray();
 		rdyForRow = false;
+		TCNT0 = 0x00;		//reset clk counter
+		TIMSK0 = 0x01;		//enable time interrupts
 		rowToSend++;
-		_delay_ms(25);
-	//}
 }
 
 

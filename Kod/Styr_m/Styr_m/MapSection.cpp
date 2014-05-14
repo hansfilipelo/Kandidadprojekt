@@ -367,7 +367,7 @@ void Robot::rotateLeft(){
 	// Send map before rotating since it's the least critical point during mapping run
 	setSpeed(0);
 	drive();
-	//commObj->sendMap();
+	commObj->sendMap();
 	
     // Send request to sensor module to measure angle
     commObj->sendRotateRequest();
@@ -423,7 +423,7 @@ void Robot::rotateRight(){
 	// Send map before rotating since it's the least critical point during mapping run
 	setSpeed(0);
 	drive();
-	//commObj->sendMap();
+	commObj->sendMap();
 	
 	//---------
 	// First send stuff to sensor module
