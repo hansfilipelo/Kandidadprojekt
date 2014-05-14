@@ -96,7 +96,7 @@ int getValueFromArray(char* inArray, int valueNr){
     return charToInt(outArray);
 }
 
-#if DEBUG == 0
+#if TESTING == 0
 
 // Operators for creating and destroying objects (not included in AVR C++)
 // ------------------------------------
