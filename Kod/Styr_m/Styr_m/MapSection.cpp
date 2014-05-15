@@ -1017,8 +1017,8 @@ void Robot::updateRobotPosition(){
 	   MapSection* tempSection;
 	   
 	   //halt
-	   setUserSpeed(0);
-	   drive();
+	   //setUserSpeed(0);
+	   //drive();
 
 	   
 		switch (direction){
