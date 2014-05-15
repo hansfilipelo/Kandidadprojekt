@@ -6,7 +6,6 @@
 #include <stdio.h>
 #include "slave.h"
 
-#include "MapSection.h"
 #include "Abstraction.h"
 
 class MapSection;

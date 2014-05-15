@@ -139,6 +139,193 @@ int MapSection::findUnexplored(){
 	}
 }
 
+// ------------------------
+// Checks if closed area is closed loop
+
+bool MapSection::isClosed(int origX, int origY, int fwdCounter, int bwdCounter){
+    
+    if ( fwdCounter - bwdCounter < 2 ) {
+#if TESTING == 1
+        cout << "xCoor: " << xCoord << endl;
+		cout << "yCoord: " << yCoord << endl;
+        cout << "fwdCounter: " << fwdCounter << endl;
+        cout << "bwdCounter: " << bwdCounter << endl;
+#endif
+        
+        hasBeenClosed = false;
+        return false;
+    }
+    
+    if ( ((abs(xCoord-origX) < 2) && (abs(yCoord-origY) < 2)) && fwdCounter > 10 ) {
+        hasBeenClosed = false;
+        return true;
+    }
+    
+    int nextX;
+    int nextY;
+    
+    this->hasBeenClosed = true;
+    
+    // Using clock as direction pointer in comments
+    // Check 9
+    if ((xCoord - 1 > 0) && (yCoord > 0) && (xCoord - 1 < 32) && (yCoord < 18) && mom->getPos(xCoord - 1, yCoord)->getType() == 'c' && !mom->getPos(xCoord - 1, yCoord)->hasBeenClosed ) {
+        
+        nextX = xCoord - 1;
+        nextY = yCoord;
+        fwdCounter = fwdCounter + 1;
+	}
+    // Check 10,5
+    else if ( (xCoord - 1 > 0) && (yCoord - 1 > 0) && (xCoord - 1 < 32) && (yCoord - 1 < 18) && mom->getPos(xCoord - 1, yCoord - 1)->getType() == 'c' && !mom->getPos(xCoord - 1, yCoord - 1)->hasBeenClosed ) {
+        
+        nextX = xCoord - 1;
+        nextY = yCoord - 1;
+        fwdCounter = fwdCounter + 1;
+	}
+    // Check 12
+    else if ( (xCoord > 0) && (yCoord - 1 > 0) && (xCoord < 32) && (yCoord - 1 < 18) && mom->getPos(xCoord, yCoord - 1)->getType() == 'c' && !mom->getPos(xCoord, yCoord - 1)->hasBeenClosed ) {
+        
+        nextX = xCoord;
+        nextY = yCoord - 1;
+        fwdCounter = fwdCounter + 1;
+	}
+    // Check 1,5
+    else if ((xCoord + 1 > 0) && (yCoord - 1 > 0) && (xCoord + 1 < 32) && (yCoord - 1 < 18) && mom->getPos(xCoord + 1, yCoord - 1)->getType() == 'c' && !mom->getPos(xCoord + 1, yCoord - 1)->hasBeenClosed ) {
+        
+        nextX = xCoord + 1;
+        nextY = yCoord - 1;
+        fwdCounter = fwdCounter + 1;
+	}
+    // Check 3
+    else if ((xCoord + 1 > 0) && (yCoord > 0) && (xCoord + 1 < 32) && (yCoord < 18) && mom->getPos(xCoord + 1, yCoord)->getType() == 'c' && !mom->getPos(xCoord + 1, yCoord)->hasBeenClosed ) {
+        
+        nextX = xCoord + 1;
+        nextY = yCoord;
+        fwdCounter = fwdCounter + 1;
+	}
+    // Check 4,5
+    else if ((xCoord + 1 > 0) && (yCoord + 1 > 0) && (xCoord + 1 < 32) && (yCoord + 1 < 18) && mom->getPos(xCoord + 1, yCoord + 1)->getType() == 'c' && !mom->getPos(xCoord + 1, yCoord + 1)->hasBeenClosed ) {
+        
+        nextX = xCoord + 1;
+        nextY = yCoord + 1;
+        fwdCounter = fwdCounter + 1;
+	}
+    // Check 6
+    else if ((xCoord > 0) && (yCoord + 1 > 0) && (xCoord < 32) && (yCoord + 1 < 18) && mom->getPos(xCoord, yCoord + 1)->getType() == 'c' && !mom->getPos(xCoord, yCoord + 1)->hasBeenClosed ) {
+        
+        nextX = xCoord;
+        nextY = yCoord + 1;
+        fwdCounter = fwdCounter + 1;
+	}
+    // Check 7,5
+    else if ((xCoord - 1 > 0) && (yCoord + 1 > 0) && (xCoord - 1 < 32) && (yCoord + 1 < 18) && mom->getPos(xCoord - 1, yCoord + 1)->getType() == 'c' && !mom->getPos(xCoord - 1, yCoord + 1)->hasBeenClosed ) {
+        
+        nextX = xCoord - 1;
+        nextY = yCoord + 1;
+        fwdCounter = fwdCounter + 1;
+    }
+    // ----------------------------------------------------
+    // Using clock as direction pointer in comments. Now checking without hasBeenClosed
+    // Check 9
+    else if ((xCoord - 1 > 0) && (yCoord > 0) && (xCoord - 1 < 32) && (yCoord < 18) && mom->getPos(xCoord - 1, yCoord)->getType() == 'c' ) {
+        
+        nextX = xCoord - 1;
+        nextY = yCoord;
+        bwdCounter = bwdCounter + 1;
+	}
+    // Check 10,5
+    else if ( (xCoord - 1 > 0) && (yCoord - 1 > 0) && (xCoord - 1 < 32) && (yCoord - 1 < 18) && mom->getPos(xCoord - 1, yCoord - 1)->getType() == 'c' ) {
+        
+        nextX = xCoord - 1;
+        nextY = yCoord - 1;
+        bwdCounter = bwdCounter + 1;
+	}
+    // Check 12
+    else if ( (xCoord > 0) && (yCoord - 1 > 0) && (xCoord < 32) && (yCoord - 1 < 18) && mom->getPos(xCoord, yCoord - 1)->getType() == 'c' ) {
+        
+        nextX = xCoord;
+        nextY = yCoord - 1;
+        bwdCounter = bwdCounter + 1;
+	}
+    // Check 1,5
+    else if ((xCoord + 1 > 0) && (yCoord - 1 > 0) && (xCoord + 1 < 32) && (yCoord - 1 < 18) && mom->getPos(xCoord + 1, yCoord - 1)->getType() == 'c' ) {
+        
+        nextX = xCoord + 1;
+        nextY = yCoord - 1;
+        bwdCounter = bwdCounter + 1;
+	}
+    // Check 3
+    else if ((xCoord + 1 > 0) && (yCoord > 0) && (xCoord + 1 < 32) && (yCoord < 18) && mom->getPos(xCoord + 1, yCoord)->getType() == 'c' ) {
+        
+        nextX = xCoord + 1;
+        nextY = yCoord;
+        bwdCounter = bwdCounter + 1;
+	}
+    // Check 4,5
+    else if ((xCoord + 1 > 0) && (yCoord + 1 > 0) && (xCoord + 1 < 32) && (yCoord + 1 < 18) && mom->getPos(xCoord + 1, yCoord + 1)->getType() == 'c' ) {
+        
+        nextX = xCoord + 1;
+        nextY = yCoord + 1;
+        bwdCounter = bwdCounter + 1;
+	}
+    // Check 6
+    else if ((xCoord > 0) && (yCoord + 1 > 0) && (xCoord < 32) && (yCoord + 1 < 18) && mom->getPos(xCoord, yCoord + 1)->getType() == 'c' ) {
+        
+        nextX = xCoord;
+        nextY = yCoord + 1;
+        bwdCounter = bwdCounter + 1;
+	}
+    // Check 7,5
+    else if ((xCoord - 1 > 0) && (yCoord + 1 > 0) && (xCoord - 1 < 32) && (yCoord + 1 < 18) && mom->getPos(xCoord - 1, yCoord + 1)->getType() == 'c' ) {
+        
+        nextX = xCoord - 1;
+        nextY = yCoord + 1;
+        bwdCounter = bwdCounter + 1;
+    }
+    else {
+#if TESTING == 1
+		cout << "xCoor: " << xCoord << endl;
+		cout << "yCoord: " << yCoord << endl;
+#endif
+        hasBeenClosed = false;
+		return false;
+    }
+    
+    volatile bool output = mom->getPos(nextX, nextY)->isClosed(origX, origY, fwdCounter, bwdCounter);
+    hasBeenClosed = false;
+    return output;
+    
+}
+
+// -----------------------------
+// Cancer function for fillig unexplored spaces not reachable
+
+void MapSection::cancer(){
+    this->setType('c');
+    
+    // 9 o clock
+    if ( mom->withinMap(xCoord - 1,yCoord) && mom->getPos(xCoord - 1, yCoord)->getType() == 'u' ) {
+        
+        mom->getPos(xCoord - 1, yCoord)->cancer();
+        
+	}
+    // Check 12
+    if ( mom->withinMap(xCoord, yCoord - 1) && mom->getPos(xCoord, yCoord - 1)->getType() == 'u' ) {
+        
+        mom->getPos(xCoord, yCoord - 1)->cancer();
+	}
+    // Check 3
+    if ( mom->withinMap(xCoord + 1, yCoord) && mom->getPos(xCoord + 1, yCoord)->getType() == 'u' ) {
+        
+        mom->getPos(xCoord + 1, yCoord)->cancer();
+	}
+    // Check 6
+    if ( mom->withinMap(xCoord, yCoord + 1) && mom->getPos(xCoord, yCoord + 1)->getType() == 'u' ) {
+        
+        mom->getPos(xCoord, yCoord + 1)->cancer();
+	}
+}
+
+
 
 /*	-------------------------------------------------------------
 
@@ -191,7 +378,7 @@ void Robot::changeGear(char inGear){
             
             gear = inGear;
             
-            #if DEBUG == 0
+            #if TESTING == 0
 			PORTD &= ~(1<<PORTD4); //0x10;
 			PORTD &= ~(1<<PORTD5); //0x20;
             #endif
@@ -199,7 +386,7 @@ void Robot::changeGear(char inGear){
 		else if (inGear == 'r'){
             gear = inGear;
             
-            #if DEBUG == 0
+            #if TESTING == 0
 			PORTD &= ~(1<<PORTD5);
 			PORTD |= (1<<PORTD4);
             #endif
@@ -207,7 +394,7 @@ void Robot::changeGear(char inGear){
 		else if (inGear == 'l'){
             gear = inGear;
             
-            #if DEBUG == 0
+            #if TESTING == 0
 			PORTD &= ~(1<<PORTD4);
 			PORTD |= (1<<PORTD5);
             #endif
@@ -215,7 +402,7 @@ void Robot::changeGear(char inGear){
 		else if (inGear == 'f'){
             gear = inGear;
             
-            #if DEBUG == 0
+            #if TESTING == 0
 			PORTD |= (1<<PORTD4);
 			PORTD |= (1<<PORTD5);
             #endif
@@ -244,13 +431,13 @@ void Robot::drive(){
             outputLeft = floor(speed * 255 / 100);
             outputRight = floor(speed * 255 /100);
 		}
-		#if DEBUG == 0
+		#if TESTING == 0
 		OCR2A = outputLeft;
 		OCR2B = outputRight;
 		#endif
 	}
 	else {
-#if DEBUG == 0
+#if TESTING == 0
 		OCR2A = 0;
 		OCR2B = 0;
 #endif
@@ -261,7 +448,7 @@ void Robot::driveBackward(int speed){
     changeGear('b');
 	int output = floor(speed * 255 / 100);
 	
-#if DEBUG == 0
+#if TESTING == 0
     OCR2A = output;
     OCR2B = output;
 #endif
@@ -381,7 +568,7 @@ void Robot::turn(int pd){
 	
 	int pdOut = pd * movementSpeed * 0.01;
 	
-	#if DEBUG == 0
+	#if TESTING == 0
 	OCR2A = output+pdOut; //Negative value on pd will turn left, positive right
 	OCR2B = output-pdOut;
 	#endif
@@ -396,7 +583,7 @@ void Robot::fwdLongValueIn(char fwd[3]){
     fwdLongSensor += 10 * fwd[1];
     fwdLongSensor += fwd[2];
 
-#if DEBUG == 1
+#if TESTING == 1
     cout << "fwdValueIn" << endl;
     cout << fwdLongSensor << endl;
 #endif
@@ -407,7 +594,7 @@ void Robot::bwdLongValueIn(char* bwd){
     bwdLongSensor += 10 * bwd[1];
     bwdLongSensor += bwd[2];
     
-#if DEBUG == 1
+#if TESTING == 1
     cout << "bwdValueIn" << endl;
     cout << bwdLongSensor << endl;
 #endif
@@ -418,7 +605,7 @@ void Robot::bwdShortValueIn(char bwdShort[3]){
     bwdShortSensor += 10 * bwdShort[1];
     bwdShortSensor += bwdShort[2];
     
-#if DEBUG == 1
+#if TESTING == 1
     cout << "bwdShortValueIn" << endl;
     cout << bwdShortSensor << endl;
 #endif
@@ -429,7 +616,7 @@ void Robot::fwdShortValueIn(char fwdShort[3]){
     fwdShortSensor += 10 * fwdShort[1];
     fwdShortSensor += fwdShort[2];
     
-#if DEBUG == 1
+#if TESTING == 1
     cout << "fwdShortValueIn" << endl;
     cout << fwdShortSensor << endl;
 #endif
@@ -440,7 +627,7 @@ void Robot::leftLongValueIn(char left[3]){
     leftMidSensor += 10 * left[1];
     leftMidSensor += left[2];
     
-#if DEBUG == 1
+#if TESTING == 1
     cout << "leftLongValueIn" << endl;
     cout << leftMidSensor << endl;
 #endif
@@ -451,7 +638,7 @@ void Robot::rightBackValueIn(char right[3]){
     rightBackSensor += 10 * right[1];
     rightBackSensor += right[2];
     
-#if DEBUG == 1
+#if TESTING == 1
     cout << "rightBackValueIn" << endl;
     cout << rightBackSensor << endl;
 #endif
@@ -462,7 +649,7 @@ void Robot::rightFrontValueIn(char right[3]){
     rightFrontSensor += 10 * right[1];
     rightFrontSensor += right[2];
     
-#if DEBUG == 1
+#if TESTING == 1
     cout << "rightFrontValueIn" << endl;
     cout << rightFrontSensor << endl;
 #endif
@@ -574,9 +761,6 @@ void Robot::setBwdClosed(){
 				mom->convertSection(xCoord,yCoord - i - 1, 'e');
 			}
         }
-		if(output == 0){
-			mom->convertSection(xCoord,yCoord - 1, 'c');
-		}
 	}
 	// Direction 17->y->0, "bwd"
 	else if (direction == 'b'){
@@ -589,9 +773,6 @@ void Robot::setBwdClosed(){
 			if(mom->getPos(xCoord,yCoord + i + 1)->getType() != 'f'){
 				mom->convertSection(xCoord,yCoord + i + 1, 'e');
 			}
-		}
-		if(output == 0){
-			mom->convertSection(xCoord,yCoord + 1, 'c');
 		}
 	}
 	// Direction 0->x->32, "right"
@@ -606,9 +787,6 @@ void Robot::setBwdClosed(){
 				mom->convertSection(xCoord - i - 1,yCoord, 'e');
 			}
         }
-		if(output == 0){
-			mom->convertSection(xCoord - 1,yCoord, 'c');
-		}
 	}
 	// Direction 32->x->0, "left"
 	else if (direction == 'r'){
@@ -622,9 +800,6 @@ void Robot::setBwdClosed(){
 				mom->convertSection(xCoord + i + 1,yCoord, 'e');
 			}
         }
-		if(output == 0){
-			mom->convertSection(xCoord + 1,yCoord, 'c');
-		}
 	}
 }
 
@@ -1167,6 +1342,7 @@ bool Robot::getRotateLeftActive()
 
 void Robot::waitForNewData()
 {
+#if TESTING == 0
 	// This is ugly but DONT'T FUCKING TOUCH THIS! /H-F and Jens
 	asm("");
 	volatile int temp = bwdShortSensor;
@@ -1180,6 +1356,7 @@ void Robot::waitForNewData()
 	p++;
 	p++;
 	asm("");
+#endif
 }
 
 // ----------------------

@@ -5,7 +5,7 @@
 	BUILDDIR = BUILD
 
 Styr_m: $(OBJECTS)
-	$(CCC) $(CCFLAGS) $(OBJECTS) -o styrtest
+	$(CCC) $(CCFLAGS) $(OBJECTS) -o Styr_m
 
 Styr_m.o: Styr_m.cpp Abstraction.o Communication.o
 	$(CCC) $(CCFLAGS) -c Styr_m.cpp
@@ -27,4 +27,4 @@ slave.o: slave.cpp
 
 clean:
 	@ \rm -f ./*.o
-	@ \rm -f ./styrtest
+	@ \rm -f ./Styr_m
