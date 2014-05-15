@@ -1,6 +1,8 @@
 #ifndef _Map_h
 #define _Map_h
 
+#define F_CPU 14745600
+
 #ifndef __AVR_ATmega1284P__
 #define DEBUG 1
 #else

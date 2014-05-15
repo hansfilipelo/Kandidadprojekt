@@ -295,6 +295,7 @@ void Robot::rotateLeft(){
 	setSpeed(0);
 	changeGear('f');
 	drive();
+	waitForNewData();
     
     // Update direction
     if (direction == 'f') {
@@ -350,7 +351,8 @@ void Robot::rotateRight(){
 	setSpeed(0);
 	changeGear('f');
 	drive();
-    
+    waitForNewData();
+	
     // Update direction
     if (direction == 'f') {
         changeDirection('r');
@@ -824,12 +826,13 @@ void Robot::updateRobotPosition(){
     if ((sensorDifference > 36)||(sensorDifference < -36)){
 		commObj->reactivateRFID();	
 		MapSection* tempSection;
-		switch (direction)
+		
 		if(haltAfterSection){
 			setUserSpeed(0);
 			drive();
 		}
-		{
+		
+		switch (direction){
             
 //-------------------------Direction is forwards in map-------------------
 			case 'f':
@@ -1165,6 +1168,13 @@ void Robot::setRotateLeftActive()
 bool Robot::getRotateLeftActive()
 {
 	return rotateLeftActive;
+}
+
+// ----------------------
+
+void Robot::waitForNewData()
+{
+	_delay_ms(700);
 }
 
 // ----------------------

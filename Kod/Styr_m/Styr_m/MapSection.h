@@ -1,6 +1,8 @@
 #ifndef _MapSection_h
 #define _MapSection_h
 
+#define F_CPU 14745600
+
 #ifndef __AVR_ATmega1284P__
 #define DEBUG 1
 #else
@@ -139,6 +141,9 @@ public:
     void turn(int pd); //Positive or negative value will decide left or right
     void adjustPosition();
     
+	// wait for new data before doing stuff
+	void waitForNewData();
+	
     void setControlParameters(double, double, int, int, int);
 	
 	volatile bool newData = false;

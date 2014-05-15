@@ -1,6 +1,8 @@
 #ifndef _Communication_h
 #define _Communication_h
 
+#define F_CPU 14745600
+
 #include <stdio.h>
 #include "slave.h"
 
