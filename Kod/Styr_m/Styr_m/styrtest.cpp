@@ -30,14 +30,14 @@ int main(){
     
     if ( mom->getPos(16,1)->isClosed(16,1,0,-2) ) {
         cout << "Map is closed." << endl;
+        
+        mom->getPos(1,1)->cancer();
+        mom->getPos(16,8)->cancer();
+        mom->printMap();
     }
     else{
         cout << "Map is NOT closed." << endl;
     }
-    
-    mom->getPos(1,1)->cancer();
-    mom->getPos(16,8)->cancer();
-    mom->printMap();
     
     // Delete
     delete testRobot;
