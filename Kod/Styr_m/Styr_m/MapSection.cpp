@@ -691,7 +691,7 @@ void Robot::setFwdClosed(){
 				 mom->convertSection(xCoord,yCoord + i + 1, 'e');
 			}
 		}
-        if(output == 0){
+        if(output == 0 && getFwdDistance()<20){
 	        mom->convertSection(xCoord,yCoord + 1, 'c');
         }
 	}
@@ -707,7 +707,7 @@ void Robot::setFwdClosed(){
 				mom->convertSection(xCoord,yCoord - i - 1, 'e');
 			}
         }
-		if(output == 0){
+		if(output == 0 && getFwdDistance()<20){
 			mom->convertSection(xCoord,yCoord - 1, 'c');
 		}
 	}
@@ -723,7 +723,7 @@ void Robot::setFwdClosed(){
 				mom->convertSection(xCoord + i + 1,yCoord, 'e');
 			}
         }
-		if(output == 0){
+		if(output == 0 && getFwdDistance()<20){
 			mom->convertSection(xCoord + 1,yCoord, 'c');
 		}
 	}
@@ -739,7 +739,7 @@ void Robot::setFwdClosed(){
             mom->convertSection(xCoord - i - 1,yCoord, 'e');
 			}
         }
-		if(output == 0){
+		if(output == 0 && getFwdDistance()<20){
 			mom->convertSection(xCoord - 1,yCoord, 'c');
 		}
 	}	
@@ -1017,8 +1017,8 @@ void Robot::updateRobotPosition(){
 	   MapSection* tempSection;
 	   
 	   //halt
-	   //setUserSpeed(0);
-	   //drive();
+	   setUserSpeed(0);
+	   drive();
 
 	   
 		switch (direction){
@@ -1088,10 +1088,10 @@ void Robot::updateRobotPosition(){
 				return;
 		}
 	
-		//setFwdClosed();
-		//setBwdClosed();
-		//setRightClosed();
-		//setLeftClosed();
+		setFwdClosed();
+		setBwdClosed();
+		setRightClosed();
+		setLeftClosed();
 	}
 }
 
