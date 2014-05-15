@@ -49,6 +49,8 @@ public:
     virtual MapSection* getLeft();
     virtual MapSection* getRight();
     
+    virtual bool isClosed(int origX, int origY, int fwdCounter, int bwdCounter);
+    
     /*
     virtual void setTop(MapSection*);
     virtual void setBottom(MapSection*);
@@ -73,6 +75,8 @@ protected:
 */
 	Map* mom;
     char next;
+    
+    volatile bool hasBeenClosed = false;
 };
 
 

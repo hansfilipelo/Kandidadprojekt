@@ -1,16 +1,14 @@
 
 	CCC = g++
-	CCFLAGS = -g -std=c++11 -Wc++11-extensions
-	OBJECTS = Map.o MapSection.o Abstraction.o ../styrtest.o ../slave.o Communication.o
+	CCFLAGS = -g -std=c++11 -pedantic -Wall -Wextra 
+	OBJECTS = Map.o MapSection.o Abstraction.o styrtest.o slave.o Communication.o
 	BUILDDIR = BUILD
 
-# Test case
 styrtest: $(OBJECTS)
 	$(CCC) $(CCFLAGS) $(OBJECTS) -o styrtest
 
-styrtest.o: ../styrtest.cpp Abstraction.o Communication.o
-	$(CCC) $(CCFLAGS) $(OBJECTS) -c ../styrtest.cpp
-# End testcas
+styrtest.o: ../styrtest.cpp ../Abstraction.o ../Communication.o
+	$(CCC) $(CCFLAGS) -c ../styrtest.cpp
 
 Communication.o: ../Communication.cpp
 	$(CCC) $(CCFLAGS) -c ../Communication.cpp
@@ -29,5 +27,4 @@ slave.o: ../slave.cpp
 
 clean:
 	@ \rm -f ./*.o
-	@ \rm -f ./styrtest
-
+	@ \rm -f ./Styr_m

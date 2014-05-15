@@ -204,7 +204,9 @@ int main(void)
 					robotPointer->setSpeed(25);
 					robotPointer->drive();
 				}
+#if TESTING == 0
 				_delay_ms(200);
+#endif
 				robotPointer->rotateRight();
 				while ( !robotPointer->isWallRight() && !(abstractionObject->getManual())) {
 					robotPointer->changeGear('f');

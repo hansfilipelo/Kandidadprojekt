@@ -30,13 +30,15 @@ public:
 	void setSection(int, int, MapSection*);
 	void convertSection(int,int,char);
 	char* getColAsChar(int);
-	
 	MapSection* getPos(int,int);
+    void fillClosedArea();
     
 #if TESTING == 1
     void printMap();
+    
+    void initMap();
 #endif
-	
+    
 protected:
 	MapSection* mapArea[32][17];
 };
