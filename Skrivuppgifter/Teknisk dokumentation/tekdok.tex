@@ -131,26 +131,25 @@ Beskrivning av regleralgoritmer mm.
 \end{figure}
 
 \subsection{Ingående delsystem}
-Roboten består av tre delsystem, en buss, ett chassi samt en tillhörande mjukvara för persondator. Sensormodulen kommer att hantera analoga sensorsignaler samt omvandla dessa till användbart mätdata som skickas vidare tll kommunikationsmodulen. 
-Kommunikationsenheten kommer att agera master och därav sköta all kommunikation mellan de andra enheterna. Kommunikationsmodulen sköter även kommunikationen mellan mjukvaran och roboten via en bluetoothadapter. Styrenheten kommer sköta robotens fyra drivande motorer, kartlägga samt ta beslut om körriktning vid autonom operation.
-De tre delsystemen kommer att kommunicera via en SPI-buss och är byggda runt processorerna ATMEL Atmega 1284p med 16KByte SRAM som är fullt tillräckligt för att kunna använda C++ och en objektorienterad programmeringsstruktur.
+Roboten består av tre delsystem, en buss, ett chassi samt en tillhörande mjukvara för persondator. Sensormodulen hanterar analoga sensorsignaler och omvandlar dessa till användbart mätdata som skickas vidare till kommunikationsmodulen och styrmodulen. 
+Kommunikationsenheten agerar master och sköter all kommunikation mellan de andra enheterna. Kommunikationsmodulen sköter även kommunikationen mellan PC och roboten via en bluetoothadapter. Styrenheten sköter robotens fyra drivande motorer, kartläggning samt tar beslut om körriktning vid autonom operation.
+De tre delsystemen kommunicerar via en SPI-buss och är byggda runt processorerna ATMEL Atmega 1284p med 16KByte SRAM som har visat sig fullt tillräckligt för att kunna använda C++ och en objektorienterad programmeringsstruktur.
 
-Chassit kommer vara i storlkesordningen 30cm och ha fyra PWM-motorer, placerade på längst fram och längstbak på sidorna av chassit. Motorerna kommer att vara fixa i chassit, vilket betyder att roation kommer utföras genom att införa en rotationshastighetsdifferens mellan motorparen.
+Chassit har fyra PWM-motorer, placerade längst fram och längst bak på sidorna av chassit. Motorerna är monterade i chassit, vilket betyder att rotation utförs genom att en rotationshastighetsdifferens införs mellan motorparen. Rotationer görs alltid med 90 graders svängar som utförs med hjälp av gyrot som är placerat på sensormodulen. 
 
-Sensorerna som tillhör sensormodulen kommer alla, förutom robotens tillhörande RFID-läsare, att vara symetriskt utplacerade på chasit. Två långdistanssensorer av typ GP\-2Y\-3A\-00\-3K\-0F placerade centrerat i fram och bak på roboten kommer användas för odometri. Ovanför varje däck plaseras en medeldistanssensor som kommer användas för att upptäcka sidokorridorer samt för att reglera roboten vid färd.
-I fronten kommer även en RFID-läsare för upptäckt av de RFIDmarkerade brandhärdena placeras och kretskortet för modulerna kommer ett gyro för mätning av vinkelhastighet att placeras. Denna kommer användas för att bedöma orientering av roboten.
+Sensorerna som tillhör sensormodulen, förutom robotens tillhörande RFID-läsare,är placerade på ett sådant sätt att sensorer interfererar minimalt med varandra. En långdistanssensorer av typ GP\-2Y\-3A\-00\-3K\-0F är placerad bak på roboten och används för positionering. På höger sida av roboten har 2 stycken kortdistanssensorer placerats för att ge indata till PD-regleringen. På vänster sida sitter en medeldistanssensor som kommer användas för att upptäcka sidokorridorer och öppna ytor.
+Under roboten sitter en RFID-läsare för upptäcka RFIDmarkerade brandhärder.
 
 \subsection{Kommunikation via buss}
 En buss med protokoll SPI kommer att sköta kommunikationen mellan robotens tre delsystem. SPI-protokollet är ett fullt-duplext kommunikationsprotokoll som fungerar genom att byta 8 lokala bitar med 8 bitar från modulen den kommunicerar med. 
 
-Ett eget konstruerat dataprotokoll kommer implementeras. Protokollet är konstruerat så att de 4 högsta bitarna som skickats in på registret specificerar vilket kommando som skickas.
-De följande 4 anger hur många cykler, dvs. hela Bytes som datat som skickas i samband med kommandot kommer upta. 0x**00 kommer tolkas som att en Byte ska skickas vilket inebär att Datamängden som kan skickas per kommando har 17*8 bitar som tak.
+Kommunikation via bluetooth och buss följer ett speciellt protokoll. Protokollet är konstruerat så att den första byten definierar alltid längden på meddelandet. Nästföljande 2 bytes definierar kommandotyp och argument till den typen. Efter de 3 första bytes följer godtyckligt lång datamängd.  
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
-  \includegraphics[keepaspectratio=true,width=\linewidth]{bilder/bussprotokoll}  %skala och filnamn. 
+  \includegraphics[keepaspectratio=true,scale=0.6]{bilder/bussprotokoll}  %skala och filnamn. 
   \end{center}
-  \caption{Översiktsbild av bussprotokollet} %figurtext.
+  \caption{Översiktsbild av kommunikationsprotokollet} %figurtext.
   \label{fig:bussprotocol}
 \end{figure}
 

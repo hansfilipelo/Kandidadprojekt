@@ -56,6 +56,8 @@ volatile double angle = 0;			//constant for angle
 volatile double gyrovila = 0;		//calibration constant for reference
 Slave sensormodul;					//construct the slave "sensormodul"
 
+int wheelTrim = 0;
+
 //-------------------------------Init--------------------------------------
 //Usart initialization
 void USART_Init( unsigned int baud )
@@ -120,6 +122,40 @@ void gyrocal(){
 	}
 	gyrovila = gyrovila/100;				//calculate mean constant
 	ADMUX = 0x20;							//set ADMUX to input 0
+}
+
+void TrimWheel(){
+	int squareDifference = 0;
+	if(sen2 < 70){						//back short
+		squareDifference = sensor2[savepos - 1] % 40;
+		if(squareDifference > 13){
+			wheelTrim = wheelTrim - 1;
+		}
+		else if(squareDifference < 7){
+			wheelTrim = wheelTrim + 1;
+		}
+	}
+	else if(sen1 < 200){				//back long
+		squareDifference = sensor1[savepos - 1] % 40;
+		if(squareDifference > 13){
+			wheelTrim = wheelTrim - 1;
+		}
+		else if(squareDifference < 7){
+			wheelTrim = wheelTrim + 1;
+		}
+	}
+	else if(sen4 < 60){					//front short
+		squareDifference = sensor4[savepos - 1] % 40;
+		if(squareDifference > 13){
+			wheelTrim = wheelTrim + 1;
+		}
+		else if(squareDifference < 7){
+			wheelTrim = wheelTrim - 1;
+		}
+	}
+	else{
+		wheelTrim = 0;
+	}
 }
 
 //handles data from SPI
@@ -214,8 +250,6 @@ void sendSensors(){
 
     sensormodul.SPI_Send();			//send outDataArray
 }
-
-
 //------------------------------------INTERRUPTS---------------------------------
 
 //SPI interrupt
@@ -325,14 +359,17 @@ int main(void)
 				segmentsTurned++;
 				blacksegment = false;
 			}
-			if(segmentsTurned > 19){
+			if(segmentsTurned > 20 + wheelTrim){
+				//------------Send------------------------------
 				sensormodul.outDataArray[0] = 1;
 				sensormodul.outDataArray[1] = 'W';
- 				sensormodul.SPI_Send();		//send 90 degree turn is complete
+				sensormodul.SPI_Send();		//send 90 degree turn is complete
 				wheelmode = false;
+				//------------Trim--------------------------------
+				TrimWheel();
+				sen0 = wheelTrim+20;
 				savepos = 0;
 				ADMUX = 0x20;
-				sen0 = sen0 +1;
 			}
 			asm("");
 		}

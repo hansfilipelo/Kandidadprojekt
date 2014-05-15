@@ -977,7 +977,7 @@ int Robot::meanValueArray(char* inputArray, int iterations) {
 // -----------------------------------------
 //Sets reference values and moves robot in map abstraction if robot has moved one square
 void Robot::updateRobotPosition(){
-    /*
+	/*
 	if(validSensor == 'N'){
         validSensor = determineValidSensor();
     }
@@ -1078,10 +1078,10 @@ void Robot::updateRobotPosition(){
 				return;
 		}
 	
-		setFwdClosed();
-		setBwdClosed();
-		setRightClosed();
-		setLeftClosed();
+		//setFwdClosed();
+		//setBwdClosed();
+		//setRightClosed();
+		//setLeftClosed();
 	}
 }
 
