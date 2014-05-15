@@ -1174,7 +1174,7 @@ bool Robot::getRotateLeftActive()
 
 void Robot::waitForNewData()
 {
-	// This is ugly bot DONT'T FUCKING TOUCH THIS! /H-F and Jens
+	// This is ugly but DONT'T FUCKING TOUCH THIS! /H-F and Jens
 	asm("");
 	volatile int temp = bwdShortSensor;
 	asm("");
