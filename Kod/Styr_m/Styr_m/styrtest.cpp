@@ -35,6 +35,9 @@ int main(){
         cout << "Map is NOT closed." << endl;
     }
     
+    mom->getPos(1,1)->cancer();
+    mom->getPos(16,8)->cancer();
+    mom->printMap();
     
     // Delete
     delete testRobot;

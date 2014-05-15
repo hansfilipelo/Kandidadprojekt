@@ -102,6 +102,17 @@ void Map::fillClosedArea()
         eAfterC = false;
     }
 }
+//-----------------------------------
+// Checks if coordinates within map
+
+bool Map::withinMap(int xPos, int yPos){
+    if (xPos < 0 || xPos > 31 || yPos < 0 || yPos > 16) {
+        return false;
+    }
+    else {
+        return true;
+    }
+}
 
 
 // -------------------- TESTING --------------------

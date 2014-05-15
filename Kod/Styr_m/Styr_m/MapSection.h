@@ -50,6 +50,7 @@ public:
     virtual MapSection* getRight();
     
     virtual bool isClosed(int origX, int origY, int fwdCounter, int bwdCounter);
+    virtual void cancer();
     
     /*
     virtual void setTop(MapSection*);

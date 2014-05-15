@@ -32,6 +32,7 @@ public:
 	char* getColAsChar(int);
 	MapSection* getPos(int,int);
     void fillClosedArea();
+    bool withinMap(int,int);
     
 #if TESTING == 1
     void printMap();

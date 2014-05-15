@@ -296,7 +296,35 @@ bool MapSection::isClosed(int origX, int origY, int fwdCounter, int bwdCounter){
     
 }
 
-// ----------
+// -----------------------------
+// Cancer function for fillig unexplored spaces not reachable
+
+void MapSection::cancer(){
+    this->setType('c');
+    
+    // 9 o clock
+    if ( mom->withinMap(xCoord - 1,yCoord) && mom->getPos(xCoord - 1, yCoord)->getType() == 'u' ) {
+        
+        mom->getPos(xCoord - 1, yCoord)->cancer();
+        
+	}
+    // Check 12
+    if ( mom->withinMap(xCoord, yCoord - 1) && mom->getPos(xCoord, yCoord - 1)->getType() == 'u' ) {
+        
+        mom->getPos(xCoord, yCoord - 1)->cancer();
+	}
+    // Check 3
+    if ( mom->withinMap(xCoord + 1, yCoord) && mom->getPos(xCoord + 1, yCoord)->getType() == 'u' ) {
+        
+        mom->getPos(xCoord + 1, yCoord)->cancer();
+	}
+    // Check 6
+    if ( mom->withinMap(xCoord, yCoord + 1) && mom->getPos(xCoord, yCoord + 1)->getType() == 'u' ) {
+        
+        mom->getPos(xCoord, yCoord + 1)->cancer();
+	}
+}
+
 
 
 /*	-------------------------------------------------------------
