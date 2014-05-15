@@ -1,5 +1,5 @@
 #ifdef __APPLE__
-#define DEBUG 1
+#define TESTING 1
 #endif
 
 #include <stdio.h>

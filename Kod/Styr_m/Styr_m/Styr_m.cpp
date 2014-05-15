@@ -8,12 +8,12 @@
 #define F_CPU 14745600
 
 #ifndef __AVR_ATmega1284P__
-#define DEBUG 1
+#define TESTING 1
 #else
-#define DEBUG 0
+#define TESTING 0
 #endif
 
-#if DEBUG == 0
+#if TESTING == 0
 
 #include <avr/io.h>
 #include <util/delay.h>
@@ -40,7 +40,7 @@ Communication* abstractionObject = new Communication(slavePointer);
 Map* mapPointer = new Map();
 Robot* robotPointer = new Robot(16,1,mapPointer,abstractionObject);
 
-#if DEBUG == 0
+#if TESTING == 0
 
 // Interreupt for bus comm
 // -----------------------------
@@ -140,7 +140,7 @@ void pwm_init()
 
 int main(void)
 {
-#if DEBUG == 0
+#if TESTING == 0
     // Set up interrupts
 	cli();
 	MCUCR = 0b00000000;

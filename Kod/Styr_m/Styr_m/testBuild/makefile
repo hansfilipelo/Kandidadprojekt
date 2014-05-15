@@ -1,6 +1,6 @@
 
 	CCC = g++
-	CCFLAGS = -g -std=c++11
+	CCFLAGS = -g -std=c++11 -Wc++11-extensions
 	OBJECTS = Map.o MapSection.o Abstraction.o ../styrtest.o ../slave.o Communication.o
 	BUILDDIR = BUILD
 

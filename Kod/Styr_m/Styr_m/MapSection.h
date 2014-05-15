@@ -4,12 +4,12 @@
 #define F_CPU 14745600
 
 #ifndef __AVR_ATmega1284P__
-#define DEBUG 1
+#define TESTING 1
 #else
-#define DEBUG 0
+#define TESTING 0
 #endif
 
-#if DEBUG == 0
+#if TESTING == 0
 
 #include <avr/io.h>
 #include <util/delay.h>
@@ -17,7 +17,7 @@
 
 #endif
 
-#if DEBUG == 1
+#if TESTING == 1
 #include <iostream>
 #endif
 
