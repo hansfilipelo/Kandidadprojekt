@@ -16,9 +16,10 @@ int main(){
     
     //Initiate
     Map* mom = new Map();
+    mom->initMap();
     Slave* testSlave = new Slave();
     Communication* testComm = new Communication(testSlave);
-    Robot* testRobot = new Robot(16,1,mom, testComm);
+    Robot* testRobot = new Robot(16,2,mom, testComm);
     testComm->setRobot(testRobot);
     
     // Map testing
@@ -27,7 +28,12 @@ int main(){
     mom->printMap();
     cout << endl;
     
-    
+    if ( mom->getPos(16,1)->isClosed(16,1,0,-2) ) {
+        cout << "Map is closed." << endl;
+    }
+    else{
+        cout << "Map is NOT closed." << endl;
+    }
     
     
     // Delete

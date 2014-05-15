@@ -296,6 +296,8 @@ bool MapSection::isClosed(int origX, int origY, int fwdCounter, int bwdCounter){
     
 }
 
+// ----------
+
 
 /*	-------------------------------------------------------------
 
