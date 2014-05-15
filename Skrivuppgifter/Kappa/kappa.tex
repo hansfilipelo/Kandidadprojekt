@@ -168,7 +168,9 @@ I slutfasen av projektet turades gruppmedlemarna om att skriva den tekniska doku
 %Redovisa det tekniska resultatet och skrivuppgifterna på ett lämpligt sätt. Detaljerade beskrivningar på grindnivå i hårdvaran eller på instruktionsnivå i mjukvaran är i detta sammanhang oftast ointressant. Referera den tekniska dokumentationen och skrivuppgifterna för beskrivning av detaljer. Lyft fram egna kreativa lösningar!
 
 Roboten har nio olika sensorer. En RFID-läsare, ett gyroskop, en reflexsensor, en långdistansmätare, en mellandistansmätare och fyra kortdistansmätare. 
-RFID-läsaren ger ut en digital signal och behandlas med USART. De resterande sensorerna ger analoga utsignaler och behandlas med hjälp av en intern A/D-mux på sensormodulen. 
+RFID-läsaren ger ut en digital signal och behandlas med USART. Vid detektion av en RFID-tagg så stängs USART-avbrott av och ett kommando skickas till styrmodulen som säger till att vi hittat en brandhärd. 
+USART-avbrotten stängs av för att inte låsa sensormodulen med flera läsningar av samma tagg. Avbrottet tillåts då roboten lämnat segmentet genom att styrmodulen skickar ett kommando till sensormodulen.
+De resterande sensorerna ger analoga utsignaler och behandlas med hjälp av en intern A/D-mux på sensormodulen. 
 Sensormodulen hämtar kontinuerligt signaler från avståndssensorerna, genom att stega igenom muxen, och från alla sensorer genom att stega igenom muxen. Den hoppar, i grundtillståndet, över gyroskopet och reflexsensorn. 
 Mätningar på gyroskopet görs på begäran av styrmodulen och låser sensormodulen till enbart gyroskopmätningar. 
 Läsningen slutförs när roboten svängt 90 grader och sensormodulen skickar ett kommando till styrmodulen som säger att svängen är klar. 
