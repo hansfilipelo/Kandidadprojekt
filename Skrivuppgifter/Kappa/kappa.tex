@@ -1,4 +1,4 @@
-\documentclass[a4paper,12pt,fleqn]{article}
+﻿\documentclass[a4paper,12pt,fleqn]{article}
 \usepackage{fixltx2e}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
@@ -112,7 +112,11 @@
 %Lyft gärna fram det som ni anser är utmanande/intressant i uppdraget. 
 %Beskriv kortfattat dispositionen på rapporten.''
 
-En robot med tillgång till ett antal avståndssensorer, ett gyro och en RFID-sensor placeras i ett stängt område med dimension 6x6 meter som är uppdelat i 40x40 centimeters segment. Den ska, med en vägg som startpunkt, helt autonomt kartlägga området genom att markera ut var väggar finns och var det finns områden som inte går att nå. Den ska även markera ut var det går att finna RFID-taggar, som symboliserar brandhärdar. Om inte hela det slutna området är kartlagt ska den upptäcka vilka segment som är oupptäckta, färdas dit och lägga till det i kartan. När hela området är kartlagt ska roboten ta sig tillbaka till startpunkten och avsluta arbetet. Ett exempel på en karta kan ses i Figur \ref{fig:omrade}.
+En robot med tillgång till ett antal avståndssensorer, ett gyro och en RFID-sensor placeras i ett stängt område med dimension 6x6 meter som är uppdelat i 40x40 centimeters segment. 
+Den ska, med en vägg som startpunkt, helt autonomt kartlägga området genom att markera ut var väggar finns och var det finns områden som inte går att nå. 
+Den ska även markera ut var det går att finna RFID-taggar, som symboliserar brandhärdar. 
+Om inte hela det slutna området är kartlagt ska den upptäcka vilka segment som är oupptäckta, färdas dit och lägga till det i kartan. 
+När hela området är kartlagt ska roboten ta sig tillbaka till startpunkten och avsluta arbetet. Ett exempel på en karta kan ses i Figur \ref{fig:omrade}.
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
   \includegraphics[keepaspectratio=true,scale=0.5]{gimpmap.png}  %skala och filnamn. 
@@ -121,37 +125,58 @@ En robot med tillgång till ett antal avståndssensorer, ett gyro och en RFID-se
   \label{fig:omrade}
 \end{figure}
 
-Stora delar av arbetet med denna produkt består av att utnyttja den teoretiska kunskap som finns och att koppla den till praktiken för att sedan implementera principerna på roboten. Detta innefattar bland annat reglerteori, sannolikhetslära och matematisk analys.
+Stora delar av arbetet med denna produkt består av att utnyttja den teoretiska kunskap som finns och att koppla den till praktiken för att sedan implementera principerna på roboten. 
+Detta innefattar bland annat reglerteori, sannolikhetslära och matematisk analys.
 
 En av de största utmaningarna med robotens uppdrag är dock att rita ut en karta över området utan att veta var den befinner sig - men hur går det att veta var roboten befinner sig utan en karta? 
 
 \section{Problemformulering}
 %Redogör kort för kravbilden och referera till projektdirektiv och kravspecifikation för %att läsa detaljer.
-%Lägg återigen mest fokus på det som ni ansåg utmanande/intressant. 
-Den slutgiltiga produkten ska uppfylla ett antal krav (Se Kravspecifikation) för att godkännas av beställaren. Kraven som ställts är delvis baserade på vad beställaren ville få levererat (Se Projektdirektiv för kartrobot) och delvis på sådant som projektgruppen ansåg var viktigt för robotens funktionalitet. Sammanfattningsvis består kraven bland annat av de delar som beskrivs av scenariot i inledningen. Den innehåller även en del krav på vilka delprodukter som ska vara klara vid vissa specifika datum.
+%Lägg återigen mest fokus på det som ni ansåg utmanande/intressant.
+
+Den slutgiltiga produkten ska uppfylla ett antal krav (Se Kravspecifikation) för att godkännas av beställaren. 
+Kraven som ställts är delvis baserade på vad beställaren ville få levererat (Se Projektdirektiv för kartrobot) och delvis på sådant som projektgruppen ansåg var viktigt för robotens funktionalitet. 
+Sammanfattningsvis består kraven bland annat av de delar som beskrivs av scenariot i inledningen. Den innehåller även en del krav på vilka delprodukter som ska vara klara vid vissa specifika datum.
+
 \section{Kunskapsbas}
 
 %%Här behövs lite referenser sen
-Den litteratur som använts under projektets gång består till stor del av böcker inom grunderna för bland annat sannolikhetslära, datorteknik, elektronik, reglerteknik och matematisk analys. Dessa har kombinerats med datablad för de komponenter som använts tagna från ISY:s sida VanHeden\footnote{\url{https://docs.isy.liu.se/twiki/bin/view/VanHeden}} och datablad från Atmel för de processorer som modulerna baserats på\footnote{\url{http://www.atmel.com/images/doc8059.pdf}}. Utöver detta har även diverse forum på internet berörande exempelvis \emph{C}-,\emph{C++}-\footnote{\url{http://stackoverflow.com/}} och \emph{AVR}-programmering\footnote{\url{http://www.avrfreaks.net/}} besökts. 
+Den litteratur som använts under projektets gång består till stor del av böcker inom grunderna för bland annat sannolikhetslära, datorteknik, elektronik, reglerteknik och matematisk analys. 
+Dessa har kombinerats med datablad för de komponenter som använts tagna från ISY:s sida VanHeden\footnote{\url{https://docs.isy.liu.se/twiki/bin/view/VanHeden}} och datablad från Atmel för 
+de processorer som modulerna baserats på\footnote{\url{http://www.atmel.com/images/doc8059.pdf}}. 
+Utöver detta har även diverse forum på internet berörande exempelvis \emph{C}-,\emph{C++}-\footnote{\url{http://stackoverflow.com/}} och \emph{AVR}-programmering\footnote{\url{http://www.avrfreaks.net/}} besökts.
+
 \section{Genomförande}
 %Beskriv hur projektet har bedrivits och referera bland annat till LIPS-modellen, %systemskiss, projektplan och designspecifikation. Observera att designspecifikationen %belyser arbetsprocessen och inte den slutliga produkten så om ni uppdaterat %designspecifikationen löpande under projektet så kan ni infoga t ex den version som var %aktuell vid BP3.
 
-Det grundläggande upplägget på projektet har baserats på LiPS-modellen, det vill säga de olika faserna i arbetet och vad som bör göras. De dokument som producerades under för-fasen så som systemskiss och projektplan skrevs gemensamt för att alla medlemmar skulle få en så bra inblick som möjligt i hur arbetet planerades. För mer detaljerad beskrivning av arbetsupplägget hänvisas läsaren till ovan nämnda dokument (Se Systemskiss och Projektplan).
+Det grundläggande upplägget på projektet har baserats på LiPS-modellen, det vill säga de olika faserna i arbetet och vad som bör göras. 
+De dokument som producerades under för-fasen så som systemskiss och projektplan skrevs gemensamt för att alla medlemmar skulle få en så bra inblick som möjligt i hur arbetet planerades. 
+För mer detaljerad beskrivning av arbetsupplägget hänvisas läsaren till ovan nämnda dokument (Se Systemskiss och Projektplan).
 
-Projektet har delats upp i mindre delprojekt som olika projektmedlemmar fått ansvara för. Det har bland annat inneburit förberedande design av delprodukt (Se Designspecifikation) och implementering. Vid ett delprojekts slutförande har hårdvaran eller den skrivna koden förklarats för de andra projektmedlemmarna och sedan slagits samman med resten av projektet. 
+Projektet har delats upp i mindre delprojekt som olika projektmedlemmar fått ansvara för. 
+Det har bland annat inneburit förberedande design av delprodukt (Se Designspecifikation) och implementering. 
+Vid ett delprojekts slutförande har hårdvaran eller den skrivna koden förklarats för de andra projektmedlemmarna och sedan slagits samman med resten av projektet. 
 
 För att på ett smidigt vis slå samman kod och möjliggöra simultan programmering har en SVN-klient vid namn Github använts. 
 När hårdvara skulle utvecklas delades projektgruppen in modulvis, två personer per modul.
 Dialog hölls mellan grupperna för att säkerställa att portar och kontakter placerades på smidiga ställen.
 
-Längre in i projektet ändrades grupperna något för att ge alla projektmedlemmar en chans att arbeta med varandra, men även för att det var färre delmoment att arbeta med. I slutfasen av projektet turades gruppmedlemarna om att skriva den tekniska dokumentationen medan andra arbetade med roboten för att effektivisera arbetet.
+Längre in i projektet ändrades grupperna något för att ge alla projektmedlemmar en chans att arbeta med varandra, men även för att det var färre delmoment att arbeta med. 
+I slutfasen av projektet turades gruppmedlemarna om att skriva den tekniska dokumentationen medan andra arbetade med roboten för att effektivisera arbetet.
 
 \section{Teknisk beskrivning}
 %Redovisa det tekniska resultatet och skrivuppgifterna på ett lämpligt sätt. Detaljerade beskrivningar på grindnivå i hårdvaran eller på instruktionsnivå i mjukvaran är i detta sammanhang oftast ointressant. Referera den tekniska dokumentationen och skrivuppgifterna för beskrivning av detaljer. Lyft fram egna kreativa lösningar!
 
-Roboten har nio olika sensorer. En RFID-läsare, ett gyroskop, en reflexsensor, en långdistansmätare, en mellandistansmätare och fyra kortdistansmätare. RFID-läsaren ger ut en digital signal och behandlas med USART. De resterande sensorerna ger analoga utsignaler och behandlas med hjälp av en intern A/D-mux på sensormodulen. Sensormodulen hämtar kontinuerligt signaler från avståndssensorerna, genom att stega igenom muxen, och från alla sensorer genom att stega igenom muxen. Den hoppar, i grundtillståndet, över gyroskopet och reflexsensorn. Mätningar på gyroskopet görs på begäran av styrmodulen och låser sensormodulen till enbart gyroskopmätningar. Läsningen slutförs när roboten svängt 90 grader och sensormodulen skickar ett kommando till styrmodulen som säger att svängen är klar. Även reflexsensorn körs på begäran av styrmodulen men låser inte sensormodulen. Reflexsensorn tas istället med i muxräkningen. Detta för att styrmodulen fortfarande behöver kontinuerliga sensorvärden från avståndssensorerna.
-
-
+Roboten har nio olika sensorer. En RFID-läsare, ett gyroskop, en reflexsensor, en långdistansmätare, en mellandistansmätare och fyra kortdistansmätare. 
+RFID-läsaren ger ut en digital signal och behandlas med USART. Vid detektion av en RFID-tagg så stängs USART-avbrott av och ett kommando skickas till styrmodulen som säger till att vi hittat en brandhärd. 
+USART-avbrotten stängs av för att inte låsa sensormodulen med flera läsningar av samma tagg. Avbrottet tillåts då roboten lämnat segmentet genom att styrmodulen skickar ett kommando till sensormodulen.
+De resterande sensorerna ger analoga utsignaler och behandlas med hjälp av en intern A/D-mux på sensormodulen. 
+Sensormodulen hämtar kontinuerligt signaler från avståndssensorerna, genom att stega igenom muxen, och från alla sensorer genom att stega igenom muxen. Den hoppar, i grundtillståndet, över gyroskopet och reflexsensorn. 
+Mätningar på gyroskopet görs på begäran av styrmodulen och låser sensormodulen till enbart gyroskopmätningar. 
+Läsningen slutförs när roboten svängt 90 grader och sensormodulen skickar ett kommando till styrmodulen som säger att svängen är klar. 
+Även reflexsensorn körs på begäran av styrmodulen men låser inte sensormodulen. Reflexsensorn tas istället med i muxräkningen. 
+Detta för att styrmodulen fortfarande behöver kontinuerliga sensorvärden från avståndssensorerna. Läsningar från reflexsensorn upphör då roboten färdats $40$ cm och sensormodulen skickar ett kommando till styrmodulen
+som säger att roboten nått ett nytt segment.
 
 
 \section{Resultat}
