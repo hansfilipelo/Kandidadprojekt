@@ -7,18 +7,18 @@
 #include <stdlib.h>
 
 #ifndef __AVR_ATmega1284P__
-#define TESTING 1
+#define DEBUG 1
 #else
-#define TESTING 0
+#define DEBUG 0
 #endif
 
-#if TESTING == 1
+#if DEBUG == 1
 
 #include <iostream>
 
 #endif
 
-#if TESTING == 0
+#if DEBUG == 0
 
 // Operators new and delete does not exist in AVR version of C++
 void* operator new(size_t objsize);

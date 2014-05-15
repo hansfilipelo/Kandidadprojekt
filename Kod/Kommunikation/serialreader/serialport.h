@@ -1,10 +1,4 @@
 /*
- *  MapMaster2001
- *  Erik Ekelund, David Habrman, Tobias Grundström,
- *  Hans-Filip Elo, Niklas Ericsson, Jens Edhammer
- *
- *  TSEA56 2014.
- *
  *  Code produced in part from qt example, which can be found. 
  *  https://qt.gitorious.org/qt/qtserialport/source/c82120dd86881e964bf5104b608932d9e2ec7da4:examples/serialport/creaderasync/serialportreader.cpp
  *
@@ -43,13 +37,11 @@ private slots:
 
 private:
     
-    void rowReceived();
     Gui* GUI;
     char* QByteToArray(QByteArray);
     QByteArray  m_readData;
     QTextStream m_standardOutput;
     QByteArray tempData;
-    QTime test;
 };
 
 #endif

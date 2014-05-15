@@ -24,7 +24,7 @@ void Bluetooth::init(){
     DDRA |= (1<<PORTA2)|(1<<PORTA3);
 	PORTA &= ~((1<<PORTA2)|(1<<PORTA3));
     
-	/* Set baud rate at 115200 */
+	/* Set baud rate */
 	UBRR0H = (unsigned char)(baud>>8);
 	UBRR0L = (unsigned char)baud;
     
@@ -54,7 +54,6 @@ unsigned char Bluetooth::receiveByte(){
 	return readData;
 }
 
-/*Send the 27 elements of the array */
 void Bluetooth::sendArray(){
     
     for (unsigned int i=0; i<27; i++){
@@ -62,36 +61,13 @@ void Bluetooth::sendArray(){
 	}
 }
 
-
-/*Send the next row inline to PC, 22 ms delay to ensure data is handled properly
- *before proceeding (avoids overflow in PC-buffer). 
- */
-
 void Bluetooth::sendMap(){
-	
-		memcpy(outDataArray,mapPointer->mapArea[rowToSend],27);
+	for(unsigned int i = 0; i<32;i++){
+		memcpy(outDataArray,mapPointer->mapArea[i],27);
 		sendArray();
-		rdyForRow = false;
-		TCNT0 = 0x00;		//reset clk counter
-		TIMSK0 = 0x01;		//enable time interrupts
-		rowToSend++;
+		_delay_ms(27);
+	}
 }
-
-
-/*The datahandling function of data recieved from Bluetooth. This should never be
- *called from within a interrupt since datahandling can take some time.
- *asm(""); is used to ensure the precompiler doesn't optimize away code that is
- *critical.
- *pcHandle is a buffer making sure that no data is overwritten. this can happen 
- *since this function does not block interrupts.
- *
- *spiPointer->sendArray(i) sends data to processor i. 
- *i = 0 is the sensormodule and i = 1 is the steermodule.
- *
- *The handling can be read on a case-by-case basis. And an explaination of the
- *different codewords can be found in the document kodord.txt
- */
-
 
 volatile void Bluetooth::handle(){
     if(!this->Btrec){
@@ -111,22 +87,18 @@ volatile void Bluetooth::handle(){
 		asm("");
 		memcpy(spiPointer->outDataArray,pcHandle,4);
 		asm("");
-		spiPointer->sendArray(1);
+		spiPointer->sendArray(1); //send data to module 1 (steer)
 		asm("");
 	}
 	
 	if (pcHandle[1] == 'h'){
 		spiPointer->outDataArray[0] = 2;
 		spiPointer->outDataArray[1] = 'g';
-		spiPointer->outDataArray[2] = 2; //tell sensormodule to stop gyromode.
+		spiPointer->outDataArray[2] = 2;
 		
 		spiPointer->sendArray(0);
 	}
-	
-	if(pcHandle[1] == 'Y'){
-		rdyForRow = true;
-	}
-	
+
 	if(pcHandle[1] == 'a'){
 		if(!autonom){
 			spiPointer->outDataArray[1] = 'a';
@@ -139,37 +111,31 @@ volatile void Bluetooth::handle(){
 		spiPointer->outDataArray[0] =  pcHandle[0];
 		spiPointer->outDataArray[2] =  pcHandle[2];
 		spiPointer->outDataArray[3] =  pcHandle[3];
-		spiPointer->sendArray(1); //Pass on information to steer.
+		spiPointer->sendArray(1);
 		spiPointer->outDataArray[0] = 2;
 		spiPointer->outDataArray[1] = 'g';
 		spiPointer->outDataArray[2] = 2;
-		spiPointer->sendArray(0); //tell sensormodule to stop gyromode.
+		spiPointer->sendArray(0);
 		
 	}
 
 	if(inDataArray[1] == 'F'){
-		spiPointer->outDataArray[0] = 1;
-		spiPointer->outDataArray[1] = 'F';
-		spiPointer->sendArray(1);
+		getMap = true;
 	}
     if(inDataArray[1]=='P'){
         asm("");
-		memcpy(spiPointer->outDataArray,pcHandle,(int)pcHandle[0]+1);
+		memcpy(spiPointer->outDataArray,pcHandle,(int)pcHandle[1]+1);
 		asm("");
-		spiPointer->sendArray(1);
+		spiPointer->sendArray(1); //send data to module 1 (steer)
 		asm("");
 
         
     }
 }
 
-/*Do not accept interrupts during receiveArray, and do not accept new
- *transmissions on BT while still processing.
- */
-
 void Bluetooth::receiveArray(){
     cli();
-	//Set CTS and RTS to 1 ie do not receive new data untill done.
+	//Set CTS and RTS to 1
 	PORTA |= (1<<PORTA2)|(1<<PORTA3);
 	inDataArray[position] = receiveByte();
 	position++;

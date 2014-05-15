@@ -8,12 +8,12 @@
 #define SLAVE
 
 #ifndef __AVR_ATmega1284P__
-#define TESTING 1
+#define DEBUG 1
 #else
-#define TESTING 0
+#define DEBUG 0
 #endif
 
-#if TESTING == 0
+#if DEBUG == 0
 
 #include <avr/io.h>
 #include <avr/interrupt.h>

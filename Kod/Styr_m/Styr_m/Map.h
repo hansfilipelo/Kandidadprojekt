@@ -2,12 +2,12 @@
 #define _Map_h
 
 #ifndef __AVR_ATmega1284P__
-#define TESTING 1
+#define DEBUG 1
 #else
-#define TESTING 0
+#define DEBUG 0
 #endif
 
-#if TESTING == 1
+#if DEBUG == 1
 #include <iostream>
 #endif
 
@@ -28,14 +28,11 @@ public:
 	void setSection(int, int, MapSection*);
 	void convertSection(int,int,char);
 	char* getColAsChar(int);
-	void fillClosedArea();
 	
 	MapSection* getPos(int,int);
     
-#if TESTING == 1
+#if DEBUG == 1
     void printMap();
-    
-    void initMap();
 #endif
 	
 protected:

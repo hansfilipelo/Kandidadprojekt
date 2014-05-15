@@ -13,16 +13,16 @@
 #include "slave.h"
 
 //------------sensorer----------------------
-volatile int numOfSamples = 30;		//number of samples for mean value
+volatile int numOfSamples = 25;		//number of samples for mean value
 volatile int savepos = 0;			//counter for the storage array
 
-volatile int sensor0[30];			//arrays for sensordata
-volatile int sensor1[30];
-volatile int sensor2[30];
-volatile int sensor3[30];
-volatile int sensor4[30];
-volatile int sensor5[30];
-volatile int sensor6[30];
+volatile int sensor0[25];			//arrays for sensordata
+volatile int sensor1[25];
+volatile int sensor2[25];
+volatile int sensor3[25];
+volatile int sensor4[25];
+volatile int sensor5[25];
+volatile int sensor6[25];
 
 
 volatile long int sen0;				//integers for mean distance
@@ -38,9 +38,6 @@ volatile int RfidCount = 0;
 volatile double decadc=0;			//variable used in the ADC-interrupt (decimal adc-value, ADC-value with 5 V ref)
 volatile bool ADCdone = false;		//Flag for checking if ADC is done
 double spanning = 0;				//ADC-value without 5v ref
-bool blacksegment = false;
-int segmentsTurned = 0;
-bool wheelmode = false;
 
 //------------------USART-------------------------
 unsigned char indata;				//data from USART-reading
@@ -85,27 +82,12 @@ void Timer_Init()
 	TIMSK0 = 0x00;			//dont't allow time-interrups
 }
 
-//determines color of starsegment on wheel
-void Wheel_Init()
-{
-	int saveADMUX = ADMUX;
-	ADMUX = 0x20;
-	asm("");
-	if (decadc>200)
-	{
-		blacksegment = true;
-	}
-	else{
-		blacksegment = false;
-	}
-	ADMUX = saveADMUX;
-}
 
 //------------------------------------------------------------------------------
 //calibration of reference constant "gyrovila"
 void gyrocal(){
 	ADMUX = 0x27;							//set ADMUX to input 7, ADC gets it's data from gyro
-	volatile int i = 0;						//loopsegmentsTurned
+	volatile int i = 0;						//loopcounter
 	while(i < 100){							//loop
 		asm("");
 		ADCdone = false;					//set ADC flag to false
@@ -113,7 +95,7 @@ void gyrocal(){
 		while(!ADCdone);					//wait until ADC is done
 		cli();
 		gyrovila = spanning + gyrovila;		//sum 100 measurements
-		i++;								//add one to segmentsTurned
+		i++;								//add one to counter
 		sei();
 	}
 	gyrovila = gyrovila/100;				//calculate mean constant
@@ -156,12 +138,6 @@ void handleInDataArray(){
 	else if(sensormodul.inDataArray[1] == 'r'){
 		UCSR0B |= (1<<RXCIE0);							//enable USART interrups
 	}
-	//reset segmentsTurned
-	else if(sensormodul.inDataArray[1] == 'd'){
-		segmentsTurned = 0;
-		Wheel_Init();
-		wheelmode = true;
-	}
 }
 
 //calculate the mean of a array of integers
@@ -203,6 +179,12 @@ void sendSensors(){
 	sensormodul.outDataArray[24] = (RfidCount/100);
 	sensormodul.outDataArray[25] = ((RfidCount/10) %10);
 	sensormodul.outDataArray[26] = (RfidCount % 10);
+	
+	
+	if (sensormodul.outDataArray[9] == 0){
+		volatile int p = 0;
+		p++;
+	}
 
     sensormodul.SPI_Send();			//send outDataArray
 }
@@ -280,7 +262,6 @@ int main(void)
 	
 	sei();					// Enable Global Interrupts
 	gyrocal();				//run gyro calibration
-	Wheel_Init();
 	ADCSRA |= 1<<ADSC;		// Start Conversion
 	
 	while(1){				// Wait forever
@@ -303,31 +284,15 @@ int main(void)
 			sei();				//allow interrupts
 		}
 		
-		if((wheelmode)&(ADMUX == 0x20)){		//get distance from sensor A0 with conversion formula
+		if(ADMUX == 0x20){			//get distance from sensor A0 with conversion formula
 			asm("");
-			//sen0 = 0;
-			if((decadc > 200)&(!blacksegment)) {
-				segmentsTurned++;
-				blacksegment = true;
-			}
-			else if((decadc < 120) and blacksegment){
-				segmentsTurned++;
-				blacksegment = false;
-			}
-			if(segmentsTurned > 21){
-				sensormodul.outDataArray[0] = 1;
-				sensormodul.outDataArray[1] = 'D';
-				sensormodul.SPI_Send();		//send 90 degree turn is complete
-				wheelmode = false;
-				segmentsTurned = 0;
-				sen0 = sen0 +1;
-			}
+			sensor0[savepos]	= round(45.64*pow(spanning,4)-320.2*pow(spanning,3)+830.3*pow(spanning,2)-984.9*spanning+524.4);
 			asm("");
 		}
 		
 		if(ADMUX == 0x21){		//get distance from sensor A1 with conversion formula
 			asm("");
-			sensor1[savepos]	= round(11.2*pow(spanning,4)-119.5*pow(spanning,3)+422.2*pow(spanning,2)-645*spanning+427.3);
+			sensor1[savepos]	= round(1.031*pow(spanning,4)-68*pow(spanning,3)+364.8*pow(spanning,2)-683.2*spanning+492.2);
 		}
 				
 		if( (ADMUX == 0x22)){	//get distance from sensor A2 with conversion formula
@@ -365,7 +330,8 @@ int main(void)
 		}
 		
         if(savepos == numOfSamples){	//if all readings are done
-            sen1 = average(sensor1);	//get average distance from sensors
+            sen0 = average(sensor0);	//get average distance from sensors
+            sen1 = average(sensor1);
             sen2 = average(sensor2);
             sen3 = average(sensor3);
             sen4 = average(sensor4);

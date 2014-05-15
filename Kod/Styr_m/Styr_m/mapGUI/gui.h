@@ -11,14 +11,10 @@
 #include <QtAlgorithms>
 #include <QtSerialPort/QtSerialPort>
 #include <graphwindow.h>
-#include <paramwindow.h>
 
 class graphWindow;
 class SerialPort;
 class Order;
-class ParamWindow;
-
-
 namespace Ui {
 class Gui;
 }
@@ -33,18 +29,21 @@ public:
     ~Gui();
     void setupPlots();
     void updateSensorValues(int value0,int value1, int value2, int value3, int value4, int value5, int value6,int value7);
+    void updatePlots();
     void updateMap();
+    void insertRow(char inArray[27]);
     int startPort();
     int connectStatus;
     void labelSet(QString);
     char mapArea[32][27];
     void saveToFile();
-    void rowReceived();
 
 private slots:
     void on_speedSlider_valueChanged(int value);
 
     void on_speedSlider_sliderReleased();
+
+    void updateTimeVector();
 
     void on_actionForward_triggered();
 
@@ -72,10 +71,12 @@ private slots:
 
     void on_actionHalt_triggered();
 
+    void on_saveDataButton_pressed();
+
+
     void on_actionReview_Data_triggered();
 
     void on_actionSave_Data_triggered();
-
 
 private:
     graphWindow* graph;
@@ -96,7 +97,6 @@ private:
     QGraphicsScene* scene = new QGraphicsScene();
     Order* bluetooth;
     SerialPort* serPort;
-    ParamWindow* parWindow;
 
     int speedMultiplier;
     //testvariabler

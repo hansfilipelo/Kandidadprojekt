@@ -5,24 +5,21 @@
  *  Author: hanel742 och tobgr602
  */
 
-
+#define F_CPU 14745600
 
 #ifndef __AVR_ATmega1284P__
-#define TESTING 1
+#define DEBUG 1
 #else
-#define TESTING 0
+#define DEBUG 0
 #endif
 
-#if TESTING == 0
+#if DEBUG == 0
 
 #include <avr/io.h>
-#define F_CPU 14745600
 #include <util/delay.h>
 #include <avr/interrupt.h>
 
 #endif
-
-
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -43,16 +40,10 @@ Communication* abstractionObject = new Communication(slavePointer);
 Map* mapPointer = new Map();
 Robot* robotPointer = new Robot(16,1,mapPointer,abstractionObject);
 
-#if TESTING == 0
+#if DEBUG == 0
 
 // Interreupt for bus comm
 // -----------------------------
-/*
- *  When the interrupt fires put your current outData on the SPDR and read from it to the inData.
- *  If we receieved as many bytes as the length specifies fire another interrupt for data handling.
- *  When the slave sends to master it needs to check the outDataArray's length instead.
- */
-
 
 ISR(SPI_STC_vect){
 	steerModuleSlave.position++;
@@ -69,11 +60,6 @@ ISR(SPI_STC_vect){
 		steerModuleSlave.position = 0;
 	}
 }
-
-/*
- *  Datahandling interrupt fired from within SPI interrupt.
- */
-
 
 ISR(PCINT2_vect){
 	abstractionObject->handleData();
@@ -99,6 +85,54 @@ void pwm_init()
 	// Initiate gear as 00
 	PORTD |= (0<<PORTD4) | (0<<PORTD5);
 }
+
+/*
+ // Gearbox, port 17
+ ISR(INT0_vect){
+ cli();
+ if (gear == 0){
+ PORTD |= 0x10;
+ PORTD &= ~0x20;
+ gear = gear + 1;
+ }
+ else if (gear == 1){
+ PORTD &= ~0x10;
+ PORTD |= 0x20;
+ gear = gear + 1;
+ }
+ else if (gear == 2){
+ PORTD |= 0x10;
+ PORTD |= 0x20;
+ gear = gear + 1;
+ }
+ else {
+ PORTD &= ~0x10;
+ PORTD &= ~0x20;
+ gear = 0;
+ }
+ 
+ sei();
+ }
+ */
+
+/*
+ // Drive, port 16
+ ISR(INT1_vect){
+ cli();
+ if (speed == 0){
+ speed = 25;
+ }
+ else{
+ speed = 0;
+ }
+ int output = floor(speed * 255 / 100);
+ 
+ OCR2A = output;
+ OCR2B = output;
+ 
+ sei();
+ }
+ */
 #endif
 
 // ----------------------------------------
@@ -106,8 +140,7 @@ void pwm_init()
 
 int main(void)
 {
-	
-#if TESTING == 0
+#if DEBUG == 0
     // Set up interrupts
 	cli();
 	MCUCR = 0b00000000;
@@ -126,10 +159,8 @@ int main(void)
 #endif
 	
 	abstractionObject->setRobot(robotPointer);
-	robotPointer->changeGear('f');
+	robotPointer->changeDirection('f');
 	
-    // Wait for sensordata before mapping stuff.
-    robotPointer->waitForNewData();
 	robotPointer->setFwdReference();
 	robotPointer->setBwdReference();
     
@@ -142,10 +173,16 @@ int main(void)
     robotPointer->setRightClosed();
     robotPointer->setLeftClosed();
     for (;;) {
+        
         // Manual mode
         if (abstractionObject->getManual()) {
             asm("");
-			
+
+			if (i == 500)
+			{
+				robotPointer->updateRobotPosition();
+			}
+			i++;
 			if (robotPointer->getRotateRightActive())
 			{
 				robotPointer->rotateRight();
@@ -154,20 +191,17 @@ int main(void)
 			else if ( robotPointer->getRotateLeftActive() ){
 				robotPointer->rotateLeft();
 			}
-			
         }
         // Automatic mode
         else {            
 			//----------------------Om kortdistans flyttas fram----------
 			if(robotPointer->isCornerRight()){
-				while ( !(robotPointer->isCornerPassed()) && !(abstractionObject->getManual())) {
+				while ( robotPointer->isWallRight() && !(abstractionObject->getManual())) {
 					robotPointer->changeGear('f');
 					robotPointer->setSpeed(25);
 					robotPointer->drive();
 				}
-#if TESTING == 0
-				_delay_ms(25); // This delay ensures that we enter next segment.
-#endif
+				_delay_ms(200);
 				robotPointer->rotateRight();
 				while ( !robotPointer->isWallRight() && !(abstractionObject->getManual())) {
 					robotPointer->changeGear('f');
@@ -184,12 +218,11 @@ int main(void)
 				}
 				robotPointer->setSpeed(0);
 				robotPointer->drive();
-			
 				
 				if(!robotPointer->isWallRight())
 				{
 					robotPointer->rotateRight();
-                    //Drive forward untill robot has entered
+			//kör framåt tills roboten åkt in i korridoren
 					while (!robotPointer->isWallRight() && !(abstractionObject->getManual())) {
 						robotPointer->changeGear('f');
 						robotPointer->setSpeed(25);
@@ -200,6 +233,9 @@ int main(void)
 				else
 				{
 					robotPointer->rotateLeft();
+#if DEBUG == 0
+					_delay_ms(500);
+#endif
 				}
                 
             }
@@ -208,6 +244,10 @@ int main(void)
 				if(!robotPointer->isWallRight())
 				{
 					robotPointer->rotateRight();
+#if DEBUG == 0
+					_delay_ms(500);
+#endif
+					
 				}
 				else
 				{
@@ -219,30 +259,23 @@ int main(void)
 			}
 		}
     
-        // Look for walls every 250th turn of main loop
-        if (i == 250) {
-			//abstractionObject->time1();
-            // Update position in map
-            robotPointer->updateRobotPosition();
-            
-            i = 0;
-        }
-		
-		if(abstractionObject->wheelHasTurned){
-			robotPointer->moveRobot();
-			abstractionObject->wheelHasTurned=false;
-		}
-		
-        i++;
+    // Look for walls every 500th turn of main loop
+    if (i == 500) {
+              // Update position in map
+        robotPointer->updateRobotPosition();
         
-        
-        if(abstractionObject->sendMapNow){
-            asm("");
-            abstractionObject->sendMapNow=false;
-            abstractionObject->sendMap();
-            asm("");
-        }
+        i = 0;
     }
+    i++;
     
-    return 0;
+    
+    if(abstractionObject->sendMapNow){
+        asm("");
+        abstractionObject->sendMapNow=false;
+        abstractionObject->sendMap();
+        asm("");
+    }
+}
+
+return 0;
 }

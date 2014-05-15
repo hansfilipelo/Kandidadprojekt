@@ -2,21 +2,20 @@
 #define _MapSection_h
 
 #ifndef __AVR_ATmega1284P__
-#define TESTING 1
+#define DEBUG 1
 #else
-#define TESTING 0
+#define DEBUG 0
 #endif
 
-#if TESTING == 0
+#if DEBUG == 0
 
 #include <avr/io.h>
-#define F_CPU 14745600
 #include <util/delay.h>
 #include <avr/interrupt.h>
 
 #endif
 
-#if TESTING == 1
+#if DEBUG == 1
 #include <iostream>
 #endif
 
@@ -24,7 +23,6 @@
 #include <string.h>
 #include "Abstraction.h"
 #include "Communication.h"
-#include <stdlib.h>
 
 class Map;
 class Communication;
@@ -58,15 +56,8 @@ public:
     
     virtual bool isUnexplored();
     virtual int findUnexplored();
-    virtual bool isClosed(int origX, int origY, int fwdCounter, int bwdCounter);
-    virtual bool isReachable();
 	
-    volatile bool hasBeenClosed = false;
-    volatile bool hasBeenReached = false;
-    volatile bool isOrigClosed = false;
-    
 protected:
-    
 	int xCoord;
 	int yCoord;
 	int step;
@@ -122,9 +113,6 @@ public:
 	void phiDotValueIn(char phi[3]);
     
 	// SLAM (mapping, positioning)
-	volatile int movedToNewPosition = 0;
-	volatile int sensorDifference = 0;
-	bool usingLong = false;
 	void setFwdClosed();
 	void setBwdClosed();
     void setRightClosed();
@@ -132,7 +120,6 @@ public:
     
     bool isWallRight();
     bool isCornerRight();
-	bool isCornerPassed();
     bool isWallFwd();
     bool isWallLeft();
 	bool isWallFwdClose();
@@ -142,35 +129,21 @@ public:
     
     int meanValueArray(char* inputArray, int iterations);
     void updateRobotPosition();
-	void moveRobot();
 	void setFwdReference();
 	void setBwdReference();
     
     int getRightDifference();
     int getUserSpeed();
-	
-	void waitForNewData();
-	void backToStart();
     
     // Automatic control
     void turn(int pd); //Positive or negative value will decide left or right
     void adjustPosition();
     
-    void setControlParameters(double inputKp, double inputKd, int inputRef, int inTrimLeft, int inTrimRight, int inFwdRefLong, int inBwdRefLong, int inFwdRefShort, int inBwdRefShort, int inRightCornerFront, int inRightCornerBack, int inRightWallFront, int inRightWallBack, int inHaltAfterSection,int inKp2);
+    void setControlParameters(double, double, int, int, int);
 	
-	volatile bool newData = true;
-	
-	char validSensor = 'N'; //No valid from start.
+	volatile bool newData = false;
     
 protected:
-    //move robot functions based on direction
-    
-    void moveForward();
-    void moveBackward();
-    void moveRight();
-    void moveLeft();
-    
-    
     int getRightDistance();
 	int getLeftDistance();
 	int getFwdDistance();
@@ -192,6 +165,7 @@ protected:
 	
 	char direction = 'f';
     char gear = 'f';
+    char validSensor = 'N'; //No valid from start.
     
     int fwdReference;
     int bwdReference;
@@ -208,10 +182,10 @@ protected:
     int Ref; //Reference value for control
     volatile double Kd; //Differentiation coeff.
     volatile double Kp; //Proportional coeff.
-	volatile int Kp2;
     
-    int previousFrontError = 0;
-    int previousBackError = 0;
+    int previousRightError = 0;
+    int previousLeftError = 0;
+	long int robotTempPd;
     
     MapSection* previousSection = NULL;
     Communication* commObj = NULL;
@@ -223,20 +197,19 @@ protected:
 	int bwdRefShort;
 	
 	//Paramater that determines if robot should stop after one segment.
-	volatile bool haltAfterSection;
-    volatile bool startExplore = false;
+	bool haltAfterSection = false;
 	
 	//Paramaters for wall and corner detection
-	int rightCornerFront;
-	int rightCornerBack;
-	int rightWallFront;
-	int rightWallBack;
+	int rightCornerFront = 40;
+	int rightCornerBack = 30;
+	int rightWallFront = 30;
+	int rightWallBack = 30;
 	
-	int speed;
-	int userSpeed;
+	int speed = 0;
+	int userSpeed = 0;
     int trimLeft;
     int trimRight;
-    char currentGear;
+    char currentGear = 'f';
 	
 	bool rotateRightActive;
 	bool rotateLeftActive;
