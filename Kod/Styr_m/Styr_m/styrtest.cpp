@@ -28,13 +28,12 @@ int main(){
     
     if (mom->getPos(1,1)->isClosed(1,1,0)) {
         cout << "True!" << endl;
+        mom->fillClosedArea();
+        mom->printMap();
     }
     else {
         cout << "False... " << endl;
     }
-    
-    mom->fillClosedArea();
-    mom->printMap();
     
     delete testRobot;
     delete mom;
