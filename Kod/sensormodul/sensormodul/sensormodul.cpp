@@ -13,16 +13,16 @@
 #include "slave.h"
 
 //------------sensorer----------------------
-volatile int numOfSamples = 25;		//number of samples for mean value
+volatile int numOfSamples = 50;		//number of samples for mean value
 volatile int savepos = 0;			//counter for the storage array
 
-volatile int sensor0[25];			//arrays for sensordata
-volatile int sensor1[25];
-volatile int sensor2[25];
-volatile int sensor3[25];
-volatile int sensor4[25];
-volatile int sensor5[25];
-volatile int sensor6[25];
+volatile int sensor0[50];			//arrays for sensordata
+volatile int sensor1[50];
+volatile int sensor2[50];
+volatile int sensor3[50];
+volatile int sensor4[50];
+volatile int sensor5[50];
+volatile int sensor6[50];
 
 
 volatile long int sen0;				//integers for mean distance
