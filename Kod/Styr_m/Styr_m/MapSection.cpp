@@ -802,7 +802,8 @@ int Robot::meanValueArray(char* inputArray, int iterations) {
 // -----------------------------------------
 //Sets reference values and moves robot in map abstraction if robot has moved one square
 void Robot::updateRobotPosition(){
-    if(validSensor == 'N'){
+    /*
+	if(validSensor == 'N'){
         validSensor = determineValidSensor();
     }
     int sensorDifference = 0;
@@ -815,6 +816,7 @@ void Robot::updateRobotPosition(){
 		int ref = fwdReference/40;
 		sensorDifference = getFwdDistance() - ref*40;
     }
+	*/
 	
 	/* The paramaters for sensor differences (references?) are called:
 	fwdRefLong;
@@ -823,15 +825,17 @@ void Robot::updateRobotPosition(){
 	bwdRefShort;
 	*/
     
-    if ((sensorDifference > 36)||(sensorDifference < -36)){
-		commObj->reactivateRFID();	
-		MapSection* tempSection;
-		
-		if(haltAfterSection){
-			setUserSpeed(0);
-			drive();
-		}
-		
+   if (wheelHasTurned){
+	   wheelHasTurned = false;
+	   commObj->reactivateWheelSensor();
+	   //commObj->reactivateRFID();
+	   MapSection* tempSection;
+	   
+	   //halt
+	   setUserSpeed(0);
+	   drive();
+
+	   
 		switch (direction){
             
 //-------------------------Direction is forwards in map-------------------
@@ -898,20 +902,7 @@ void Robot::updateRobotPosition(){
 				//would like to throw some kind of error here.
 				return;
 		}
-		//update which sensor that is valid and should be measured.
-		//and update the references on that sensor.
-		validSensor = determineValidSensor();
-		if(validSensor == 'f'){
-			this->setFwdReference();
-		}
-		else if(validSensor == 'b'){
-			this->setBwdReference();
-		}
-		else{
-			validSensor = 'N';
-			this->setBwdReference();
-			this->setFwdReference();
-		}
+	
 		setFwdClosed();
 		setBwdClosed();
 		setRightClosed();
@@ -1121,6 +1112,7 @@ bool Robot::isWallFwdClose()
 // ----------------
 
 void Robot::robotRotated(){
+	/*
 	validSensor = determineValidSensor();
 	if(validSensor == 'f'){
 		this->setFwdReference();
@@ -1133,6 +1125,7 @@ void Robot::robotRotated(){
 		this->setBwdReference();
 		this->setFwdReference();
 	}
+	*/
 	setFwdClosed();
 	setBwdClosed();
 	setRightClosed();

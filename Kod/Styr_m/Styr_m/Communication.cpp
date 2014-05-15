@@ -112,14 +112,30 @@ void Communication::handleData(){
     
     // Gyro interrupt
     if (this->inData[1] == 'G') {
-        robotPointer->stopRotation();
+        asm("");
+        asm("");
+		robotPointer->stopRotation();
 		robotPointer->robotRotated();
-    }
+		asm("");
+		asm("");
+	}
 	
 	// RFID-detektion
     if (this->inData[1] == 'R') {
-	    robotPointer->setRFID();
-    }
+	    asm("");
+	    asm("");
+		robotPointer->setRFID();
+		asm("");
+		asm("");
+	}
+	
+	if(this->inData[1] == 'W'){
+		asm("");
+		asm("");
+		robotPointer->wheelHasTurned = true;
+		asm("");
+		asm("");
+	}
     
     // Constants for PD-control
     if(this->inData[1]=='P'){
@@ -188,4 +204,11 @@ void Communication::reactivateRFID(){
 	    slavePointer->outDataArray[0] = 1;
 	    slavePointer->outDataArray[1] = 'r';
 	    slavePointer->SPI_Send();
+}
+
+
+void Communication::reactivateWheelSensor(){
+	slavePointer->outDataArray[0] = 1;
+	slavePointer->outDataArray[1] = 'w';
+	slavePointer->SPI_Send();
 }

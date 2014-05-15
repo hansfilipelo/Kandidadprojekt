@@ -6,8 +6,10 @@
  *	All snopp åt Erik, vår buttyboy.
  */ 
 
+#define F_CPU 14745600
 
 #include <avr/io.h>
+#include <util/delay.h>
 #include <avr/interrupt.h>
 #include <math.h>
 #include "slave.h"
@@ -38,6 +40,9 @@ volatile int RfidCount = 0;
 volatile double decadc=0;			//variable used in the ADC-interrupt (decimal adc-value, ADC-value with 5 V ref)
 volatile bool ADCdone = false;		//Flag for checking if ADC is done
 double spanning = 0;				//ADC-value without 5v ref
+bool blacksegment = false;
+int segmentsTurned = 0;
+bool wheelmode = true;				
 
 //------------------USART-------------------------
 unsigned char indata;				//data from USART-reading
@@ -80,6 +85,21 @@ void Timer_Init()
 	TCNT0 = 0x00;			//set timer to 0
 	TCCR0B = 0x04;			//pre-scalar 256 på timer
 	TIMSK0 = 0x00;			//dont't allow time-interrups
+}
+
+void Wheel_Init()
+{
+	int saveADMUX = ADMUX;
+	ADMUX = 0x20;
+	asm("");
+	if (decadc>200)
+	{
+		blacksegment = true;
+	}
+	else{
+		blacksegment = false;
+	}
+	ADMUX = saveADMUX;
 }
 
 
@@ -137,6 +157,12 @@ void handleInDataArray(){
 	//if [r] is received
 	else if(sensormodul.inDataArray[1] == 'r'){
 		UCSR0B |= (1<<RXCIE0);							//enable USART interrups
+	}
+	//reset segmentsTurned
+	else if(sensormodul.inDataArray[1] == 'w'){
+		segmentsTurned = 0;
+		Wheel_Init();
+		wheelmode = true;
 	}
 }
 
@@ -242,6 +268,8 @@ ISR(USART0_RX_vect){
 		sensormodul.outDataArray[0] = 1;
 		sensormodul.outDataArray[1] = 'R';
 		sensormodul.SPI_Send();				//send outDataArray
+		savepos = 0;
+		ADMUX = 0x20;				
 		UCSR0B &= ~(1<<RXCIE0);				//disable USART interrups
 	}
 }
@@ -259,7 +287,7 @@ int main(void)
 	Sensor_Init();			//run sensor initialization
 	USART_Init(383);		//run USART initialization
 	Timer_Init();			//run timer initialization
-	
+	Wheel_Init();			//init for wheel, starting segment
 	sei();					// Enable Global Interrupts
 	gyrocal();				//run gyro calibration
 	ADCSRA |= 1<<ADSC;		// Start Conversion
@@ -280,13 +308,32 @@ int main(void)
 				sensormodul.outDataArray[0] = 1;
 				sensormodul.outDataArray[1] = 'G';
 				sensormodul.SPI_Send();		//send 90 degree turn is complete
+				savepos = 0;
+				ADMUX = 0x20;		
 			}
 			sei();				//allow interrupts
 		}
 		
-		if(ADMUX == 0x20){			//get distance from sensor A0 with conversion formula
+		if((wheelmode)&(ADMUX == 0x20)){		//get distance from sensor A0 with conversion formula
 			asm("");
-			sensor0[savepos]	= round(45.64*pow(spanning,4)-320.2*pow(spanning,3)+830.3*pow(spanning,2)-984.9*spanning+524.4);
+			//sen0 = 0;
+			if((decadc > 200)&(!blacksegment)) {
+				segmentsTurned++;
+				blacksegment = true;
+			}
+			else if((decadc < 120) and blacksegment){
+				segmentsTurned++;
+				blacksegment = false;
+			}
+			if(segmentsTurned > 19){
+				sensormodul.outDataArray[0] = 1;
+				sensormodul.outDataArray[1] = 'W';
+ 				sensormodul.SPI_Send();		//send 90 degree turn is complete
+				wheelmode = false;
+				savepos = 0;
+				ADMUX = 0x20;
+				sen0 = sen0 +1;
+			}
 			asm("");
 		}
 		
@@ -330,7 +377,6 @@ int main(void)
 		}
 		
         if(savepos == numOfSamples){	//if all readings are done
-            sen0 = average(sensor0);	//get average distance from sensors
             sen1 = average(sensor1);
             sen2 = average(sensor2);
             sen3 = average(sensor3);

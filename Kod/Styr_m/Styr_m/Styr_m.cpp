@@ -172,7 +172,10 @@ int main(void)
     robotPointer->setBwdClosed();
     robotPointer->setRightClosed();
     robotPointer->setLeftClosed();
-    for (;;) {
+    
+	abstractionObject->reactivateWheelSensor();
+	
+	for (;;) {
         
         // Manual mode
         if (abstractionObject->getManual()) {
@@ -269,6 +272,7 @@ int main(void)
         abstractionObject->sendMap();
         asm("");
     }
+	
 }
 
 return 0;

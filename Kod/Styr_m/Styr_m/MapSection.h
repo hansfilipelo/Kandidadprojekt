@@ -136,6 +136,8 @@ public:
     
     int getRightDifference();
     int getUserSpeed();
+	
+	bool wheelHasTurned = false;
     
     // Automatic control
     void turn(int pd); //Positive or negative value will decide left or right
