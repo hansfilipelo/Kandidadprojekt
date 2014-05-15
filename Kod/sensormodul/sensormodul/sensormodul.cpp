@@ -290,6 +290,7 @@ int main(void)
 	sei();					// Enable Global Interrupts
 	gyrocal();				//run gyro calibration
 	Wheel_Init();
+	wheelmode = true;		//wheelmode true for testing purposes 
 	ADCSRA |= 1<<ADSC;		// Start Conversion
 	
 	while(1){				// Wait forever
@@ -327,7 +328,7 @@ int main(void)
 				sensormodul.outDataArray[0] = 1;
 				sensormodul.outDataArray[1] = 'D';
 				sensormodul.SPI_Send();
-				wheelmode = false;
+				//wheelmode = false;	Keep robot in wheelmode pls.
 				segmentsTurned = 0;
 				sen0 = sen0 +1;
 			}

@@ -277,7 +277,7 @@ void Communication::sensorArrayToVariables(){
 void Communication::activateWheelSensor(){
 	slavePointer->outDataArray[0] = 1;
 	slavePointer->outDataArray[1] = 'd';
-	slavePointer->SPI_Send();
+	//slavePointer->SPI_Send();
 }
 
 void Communication::time0()

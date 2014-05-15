@@ -219,8 +219,8 @@ int main(void)
     
         // Look for walls every 250th turn of main loop
         if (i == 300) {
-			//abstractionObject->time1();
-            // Update position in map
+			
+            //Update position in map
             robotPointer->updateRobotPosition();
             
             i = 0;
