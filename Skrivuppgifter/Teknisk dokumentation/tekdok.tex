@@ -328,7 +328,7 @@ Styrmodulens (slave) huvudkomponent kommer  att bestå av en AVR-processor, Atme
 	\item Batteri, 7.2 V
 	\item Resetknapp
 \end{itemize}
-~\\
+\subsection{Signaler}
 Motorerna kommer att styras parvis med två signaler per sida:
 \begin{itemize}
 	\item DIRL - Styr den vänstra motorns rotationsriktning
@@ -429,9 +429,9 @@ Den proportionella delen av regleringen kommer fås från avståndet till vägg 
 
 $ e_p = K_{p}*avst\text{\it{å}}ndssensordata $
 
-Där K är en konstant- Den deriverande delen av regleringen kommer ges av linjär uppskattning av derivatan utefter de senaste mätvärdena. Derivatan ges alltså av: 
+Där K är en konstant- Den deriverande delen av regleringen ges av differensen mellan den främre avståndssensorn och den bakre: 
 
-$ e_d = K_{D}*(data/antal_sampels) $
+$ e_d = K_{D}*(fram - bak) $
 
 Totala felet ges då av: 
 

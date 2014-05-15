@@ -147,7 +147,13 @@ Dialog hölls mellan grupperna för att säkerställa att portar och kontakter p
 Längre in i projektet ändrades grupperna något för att ge alla projektmedlemmar en chans att arbeta med varandra, men även för att det var färre delmoment att arbeta med. I slutfasen av projektet turades gruppmedlemarna om att skriva den tekniska dokumentationen medan andra arbetade med roboten för att effektivisera arbetet.
 
 \section{Teknisk beskrivning}
-Redovisa det tekniska resultatet och skrivuppgifterna på ett lämpligt sätt. Detaljerade beskrivningar på grindnivå i hårdvaran eller på instruktionsnivå i mjukvaran är i detta sammanhang oftast ointressant. Referera den tekniska dokumentationen och skrivuppgifterna för beskrivning av detaljer. Lyft fram egna kreativa lösningar!
+%Redovisa det tekniska resultatet och skrivuppgifterna på ett lämpligt sätt. Detaljerade beskrivningar på grindnivå i hårdvaran eller på instruktionsnivå i mjukvaran är i detta sammanhang oftast ointressant. Referera den tekniska dokumentationen och skrivuppgifterna för beskrivning av detaljer. Lyft fram egna kreativa lösningar!
+
+Roboten har nio olika sensorer. En RFID-läsare, ett gyroskop, en reflexsensor, en långdistansmätare, en mellandistansmätare och fyra kortdistansmätare. RFID-läsaren ger ut en digital signal och behandlas med USART. De resterande sensorerna ger analoga utsignaler och behandlas med hjälp av en intern A/D-mux på sensormodulen. Sensormodulen hämtar kontinuerligt signaler från avståndssensorerna, genom att stega igenom muxen, och från alla sensorer genom att stega igenom muxen. Den hoppar, i grundtillståndet, över gyroskopet och reflexsensorn. Mätningar på gyroskopet görs på begäran av styrmodulen och låser sensormodulen till enbart gyroskopmätningar. Läsningen slutförs när roboten svängt 90 grader och sensormodulen skickar ett kommando till styrmodulen som säger att svängen är klar. Även reflexsensorn körs på begäran av styrmodulen men låser inte sensormodulen. Reflexsensorn tas istället med i muxräkningen. Detta för att styrmodulen fortfarande behöver kontinuerliga sensorvärden från avståndssensorerna.
+
+
+
+
 \section{Resultat}
 Beskriv kortfattat hur produkten används, hänvisa till användarmanualen.
 Beskriv vilken prestanda produkten har och hur det har testats, hänvisa till eventuella testprotokoll.
