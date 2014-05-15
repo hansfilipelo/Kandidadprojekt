@@ -144,7 +144,7 @@ int MapSection::findUnexplored(){
 
 bool MapSection::isClosed(int origX, int origY, int fwdCounter, int bwdCounter){
     
-    if ( fwdCounter - bwdCounter < 2 ) {
+    if ( fwdCounter - bwdCounter < 3 ) {
 #if TESTING == 1
         cout << "xCoor: " << xCoord << endl;
 		cout << "yCoord: " << yCoord << endl;
