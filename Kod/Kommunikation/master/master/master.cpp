@@ -39,7 +39,7 @@ Lcd Display;
 void Timer_Init()
 {
     TCNT0 = 0x00;			//set timer to 0
-    TCCR0B = 0x04;			//pre-scalar 256 på timer
+    TCCR0B = 0x05;			//pre-scalar 256 på timer
     TIMSK0 = 0x00;			//dont't allow time-interrups
 }
 
@@ -208,6 +208,16 @@ int main(void)
 			PORTA &= ~(1<<PORTA4);
 		}
         
-        if(Firefly.mapDone && Firefly.rdyForRow)
+        if(Firefly.mapDone && Firefly.rdyForRow){
+			Firefly.sendMap();
+			if(Firefly.rowToSend > 31){
+			
+			Firefly.mapDone=false;
+			Firefly.rowToSend=0;
+			Firefly.rdyForRow=true;
+			}
+		}
 	}
+	
 }
+	
