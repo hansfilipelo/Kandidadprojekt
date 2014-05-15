@@ -26,7 +26,7 @@ int main(){
     mom->initMap();
     mom->printMap();
     
-    if (mom->getPos(1,1)->isClosed(1,1,0)) {
+    if (mom->getPos(16,1)->isClosed(16,1,0,-4)) {
         cout << "True!" << endl;
         mom->fillClosedArea();
         mom->printMap();

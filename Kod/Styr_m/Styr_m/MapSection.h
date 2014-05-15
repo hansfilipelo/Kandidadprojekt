@@ -58,7 +58,7 @@ public:
     
     virtual bool isUnexplored();
     virtual int findUnexplored();
-    virtual bool isClosed(int origX, int origY, int counter);
+    virtual bool isClosed(int origX, int origY, int fwdCounter, int bwdCounter);
     virtual bool isReachable();
 	
     volatile bool hasBeenClosed = false;
