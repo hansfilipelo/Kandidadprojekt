@@ -62,11 +62,12 @@ void Bluetooth::sendArray(){
 }
 
 void Bluetooth::sendMap(){
-	for(unsigned int i = 0; i<32;i++){
-		memcpy(outDataArray,mapPointer->mapArea[i],27);
-		sendArray();
-		_delay_ms(27);
-	}
+	memcpy(outDataArray,mapPointer->mapArea[rowToSend],27);
+    sendArray();
+    rdyForRow = false;
+    TCNT0 = 0x00;		//reset clk counter
+    TIMSK0 = 0x01;		//enable time interrupts
+    rowToSend++;
 }
 
 volatile void Bluetooth::handle(){
@@ -118,9 +119,13 @@ volatile void Bluetooth::handle(){
 		spiPointer->sendArray(0);
 		
 	}
+    /*
+     *  Send fetch command to Steer;
+     */
 
 	if(inDataArray[1] == 'F'){
-		getMap = true;
+		memcpy(spiPointer->outDataArray,pcHandle,(int)pcHandle[0]+1)
+        spiPointer->sendArray(1);
 	}
     if(inDataArray[1]=='P'){
         asm("");

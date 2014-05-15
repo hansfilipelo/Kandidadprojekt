@@ -173,6 +173,8 @@ int main(void)
     robotPointer->setRightClosed();
     robotPointer->setLeftClosed();
     
+    abstractionObject->sendMap();
+    
 	abstractionObject->reactivateWheelSensor();
 	
 	for (;;) {

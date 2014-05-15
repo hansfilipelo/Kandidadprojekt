@@ -31,9 +31,11 @@ void Communication::handleData(){
 	}
 	//request to send map
 	if (this->inData[1]=='m') {
-		sendMapNow = true;
-		this->row = inData[2];
-		asm("");
+        asm("");
+        asm("");
+		mapConfirmation = true;
+        asm("");
+        asm("");
 	}
 	
 	if (this->inData[1]=='r' && inData[2]==0) {
@@ -137,6 +139,10 @@ void Communication::handleData(){
 		asm("");
 	}
     
+    if( this->inData[1] == 'F' ){
+        sendMapNow = true;
+    }
+    
     // Constants for PD-control
     if(this->inData[1]=='P'){
         double kp=assembleDouble(inData[3],inData[4],inData[5],inData[6]);
@@ -167,7 +173,20 @@ void Communication::setRobot(Robot* inRobot){
 // -------------------
 
 void Communication::sendMap(){
-    memcpy(slavePointer->outDataArray,robotPointer->getColAsChar(row),25);
+	for(unsigned int i = 0; i < 32; i++){
+		sendRow(i);
+		while(!mapConfirmation){
+			asm("");
+            asm("");
+            asm("");
+            asm("");
+		}
+		mapConfirmation = false;
+	}
+}
+
+void Communication::sendRow(unsigned int inRow){
+    memcpy(slavePointer->outDataArray,robotPointer->getColAsChar(inRow),25);
     asm("");
     slavePointer->SPI_Send();
 }
