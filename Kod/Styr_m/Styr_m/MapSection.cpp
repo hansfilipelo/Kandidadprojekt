@@ -973,10 +973,10 @@ void Robot::updateRobotPosition(){
 
 void Robot::moveRobot(){
     
-    if (haltAfterSection) {
+    //if (haltAfterSection) {
         this->setSpeed(0);
         drive();
-    }
+    //}
 	
 	commObj->reactivateRFID(); // this cannot be called upon from within a interrupt 
 	MapSection* tempSection;
@@ -1052,9 +1052,6 @@ void Robot::moveRobot(){
 	setRightClosed();
 	setLeftClosed();
 	validSensor = determineValidSensor();
-	if (validSensor == 'w'){
-		commObj->activateWheelSensor();
-	}
 	if(validSensor == 'f'){
 		this->setFwdReference();
 	}
@@ -1142,6 +1139,7 @@ void Robot::moveLeft(){
 
 char Robot::determineValidSensor(){
 	if((getBwdDistance()>150) && (getFwdDistance()>41)){
+		commObj->activateWheelSensor();
 		return 'w';
 	}
     else if((getFwdDistance() > getBwdDistance()) || ((getBwdDistance() < 150) && (getFwdDistance() > 41))){ // bwd sensor is smaller than fwd.
