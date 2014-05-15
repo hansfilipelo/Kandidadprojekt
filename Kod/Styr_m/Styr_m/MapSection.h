@@ -59,8 +59,10 @@ public:
     virtual bool isUnexplored();
     virtual int findUnexplored();
     virtual bool isClosed(int origX, int origY, int counter);
+    virtual bool isReachable();
 	
     volatile bool hasBeenClosed = false;
+    volatile bool hasBeenReached = false;
     volatile bool isOrigClosed = false;
     
 protected:
@@ -154,9 +156,11 @@ public:
     void turn(int pd); //Positive or negative value will decide left or right
     void adjustPosition();
     
-    void setControlParameters(double inputKp, double inputKd, int inputRef, int inTrimLeft, int inTrimRight, int inFwdRefLong, int inBwdRefLong, int inFwdRefShort, int inBwdRefShort, int inRightCornerFront, int inRightCornerBack, int inRightWallFront, int inRightWallBack, int inHaltAfterSection);
+    void setControlParameters(double inputKp, double inputKd, int inputRef, int inTrimLeft, int inTrimRight, int inFwdRefLong, int inBwdRefLong, int inFwdRefShort, int inBwdRefShort, int inRightCornerFront, int inRightCornerBack, int inRightWallFront, int inRightWallBack, int inHaltAfterSection,int inKp2);
 	
 	volatile bool newData = true;
+	
+	char validSensor = 'N'; //No valid from start.
     
 protected:
     //move robot functions based on direction
@@ -188,7 +192,6 @@ protected:
 	
 	char direction = 'f';
     char gear = 'f';
-    char validSensor = 'N'; //No valid from start.
     
     int fwdReference;
     int bwdReference;
@@ -205,6 +208,7 @@ protected:
     int Ref; //Reference value for control
     volatile double Kd; //Differentiation coeff.
     volatile double Kp; //Proportional coeff.
+	volatile int Kp2;
     
     int previousFrontError = 0;
     int previousBackError = 0;

@@ -46,6 +46,7 @@ private:
     int defRightWallFront;
     int defRightWallBack;
     int defHaltAfterSection;
+    double defKp2;
 
 
 

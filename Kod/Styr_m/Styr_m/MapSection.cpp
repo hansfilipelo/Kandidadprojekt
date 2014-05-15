@@ -147,6 +147,7 @@ int MapSection::findUnexplored(){
 bool MapSection::isClosed(int origX, int origY, int counter){
     
     if ( ((abs(xCoord-origX) < 2) && (abs(yCoord-origY) < 2)) && counter > 10 ) {
+        hasBeenClosed = false;
         return true;
     }
     
@@ -205,10 +206,37 @@ bool MapSection::isClosed(int origX, int origY, int counter){
         nextY = yCoord + 1;
     }
     else {
+        hasBeenClosed = false;
 		return false;
     }
     
-    return mom->getPos(nextX, nextY)->isClosed(origX, origY, counter+1);
+    volatile bool output = mom->getPos(nextX, nextY)->isClosed(origX, origY, counter+1);
+    hasBeenClosed = false;
+    return output;
+    
+}
+
+
+// For path finding
+
+bool MapSection::isReachable(){
+    
+    int nextX;
+    int nextY;
+    
+    this->hasBeenReached = true;
+    
+    if (true) {
+        return false;
+    }
+    else {
+        hasBeenReached = false;
+		return false;
+    }
+    
+    volatile bool output = mom->getPos(nextX, nextY)->isReachable();
+    hasBeenReached = false;
+    return output;
     
 }
 
@@ -230,6 +258,7 @@ Robot::Robot(int xPos, int yPos, Map* inMom, Communication* inComm) : MapSection
 	
 	Kd = 23;
 	Kp = 7;
+	Kp2 = 1;
 	Ref = 12;
 	
 	trimRight = 30;
@@ -255,6 +284,8 @@ Robot::Robot(int xPos, int yPos, Map* inMom, Communication* inComm) : MapSection
     commObj = inComm;
     previousSection = mom->getPos(xPos,yPos);
     mom->setSection(xPos,yPos,this);
+	
+	validSensor = 'N';
 }
 
 Robot::~Robot(){
@@ -942,10 +973,10 @@ void Robot::updateRobotPosition(){
 
 void Robot::moveRobot(){
     
-    if (haltAfterSection) {
+    //if (haltAfterSection) {
         this->setSpeed(0);
         drive();
-    }
+    //}
 	
 	commObj->reactivateRFID(); // this cannot be called upon from within a interrupt 
 	MapSection* tempSection;
@@ -1021,9 +1052,6 @@ void Robot::moveRobot(){
 	setRightClosed();
 	setLeftClosed();
 	validSensor = determineValidSensor();
-	if (validSensor == 'w'){
-		commObj->activateWheelSensor();
-	}
 	if(validSensor == 'f'){
 		this->setFwdReference();
 	}
@@ -1110,11 +1138,11 @@ void Robot::moveLeft(){
 // -----------------------------------------
 
 char Robot::determineValidSensor(){
-	if((getBwdDistance()>0) & (getFwdDistance()>0)){
-		//commObj->activateWheelSensor(); // this might not be able to be called upon from within an interrupt 
+	if((getBwdDistance()>150) && (getFwdDistance()>41)){
+		commObj->activateWheelSensor();
 		return 'w';
 	}
-    else if( getFwdDistance() > getBwdDistance()){ // bwd sensor is smaller than fwd.
+    else if((getFwdDistance() > getBwdDistance()) || ((getBwdDistance() < 150) && (getFwdDistance() > 41))){ // bwd sensor is smaller than fwd.
         return 'b';
     }
     else{                   //fwd sensor is smaller than bwd.
@@ -1132,7 +1160,7 @@ void Robot::adjustPosition(){
 	volatile int backError = 0;
 	volatile int deltaFrontError = 0;
 	volatile int deltaBackError = 0;
-	volatile int kp2 = 4;
+	
 	
 	
 	//front menar högerfram, back höger bak
@@ -1152,7 +1180,7 @@ void Robot::adjustPosition(){
 	
 	
 	//Båda sensorerna ska reglera hjulparen på samma vis, således kan vi addera ihop parametrarna och relgera samma hjulpar	
-	pd = Kp*((frontError + backError)/2) + Kd*((deltaFrontError + deltaBackError)/2) - kp2*(rightFrontSensor - rightBackSensor);
+	pd = Kp*((frontError + backError)/2) + Kd*((deltaFrontError + deltaBackError)/2) - Kp2*(rightFrontSensor - rightBackSensor);
     
 	turn(pd);
     
@@ -1181,7 +1209,7 @@ int Robot::getFwdDistance(){
 }
 
 int Robot::getBwdDistance(){
-	if(bwdShortSensor < 50){
+	if(bwdShortSensor < 41){
 		asm("");
 		usingLong = false;
 		return bwdShortSensor;
@@ -1211,9 +1239,10 @@ int Robot::getLeftDistance(){
 	}
 }
 
-void Robot::setControlParameters(double inputKp, double inputKd, int inputRef, int inTrimLeft, int inTrimRight, int inFwdRefLong, int inBwdRefLong, int inFwdRefShort, int inBwdRefShort, int inRightCornerFront, int inRightCornerBack, int inRightWallFront, int inRightWallBack, int inHaltAfterSection){
+void Robot::setControlParameters(double inputKp, double inputKd, int inputRef, int inTrimLeft, int inTrimRight, int inFwdRefLong, int inBwdRefLong, int inFwdRefShort, int inBwdRefShort, int inRightCornerFront, int inRightCornerBack, int inRightWallFront, int inRightWallBack, int inHaltAfterSection,int inKp2){
     Kp=inputKp;
     Kd=inputKd;
+	Kp2=inKp2;
     
     Ref=inputRef;
 	
@@ -1403,9 +1432,11 @@ bool Robot::getRotateLeftActive()
 
 void Robot::waitForNewData()
 {
+#if TESTING == 0
 	asm("");
 	_delay_ms(300);
 	asm("");
+#endif
     
 	/* Unclear why, but this function does not work properly
 	for (unsigned int i = 0; i < 2; i++) {

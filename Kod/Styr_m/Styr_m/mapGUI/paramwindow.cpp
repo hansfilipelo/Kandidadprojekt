@@ -27,6 +27,7 @@ ParamWindow::ParamWindow(QWidget *parent) :
     defRightWallFront = ui->rightWallFrontBox->value();
     defRightWallBack = ui->rightWallBackBox->value();
     defHaltAfterSection = (int)ui->haltBox->isChecked();
+    defKp2 =ui->kp2SpinBox->value();
 
 }
 
@@ -66,12 +67,13 @@ void ParamWindow::on_setParamButton_pressed()
     int rightWallFront = ui->rightWallFrontBox->value();
     int rightWallBack = ui->rightWallBackBox->value();
     int haltAfterSection = (int)ui->haltBox->isChecked();
+    int kp2 = ui->kp2SpinBox->value();
 
-    Bluetooth->setControlParameters(Kp,Kd,Ref,trimLeft,trimRight,fwdRefLong,bwdRefLong,fwdRefShort,bwdRefShort,rightCornerFront,rightCornerBack,rightWallFront,rightWallBack,haltAfterSection);
+    Bluetooth->setControlParameters(Kp,Kd,Ref,trimLeft,trimRight,fwdRefLong,bwdRefLong,fwdRefShort,bwdRefShort,rightCornerFront,rightCornerBack,rightWallFront,rightWallBack,haltAfterSection,kp2);
 }
 
 void ParamWindow::on_setDefaultButton_pressed()
 {
-    Bluetooth->setControlParameters(defKp,defKd,defRef,defTrimLeft,defTrimRight,defFwdRefLong,defBwdRefLong,defFwdRefShort,defBwdRefShort,defRightCornerFront,defRightCornerBack,defRightWallFront,defRightWallBack,defHaltAfterSection);
+    Bluetooth->setControlParameters(defKp,defKd,defRef,defTrimLeft,defTrimRight,defFwdRefLong,defBwdRefLong,defFwdRefShort,defBwdRefShort,defRightCornerFront,defRightCornerBack,defRightWallFront,defRightWallBack,defHaltAfterSection,defKp2);
 
 }
