@@ -31,6 +31,10 @@ public:
 	volatile int mapNumber = 0;
 	bool autonom = false;
     
+    volatile bool mapDone = false;
+	unsigned int rowToSend = 0;
+	volatile bool rdyForRow = true;
+    
     unsigned char pcHandle[27];
      // Data arrives in order, datalength (data.length + codeword + arg), codeword, arg, data.
     unsigned char inDataArray[27] = {'0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0'};

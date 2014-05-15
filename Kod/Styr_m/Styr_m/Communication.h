@@ -35,7 +35,8 @@ public:
     
 protected:
     
-    
+    void sendRow(unsigned int);
+    volatile bool mapConfirmation = false;
 	bool manual = true;
     int dataLength;
     Slave* slavePointer;

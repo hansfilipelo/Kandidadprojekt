@@ -28,7 +28,7 @@ int main(){
     mom->printMap();
     cout << endl;
     
-    if ( mom->getPos(16,1)->isClosed(16,1,0,-2) ) {
+    if ( mom->getPos(16,1)->isClosed(16,1,0,-3) ) {
         cout << "Map is closed." << endl;
         
         mom->getPos(1,1)->cancer();
