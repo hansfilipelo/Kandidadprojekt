@@ -1,12 +1,10 @@
-/*
- *  MapMaster2001
- *  Erik Ekelund, David Habrman, Tobias Grundström,
- *  Hans-Filip Elo, Niklas Ericsson, Jens Edhammer
- *
- *  TSEA56 2014.
- *
- */
-
+//
+//  order.h
+//  
+//
+//  Created by Jens Edhammer on 2014-04-08.
+//
+//
 
 class SerialPort;
 
@@ -24,7 +22,6 @@ public:
     ~Order();
 
    // void setPID(int,int);
-    void rowReceived();
     void rotateLeft(int);
     void rotateRight(int);
     void turnDone();
@@ -34,7 +31,7 @@ public:
     void test();
     void fetchMap();
     void autonom(int);
-    void setControlParameters(double,double,int,int,int,int,int,int,int,int,int,int,int,int,int);
+    void setControlParameters(double, double, int, int, int);
     
     int getTen(double); //Returns ex. 1 if the number is 10
     int getOne(double); //Returns ex 1 if the number is 1

@@ -4,14 +4,6 @@
 	OBJECTS = Map.o MapSection.o Abstraction.o Styr_m.o slave.o Communication.o
 	BUILDDIR = BUILD
 
-# Test case
-styrtest: $(OBJECTS)
-	$(CCC) $(CCFLAGS) $(OBJECTS) -o styrtest
-
-styrtest.o: styrtest.cpp Abstraction.o Communication.o
-	$(CCC) $(CCFLAGS) $(OBJECTS) -c styrtest.cpp
-# End testcase
-
 Styr_m: $(OBJECTS)
 	$(CCC) $(CCFLAGS) $(OBJECTS) -o Styr_m
 
@@ -35,5 +27,4 @@ slave.o: slave.cpp
 
 clean:
 	@ \rm -f ./*.o
-	@ \rm -f ./styrtest
 	@ \rm -f ./Styr_m

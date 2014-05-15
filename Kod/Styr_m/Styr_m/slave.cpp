@@ -18,7 +18,9 @@ void Slave::SPI_Init()
 	SPCR = (1<<SPE)|(1<<SPIE)|(1<<SPR0);
 	SPCR &= ~(1<<MSTR);
 	
-	//dummy read to clear the register.
+	//PORTB |= (1<<PORTB4); //Enable pull-up resistor
+	
+	//dummy läsning för att rensa registret
 	SPDR=0x00;
 	
 	DDRB |= (1<<DDB2);
@@ -45,3 +47,20 @@ void Slave::SPI_Send(){
     
 	return;
 }
+
+/*
+ISR(SPI_STC_vect){
+	sensormodul.position++;
+	SPDR = sensormodul.outDataArray[sensormodul.position];
+	sensormodul.inDataArray[sensormodul.position-1] = SPDR;
+	
+	if ((sensormodul.position == (sensormodul.inDataArray[0]+1))&(sensormodul.inDataArray[0]!= 0)){
+		PORTC |= (1<<PORTC0);
+	}
+}
+
+ISR(PCINT2_vect){
+	handleInDataArray();
+}
+
+*/

@@ -27,19 +27,16 @@ public:
     volatile void handle();
     volatile bool Btrec = false; 
 	void sendMap();
+	volatile bool getMap = false; 
 	volatile int mapNumber = 0;
 	bool autonom = false;
     
     unsigned char pcHandle[27];
-     // Data arrives in the following order datalength (data.length + codeword + arg), codeword, arg, data.
+     // Data arrives in order, datalength (data.length + codeword + arg), codeword, arg, data.
     unsigned char inDataArray[27] = {'0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0'};
     unsigned char outDataArray[27] = {'0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0'};
     
-	volatile bool mapDone = false;
-	unsigned int rowToSend = 0; 
-	volatile bool rdyForRow = true;
 private:
-	
     unsigned int position = 0;
 	
 	Spi* spiPointer;

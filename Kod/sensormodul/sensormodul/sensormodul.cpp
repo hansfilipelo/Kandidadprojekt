@@ -6,23 +6,25 @@
  *	All snopp åt Erik, vår buttyboy.
  */ 
 
+#define F_CPU 14745600
 
 #include <avr/io.h>
+#include <util/delay.h>
 #include <avr/interrupt.h>
 #include <math.h>
 #include "slave.h"
 
 //------------sensorer----------------------
-volatile int numOfSamples = 30;		//number of samples for mean value
+volatile int numOfSamples = 50;		//number of samples for mean value
 volatile int savepos = 0;			//counter for the storage array
 
-volatile int sensor0[30];			//arrays for sensordata
-volatile int sensor1[30];
-volatile int sensor2[30];
-volatile int sensor3[30];
-volatile int sensor4[30];
-volatile int sensor5[30];
-volatile int sensor6[30];
+volatile int sensor0[50];			//arrays for sensordata
+volatile int sensor1[50];
+volatile int sensor2[50];
+volatile int sensor3[50];
+volatile int sensor4[50];
+volatile int sensor5[50];
+volatile int sensor6[50];
 
 
 volatile long int sen0;				//integers for mean distance
@@ -40,7 +42,7 @@ volatile bool ADCdone = false;		//Flag for checking if ADC is done
 double spanning = 0;				//ADC-value without 5v ref
 bool blacksegment = false;
 int segmentsTurned = 0;
-bool wheelmode = false;
+bool wheelmode = true;				
 
 //------------------USART-------------------------
 unsigned char indata;				//data from USART-reading
@@ -53,6 +55,8 @@ volatile double moturs = 130;		//constant to end left turn
 volatile double angle = 0;			//constant for angle
 volatile double gyrovila = 0;		//calibration constant for reference
 Slave sensormodul;					//construct the slave "sensormodul"
+
+int wheelTrim = 0;
 
 //-------------------------------Init--------------------------------------
 //Usart initialization
@@ -85,7 +89,6 @@ void Timer_Init()
 	TIMSK0 = 0x00;			//dont't allow time-interrups
 }
 
-//determines color of starsegment on wheel
 void Wheel_Init()
 {
 	int saveADMUX = ADMUX;
@@ -101,11 +104,12 @@ void Wheel_Init()
 	ADMUX = saveADMUX;
 }
 
+
 //------------------------------------------------------------------------------
 //calibration of reference constant "gyrovila"
 void gyrocal(){
 	ADMUX = 0x27;							//set ADMUX to input 7, ADC gets it's data from gyro
-	volatile int i = 0;						//loopsegmentsTurned
+	volatile int i = 0;						//loopcounter
 	while(i < 100){							//loop
 		asm("");
 		ADCdone = false;					//set ADC flag to false
@@ -113,11 +117,45 @@ void gyrocal(){
 		while(!ADCdone);					//wait until ADC is done
 		cli();
 		gyrovila = spanning + gyrovila;		//sum 100 measurements
-		i++;								//add one to segmentsTurned
+		i++;								//add one to counter
 		sei();
 	}
 	gyrovila = gyrovila/100;				//calculate mean constant
 	ADMUX = 0x20;							//set ADMUX to input 0
+}
+
+void TrimWheel(){
+	int squareDifference = 0;
+	if(sen2 < 70){						//back short
+		squareDifference = sensor2[savepos - 1] % 40;
+		if(squareDifference > 13){
+			wheelTrim = wheelTrim - 1;
+		}
+		else if(squareDifference < 7){
+			wheelTrim = wheelTrim + 1;
+		}
+	}
+	else if(sen1 < 200){				//back long
+		squareDifference = sensor1[savepos - 1] % 40;
+		if(squareDifference > 13){
+			wheelTrim = wheelTrim - 1;
+		}
+		else if(squareDifference < 7){
+			wheelTrim = wheelTrim + 1;
+		}
+	}
+	else if(sen4 < 60){					//front short
+		squareDifference = sensor4[savepos - 1] % 40;
+		if(squareDifference > 13){
+			wheelTrim = wheelTrim + 1;
+		}
+		else if(squareDifference < 7){
+			wheelTrim = wheelTrim - 1;
+		}
+	}
+	else{
+		wheelTrim = 0;
+	}
 }
 
 //handles data from SPI
@@ -157,7 +195,7 @@ void handleInDataArray(){
 		UCSR0B |= (1<<RXCIE0);							//enable USART interrups
 	}
 	//reset segmentsTurned
-	else if(sensormodul.inDataArray[1] == 'd'){
+	else if(sensormodul.inDataArray[1] == 'w'){
 		segmentsTurned = 0;
 		Wheel_Init();
 		wheelmode = true;
@@ -203,11 +241,15 @@ void sendSensors(){
 	sensormodul.outDataArray[24] = (RfidCount/100);
 	sensormodul.outDataArray[25] = ((RfidCount/10) %10);
 	sensormodul.outDataArray[26] = (RfidCount % 10);
+	
+	
+	if (sensormodul.outDataArray[9] == 0){
+		volatile int p = 0;
+		p++;
+	}
 
     sensormodul.SPI_Send();			//send outDataArray
 }
-
-
 //------------------------------------INTERRUPTS---------------------------------
 
 //SPI interrupt
@@ -260,6 +302,8 @@ ISR(USART0_RX_vect){
 		sensormodul.outDataArray[0] = 1;
 		sensormodul.outDataArray[1] = 'R';
 		sensormodul.SPI_Send();				//send outDataArray
+		savepos = 0;
+		ADMUX = 0x20;				
 		UCSR0B &= ~(1<<RXCIE0);				//disable USART interrups
 	}
 }
@@ -277,10 +321,9 @@ int main(void)
 	Sensor_Init();			//run sensor initialization
 	USART_Init(383);		//run USART initialization
 	Timer_Init();			//run timer initialization
-	
+	Wheel_Init();			//init for wheel, starting segment
 	sei();					// Enable Global Interrupts
 	gyrocal();				//run gyro calibration
-	Wheel_Init();
 	ADCSRA |= 1<<ADSC;		// Start Conversion
 	
 	while(1){				// Wait forever
@@ -299,6 +342,8 @@ int main(void)
 				sensormodul.outDataArray[0] = 1;
 				sensormodul.outDataArray[1] = 'G';
 				sensormodul.SPI_Send();		//send 90 degree turn is complete
+				savepos = 0;
+				ADMUX = 0x20;		
 			}
 			sei();				//allow interrupts
 		}
@@ -314,20 +359,24 @@ int main(void)
 				segmentsTurned++;
 				blacksegment = false;
 			}
-			if(segmentsTurned > 21){
+			if(segmentsTurned > 20 + wheelTrim){
+				//------------Send------------------------------
 				sensormodul.outDataArray[0] = 1;
-				sensormodul.outDataArray[1] = 'D';
+				sensormodul.outDataArray[1] = 'W';
 				sensormodul.SPI_Send();		//send 90 degree turn is complete
 				wheelmode = false;
-				segmentsTurned = 0;
-				sen0 = sen0 +1;
+				//------------Trim--------------------------------
+				TrimWheel();
+				sen0 = wheelTrim+20;
+				savepos = 0;
+				ADMUX = 0x20;
 			}
 			asm("");
 		}
 		
 		if(ADMUX == 0x21){		//get distance from sensor A1 with conversion formula
 			asm("");
-			sensor1[savepos]	= round(11.2*pow(spanning,4)-119.5*pow(spanning,3)+422.2*pow(spanning,2)-645*spanning+427.3);
+			sensor1[savepos]	= round(1.031*pow(spanning,4)-68*pow(spanning,3)+364.8*pow(spanning,2)-683.2*spanning+492.2);
 		}
 				
 		if( (ADMUX == 0x22)){	//get distance from sensor A2 with conversion formula
@@ -365,7 +414,7 @@ int main(void)
 		}
 		
         if(savepos == numOfSamples){	//if all readings are done
-            sen1 = average(sensor1);	//get average distance from sensors
+            sen1 = average(sensor1);
             sen2 = average(sensor2);
             sen3 = average(sensor3);
             sen4 = average(sensor4);

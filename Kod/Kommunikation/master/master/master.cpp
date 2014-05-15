@@ -35,47 +35,24 @@ Spi Bus(&Firefly,&buffer);
 Lcd Display;
 
 /*
- *	Handeling data from modules
- *  The specific codewords are specified in the document kodord.txt.
- *  sendArray(i) sends to the i:th module. 
- *  i=0 is the sensorModule and i=1 is the steerModule.
- *  These functions are not called on from interrupts.
- */
-
-//Timer initialization
-void Timer_Init()
-{
-	TCNT0 = 0x00;			//set timer to 0
-	TCCR0B = 0x04;			//pre-scalar 256 på timer
-	TIMSK0 = 0x00;			//dont't allow time-interrups
-}
-
-//Timer overflow interrupt
-ISR(TIMER0_OVF_vect){
-	asm("");
-	Firefly.rdyForRow = true;
-	TIMSK0 = 0x00;		//don't allow time-interrups
-}
+*	Handeling data from modules
+*/
 
 void handleDataFromSteer(){
 	
 	ReceiveFromSteer=false;
 	memcpy(Bus.buffer, Bus.inDataArray,27);
-	
-	if(Bus.buffer[1] == 'T'){
-		memcpy(Firefly.outDataArray,Bus.buffer,27);
-		Firefly.sendArray();
-	}
 	if(Bus.buffer[1]=='M'){
-		memcpy(buffer.mapArea[Bus.buffer[2]],Bus.buffer,27);
-		Bus.latestRow = Bus.buffer[2];
-		//Confirm received map section
-		Bus.outDataArray[0] = 1;
-		Bus.outDataArray[1] = 'm';
-		Bus.sendArray(1);
-		//If last row, start sending it to PC.
-		if(Bus.latestRow == 31){
-			Firefly.mapDone = true;
+		memcpy(Firefly.outDataArray, Bus.buffer,27);
+		memcpy(buffer.mapArea[Firefly.outDataArray[2]],Firefly.outDataArray,27);
+		if((int)Firefly.mapNumber==31){
+			Firefly.sendMap();
+			Firefly.getMap = false;
+			Firefly.mapNumber = 0;
+		}
+		else{
+			Firefly.mapNumber++;
+			Firefly.getMap = true;
 		}
 	}
 	if(Bus.buffer[1]=='g'){
@@ -89,11 +66,6 @@ void handleDataFromSteer(){
 		Bus.outDataArray[1] = 'r';
 		Bus.sendArray(0);
 	}
-	if(Bus.buffer[1]=='d'){
-		Bus.outDataArray[0] = 1;
-		Bus.outDataArray[1] = 'd';
-		Bus.sendArray(0);
-	}
 }	
 
 void handleDataFromSensor(){
@@ -104,10 +76,8 @@ void handleDataFromSensor(){
 		// copy data to Bus outDataArray
 		memcpy(Bus.outDataArray, Bus.buffer,27);
 		Bus.sendArray(1);
-		
 		memcpy(Firefly.outDataArray, Bus.buffer,27);
 		Firefly.sendArray();
-
 		//inserts data from all sensors into the Display-buffer
 		if (Display.bufferWritten)
 		{
@@ -124,56 +94,33 @@ void handleDataFromSensor(){
 		Bus.outDataArray[1] = 'R';
 		Bus.sendArray(1);
 	}
-	if(Bus.buffer[1] == 'D'){
-		Bus.outDataArray[0] = 1;
-		Bus.outDataArray[1] = 'D';
-		Bus.sendArray(1);
-	}
 }
 
 #if DEBUG == 0
 /*
 *	INTERUPTS
 */
-
-
-/*
- *  Interrupt fires when data from BT-module arrive.
- */
-
-
+//bluetooth interupt
 ISR(USART0_RX_vect)
 {
 	Firefly.receiveArray();
 }
 
-/*
- *  Interrupt from steermodule telling us to fetch data from them.
- *  Sets bool fro receiving true so data can be handled in main.
- */
-
+//Steer module wants to send data
 ISR(INT2_vect){
 	cli();
 	Bus.receiveArray(1);
 	ReceiveFromSteer = true;
 	sei();
 }
-/*
- *  Interrupt from sensormodule telling us to fetch data from them.
- *  Sets bool fro receiving true so data can be handled in main.
- */
-
+//Sensor module wants to send data
 ISR(INT1_vect){
 	cli();
 	Bus.receiveArray(0);
 	ReceiveFromSensor = true;
 	sei();
 }
-
-/*
- *  Interrupt from manual/auto button. Switches mode.
- */
-
+//Handle auto/manual button event
 ISR(INT0_vect){
 	cli();
 	if(!Firefly.autonom){
@@ -204,15 +151,9 @@ ISR(INT0_vect){
 
 #endif
 
-/*
- *  MainLoop, checks which receive bool that is true and handles the data. 
- *  also once per iteration updates the display (either position or character, see
- *  lcd.cpp for details). If the bool mapDone = true the mainloop also sends one 
- *  row of map-data to PC.
- */
+
 int main(void)
 {
-	Timer_Init();
 	DDRA |= (1<<PORTA4);
     Firefly.setPointer(&Bus,&buffer);
 	sei();
@@ -226,27 +167,15 @@ int main(void)
 		if(ReceiveFromSensor){
 			handleDataFromSensor();
 		}
-		
-		/* In its current implementation this function is delaying the master by 25  ms. 
-				In that time the master might miss to relay for instance the stopRotation command.*/
-		
-		if(Firefly.mapDone && Firefly.rdyForRow ){
-			Firefly.sendMap();
-			
-			// When all sent - do this
-			if(Firefly.rowToSend > 31){
-				Firefly.mapDone = false;
-				Firefly.rowToSend = 0;
-				Firefly.rdyForRow = true;
-			}
+		if(Firefly.getMap){
+		Bus.requestRow(Firefly.mapNumber);
+		Firefly.getMap = false;
 		}
-		
-		
 		Display.update();
 		
 		
 		
-		 // this turns on a LED when in auto-mode.
+		 // lampan tänds vid autonom körning
 		if(Firefly.autonom){
 			PORTA |=(1<<PORTA4);
 		}
@@ -254,5 +183,4 @@ int main(void)
 			PORTA &= ~(1<<PORTA4);
 		}
 	}
-	
 }

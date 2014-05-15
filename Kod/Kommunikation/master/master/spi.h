@@ -21,6 +21,7 @@ class Spi
 {
     
 public:
+	unsigned char* getInDataArray();
 	Spi(Bluetooth*,Map*);
 	void init();
     char transfer(char, unsigned int);
@@ -32,8 +33,6 @@ public:
     unsigned char inDataArray[27];
     unsigned char outDataArray[27];
 	unsigned char buffer[27];
-   
-   volatile unsigned int latestRow = 31; 
    
 private:
     unsigned int  position = 0;

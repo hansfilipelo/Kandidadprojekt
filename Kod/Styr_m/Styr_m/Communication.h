@@ -1,10 +1,11 @@
 #ifndef _Communication_h
 #define _Communication_h
 
+#define F_CPU 14745600
+
 #include <stdio.h>
 #include "slave.h"
 
-#include "MapSection.h"
 #include "Abstraction.h"
 
 class MapSection;
@@ -21,10 +22,7 @@ public:
     void sendMap();
     void sendRotateRequest();
 	void reactivateRFID();
-    void initSendMap();
-	
-	
-	void activateWheelSensor();
+	void reactivateWheelSensor();
     
 //flyttade från protected
 	unsigned char inData[27];
@@ -33,21 +31,15 @@ public:
 	int row = 0;
     double assembleDouble(char, char, char, char);
 	bool getManual();
-	bool wheelHasTurned=false;
-	
-	void time0();
-	void time1();
     
     
 protected:
     
-    void sensorArrayToVariables();
-    void sendRow(unsigned int);
+    
 	bool manual = true;
     int dataLength;
     Slave* slavePointer;
     Robot* robotPointer;
-	volatile bool mapConfirmation = false;
 	
 };
 

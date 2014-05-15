@@ -1,7 +1,5 @@
-#ifndef __AVR_ATmega1284P__
-#define DEBUG 1
-#else
-#define DEBUG 0
+#ifdef __APPLE__
+#define TESTING 1
 #endif
 
 #include <stdio.h>
@@ -18,24 +16,30 @@ int main(){
     
     //Initiate
     Map* mom = new Map();
+    mom->initMap();
     Slave* testSlave = new Slave();
     Communication* testComm = new Communication(testSlave);
-    Robot* testRobot = new Robot(16,1,mom, testComm);
+    Robot* testRobot = new Robot(16,2,mom, testComm);
     testComm->setRobot(testRobot);
     
-    mom->initMap();
+    // Map testing
+    // -----------------------------
+    cout << "--------" << " Printing map " << "--------" << endl;
     mom->printMap();
+    cout << endl;
     
-    if (mom->getPos(1,1)->isClosed(1,1,0)) {
-        cout << "True!" << endl;
+    if ( mom->getPos(16,1)->isClosed(16,1,0,-3) ) {
+        cout << "Map is closed." << endl;
+        
+        mom->getPos(1,1)->cancer();
+        mom->getPos(16,8)->cancer();
+        mom->printMap();
     }
-    else {
-        cout << "False... " << endl;
+    else{
+        cout << "Map is NOT closed." << endl;
     }
     
-    mom->fillClosedArea();
-    mom->printMap();
-    
+    // Delete
     delete testRobot;
     delete mom;
     

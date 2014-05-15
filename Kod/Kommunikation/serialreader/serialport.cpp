@@ -1,20 +1,9 @@
-/*
- *  MapMaster2001
- *  Erik Ekelund, David Habrman, Tobias Grundström,
- *  Hans-Filip Elo, Niklas Ericsson, Jens Edhammer
- *
- *  TSEA56 2014.
- *
- */
-
-
 #include "serialport.h"
 
 #include <QCoreApplication>
 #include <iostream>
 #include <QDebug>
 #include <QChar>
-#include <QTime>
 
 QT_USE_NAMESPACE
 
@@ -31,30 +20,26 @@ SerialPort::~SerialPort()
 {
 }
 
-/* 
- *  Write exactly 27 bytes of data to port. Our char arrays are not nullterminated. Will cause issue if not for 27 bytes max.
- *  Wait for a maximum och 0.6 seconds for successful transmission.
+/* Write exactly 27 bytes of data to port. Our char arrays are not nullterminated. Will cause issue if not for 27 bytes max.
+ * Wait for a maximum och 0.6 seconds for successful transmission.
  */
 
 
 void SerialPort::sendArray(const char inArray[27]){
-
     port->write(inArray,27);
-    port->waitForBytesWritten(400);
-
+    port->waitForBytesWritten(600);
 }
 
 
-/*
- *  handleReadyRead(). tempData is the data from potential previous transmission. if the current transmission added with the previous
- *  transmission has a length of less than 27 it is saved in tempData and we leave the readyread to accept more data.
- *  On 27 or more bytes, 27 bytes of data are sent to handleData, excess is stored in tempData for future transmissiondata.
+/*handleReadyRead(). tempData is the data from potential previous transmission. if the current transmission added with the previous
+ * transmission has a length of less than 27 it is saved in tempData and we leave the readyread to accept more data.
+ * On 27 or more bytes 27 bytes of data are sent to handleData, excess is stored in tempData for future transmissiondata.
+ * This function is not fully tested yet.
  */
 
 void SerialPort::handleReadyRead() {
-
+    
     QByteArray inData;
-
     
     int inBytes = port->bytesAvailable();
     int tempBytes = tempData.length();
@@ -67,7 +52,6 @@ void SerialPort::handleReadyRead() {
         handleData(tempData);
         inData.clear();
         tempData.clear();
-        test.start();
         return;
     }
     if(checkBytes < 27){                //too little data to handle, save data and leave rdyread.
@@ -87,8 +71,7 @@ void SerialPort::handleReadyRead() {
 }
 
 
-/*
- *  Function for conversion and deepcopy from QByteArray to char array.
+/*Function for conversion and deepcopy from QByteArray to char array.
  */
 
 char* SerialPort::QByteToArray(QByteArray inArray)
@@ -99,27 +82,25 @@ char* SerialPort::QByteToArray(QByteArray inArray)
     return outData;
 }
 
-/*
- *  Pointer to gui neccessary for handleData.
+/*Pointer to gui neccessary for handleData.
  */
 
 void SerialPort::setGui(Gui* ptr){
     GUI = ptr;
 }
 
-/*
- *  Errorhandling of serialport. Currently only informs.
+/*Errorhandling of serialport. Currently only informs. Improvement would be to have it reconnect.
  */
 
 void SerialPort::handleError(QSerialPort::SerialPortError serialPortError)
 {
     if (serialPortError == QSerialPort::ReadError) {
         m_standardOutput << QObject::tr("An I/O error occurred while reading the data from port %1, error: %2").arg(port->portName()).arg(port->errorString()) << endl;
+        //QCoreApplication::exit(1);
     }
 }
 
-/*
- *  Passing and preformatting data that arrives from serialport and handleReadyRead.
+/*Passing and preformatting data that arrives from serialport and handleReadyRead.
  */
 
 void SerialPort::handleData(QByteArray inData){
@@ -127,22 +108,11 @@ void SerialPort::handleData(QByteArray inData){
         int row = (int)QByteToArray(inData)[2];
         std::cout << row << std::endl;
         memcpy(GUI->mapArea[row],QByteToArray(inData),27);
-        this->rowReceived();
         if(row == 31){
             GUI->updateMap();
         }
         return;
     }
-    if(inData[1] == 'T'){
-        if((int)inData[2] == 0){
-            test.start();
-        }
-        else if((int)inData[2] == 1){
-            std::cout << test.elapsed() << std::endl;
-            test.start();
-        }
-    }
-
     if(inData[1] == 'S'){
 
         int sen0 = 100*inData[3]+10*inData[4]+inData[5];
@@ -155,12 +125,8 @@ void SerialPort::handleData(QByteArray inData){
         int sen7 = 100*inData[24]+10*inData[25]+inData[26];
 
         GUI->updateSensorValues(sen0,sen1,sen2,sen3,sen4,sen5,sen6,sen7);
+
+        //std::cout << sen0 << '\n' << sen1 << '\n' << sen2 << '\n' << sen3 << '\n' << sen4 << '\n' << sen5 << '\n' << sen6 << '\n' << sen7 << std::endl;
+
     }
-}
-
-void SerialPort::rowReceived()
-{
-    char data[27] = {2,'Y',0,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30};
-    sendArray(data);
-
 }
