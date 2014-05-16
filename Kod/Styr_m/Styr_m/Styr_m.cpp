@@ -86,6 +86,7 @@ void pwm_init()
 	PORTD |= (0<<PORTD4) | (0<<PORTD5);
 }
 
+#endif
 
 // ----------------------------------------
 // Main
