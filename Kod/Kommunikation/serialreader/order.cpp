@@ -22,6 +22,12 @@ Order::~Order(){
 //    serport->sendArray(data);
 //}
 
+void Order::btReset(){
+
+    char data[27] = {'x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x'};
+    serport->sendArray(data);
+}
+
 void Order::rotateLeft(int speed){
 
     char data[27] = {3,'r',0,(char)speed,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30};

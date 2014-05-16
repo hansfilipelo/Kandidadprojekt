@@ -318,7 +318,7 @@ void Gui::updateMap(){
     qDeleteAll( scene->items());
     for (int rad = 0; rad < 32; rad++){
         for(int kol = 3; kol < 20; kol ++){
-            QGraphicsRectItem*   temp = new QGraphicsRectItem(31-(kol-3)*10,rad*10,10,10);
+            QGraphicsRectItem*   temp = new QGraphicsRectItem((kol-3)*10,(31-rad)*10,10,10);
             if(mapArea[rad][kol]=='e'){
                 temp->setBrush(Qt::green);
                 scene->addItem(temp);
@@ -337,7 +337,7 @@ void Gui::updateMap(){
                 scene->addItem(temp);
             }
             else if(mapArea[rad][kol]=='r'){
-                QGraphicsEllipseItem* robot = new QGraphicsEllipseItem(31-(kol-3)*10,rad*10,10,10);
+                QGraphicsEllipseItem* robot = new QGraphicsEllipseItem((kol-3)*10,(31-rad)*10,10,10);
                 robot->setBrush(Qt::black);
                 temp->setBrush(Qt::green);
                 scene->addItem(temp);
@@ -464,4 +464,9 @@ void Gui::on_actionReview_Data_triggered()
 void Gui::on_actionSave_Data_triggered()
 {
     saveToFile();
+}
+
+void Gui::on_btResetButton_pressed()
+{
+    bluetooth->btReset();
 }

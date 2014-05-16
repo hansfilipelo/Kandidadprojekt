@@ -26,6 +26,7 @@ SerialPort::~SerialPort()
 
 
 void SerialPort::sendArray(const char inArray[27]){
+    port->flush();
     port->write(inArray,27);
     port->waitForBytesWritten(600);
 }

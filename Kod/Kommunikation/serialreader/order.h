@@ -22,6 +22,7 @@ public:
     ~Order();
 
    // void setPID(int,int);
+    void btReset();
     void rotateLeft(int);
     void rotateRight(int);
     void turnDone();

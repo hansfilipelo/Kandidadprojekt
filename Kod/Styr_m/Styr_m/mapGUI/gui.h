@@ -78,6 +78,8 @@ private slots:
 
     void on_actionSave_Data_triggered();
 
+    void on_btResetButton_pressed();
+
 private:
     graphWindow* graph;
     QTime time;

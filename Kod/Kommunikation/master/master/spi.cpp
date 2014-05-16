@@ -77,7 +77,7 @@ void Spi::receiveArray(unsigned int slave){
 	
 	inDataArray[0] = transfer(0x00,slave);
 	unsigned int length = inDataArray[0];
-	_delay_us(3);//om data inte kommer fram korrekt, testa dÂ att hˆja denna.
+	_delay_us(3);
 	for (unsigned int i=1; i<=length; i++)
 	{
 		inDataArray[i] = transfer(0x00, slave);

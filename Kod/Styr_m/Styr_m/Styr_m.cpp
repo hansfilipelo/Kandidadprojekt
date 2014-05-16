@@ -144,8 +144,8 @@ int main(void)
     // Set up interrupts
 	cli();
 	MCUCR = 0b00000000;
-	EIMSK = 0b00000011;
-	EICRA = 0b00001111;
+	//EIMSK = 0b00000011;
+	//EICRA = 0b00001111;
 	SMCR = 0x01;
 	
     // Initiates PWM
