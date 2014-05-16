@@ -325,6 +325,7 @@ int main(void)
 	sei();					// Enable Global Interrupts
 	gyrocal();				//run gyro calibration
 	ADCSRA |= 1<<ADSC;		// Start Conversion
+	sen0 = 0;
 	
 	while(1){				// Wait forever
 		
@@ -359,17 +360,20 @@ int main(void)
 				segmentsTurned++;
 				blacksegment = false;
 			}
-			if(segmentsTurned > 20 + wheelTrim){
+			if(segmentsTurned > 20){// + wheelTrim){
 				//------------Send------------------------------
 				sensormodul.outDataArray[0] = 1;
 				sensormodul.outDataArray[1] = 'W';
+				sen0++;
 				sensormodul.SPI_Send();		//send 90 degree turn is complete
 				wheelmode = false;
-				//------------Trim--------------------------------
-				TrimWheel();
-				sen0 = wheelTrim+20;
 				savepos = 0;
 				ADMUX = 0x20;
+				//------------Trim--------------------------------
+				//TrimWheel();
+				//sen0 = wheelTrim+20;
+				
+				
 			}
 			asm("");
 		}

@@ -466,6 +466,10 @@ void Robot::rotateLeft(){
 	fwdDiff = 0;
 	bwdDiff = 0;
 	
+	
+	//send map 
+	
+	commObj->sendMap();
     // Send request to sensor module to measure angle
     commObj->sendRotateRequest();
 	
@@ -519,6 +523,12 @@ void Robot::rotateRight(){
 	// Seft diffs to 0
 	fwdDiff = 0;
 	bwdDiff = 0;
+	
+	
+	//send map
+	
+	commObj->sendMap();
+	
 	//---------
 	// First send stuff to sensor module
 	// When we have rotated 90 degrees sensor module will send a signal which will deactivate rotate
@@ -681,7 +691,7 @@ void Robot::setFwdClosed(){
 				 mom->convertSection(xCoord,yCoord + i + 1, 'e');
 			}
 		}
-        if(output == 0){
+        if(output == 0 && getFwdDistance()<20){
 	        mom->convertSection(xCoord,yCoord + 1, 'c');
         }
 	}
@@ -697,7 +707,7 @@ void Robot::setFwdClosed(){
 				mom->convertSection(xCoord,yCoord - i - 1, 'e');
 			}
         }
-		if(output == 0){
+		if(output == 0 && getFwdDistance()<20){
 			mom->convertSection(xCoord,yCoord - 1, 'c');
 		}
 	}
@@ -713,7 +723,7 @@ void Robot::setFwdClosed(){
 				mom->convertSection(xCoord + i + 1,yCoord, 'e');
 			}
         }
-		if(output == 0){
+		if(output == 0 && getFwdDistance()<20){
 			mom->convertSection(xCoord + 1,yCoord, 'c');
 		}
 	}
@@ -729,7 +739,7 @@ void Robot::setFwdClosed(){
             mom->convertSection(xCoord - i - 1,yCoord, 'e');
 			}
         }
-		if(output == 0){
+		if(output == 0 && getFwdDistance()<20){
 			mom->convertSection(xCoord - 1,yCoord, 'c');
 		}
 	}	
@@ -1078,10 +1088,10 @@ void Robot::updateRobotPosition(){
 				return;
 		}
 	
-		//setFwdClosed();
-		//setBwdClosed();
-		//setRightClosed();
-		//setLeftClosed();
+		setFwdClosed();
+		setBwdClosed();
+		setRightClosed();
+		setLeftClosed();
 	}
 }
 

@@ -143,33 +143,23 @@ Under roboten sitter en RFID-läsare för upptäcka RFIDmarkerade brandhärder.
 \subsection{Kommunikation via buss}
 En buss med protokoll SPI kommer att sköta kommunikationen mellan robotens tre delsystem. SPI-protokollet är ett fullt-duplext kommunikationsprotokoll som fungerar genom att byta 8 lokala bitar med 8 bitar från modulen den kommunicerar med. 
 
-Kommunikation via bluetooth och buss följer ett speciellt protokoll. Protokollet är konstruerat så att den första byten definierar alltid längden på meddelandet. Nästföljande 2 bytes definierar kommandotyp och argument till den typen. Efter de 3 första bytes följer godtyckligt lång datamängd.  
-
-\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
-  \begin{center}
-  \includegraphics[keepaspectratio=true,scale=0.6]{bilder/bussprotokoll}  %skala och filnamn. 
-  \end{center}
-  \caption{Översiktsbild av kommunikationsprotokollet} %figurtext.
-  \label{fig:bussprotocol}
-\end{figure}
-
+Kommunikation via bluetooth och buss följer ett speciellt egendefininerat protokoll. 
 
 % ----------------------------- Kommunikationsmodul ------------------------------
 % --------------------------------------------------------------------------------
 
 
 \section{Kommunikationsmodul}
-Modul för att hantera kommunikation mellan robotens olika delkomponenter samt med persondatorn via Blåtand. Kommunikationsmodulen som syns i figur 3, kommer att agera master på robotens interna buss. Vid kommunikation mellan övriga moduler, dvs. sensor- och 'en, kommer denna gå via kommunikationsmodulen.
-Kommunikationsmodulen kommer alltså att leverera sensordata mellan roboten och mjukvaran som körs på persondatorn.
+Modulen hanterar kommunikation mellan robotens olika delkomponenter samt med persondatorn via Blåtand. Kommunikationsmodulen som syns i figur 3, kommer att agera master på robotens interna buss. Vid kommunikation mellan övriga moduler, dvs. sensor- och styrmodulen, kommer denna gå via kommunikationsmodulen. Kommunikationsmodulen levererar sensordata och manuella styrkommandon mellan roboten och PC-mjukvaran.
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
-  \includegraphics[keepaspectratio=true,width=\linewidth]{bilder/komoverview.png}  %skala och filnamn. 
+  \includegraphics[keepaspectratio=true,width=\linewidth]{bilder/kom_overview.png}  %skala och filnamn. 
   \end{center}
   \caption{Översiktsbild av kommunikationsdelen av systemet} %figurtext.
   \label{fig:overview}
 \end{figure}
-
+\newpage
 \subsection{Kommunikationsfall}
 Ett par exempel på kom\-mun\-ikations\-fall.
 
@@ -180,9 +170,6 @@ Fall 1: Kommunikationsmodulen skickar manuella styrkommandon till styrmodulen, s
 Fall 2: Sensormodulen signalerar att ny sensordata är redo, se  figur~\ref{fig:case2flow}.
 
 Fall 3: Kartdata skickas från kommunikationsmodulen till PC, se figur~\ref{fig:case3flow}. 
-
-Fall 4: PC signalerar nödstop, se figur~\ref{fig:case4flow}. 
-
  
 \subsection{Komponenter}
 \begin{itemize}
@@ -191,41 +178,25 @@ Fall 4: PC signalerar nödstop, se figur~\ref{fig:case4flow}.
   \item LCD-Display
   \item Två stycken knappar
   \item Kristalloscillator EXO-3, 14.745 MHz
+  \item Lysdiod
+  \item Bandkabel
 \end{itemize}
 
 \subsection{Buss}
-Mellan processorerna kommer SPI-kommunikation att användas. Kommunikationsmodulen agerar master medan styr- och sensormodul agerar slave. 
+Mellan processorerna används SPI som bussprotokoll. Kommunikationsmodulen agerar master medan styr- och sensormodul agerar slave. Kommunikation kommer alltid att initieras av master och om slave vill skicka data, genererar de ett avbrott på master som talar om att de har data som är redo att skickas. 
 
-\subsubsection{Styrord}
-Kommunikation kommer starta med att ett styrord skickas. Ett styrord kommer bestå av ett 8-bitars paket (xxxxyyyy). De fyra mest signifikanta bitarna står för kommandot medan de 4 minst signifikanta bitarna står för antalet byte som kommer att följa som argument till kommandot. I tabellerna nedan visas detta mer utförligt. \\
+\subsubsection{Kommunikationsprotokoll}
+Roboten har ett speciellt kommunikationsprotokoll som används både av Bluetooth och SPI-bussen. Protokollet är konstruerat så att den första byten definierar alltid längden på meddelandet. Nästföljande 2 bytes definierar kommandotyp och argument till den typen. Efter de 3 första bytes följer godtyckligt lång datamängd se figur 3.
 
- \begin{tabular}{| p{3cm} | p{3.5cm} |}
-	    \hline
-		\textbf{xxxx} & \textbf{Kommandonr.} \\ \hline
-		0000 & 1 \\ \hline
-		0001 & 2 \\ \hline
-		... & ... \\ \hline
-		1111 & 17 \\ \hline
-	    \end{tabular}
-		\\
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,scale=0.6]{bilder/bussprotokoll}  %skala och filnamn. 
+  \end{center}
+  \caption{Översiktsbild av kommunikationsprotokollet} %figurtext.
+  \label{fig:bussprotocol}
+\end{figure}
 
- \begin{tabular}{| p{3cm} | p{3.5cm} |}
-	    \hline
-		\textbf{yyyy} & \textbf{Antal bytes data} \\ \hline
-		0000 & 1 \\ \hline
-		0001 & 2 \\ \hline
-		... & ... \\ \hline
-		1111 & 17 \\ \hline
-	    \end{tabular}
-		\vspace{0.5cm}
-		
-		Detta betyder alltså att master kan skicka 16 unika kommandon till respektive slave och varje slave kan skicka 16 unika kommandon till master. Kommandon kan följas av ett upp till och med 17 bytes av data. I händelsen att ett meddelande inte behöver skicka data så skickas en byte nollor.
-
-
-		Kommandon kommer att kunna betyda olika på de olika processorerna. 0001 kan t ex på slave1 betyda åk rakt längs väggen, på slave2 betyda läs av sensor 3, och på master uppdatera kartabstraktion med följande värden. Om likadana kommandon finns på flera processorer så ska de ha samma kodord på alla processorer som delar kommandot. Ett kommando är reserverat på båda slaves för ett kommando från master som säger du kan skicka information nu. En slave kommer också att kunna skicka ett avbrott till Master för att be om kommunikation. En lista av de olika kodorden finns i appendix. 
-		
-På både mottagar- och sändarsida kommer en buffer i form av en länkad lista finnas. Denna lista fylls med data som tas emot och läses från när data ska skickas. 
-
+Alla olika kommadotyper är definierade i appendix C. 
 
 \subsubsection{Busstrafik}
 På bussen kommer följande data att skickas.
@@ -241,14 +212,20 @@ Kartabstraktionen och robotens position kommer att uppdateras allt eftersom ny s
 \paragraph{Kommandon för inställning av reglerparametrar.}
 ~\\
 Kommandon mottags via blåtand från PC på mastern, som skickar detta vidare till styrenheten. 
+\paragraph{RFID aktivering och bekräftelse}
+~\\
+Kommandot skickas från styrmodulen via mastern som speglar ner kommandot till sensormodulen. Sensormodulen startar då RFID-läsning och skickar bekräftelse till styrmodulen när RFID-kortet är detekterat.  
 
+\paragraph{Gyro aktivering och bekräftelse}
+~\\
+Kommandot skickas från styrmodulen via mastern som speglar ner kommandot till sensormodulen. Sensormodulen startar då Gyro-omvandling och skickar bekräftelse till styrmodulen när roboten har roterat 90 grader är detekterat. 
 
-\subsubsection{Ack-paketets struktur}
-Ett sista paket som följer direkt efter datapaketen kommer att skickas. Detta paket är ack-paketet och kommer vara additionen av samtliga datapaketets lägsta bit. Detta ger mottagarsidan en möjlighet att kontrollera att datapaketen mottogs korrekt.
-Både sändaren och mottagaren skickar ett sådant ack-paket samtidigt, detta ger oss möjlighet att göra om sändningen direkt, utan att lämna ett eventuellt avbrott. Försök att skicka data utförs tre gånger, om det fortfarande inte lyckats skicka korrekt data, avbryts försöken och lämnas över till felhantering. 
+\paragraph{Hjulsensor aktivering och bekräftelse}
+~\\
+Kommandot skickas från styrmodulen via mastern som speglar ner kommandot till sensormodulen. Sensormodulen startar då en hjulsensormätning och skickar bekräftelse till styrmodulen när roboten har åkt fram 40 cm är. 
 
 \subsection{LCD-Display}
-Sensordata och annan information från roboten kommer att visas på en alfanumerisk-display, närmare bestämt  LCD JM162A. Displayen kommer att kunna visa 2 rader × 16 tecken.
+Sensordata och annan information från roboten visas på en alfanumerisk-display, närmare bestämt  LCD JM162A. Displayen kommer att kunna visa 2 rader × 16 tecken.
 Displayen kommer anslutas till processorn enligt kretschemat i appendix A. 
 Vid varje uppstart kommer initiering av LCD-display göras och då följa nedanstående flödesschema. Varje steg startas med att processorn skickar ett kommando till ingångarna på LCD-displayen. Kommandon finns specificerade i databladet, se (fotnot https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/jm162a.pdf). 
 
@@ -620,6 +597,35 @@ Vilka förbättringar skulle kunna göras?
   \caption{Flödesdiagram för Fall 4.} %figurtext.
   \label{fig:case4flow}
 \end{figure}
-\thispagestyle{empty}
+\clearpage %flushes picture cache to place now
+\newpage
+
+\section{Appendix C - Kommandon}
+
+\begin{tabular}{| p{4cm} | p{2.5cm} | p{2.5cm} | p{2.5cm} | p{3.7cm} |}
+	\hline
+	\textbf{Beskrivning} & \textbf{Datalängd} & \textbf{Kommando} & \textbf{Argument} & \textbf{Data} \\ \hline
+	Rotera vänster & 3 & r & 0 & 1 byte, speed \\\hline
+	Rotera höger & 3 & r & 1 & 1 byte, speed \\\hline
+	Halt & 3 & h & 0 & - \\\hline
+	Framåt & 3 & f & 0 & 1 byte, speed \\\hline
+	Bakåt & 3 & b & 0 & 1 byte, speed \\\hline
+	Fetch Map & 1 & F & - & -\\\hline
+	Gyro kalibrering & 2 & g & 0 & - \\\hline
+	Aktivera gyro & 2 & g & 1 & - \\\hline
+	Deaktivera gyro & 2 & g & 2 & - \\\hline
+
+	Gyro 90 grader & 1 & G & - & - \\\hline
+	RFID detekterad & 1 & R & - & - \\\hline
+	Aktivera RFID & 1 & r & - & - \\\hline
+	Kartkolumn & 19 & M & Kolumn nr& Kartkolumn\\\hline
+	Bekräftar kartkolumn & 2 & m & Kolumn nr & - \\\hline
+	Manuellt läge & 1 & a & - & - \\\hline
+	Autonomt läge & 1 & q & - & - \\\hline
+	Gyro medurskonstant & 5 & k & 0 & 3 byte,\newline [100tal 10tal 1tal]\\\hline
+	Gyro moturskonstant & 5 & k & 1 & 3 byte,\newline [100tal 10tal 1tal]\\\hline
+	Sensordata 0-9 & 26 & S & A & 24 bytes sensordata,\newline 8x[100tal 10tal 1tal]\\\hline
+	
+\end{tabular}
 
 \end{document}
