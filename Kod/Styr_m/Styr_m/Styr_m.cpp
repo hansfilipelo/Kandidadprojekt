@@ -29,6 +29,10 @@
 #include "Communication.h"
 #include "slave.h"
 
+
+
+
+
 // Intiating global variables
 // -----------------------------
 // Chooses direction
@@ -44,6 +48,16 @@ Robot* robotPointer = new Robot(16,1,mapPointer,abstractionObject);
 
 // Interreupt for bus comm
 // -----------------------------
+
+ISR(BADISR_vect){
+	robotPointer->setSpeed(0);
+	robotPointer->drive();
+	
+	volatile int p;
+	p++;
+	asm("");
+	
+}
 
 ISR(SPI_STC_vect){
 	steerModuleSlave.position++;
@@ -63,6 +77,15 @@ ISR(SPI_STC_vect){
 
 ISR(PCINT2_vect){
 	abstractionObject->handleData();
+}
+
+ISR(ADC_vect){
+	robotPointer->setSpeed(0);
+	robotPointer->drive();
+	
+	volatile int p;
+	p++;
+	asm("");
 }
 
 // ---------------------------------
@@ -96,10 +119,14 @@ int main(void)
 #if TESTING == 0
     // Set up interrupts
 	cli();
-	MCUCR = 0b00000000;
-	EIMSK = 0b00000011;
-	EICRA = 0b00001111;
-	SMCR = 0x01;
+	//MCUCR = 0b00000000;
+	//EIMSK = 0b00000011;
+	//EICRA = 0b00001111;
+	//SMCR = 0x01;
+
+	robotPointer->setSpeed(0);
+	robotPointer->drive();
+	
 	
     // Initiates PWM
 	pwm_init();

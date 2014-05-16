@@ -29,10 +29,12 @@ public:
 	
 	void setSection(int, int, MapSection*);
 	void convertSection(int,int,char);
-	char* getColAsChar(int);
+	//char* getColAsChar(int);
+	void getColAsChar(int);
 	MapSection* getPos(int,int);
     void fillClosedArea();
     bool withinMap(int,int);
+	char colArray[25];
     
 #if TESTING == 1
     void printMap();

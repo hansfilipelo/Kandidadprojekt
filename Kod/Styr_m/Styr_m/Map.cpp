@@ -45,7 +45,7 @@ void Map::convertSection(int xPos, int yPos, char inType){
 }
 
 // ---------------- getColAsChar ------------
-
+/*
 char* Map::getColAsChar(int col)
 {
 	// Char sent to communications unit
@@ -55,7 +55,7 @@ char* Map::getColAsChar(int col)
     // Abstraction for buss communications
     // Sending 19 positions of interest
     int crap = 19;
-    output[0] = crap;
+    output[0] = 23;
     // Sending Map data command
     output[1] = 'M';
     // Sending column number
@@ -69,6 +69,28 @@ char* Map::getColAsChar(int col)
     
     return output;
 }
+*/
+
+
+void Map::getColAsChar(int col)
+{
+	
+	
+	// Sending 19 positions of interest
+	int crap = 19;
+	colArray[0] = 23;
+	// Sending Map data command
+	colArray[1] = 'M';
+	// Sending column number
+	colArray[2] = col;
+
+	for (int it = 0; it < 17; it++)
+	{
+		// Type of the block we are looking at
+		colArray[it+3] = this->getPos(col,it)->getType();
+	}
+}
+
 
 // Fills closed area if closed
 

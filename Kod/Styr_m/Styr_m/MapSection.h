@@ -132,8 +132,11 @@ public:
 	bool isWallFwdClose();
     
     void changeDirection(char);
-    char* getColAsChar(int col);
-    
+    //char* getColAsChar(int col); colArray
+    void getColAsChar(int col);
+	char colArray[25];
+	
+	
     int meanValueArray(char* inputArray, int iterations);
     void updateRobotPosition();
 	void setFwdReference();

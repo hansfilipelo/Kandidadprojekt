@@ -100,10 +100,11 @@ void handleDataFromSensor(){
 		memcpy(Bus.outDataArray, Bus.buffer,27);
 		Bus.sendArray(1);
 		memcpy(Firefly.outDataArray, Bus.buffer,27);
+		/*
 		Firefly.outDataArray[6] = (wheelCount/100); //plats 4
 		Firefly.outDataArray[7] = ((wheelCount/10) %10); // plats 5
 		Firefly.outDataArray[8] = (wheelCount % 10); // plats 6
-		
+		*/
 		Firefly.sendArray();
 		//inserts data from all sensors into the Display-buffer
 		if (Display.bufferWritten)
