@@ -13,9 +13,11 @@
 #include <iostream>
 #endif
 
+#include "node.h"
 #include "Abstraction.h"
 #include <string.h>
 #include <stdio.h>
+#include <queue>
 
 class MapSection;
 class Robot;
@@ -33,9 +35,14 @@ public:
 	MapSection* getPos(int,int);
     void fillClosedArea();
     bool withinMap(int,int);
+    void convertToPathFinding();
+    int pathMap[32][17];
+    char pathArray[100];
+    void aStar(const int &, const int &,const int &, const int &);
     
 #if TESTING == 1
     void printMap();
+    void printPathMap();
     
     void initMap();
 #endif
