@@ -25,6 +25,7 @@
 #include "spi.h"
 #include "lcd.h"
 
+volatile unsigned int wheelCount=0;
 bool toggle = false;
 bool ReceiveFromSteer = false;
 bool ReceiveFromSensor = false;
@@ -39,7 +40,7 @@ Lcd Display;
 void Timer_Init()
 {
     TCNT0 = 0x00;			//set timer to 0
-    TCCR0B = 0x04;			//pre-scalar 256 på timer
+    TCCR0B = 0x05;			//pre-scalar 256 på timer
     TIMSK0 = 0x00;			//dont't allow time-interrups
 }
 
@@ -76,17 +77,33 @@ void handleDataFromSteer(){
 		Bus.outDataArray[1] = 'r';
 		Bus.sendArray(0);
 	}
+	if(Bus.buffer[1]=='w'){
+		Bus.outDataArray[0] = 1;
+		Bus.outDataArray[1] = 'w';
+		Bus.sendArray(0);
+	}
 }
 
 void handleDataFromSensor(){
 	ReceiveFromSensor=false;
 	memcpy(Bus.buffer, Bus.inDataArray,27);
 	
+	if(Bus.buffer[1] == 'W'){
+		Bus.outDataArray[0] = 1;
+		Bus.outDataArray[1] = 'W';
+		wheelCount++;
+		Bus.sendArray(1);
+		
+	}
 	if(Bus.buffer[1] == 'S'){
 		// copy data to Bus outDataArray
 		memcpy(Bus.outDataArray, Bus.buffer,27);
 		Bus.sendArray(1);
 		memcpy(Firefly.outDataArray, Bus.buffer,27);
+		Firefly.outDataArray[6] = (wheelCount/100); //plats 4
+		Firefly.outDataArray[7] = ((wheelCount/10) %10); // plats 5
+		Firefly.outDataArray[8] = (wheelCount % 10); // plats 6
+		
 		Firefly.sendArray();
 		//inserts data from all sensors into the Display-buffer
 		if (Display.bufferWritten)
@@ -104,6 +121,7 @@ void handleDataFromSensor(){
 		Bus.outDataArray[1] = 'R';
 		Bus.sendArray(1);
 	}
+	
 }
 
 #if DEBUG == 0
@@ -185,18 +203,17 @@ int main(void)
     
 	for(;;){
 		asm("");
-		Firefly.handle();
-		if (ReceiveFromSteer){
-			handleDataFromSteer();
-		}
 		if(ReceiveFromSensor){
 			handleDataFromSensor();
+			continue;
 		}
-		if(Firefly.getMap){
-            Bus.requestRow(Firefly.mapNumber);
-            Firefly.getMap = false;
+		if (ReceiveFromSteer){
+			handleDataFromSteer();
+			continue;
 		}
+		
 		Display.update();
+		Firefly.handle();
 		
 		
 		
@@ -207,7 +224,17 @@ int main(void)
 		else{
 			PORTA &= ~(1<<PORTA4);
 		}
-        
-        if(Firefly.mapDone && Firefly.rdyForRow)
+       
+        if(Firefly.mapDone && Firefly.rdyForRow){
+			Firefly.sendMap();
+			if(Firefly.rowToSend > 31){
+			
+			Firefly.mapDone=false;
+			Firefly.rowToSend=0;
+			Firefly.rdyForRow=true;
+			}
+		}
 	}
+	
 }
+	

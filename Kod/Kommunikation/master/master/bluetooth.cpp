@@ -124,7 +124,7 @@ volatile void Bluetooth::handle(){
      */
 
 	if(inDataArray[1] == 'F'){
-		memcpy(spiPointer->outDataArray,pcHandle,(int)pcHandle[0]+1)
+		memcpy(spiPointer->outDataArray,pcHandle,(int)pcHandle[0]+1);
         spiPointer->sendArray(1);
 	}
     if(inDataArray[1]=='P'){
