@@ -132,6 +132,7 @@ int main(void)
 	abstractionObject->setRobot(robotPointer);
 	robotPointer->changeDirection('f');
 	
+	robotPointer->waitForNewData();
 	robotPointer->setFwdReference();
 	robotPointer->setBwdReference();
     
@@ -153,12 +154,6 @@ int main(void)
         // Manual mode
         if (abstractionObject->getManual()) {
             asm("");
-
-			if (i == 500)
-			{
-				robotPointer->updateRobotPosition();
-			}
-			i++;
 			if (robotPointer->getRotateRightActive())
 			{
 				robotPointer->rotateRight();

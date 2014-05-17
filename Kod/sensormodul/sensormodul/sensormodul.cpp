@@ -372,14 +372,13 @@ int main(void)
                 savepos = 0;
 				ADMUX = 0x20;
 				
+				_delay_ms(5);
                 if(!wheelmode){
-                    _delay_us(18);
                     sensormodul.SPI_Send();
                 }
                 
-                
+                _delay_ms(5);
                 if(!wheelmode){
-                    _delay_us(18);
                     sensormodul.SPI_Send();
                 }
                 

@@ -11,13 +11,14 @@
 
 #if TESTING == 1
 #include <iostream>
+#include <queue>
 #endif
 
 #include "node.h"
 #include "Abstraction.h"
 #include <string.h>
 #include <stdio.h>
-#include <queue>
+
 
 class MapSection;
 class Robot;

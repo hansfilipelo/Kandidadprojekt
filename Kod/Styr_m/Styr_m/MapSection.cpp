@@ -1003,12 +1003,12 @@ void Robot::updateRobotPosition(){
     }
 	*/
 	
-	/* The paramaters for sensor differences (references?) are called:
+	// The paramaters for sensor differences (references?) are called:
 	fwdRefLong;
 	bwdRefLong;
 	fwdRefShort;
 	bwdRefShort;
-	*/
+	
     
    if (wheelHasTurned){
 	   wheelHasTurned = false;
