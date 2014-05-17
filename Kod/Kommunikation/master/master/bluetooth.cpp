@@ -146,6 +146,7 @@ void Bluetooth::receiveArray(){
         Btrec = false;
         PORTA &= ~((1<<PORTA2)|(1<<PORTA3));
         sei();
+		return;
     }
 	position++;
 	if(position == 27){
