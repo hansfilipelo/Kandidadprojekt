@@ -133,6 +133,7 @@ int main(void)
 	robotPointer->changeDirection('f');
 	
 	robotPointer->waitForNewData();
+	robotPointer->waitForNewData();
 	robotPointer->setFwdReference();
 	robotPointer->setBwdReference();
     

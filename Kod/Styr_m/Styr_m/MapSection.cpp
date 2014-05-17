@@ -1166,12 +1166,7 @@ void Robot::getColAsChar(int col){
 
 // ----------------------------------------
 int Robot::getFwdDistance(){
-	if(fwdShortSensor < 80){
-		return fwdShortSensor;
-	}
-	else{
-		return fwdLongSensor;	
-	}
+	return fwdShortSensor;
 }
 
 int Robot::getBwdDistance(){
