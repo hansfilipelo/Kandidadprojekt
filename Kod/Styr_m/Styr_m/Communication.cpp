@@ -205,6 +205,10 @@ void Communication::sendRotateRequest(){
 	slavePointer->outDataArray[2] = 1;
     
     slavePointer->SPI_Send();
+	_delay_ms(5);
+	slavePointer->SPI_Send();
+	_delay_ms(5);
+	slavePointer->SPI_Send();
 }
 
 double Communication::assembleDouble(char ten, char one, char tenth, char hundreth){

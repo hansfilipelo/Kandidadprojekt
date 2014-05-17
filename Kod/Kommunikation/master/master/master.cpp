@@ -67,10 +67,14 @@ void handleDataFromSteer(){
 		}
 	}
 	if(Bus.buffer[1]=='g'){
-		Bus.outDataArray[0] = 2;
-		Bus.outDataArray[1] = 'g';
-		Bus.outDataArray[2] = 1;
-		Bus.sendArray(0);
+		if ( !Bus.gyroActive )
+		{
+			Bus.outDataArray[0] = 2;
+			Bus.outDataArray[1] = 'g';
+			Bus.outDataArray[2] = 1;
+			Bus.sendArray(0);
+			Bus.gyroActive = true;
+		}
 	}
 	if(Bus.buffer[1]=='r'){
 		Bus.outDataArray[0] = 1;
@@ -121,8 +125,12 @@ void handleDataFromSensor(){
 		}
 	}
 	if(Bus.buffer[1] == 'G'){
-		memcpy(Bus.outDataArray, Bus.buffer,2);
-		Bus.sendArray(1);
+		if (Bus.gyroActive)
+		{
+			memcpy(Bus.outDataArray, Bus.buffer,2);
+			Bus.sendArray(1);
+			Bus.gyroActive = false;
+		}
 	}
 	if(Bus.buffer[1] == 'R'){
 		Bus.outDataArray[0] = 1;

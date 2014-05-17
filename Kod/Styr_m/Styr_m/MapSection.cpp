@@ -1308,20 +1308,6 @@ bool Robot::isWallFwdClose()
 // ----------------
 
 void Robot::robotRotated(){
-	/*
-	validSensor = determineValidSensor();
-	if(validSensor == 'f'){
-		this->setFwdReference();
-	}
-	else if(validSensor == 'b'){
-		this->setBwdReference();
-	}
-	else{
-		validSensor = 'N';
-		this->setBwdReference();
-		this->setFwdReference();
-	}
-	*/
 	setFwdClosed();
 	setBwdClosed();
 	setRightClosed();
