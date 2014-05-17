@@ -173,20 +173,25 @@ void Communication::setRobot(Robot* inRobot){
 // -------------------
 
 void Communication::sendMap(){
+	volatile int k = 0; 
 	for(unsigned int i = 0; i < 32; i++){
 		sendRow(i);
-		while(!mapConfirmation){
+		k = 0;
+		while(!mapConfirmation && k < 5000){
 			asm("");
             asm("");
             asm("");
             asm("");
+			k++;
 		}
+		_delay_ms(10);
 		mapConfirmation = false;
 	}
 }
 
 void Communication::sendRow(unsigned int inRow){
-    memcpy(slavePointer->outDataArray,robotPointer->getColAsChar(inRow),25);
+	robotPointer->getColAsChar(inRow);
+    memcpy(slavePointer->outDataArray,robotPointer->colArray,25);
     asm("");
     slavePointer->SPI_Send();
 }

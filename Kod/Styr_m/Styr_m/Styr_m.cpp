@@ -29,6 +29,10 @@
 #include "Communication.h"
 #include "slave.h"
 
+
+
+
+
 // Intiating global variables
 // -----------------------------
 // Chooses direction
@@ -44,6 +48,16 @@ Robot* robotPointer = new Robot(16,1,mapPointer,abstractionObject);
 
 // Interreupt for bus comm
 // -----------------------------
+
+ISR(BADISR_vect){
+	robotPointer->setSpeed(0);
+	robotPointer->drive();
+	
+	volatile int p;
+	p++;
+	asm("");
+	
+}
 
 ISR(SPI_STC_vect){
 	steerModuleSlave.position++;
@@ -86,53 +100,6 @@ void pwm_init()
 	PORTD |= (0<<PORTD4) | (0<<PORTD5);
 }
 
-/*
- // Gearbox, port 17
- ISR(INT0_vect){
- cli();
- if (gear == 0){
- PORTD |= 0x10;
- PORTD &= ~0x20;
- gear = gear + 1;
- }
- else if (gear == 1){
- PORTD &= ~0x10;
- PORTD |= 0x20;
- gear = gear + 1;
- }
- else if (gear == 2){
- PORTD |= 0x10;
- PORTD |= 0x20;
- gear = gear + 1;
- }
- else {
- PORTD &= ~0x10;
- PORTD &= ~0x20;
- gear = 0;
- }
- 
- sei();
- }
- */
-
-/*
- // Drive, port 16
- ISR(INT1_vect){
- cli();
- if (speed == 0){
- speed = 25;
- }
- else{
- speed = 0;
- }
- int output = floor(speed * 255 / 100);
- 
- OCR2A = output;
- OCR2B = output;
- 
- sei();
- }
- */
 #endif
 
 // ----------------------------------------
@@ -143,10 +110,14 @@ int main(void)
 #if TESTING == 0
     // Set up interrupts
 	cli();
-	MCUCR = 0b00000000;
+	//MCUCR = 0b00000000;
 	//EIMSK = 0b00000011;
 	//EICRA = 0b00001111;
-	SMCR = 0x01;
+	//SMCR = 0x01;
+
+	robotPointer->setSpeed(0);
+	robotPointer->drive();
+	
 	
     // Initiates PWM
 	pwm_init();

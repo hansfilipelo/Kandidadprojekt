@@ -1,13 +1,13 @@
 
 	CCC = g++
 	CCFLAGS = -g -std=c++11 -pedantic -Wall -Wextra 
-	OBJECTS = Map.o MapSection.o Abstraction.o styrtest.o slave.o Communication.o
+	OBJECTS = node.o Map.o MapSection.o Abstraction.o styrtest.o slave.o Communication.o
 	BUILDDIR = BUILD
 
 styrtest: $(OBJECTS)
 	$(CCC) $(CCFLAGS) $(OBJECTS) -o styrtest
 
-styrtest.o: ../styrtest.cpp ../Abstraction.o ../Communication.o
+styrtest.o: ../styrtest.cpp ../Abstraction.o ../Communication.o ../node.o
 	$(CCC) $(CCFLAGS) -c ../styrtest.cpp
 
 Communication.o: ../Communication.cpp
@@ -24,6 +24,9 @@ MapSection.o: ../MapSection.cpp Map.o
 
 slave.o: ../slave.cpp
 	$(CCC) $(CCFLAGS) -c ../slave.cpp
+
+node.o: ../node.cpp
+	$(CCC) $(CCFLAGS) -c ../node.cpp
 
 clean:
 	@ \rm -f ./*.o

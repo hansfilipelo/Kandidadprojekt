@@ -1017,8 +1017,8 @@ void Robot::updateRobotPosition(){
 	   MapSection* tempSection;
 	   
 	   //halt
-	   setUserSpeed(0);
-	   drive();
+	   //setUserSpeed(0);
+	   //drive();
 
 	   
 		switch (direction){
@@ -1142,10 +1142,22 @@ void Robot::changeDirection(char inDirection){
 // ----------------------------------------
 // Get column from Map and send to Comm
 
-char* Robot::getColAsChar(int col){
-	asm("");
-    return mom->getColAsChar(col);
-}
+void Robot::getColAsChar(int col){	
+		// Sending 19 positions of interest
+		int crap = 19;
+		colArray[0] = 23;
+		// Sending Map data command
+		colArray[1] = 'M';
+		// Sending column number
+		colArray[2] = col;
+
+		for (int it = 0; it < 17; it++)
+		{
+			// Type of the block we are looking at
+			colArray[it+3] = mom->getPos(col,it)->getType();
+		}
+	}
+
 
 
 // ----------------------------------------
