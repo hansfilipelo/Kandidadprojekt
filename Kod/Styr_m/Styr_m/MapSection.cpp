@@ -671,12 +671,16 @@ void Robot::rightFrontValueIn(char right[3]){
 void Robot::setFwdClosed(){
 	
     int output = 0;
-    if (getFwdDistance() > 300) {
-        output = 280/40;
+    if ( getFwdDistance() < 30 ) {
+        output = 0;
     }
-    else{
-        output = getFwdDistance()/40;
+    else if ( getFwdDistance() < 70 ){
+        output = 1;
     }
+	else {
+		output = 2;
+	}
+	
 	
 	// Set closed section output + 1 steps away from robot.
 	// Direction 0->y->17, "fwd"
@@ -691,7 +695,7 @@ void Robot::setFwdClosed(){
 				 mom->convertSection(xCoord,yCoord + i + 1, 'e');
 			}
 		}
-        if(output == 0 && getFwdDistance()<20){
+        if(output == 0){
 	        mom->convertSection(xCoord,yCoord + 1, 'c');
         }
 	}
@@ -707,7 +711,7 @@ void Robot::setFwdClosed(){
 				mom->convertSection(xCoord,yCoord - i - 1, 'e');
 			}
         }
-		if(output == 0 && getFwdDistance()<20){
+		if(output == 0){
 			mom->convertSection(xCoord,yCoord - 1, 'c');
 		}
 	}
@@ -723,7 +727,7 @@ void Robot::setFwdClosed(){
 				mom->convertSection(xCoord + i + 1,yCoord, 'e');
 			}
         }
-		if(output == 0 && getFwdDistance()<20){
+		if(output == 0){
 			mom->convertSection(xCoord + 1,yCoord, 'c');
 		}
 	}
@@ -739,7 +743,7 @@ void Robot::setFwdClosed(){
             mom->convertSection(xCoord - i - 1,yCoord, 'e');
 			}
         }
-		if(output == 0 && getFwdDistance()<20){
+		if(output == 0){
 			mom->convertSection(xCoord - 1,yCoord, 'c');
 		}
 	}	
