@@ -78,12 +78,6 @@ volatile void Bluetooth::handle(){
 	this->Btrec = false;
 	asm("");
 	
-	if(pcHandle[0]==30 || pcHandle[1] == 30){
-		position = 0;
-		return;
-	}
-    
-	
 	if(pcHandle[1] == 'f' || pcHandle[1] == 'r'|| pcHandle[1] == 'b' || pcHandle[1] == 'h' || pcHandle[1] == 'G'){
 		asm("");
 		memcpy(spiPointer->outDataArray,pcHandle,4);
@@ -136,6 +130,9 @@ volatile void Bluetooth::handle(){
 
         
     }
+    else{
+        position = 0;
+    }
 }
 
 void Bluetooth::receiveArray(){
@@ -143,6 +140,13 @@ void Bluetooth::receiveArray(){
 	//Set CTS and RTS to 1
 	PORTA |= (1<<PORTA2)|(1<<PORTA3);
 	inDataArray[position] = receiveByte();
+    
+    if(inDataArray[position] == 'x'){
+        position = 0;
+        Btrec = false;
+        PORTA &= ~((1<<PORTA2)|(1<<PORTA3));
+        sei();
+    }
 	position++;
 	if(position == 27){
 		Btrec = true;
