@@ -34,6 +34,7 @@ public:
     unsigned char outDataArray[27];
 	unsigned char buffer[27];
 	volatile unsigned int latestRow = 31;
+    volatile bool waitingForW = false;
    
 private:
     unsigned int  position = 0;

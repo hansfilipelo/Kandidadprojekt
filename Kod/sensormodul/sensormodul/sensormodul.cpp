@@ -365,8 +365,18 @@ int main(void)
 				sensormodul.outDataArray[0] = 1;
 				sensormodul.outDataArray[1] = 'W';
 				sen0++;
-				sensormodul.SPI_Send();		//send 90 degree turn is complete
+				sensormodul.SPI_Send();
+                //delay and the repeat transmission to ensure that we correctly recieve transmission.
+                _delay_ms(20);
+                sensormodul.SPI_Send();
+                _delay_ms(20);
+                sensormodul.SPI_Send();
+                
+                //leave wheelmode.
 				wheelmode = false;
+                
+                //reset AD-conversion loop to give new fresh values. And to not interrupt crucial
+                //communication on bus.
 				savepos = 0;
 				ADMUX = 0x20;
 				//------------Trim--------------------------------

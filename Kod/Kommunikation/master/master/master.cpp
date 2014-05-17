@@ -80,6 +80,7 @@ void handleDataFromSteer(){
 	if(Bus.buffer[1]=='w'){
 		Bus.outDataArray[0] = 1;
 		Bus.outDataArray[1] = 'w';
+        Bus.waitingForW = true;
 		Bus.sendArray(0);
 	}
 }
@@ -92,7 +93,10 @@ void handleDataFromSensor(){
 		Bus.outDataArray[0] = 1;
 		Bus.outDataArray[1] = 'W';
 		wheelCount++;
+        if(waitingForW){
 		Bus.sendArray(1);
+            waitingForW = false;
+        }
 		
 	}
 	if(Bus.buffer[1] == 'S'){
