@@ -235,4 +235,14 @@ void Communication::reactivateWheelSensor(){
 	slavePointer->outDataArray[0] = 1;
 	slavePointer->outDataArray[1] = 'w';
 	slavePointer->SPI_Send();
+	
+	_delay_ms(5);
+	if(!robotPointer->wheelHasTurned){
+		slavePointer->SPI_Send();
+	}
+	
+	_delay_ms(5);
+	if(!robotPointer->wheelHasTurned){
+		slavePointer->SPI_Send();
+	}
 }

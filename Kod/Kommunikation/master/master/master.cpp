@@ -78,10 +78,13 @@ void handleDataFromSteer(){
 		Bus.sendArray(0);
 	}
 	if(Bus.buffer[1]=='w'){
-		Bus.outDataArray[0] = 1;
-		Bus.outDataArray[1] = 'w';
-        Bus.waitingForW = true;
-		Bus.sendArray(0);
+		if (!Bus.waitingForW)
+		{
+			Bus.outDataArray[0] = 1;
+			Bus.outDataArray[1] = 'w';
+			Bus.waitingForW = true;
+			Bus.sendArray(0);
+		}
 	}
 }
 
