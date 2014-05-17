@@ -367,18 +367,26 @@ int main(void)
 				sen0++;
 				sensormodul.SPI_Send();
                 //delay and the repeat transmission to ensure that we correctly recieve transmission.
-                _delay_ms(20);
-                sensormodul.SPI_Send();
-                _delay_ms(20);
-                sensormodul.SPI_Send();
+                wheelmode = false;
+                
+                savepos = 0;
+				ADMUX = 0x20;
+				
+                if(!wheelmode){
+                    _delay_us(18);
+                    sensormodul.SPI_Send();
+                }
+                
+                
+                if(!wheelmode){
+                    _delay_us(18);
+                    sensormodul.SPI_Send();
+                }
                 
                 //leave wheelmode.
-				wheelmode = false;
-                
+				
                 //reset AD-conversion loop to give new fresh values. And to not interrupt crucial
                 //communication on bus.
-				savepos = 0;
-				ADMUX = 0x20;
 				//------------Trim--------------------------------
 				//TrimWheel();
 				//sen0 = wheelTrim+20;

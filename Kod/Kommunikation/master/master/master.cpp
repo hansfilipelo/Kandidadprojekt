@@ -93,9 +93,9 @@ void handleDataFromSensor(){
 		Bus.outDataArray[0] = 1;
 		Bus.outDataArray[1] = 'W';
 		wheelCount++;
-        if(waitingForW){
+        if(Bus.waitingForW){
 		Bus.sendArray(1);
-            waitingForW = false;
+            Bus.waitingForW = false;
         }
 		
 	}
