@@ -162,8 +162,10 @@ void TrimWheel(){
 void handleInDataArray(){
 	//if [g 1] is received
 	if((sensormodul.inDataArray[1] == 'g') and (sensormodul.inDataArray[2] == 1)){
+		asm("");
 		gyromode = true;		//set gyromode to true
 		TCNT0 = 0x00;			//set timer to 0
+		asm("");
 	}
 	//if [g 0] is received
 	else if((sensormodul.inDataArray[1] == 'g') and (sensormodul.inDataArray[2] == 0)){
@@ -343,21 +345,21 @@ int main(void)
 				gyromode = false;	//done with gyroreadings
 				angle = 0;			//reset angle
 				TIMSK0 = 0x00;		//don't allow time interrupts
-				savepos = 0;
-				ADMUX = 0x20;
 				sensormodul.outDataArray[0] = 1;
 				sensormodul.outDataArray[1] = 'G';
-				
-				// Redundancy on bus - send three times to master
-				sensormodul.SPI_Send();
-				_delay_ms(5);
-				sensormodul.SPI_Send();		//send 90 degree turn is complete
-				_delay_ms(5);
-				sensormodul.SPI_Send();
 				
 				savepos = 0;
 				ADMUX = 0x20;
                 segmentsTurned=0;
+				
+				// Redundancy on bus - send three times to master
+				sensormodul.SPI_Send();
+				/*_delay_ms(5);
+				sensormodul.SPI_Send();		//send 90 degree turn is complete
+				_delay_ms(5);
+				sensormodul.SPI_Send();
+				*/
+				
 			}
 			sei();				//allow interrupts
 		}

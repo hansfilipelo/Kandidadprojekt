@@ -140,7 +140,7 @@ void handleDataFromSensor(){
 			Bus.outDataArray[0] = 1;
 			Bus.outDataArray[1] = 'R';
 			Bus.sendArray(1);
-			Bus.rfidActive = true;
+			Bus.rfidActive = false;
 		}
 	}
 }
