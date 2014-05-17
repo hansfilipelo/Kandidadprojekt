@@ -302,6 +302,11 @@ ISR(USART0_RX_vect){
 		sensormodul.outDataArray[0] = 1;
 		sensormodul.outDataArray[1] = 'R';
 		sensormodul.SPI_Send();				//send outDataArray
+		_delay_ms(5);
+		sensormodul.SPI_Send();				//send outDataArray
+		_delay_ms(5);
+		sensormodul.SPI_Send();				//send outDataArray
+		
 		savepos = 0;
 		ADMUX = 0x20;				
 		UCSR0B &= ~(1<<RXCIE0);				//disable USART interrups

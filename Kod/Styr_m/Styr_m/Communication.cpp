@@ -232,6 +232,10 @@ void Communication::reactivateRFID(){
 	    slavePointer->outDataArray[0] = 1;
 	    slavePointer->outDataArray[1] = 'r';
 	    slavePointer->SPI_Send();
+		_delay_ms(5);
+		slavePointer->SPI_Send();
+		_delay_ms(5);
+		slavePointer->SPI_Send();
 }
 
 

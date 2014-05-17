@@ -36,6 +36,7 @@ public:
 	volatile unsigned int latestRow = 31;
     volatile bool waitingForW = false;
 	volatile bool gyroActive = false;
+	volatile bool rfidActive = false;
    
 private:
     unsigned int  position = 0;

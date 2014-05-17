@@ -77,9 +77,12 @@ void handleDataFromSteer(){
 		}
 	}
 	if(Bus.buffer[1]=='r'){
-		Bus.outDataArray[0] = 1;
-		Bus.outDataArray[1] = 'r';
-		Bus.sendArray(0);
+		if ( !Bus.rfidActive ){
+			Bus.outDataArray[0] = 1;
+			Bus.outDataArray[1] = 'r';
+			Bus.sendArray(0);
+			Bus.rfidActive = true;
+		}
 	}
 	if(Bus.buffer[1]=='w'){
 		if (!Bus.waitingForW)
@@ -133,11 +136,13 @@ void handleDataFromSensor(){
 		}
 	}
 	if(Bus.buffer[1] == 'R'){
-		Bus.outDataArray[0] = 1;
-		Bus.outDataArray[1] = 'R';
-		Bus.sendArray(1);
+		if (Bus.rfidActive){
+			Bus.outDataArray[0] = 1;
+			Bus.outDataArray[1] = 'R';
+			Bus.sendArray(1);
+			Bus.rfidActive = true;
+		}
 	}
-	
 }
 
 #if DEBUG == 0
