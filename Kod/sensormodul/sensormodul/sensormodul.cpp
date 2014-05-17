@@ -344,7 +344,8 @@ int main(void)
 				sensormodul.outDataArray[1] = 'G';
 				sensormodul.SPI_Send();		//send 90 degree turn is complete
 				savepos = 0;
-				ADMUX = 0x20;		
+				ADMUX = 0x20;
+                segmentsTurned=0;
 			}
 			sei();				//allow interrupts
 		}
