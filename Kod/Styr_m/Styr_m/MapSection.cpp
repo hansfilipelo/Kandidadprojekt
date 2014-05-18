@@ -1019,12 +1019,12 @@ void Robot::updateRobotPosition(){
     }
 	*/
 	
-	// The paramaters for sensor differences (references?) are called:
-	fwdRefLong;
-	bwdRefLong;
-	fwdRefShort;
-	bwdRefShort;
-	
+	/* The paramaters for sensor differences (references?) are called:
+		fwdRefLong;
+		bwdRefLong;
+		fwdRefShort;
+		bwdRefShort;
+	*/
     
    if (wheelHasTurned){
 	   wheelHasTurned = false;
@@ -1160,7 +1160,6 @@ void Robot::changeDirection(char inDirection){
 
 void Robot::getColAsChar(int col){	
 		// Sending 19 positions of interest
-		int crap = 19;
 		colArray[0] = 23;
 		// Sending Map data command
 		colArray[1] = 'M';
