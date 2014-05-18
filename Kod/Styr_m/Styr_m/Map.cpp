@@ -1,7 +1,6 @@
 #include "Map.h"
 #include "MapSection.h"
 
-
 using namespace std;
 
 // ------------- Construct -----------------

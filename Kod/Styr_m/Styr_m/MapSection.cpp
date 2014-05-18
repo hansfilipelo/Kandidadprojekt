@@ -843,7 +843,10 @@ void Robot::setLeftClosed(){
             if(xCoord+1+i > 31){
                 break;
             }
-            mom->convertSection(xCoord + i + 1,yCoord, 'e');
+            // Explored except if closed since short range sensors have higher priority
+            if ( mom->getPos(xCoord + i + 1, yCoord)->getType() != 'c' ){
+                mom->convertSection(xCoord + i + 1,yCoord, 'e');
+            }
         }
         if(output == 0){
 	        mom->convertSection(xCoord + 1,yCoord, 'c');
@@ -859,7 +862,10 @@ void Robot::setLeftClosed(){
             if(xCoord-1-i < 0){
                 break;
             }
-            mom->convertSection(xCoord - i - 1,yCoord, 'e');
+            // Explored except if closed since short range sensors have higher priority
+            if ( mom->getPos(xCoord - i - 1, yCoord)->getType() != 'c' ){
+                mom->convertSection(xCoord - i - 1,yCoord, 'e');
+            }
         }
 		if(output == 0){
 			mom->convertSection(xCoord - 1,yCoord, 'c');
@@ -873,7 +879,10 @@ void Robot::setLeftClosed(){
             if(yCoord-1-i < 0){
                 break;
             }
-            mom->convertSection(xCoord,yCoord - i - 1, 'e');
+            // Explored except if closed since short range sensors have higher priority
+            if ( mom->getPos(xCoord, yCoord - i - 1)->getType() != 'c' ){
+                mom->convertSection(xCoord,yCoord - i - 1, 'e');
+            }
         }
 		if(output == 0){
 			mom->convertSection(xCoord,yCoord - 1, 'c');
@@ -887,7 +896,10 @@ void Robot::setLeftClosed(){
             if(yCoord+1+i > 16){
                 break;
             }
-            mom->convertSection(xCoord,yCoord + i + 1, 'e');
+            // Explored except if closed since short range sensors have higher priority
+            if ( mom->getPos(xCoord, yCoord + i + 1)->getType() != 'c' ){
+                mom->convertSection(xCoord,yCoord + i + 1, 'e');
+            }
         }
 		if(output == 0){
 			mom->convertSection(xCoord,yCoord + 1, 'c');
