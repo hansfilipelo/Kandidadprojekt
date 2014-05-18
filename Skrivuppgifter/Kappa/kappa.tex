@@ -157,7 +157,7 @@ Projektet har delats upp i mindre delprojekt som olika projektmedlemmar fått an
 Det har bland annat inneburit förberedande design av delprodukt (Se Designspecifikation) och implementering. 
 Vid ett delprojekts slutförande har hårdvaran eller den skrivna koden förklarats för de andra projektmedlemmarna och sedan slagits samman med resten av projektet. 
 
-För att på ett smidigt vis slå samman kod och möjliggöra simultan programmering har en SVN-klient vid namn Github använts. 
+För att på ett smidigt vis slå samman kod och möjliggöra simultan programmering har en versionshanteringstjänst vid namn Github använts. 
 När hårdvara skulle utvecklas delades projektgruppen in modulvis, två personer per modul.
 Dialog hölls mellan grupperna för att säkerställa att portar och kontakter placerades på smidiga ställen.
 
@@ -167,6 +167,17 @@ I slutfasen av projektet turades gruppmedlemarna om att skriva den tekniska doku
 \section{Teknisk beskrivning}
 %Redovisa det tekniska resultatet och skrivuppgifterna på ett lämpligt sätt. Detaljerade beskrivningar på grindnivå i hårdvaran eller på instruktionsnivå i mjukvaran är i detta sammanhang oftast ointressant. Referera den tekniska dokumentationen och skrivuppgifterna för beskrivning av detaljer. Lyft fram egna kreativa lösningar!
 
+
+
+\subsection{Kommunikation mellan processorer}
+\subsubsection{Datahantering}
+\subsubsection{Databufferstruktur}
+\subsection{Kommunikation melllan PC och robot}
+\subsection{PC-mjukvara med grafiskt gränssnitt}
+\subsection{Pulse Width Modulation}
+\subsection{LCD-display}
+\subsection{Kartabstraktion}
+\subsection{Sensormodul}
 Roboten har nio olika sensorer. En RFID-läsare, ett gyroskop, en reflexsensor, en långdistansmätare, en mellandistansmätare och fyra kortdistansmätare. 
 RFID-läsaren ger ut en digital signal och behandlas med USART. Vid detektion av en RFID-tagg så stängs USART-avbrott av och ett kommando skickas till styrmodulen som säger till att vi hittat en brandhärd. 
 USART-avbrotten stängs av för att inte låsa sensormodulen med flera läsningar av samma tagg. Avbrottet tillåts då roboten lämnat segmentet genom att styrmodulen skickar ett kommando till sensormodulen.
@@ -177,6 +188,10 @@ Läsningen slutförs när roboten svängt 90 grader och sensormodulen skickar et
 Även reflexsensorn körs på begäran av styrmodulen men låser inte sensormodulen. Reflexsensorn tas istället med i muxräkningen. 
 Detta för att styrmodulen fortfarande behöver kontinuerliga sensorvärden från avståndssensorerna. Läsningar från reflexsensorn upphör då roboten färdats $40$ cm och sensormodulen skickar ett kommando till styrmodulen
 som säger att roboten nått ett nytt segment.
+
+\subsubsection{AD-omvandling}
+
+\subsection{SLAM}
 
 
 \section{Resultat}
