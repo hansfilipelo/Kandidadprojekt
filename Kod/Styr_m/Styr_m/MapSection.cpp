@@ -706,7 +706,7 @@ void Robot::setFwdClosed(){
             if(yCoord+i+1>16){
                 break;
             }
-			if(mom->getPos(xCoord,yCoord + i + 1)->getType() != 'f'){
+			if(mom->getPos(xCoord,yCoord + i + 1)->getType() != 'f' && mom->getPos(xCoord,yCoord + i + 1)->getType() != 'c'){
 				 mom->convertSection(xCoord,yCoord + i + 1, 'e');
 			}
 		}
@@ -722,7 +722,7 @@ void Robot::setFwdClosed(){
             if(yCoord-i-1<0){
                 break;
             }
-			if(mom->getPos(xCoord,yCoord - i - 1)->getType() != 'f'){
+			if(mom->getPos(xCoord,yCoord - i - 1)->getType() != 'f' && mom->getPos(xCoord,yCoord - i - 1)->getType() != 'c'){
 				mom->convertSection(xCoord,yCoord - i - 1, 'e');
 			}
         }
@@ -738,7 +738,7 @@ void Robot::setFwdClosed(){
             if(xCoord+i+1>31){
                 break;
             }
-			if(mom->getPos(xCoord + i + 1,yCoord)->getType() != 'f'){
+			if(mom->getPos(xCoord + i + 1,yCoord)->getType() != 'f' && mom->getPos(xCoord + i + 1,yCoord)->getType() != 'c'){
 				mom->convertSection(xCoord + i + 1,yCoord, 'e');
 			}
         }
@@ -754,7 +754,7 @@ void Robot::setFwdClosed(){
             if(xCoord-i-1<0){
                 break;
             }
-			if(mom->getPos(xCoord - i - 1,yCoord)->getType() != 'f'){
+			if(mom->getPos(xCoord - i - 1,yCoord)->getType() != 'f' && mom->getPos(xCoord - i - 1,yCoord)->getType() != 'c'){
             mom->convertSection(xCoord - i - 1,yCoord, 'e');
 			}
         }
@@ -786,7 +786,7 @@ void Robot::setBwdClosed(){
             if(yCoord-1-i < 0){
                 break;
             }
-			if(mom->getPos(xCoord,yCoord - i - 1)->getType() != 'f'){
+			if(mom->getPos(xCoord,yCoord - i - 1)->getType() != 'f' && mom->getPos(xCoord,yCoord - i - 1)->getType() != 'c'){
 				mom->convertSection(xCoord,yCoord - i - 1, 'e');
 			}
         }
@@ -799,7 +799,7 @@ void Robot::setBwdClosed(){
             if(yCoord +1 +i >16){
                 break;
             }
-			if(mom->getPos(xCoord,yCoord + i + 1)->getType() != 'f'){
+			if(mom->getPos(xCoord,yCoord + i + 1)->getType() != 'f' && mom->getPos(xCoord,yCoord + i + 1)->getType() != 'c'){
 				mom->convertSection(xCoord,yCoord + i + 1, 'e');
 			}
 		}
@@ -812,7 +812,7 @@ void Robot::setBwdClosed(){
             if(xCoord-1-i < 0){
                 break;
             }
-			if(mom->getPos(xCoord - i - 1,yCoord)->getType() != 'f'){
+			if(mom->getPos(xCoord - i - 1,yCoord)->getType() != 'f' && mom->getPos(xCoord - i - 1,yCoord)->getType() != 'c'){
 				mom->convertSection(xCoord - i - 1,yCoord, 'e');
 			}
         }
@@ -825,7 +825,7 @@ void Robot::setBwdClosed(){
             if(xCoord+1+i > 31){
                 break;
             }
-			if(mom->getPos(xCoord + i + 1,yCoord)->getType() != 'f'){
+			if (mom->getPos(xCoord + i + 1,yCoord)->getType() != 'f' && mom->getPos(xCoord + i + 1,yCoord)->getType() != 'c'){
 				mom->convertSection(xCoord + i + 1,yCoord, 'e');
 			}
         }
@@ -859,7 +859,7 @@ void Robot::setLeftClosed(){
                 break;
             }
             // Explored except if closed since short range sensors have higher priority
-            if ( mom->getPos(xCoord + i + 1, yCoord)->getType() != 'c' ){
+            if ( mom->getPos(xCoord + i + 1, yCoord)->getType() != 'c' && mom->getPos(xCoord + i + 1, yCoord)->getType() != 'f' ){
                 mom->convertSection(xCoord + i + 1,yCoord, 'e');
             }
         }
@@ -878,7 +878,7 @@ void Robot::setLeftClosed(){
                 break;
             }
             // Explored except if closed since short range sensors have higher priority
-            if ( mom->getPos(xCoord - i - 1, yCoord)->getType() != 'c' ){
+            if ( mom->getPos(xCoord - i - 1, yCoord)->getType() != 'c' && mom->getPos(xCoord - i - 1, yCoord)->getType() != 'f' ){
                 mom->convertSection(xCoord - i - 1,yCoord, 'e');
             }
         }
@@ -895,7 +895,7 @@ void Robot::setLeftClosed(){
                 break;
             }
             // Explored except if closed since short range sensors have higher priority
-            if ( mom->getPos(xCoord, yCoord - i - 1)->getType() != 'c' ){
+            if ( mom->getPos(xCoord, yCoord - i - 1)->getType() != 'c' && mom->getPos(xCoord, yCoord - i - 1)->getType() != 'f'){
                 mom->convertSection(xCoord,yCoord - i - 1, 'e');
             }
         }
@@ -912,7 +912,7 @@ void Robot::setLeftClosed(){
                 break;
             }
             // Explored except if closed since short range sensors have higher priority
-            if ( mom->getPos(xCoord, yCoord + i + 1)->getType() != 'c' ){
+            if ( mom->getPos(xCoord, yCoord + i + 1)->getType() != 'c' && mom->getPos(xCoord, yCoord + i + 1)->getType() != 'f' ){
                 mom->convertSection(xCoord,yCoord + i + 1, 'e');
             }
         }
@@ -948,7 +948,9 @@ void Robot::setRightClosed(){
             if(xCoord-1-i < 0){
                 break;
             }
-            mom->convertSection(xCoord - i - 1,yCoord, 'e');
+            if ( mom->getPos(xCoord - i - 1, yCoord)->getType() != 'c' && mom->getPos(xCoord - i - 1, yCoord)->getType() != 'f' ) {
+                mom->convertSection(xCoord - i - 1,yCoord, 'e');
+            }
         }
         if(output == 0){
             mom->convertSection(xCoord - 1,yCoord, 'c');
@@ -963,7 +965,10 @@ void Robot::setRightClosed(){
             if(xCoord+1+i > 31){
                 break;
             }
-            mom->convertSection(xCoord + i + 1,yCoord, 'e');
+            if ( mom->getPos(xCoord + i + 1, yCoord)->getType() != 'c' && mom->getPos(xCoord + i + 1, yCoord)->getType() != 'f' ) {
+                mom->convertSection(xCoord + i + 1,yCoord, 'e');
+            }
+            
         }
         if(output == 0){
             mom->convertSection(xCoord + 1,yCoord, 'c');
@@ -977,7 +982,9 @@ void Robot::setRightClosed(){
             if(yCoord+1+i > 16){
                 break;
             }
-            mom->convertSection(xCoord,yCoord + i + 1, 'e');
+            if ( mom->getPos(xCoord, yCoord + i + 1)->getType() != 'c' && mom->getPos(xCoord, yCoord + i + 1)->getType() != 'f' ) {
+                mom->convertSection(xCoord,yCoord + i + 1, 'e');
+            }
         }
         if(output == 0){
             mom->convertSection(xCoord,yCoord + 1, 'c');
@@ -992,7 +999,9 @@ void Robot::setRightClosed(){
             if(yCoord-1-i < 0){
                 break;
             }
-            mom->convertSection(xCoord,yCoord - i - 1, 'e');
+            if ( mom->getPos(xCoord, yCoord - i - 1)->getType() != 'c' && mom->getPos(xCoord, yCoord - i - 1)->getType() != 'f' ) {
+                mom->convertSection(xCoord,yCoord - i - 1, 'e');
+            }
         }
         if(output == 0){
             mom->convertSection(xCoord,yCoord - 1, 'c');
