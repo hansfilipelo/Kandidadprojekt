@@ -237,13 +237,13 @@ Inkluderat i PC-mjukvaran finns ett verktyg för att rita upp tidigare sparade s
 
 \subsection{Pulse Width Modulation}
 
-För att styra chassits motorer används AVR-processorn inbyggda pulsbreddsmodulering, PWM. Den som använts är en 8-bitars PWM, det vill säga att den styrs med värden mellan mellan 0 och 255 där 0 innebär att motorerna inte körs och där 255 leder till att roboten kör med 100\% av sin maxhastighet.
+För att styra chassits motorer används AVR-processorns inbyggda pulsbreddsmodulering, PWM. Den som använts är en 8-bitars PWM, det vill säga att den styrs med värden mellan mellan 0 och 255 där 0 innebär att motorerna inte körs och där 255 leder till att roboten kör med 100\% av sin maxhastighet.
 
 PWM fungerar så att en förutbestämd vågform jämförs med en bestämd referensspänning. Utifrån detta genereras en fyrkantsvåg baserat på om den förutbestämda vågen ligger över eller under referenspänningen. När den är över går utsignalen hög och när den är under går utsignalen låg. Detta resulterar i att tiderna som motorn är aktiv respektive avstängd kommer variera beroende på var referensspänningen sätts, vilket leder till olika hastigheter.
 
 
 \subsection{LCD-display}
-LCD-displayen tar relativt processorn lång tid på sig att rita ut ett tecken. Eftersom LCD-displayen hanteras av kommunikationsmodulen, som även är bussmaster, löses displayen utan att processorn väntar på displayen. Detta görs genom att LCD-displayens busyflagga läses i mainloopen och om LCD inte är upptagen skrivs ett tecken ut. För att möjliggöra denna struktur nyttjas en buffer där tecken som ska skrivas ut på displayen hämtas. När alla tecken är skrivna markeras bufferten som klar och vid nästa sensoröverföring skrivs de nya värdena in i bufferten. 
+LCD-displayen tar relativt processorn lång tid på sig att rita ut ett tecken. Eftersom LCD-displayen hanteras av kommunikationsmodulen, som även är bussmaster, löses displayen utan att processorn väntar på displayen. Detta görs genom att LCD-displayens busyflagga läses i mainloopen och om LCD inte är upptagen skrivs ett tecken ut. För att möjliggöra denna struktur nyttjas en buffer där tecken som ska skrivas ut på displayen hämtas. När alla tecken är skrivna markeras bufferten som klar och vid nästa sensoröverföring skrivs de nya värdena in i bufferten. För detaljer angående LCD-buffern och busyflaggan se den tekniska dokumentationen.
 
 \subsection{Kartabstraktion}
 
@@ -289,17 +289,28 @@ Roboten har nio olika sensorer. En RFID-läsare, ett gyroskop, en reflexsensor, 
 
 \subsubsection{AD-omvandling}
 De resterande sensorerna ger analoga utsignaler och behandlas med hjälp av en intern A/D-mux på sensormodulen. 
-Sensormodulen hämtar kontinuerligt signaler från avståndssensorerna, genom att stega igenom muxen, och från alla sensorer genom att stega igenom muxen. Den hoppar, i grundtillståndet, över gyroskopet och reflexsensorn. De analoga insignalerna är lågpassfiltrerade för att ge bättre värden.
+Sensormodulen hämtar kontinuerligt signaler från avståndssensorerna, genom att stega igenom muxen, och från alla sensorer genom att stega igenom muxen. Sensormodulen hoppar, i initialtillståndet, över gyroskopet och reflexsensorn. De analoga insignalerna är lågpassfiltrerade för att ge bättre värden.
 För att spara trafik på bussen skapas ett medelvärde av 25 sensorvärden innan de skickas iväg. Samtliga avståndssensorer skickas i gemensam array till kommunikationsmodulen.
 
 
 \subsubsection{Vinkelhastighetsmätare}
 Mätningar på gyroskopet görs på begäran av styrmodulen och låser sensormodulen till enbart gyroskopmätningar. 
-Läsningen slutförs när roboten svängt 90 grader och sensormodulen skickar ett kommando till styrmodulen som säger att svängen är klar. Eftersom dessa konstanter, som modulen jämför med för att veta när 90 graders rotation är uppnådd, är spänningsberoende finns ett kalibreringskommando för gyrot. Detta kommando utgår från att roboten står still och mäter flera gånger i rad och väljer därefter medelvärdet av mätningarna till nollnivå. Kring nollnivån läggs ett band där värden innanför sägs vara noll grader per sekund, detta för att slippa få mätningar på spänningsrippel. Gyrot nollställs efter 90 graders svängen är klar och påbörjar inte mätningar igen förens styrmodulen ber om en ny mätning.
+Läsningen slutförs när roboten svängt 90 grader och sensormodulen skickar ett kommando till styrmodulen som säger att svängen är klar. Eftersom konstanterna, som modulen använder för att veta när 90 graders rotation är uppnådd, är spänningsberoende finns ett kalibreringskommando för gyrot. Detta kommando utgår från att roboten står still och mäter flera gånger i rad och väljer därefter medelvärdet av mätningarna till nollnivå. Kring nollnivån läggs ett band där värden innanför sägs vara noll grader per sekund, detta för att slippa få mätningar på spänningsrippel. Gyrot nollställs efter att 90 graders svängen är klar och påbörjar inte mätningar igen förän styrmodulen ber om en ny mätning.
 
 \subsubsection{Reflexsensor}
-Reflexsensorn, precis som vinkelhastighetsmätaren, körs på begäran av styrmodulen men låser inte sensormodulens avståndsmätningar. Reflexsensorn tas istället med i muxräkningen. Detta är nödvändigt då vi behöver leverera sensordata under färd tillskillnad från under rotation. Läsningar från reflexsensorn upphör då roboten färdats $40$ cm och sensormodulen skickar ett kommando till styrmodulen
+Reflexsensorn, precis som vinkelhastighetsmätaren, körs på begäran av styrmodulen men låser inte sensormodulens avståndsmätningar. Reflexsensorn, som man kan se i figur~\ref{fig:reflex}, tas istället med i muxräkningen. Detta är nödvändigt då vi behöver leverera sensordata under färd tillskillnad från under rotation. Läsningar från reflexsensorn upphör då roboten färdats $40$ cm och sensormodulen skickar ett kommando till styrmodulen
 som säger att roboten nått ett nytt segment. Detta kommando skickas upp till tre gånger för att inte missas av kommunikationsmodulen.
+
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,width=0.3\textwidth]{reflexsensor.png}  %skala och filnamn. 
+  \end{center}
+  \caption{Reflexsensor med svartvit-segment på hjulet} %figurtext.
+  \label{fig:reflex}
+\end{figure}
+
+
+
 
 \subsubsection{RFID-sensor}
 
@@ -319,7 +330,7 @@ I figur~\ref{fig:Astar} visas två exempel på färdväg som Astar-algoritmen ha
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
-  \includegraphics[width=0.5\textwidth]{Astar.png}  %skala och filnamn. 
+  \includegraphics[width=0.75\textwidth]{Astar.png}  %skala och filnamn. 
   \caption{Färdväg efter att Astar-algoritmen har körts på kartan.}%figurtext.
   \end{center}
   \label{fig:Astar}
