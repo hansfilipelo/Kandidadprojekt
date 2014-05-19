@@ -114,14 +114,17 @@ int main(void)
 	//EIMSK = 0b00000011;
 	//EICRA = 0b00001111;
 	//SMCR = 0x01;
-
-	robotPointer->setSpeed(0);
-	robotPointer->drive();
 	
 	
     // Initiates PWM
 	pwm_init();
-    
+	
+	
+	abstractionObject->setRobot(robotPointer);
+    robotPointer->changeDirection('f');
+	robotPointer->changeGear('f');
+	robotPointer->setSpeed(0);
+	robotPointer->drive();
     // Set up bus comm
     steerModuleSlave.SPI_Init();
     
@@ -129,10 +132,10 @@ int main(void)
 	
 #endif
 	
-	abstractionObject->setRobot(robotPointer);
-	robotPointer->changeDirection('f');
 	
-	robotPointer->waitForNewData();
+	
+	
+	robotPointer->waitForNewData(); 
 	robotPointer->waitForNewData();
 	robotPointer->setFwdReference();
 	robotPointer->setBwdReference();
@@ -150,8 +153,7 @@ int main(void)
     
 	abstractionObject->reactivateWheelSensor();
 	
-	for (;;) {
-        
+	for (;;) {       
         // Manual mode
         if (abstractionObject->getManual()) {
             asm("");
@@ -166,24 +168,26 @@ int main(void)
         }
         // Automatic mode
         else {            
-			//----------------------Om kortdistans flyttas fram----------
+			//----------------------Högerföljare----------
+			//lets try with only ifs
 			if(robotPointer->isCornerRight()){
-				while ( robotPointer->isWallRight() && !(abstractionObject->getManual())) {
+				while ( !(robotPointer->isCornerPassed()) && !(abstractionObject->getManual())) {
 					robotPointer->changeGear('f');
-					robotPointer->setSpeed(25);
+					robotPointer->setSpeed(15);
 					robotPointer->drive();
 				}
-#if TESTING == 0
-				_delay_ms(200);
-#endif
+				//_delay_ms(25); // This delay ensures that we enter next segment.
 				robotPointer->rotateRight();
-				while ( !robotPointer->isWallRight() && !(abstractionObject->getManual())) {
+				//said !iswallright lets try iscornerpassed
+				while ( robotPointer->isCornerPassed() && !(abstractionObject->getManual())) {
 					robotPointer->changeGear('f');
-					robotPointer->setSpeed(25);
+					robotPointer->setSpeed(15);
 					robotPointer->drive();
 				}
 			}
-            else if(robotPointer->isWallFwd()){
+			
+			//was elseif before
+			if(robotPointer->isWallFwd()){
 				robotPointer->setSpeed(20);
 				robotPointer->changeGear('f');
 				while (!robotPointer->isWallFwdClose() && !(abstractionObject->getManual()))
@@ -192,34 +196,36 @@ int main(void)
 				}
 				robotPointer->setSpeed(0);
 				robotPointer->drive();
-				
+
+
 				if(!robotPointer->isWallRight())
 				{
 					robotPointer->rotateRight();
-			//kör framåt tills roboten åkt in i korridoren
+					//Drive forward untill robot has entered
 					while (!robotPointer->isWallRight() && !(abstractionObject->getManual())) {
 						robotPointer->changeGear('f');
 						robotPointer->setSpeed(25);
 						robotPointer->drive();
 					}
 				}
-				
+
 				else
 				{
 					robotPointer->rotateLeft();
 				}
-                
-            }
+				
+			}
 			else
 			{
 				if(!robotPointer->isWallRight())
 				{
 					robotPointer->rotateRight();
-					
 				}
 				else
 				{
-					robotPointer->setSpeed(robotPointer->getUserSpeed());
+					
+					// stod robotPointer->getUserSpeed() ist för 35
+					robotPointer->setSpeed(35);
 					robotPointer->changeGear('f');
 					robotPointer->drive();
 					robotPointer->adjustPosition();
@@ -227,22 +233,20 @@ int main(void)
 			}
 		}
     
-    // Look for walls every 500th turn of main loop
-    if (i == 500) {
-              // Update position in map
-        robotPointer->updateRobotPosition();
-        
-        i = 0;
-    }
-    i++;
+		// Look for walls every 500th turn of main loop
+		if (i == 250) {
+			// Update position in map
+			robotPointer->updateRobotPosition();
+			i = 0;
+		}
+		i++;
     
-    
-    if(abstractionObject->sendMapNow){
-        asm("");
-        abstractionObject->sendMapNow=false;
-        abstractionObject->sendMap();
-        asm("");
-    }
+		if(abstractionObject->sendMapNow){
+			asm("");
+			abstractionObject->sendMapNow=false;
+			abstractionObject->sendMap();
+			asm("");
+		}
 	
 }
 

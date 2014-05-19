@@ -15,16 +15,16 @@
 #include "slave.h"
 
 //------------sensorer----------------------
-volatile int numOfSamples = 50;		//number of samples for mean value
+volatile int numOfSamples = 25;		//number of samples for mean value
 volatile int savepos = 0;			//counter for the storage array
 
-volatile int sensor0[50];			//arrays for sensordata
-volatile int sensor1[50];
-volatile int sensor2[50];
-volatile int sensor3[50];
-volatile int sensor4[50];
-volatile int sensor5[50];
-volatile int sensor6[50];
+volatile int sensor0[25];			//arrays for sensordata
+volatile int sensor1[25];
+volatile int sensor2[25];
+volatile int sensor3[25];
+volatile int sensor4[25];
+volatile int sensor5[25];
+volatile int sensor6[25];
 
 
 volatile long int sen0;				//integers for mean distance
@@ -40,7 +40,7 @@ volatile int RfidCount = 0;
 volatile double decadc=0;			//variable used in the ADC-interrupt (decimal adc-value, ADC-value with 5 V ref)
 volatile bool ADCdone = false;		//Flag for checking if ADC is done
 double spanning = 0;				//ADC-value without 5v ref
-bool blacksegment = false;
+bool blacksegment = false;			//variable to determine startingcolor on wheelsegment. avoids counting first segment as a segment turned
 int segmentsTurned = 0;
 bool wheelmode = true;				
 
@@ -244,12 +244,6 @@ void sendSensors(){
 	sensormodul.outDataArray[25] = ((RfidCount/10) %10);
 	sensormodul.outDataArray[26] = (RfidCount % 10);
 	
-	
-	if (sensormodul.outDataArray[9] == 0){
-		volatile int p = 0;
-		p++;
-	}
-
     sensormodul.SPI_Send();			//send outDataArray
 }
 //------------------------------------INTERRUPTS---------------------------------
@@ -299,16 +293,19 @@ ISR(ADC_vect)
 ISR(USART0_RX_vect){
 	indata=UDR0;		//receive data
 		
+		
+	// varför skickar vi tre ggr?
 	if(indata==startbit){
 		RfidCount++;
 		sensormodul.outDataArray[0] = 1;
 		sensormodul.outDataArray[1] = 'R';
 		sensormodul.SPI_Send();				//send outDataArray
-		_delay_ms(5);
+		/*_delay_ms(5);
 		sensormodul.SPI_Send();				//send outDataArray
 		_delay_ms(5);
 		sensormodul.SPI_Send();				//send outDataArray
-		
+		*/
+		_delay_ms(80);
 		savepos = 0;
 		ADMUX = 0x20;				
 		UCSR0B &= ~(1<<RXCIE0);				//disable USART interrups
@@ -345,20 +342,26 @@ int main(void)
 				gyromode = false;	//done with gyroreadings
 				angle = 0;			//reset angle
 				TIMSK0 = 0x00;		//don't allow time interrupts
+				asm("");
 				sensormodul.outDataArray[0] = 1;
 				sensormodul.outDataArray[1] = 'G';
+				asm("");
 				
 				savepos = 0;
 				ADMUX = 0x20;
                 segmentsTurned=0;
 				
+				
+				sei();
 				// Redundancy on bus - send three times to master
 				sensormodul.SPI_Send();
-				/*_delay_ms(5);
+				_delay_ms(5);
 				sensormodul.SPI_Send();		//send 90 degree turn is complete
 				_delay_ms(5);
 				sensormodul.SPI_Send();
-				*/
+			
+				_delay_ms(150);
+				
 				
 			}
 			sei();				//allow interrupts
@@ -396,6 +399,7 @@ int main(void)
                 if(!wheelmode){
                     sensormodul.SPI_Send();
                 }
+				_delay_ms(150);
                 
                 //leave wheelmode.
 				
