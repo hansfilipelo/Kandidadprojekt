@@ -9,14 +9,6 @@
 #ifndef NODE
 #define NODE
 
-#if TESTING == 1
-#include <iostream>
-#include <iomanip>
-#include <ctime>
-#include <queue>
-#endif
-
-#include <string.h>
 #include <math.h>
 
 

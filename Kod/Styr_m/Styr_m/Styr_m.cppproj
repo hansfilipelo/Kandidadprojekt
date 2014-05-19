@@ -170,6 +170,12 @@
     <None Include="MapSection.h">
       <SubType>compile</SubType>
     </None>
+    <Compile Include="node.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="node.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="slave.cpp">
       <SubType>compile</SubType>
     </Compile>

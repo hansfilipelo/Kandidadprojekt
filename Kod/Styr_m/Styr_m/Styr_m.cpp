@@ -167,69 +167,109 @@ int main(void)
 			}
         }
         // Automatic mode
-        else {            
-			//----------------------Högerföljare----------
-			//lets try with only ifs
-			if(robotPointer->isCornerRight()){
-				while ( !(robotPointer->isCornerPassed()) && !(abstractionObject->getManual())) {
-					robotPointer->changeGear('f');
-					robotPointer->setSpeed(15);
-					robotPointer->drive();
-				}
-				//_delay_ms(25); // This delay ensures that we enter next segment.
-				robotPointer->rotateRight();
-				//said !iswallright lets try iscornerpassed
-				while ( robotPointer->isCornerPassed() && !(abstractionObject->getManual())) {
-					robotPointer->changeGear('f');
-					robotPointer->setSpeed(15);
-					robotPointer->drive();
-				}
-			}
-			
-			//was elseif before
-			if(robotPointer->isWallFwd()){
-				robotPointer->setSpeed(20);
-				robotPointer->changeGear('f');
-				while (!robotPointer->isWallFwdClose() && !(abstractionObject->getManual()))
-				{
-					robotPointer->drive();
-				}
-				robotPointer->setSpeed(0);
-				robotPointer->drive();
-
-
-				if(!robotPointer->isWallRight())
-				{
-					robotPointer->rotateRight();
-					//Drive forward untill robot has entered
-					while (!robotPointer->isWallRight() && !(abstractionObject->getManual())) {
+        else {
+			if(!robotPointer->startExplore){
+				/****************************************HÖGERFÖLJNING*******************************************
+				/************************************************************************************************/
+				//lets try with only ifs
+				if(robotPointer->isCornerRight()){
+					while ( !(robotPointer->isCornerPassed()) && !(abstractionObject->getManual())) {
 						robotPointer->changeGear('f');
-						robotPointer->setSpeed(25);
+						robotPointer->setSpeed(15);
+						robotPointer->drive();
+					}
+					//_delay_ms(25); // This delay ensures that we enter next segment.
+					robotPointer->rotateRight();
+					//said !iswallright lets try iscornerpassed
+					while ( robotPointer->isCornerPassed() && !(abstractionObject->getManual())) {
+						robotPointer->changeGear('f');
+						robotPointer->setSpeed(15);
 						robotPointer->drive();
 					}
 				}
+			
+				//was elseif before
+				if(robotPointer->isWallFwd()){
+					robotPointer->setSpeed(20);
+					robotPointer->changeGear('f');
+					while (!robotPointer->isWallFwdClose() && !(abstractionObject->getManual()))
+					{
+						robotPointer->drive();
+					}
+					robotPointer->setSpeed(0);
+					robotPointer->drive();
 
+
+					if(!robotPointer->isWallRight())
+					{
+						robotPointer->rotateRight();
+						//Drive forward untill robot has entered
+						while (!robotPointer->isWallRight() && !(abstractionObject->getManual())) {
+							robotPointer->changeGear('f');
+							robotPointer->setSpeed(25);
+							robotPointer->drive();
+						}
+					}
+
+					else
+					{
+						robotPointer->rotateLeft();
+					}
+				
+				}
 				else
 				{
-					robotPointer->rotateLeft();
+					if(!robotPointer->isWallRight())
+					{
+						robotPointer->rotateRight();
+					}
+					else
+					{
+					
+						// stod robotPointer->getUserSpeed() ist för 35
+						robotPointer->setSpeed(35);
+						robotPointer->changeGear('f');
+						robotPointer->drive();
+						robotPointer->adjustPosition();
+					}
+				}
+			}
+			else{
+				/****************************************KARTLÄGGNING*******************************************
+				/*************************************************************************************************/
+				
+				mapPointer->convertToPathFinding();
+				
+				//Sets start and finnish coordinates
+				int xStart = robotPointer->getX();
+				int yStart = robotPointer->getY();
+				int xFinish = robotPointer->getFinishX();
+				int yFinish = robotPointer->getFinishY();
+				
+				// get the route
+				mapPointer->aStar(xStart,yStart,xFinish,yFinish);
+				
+				int sizeOfArray = int(mapPointer->pathArray[0]) - 48;
+				
+				for (int i=1;i < sizeOfArray+1 ; i++) {
+					
+					char p = mapPointer->pathArray[i];
+					
+					if(p == 'h'){
+						//kör höger 40 cm 
+					}
+					else if(p== 'b'){
+						//kör bakåt 40 cm
+					}
+					else if(p== 'v'){
+						//kör vänster 40 cm
+					}
+					else if(p== 'f'){
+						//kör rakt fram 40 cm
+					}
+
 				}
 				
-			}
-			else
-			{
-				if(!robotPointer->isWallRight())
-				{
-					robotPointer->rotateRight();
-				}
-				else
-				{
-					
-					// stod robotPointer->getUserSpeed() ist för 35
-					robotPointer->setSpeed(35);
-					robotPointer->changeGear('f');
-					robotPointer->drive();
-					robotPointer->adjustPosition();
-				}
 			}
 		}
     
