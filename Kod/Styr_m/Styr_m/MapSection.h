@@ -158,6 +158,7 @@ public:
     void setControlParameters(double, double, int, int, int);
 	
 	volatile bool newData = false;
+	volatile bool okayToClose = true;
     
 protected:
     int getRightDistance();
