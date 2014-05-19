@@ -527,10 +527,6 @@ void Robot::rotateRight(){
 	fwdDiff = 0;
 	bwdDiff = 0;
 	
-	// For odometry
-	robotPointer->wheelHasTurned = true;	//move robot
-	updateRobotPosition();
-	
 	//send map
 	
 	commObj->sendMap();
