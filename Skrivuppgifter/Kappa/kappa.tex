@@ -13,6 +13,7 @@
 \usepackage{adjustbox}
 \usepackage{textcomp}
 \usepackage[T1]{fontenc}
+\usepackage{pdfpages}
 \usepackage{listings}
 \usepackage{xcolor,colortbl}
 \usepackage{hyperref}
@@ -193,7 +194,7 @@ För att undvika ovannämnda problem utnyttjas en dubbelbuffer. Första buffern 
 
 \subsection{Kommunikation mellan PC och robot}
 Kommunikation mellan processor och PC sker via en Bluetooth-modul. Bluetooth-modulen arbetar via Universal Serial Asynchronous Receiver/Transmitter, USART.
-På PC-mjukvaran virtualiseras Bluetooth mottagaren/sändaren som en seriellport och information skickas i form av en 27 element lång char array. För mer detaljer angående dataprotokoll se den tekniska dokumentationen. 
+På PC-mjukvaran virtualiseras Bluetooth mottagaren/sändaren som en seriellport och information skickas i form av en 27 element lång char array. För mer detaljer angående dataprotokoll se den tekniska dokumentationen. För en jämförelse mellan olika trådlösa kommunikationstekniker se Appendix~\ref{komuppg.}.
 
 \subsection{PC-mjukvara med grafiskt gränssnitt}
 
@@ -297,13 +298,14 @@ SLAM står för Simultaneous Localization And Mapping och innebär att roboten s
 Vi är väldigt nöjda med är vår implementering av kartritningen, slutning av områden och vår A*-sökalgoritm. Vi är även väldigt nöjda och stolta över objektstrukturen och klass nyttjandet som hela projektgruppen gjort under projektets gång.
 
 %Reflektera över resultatet såväl tekniskt som över genomförandet. Referera efterstudien.
-
+Resultatet 
 
 %Framtida arbete
 
 
 %Vad skulle ni göra annorlunda om ni skulle göra om samma uppdrag?
 Om denna projektgrupp eller någon av dess medlemmar fick göra om detta uppdrag så skulle de använda en trådad processor istället för tre. En av de mest tidskrävande aktiviteterna har varit bussen, implementering och felsökning. Bussen är även den del av projektet som gett oss flest fel. Så två saker är säkra, om vi fick möjlighet att göra det utan en buss skulle vi göra det och om vi var tvugna att återigen göra en buss skulle denna påbörjas något tidigare och stresstestas hårt.
+
 
 %Vad skulle ni vilja utveckla om ni fick mer tid?
 Om vi fick mer tid i projektet skulle tiden med all fördel läggas på optimeringsalgoritmer och förbättrandet av bussen. En av förbättringarna till bussen som skulle kunna utnyttjas är en mer avancerad bufferstruktur än den som används.  
@@ -323,5 +325,14 @@ I vår åsikt, så skulle tävlingsmomentena kunna göras mer intressanta. I nuv
 \pagestyle{empty}
 \newgeometry{left=2cm,right=2cm,bottom=2cm,top=2cm}
 \section{Appendix A}
+\includepdf[pages=-]{../Kommunikation/kom.pdf}
+
+%\section{Appendix B}
+%\includepdf[pages=-]{../Regler/regler.pdf}
+
+%\section{Appendix C}
+%\includepdf[pages=-]{../Sensorer/Sensor.pdf}
+
+\label{komuppg.}
 LIPS-dokument och fördjupningar enligt ovan.
 \end{document}
