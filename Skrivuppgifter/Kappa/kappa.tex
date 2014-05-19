@@ -310,7 +310,14 @@ USART-avbrotten stängs av för att inte låsa sensormodulen med flera läsninga
 
 SLAM står för Simultaneous Localization And Mapping och innebär att roboten ska kunna skatta sin position samtidigt som den ritar upp en karta över området den färdas inom.
 
-\subsubsection{Astar}
+\subsubsection{Positionsskattning}
+Positionsskattning fungerar genom att reflexsensor uppskattar när roboten rört sig 40 cm. Dessa 40 cm representerar ett segment i vår kartrepresentation och närmre upplösning krävs ej då minsta objektet som ska kartläggas är 40 cm. Roboten innehåller information om vilken riktning den färdas i och får information från sensormodulen om avståndet som färdats. Roboten förflyttas i kartan i aktuell riktning. Vid rotation uppdateras riktningen. 
+
+\subsubsection{Kartläggning}
+På styrmodulen ligger en karta i form av en array som uppdateras allt eftersom roboten åker och tar in ny mätdata. Arrayen innehåller objekt som kan vara av typen, explored, unexplored, closed och fire. En fördel med att ha objekt i arrayen är t.ex. att funktioner för att överblick och dra slutsatser kring kartan blir väldigt lätta att implementera. T.ex. kan man kolla om en vägg tillhör en köksö genom att helt enkel fråga ett objekt som är closed, isClosed? Ett rekursivt anrop sker då mellan alla närliggade vägger och om väggarna utgör en sluten cirkel, kan hela köksön markes som sluten på kartan. 
+Vid sändning av kartan upp till master och sedan vidare till PC-mjukvaran konverteras objekten till bokstäver som sedan avgör färgerna i den uppritande kartan.
+
+\subsection{Astar}
 För att finna en bra färdväg från punkt A till B i kartan har en algoritm som kallas Astar implementerats. Algoritmen utgår ifrån Dijkstra''s algoritm, som löser problemet att finna billigaste vägen från nod A till B. Den fungerar så att den successivt besöker hörnpunkter i kartan och utgår från startpositionen. Algoritmen expanderar sedan utåt från startpunkten tills målet är hittat. Dijkstra’s algoritm ger garanterat den billigaste vägen, så länge som nodernas kostnader är positiva.\footnote{http://theory.stanford.edu/\textasciitilde amitp/GameProgramming/AStarComparison.html\#the-a-star-algorithm}
 
 Den Giriga Bäst-Först algoritmen fungerar på liknande sätt, förutom att den kan uppskatta hur långt från målet alla hörnpunker är. Istället för att välja noden som befinner sig närmast startpunkten väljer den här algoritmen den som ligger närmast slutpunkten. Astar algoritmen kombinerar det bästa av dessa två algoritmer och ger alltså garanterat den minst kostsamma vägen, på kortare tid än Dijkstras. \footnote{http://www.policyalmanac.org/games/aStarTutorial.htm}
@@ -324,13 +331,6 @@ I figur~\ref{fig:Astar} visas två exempel på färdväg som Astar-algoritmen ha
   \end{center}
   \label{fig:Astar}
 \end{figure}
-
-\subsubsection{Positionsskattning}
-Positionsskattning fungerar genom att reflexsensor uppskattar när roboten rört sig 40 cm. Dessa 40 cm representerar ett segment i vår kartrepresentation och närmre upplösning krävs ej då minsta objektet som ska kartläggas är 40 cm. Roboten innehåller information om vilken riktning den färdas i och får information från sensormodulen om avståndet som färdats. Roboten förflyttas i kartan i aktuell riktning. Vid rotation uppdateras riktningen. 
-
-\subsubsection{Kartläggning}
-På styrmodulen ligger en karta i form av en array som uppdateras allt eftersom roboten åker och tar in ny mätdata. Arrayen innehåller objekt som kan vara av typen, explored, unexplored, closed och fire. En fördel med att ha objekt i arrayen är t.ex. att funktioner för att överblick och dra slutsatser kring kartan blir väldigt lätta att implementera. T.ex. kan man kolla om en vägg tillhör en köksö genom att helt enkel fråga ett objekt som är closed, isClosed? Ett rekursivt anrop sker då mellan alla närliggade vägger och om väggarna utgör en sluten cirkel, kan hela köksön markes som sluten på kartan. 
-Vid sändning av kartan upp till master och sedan vidare till PC-mjukvaran konverteras objekten till bokstäver som sedan avgör färgerna i den uppritande kartan.
 
 
 \section{Resultat}
