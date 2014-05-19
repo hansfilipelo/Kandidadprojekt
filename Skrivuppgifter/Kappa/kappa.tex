@@ -23,6 +23,8 @@
 %Första sidan
 
 \begin{document}
+	
+
 	\pagestyle{fancy}
 \pagenumbering{roman}
 	\vspace*{\fill}
@@ -170,8 +172,26 @@ I slutfasen av projektet turades gruppmedlemarna om att skriva den tekniska doku
 
 
 \subsection{Kommunikation mellan processorer}
+Kommunikationen mellan processorerna sker via en Serial Peripheral Interface Bus, hädanefter refererad till som en SPI-buss.
+Roboten är konstruerad med tre processorer på två separata vir-kort och kopplas ihop med hjälp av en bandkabel. På roboten agerar kommunikationsmodulen master och de övriga två modulerna är slaves. SPI-bussen kan sammanfattas till att master skiftar ett 8 bitars register med en slave. SPI-bussen har alltså möjlighet för duplex dataöverföring. För ytterligare detaljer angående SPI-bussen se den tekniska dokumentationen.
+
+När master väljer en slave, genom Slave Select signalen, genereras ett avbrott på slave-processorn. Detta innebär att master kan skicka hämta data i princip var som helst i ett program på en slave-processor. För kommunikations som måste initieras från slave till master har vi kopplat en avbrottssignal som säger till master-processorn att påbörja SPI-kommunikation med aktuell slave-processor.
+
 \subsubsection{Datahantering}
+För att avbrotten ska bli så korta som möjligt på processorn så har datahanteringen på kommunikationsmodulen flyttats ut ur avbrott. Anledningen till detta är att så länge processorn befinner sig i avbrott skulle vidare avbrott kunna missas. Sanningsvariabler ifall ny data finns tillgänglig för datahantering används istället. Dessa sanningsvariabler avläses i master-processorns main-loop, vilket visas i flödesdiagrammet i figur~\ref{fig:SPIrec}. Detta ger att nya mottagningar kan påbörjas medan data behandlas, man får dock beakta att data i en given buffer måste behandlas innan den skrivs över av nästa kommunikation.
+
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,scale=0.5]{spirec.jpg}  %skala och filnamn. 
+  \end{center}
+  \caption{Flödesdiagram för bussmottagning} %figurtext.
+  \label{fig:SPIrec}
+\end{figure}
+
+
 \subsubsection{Databufferstruktur}
+För att undvika ovannämnda problem utnyttjas en dubbelbuffer. Första buffern är mottagningsbuffern inuti buss-avbrottet. När vi når en databehandlingsfunktion flyttas denna data över till en ny buffer under datahanteringen. Detta innebär att vi kan ta emot ny data från samma sändare på samma buffer sålänge vi har påbörjat databehandling.
+
 \subsection{Kommunikation melllan PC och robot}
 \subsection{PC-mjukvara med grafiskt gränssnitt}
 \subsection{Pulse Width Modulation}
