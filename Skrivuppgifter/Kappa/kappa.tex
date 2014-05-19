@@ -1,4 +1,4 @@
-﻿\documentclass[a4paper,12pt,fleqn]{article}
+\documentclass[a4paper,12pt,fleqn]{article}
 \usepackage{fixltx2e}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
@@ -16,14 +16,11 @@
 \usepackage{listings}
 \usepackage{xcolor,colortbl}
 \usepackage{hyperref}
-
 \include{pagestyle}
 
+\begin{document}
 %-------------------------------------------------------------------
 %Första sidan
-
-\begin{document}
-	
 
 	\pagestyle{fancy}
 \pagenumbering{roman}
@@ -195,6 +192,9 @@ För att undvika ovannämnda problem utnyttjas en dubbelbuffer. Första buffern 
 \subsection{Kommunikation melllan PC och robot}
 \subsection{PC-mjukvara med grafiskt gränssnitt}
 \subsection{Pulse Width Modulation}
+
+För att styra chassits motorer används AVR-processorn inbyggda pulsbreddsmodulering, PWM. 
+
 \subsection{LCD-display}
 \subsection{Kartabstraktion}
 
