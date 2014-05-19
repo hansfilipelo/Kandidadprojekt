@@ -123,7 +123,7 @@ void gyrocal(){
 	gyrovila = gyrovila/100;				//calculate mean constant
 	ADMUX = 0x20;							//set ADMUX to input 0
 }
-
+/*
 void TrimWheel(){
 	int squareDifference = 0;
 	if(sen2 < 70){						//back short
@@ -156,7 +156,7 @@ void TrimWheel(){
 	else{
 		wheelTrim = 0;
 	}
-}
+}*/
 
 //handles data from SPI
 void handleInDataArray(){
@@ -403,9 +403,38 @@ int main(void)
                 //communication on bus.
 				//------------Trim--------------------------------
 				//TrimWheel();
-				//sen0 = wheelTrim+20;
-				
-				
+				int squareDifference = 0;
+				if(sen2 < 70){						//back short
+					squareDifference = sensor2[savepos - 1] % 40;
+					if(squareDifference > 13){
+						wheelTrim = wheelTrim - 1;
+					}
+					else if(squareDifference < 7){
+						wheelTrim = wheelTrim + 1;
+					}
+				}
+				else if(sen1 < 200){				//back long
+					squareDifference = sensor1[savepos - 1] % 40;
+					if(squareDifference > 13){
+						wheelTrim = wheelTrim - 1;
+					}
+					else if(squareDifference < 7){
+						wheelTrim = wheelTrim + 1;
+					}
+				}
+				else if(sen4 < 60){					//front short
+					squareDifference = sensor4[savepos - 1] % 40;
+					if(squareDifference > 13){
+						wheelTrim = wheelTrim + 1;
+					}
+					else if(squareDifference < 7){
+						wheelTrim = wheelTrim - 1;
+					}
+				}
+				else{
+					wheelTrim = 0;
+				}
+				sen0 = wheelTrim+20;
 			}
 			asm("");
 		}
