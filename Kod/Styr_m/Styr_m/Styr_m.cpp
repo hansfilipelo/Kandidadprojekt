@@ -238,44 +238,28 @@ int main(void)
 			}
 			else{
 				/*--------------KARTLÄGGNING----------------------
-				--------------------------------------------------
                 -------------------------------------------------*/
-				mapPointer->convertToPathFinding();
+				if(mapPointer->firstTimeMapping){
+					mapPointer->firstTimeMapping = false;
+					//mapPointer->convertToPathFinding();
+					//Sets start and finnish coordinates
+					int xStart = robotPointer->getX();
+					int yStart = robotPointer->getY();
+					robotPointer->findFinishPos();
+					int xFinish = robotPointer->getFinishX();
+					int yFinish = robotPointer->getFinishY();
 				
-				//Sets start and finnish coordinates
-				int xStart = robotPointer->getX();
-				int yStart = robotPointer->getY();
-                robotPointer->findFinishPos();
-				int xFinish = robotPointer->getFinishX();
-				int yFinish = robotPointer->getFinishY();
-				
-				// get the route
-				mapPointer->aStar(xStart,yStart,xFinish,yFinish);
-				
-				int sizeOfArray = int(mapPointer->pathArray[0]) - 48;
-				
-				for (int i=1;i < sizeOfArray+1 ; i++) {
+					// get the route
+					//mapPointer->aStar(xStart,yStart,xFinish,yFinish);
+					robotPointer->goToAStar();
 					
-					char p = mapPointer->pathArray[i];
-					
-					if(p == 'h'){
-						//kör höger 40 cm 
-					}
-					else if(p== 'b'){
-						//kör bakåt 40 cm
-					}
-					else if(p== 'v'){
-						//kör vänster 40 cm
-					}
-					else if(p== 'f'){
-						//kör rakt fram 40 cm
-					}
-
 				}
-				
+				if(robotPointer->foundIsland){
+					
+				}
+
 			}
 		}
-    
 		// Look for walls every 500th turn of main loop
 		if (i == 250) {
 			// Update position in map
@@ -291,7 +275,6 @@ int main(void)
 			asm("");
 		}
 	
-}
-
-return 0;
+	}
+	return 0;
 }

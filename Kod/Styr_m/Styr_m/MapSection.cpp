@@ -1074,7 +1074,7 @@ void Robot::updateRobotPosition(){
     
    if (wheelHasTurned){
 	   wheelHasTurned = false;
-		commObj->reactivateWheelSensor();
+	   commObj->reactivateWheelSensor();
 	    //commObj->reactivateRFID();
 	   MapSection* tempSection;
 	   
@@ -1084,7 +1084,7 @@ void Robot::updateRobotPosition(){
 		#if TESTING == 0
 		_delay_ms(250);
 	   #endif
-	   setSpeed(userSpeed);
+	   setSpeed(userSpeed); //borde flyttas till efter switchen
 	   drive();
 	   
 		switch (direction){
@@ -1164,7 +1164,7 @@ void Robot::updateRobotPosition(){
 			setRightClosed();
 			setLeftClosed();
 		}
-		backToStart(); // not tested fully, could still give nonsense.
+		//backToStart(); // not tested fully, could still give nonsense.
    }
 }
 
@@ -1467,4 +1467,85 @@ int Robot::getFinishX(){
 
 int Robot::getFinishY(){
 	return finishY;
+}
+
+void Robot::goToAStar(){
+	int sizeOfArray = int(mom->pathArray[0]) - 48;
+
+	for (int i=1;i < sizeOfArray+1 ; i++) {
+		
+		char p = mom->pathArray[i];
+		
+		if(p == 'r'){
+			if(direction == 'r'){
+				break;
+			}
+			else if(direction=='l'){
+				rotateRight();
+				rotateRight();
+			}
+			else if(direction=='f'){
+				rotateRight();
+			}
+			else if(direction=='b'){
+				rotateLeft();
+			}
+		}
+		else if(p == 'l'){
+			if(direction == 'r'){
+				rotateRight();
+				rotateRight();
+			}
+			else if(direction=='l'){
+				break;
+			}
+			else if(direction=='f'){
+				rotateLeft();
+			}
+			else if(direction=='b'){
+				rotateRight();
+			}
+		}
+		else if(p == 'f'){
+			if(direction == 'r'){
+				rotateLeft();
+			}
+			else if(direction=='l'){
+				rotateRight();
+			}
+			else if(direction=='f'){
+				break;
+			}
+			else if(direction=='b'){
+				rotateRight();
+				rotateRight();
+			}
+		}
+		else if(p == 'b'){
+			if(direction == 'r'){
+				rotateRight();
+			}
+			else if(direction=='l'){
+				rotateLeft();
+			}
+			else if(direction=='f'){
+				rotateRight();
+				rotateRight();
+			}
+			else if(direction=='b'){
+				break;
+			}
+		}
+		//checks if wall
+		if(isWallFwd()){
+			foundIsland = true;
+			return;
+		}
+		
+		changeGear('f');
+		setSpeed(25);
+		drive();
+		while(!wheelHasTurned){}
+		updateRobotPosition();
+	}	
 }
