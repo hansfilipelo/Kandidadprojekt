@@ -278,7 +278,10 @@ USART-avbrotten stängs av för att inte låsa sensormodulen med flera läsninga
 SLAM står för Simultaneous Localization And Mapping och innebär att roboten ska kunna skatta sin position samtidigt som den ritar upp en karta över området den färdas inom.
 
 \subsubsection{Positionsskattning}
+
 \subsubsection{Kartläggning}
+På styrmodulen ligger en karta i form av en array som uppdateras allt eftersom roboten åker och tar in ny mätdata. Arrayen innehåller objekt som kan vara av typen, explored, unexplored, closed och fire. En fördel med att ha objekt i arrayen är t.ex. att funktioner för att överblick och dra slutsatser kring kartan blir väldigt lätta att implementera. T.ex. kan man kolla om en vägg tillhör en köksö genom att helt enkel fråga ett objekt som är closed, isClosed? Ett rekursivt anrop sker då mellan alla närliggade vägger och om väggarna utgör en sluten cirkel, kan hela köksön markes som sluten på kartan. 
+Vid sändning av kartan upp till master och sedan vidare till PC-mjukvaran konverteras objekten till bokstäver som sedan avgör färgerna i den uppritande kartan.  
 
 
 \section{Resultat}
