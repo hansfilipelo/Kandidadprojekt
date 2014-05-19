@@ -1,4 +1,4 @@
-﻿\documentclass[a4paper,12pt,fleqn]{article}
+\documentclass[a4paper,12pt,fleqn]{article}
 \usepackage{fixltx2e}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
@@ -248,10 +248,6 @@ Till en början är alla områden outforskade. I takt med att sensordata kommer 
 Roboten har nio olika sensorer. En RFID-läsare, ett gyroskop, en reflexsensor, en långdistansmätare, en mellandistansmätare och fyra kortdistansmätare. 
 
 
-RFID-läsaren ger ut en digital signal och behandlas med USART. Vid detektion av en RFID-tagg så stängs USART-avbrott av och ett kommando skickas till styrmodulen som säger till att vi hittat en brandhärd. 
-USART-avbrotten stängs av för att inte låsa sensormodulen med flera läsningar av samma tagg. Avbrottet tillåts då roboten lämnat segmentet genom att styrmodulen skickar ett kommando till sensormodulen via kommunikationsmodulen.
-
-
 
 \subsubsection{AD-omvandling}
 De resterande sensorerna ger analoga utsignaler och behandlas med hjälp av en intern A/D-mux på sensormodulen. 
@@ -265,7 +261,12 @@ Läsningen slutförs när roboten svängt 90 grader och sensormodulen skickar et
 
 \subsubsection{Reflexsensor}
 Reflexsensorn, precis som vinkelhastighetsmätaren, körs på begäran av styrmodulen men låser inte sensormodulens avståndsmätningar. Reflexsensorn tas istället med i muxräkningen. Detta är nödvändigt då vi behöver leverera sensordata under färd tillskillnad från under rotation. Läsningar från reflexsensorn upphör då roboten färdats $40$ cm och sensormodulen skickar ett kommando till styrmodulen
-som säger att roboten nått ett nytt segment. Detta kommando skickas upp till tre gånger för att inte missas av kommunikationsmodulen. xs
+som säger att roboten nått ett nytt segment. Detta kommando skickas upp till tre gånger för att inte missas av kommunikationsmodulen.
+
+\subsubsection{RFID-sensor}
+
+RFID-läsaren ger ut en digital signal och behandlas med USART. Vid detektion av en RFID-tagg så stängs USART-avbrott av och ett kommando skickas till styrmodulen som säger till att vi hittat en brandhärd. 
+USART-avbrotten stängs av för att inte låsa sensormodulen med flera läsningar av samma tagg. Avbrottet tillåts då roboten lämnat segmentet genom att styrmodulen skickar ett kommando till sensormodulen via kommunikationsmodulen.
 
 \subsection{SLAM}
 
@@ -276,18 +277,41 @@ SLAM står för Simultaneous Localization And Mapping och innebär att roboten s
 
 
 \section{Resultat}
-Beskriv kortfattat hur produkten används, hänvisa till användarmanualen.
-Beskriv vilken prestanda produkten har och hur det har testats, hänvisa till eventuella testprotokoll.
-Kommentera om produkten klarade de kraven som ställdes upp i kravspecifikationen. 
+%Beskriv kortfattat hur produkten används, hänvisa till användarmanualen.
+
+
+%Beskriv vilken prestanda produkten har och hur det har testats, hänvisa till eventuella testprotokoll.
+
+
+%Kommentera om produkten klarade de kraven som ställdes upp i kravspecifikationen. 
+
+
 \section{Slutsatser}
-Slutsatser
-Sammanfatta arbetet. 
-Lyft fram det ni är mest nöjda med.
-Reflektera över resultatet såväl tekniskt som över genomförandet. Referera efterstudien.
-Framtida arbete
-Vad skulle ni göra annorlunda om ni skulle göra om samma uppdrag?
-Vad skulle ni vilja utveckla om ni fick mer tid?
-Hur skulle ni tänka er att ändra uppgiften för att göra den ännu mer intressant?
+%Slutsatser
+
+
+%Sammanfatta arbetet. 
+
+
+%Lyft fram det ni är mest nöjda med.
+Vi är väldigt nöjda med är vår implementering av kartritningen, slutning av områden och vår A*-sökalgoritm. Vi är även väldigt nöjda och stolta över objektstrukturen och klass nyttjandet som hela projektgruppen gjort under projektets gång.
+
+%Reflektera över resultatet såväl tekniskt som över genomförandet. Referera efterstudien.
+
+
+%Framtida arbete
+
+
+%Vad skulle ni göra annorlunda om ni skulle göra om samma uppdrag?
+Om denna projektgrupp eller någon av dess medlemmar fick göra om detta uppdrag så skulle de använda en trådad processor istället för tre. En av de mest tidskrävande aktiviteterna har varit bussen, implementering och felsökning. Bussen är även den del av projektet som gett oss flest fel. Så två saker är säkra, om vi fick möjlighet att göra det utan en buss skulle vi göra det och om vi var tvugna att återigen göra en buss skulle denna påbörjas något tidigare och stresstestas hårt.
+
+%Vad skulle ni vilja utveckla om ni fick mer tid?
+Om vi fick mer tid i projektet skulle tiden med all fördel läggas på optimeringsalgoritmer och förbättrandet av bussen. En av förbättringarna till bussen som skulle kunna utnyttjas är en mer avancerad bufferstruktur än den som används.  
+
+%Hur skulle ni tänka er att ändra uppgiften för att göra den ännu mer intressant?
+I vår åsikt, så skulle tävlingsmomentena kunna göras mer intressanta. I nuvarande form ska RFID-taggar hittas. Dessa taggar måste besökas väldigt långsamt och varje ruta i hela kartan måste besökas för att hitta alla taggar. Detta tar bort en väldigt intressant utmaning, nämligen avsökningsoptimering, nyttjandet av sensorer med längre räckvidd och en god reglering vid höga hastigheter.
+
+
 \section{Referenser}
 
 
