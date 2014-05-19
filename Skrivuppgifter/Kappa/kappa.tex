@@ -1,4 +1,4 @@
-\documentclass[a4paper,12pt,fleqn]{article}
+﻿\documentclass[a4paper,12pt,fleqn]{article}
 \usepackage{fixltx2e}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
@@ -133,8 +133,9 @@ En av de största utmaningarna med robotens uppdrag är dock att rita ut en kart
 %Redogör kort för kravbilden och referera till projektdirektiv och kravspecifikation för %att läsa detaljer.
 %Lägg återigen mest fokus på det som ni ansåg utmanande/intressant.
 
-Den slutgiltiga produkten ska uppfylla ett antal krav (Se Kravspecifikation) för att godkännas av beställaren. 
-Kraven som ställts är delvis baserade på vad beställaren ville få levererat (Se Projektdirektiv för kartrobot) och delvis på sådant som projektgruppen ansåg var viktigt för robotens funktionalitet. 
+Den slutgiltiga produkten ska uppfylla ett antal krav (Se Kravspecifikation) för att godkännas av beställaren. Principiellt ska roboten kunnas köra autonomt genom ett område (uppbyggt av kartongväggar) och i realtid skicka en karta till en persondator som på ett prydligt sätt redovisar var roboten har sett. 
+
+Kraven som ställts är delvis baserade på vad beställaren ville få levererat (Se Projektdirektiv för kartrobot) och delvis på sådant som projektgruppen ansåg var viktigt för robotens funktionalitet. Ett exempel på det är hanteringen av kartan och sökalgoritmer som ansågs mest intressant och svårast att implementera. 
 Sammanfattningsvis består kraven bland annat av de delar som beskrivs av scenariot i inledningen. Den innehåller även en del krav på vilka delprodukter som ska vara klara vid vissa specifika datum.
 
 \section{Kunskapsbas}
@@ -148,20 +149,22 @@ Utöver detta har även diverse forum på internet berörande exempelvis \emph{C
 \section{Genomförande}
 %Beskriv hur projektet har bedrivits och referera bland annat till LIPS-modellen, %systemskiss, projektplan och designspecifikation. Observera att designspecifikationen %belyser arbetsprocessen och inte den slutliga produkten så om ni uppdaterat %designspecifikationen löpande under projektet så kan ni infoga t ex den version som var %aktuell vid BP3.
 
-Det grundläggande upplägget på projektet har baserats på LiPS-modellen, det vill säga de olika faserna i arbetet och vad som bör göras. 
-De dokument som producerades under för-fasen så som systemskiss och projektplan skrevs gemensamt för att alla medlemmar skulle få en så bra inblick som möjligt i hur arbetet planerades. 
-För mer detaljerad beskrivning av arbetsupplägget hänvisas läsaren till ovan nämnda dokument (Se Systemskiss och Projektplan).
+Det grundläggande upplägget av projektet har baserats på Lips-modellen\footnote{http://www.liu.se/cul/resurser/lips/kort-beskrivning-av-lips-modellen?l=sv}. Modellen innehåller tre stycken faser. FÖRE, UNDER och EFTER utförandet av projektet. Beslut angående projektets fortskridande tas vid så kallade beslutspunkter (förkortas BP) som ligger placerade löpande under de olika faserna. Utöver detta finns det även milstolpar som används för att kunna verifiera att projektet håller tidplanen. 
 
-Projektet har delats upp i mindre delprojekt som olika projektmedlemmar fått ansvara för. 
-Det har bland annat inneburit förberedande design av delprodukt (Se Designspecifikation) och implementering. 
+\subsection{Före}
+De dokument som producerades under för-fasen så som systemskiss och projektplan skrevs gemensamt för att alla medlemmar skulle få en så bra inblick som möjligt i hur arbetet planerades. För mer detaljerad beskrivning av arbetsupplägget hänvisas läsaren till ovan nämnda dokument (Se Systemskiss och Projektplan).
+
+\subsection{Under}
+Under produktionsfasen började arbetet med att upprätta en designspecifikation. I denna beskrevs robotens struktur som delades upp i 3 stycken moduler. Gruppen delades i 3 och varje delgrupp ansvarade för varsin modul. Modulansvaret hos respektive delgrupp har inneburit förberedande design av delprodukt (Se Designspecifikation) och implementering. 
 Vid ett delprojekts slutförande har hårdvaran eller den skrivna koden förklarats för de andra projektmedlemmarna och sedan slagits samman med resten av projektet. 
 
-För att på ett smidigt vis slå samman kod och möjliggöra simultan programmering har en versionshanteringstjänst vid namn Github använts. 
-När hårdvara skulle utvecklas delades projektgruppen in modulvis, två personer per modul.
-Dialog hölls mellan grupperna för att säkerställa att portar och kontakter placerades på smidiga ställen.
+Dialog hölls även löpande mellan grupperna för att säkerställa att portar och kontakter placerades på smidiga ställen. Vid implementering av mjukvaran har en versionshanteringstjänst vid namn Github använts, detta för att på ett smidigt vis slå samman kod och möjliggöra simultan programmering
 
-Längre in i projektet ändrades grupperna något för att ge alla projektmedlemmar en chans att arbeta med varandra, men även för att det var färre delmoment att arbeta med. 
-I slutfasen av projektet turades gruppmedlemarna om att skriva den tekniska dokumentationen medan andra arbetade med roboten för att effektivisera arbetet.
+Längre in i projektet ändrades grupperna något för att ge alla projektmedlemmar en chans att arbeta med varandra, men även för sprida ut kunskapen kring de olika modulerna.
+I slutfasen av projektet turades gruppmedlemmarna om att skriva den tekniska dokumentationen medan andra arbetade med roboten för att effektivisera arbetet.
+
+\subsection{Efter}
+I efterfasen överfördes projektresultatet till beställaren och projektet avslutades. En tävling hölls av mellan de olika projektgrupperna för att avgöra vilken robot som var bäst. 
 
 \section{Teknisk beskrivning}
 %Redovisa det tekniska resultatet och skrivuppgifterna på ett lämpligt sätt. Detaljerade beskrivningar på grindnivå i hårdvaran eller på instruktionsnivå i mjukvaran är i detta sammanhang oftast ointressant. Referera den tekniska dokumentationen och skrivuppgifterna för beskrivning av detaljer. Lyft fram egna kreativa lösningar!
