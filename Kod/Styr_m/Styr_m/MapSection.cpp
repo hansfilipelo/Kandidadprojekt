@@ -466,10 +466,6 @@ void Robot::rotateLeft(){
 	fwdDiff = 0;
 	bwdDiff = 0;
 	
-	// For odometry
-	robotPointer->wheelHasTurned = true;	//move robot
-	updateRobotPosition();
-	
 	//send map
 	
 	commObj->sendMap();
@@ -484,6 +480,10 @@ void Robot::rotateLeft(){
 	{
 		drive();
 	}
+	
+	// Corr our position on turns
+	updateRobotPosition();
+
 	
 	// Stop rotation and set gear to forward
 	setSpeed(0);
@@ -505,9 +505,8 @@ void Robot::rotateLeft(){
         changeDirection('f');
     }
 	
-	while(!newData){
-		
-	}
+	
+	waitForNewData();
 	this->robotRotated();
 		
 }
@@ -546,6 +545,9 @@ void Robot::rotateRight(){
  		drive();
 	}
 	
+	// Corr our position on turns
+	updateRobotPosition();
+	
 	// Stop rotation and set gear to forward
 	setSpeed(0);
 	changeGear('f');
@@ -566,9 +568,7 @@ void Robot::rotateRight(){
         changeDirection('f');
     }
 	
-	while(!newData){
-		asm("");
-	}
+	waitForNewData();
 	this->robotRotated();
 	
 }
@@ -580,10 +580,20 @@ void Robot::turn(int pd){
 	
 	int pdOut = pd * movementSpeed * 0.01;
 	
-	#if TESTING == 0
-	OCR2A = output+pdOut; //Negative value on pd will turn left, positive right
-	OCR2B = output-pdOut;
-	#endif
+	// Protect against overflow
+	if (output+pdOut > 255 || output-pdOut < 0)
+	{
+		#if TESTING == 0
+		OCR2A = 0; //Negative value on pd will turn left, positive right
+		OCR2B = 0;
+		#endif
+	}
+	else {
+		#if TESTING == 0
+		OCR2A = output+pdOut; //Negative value on pd will turn left, positive right
+		OCR2B = output-pdOut;
+		#endif
+	}
 }
 
 
@@ -1037,14 +1047,12 @@ void Robot::updateRobotPosition(){
     
    if (wheelHasTurned){
 	   wheelHasTurned = false;
-	   if(fwdShortSensor>80){
-			commObj->reactivateWheelSensor();
-	   }
+		commObj->reactivateWheelSensor();
 	   //commObj->reactivateRFID();
 	   MapSection* tempSection;
 	   
 	   //halt
-	   //setUserSpeed(0);
+	   //setSpeed(0);
 	   //drive();
 
 	   
@@ -1319,7 +1327,7 @@ bool Robot::isWallFwdClose()
 	    if ( getFwdDistance() == 0 ) {
 		    return false;
 	    }
-	    if ( getFwdDistance() < 10 ){
+	    if ( getFwdDistance() < 15 ){
 		    return true;
 	    }
 	    else{
