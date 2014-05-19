@@ -225,9 +225,9 @@ Kommandot skickas från styrmodulen via mastern som speglar ner kommandot till s
 Kommandot skickas från styrmodulen via mastern som speglar ner kommandot till sensormodulen. Sensormodulen startar då en hjulsensormätning och skickar bekräftelse till styrmodulen när roboten har åkt fram 40 cm är. 
 
 \subsection{LCD-Display}
-Sensordata och annan information från roboten visas på en alfanumerisk-display, närmare bestämt  LCD JM162A. Displayen kommer att kunna visa 2 rader × 16 tecken.
+Sensordata och annan information från roboten visas på en alfanumerisk-display, närmare bestämt  LCD JM162A. Displayen kommer visar sensordata på 4 rader × 16 tecken.
 Displayen kommer anslutas till processorn enligt kretschemat i appendix A. 
-Vid varje uppstart kommer initiering av LCD-display göras och då följa nedanstående flödesschema. Varje steg startas med att processorn skickar ett kommando till ingångarna på LCD-displayen. Kommandon finns specificerade i databladet, se (fotnot https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/jm162a.pdf). 
+Vid varje uppstart kommer initiering av LCD-display göras och då följa nedanstående flödesschema. Varje steg startas med att processorn skickar ett kommando till ingångarna på LCD-displayen. Kommandon finns specificerade i databladet\footnote{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/jm162a.pdf}. LCD-displayen sitter på mastermodulen och för att inte låsa mastermodulen under tiden då datan  skrivs ut på diaplyen har ett buffersystem implementerats. Buffersystemet gör så att mainprogrammet i mastern inte låser ner sig när data skrivs till displayen. Buffern håller koll på vilken rad och kolumn som för tillfället ska skrivas ut och kan därför avsluta skrivningen direkt efter att 0 eller 1 karaktär är utskriven på displayen och därefter kan mastern återgå till mainloopen för att hantera inkommande eller mottagande data.  
 
 \subsubsection{Uppstart}
 	
@@ -536,7 +536,7 @@ Vilka förbättringar skulle kunna göras?
 
 \begin{figure}[ht] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
-  \includegraphics[keepaspectratio=true,width=\linewidth]{bilder/komschema.png}  %skala och filnamn. 
+  \includegraphics[keepaspectratio=true,width=\linewidth]{bilder/kom_uptodate.png}  %skala och filnamn. 
   \end{center}
   \caption{Kopplingsschema kommunikationsmodul} %figurtext.
   \label{fig:kopplingkom} %glöm inte att uppdatera era labels

@@ -138,7 +138,11 @@ International Journal of Robotics Research, 5(4), sida 56–68. Hämtad 28 mars 
 Utvecklingen på området har sedan dess accelererat kraftigt tack vare
 mikrokontrollers förmåga att hantera mer data vilket är intressant eftersom noggrannheten i SLAM gynnas kraftigt av att arbeta med stora stickprov. 
 
-För den som vill läsa på mer om SLAM finns ett urval av referenser till vetenskaplig litteratur och artiklar i källförteckningen, till exempel om läsaren istället vill få en mer övergripande bild utan att gå in så mycket på beräkningar erbjuder den vetenskapliga artikeln ''SLAM for dummies'' en bra förklaring. Ytterligare läsning finns i David Törnqvists doktorsavhandling ''Estimation and Detection with Applications to Navigation''. Där beskriver Törnqvist teorin bakom SLAM på ett pedagogiskt och detaljerat sätt \footnote{Törnqvist, D. Estimation and Detection with Applications to Navigation. PhD thesis, Linköping University, 2008, \url{http://urn.kb.se/resolve?urn=urn:nbn:se:liu:diva-14956}. Hämtad 15 april 2014.}.
+För den som vill läsa på mer om SLAM finns ett urval av referenser till vetenskaplig litteratur och artiklar i källförteckningen, till exempel om läsaren istället vill få en mer övergripande bild utan att gå in så mycket på beräkningar erbjuder den vetenskapliga artikeln ''SLAM for dummies''\footnote{Risgaard, S; Blas, M.R (2005).
+''SLAM for Dummies, A Tutorial Approach to Simultaneous Localization and Mapping''. 
+Hämtad 28 mars 2014:
+\url{http://ocw.mit.edu/courses/aeronautics-and-astronautics/16-412j-cognitive-robotics-spring-2005/projects/1aslam_blas_repo.pdf}
+} en bra förklaring. Ytterligare läsning finns i David Törnqvists doktorsavhandling ''Estimation and Detection with Applications to Navigation''. Där beskriver Törnqvist teorin bakom SLAM på ett pedagogiskt och detaljerat sätt \footnote{Törnqvist, D. Estimation and Detection with Applications to Navigation. PhD thesis, Linköping University, 2008, \url{http://urn.kb.se/resolve?urn=urn:nbn:se:liu:diva-14956}. Hämtad 15 april 2014.}.
  
 På senare år har man även, precis som inom många andra vetenskapliga områden, sett utvecklingen ta ytterligare ett kliv tack vare internet och öppna källkodsprojekt som Github och OpenSLAM. Att göra en sökning på SLAM på Github resulterar i en mängd aktiva projekt på området. Eftersom källkoden där också finns tillgänglig är detta ett utmärkt exempel för de som vill studera implementeringar av SLAM-algoritmer. 
 
@@ -319,7 +323,8 @@ och skattningen ges av
 	P_{n+1|n}=A_nP_{n|n-1}A_n^T+R_{1} 
 	        -A_nP_{n|n-1}C_n^T(C_nP_{n|n-1}C_n^T+R_1)^{-1}C_nP_{n|n-1}A_n^T
 \end{gather}
-där $R_1$ och $R_2$ är kovariansmatriserna för $e$ respektive $v$. $A$-,$B$-,$C$- och $D$-matriserna varierar med tiden.  
+där $R_1$ och $R_2$ är kovariansmatriserna för $e$ respektive $v$. $A$-,$B$-,$C$- och $D$-matriserna varierar med tiden. \footnote{Gustavsson, Fredrik; Ljung, Lennart; Millnert, Mille. 2000. \textit{Signalbehandling}. Andra upplagan. Lund. Studentlitteratur.
+}
 
 \subsubsection{EKF - Det utökade kalmanfiltret}
 
@@ -385,9 +390,17 @@ Fox, C.; Evans, M.; Pearson, M.; Prescott, T. (2012)
 
 Glad, Torkel och Ljung, Lennart. 2006. \textit{Reglerteknik - Grundläggande teori}. Upplaga 4:10. Lund. Studentlitteratur.
 
+Gustavsson, Fredrik; Ljung, Lennart; Millnert, Mille. 2000. \textit{Signalbehandling}. Andra upplagan. Lund. Studentlitteratur.
+
 Karlsson, N.; Goncalves, L.; Munich, M.E.; Pirjanian, P.
 ''The vSLAM Algorithm for Navigation in Natural Environments''. Evolution Robotics, Inc. Hämtad 28 mars 2014:
 \url{http://www.vision.caltech.edu/mariomu/research/papers/vSLAM-krs.pdf}
+
+Risgaard, S; Blas, M.R (2005).
+''SLAM for Dummies, A Tutorial Approach to Simultaneous Localization and Mapping''. 
+Hämtad 28 mars 2014:
+\url{http://ocw.mit.edu/courses/aeronautics-and-astronautics/16-412j-cognitive-robotics-spring-2005/projects/1aslam_blas_repo.pdf}
+
 
 Smith, R.C.; Cheeseman, P. (1986). ''On the Representation and Estimation of Spatial Uncertainty''. The
 International Journal of Robotics Research, 5(4), sida 56–68. Hämtad

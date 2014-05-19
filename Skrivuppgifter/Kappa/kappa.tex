@@ -1,4 +1,4 @@
-﻿\documentclass[a4paper,12pt,fleqn]{article}
+\documentclass[a4paper,12pt,fleqn]{article}
 \usepackage{fixltx2e}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
@@ -21,10 +21,7 @@
 
 %-------------------------------------------------------------------
 %Första sidan
-
 \begin{document}
-	
-
 	\pagestyle{fancy}
 \pagenumbering{roman}
 	\vspace*{\fill}
@@ -128,7 +125,7 @@ När hela området är kartlagt ska roboten ta sig tillbaka till startpunkten oc
 \end{figure}
 
 Stora delar av arbetet med denna produkt består av att utnyttja den teoretiska kunskap som finns och att koppla den till praktiken för att sedan implementera principerna på roboten. 
-Detta innefattar bland annat reglerteori, sannolikhetslära och matematisk analys.
+Detta innefattar bland annat reglerteori, sannolikhetslära, optimering och matematisk analys.
 
 En av de största utmaningarna med robotens uppdrag är dock att rita ut en karta över området utan att veta var den befinner sig - men hur går det att veta var roboten befinner sig utan en karta? 
 
@@ -136,40 +133,47 @@ En av de största utmaningarna med robotens uppdrag är dock att rita ut en kart
 %Redogör kort för kravbilden och referera till projektdirektiv och kravspecifikation för %att läsa detaljer.
 %Lägg återigen mest fokus på det som ni ansåg utmanande/intressant.
 
-Den slutgiltiga produkten ska uppfylla ett antal krav (Se Kravspecifikation) för att godkännas av beställaren. 
-Kraven som ställts är delvis baserade på vad beställaren ville få levererat (Se Projektdirektiv för kartrobot) och delvis på sådant som projektgruppen ansåg var viktigt för robotens funktionalitet. 
+Den slutgiltiga produkten ska uppfylla ett antal krav (Se Kravspecifikation) för att godkännas av beställaren. Principiellt ska roboten kunnas köra autonomt genom ett område (uppbyggt av kartongväggar) och i realtid skicka en karta till en persondator som på ett prydligt sätt redovisar var roboten har sett. Roboten ska även kunna detektera brandhärdar som symboliseras med RFID-kort. Dessa kort placeras ut på slumpmässigt valda rutor på banan. 
+
+Kraven som ställts är delvis baserade på vad beställaren ville få levererat (Se Projektdirektiv för kartrobot) och delvis på sådant som projektgruppen ansåg var viktigt för robotens funktionalitet. Ett exempel på funktionalitet som har prioriterats är hantering av karta och sökalgoritmer som ansågs mest intressant dock även svårast att implementera. 
 Sammanfattningsvis består kraven bland annat av de delar som beskrivs av scenariot i inledningen. Den innehåller även en del krav på vilka delprodukter som ska vara klara vid vissa specifika datum.
 
 \section{Kunskapsbas}
 
-%%Här behövs lite referenser sen
-Den litteratur som använts under projektets gång består till stor del av böcker inom grunderna för bland annat sannolikhetslära, datorteknik, elektronik, reglerteknik och matematisk analys. 
-Dessa har kombinerats med datablad för de komponenter som använts tagna från ISY:s sida VanHeden\footnote{\url{https://docs.isy.liu.se/twiki/bin/view/VanHeden}} och datablad från Atmel för 
-de processorer som modulerna baserats på\footnote{\url{http://www.atmel.com/images/doc8059.pdf}}. 
+\subsection{Personligkontakt}
+Under projektets gång har gruppen haft hjälp av en handledare vid namn Peter Johansson, som är anställd på instutitionen för systemteknik vid Linköpings universitet. 
+
+\subsection{Litteratur}
+Den litteratur som använts under projektets gång består till stor del av böcker inom grunderna för bland annat sannolikhetslära, datorteknik\footnote{Roos, Olof. 1995. Grundläggande datorteknik. upplaga 1. Studentlitteratur AB}, elektronik\footnote{Söderkvist, Sune. 1996. Kretsteori och elektronik. utgåva 1. Tryckeriet Erik Larsson AB}, reglerteknik och matematisk analys.
+
+\subsection{Webb}
+Den ovannämnda litteraturen har kombinerats med datablad för de komponenter som använts tagna från ISY:s sida VanHeden\footnote{\url{https://docs.isy.liu.se/twiki/bin/view/VanHeden}} och datablad från Atmel för de processorer som modulerna baserats på\footnote{\url{http://www.atmel.com/images/doc8059.pdf}}. 
 Utöver detta har även diverse forum på internet berörande exempelvis \emph{C}-,\emph{C++}-\footnote{\url{http://stackoverflow.com/}} och \emph{AVR}-programmering\footnote{\url{http://www.avrfreaks.net/}} besökts.
+
 
 \section{Genomförande}
 %Beskriv hur projektet har bedrivits och referera bland annat till LIPS-modellen, %systemskiss, projektplan och designspecifikation. Observera att designspecifikationen %belyser arbetsprocessen och inte den slutliga produkten så om ni uppdaterat %designspecifikationen löpande under projektet så kan ni infoga t ex den version som var %aktuell vid BP3.
 
-Det grundläggande upplägget på projektet har baserats på LiPS-modellen, det vill säga de olika faserna i arbetet och vad som bör göras. 
-De dokument som producerades under för-fasen så som systemskiss och projektplan skrevs gemensamt för att alla medlemmar skulle få en så bra inblick som möjligt i hur arbetet planerades. 
-För mer detaljerad beskrivning av arbetsupplägget hänvisas läsaren till ovan nämnda dokument (Se Systemskiss och Projektplan).
+Det grundläggande upplägget av projektet har baserats på Lips-modellen\footnote{http://www.liu.se/cul/resurser/lips/kort-beskrivning-av-lips-modellen?l=sv}. Modellen innehåller tre stycken faser. FÖRE, UNDER och EFTER utförandet av projektet. Beslut angående projektets fortskridande tas vid så kallade beslutspunkter (förkortas BP) som ligger placerade löpande under de olika faserna. Utöver detta finns det även milstolpar som används för att kunna verifiera att projektet håller tidplanen. 
 
-Projektet har delats upp i mindre delprojekt som olika projektmedlemmar fått ansvara för. 
-Det har bland annat inneburit förberedande design av delprodukt (Se Designspecifikation) och implementering. 
+\subsection{Före}
+De dokument som producerades under för-fasen så som systemskiss och projektplan skrevs gemensamt för att alla medlemmar skulle få en så bra inblick som möjligt i hur arbetet planerades. För mer detaljerad beskrivning av arbetsupplägget hänvisas läsaren till ovan nämnda dokument (Se Systemskiss och Projektplan).
+
+\subsection{Under}
+Under produktionsfasen började arbetet med att upprätta en designspecifikation. I denna beskrevs robotens struktur som delades upp i 3 stycken moduler. Gruppen delades i 3 och varje delgrupp ansvarade för varsin modul. Modulansvaret hos respektive delgrupp har inneburit förberedande design av delprodukt (Se Designspecifikation) och implementering. 
 Vid ett delprojekts slutförande har hårdvaran eller den skrivna koden förklarats för de andra projektmedlemmarna och sedan slagits samman med resten av projektet. 
 
-För att på ett smidigt vis slå samman kod och möjliggöra simultan programmering har en versionshanteringstjänst vid namn Github använts. 
-När hårdvara skulle utvecklas delades projektgruppen in modulvis, två personer per modul.
-Dialog hölls mellan grupperna för att säkerställa att portar och kontakter placerades på smidiga ställen.
+Dialog hölls även löpande mellan grupperna för att säkerställa att portar och kontakter placerades på smidiga ställen. Vid implementering av mjukvaran har en versionshanteringstjänst vid namn Github använts, detta för att på ett smidigt vis slå samman kod och möjliggöra simultan programmering
 
-Längre in i projektet ändrades grupperna något för att ge alla projektmedlemmar en chans att arbeta med varandra, men även för att det var färre delmoment att arbeta med. 
-I slutfasen av projektet turades gruppmedlemarna om att skriva den tekniska dokumentationen medan andra arbetade med roboten för att effektivisera arbetet.
+Längre in i projektet ändrades grupperna något för att ge alla projektmedlemmar en chans att arbeta med varandra, men även för sprida ut kunskapen kring de olika modulerna.
+I slutfasen av projektet turades gruppmedlemmarna om att skriva den tekniska dokumentationen medan andra arbetade med roboten för att effektivisera arbetet.
+
+\subsection{Efter}
+I efterfasen överfördes projektresultatet till beställaren och projektet avslutades. En tävling hölls av mellan de olika projektgrupperna för att avgöra vilken robot som var bäst. 
 
 \section{Teknisk beskrivning}
 %Redovisa det tekniska resultatet och skrivuppgifterna på ett lämpligt sätt. Detaljerade beskrivningar på grindnivå i hårdvaran eller på instruktionsnivå i mjukvaran är i detta sammanhang oftast ointressant. Referera den tekniska dokumentationen och skrivuppgifterna för beskrivning av detaljer. Lyft fram egna kreativa lösningar!
-
-
+Roboten har implementerats med tre stycken AVR Atmega 1284p-processorer, med en kommunikationsbuss över SPI-länk\footnote{Datablad för Atmega 1284p \url{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/atmega1284p.pdf}, hämtad 2014-05-19}. En processor hanterar sensorer, en processor hanterar styrning och en processor agerar kommunikationslänk mellan de två förstnämnda samt en persondatormjukvara över Bluetooth. 
 
 \subsection{Kommunikation mellan processorer}
 Kommunikationen mellan processorerna sker via en Serial Peripheral Interface Bus, hädanefter refererad till som en SPI-buss.
@@ -198,49 +202,121 @@ På PC-mjukvaran virtualiseras Bluetooth mottagaren/sändaren som en seriellport
 
 \subsection{PC-mjukvara med grafiskt gränssnitt}
 
-PC-mjukvaran är skapad och designad med hjälp av Open Source varianten av Qt för Mac OS X och dess tillhörande utvecklingsmiljö QtCreator. Qt är ett $C++$ bibliotek som innehåller 
+PC-mjukvaran är skapad och designad med hjälp av Open Source varianten av Qt för Mac OS X och dess tillhörande utvecklingsmiljö QtCreator. Qt är ett $C++$ bibliotek som innehåller användarvänliga funktioner för till exempel fönsterhantering och grafisk uppritning.\footnote{\url{http://qt-project.org/}} Ett kompletterande bibliotek till Qt har använts för plottarna kallat QCustomPlot\footnote{\url{http://www.qcustomplot.com/}}.
+
+Med hjälp av mjukvaran kan användaren justera olika parametrar som ändrar robotens beteende vid arbete, till exempel avstånd till väggar som ska hållas, regleringsparametrar och hastighet. Det går att se hur alla sensorers värden ändras över tid och en modell över hur roboten ritar kartan, denna kan även uppdateras genom att användaren trycker på en knapp då autonomt läge ej är aktivt.
+
+Inkluderat i PC-mjukvaran finns ett verktyg för att rita upp tidigare sparade sensorvärden för att lättare kunna analysera hur de förändrats under en körning.
 
 \subsection{Pulse Width Modulation}
 
-%%För att styra chassits motorer används AVR-processorn inbyggda pulsbreddsmodulering, PWM. Den som använts är en 8-bitars PWM, det vill säga att den styrs med värden mellan mellan 0 och 255 där 0 innebär att motorerna inte körs och där 255 leder till att roboten kör med 100\% av sin maxhastighet.
+För att styra chassits motorer används AVR-processorn inbyggda pulsbreddsmodulering, PWM. Den som använts är en 8-bitars PWM, det vill säga att den styrs med värden mellan mellan 0 och 255 där 0 innebär att motorerna inte körs och där 255 leder till att roboten kör med 100\% av sin maxhastighet.
 
-%%PWM fungerar så att en förutbestämd vågform jämförs med en bestämd referensspänning. Utifrån detta genereras en fyrkantsvåg baserat på om den förutbestämda vågen ligger över eller under referenspänningen. När den är över går utsignalen hög och när den är under går utsignalen låg. Detta resulterar i att tiderna som motorn är aktiv respektive avstängd kommer variera beroende på var referensspänningen sätts, vilket leder till olika hastigheter.
+PWM fungerar så att en förutbestämd vågform jämförs med en bestämd referensspänning. Utifrån detta genereras en fyrkantsvåg baserat på om den förutbestämda vågen ligger över eller under referenspänningen. När den är över går utsignalen hög och när den är under går utsignalen låg. Detta resulterar i att tiderna som motorn är aktiv respektive avstängd kommer variera beroende på var referensspänningen sätts, vilket leder till olika hastigheter.
 
 
 \subsection{LCD-display}
 LCD-displayen tar relativt processorn lång tid på sig att rita ut ett tecken. Eftersom LCD-displayen hanteras av kommunikationsmodulen, som även är bussmaster, löses displayen utan att processorn väntar på displayen. Detta görs genom att LCD-displayens busyflagga läses i mainloopen och om LCD inte är upptagen skrivs ett tecken ut. För att möjliggöra denna struktur nyttjas en buffer där tecken som ska skrivas ut på displayen hämtas. När alla tecken är skrivna markeras bufferten som klar och vid nästa sensoröverföring skrivs de nya värdena in i bufferten. 
 
 \subsection{Kartabstraktion}
+
+En karta abstraheras i form av en rektangel med ett rutnät med dimensionen 33x17 rutor med koordinaterna (0,0) i det övre vänstra hörnet. Det verkliga området skulle med liknande rutnät bli 15x15 rutor. För att kompensera för eventuella mätfel utökas matrisen något för att underlätta uppritningen. Felaktigheter i avläsning kan leda till att roboten i abstraktionen tillfälligt är utanför sitt givna område. Roboten kommer i början att placeras i punkten (16,0) och rita upp kartan utifrån detta. Det kommer då inte spela någon roll hur roboten är placerad i det verkliga systemet eftersom det finns utrymme för 15 rutor åt båda hållen inklusive marginaler. 
+
+En abstraktion av en matris i mjukvara skapas med hjälp utav nästlade arrayer, eller någon modern motsvarighet. I utvecklingsmiljön Atmel Studio finns språket C++ tillgängligt, men däremot ej C++ standardbibliotek med abstraktioner.
+
+\subsubsection{Objektklasser}
+
+Kartmatrisen hålls inne i en containerklass med funktioner för att abstrahera access till den. I modern programmering är objekthantering ett kraftfullt verktyg för abstraktion. Klasserna som används följer nedan, med engelska namnet inom parantes.
+
+\begin{itemize}
+	\item Karta (Map)
+	\item Kartsektion (MapSection)
+	\item Robot (Robot)
+\end{itemize}
+
+I C++-implementeringen är Robot en dotterklass till MapSection. Detta då alla objekt i en matris måste vara av samma objekttyp. Roboten ärver då vissa egenskaper från MapSection - men innehåller klart mer logik för att hantera positionering och kartläggning. 
+
+MapSection kan anta ett antal olika tillstånd för att markera vilken typ av område det är. Nedan följer de tillstånd som implementerats i klassen MapSection: 
+
+\begin{itemize}
+	\item Stängt område (Closed)
+	\item Outforskat område (Unexplored)
+	\item Tomt område (Empty)
+	\item Brandhärd (Fire)
+\end{itemize}
+
+Till en början är alla områden outforskade. I takt med att sensordata kommer in och beräknas kan sedan roboten omvandla tillstånden hos objekten i kartan utefter given logik. 
+
 \subsection{Sensormodul}
+
+
 Roboten har nio olika sensorer. En RFID-läsare, ett gyroskop, en reflexsensor, en långdistansmätare, en mellandistansmätare och fyra kortdistansmätare. 
-RFID-läsaren ger ut en digital signal och behandlas med USART. Vid detektion av en RFID-tagg så stängs USART-avbrott av och ett kommando skickas till styrmodulen som säger till att vi hittat en brandhärd. 
-USART-avbrotten stängs av för att inte låsa sensormodulen med flera läsningar av samma tagg. Avbrottet tillåts då roboten lämnat segmentet genom att styrmodulen skickar ett kommando till sensormodulen.
-De resterande sensorerna ger analoga utsignaler och behandlas med hjälp av en intern A/D-mux på sensormodulen. 
-Sensormodulen hämtar kontinuerligt signaler från avståndssensorerna, genom att stega igenom muxen, och från alla sensorer genom att stega igenom muxen. Den hoppar, i grundtillståndet, över gyroskopet och reflexsensorn. 
-Mätningar på gyroskopet görs på begäran av styrmodulen och låser sensormodulen till enbart gyroskopmätningar. 
-Läsningen slutförs när roboten svängt 90 grader och sensormodulen skickar ett kommando till styrmodulen som säger att svängen är klar. 
-Även reflexsensorn körs på begäran av styrmodulen men låser inte sensormodulen. Reflexsensorn tas istället med i muxräkningen. 
-Detta för att styrmodulen fortfarande behöver kontinuerliga sensorvärden från avståndssensorerna. Läsningar från reflexsensorn upphör då roboten färdats $40$ cm och sensormodulen skickar ett kommando till styrmodulen
-som säger att roboten nått ett nytt segment.
+
+
 
 \subsubsection{AD-omvandling}
+De resterande sensorerna ger analoga utsignaler och behandlas med hjälp av en intern A/D-mux på sensormodulen. 
+Sensormodulen hämtar kontinuerligt signaler från avståndssensorerna, genom att stega igenom muxen, och från alla sensorer genom att stega igenom muxen. Den hoppar, i grundtillståndet, över gyroskopet och reflexsensorn. De analoga insignalerna är lågpassfiltrerade för att ge bättre värden.
+För att spara trafik på bussen skapas ett medelvärde av 25 sensorvärden innan de skickas iväg. Samtliga avståndssensorer skickas i gemensam array till kommunikationsmodulen.
+
+
+\subsubsection{Vinkelhastighetsmätare}
+Mätningar på gyroskopet görs på begäran av styrmodulen och låser sensormodulen till enbart gyroskopmätningar. 
+Läsningen slutförs när roboten svängt 90 grader och sensormodulen skickar ett kommando till styrmodulen som säger att svängen är klar. Eftersom dessa konstanter, som modulen jämför med för att veta när 90 graders rotation är uppnådd, är spänningsberoende finns ett kalibreringskommando för gyrot. Detta kommando utgår från att roboten står still och mäter flera gånger i rad och väljer därefter medelvärdet av mätningarna till nollnivå. Kring nollnivån läggs ett band där värden innanför sägs vara noll grader per sekund, detta för att slippa få mätningar på spänningsrippel. Gyrot nollställs efter 90 graders svängen är klar och påbörjar inte mätningar igen förens styrmodulen ber om en ny mätning.
+
+\subsubsection{Reflexsensor}
+Reflexsensorn, precis som vinkelhastighetsmätaren, körs på begäran av styrmodulen men låser inte sensormodulens avståndsmätningar. Reflexsensorn tas istället med i muxräkningen. Detta är nödvändigt då vi behöver leverera sensordata under färd tillskillnad från under rotation. Läsningar från reflexsensorn upphör då roboten färdats $40$ cm och sensormodulen skickar ett kommando till styrmodulen
+som säger att roboten nått ett nytt segment. Detta kommando skickas upp till tre gånger för att inte missas av kommunikationsmodulen.
+
+\subsubsection{RFID-sensor}
+
+RFID-läsaren ger ut en digital signal och behandlas med USART. Vid detektion av en RFID-tagg så stängs USART-avbrott av och ett kommando skickas till styrmodulen som säger till att vi hittat en brandhärd. 
+USART-avbrotten stängs av för att inte låsa sensormodulen med flera läsningar av samma tagg. Avbrottet tillåts då roboten lämnat segmentet genom att styrmodulen skickar ett kommando till sensormodulen via kommunikationsmodulen.
 
 \subsection{SLAM}
 
+SLAM står för Simultaneous Localization And Mapping och innebär att roboten ska kunna skatta sin position samtidigt som den ritar upp en karta över området den färdas inom.
+
+\subsubsection{Positionsskattning}
+\subsubsection{Kartläggning}
+
 
 \section{Resultat}
-Beskriv kortfattat hur produkten används, hänvisa till användarmanualen.
-Beskriv vilken prestanda produkten har och hur det har testats, hänvisa till eventuella testprotokoll.
-Kommentera om produkten klarade de kraven som ställdes upp i kravspecifikationen. 
+%Beskriv kortfattat hur produkten används, hänvisa till användarmanualen.
+
+
+%Beskriv vilken prestanda produkten har och hur det har testats, hänvisa till eventuella testprotokoll.
+
+
+%Kommentera om produkten klarade de kraven som ställdes upp i kravspecifikationen. 
+
+
 \section{Slutsatser}
-Slutsatser
-Sammanfatta arbetet. 
-Lyft fram det ni är mest nöjda med.
-Reflektera över resultatet såväl tekniskt som över genomförandet. Referera efterstudien.
-Framtida arbete
-Vad skulle ni göra annorlunda om ni skulle göra om samma uppdrag?
-Vad skulle ni vilja utveckla om ni fick mer tid?
-Hur skulle ni tänka er att ändra uppgiften för att göra den ännu mer intressant?
+%Slutsatser
+
+
+%Sammanfatta arbetet. 
+
+
+%Lyft fram det ni är mest nöjda med.
+Vi är väldigt nöjda med är vår implementering av kartritningen, slutning av områden och vår A*-sökalgoritm. Vi är även väldigt nöjda och stolta över objektstrukturen och klass nyttjandet som hela projektgruppen gjort under projektets gång.
+
+%Reflektera över resultatet såväl tekniskt som över genomförandet. Referera efterstudien.
+
+
+%Framtida arbete
+
+
+%Vad skulle ni göra annorlunda om ni skulle göra om samma uppdrag?
+Om denna projektgrupp eller någon av dess medlemmar fick göra om detta uppdrag så skulle de använda en trådad processor istället för tre. En av de mest tidskrävande aktiviteterna har varit bussen, implementering och felsökning. Bussen är även den del av projektet som gett oss flest fel. Så två saker är säkra, om vi fick möjlighet att göra det utan en buss skulle vi göra det och om vi var tvugna att återigen göra en buss skulle denna påbörjas något tidigare och stresstestas hårt.
+
+%Vad skulle ni vilja utveckla om ni fick mer tid?
+Om vi fick mer tid i projektet skulle tiden med all fördel läggas på optimeringsalgoritmer och förbättrandet av bussen. En av förbättringarna till bussen som skulle kunna utnyttjas är en mer avancerad bufferstruktur än den som används.  
+
+%Hur skulle ni tänka er att ändra uppgiften för att göra den ännu mer intressant?
+I vår åsikt, så skulle tävlingsmomentena kunna göras mer intressanta. I nuvarande form ska RFID-taggar hittas. Dessa taggar måste besökas väldigt långsamt och varje ruta i hela kartan måste besökas för att hitta alla taggar. Detta tar bort en väldigt intressant utmaning, nämligen avsökningsoptimering, nyttjandet av sensorer med längre räckvidd och en god reglering vid höga hastigheter.
+
+
 \section{Referenser}
 
 

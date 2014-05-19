@@ -466,6 +466,10 @@ void Robot::rotateLeft(){
 	fwdDiff = 0;
 	bwdDiff = 0;
 	
+	// For odometry
+	robotPointer->wheelHasTurned = true;	//move robot
+	updateRobotPosition();
+	
 	//send map
 	
 	commObj->sendMap();
@@ -1037,6 +1041,13 @@ void Robot::updateRobotPosition(){
 		sensorDifference = getFwdDistance() - ref*40;
     }
 	*/
+	
+/* The paramaters for sensor differences (references?) are called:
+		fwdRefLong;
+		bwdRefLong;
+		fwdRefShort;
+		bwdRefShort;
+*/
     
    if (wheelHasTurned){
 	   wheelHasTurned = false;
