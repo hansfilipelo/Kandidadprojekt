@@ -576,10 +576,20 @@ void Robot::turn(int pd){
 	
 	int pdOut = pd * movementSpeed * 0.01;
 	
-	#if TESTING == 0
-	OCR2A = output+pdOut; //Negative value on pd will turn left, positive right
-	OCR2B = output-pdOut;
-	#endif
+	// Protect against overflow
+	if (output+pdOut > 255 || output-pdOut < 0)
+	{
+		#if TESTING == 0
+		OCR2A = 0; //Negative value on pd will turn left, positive right
+		OCR2B = 0;
+		#endif
+	}
+	else {
+		#if TESTING == 0
+		OCR2A = output+pdOut; //Negative value on pd will turn left, positive right
+		OCR2B = output-pdOut;
+		#endif
+	}
 }
 
 
