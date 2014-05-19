@@ -1,4 +1,4 @@
-%Laborationsrapport
+﻿%Laborationsrapport
 
 \documentclass[a4paper,12pt,fleqn]{article}
 \usepackage{fixltx2e}
@@ -331,12 +331,18 @@ Gyron kan användas för att bestämma vinkel, men detta kräver en integrering 
 \footnote{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/MLX90609_datasheet.pdf}
 
 \subsection{RFID}
-RFID står för radio-frequency identification och används för att läsa information från objekt, så kallade taggar, trådlöst via radiovågor. RFID kan delas in i flera olika grupper. Den billigaste, och den vi har tillgång till i kursen, kallas passiv RFID. I den passiva tekniken består taggarna av ett unikt nummer som endast kan läsas inom korta avstånd, ofta någon decimeter. Detta nummer kan sedan användas för att peka ut en plats i en databas med ytterligare information om taggen. Taggen består av ett microchip med en antenn men ingen egen strömkälla. Även läsaren har en antenn som skickar ut radiofrekvent energi. Energin från läsaren kan sedan tas upp av taggens antenn och konverteras till elektricitet. Microchippet i taggen får ström, kan modulera vågorna och skickar tillbaka dem till läsaren. Läsaren tar emot vågorna och omvandlar dem till digitalt data som motsvarar taggens nummer.
+RFID står för radio-frequency identification och används för att läsa information från objekt, så kallade taggar, trådlöst via radiovågor. RFID kan delas in i flera olika grupper. 
+Den billigaste, och den vi har tillgång till i kursen, kallas passiv RFID. I den passiva tekniken består taggarna av ett unikt nummer som endast kan läsas inom korta avstånd, ofta någon decimeter. 
+Detta nummer kan sedan användas för att peka ut en plats i en databas med ytterligare information om taggen. Taggen består av ett microchip med en antenn men ingen egen strömkälla. 
+Även läsaren har en antenn som skickar ut radiofrekvent energi. Energin från läsaren kan sedan tas upp av taggens antenn och konverteras till elektricitet. Microchippet i taggen får ström, 
+kan modulera vågorna och skickar tillbaka dem till läsaren. Läsaren tar emot vågorna och omvandlar dem till digitalt data som motsvarar taggens nummer.
 \footnote{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/rfid-reader-v21.pdf}
 
-Aktiva RFID-raggar har, till skillnad från passiva taggar, sina egna strömkällor och även en sändare.
+Aktiva RFID-raggar har, till skillnad från passiva taggar, sina egna strömkällor och även en sändare. De har en räckvidd som kan sträcka sig på upp till flera hundra meter.
 
-RFID kan användas på många sätt; t.ex. kan man sätta en tagg på en matvara och när en RFID-läsare läser av taggen kan den hämta information om varan i en databas. Taggarna fyller då ungefär samma funktion som streckkoder och man får ett system med tre delar. Del ett är taggar, del två en läsare och del tre en databas med information om varje tagg. Taggarna kan göras små och tekniken används i bl.a. passerkort.
+RFID kan användas på många sätt; t.ex. kan man sätta en tagg på en matvara och när en RFID-läsare läser av taggen kan den hämta information om varan i en databas. 
+Taggarna fyller då ungefär samma funktion som streckkoder och man får ett system med tre delar. Del ett är taggar, del två en läsare och del tre en databas med information om varje tagg. 
+Taggarna kan göras små och tekniken används i bl.a. passerkort.
 
 \subsubsection{Fördelar och nackdelar}
 Tack vare den egna strömkällan i aktiv RFID kan läsavståndet göras betydligt mycket större än för den passiva tekniken. Aktiva taggar är dock större, dyrare och kräver mer underhåll än passiva taggar. Passiv RFID reflekterar dock bara en modulerad signal från läsaren. Det är därför läsavståndet inte är så långt.
