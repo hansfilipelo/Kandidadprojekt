@@ -245,6 +245,7 @@ int main(void)
 				//Sets start and finnish coordinates
 				int xStart = robotPointer->getX();
 				int yStart = robotPointer->getY();
+                robotPointer->findFinishPos();
 				int xFinish = robotPointer->getFinishX();
 				int yFinish = robotPointer->getFinishY();
 				
