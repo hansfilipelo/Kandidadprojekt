@@ -481,9 +481,10 @@ void Robot::rotateLeft(){
 		drive();
 	}
 	
+	okayToClose = false;
 	// Corr our position on turns
 	updateRobotPosition();
-
+	okayToClose = true;
 	
 	// Stop rotation and set gear to forward
 	setSpeed(0);
@@ -545,8 +546,10 @@ void Robot::rotateRight(){
  		drive();
 	}
 	
+	okayToClose = false;
 	// Corr our position on turns
 	updateRobotPosition();
+	okayToClose = true;
 	
 	// Stop rotation and set gear to forward
 	setSpeed(0);
@@ -1052,9 +1055,13 @@ void Robot::updateRobotPosition(){
 	   MapSection* tempSection;
 	   
 	   //halt
-	   //setSpeed(0);
-	   //drive();
-
+	   setSpeed(0);
+	   drive();
+		#if TESTING == 0
+		_delay_ms(250);
+	   #endif
+	   setSpeed(userSpeed);
+	   drive();
 	   
 		switch (direction){
             
@@ -1123,11 +1130,13 @@ void Robot::updateRobotPosition(){
 				return;
 		}
 	
-		setFwdClosed();
-		setBwdClosed();
-		setRightClosed();
-		setLeftClosed();
-	}
+		if (okayToClose){
+			setFwdClosed();
+			setBwdClosed();
+			setRightClosed();
+			setLeftClosed();
+		}
+   }
 }
 
 // -----------------------------------------
