@@ -138,6 +138,7 @@ public:
 	
 	
     int meanValueArray(char* inputArray, int iterations);
+	bool isCornerPassed();
     void updateRobotPosition();
 	void setFwdReference();
 	void setBwdReference();
@@ -169,6 +170,7 @@ protected:
     int bwdLongSensor;
     int fwdShortSensor;
     int bwdShortSensor;
+	
     int rightFrontSensor;
     int rightBackSensor;
     int leftMidSensor;
@@ -215,7 +217,7 @@ protected:
 	bool haltAfterSection = false;
 	
 	//Paramaters for wall and corner detection
-	int rightCornerFront = 40;
+	int rightCornerFront = 30;
 	int rightCornerBack = 30;
 	int rightWallFront = 30;
 	int rightWallBack = 30;

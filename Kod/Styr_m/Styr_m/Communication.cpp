@@ -12,6 +12,7 @@ void Communication::handleData(){
     dataLength = (int)inData[0];
 	int speed = (int)inData[3];
     // Protect from incorrect transmissions
+	// does this work as intended
     if (speed > 100) {
         speed = 5;
     }
@@ -19,9 +20,7 @@ void Communication::handleData(){
 	//checks manual/auto
 	if (this->inData[1]=='a') {
 		manual = false;
-		robotPointer->setUserSpeed(speed);
 		robotPointer->stopRotation();
-		robotPointer->drive();
 	}
 	if (this->inData[1]=='q') {
 		manual = true;
