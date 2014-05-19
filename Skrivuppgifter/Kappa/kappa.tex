@@ -168,8 +168,7 @@ I slutfasen av projektet turades gruppmedlemarna om att skriva den tekniska doku
 
 \section{Teknisk beskrivning}
 %Redovisa det tekniska resultatet och skrivuppgifterna på ett lämpligt sätt. Detaljerade beskrivningar på grindnivå i hårdvaran eller på instruktionsnivå i mjukvaran är i detta sammanhang oftast ointressant. Referera den tekniska dokumentationen och skrivuppgifterna för beskrivning av detaljer. Lyft fram egna kreativa lösningar!
-
-
+Roboten har implementerats med tre stycken AVR Atmega 1284p-processorer, med en kommunikationsbuss över SPI-länk\footnote{Datablad för Atmega 1284p \url{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/atmega1284p.pdf}, hämtad 2014-05-19}. En processor hanterar sensorer, en processor hanterar styrning och en processor agerar kommunikationslänk mellan de två förstnämnda samt en persondatormjukvara över Bluetooth. 
 
 \subsection{Kommunikation mellan processorer}
 Kommunikationen mellan processorerna sker via en Serial Peripheral Interface Bus, hädanefter refererad till som en SPI-buss.
