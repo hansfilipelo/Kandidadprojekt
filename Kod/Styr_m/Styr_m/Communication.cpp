@@ -183,8 +183,10 @@ void Communication::sendMap(){
             asm("");
 			k++;
 		}
+#if TESTING == 0
 		_delay_ms(10);
 		mapConfirmation = false;
+#endif
 	}
 }
 
@@ -203,11 +205,13 @@ void Communication::sendRotateRequest(){
     slavePointer->outDataArray[1] = 'g';
 	slavePointer->outDataArray[2] = 1;
     
+#if TESTING == 0
     slavePointer->SPI_Send();
 	_delay_ms(5);
 	slavePointer->SPI_Send();
 	_delay_ms(5);
 	slavePointer->SPI_Send();
+#endif
 }
 
 double Communication::assembleDouble(char ten, char one, char tenth, char hundreth){
@@ -230,11 +234,14 @@ double Communication::assembleDouble(char ten, char one, char tenth, char hundre
 void Communication::reactivateRFID(){
 	    slavePointer->outDataArray[0] = 1;
 	    slavePointer->outDataArray[1] = 'r';
+
+#if TESTING == 0
 	    slavePointer->SPI_Send();
 		_delay_ms(5);
 		slavePointer->SPI_Send();
 		_delay_ms(5);
 		slavePointer->SPI_Send();
+#endif
 }
 
 
@@ -242,7 +249,8 @@ void Communication::reactivateWheelSensor(){
 	slavePointer->outDataArray[0] = 1;
 	slavePointer->outDataArray[1] = 'w';
 	slavePointer->SPI_Send();
-	
+
+#if TESTING == 0
 	_delay_ms(5);
 	if(!robotPointer->wheelHasTurned){
 		slavePointer->SPI_Send();
@@ -252,4 +260,5 @@ void Communication::reactivateWheelSensor(){
 	if(!robotPointer->wheelHasTurned){
 		slavePointer->SPI_Send();
 	}
+#endif
 }

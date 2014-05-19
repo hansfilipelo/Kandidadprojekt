@@ -466,8 +466,11 @@ void Robot::rotateLeft(){
 	fwdDiff = 0;
 	bwdDiff = 0;
 	
+	// For odometry
+	robotPointer->wheelHasTurned = true;	//move robot
+	updateRobotPosition();
 	
-	//send map 
+	//send map
 	
 	commObj->sendMap();
     // Send request to sensor module to measure angle
@@ -524,6 +527,9 @@ void Robot::rotateRight(){
 	fwdDiff = 0;
 	bwdDiff = 0;
 	
+	// For odometry
+	robotPointer->wheelHasTurned = true;	//move robot
+	updateRobotPosition();
 	
 	//send map
 	
@@ -843,7 +849,10 @@ void Robot::setLeftClosed(){
             if(xCoord+1+i > 31){
                 break;
             }
-            mom->convertSection(xCoord + i + 1,yCoord, 'e');
+            // Explored except if closed since short range sensors have higher priority
+            if ( mom->getPos(xCoord + i + 1, yCoord)->getType() != 'c' ){
+                mom->convertSection(xCoord + i + 1,yCoord, 'e');
+            }
         }
         if(output == 0){
 	        mom->convertSection(xCoord + 1,yCoord, 'c');
@@ -859,7 +868,10 @@ void Robot::setLeftClosed(){
             if(xCoord-1-i < 0){
                 break;
             }
-            mom->convertSection(xCoord - i - 1,yCoord, 'e');
+            // Explored except if closed since short range sensors have higher priority
+            if ( mom->getPos(xCoord - i - 1, yCoord)->getType() != 'c' ){
+                mom->convertSection(xCoord - i - 1,yCoord, 'e');
+            }
         }
 		if(output == 0){
 			mom->convertSection(xCoord - 1,yCoord, 'c');
@@ -873,7 +885,10 @@ void Robot::setLeftClosed(){
             if(yCoord-1-i < 0){
                 break;
             }
-            mom->convertSection(xCoord,yCoord - i - 1, 'e');
+            // Explored except if closed since short range sensors have higher priority
+            if ( mom->getPos(xCoord, yCoord - i - 1)->getType() != 'c' ){
+                mom->convertSection(xCoord,yCoord - i - 1, 'e');
+            }
         }
 		if(output == 0){
 			mom->convertSection(xCoord,yCoord - 1, 'c');
@@ -887,7 +902,10 @@ void Robot::setLeftClosed(){
             if(yCoord+1+i > 16){
                 break;
             }
-            mom->convertSection(xCoord,yCoord + i + 1, 'e');
+            // Explored except if closed since short range sensors have higher priority
+            if ( mom->getPos(xCoord, yCoord + i + 1)->getType() != 'c' ){
+                mom->convertSection(xCoord,yCoord + i + 1, 'e');
+            }
         }
 		if(output == 0){
 			mom->convertSection(xCoord,yCoord + 1, 'c');
@@ -1014,6 +1032,7 @@ void Robot::updateRobotPosition(){
     }
 	*/
 	
+<<<<<<< HEAD
 	// The paramaters for sensor differences (references?) are called:
 	//these parameters may be removed, not used anywhere
 	fwdRefLong;
@@ -1021,10 +1040,20 @@ void Robot::updateRobotPosition(){
 	fwdRefShort;
 	bwdRefShort;
 	
+=======
+	/* The paramaters for sensor differences (references?) are called:
+		fwdRefLong;
+		bwdRefLong;
+		fwdRefShort;
+		bwdRefShort;
+	*/
+>>>>>>> d52111588a1a5b2d69801d2af78825a73eb959c6
     
    if (wheelHasTurned){
 	   wheelHasTurned = false;
-	   commObj->reactivateWheelSensor();
+	   if(fwdShortSensor>80){
+			commObj->reactivateWheelSensor();
+	   }
 	   //commObj->reactivateRFID();
 	   MapSection* tempSection;
 	   
@@ -1156,7 +1185,6 @@ void Robot::changeDirection(char inDirection){
 
 void Robot::getColAsChar(int col){	
 		// Sending 19 positions of interest
-		int crap = 19;
 		colArray[0] = 23;
 		// Sending Map data command
 		colArray[1] = 'M';

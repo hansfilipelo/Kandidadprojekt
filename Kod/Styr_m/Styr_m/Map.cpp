@@ -1,7 +1,6 @@
 #include "Map.h"
 #include "MapSection.h"
 
-
 using namespace std;
 
 // ------------- Construct -----------------
@@ -76,7 +75,6 @@ void Map::getColAsChar(int col)
 	
 	
 	// Sending 19 positions of interest
-	int crap = 19;
 	colArray[0] = 23;
 	// Sending Map data command
 	colArray[1] = 'M';

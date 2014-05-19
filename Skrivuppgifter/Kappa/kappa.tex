@@ -23,6 +23,8 @@
 %Första sidan
 
 \begin{document}
+	
+
 	\pagestyle{fancy}
 \pagenumbering{roman}
 	\vspace*{\fill}
@@ -157,7 +159,7 @@ Projektet har delats upp i mindre delprojekt som olika projektmedlemmar fått an
 Det har bland annat inneburit förberedande design av delprodukt (Se Designspecifikation) och implementering. 
 Vid ett delprojekts slutförande har hårdvaran eller den skrivna koden förklarats för de andra projektmedlemmarna och sedan slagits samman med resten av projektet. 
 
-För att på ett smidigt vis slå samman kod och möjliggöra simultan programmering har en SVN-klient vid namn Github använts. 
+För att på ett smidigt vis slå samman kod och möjliggöra simultan programmering har en versionshanteringstjänst vid namn Github använts. 
 När hårdvara skulle utvecklas delades projektgruppen in modulvis, två personer per modul.
 Dialog hölls mellan grupperna för att säkerställa att portar och kontakter placerades på smidiga ställen.
 
@@ -167,6 +169,40 @@ I slutfasen av projektet turades gruppmedlemarna om att skriva den tekniska doku
 \section{Teknisk beskrivning}
 %Redovisa det tekniska resultatet och skrivuppgifterna på ett lämpligt sätt. Detaljerade beskrivningar på grindnivå i hårdvaran eller på instruktionsnivå i mjukvaran är i detta sammanhang oftast ointressant. Referera den tekniska dokumentationen och skrivuppgifterna för beskrivning av detaljer. Lyft fram egna kreativa lösningar!
 
+
+
+\subsection{Kommunikation mellan processorer}
+Kommunikationen mellan processorerna sker via en Serial Peripheral Interface Bus, hädanefter refererad till som en SPI-buss.
+Roboten är konstruerad med tre processorer på två separata vir-kort och kopplas ihop med hjälp av en bandkabel. På roboten agerar kommunikationsmodulen master och de övriga två modulerna är slaves. SPI-bussen kan sammanfattas till att master skiftar ett 8 bitars register med en slave. SPI-bussen har alltså möjlighet för duplex dataöverföring. För ytterligare detaljer angående SPI-bussen se den tekniska dokumentationen.
+
+När master väljer en slave, genom Slave Select signalen, genereras ett avbrott på slave-processorn. Detta innebär att master kan skicka hämta data i princip var som helst i ett program på en slave-processor. För kommunikations som måste initieras från slave till master har vi kopplat en avbrottssignal som säger till master-processorn att påbörja SPI-kommunikation med aktuell slave-processor.
+
+\subsubsection{Datahantering}
+För att avbrotten ska bli så korta som möjligt på processorn så har datahanteringen på kommunikationsmodulen flyttats ut ur avbrott. Anledningen till detta är att så länge processorn befinner sig i avbrott skulle vidare avbrott kunna missas. Sanningsvariabler ifall ny data finns tillgänglig för datahantering används istället. Dessa sanningsvariabler avläses i master-processorns main-loop, vilket visas i flödesdiagrammet i figur~\ref{fig:SPIrec}. Detta ger att nya mottagningar kan påbörjas medan data behandlas, man får dock beakta att data i en given buffer måste behandlas innan den skrivs över av nästa kommunikation.
+
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,scale=0.5]{spirec.jpg}  %skala och filnamn. 
+  \end{center}
+  \caption{Flödesdiagram för bussmottagning} %figurtext.
+  \label{fig:SPIrec}
+\end{figure}
+
+
+\subsubsection{Databufferstruktur}
+För att undvika ovannämnda problem utnyttjas en dubbelbuffer. Första buffern är mottagningsbuffern inuti buss-avbrottet. När vi når en databehandlingsfunktion flyttas denna data över till en ny buffer under datahanteringen. Detta innebär att vi kan ta emot ny data från samma sändare på samma buffer sålänge vi har påbörjat databehandling.
+
+\subsection{Kommunikation mellan PC och robot}
+Kommunikation mellan processor och PC sker via en Bluetooth-modul. Bluetooth-modulen arbetar via Universal Serial Asynchronous Receiver/Transmitter, USART.
+På PC-mjukvaran virtualiseras Bluetooth mottagaren/sändaren som en seriellport och information skickas i form av en 27 element lång char array. För mer detaljer angående dataprotokoll se den tekniska dokumentationen. 
+
+\subsection{PC-mjukvara med grafiskt gränssnitt}
+\subsection{Pulse Width Modulation}
+\subsection{LCD-display}
+LCD-displayen tar relativt processorn lång tid på sig att rita ut ett tecken. Eftersom LCD-displayen hanteras av kommunikationsmodulen, som även är bussmaster, löses displayen utan att processorn väntar på displayen. Detta görs genom att LCD-displayens busyflagga läses i mainloopen och om LCD inte är upptagen skrivs ett tecken ut. För att möjliggöra denna struktur nyttjas en buffer där tecken som ska skrivas ut på displayen hämtas. När alla tecken är skrivna markeras bufferten som klar och vid nästa sensoröverföring skrivs de nya värdena in i bufferten. 
+
+\subsection{Kartabstraktion}
+\subsection{Sensormodul}
 Roboten har nio olika sensorer. En RFID-läsare, ett gyroskop, en reflexsensor, en långdistansmätare, en mellandistansmätare och fyra kortdistansmätare. 
 RFID-läsaren ger ut en digital signal och behandlas med USART. Vid detektion av en RFID-tagg så stängs USART-avbrott av och ett kommando skickas till styrmodulen som säger till att vi hittat en brandhärd. 
 USART-avbrotten stängs av för att inte låsa sensormodulen med flera läsningar av samma tagg. Avbrottet tillåts då roboten lämnat segmentet genom att styrmodulen skickar ett kommando till sensormodulen.
@@ -177,6 +213,10 @@ Läsningen slutförs när roboten svängt 90 grader och sensormodulen skickar et
 Även reflexsensorn körs på begäran av styrmodulen men låser inte sensormodulen. Reflexsensorn tas istället med i muxräkningen. 
 Detta för att styrmodulen fortfarande behöver kontinuerliga sensorvärden från avståndssensorerna. Läsningar från reflexsensorn upphör då roboten färdats $40$ cm och sensormodulen skickar ett kommando till styrmodulen
 som säger att roboten nått ett nytt segment.
+
+\subsubsection{AD-omvandling}
+
+\subsection{SLAM}
 
 
 \section{Resultat}

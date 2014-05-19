@@ -190,7 +190,7 @@ Roboten har ett speciellt kommunikationsprotokoll som används både av Bluetoot
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
-  \includegraphics[keepaspectratio=true,scale=0.6]{bilder/bussprotokoll}  %skala och filnamn. 
+  \includegraphics[keepaspectratio=true,scale=0.6]{bilder/Bussprotokoll.png}  %skala och filnamn. 
   \end{center}
   \caption{Översiktsbild av kommunikationsprotokollet} %figurtext.
   \label{fig:bussprotocol}
@@ -484,19 +484,19 @@ Sensormodulens uppgift är att A/D-omvandla signaler från robotens avståndssen
 ~\\
 
 \subsubsection{Systemchip}
-Modulens processor är en Atmel ATmega1284p\footnote{http://www.atmel.com/ja/jp/Images/doc8059.pdf}. Processorn kommer kontinuerligt att hämta data från alla sensorer via processorns inbyggda A/D-omvandlare med tillhörande mux. Denna är programmerbar och kommer att innehålla de program som behövs för att konvertera signalerna till avstånd, tillryggalagd sträcka och detektion av RFID-tagg. På begäran av master, kommunikationsmodulen, kommer data skickas från processorn till master via en SPI-buss.
+Modulens processor är en Atmel ATmega1284p\footnote{\url{http://www.atmel.com/ja/jp/Images/doc8059.pdf}}. Processorn kommer kontinuerligt att hämta data från alla sensorer via processorns inbyggda A/D-omvandlare med tillhörande mux. Denna är programmerbar och kommer att innehålla de program som behövs för att konvertera signalerna till avstånd, tillryggalagd sträcka och detektion av RFID-tagg. På begäran av master, kommunikationsmodulen, kommer data skickas från processorn till master via en SPI-buss.
 
 \subsubsection{RFID-sensor}
-För att kunna detektera RFID-taggen så krävs en RFID-läsare. Vi kommer att använda Par\-all\-ax-Read\-er\footnote{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/rfid-reader-v21.pdf}. 
+För att kunna detektera RFID-taggen så krävs en RFID-läsare. Vi kommer att använda Par\-all\-ax-Read\-er\footnote{\url{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/rfid-reader-v21.pdf}}. 
 SOUT på RFID-sensorn, PIN 3, kopplas till port C, PIN 23, på processon. RFID-läsaren använder sig av serielprotokollet asynkron USART för att skicka data från RFID-korten vidare till CPU:n. Pinne 23 som RFID-läsaren är inkopplad på har stöd för seriell kommunikation och konfigureras för att matcha dataöverföringshastigheten från läsaren.
 
 Då brus kan ge upphov en falsk RFID-läsning, så kontrolleras att mottaget data matchar vissa symboler. Vi har valt att leta efter en start byte, 0x0A, som indikerar början på en RFID-taggs unika id. För att ytterligare säkerställla en korrekt läsning görs denna kontroll två gånger innan kommandot för upptäckt brandhärd skickas till master.
 
 \subsubsection{Reflexsensor}
-Reflexsensorn, SFH300 som går att läsa om på Vanheden\footnote{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/sfh300.pdf}, används för att beräkna tillryggalagd sträcka. Sensormodulen skickar ett kommando till styrmodulen då roboten åkt 40 cm, alltså då roboten kommit till ett nytt 40x40-segment. För att beräkna den tillryggalagda sträckan fästs en pappersskiva på ett av robotens hjul. Skivan består av 6 vita och 6 svarta lika stora "tårtbitar". Reflexsensorn detekterar varje gång skivan byter färg och på så sätt kan sträckan räknas ut. För att minimera ackumulerande fel används sensorerna framtill och baktill på roboten för att trimma reflexsensorn.
+Reflexsensorn, SFH300 som går att läsa om på Vanheden\footnote{\url{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/sfh300.pdf}}, används för att beräkna tillryggalagd sträcka. Sensormodulen skickar ett kommando till styrmodulen då roboten åkt 40 cm, alltså då roboten kommit till ett nytt 40x40-segment. För att beräkna den tillryggalagda sträckan fästs en pappersskiva på ett av robotens hjul. Skivan består av 6 vita och 6 svarta lika stora "tårtbitar". Reflexsensorn detekterar varje gång skivan byter färg och på så sätt kan sträckan räknas ut. För att minimera ackumulerande fel används sensorerna framtill och baktill på roboten för att trimma reflexsensorn.
 
 \subsubsection{Avståndssensorer}
-Roboten kommer att ha sex stycken av\-stånds\-sensorer varav en är för lång\-distans, GP\-2Y3A\-00\-3K\-0F 40-300 cm som går att läsa om på Vanheden\footnote{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/gp2y3a003k0f.pdf}, en för mellan\-distans, GP2Y0A02YK 20-150 cm som går att läsa om på Vanheden\footnote{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/gp2y0a02_e.pdf}, och resterande 4 är för \hyphenation{kort-dist-ans},GP\-2Y\-0A\-21\-YK 10-80 cm som finns på Vanheden\footnote{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/gp2y0a21.pdf}. Långdistanssensorn placeras fram på roboten och mellandistanssensorn placeras på robotens vänstra sida. Två av kortdistanssensorerna placeras på robotens högra sida, en placeras fram på roboten och den sista placeras på robotens baksida.
+Roboten kommer att ha sex stycken av\-stånds\-sensorer varav en är för lång\-distans, GP\-2Y3A\-00\-3K\-0F 40-300 cm som går att läsa om på Vanheden\footnote{\url{ https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/gp2y3a003k0f.pdf }}, en för mellan\-distans, GP2Y0A02YK 20-150 cm som går att läsa om på Vanheden\footnote{\url{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/gp2y0a02_e.pdf}}, och resterande 4 är för \hyphenation{kort-dist-ans},GP\-2Y\-0A\-21\-YK 10-80 cm som finns på Vanheden\footnote{\url{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/gp2y0a21.pdf}}. Långdistanssensorn placeras fram på roboten och mellandistanssensorn placeras på robotens vänstra sida. Två av kortdistanssensorerna placeras på robotens högra sida, en placeras fram på roboten och den sista placeras på robotens baksida.
 
 PIN 6 på långdistanssensorn och PIN 1 på kortdistanssenorerna och mellandistanssensorn kopplas till port A, PIN 39, PIN 35-38 respektive PIN 34 på processorn. Sensorerna skickar alltså sin data till processorn för A/D-omvandling och tolkning.
 
@@ -505,7 +505,7 @@ GND på sensorerna sätts till jord, Vcc och Vin sätts till hög och PIN 3 på 
 Data från sensorerna behövs för att detektera väggar och skapa en kartabstraktion. Data sensorerna på sidan används för att reglera roboten under färd och sensorerna framtill och baktill används, som nämnts ovan, för att trimma reflexsensorn.
 
 \subsubsection{Vinkelhastighetssensor (gyro)}
-För att underlätta beräkningar av körriktningar och hålla koll på hur mycket roboten svängt används en vinkelhastighetssensor eller gyro, MLX\-90\-609 på Vanheden \footnote{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/MLX90609\_datasheet.pdf}. OUTAR på gyron, PIN 24, kopplas direkt till bussen för att minska brus. Gryot skickar en spänning mellan 0.5 och 4.5 V där 2.5 V motsvarar vinkelhatsighet noll. Sensormodulen börjar mäta på gryot då ett kommando från styrmodulen mottagits. Sensormodulen skickar i sin tur tillbaka ett kommando då roboten svängt 90 grader. Sensormodulen låser sig till endast mätningar på gyroskopet under svängar.
+För att underlätta beräkningar av körriktningar och hålla koll på hur mycket roboten svängt används en vinkelhastighetssensor eller gyro, MLX\-90\-609 på Vanheden \footnote{\url{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/MLX90609\_datasheet.pdf}}. OUTAR på gyron, PIN 24, kopplas direkt till bussen för att minska brus. Gryot skickar en spänning mellan 0.5 och 4.5 V där 2.5 V motsvarar vinkelhatsighet noll. Sensormodulen börjar mäta på gryot då ett kommando från styrmodulen mottagits. Sensormodulen skickar i sin tur tillbaka ett kommando då roboten svängt 90 grader. Sensormodulen låser sig till endast mätningar på gyroskopet under svängar.
 
 Vinkelberäkning kommer ske med följande formel: \newline
 $ a(k) = a(k-1)+0.5T(\delta a(k)+\delta a(k-1))$ \\
