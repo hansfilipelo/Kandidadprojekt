@@ -194,8 +194,8 @@ int main(void)
 				{
 					robotPointer->drive();
 				}
-				robotPointer->setSpeed(0);
-				robotPointer->drive();
+				//robotPointer->setSpeed(0);
+				//robotPointer->drive();
 
 
 				if(!robotPointer->isWallRight())

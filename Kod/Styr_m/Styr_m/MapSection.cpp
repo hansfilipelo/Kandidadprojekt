@@ -343,7 +343,7 @@ Robot::Robot(int xPos, int yPos, Map* inMom, Communication* inComm) : MapSection
 	
 	Kd = 26;
 	Kp = 13;
-	Ref = 8;
+	Ref = 12;
 	
 	trimRight = 15;
 	trimLeft = 0;
@@ -354,13 +354,12 @@ Robot::Robot(int xPos, int yPos, Map* inMom, Communication* inComm) : MapSection
 	fwdRefShort = 22;
 	bwdRefShort = 4; 
 	
-	
-	
 	rotateRightActive = false;
 	rotateLeftActive = false; 
     
     commObj = inComm;
     previousSection = mom->getPos(xPos,yPos);
+	previousSection->setType('e');
     mom->setSection(xPos,yPos,this);
 }
 
@@ -710,9 +709,10 @@ void Robot::setFwdClosed(){
 				 mom->convertSection(xCoord,yCoord + i + 1, 'e');
 			}
 		}
-        if(output == 0){
+		// Probably not needed /H-F
+        /*if(output == 0 && speed == 0){
 	        mom->convertSection(xCoord,yCoord + 1, 'c');
-        }
+        }*/
 	}
 	// Direction 17->y->0, "bwd"
 	else if (direction == 'b'){
@@ -726,9 +726,10 @@ void Robot::setFwdClosed(){
 				mom->convertSection(xCoord,yCoord - i - 1, 'e');
 			}
         }
-		if(output == 0){
+		// Probably not needed /H-F
+		/*if(output == 0 && speed == 0){
 			mom->convertSection(xCoord,yCoord - 1, 'c');
-		}
+		}*/
 	}
 	// Direction 32->x->0, "left"
 	else if (direction == 'l'){									//left right kan vara omvänt, måste testas
@@ -742,9 +743,10 @@ void Robot::setFwdClosed(){
 				mom->convertSection(xCoord + i + 1,yCoord, 'e');
 			}
         }
-		if(output == 0){
+		// Probably not needed /H-F
+		/*if(output == 0 && speed == 0){
 			mom->convertSection(xCoord + 1,yCoord, 'c');
-		}
+		}*/
 	}
 	// Direction 0->x->32, "right"
 	else if (direction == 'r'){
@@ -758,9 +760,10 @@ void Robot::setFwdClosed(){
             mom->convertSection(xCoord - i - 1,yCoord, 'e');
 			}
         }
-		if(output == 0){
+		// Probably not needed /H-F
+		/*if(output == 0 && speed == 0){
 			mom->convertSection(xCoord - 1,yCoord, 'c');
-		}
+		}*/
 	}	
 }
 
@@ -790,6 +793,9 @@ void Robot::setBwdClosed(){
 				mom->convertSection(xCoord,yCoord - i - 1, 'e');
 			}
         }
+		if ( output == 0 && speed == 0 ) {
+			mom->convertSection(xCoord,yCoord - 1, 'c');
+		}
 	}
 	// Direction 17->y->0, "bwd"
 	else if (direction == 'b'){
@@ -802,6 +808,9 @@ void Robot::setBwdClosed(){
 			if(mom->getPos(xCoord,yCoord + i + 1)->getType() != 'f' && mom->getPos(xCoord,yCoord + i + 1)->getType() != 'c'){
 				mom->convertSection(xCoord,yCoord + i + 1, 'e');
 			}
+		}
+		if ( output == 0 && speed == 0 ) {
+			mom->convertSection(xCoord,yCoord + 1, 'c');
 		}
 	}
 	// Direction 0->x->32, "right"
@@ -816,6 +825,9 @@ void Robot::setBwdClosed(){
 				mom->convertSection(xCoord - i - 1,yCoord, 'e');
 			}
         }
+		if ( output == 0 && speed == 0 ) {
+			mom->convertSection(xCoord - 1,yCoord, 'c');
+		}
 	}
 	// Direction 32->x->0, "left"
 	else if (direction == 'r'){
@@ -829,6 +841,9 @@ void Robot::setBwdClosed(){
 				mom->convertSection(xCoord + i + 1,yCoord, 'e');
 			}
         }
+		if ( output == 0 && speed == 0 ) {
+			mom->convertSection(xCoord + 1,yCoord, 'c');
+		}
 	}
 }
 
@@ -1084,6 +1099,10 @@ void Robot::updateRobotPosition(){
 				mom->setSection(xCoord,yCoord,previousSection);
 				//save temp section to previous section
 				previousSection = tempSection;
+				if (previousSection->getType() != 'f')
+				{
+					previousSection->setType('e');
+				}
 				
 				yCoord++;
 				break;
