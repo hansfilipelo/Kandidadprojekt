@@ -466,8 +466,11 @@ void Robot::rotateLeft(){
 	fwdDiff = 0;
 	bwdDiff = 0;
 	
+	// For odometry
+	robotPointer->wheelHasTurned = true;	//move robot
+	updateRobotPosition();
 	
-	//send map 
+	//send map
 	
 	commObj->sendMap();
     // Send request to sensor module to measure angle
@@ -524,6 +527,9 @@ void Robot::rotateRight(){
 	fwdDiff = 0;
 	bwdDiff = 0;
 	
+	// For odometry
+	robotPointer->wheelHasTurned = true;	//move robot
+	updateRobotPosition();
 	
 	//send map
 	
@@ -1028,7 +1034,9 @@ void Robot::updateRobotPosition(){
     
    if (wheelHasTurned){
 	   wheelHasTurned = false;
-	   commObj->reactivateWheelSensor();
+	   if(fwdShortSensor>80){
+			commObj->reactivateWheelSensor();
+	   }
 	   //commObj->reactivateRFID();
 	   MapSection* tempSection;
 	   
