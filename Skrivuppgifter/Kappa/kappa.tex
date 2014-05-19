@@ -184,7 +184,7 @@ I efterfasen överfördes projektresultatet till beställaren och projektet avsl
 
 \section{Teknisk beskrivning}
 %Redovisa det tekniska resultatet och skrivuppgifterna på ett lämpligt sätt. Detaljerade beskrivningar på grindnivå i hårdvaran eller på instruktionsnivå i mjukvaran är i detta sammanhang oftast ointressant. Referera den tekniska dokumentationen och skrivuppgifterna för beskrivning av detaljer. Lyft fram egna kreativa lösningar!
-Roboten har implementerats med tre stycken AVR Atmega 1284p-processorer, med en kommunikationsbuss över SPI-länk\footnote{Datablad för Atmega 1284p \url{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/atmega1284p.pdf}, hämtad 2014-05-19}. En processor hanterar sensorer, en processor hanterar styrning och en processor agerar kommunikationslänk mellan de två förstnämnda samt en persondatormjukvara över Bluetooth. En processor sitter på det övre kortet och två processorer på det undre kortet, se figur~\ref{fig:robot}
+Roboten har implementerats med tre stycken AVR Atmega 1284p-processorer, med en kommunikationsbuss över SPI-länk\footnote{Datablad för Atmega 1284p https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/atmega1284p.pdf, hämtad 2014-05-19}. En processor hanterar sensorer, en processor hanterar styrning och en processor agerar kommunikationslänk mellan de två förstnämnda samt en persondatormjukvara över Bluetooth. En processor sitter på det övre kortet och två processorer på det undre kortet, se figur~\ref{fig:robot}
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
@@ -341,7 +341,6 @@ När det autonoma läget är aktiverat ska inte användaren behöva göra något
 Vi är väldigt nöjda med är vår implementering av kartritningen, slutning av områden och vår A*-sökalgoritm. Vi är även väldigt nöjda och stolta över objektstrukturen och klass nyttjandet som hela projektgruppen gjort under projektets gång.
 
 %Reflektera över resultatet såväl tekniskt som över genomförandet. Referera efterstudien.
-Resultatet 
 
 %Framtida arbete
 
@@ -357,8 +356,28 @@ Roboten har ett delvis färdigt stöd för att förbättra positioneringen med h
 %Hur skulle ni tänka er att ändra uppgiften för att göra den ännu mer intressant?
 I vår åsikt, så skulle tävlingsmomentena kunna göras mer intressanta. I nuvarande form ska RFID-taggar hittas. Dessa taggar måste besökas väldigt långsamt och varje ruta i hela kartan måste besökas för att hitta alla taggar. Detta tar bort väldigt intressanta utmaningar, nämligen avsökningsoptimering, nyttjandet av sensorer med längre räckvidd och en god reglering vid höga hastigheter.
 
+\newpage
+\section*{Referenser}
+\addcontentsline{toc}{section}{Referenser}
 
-\section{Referenser}
+Datablad för Atmega 1284p https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/atmega1284p.pdf
+
+http://qt-project.org/
+
+http://stackoverflow.com/
+
+http://www.atmel.com/images/doc8059.pdf
+
+http://www.avrfreaks.net/
+
+http://www.liu.se/cul/resurser/lips/kort-beskrivning-av-lips-modellen?l=sv
+
+http://www.qcustomplot.com/
+
+https://docs.isy.liu.se/twiki/bin/view/VanHeden
+
+Roos, Olof. 1995. Grundläggande datorteknik. upplaga 1. Studentlitteratur AB
+Söderkvist, Sune. 1996. Kretsteori och elektronik, utgåva 1. Tryckeriet Erik Larsson AB
 
 
 % ----------------------------- Appendix -----------------------------------------
@@ -368,7 +387,8 @@ I vår åsikt, så skulle tävlingsmomentena kunna göras mer intressanta. I nuv
 \appendix
 \pagestyle{empty}
 \newgeometry{left=2cm,right=2cm,bottom=2cm,top=2cm}
-\section{Appendix A}
+\section*{Appendix A}
+\addcontentsline{toc}{section}{Appendix A}
 \includepdf[pages=-]{../Kommunikation/kom.pdf}
 
 %\section{Appendix B}
