@@ -342,7 +342,7 @@ Robot::Robot(int xPos, int yPos, Map* inMom, Communication* inComm) : MapSection
 	direction = 'f';
 	
 	Kd = 26;
-	Kp = 7;
+	Kp = 13;
 	Ref = 8;
 	
 	trimRight = 15;
@@ -987,6 +987,13 @@ int Robot::meanValueArray(char* inputArray, int iterations) {
 	return total / iter;
 }
 
+bool Robot::isCornerPassed(){
+	if (rightBackSensor > 30)
+	{
+		return true;
+	}
+	return false;
+}
 
 // -----------------------------------------
 //Sets reference values and moves robot in map abstraction if robot has moved one square
@@ -1008,6 +1015,7 @@ void Robot::updateRobotPosition(){
 	*/
 	
 	// The paramaters for sensor differences (references?) are called:
+	//these parameters may be removed, not used anywhere
 	fwdRefLong;
 	bwdRefLong;
 	fwdRefShort;
@@ -1297,7 +1305,7 @@ bool Robot::isWallFwdClose()
 	    if ( getFwdDistance() == 0 ) {
 		    return false;
 	    }
-	    if ( getFwdDistance() < 20 ){
+	    if ( getFwdDistance() < 10 ){
 		    return true;
 	    }
 	    else{
