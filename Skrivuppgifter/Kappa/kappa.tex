@@ -201,6 +201,12 @@ På PC-mjukvaran virtualiseras Bluetooth mottagaren/sändaren som en seriellport
 PC-mjukvaran är skapad och designad med hjälp av Open Source varianten av Qt för Mac OS X och dess tillhörande utvecklingsmiljö QtCreator. Qt är ett $C++$ bibliotek som innehåller 
 
 \subsection{Pulse Width Modulation}
+
+%%För att styra chassits motorer används AVR-processorn inbyggda pulsbreddsmodulering, PWM. Den som använts är en 8-bitars PWM, det vill säga att den styrs med värden mellan mellan 0 och 255 där 0 innebär att motorerna inte körs och där 255 leder till att roboten kör med 100\% av sin maxhastighet.
+
+%%PWM fungerar så att en förutbestämd vågform jämförs med en bestämd referensspänning. Utifrån detta genereras en fyrkantsvåg baserat på om den förutbestämda vågen ligger över eller under referenspänningen. När den är över går utsignalen hög och när den är under går utsignalen låg. Detta resulterar i att tiderna som motorn är aktiv respektive avstängd kommer variera beroende på var referensspänningen sätts, vilket leder till olika hastigheter.
+
+
 \subsection{LCD-display}
 LCD-displayen tar relativt processorn lång tid på sig att rita ut ett tecken. Eftersom LCD-displayen hanteras av kommunikationsmodulen, som även är bussmaster, löses displayen utan att processorn väntar på displayen. Detta görs genom att LCD-displayens busyflagga läses i mainloopen och om LCD inte är upptagen skrivs ett tecken ut. För att möjliggöra denna struktur nyttjas en buffer där tecken som ska skrivas ut på displayen hämtas. När alla tecken är skrivna markeras bufferten som klar och vid nästa sensoröverföring skrivs de nya värdena in i bufferten. 
 
