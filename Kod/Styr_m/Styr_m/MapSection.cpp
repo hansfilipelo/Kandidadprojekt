@@ -793,7 +793,7 @@ void Robot::setBwdClosed(){
 				mom->convertSection(xCoord,yCoord - i - 1, 'e');
 			}
         }
-		if ( output == 0 && speed == 0 ) {
+		if ( output == 0 && speed == 0 && !visitedByRobot && !mom->getVisited(xCoord,yCoord-1)) {
 			mom->convertSection(xCoord,yCoord - 1, 'c');
 		}
 	}
@@ -809,7 +809,7 @@ void Robot::setBwdClosed(){
 				mom->convertSection(xCoord,yCoord + i + 1, 'e');
 			}
 		}
-		if ( output == 0 && speed == 0 ) {
+		if ( output == 0 && speed == 0 && !mom->getVisited(xCoord,yCoord+1)) {
 			mom->convertSection(xCoord,yCoord + 1, 'c');
 		}
 	}
@@ -825,7 +825,7 @@ void Robot::setBwdClosed(){
 				mom->convertSection(xCoord - i - 1,yCoord, 'e');
 			}
         }
-		if ( output == 0 && speed == 0 ) {
+		if ( output == 0 && speed == 0  && !mom->getVisited(xCoord-1,yCoord)) {
 			mom->convertSection(xCoord - 1,yCoord, 'c');
 		}
 	}
@@ -841,7 +841,7 @@ void Robot::setBwdClosed(){
 				mom->convertSection(xCoord + i + 1,yCoord, 'e');
 			}
         }
-		if ( output == 0 && speed == 0 ) {
+		if ( output == 0 && speed == 0  && !mom->getVisited(xCoord+1,yCoord)) {
 			mom->convertSection(xCoord + 1,yCoord, 'c');
 		}
 	}
@@ -878,7 +878,7 @@ void Robot::setLeftClosed(){
                 mom->convertSection(xCoord + i + 1,yCoord, 'e');
             }
         }
-        if(output == 0){
+        if(output == 0 && !mom->getVisited(xCoord+1,yCoord)){
 	        mom->convertSection(xCoord + 1,yCoord, 'c');
         }
 	}
@@ -897,7 +897,7 @@ void Robot::setLeftClosed(){
                 mom->convertSection(xCoord - i - 1,yCoord, 'e');
             }
         }
-		if(output == 0){
+		if(output == 0 && !mom->getVisited(xCoord-1,yCoord)){
 			mom->convertSection(xCoord - 1,yCoord, 'c');
 		}
 	}
@@ -914,7 +914,7 @@ void Robot::setLeftClosed(){
                 mom->convertSection(xCoord,yCoord - i - 1, 'e');
             }
         }
-		if(output == 0){
+		if(output == 0 && !mom->getVisited(xCoord,yCoord-1)){
 			mom->convertSection(xCoord,yCoord - 1, 'c');
 		}
 	}
@@ -931,7 +931,7 @@ void Robot::setLeftClosed(){
                 mom->convertSection(xCoord,yCoord + i + 1, 'e');
             }
         }
-		if(output == 0){
+		if(output == 0 && !mom->getVisited(xCoord,yCoord+1)){
 			mom->convertSection(xCoord,yCoord + 1, 'c');
 		}
 	}
@@ -967,7 +967,7 @@ void Robot::setRightClosed(){
                 mom->convertSection(xCoord - i - 1,yCoord, 'e');
             }
         }
-        if(output == 0){
+        if(output == 0 && !mom->getVisited(xCoord-1,yCoord)){
             mom->convertSection(xCoord - 1,yCoord, 'c');
         }
 	}
@@ -985,7 +985,7 @@ void Robot::setRightClosed(){
             }
             
         }
-        if(output == 0){
+        if(output == 0 && !mom->getVisited(xCoord+1,yCoord)){
             mom->convertSection(xCoord + 1,yCoord, 'c');
         }
 	}
@@ -1001,7 +1001,7 @@ void Robot::setRightClosed(){
                 mom->convertSection(xCoord,yCoord + i + 1, 'e');
             }
         }
-        if(output == 0){
+        if(output == 0 && !mom->getVisited(xCoord,yCoord+1)){
             mom->convertSection(xCoord,yCoord + 1, 'c');
         }
         
@@ -1018,7 +1018,7 @@ void Robot::setRightClosed(){
                 mom->convertSection(xCoord,yCoord - i - 1, 'e');
             }
         }
-        if(output == 0){
+        if(output == 0 && !mom->getVisited(xCoord,yCoord-1)){
             mom->convertSection(xCoord,yCoord - 1, 'c');
         }
 	}
@@ -1099,6 +1099,9 @@ void Robot::updateRobotPosition(){
 				mom->setSection(xCoord,yCoord,previousSection);
 				//save temp section to previous section
 				previousSection = tempSection;
+                
+                //put back last section and tell it, it has been visited.
+                previousSection->visitedByRobot = true;
 				if (previousSection->getType() != 'f')
 				{
 					previousSection->setType('e');
@@ -1118,6 +1121,12 @@ void Robot::updateRobotPosition(){
 				//save temp section to previous section
 				previousSection = tempSection;
 				
+                previousSection->visitedByRobot = true;
+				if (previousSection->getType() != 'f')
+				{
+					previousSection->setType('e');
+				}
+                
 				yCoord--;
             
 				break;
@@ -1133,6 +1142,12 @@ void Robot::updateRobotPosition(){
 				//save temp section to previous section
 				previousSection = tempSection;
 				
+                previousSection->visitedByRobot = true;
+				if (previousSection->getType() != 'f')
+				{
+					previousSection->setType('e');
+				}
+                
 				xCoord--;
   
 				break;
@@ -1147,6 +1162,12 @@ void Robot::updateRobotPosition(){
 				mom->setSection(xCoord,yCoord,previousSection);
 				//save temp section to previous section
 				previousSection = tempSection;
+				
+                previousSection->visitedByRobot = true;
+				if (previousSection->getType() != 'f')
+				{
+					previousSection->setType('e');
+				}
 				
 				xCoord++;
             

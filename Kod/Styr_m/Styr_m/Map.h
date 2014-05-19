@@ -42,6 +42,8 @@ public:
     char pathArray[100];
     void aStar(const int &, const int &,const int &, const int &);
 	char colArray[25];
+    bool getVisited(int,int);
+    void setVisited(int,int,bool);
     
 #if TESTING == 1
     void printMap();

@@ -27,6 +27,16 @@ Map::~Map(){
     }
 }
 
+bool Map::getVisited(int xPos,int yPos){
+    return mapArea[xPos][yPos]->isVisited;
+}
+
+
+void Map::setVisited(int xPos,int yPos,bool value){
+    mapArea[xPos][yPos]->isVisited = value;
+}
+
+
 // ------------------------------------------
 
 MapSection* Map::getPos(int x, int y){
