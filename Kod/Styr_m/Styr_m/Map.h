@@ -44,6 +44,8 @@ public:
 	char colArray[25];
 	
 	bool firstTimeMapping = true;
+    bool getVisited(int,int);
+    void setVisited(int,int,bool);
     
 #if TESTING == 1
     void printMap();
