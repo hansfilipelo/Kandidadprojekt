@@ -192,10 +192,15 @@ För att avbrotten ska bli så korta som möjligt på processorn så har datahan
 \subsubsection{Databufferstruktur}
 För att undvika ovannämnda problem utnyttjas en dubbelbuffer. Första buffern är mottagningsbuffern inuti buss-avbrottet. När vi når en databehandlingsfunktion flyttas denna data över till en ny buffer under datahanteringen. Detta innebär att vi kan ta emot ny data från samma sändare på samma buffer sålänge vi har påbörjat databehandling.
 
-\subsection{Kommunikation melllan PC och robot}
+\subsection{Kommunikation mellan PC och robot}
+Kommunikation mellan processor och PC sker via en Bluetooth-modul. Bluetooth-modulen arbetar via Universal Serial Asynchronous Receiver/Transmitter, USART.
+På PC-mjukvaran virtualiseras Bluetooth mottagaren/sändaren som en seriellport och information skickas i form av en 27 element lång char array. För mer detaljer angående dataprotokoll se den tekniska dokumentationen. 
+
 \subsection{PC-mjukvara med grafiskt gränssnitt}
 \subsection{Pulse Width Modulation}
 \subsection{LCD-display}
+
+
 \subsection{Kartabstraktion}
 \subsection{Sensormodul}
 Roboten har nio olika sensorer. En RFID-läsare, ett gyroskop, en reflexsensor, en långdistansmätare, en mellandistansmätare och fyra kortdistansmätare. 
