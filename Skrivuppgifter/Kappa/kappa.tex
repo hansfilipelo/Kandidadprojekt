@@ -111,7 +111,7 @@
 %Lyft gärna fram det som ni anser är utmanande/intressant i uppdraget. 
 %Beskriv kortfattat dispositionen på rapporten.''
 
-En robot med tillgång till ett antal avståndssensorer, ett gyro och en RFID-sensor placeras i ett stängt område med dimension 6x6 meter som är uppdelat i 40x40 centimeters segment. 
+En robot med tillgång till ett antal avståndssensorer, en reflexsensor, ett gyro och en RFID-sensor placeras i ett stängt område med dimension på up till 6x6 meter som är uppdelat i 40x40 centimeters segment. 
 Den ska, med en vägg som startpunkt, helt autonomt kartlägga området genom att markera ut var väggar finns och var det finns områden som inte går att nå. 
 Den ska även markera ut var det går att finna RFID-taggar, som symboliserar brandhärdar. 
 Om inte hela det slutna området är kartlagt ska den upptäcka vilka segment som är oupptäckta, färdas dit och lägga till det i kartan. 
@@ -125,7 +125,7 @@ När hela området är kartlagt ska roboten ta sig tillbaka till startpunkten oc
 \end{figure}
 
 Stora delar av arbetet med denna produkt består av att utnyttja den teoretiska kunskap som finns och att koppla den till praktiken för att sedan implementera principerna på roboten. 
-Detta innefattar bland annat reglerteori, sannolikhetslära, optimering och matematisk analys.
+Detta innefattar bland annat reglerteori, digitalteknik, sannolikhetslära, optimering och matematisk analys.
 
 En av de största utmaningarna med robotens uppdrag är dock att rita ut en karta över området utan att veta var den befinner sig - men hur går det att veta var roboten befinner sig utan en karta? 
 
@@ -133,10 +133,18 @@ En av de största utmaningarna med robotens uppdrag är dock att rita ut en kart
 %Redogör kort för kravbilden och referera till projektdirektiv och kravspecifikation för %att läsa detaljer.
 %Lägg återigen mest fokus på det som ni ansåg utmanande/intressant.
 
-Den slutgiltiga produkten ska uppfylla ett antal krav (Se Kravspecifikation) för att godkännas av beställaren. Principiellt ska roboten kunnas köra autonomt genom ett område (uppbyggt av kartongväggar) och i realtid skicka en karta till en persondator som på ett prydligt sätt redovisar var roboten har sett. Roboten ska även kunna detektera brandhärdar som symboliseras med RFID-kort. Dessa kort placeras ut på slumpmässigt valda rutor på banan. 
+Den slutgiltiga produkten ska uppfylla ett antal krav (Se Kravspecifikation) för att godkännas av beställaren. Principiellt ska roboten kunnas köra autonomt genom ett område (uppbyggt av kartongväggar) och vid rotation skicka en karta till en persondator som på ett prydligt sätt redovisar var roboten har sett. Roboten ska även kunna detektera brandhärdar som symboliseras med RFID-kort. Dessa kort placeras ut på slumpmässigt valda rutor på banan. 
 
 Kraven som ställts är delvis baserade på vad beställaren ville få levererat (Se Projektdirektiv för kartrobot) och delvis på sådant som projektgruppen ansåg var viktigt för robotens funktionalitet. Ett exempel på funktionalitet som har prioriterats är hantering av karta och sökalgoritmer som ansågs mest intressant dock även svårast att implementera. 
 Sammanfattningsvis består kraven bland annat av de delar som beskrivs av scenariot i inledningen. Den innehåller även en del krav på vilka delprodukter som ska vara klara vid vissa specifika datum.
+
+Det som av projektgruppen ansågs mest utmanande var att konstruera en fullt funkmtionell buss. Denna ställde till med problem då den i början ofta tappade bitar vilket gav upphov till besynnerligt beteende hos roboten. 
+
+Att få gyrot att fungera var även det en utmaning då det var ytterst viktigt att få rotationerna av roboten exakta. Utan exkata rotationer skulle nämligen roboten kunna positionsuppskatta fel.
+
+Det sista svåra momentet var positionsskattningen. Att simultant positionsskatta och kartlägga visade sig vara lika svårt som förväntat.
+
+
 
 \section{Kunskapsbas}
 
