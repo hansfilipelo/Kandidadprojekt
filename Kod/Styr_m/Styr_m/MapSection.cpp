@@ -1364,7 +1364,7 @@ bool Robot::isWallFwdClose()
 	    if ( getFwdDistance() == 0 ) {
 		    return false;
 	    }
-	    if ( getFwdDistance() < 15 ){
+	    if ( getFwdDistance() < 20 ){
 		    return true;
 	    }
 	    else{
