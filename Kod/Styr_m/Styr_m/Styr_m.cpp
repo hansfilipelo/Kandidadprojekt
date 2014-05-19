@@ -169,8 +169,10 @@ int main(void)
         // Automatic mode
         else {
 			if(!robotPointer->startExplore){
-				/****************************************HÖGERFÖLJNING*******************************************
-				/************************************************************************************************/
+				/*------------------ HÖGERFÖLJNNG ---------------------- 
+                 -------------------------------------------------------
+                 -------------------------------------------------------*/
+                
 				//lets try with only ifs
 				if(robotPointer->isCornerRight()){
 					while ( !(robotPointer->isCornerPassed()) && !(abstractionObject->getManual())) {
@@ -235,14 +237,15 @@ int main(void)
 				}
 			}
 			else{
-				/****************************************KARTLÄGGNING*******************************************
-				/*************************************************************************************************/
-				
+				/*--------------KARTLÄGGNING----------------------
+				--------------------------------------------------
+                -------------------------------------------------*/
 				mapPointer->convertToPathFinding();
 				
 				//Sets start and finnish coordinates
 				int xStart = robotPointer->getX();
 				int yStart = robotPointer->getY();
+                robotPointer->findFinishPos();
 				int xFinish = robotPointer->getFinishX();
 				int yFinish = robotPointer->getFinishY();
 				

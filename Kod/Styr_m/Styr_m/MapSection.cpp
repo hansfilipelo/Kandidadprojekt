@@ -1467,10 +1467,25 @@ void Robot::backToStart()
 	}
 }
 
-void Robot::getFinishX(){
-	
+// Exploring
+// -----------------------
+
+void Robot::findFinishPos(){
+    for (int i = 0; i < 32; i++) {
+        for (int it = 0; it < 17; i++) {
+            if ( mom->getPos(i,it)->getType() == 'u' ) {
+                finishX = i;
+                finishY = it;
+                break;
+            }
+        }
+    }
 }
 
-void Robot::getFinishY(){
-	
+int Robot::getFinishX(){
+    return finishX;
+}
+
+int Robot::getFinishY(){
+	return finishY;
 }
