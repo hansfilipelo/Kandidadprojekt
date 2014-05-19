@@ -142,6 +142,8 @@ public:
     void updateRobotPosition();
 	void setFwdReference();
 	void setBwdReference();
+	void backToStart();
+	bool startExplore = false;
     
     int getRightDifference();
     int getUserSpeed();

@@ -40,6 +40,7 @@ C_SRCS +=  \
 ../Communication.cpp \
 ../Map.cpp \
 ../MapSection.cpp \
+../node.cpp \
 ../slave.cpp \
 ../Styr_m.cpp
 
@@ -55,6 +56,7 @@ Abstraction.o \
 Communication.o \
 Map.o \
 MapSection.o \
+node.o \
 slave.o \
 Styr_m.o
 
@@ -63,6 +65,7 @@ Abstraction.o \
 Communication.o \
 Map.o \
 MapSection.o \
+node.o \
 slave.o \
 Styr_m.o
 
@@ -71,6 +74,7 @@ Abstraction.d \
 Communication.d \
 Map.d \
 MapSection.d \
+node.d \
 slave.d \
 Styr_m.d
 
@@ -79,6 +83,7 @@ Abstraction.d \
 Communication.d \
 Map.d \
 MapSection.d \
+node.d \
 slave.d \
 Styr_m.d
 
@@ -93,6 +98,8 @@ OUTPUT_FILE_DEP:= ./makedep.mk
 LIB_DEP+= 
 
 # AVR32/GNU C Compiler
+
+
 
 
 

@@ -1,3 +1,4 @@
+
 #include "Map.h"
 #include "MapSection.h"
 
@@ -219,7 +220,7 @@ void Map::convertToPathFinding(){
 }
 
 
-//måste deklareras här för aStar
+//operator override is needed for A-star
 
 bool operator<(const node & a, const node & b)
 {

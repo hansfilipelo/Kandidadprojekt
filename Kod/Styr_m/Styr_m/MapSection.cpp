@@ -1060,7 +1060,7 @@ void Robot::updateRobotPosition(){
    if (wheelHasTurned){
 	   wheelHasTurned = false;
 		commObj->reactivateWheelSensor();
-	   //commObj->reactivateRFID();
+	    //commObj->reactivateRFID();
 	   MapSection* tempSection;
 	   
 	   //halt
@@ -1145,6 +1145,7 @@ void Robot::updateRobotPosition(){
 			setRightClosed();
 			setLeftClosed();
 		}
+		backToStart(); // not tested fully, could still give nonsense.
    }
 }
 
@@ -1416,4 +1417,20 @@ void Robot::waitForNewData()
 
 // ----------------------
 
+void Robot::backToStart()
+{
+	if((previousSection->getX() == 16) &&	(previousSection->getY()==1)){
+		if ( mom->getPos(xCoord,yCoord - 1)->isClosed(xCoord,yCoord - 1,0,0) ){
+			mom->fillClosedArea();
+			startExplore = true;
+		}
+	}
+}
 
+void Robot::getFinishX(){
+	
+}
+
+void Robot::getFinishY(){
+	
+}
