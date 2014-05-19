@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 ﻿\documentclass[a4paper,12pt,fleqn]{article}
+=======
+\documentclass[a4paper,12pt,fleqn]{article}
+>>>>>>> 062cbbd133d4fdd2731ade1528fec1cd3b15cdfa
 \usepackage{fixltx2e}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
@@ -21,9 +25,11 @@
 
 %-------------------------------------------------------------------
 %Första sidan
-
 \begin{document}
+<<<<<<< HEAD
 	
+=======
+>>>>>>> 062cbbd133d4fdd2731ade1528fec1cd3b15cdfa
 	\pagestyle{fancy}
 \pagenumbering{roman}
 	\vspace*{\fill}
@@ -170,8 +176,7 @@ I efterfasen överfördes projektresultatet till beställaren och projektet avsl
 
 \section{Teknisk beskrivning}
 %Redovisa det tekniska resultatet och skrivuppgifterna på ett lämpligt sätt. Detaljerade beskrivningar på grindnivå i hårdvaran eller på instruktionsnivå i mjukvaran är i detta sammanhang oftast ointressant. Referera den tekniska dokumentationen och skrivuppgifterna för beskrivning av detaljer. Lyft fram egna kreativa lösningar!
-
-
+Roboten har implementerats med tre stycken AVR Atmega 1284p-processorer, med en kommunikationsbuss över SPI-länk\footnote{Datablad för Atmega 1284p \url{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/atmega1284p.pdf}, hämtad 2014-05-19}. En processor hanterar sensorer, en processor hanterar styrning och en processor agerar kommunikationslänk mellan de två förstnämnda samt en persondatormjukvara över Bluetooth. 
 
 \subsection{Kommunikation mellan processorer}
 Kommunikationen mellan processorerna sker via en Serial Peripheral Interface Bus, hädanefter refererad till som en SPI-buss.
@@ -200,7 +205,11 @@ På PC-mjukvaran virtualiseras Bluetooth mottagaren/sändaren som en seriellport
 
 \subsection{PC-mjukvara med grafiskt gränssnitt}
 
-PC-mjukvaran är skapad och designad med hjälp av Open Source varianten av Qt för Mac OS X och dess tillhörande utvecklingsmiljö QtCreator. Qt är ett $C++$ bibliotek som innehåller 
+PC-mjukvaran är skapad och designad med hjälp av Open Source varianten av Qt för Mac OS X och dess tillhörande utvecklingsmiljö QtCreator. Qt är ett $C++$ bibliotek som innehåller användarvänliga funktioner för till exempel fönsterhantering och grafisk uppritning.\footnote{\url{http://qt-project.org/}} Ett kompletterande bibliotek till Qt har använts för plottarna kallat QCustomPlot\footnote{\url{http://www.qcustomplot.com/}}.
+
+Med hjälp av mjukvaran kan användaren justera olika parametrar som ändrar robotens beteende vid arbete, till exempel avstånd till väggar som ska hållas, regleringsparametrar och hastighet. Det går att se hur alla sensorers värden ändras över tid och en modell över hur roboten ritar kartan, denna kan även uppdateras genom att användaren trycker på en knapp då autonomt läge ej är aktivt.
+
+Inkluderat i PC-mjukvaran finns ett verktyg för att rita upp tidigare sparade sensorvärden för att lättare kunna analysera hur de förändrats under en körning.
 
 \subsection{Pulse Width Modulation}
 
@@ -242,23 +251,39 @@ MapSection kan anta ett antal olika tillstånd för att markera vilken typ av om
 Till en början är alla områden outforskade. I takt med att sensordata kommer in och beräknas kan sedan roboten omvandla tillstånden hos objekten i kartan utefter given logik. 
 
 \subsection{Sensormodul}
-Roboten har nio olika sensorer. En RFID-läsare, ett gyroskop, en reflexsensor, en långdistansmätare, en mellandistansmätare och fyra kortdistansmätare. 
-RFID-läsaren ger ut en digital signal och behandlas med USART. Vid detektion av en RFID-tagg så stängs USART-avbrott av och ett kommando skickas till styrmodulen som säger till att vi hittat en brandhärd. 
-USART-avbrotten stängs av för att inte låsa sensormodulen med flera läsningar av samma tagg. Avbrottet tillåts då roboten lämnat segmentet genom att styrmodulen skickar ett kommando till sensormodulen.
-De resterande sensorerna ger analoga utsignaler och behandlas med hjälp av en intern A/D-mux på sensormodulen. 
-Sensormodulen hämtar kontinuerligt signaler från avståndssensorerna, genom att stega igenom muxen, och från alla sensorer genom att stega igenom muxen. Den hoppar, i grundtillståndet, över gyroskopet och reflexsensorn. 
-Mätningar på gyroskopet görs på begäran av styrmodulen och låser sensormodulen till enbart gyroskopmätningar. 
-Läsningen slutförs när roboten svängt 90 grader och sensormodulen skickar ett kommando till styrmodulen som säger att svängen är klar. 
-Även reflexsensorn körs på begäran av styrmodulen men låser inte sensormodulen. Reflexsensorn tas istället med i muxräkningen. 
-Detta för att styrmodulen fortfarande behöver kontinuerliga sensorvärden från avståndssensorerna. Läsningar från reflexsensorn upphör då roboten färdats $40$ cm och sensormodulen skickar ett kommando till styrmodulen
-som säger att roboten nått ett nytt segment.
 
-\subsubsection{Astar}
+
+Roboten har nio olika sensorer. En RFID-läsare, ett gyroskop, en reflexsensor, en långdistansmätare, en mellandistansmätare och fyra kortdistansmätare. 
+
+
+RFID-läsaren ger ut en digital signal och behandlas med USART. Vid detektion av en RFID-tagg så stängs USART-avbrott av och ett kommando skickas till styrmodulen som säger till att vi hittat en brandhärd. 
+USART-avbrotten stängs av för att inte låsa sensormodulen med flera läsningar av samma tagg. Avbrottet tillåts då roboten lämnat segmentet genom att styrmodulen skickar ett kommando till sensormodulen via kommunikationsmodulen.
+
+
+
+
 
 
 \subsubsection{AD-omvandling}
+De resterande sensorerna ger analoga utsignaler och behandlas med hjälp av en intern A/D-mux på sensormodulen. 
+Sensormodulen hämtar kontinuerligt signaler från avståndssensorerna, genom att stega igenom muxen, och från alla sensorer genom att stega igenom muxen. Den hoppar, i grundtillståndet, över gyroskopet och reflexsensorn. De analoga insignalerna är lågpassfiltrerade för att ge bättre värden.
+För att spara trafik på bussen skapas ett medelvärde av 25 sensorvärden innan de skickas iväg. Samtliga avståndssensorer skickas i gemensam array till kommunikationsmodulen.
+
+
+\subsubsection{Vinkelhastighetsmätare}
+Mätningar på gyroskopet görs på begäran av styrmodulen och låser sensormodulen till enbart gyroskopmätningar. 
+Läsningen slutförs när roboten svängt 90 grader och sensormodulen skickar ett kommando till styrmodulen som säger att svängen är klar. Eftersom dessa konstanter, som modulen jämför med för att veta när 90 graders rotation är uppnådd, är spänningsberoende finns ett kalibreringskommando för gyrot. Detta kommando utgår från att roboten står still och mäter flera gånger i rad och väljer därefter medelvärdet av mätningarna till nollnivå. Kring nollnivån läggs ett band där värden innanför sägs vara noll grader per sekund, detta för att slippa få mätningar på spänningsrippel. Gyrot nollställs efter 90 graders svängen är klar och påbörjar inte mätningar igen förens styrmodulen ber om en ny mätning.
+
+\subsubsection{Reflexsensor}
+Reflexsensorn, precis som vinkelhastighetsmätaren, körs på begäran av styrmodulen men låser inte sensormodulens avståndsmätningar. Reflexsensorn tas istället med i muxräkningen. Detta är nödvändigt då vi behöver leverera sensordata under färd tillskillnad från under rotation. Läsningar från reflexsensorn upphör då roboten färdats $40$ cm och sensormodulen skickar ett kommando till styrmodulen
+som säger att roboten nått ett nytt segment. Detta kommando skickas upp till tre gånger för att inte missas av kommunikationsmodulen. xs
 
 \subsection{SLAM}
+
+SLAM står för Simultaneous Localization And Mapping och innebär att roboten ska kunna skatta sin position samtidigt som den ritar upp en karta över området den färdas inom.
+
+\subsubsection{Positionsskattning}
+\subsubsection{Kartläggning}
 
 
 \section{Resultat}
