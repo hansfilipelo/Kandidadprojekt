@@ -84,7 +84,7 @@ protected:
 // ------------------------------------------------
 // Subclass Robot
 
-class Robot : protected MapSection
+class Robot : public MapSection
 {
 public:
     Robot(int xPos, int yPos, Map* inMom, Communication* inComm);
@@ -162,7 +162,14 @@ public:
 	volatile bool newData = false;
 	volatile bool okayToClose = true;
     
+    // Exploring in the middle
+    int getFinishX();
+    int getFinishY();
+    void findFinishPos();
+    
 protected:
+    int finishX;
+    int finishY;
     int getRightDistance();
 	int getLeftDistance();
 	int getFwdDistance();
