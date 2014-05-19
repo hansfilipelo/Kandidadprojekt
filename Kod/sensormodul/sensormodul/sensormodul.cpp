@@ -41,7 +41,7 @@ volatile double decadc=0;			//variable used in the ADC-interrupt (decimal adc-va
 volatile bool ADCdone = false;		//Flag for checking if ADC is done
 double spanning = 0;				//ADC-value without 5v ref
 bool blacksegment = false;			//variable to determine startingcolor on wheelsegment. avoids counting first segment as a segment turned
-int segmentsTurned = 0;
+volatile int segmentsTurned = 0;
 bool wheelmode = true;				
 
 //------------------USART-------------------------
@@ -56,7 +56,7 @@ volatile double angle = 0;			//constant for angle
 volatile double gyrovila = 0;		//calibration constant for reference
 Slave sensormodul;					//construct the slave "sensormodul"
 
-int wheelTrim = 0;
+volatile int wheelTrim = 0;
 
 //-------------------------------Init--------------------------------------
 //Usart initialization
@@ -163,14 +163,6 @@ void handleInDataArray(){
 	//if [g 1] is received
 	if((sensormodul.inDataArray[1] == 'g') and (sensormodul.inDataArray[2] == 1)){
 		asm("");
-		if(segmentsTurned > 10){// + wheelTrim){
-			//------------Send------------------------------
-			sensormodul.outDataArray[0] = 1;
-			sensormodul.outDataArray[1] = 'W';
-			sensormodul.SPI_Send();
-			segmentsTurned = 0;
-			wheelmode = false;
-		}
 		gyromode = true;		//set gyromode to true
 		TCNT0 = 0x00;			//set timer to 0
 		asm("");
@@ -308,11 +300,10 @@ ISR(USART0_RX_vect){
 		sensormodul.outDataArray[0] = 1;
 		sensormodul.outDataArray[1] = 'R';
 		sensormodul.SPI_Send();				//send outDataArray
-		/*_delay_ms(5);
+		_delay_ms(5);
 		sensormodul.SPI_Send();				//send outDataArray
 		_delay_ms(5);
 		sensormodul.SPI_Send();				//send outDataArray
-		*/
 		_delay_ms(80);
 		savepos = 0;
 		ADMUX = 0x20;				
@@ -342,6 +333,19 @@ int main(void)
 	while(1){				// Wait forever
 		
 		while(gyromode){		//while gyromode is true
+			if(segmentsTurned > 7){
+				//------------Send------------------------------
+				sensormodul.outDataArray[0] = 1;
+				sensormodul.outDataArray[1] = 'W';
+				sensormodul.SPI_Send();
+				_delay_ms(5);
+				sensormodul.SPI_Send();		//send 90 degree turn is complete
+				_delay_ms(5);
+				sensormodul.SPI_Send();
+				
+				segmentsTurned = 0;
+				wheelmode = false;
+			}
 			ADMUX = 0x27;		//set ADMUX to take signal from gyro
 			TIMSK0 = 0x01;		//tillåt tidsavbrott
 			cli();				//don't allow interrups
@@ -378,15 +382,22 @@ int main(void)
 		if((wheelmode)&(ADMUX == 0x20)){		//get distance from sensor A0 with conversion formula
 			asm("");
 			//sen0 = 0;
+			asm("");
 			if((decadc > 200)&(!blacksegment)) {
+				asm("");
 				segmentsTurned++;
+				asm("");
 				blacksegment = true;
+				asm("");
 			}
 			else if((decadc < 120) and blacksegment){
+				asm("");
 				segmentsTurned++;
+				asm("");
 				blacksegment = false;
+				asm("");
 			}
-			if(segmentsTurned > 20){// + wheelTrim){
+			if(segmentsTurned > 21){// + wheelTrim)){
 				//------------Send------------------------------
 				sensormodul.outDataArray[0] = 1;
 				sensormodul.outDataArray[1] = 'W';
@@ -414,10 +425,11 @@ int main(void)
                 //communication on bus.
 				//------------Trim--------------------------------
 				//TrimWheel();
+				/*
 				int squareDifference = 0;
 				if(sen2 < 70){						//back short
 					squareDifference = sensor2[savepos - 1] % 40;
-					if(squareDifference > 13){
+					if(squareDifference > 16){
 						wheelTrim = wheelTrim - 1;
 					}
 					else if(squareDifference < 7){
@@ -426,7 +438,7 @@ int main(void)
 				}
 				else if(sen1 < 200){				//back long
 					squareDifference = sensor1[savepos - 1] % 40;
-					if(squareDifference > 13){
+					if(squareDifference > 16){
 						wheelTrim = wheelTrim - 1;
 					}
 					else if(squareDifference < 7){
@@ -438,14 +450,14 @@ int main(void)
 					if(squareDifference > 13){
 						wheelTrim = wheelTrim + 1;
 					}
-					else if(squareDifference < 7){
+					else if(squareDifference < 4){
 						wheelTrim = wheelTrim - 1;
 					}
 				}
 				else{
 					wheelTrim = 0;
 				}
-				sen0 = wheelTrim+20;
+				sen0 = wheelTrim+20;*/
 			}
 			asm("");
 		}
