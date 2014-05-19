@@ -1024,7 +1024,6 @@ void Robot::updateRobotPosition(){
     }
 	*/
 	
-<<<<<<< HEAD
 	// The paramaters for sensor differences (references?) are called:
 	//these parameters may be removed, not used anywhere
 	fwdRefLong;
@@ -1032,14 +1031,12 @@ void Robot::updateRobotPosition(){
 	fwdRefShort;
 	bwdRefShort;
 	
-=======
 	/* The paramaters for sensor differences (references?) are called:
 		fwdRefLong;
 		bwdRefLong;
 		fwdRefShort;
 		bwdRefShort;
 	*/
->>>>>>> d52111588a1a5b2d69801d2af78825a73eb959c6
     
    if (wheelHasTurned){
 	   wheelHasTurned = false;
