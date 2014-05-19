@@ -13,6 +13,7 @@
 \usepackage{adjustbox}
 \usepackage{textcomp}
 \usepackage[T1]{fontenc}
+\usepackage{pdfpages}
 \usepackage{listings}
 \usepackage{xcolor,colortbl}
 \usepackage{hyperref}
@@ -111,11 +112,11 @@
 %Lyft gärna fram det som ni anser är utmanande/intressant i uppdraget. 
 %Beskriv kortfattat dispositionen på rapporten.''
 
-En robot med tillgång till ett antal avståndssensorer, ett gyro och en RFID-sensor placeras i ett stängt område med dimension 6x6 meter som är uppdelat i 40x40 centimeters segment. 
+En robot med tillgång till ett antal avståndssensorer, en reflexsensor, ett gyro och en RFID-sensor placeras i ett stängt område med dimension på upp till 6x6 meter som är uppdelat i 40x40 centimeters segment. 
 Den ska, med en vägg som startpunkt, helt autonomt kartlägga området genom att markera ut var väggar finns och var det finns områden som inte går att nå. 
 Den ska även markera ut var det går att finna RFID-taggar, som symboliserar brandhärdar. 
 Om inte hela det slutna området är kartlagt ska den upptäcka vilka segment som är oupptäckta, färdas dit och lägga till det i kartan. 
-När hela området är kartlagt ska roboten ta sig tillbaka till startpunkten och avsluta arbetet. Ett exempel på en karta kan ses i Figur \ref{fig:omrade}.
+När hela området är kartlagt ska roboten ta sig tillbaka till startpunkten och avsluta arbetet. Ett exempel på en karta kan ses i figur~\ref{fig:omrade}.
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
   \includegraphics[keepaspectratio=true,scale=0.5]{gimpmap.png}  %skala och filnamn. 
@@ -125,7 +126,7 @@ När hela området är kartlagt ska roboten ta sig tillbaka till startpunkten oc
 \end{figure}
 
 Stora delar av arbetet med denna produkt består av att utnyttja den teoretiska kunskap som finns och att koppla den till praktiken för att sedan implementera principerna på roboten. 
-Detta innefattar bland annat reglerteori, sannolikhetslära, optimering och matematisk analys.
+Detta innefattar bland annat reglerteori, digitalteknik, sannolikhetslära, optimering och matematisk analys.
 
 En av de största utmaningarna med robotens uppdrag är dock att rita ut en karta över området utan att veta var den befinner sig - men hur går det att veta var roboten befinner sig utan en karta? 
 
@@ -133,14 +134,24 @@ En av de största utmaningarna med robotens uppdrag är dock att rita ut en kart
 %Redogör kort för kravbilden och referera till projektdirektiv och kravspecifikation för %att läsa detaljer.
 %Lägg återigen mest fokus på det som ni ansåg utmanande/intressant.
 
-Den slutgiltiga produkten ska uppfylla ett antal krav (Se Kravspecifikation) för att godkännas av beställaren. Principiellt ska roboten kunnas köra autonomt genom ett område (uppbyggt av kartongväggar) och i realtid skicka en karta till en persondator som på ett prydligt sätt redovisar var roboten har sett. Roboten ska även kunna detektera brandhärdar som symboliseras med RFID-kort. Dessa kort placeras ut på slumpmässigt valda rutor på banan. 
+Den slutgiltiga produkten ska uppfylla ett antal krav (Se Kravspecifikation) för att godkännas av beställaren. Principiellt ska roboten kunnas köra autonomt genom ett område (uppbyggt av kartongväggar) och vid rotation skicka en karta till en persondator som på ett prydligt sätt redovisar var roboten har sett. Roboten ska även kunna detektera brandhärdar som symboliseras med RFID-kort. Dessa kort placeras ut på slumpmässigt valda rutor på banan. 
 
 Kraven som ställts är delvis baserade på vad beställaren ville få levererat (Se Projektdirektiv för kartrobot) och delvis på sådant som projektgruppen ansåg var viktigt för robotens funktionalitet. Ett exempel på funktionalitet som har prioriterats är hantering av karta och sökalgoritmer som ansågs mest intressant dock även svårast att implementera. 
 Sammanfattningsvis består kraven bland annat av de delar som beskrivs av scenariot i inledningen. Den innehåller även en del krav på vilka delprodukter som ska vara klara vid vissa specifika datum.
 
+Det som av projektgruppen ansågs mest utmanande var att konstruera en fullt funkmtionell buss. Denna ställde till med problem då den i början ofta tappade bitar vilket gav upphov till besynnerligt beteende hos roboten. 
+
+Att få gyrot att fungera var även det en utmaning då det var ytterst viktigt att få rotationerna av roboten exakta. Utan exakta rotationer skulle nämligen roboten kunna positionsuppskatta fel.
+
+Det sista svåra momentet var positionsskattningen. Att simultant positionsskatta och kartlägga visade sig vara lika svårt som förväntat.
+
+
+
 \section{Kunskapsbas}
 
-\subsection{Personligkontakt}
+Förutom kunskap från tidigare kurser har litteratur i form av webbsidor och böcker samt personligkontakt med handledare gett stöd och råd. 
+
+\subsection{Personlig kontakt}
 Under projektets gång har gruppen haft hjälp av en handledare vid namn Peter Johansson, som är anställd på instutitionen för systemteknik vid Linköpings universitet. 
 
 \subsection{Litteratur}
@@ -169,17 +180,25 @@ Längre in i projektet ändrades grupperna något för att ge alla projektmedlem
 I slutfasen av projektet turades gruppmedlemmarna om att skriva den tekniska dokumentationen medan andra arbetade med roboten för att effektivisera arbetet.
 
 \subsection{Efter}
-I efterfasen överfördes projektresultatet till beställaren och projektet avslutades. En tävling hölls av mellan de olika projektgrupperna för att avgöra vilken robot som var bäst. 
+I efterfasen överfördes projektresultatet till beställaren och projektet avslutades. En tävling hölls mellan de olika projektgrupperna för att avgöra vilken robot som var bäst. 
 
 \section{Teknisk beskrivning}
 %Redovisa det tekniska resultatet och skrivuppgifterna på ett lämpligt sätt. Detaljerade beskrivningar på grindnivå i hårdvaran eller på instruktionsnivå i mjukvaran är i detta sammanhang oftast ointressant. Referera den tekniska dokumentationen och skrivuppgifterna för beskrivning av detaljer. Lyft fram egna kreativa lösningar!
-Roboten har implementerats med tre stycken AVR Atmega 1284p-processorer, med en kommunikationsbuss över SPI-länk\footnote{Datablad för Atmega 1284p \url{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/atmega1284p.pdf}, hämtad 2014-05-19}. En processor hanterar sensorer, en processor hanterar styrning och en processor agerar kommunikationslänk mellan de två förstnämnda samt en persondatormjukvara över Bluetooth. 
+Roboten har implementerats med tre stycken AVR Atmega 1284p-processorer, med en kommunikationsbuss över SPI-länk\footnote{Datablad för Atmega 1284p https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/atmega1284p.pdf, hämtad 2014-05-19}. En processor hanterar sensorer, en processor hanterar styrning och en processor agerar kommunikationslänk mellan de två förstnämnda samt en persondatormjukvara över Bluetooth. En processor sitter på det övre kortet och två processorer på det undre kortet, se figur~\ref{fig:robot}
+
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,width=0.5\textwidth]{robot.png}  %skala och filnamn. 
+  \end{center}
+  \caption{Bild på roboten från två vinklar} %figurtext.
+  \label{fig:robot}
+\end{figure}
 
 \subsection{Kommunikation mellan processorer}
 Kommunikationen mellan processorerna sker via en Serial Peripheral Interface Bus, hädanefter refererad till som en SPI-buss.
 Roboten är konstruerad med tre processorer på två separata vir-kort och kopplas ihop med hjälp av en bandkabel. På roboten agerar kommunikationsmodulen master och de övriga två modulerna är slaves. SPI-bussen kan sammanfattas till att master skiftar ett 8 bitars register med en slave. SPI-bussen har alltså möjlighet för duplex dataöverföring. För ytterligare detaljer angående SPI-bussen se den tekniska dokumentationen.
 
-När master väljer en slave, genom Slave Select signalen, genereras ett avbrott på slave-processorn. Detta innebär att master kan skicka hämta data i princip var som helst i ett program på en slave-processor. För kommunikations som måste initieras från slave till master har vi kopplat en avbrottssignal som säger till master-processorn att påbörja SPI-kommunikation med aktuell slave-processor.
+När master väljer en slave, genom Slave Select signalen, genereras ett avbrott på slave-processorn. Detta innebär att master kan skicka/hämta data i princip var som helst i ett program på en slave-processor. För kommunikations som måste initieras från slave till master har vi kopplat en avbrottssignal som säger till master-processorn att påbörja SPI-kommunikation med aktuell slave-processor.
 
 \subsubsection{Datahantering}
 För att avbrotten ska bli så korta som möjligt på processorn så har datahanteringen på kommunikationsmodulen flyttats ut ur avbrott. Anledningen till detta är att så länge processorn befinner sig i avbrott skulle vidare avbrott kunna missas. Sanningsvariabler ifall ny data finns tillgänglig för datahantering används istället. Dessa sanningsvariabler avläses i master-processorns main-loop, vilket visas i flödesdiagrammet i figur~\ref{fig:SPIrec}. Detta ger att nya mottagningar kan påbörjas medan data behandlas, man får dock beakta att data i en given buffer måste behandlas innan den skrivs över av nästa kommunikation.
@@ -198,15 +217,23 @@ För att undvika ovannämnda problem utnyttjas en dubbelbuffer. Första buffern 
 
 \subsection{Kommunikation mellan PC och robot}
 Kommunikation mellan processor och PC sker via en Bluetooth-modul. Bluetooth-modulen arbetar via Universal Serial Asynchronous Receiver/Transmitter, USART.
-På PC-mjukvaran virtualiseras Bluetooth mottagaren/sändaren som en seriellport och information skickas i form av en 27 element lång char array. För mer detaljer angående dataprotokoll se den tekniska dokumentationen. 
+På PC-mjukvaran virtualiseras Bluetooth mottagaren/sändaren som en seriellport och information skickas i form av en 27 element lång char array. För mer detaljer angående dataprotokoll se den tekniska dokumentationen. För en jämförelse mellan olika trådlösa kommunikationstekniker se Appendix~\ref{komuppg.}.
 
 \subsection{PC-mjukvara med grafiskt gränssnitt}
 
 PC-mjukvaran är skapad och designad med hjälp av Open Source varianten av Qt för Mac OS X och dess tillhörande utvecklingsmiljö QtCreator. Qt är ett $C++$ bibliotek som innehåller användarvänliga funktioner för till exempel fönsterhantering och grafisk uppritning.\footnote{\url{http://qt-project.org/}} Ett kompletterande bibliotek till Qt har använts för plottarna kallat QCustomPlot\footnote{\url{http://www.qcustomplot.com/}}.
 
-Med hjälp av mjukvaran kan användaren justera olika parametrar som ändrar robotens beteende vid arbete, till exempel avstånd till väggar som ska hållas, regleringsparametrar och hastighet. Det går att se hur alla sensorers värden ändras över tid och en modell över hur roboten ritar kartan, denna kan även uppdateras genom att användaren trycker på en knapp då autonomt läge ej är aktivt.
+Med hjälp av mjukvaran kan användaren justera olika parametrar som ändrar robotens beteende vid arbete, till exempel avstånd till väggar som ska hållas, regleringsparametrar och hastighet. Det går att se hur alla sensorers värden ändras över tid, detta kan ses i figur~\ref{fig:gui} och en modell över hur roboten ritar kartan, denna kan även uppdateras genom att användaren trycker på en knapp då autonomt läge ej är aktivt.
 
 Inkluderat i PC-mjukvaran finns ett verktyg för att rita upp tidigare sparade sensorvärden för att lättare kunna analysera hur de förändrats under en körning.
+
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,width=0.5\linewidth]{gui.png}  %skala och filnamn. 
+  \end{center}
+  \caption{Det grafiska fönstret} %figurtext.
+  \label{fig:gui}
+\end{figure}
 
 \subsection{Pulse Width Modulation}
 
@@ -220,7 +247,16 @@ LCD-displayen tar relativt processorn lång tid på sig att rita ut ett tecken. 
 
 \subsection{Kartabstraktion}
 
-En karta abstraheras i form av en rektangel med ett rutnät med dimensionen 33x17 rutor med koordinaterna (0,0) i det övre vänstra hörnet. Det verkliga området skulle med liknande rutnät bli 15x15 rutor. För att kompensera för eventuella mätfel utökas matrisen något för att underlätta uppritningen. Felaktigheter i avläsning kan leda till att roboten i abstraktionen tillfälligt är utanför sitt givna område. Roboten kommer i början att placeras i punkten (16,0) och rita upp kartan utifrån detta. Det kommer då inte spela någon roll hur roboten är placerad i det verkliga systemet eftersom det finns utrymme för 15 rutor åt båda hållen inklusive marginaler. 
+
+En karta abstraheras i form av en rektangel med ett rutnät med dimensionen 32x17 rutor med koordinaterna (0,0) i det övre vänstra hörnet. Det verkliga området skulle med liknande rutnät bli 16x16 rutor. För att kompensera för eventuella mätfel utökas matrisen något för att underlätta uppritningen. Felaktigheter i avläsning kan leda till att roboten i abstraktionen tillfälligt är utanför sitt givna område. Roboten kommer i början att placeras i punkten (16,1) och rita upp kartan utifrån detta. Det kommer då inte spela någon roll hur roboten är placerad i det verkliga systemet eftersom det finns utrymme för 15 rutor åt båda hållen inklusive marginaler. Koordinatsystemet som används i robotens interna representation är ett vänstersystem, se figur~\ref{fig:coor}
+
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,width=0.2\textwidth]{coor.jpg}  %skala och filnamn. 
+  \end{center}
+  \caption{Vänstersystemet som används på roboten} %figurtext.
+  \label{fig:coor}
+\end{figure}
 
 En abstraktion av en matris i mjukvara skapas med hjälp utav nästlade arrayer, eller någon modern motsvarighet. I utvecklingsmiljön Atmel Studio finns språket C++ tillgängligt, men däremot ej C++ standardbibliotek med abstraktioner.
 
@@ -249,10 +285,7 @@ Till en början är alla områden outforskade. I takt med att sensordata kommer 
 
 \subsection{Sensormodul}
 
-
 Roboten har nio olika sensorer. En RFID-läsare, ett gyroskop, en reflexsensor, en långdistansmätare, en mellandistansmätare och fyra kortdistansmätare. 
-
-
 
 \subsubsection{AD-omvandling}
 De resterande sensorerna ger analoga utsignaler och behandlas med hjälp av en intern A/D-mux på sensormodulen. 
@@ -278,10 +311,26 @@ USART-avbrotten stängs av för att inte låsa sensormodulen med flera läsninga
 SLAM står för Simultaneous Localization And Mapping och innebär att roboten ska kunna skatta sin position samtidigt som den ritar upp en karta över området den färdas inom.
 
 \subsubsection{Positionsskattning}
+Positionsskattning fungerar genom att reflexsensor uppskattar när roboten rört sig 40 cm. Dessa 40 cm representerar ett segment i vår kartrepresentation och närmre upplösning krävs ej då minsta objektet som ska kartläggas är 40 cm. Roboten innehåller information om vilken riktning den färdas i och får information från sensormodulen om avståndet som färdats. Roboten förflyttas i kartan i aktuell riktning. Vid rotation uppdateras riktningen. 
 
 \subsubsection{Kartläggning}
 På styrmodulen ligger en karta i form av en array som uppdateras allt eftersom roboten åker och tar in ny mätdata. Arrayen innehåller objekt som kan vara av typen, explored, unexplored, closed och fire. En fördel med att ha objekt i arrayen är t.ex. att funktioner för att överblick och dra slutsatser kring kartan blir väldigt lätta att implementera. T.ex. kan man kolla om en vägg tillhör en köksö genom att helt enkel fråga ett objekt som är closed, isClosed? Ett rekursivt anrop sker då mellan alla närliggade vägger och om väggarna utgör en sluten cirkel, kan hela köksön markes som sluten på kartan. 
-Vid sändning av kartan upp till master och sedan vidare till PC-mjukvaran konverteras objekten till bokstäver som sedan avgör färgerna i den uppritande kartan.  
+Vid sändning av kartan upp till master och sedan vidare till PC-mjukvaran konverteras objekten till bokstäver som sedan avgör färgerna i den uppritande kartan.
+
+\subsection{A-star}
+För att finna en bra färdväg från punkt A till B i kartan har en algoritm som kallas Astar implementerats. Algoritmen utgår ifrån Dijkstra''s algoritm, som löser problemet att finna billigaste vägen från nod A till B. Den fungerar så att den successivt besöker hörnpunkter i kartan och utgår från startpositionen. Algoritmen expanderar sedan utåt från startpunkten tills målet är hittat. Dijkstra’s algoritm ger garanterat den billigaste vägen, så länge som nodernas kostnader är positiva.\footnote{http://theory.stanford.edu/\textasciitilde amitp/GameProgramming/AStarComparison.html\#the-a-star-algorithm}
+
+Den Giriga Bäst-Först algoritmen fungerar på liknande sätt, förutom att den kan uppskatta hur långt från målet alla hörnpunker är. Istället för att välja noden som befinner sig närmast startpunkten väljer den här algoritmen den som ligger närmast slutpunkten. Astar algoritmen kombinerar det bästa av dessa två algoritmer och ger alltså garanterat den minst kostsamma vägen, på kortare tid än Dijkstras. \footnote{http://www.policyalmanac.org/games/aStarTutorial.htm}
+\newline
+I figur~\ref{fig:Astar} visas två exempel på färdväg som Astar-algoritmen har valt vid testning på PC. Färdvägen beskrivs med bokstaven R och vägg/hinder betecknas med bokstaven 0. Startpunkt (S) och slutpunk (F) har slumpats fram. 
+
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[width=0.5\textwidth]{Astar.png}  %skala och filnamn. 
+  \caption{Färdväg efter att Astar-algoritmen har körts på kartan.}%figurtext.
+  \end{center}
+  \label{fig:Astar}
+\end{figure}
 
 
 \section{Resultat}
@@ -307,22 +356,42 @@ När det autonoma läget är aktiverat ska inte användaren behöva göra något
 Vi är väldigt nöjda med är vår implementering av kartritningen, slutning av områden och vår A*-sökalgoritm. Vi är även väldigt nöjda och stolta över objektstrukturen och klass nyttjandet som hela projektgruppen gjort under projektets gång.
 
 %Reflektera över resultatet såväl tekniskt som över genomförandet. Referera efterstudien.
-
-
 %Framtida arbete
 
 
 %Vad skulle ni göra annorlunda om ni skulle göra om samma uppdrag?
-Om denna projektgrupp eller någon av dess medlemmar fick göra om detta uppdrag så skulle de använda en trådad processor istället för tre. En av de mest tidskrävande aktiviteterna har varit bussen, implementering och felsökning. Bussen är även den del av projektet som gett oss flest fel. Så två saker är säkra, om vi fick möjlighet att göra det utan en buss skulle vi göra det och om vi var tvugna att återigen göra en buss skulle denna påbörjas något tidigare och stresstestas hårt.
+Om denna projektgrupp eller någon av dess medlemmar fick göra om detta uppdrag så skulle de använda en multitrådad processor istället för tre. En av de mest tidskrävande aktiviteterna har varit bussen, implementering och felsökning. Bussen är även den del av projektet som gett oss flest fel. Så två saker är säkra, om vi fick möjlighet att göra det utan en buss skulle vi göra det och om vi var tvugna att återigen göra en buss skulle denna påbörjas något tidigare och stresstestas hårt.
+
 
 %Vad skulle ni vilja utveckla om ni fick mer tid?
-Om vi fick mer tid i projektet skulle tiden med all fördel läggas på optimeringsalgoritmer och förbättrandet av bussen. En av förbättringarna till bussen som skulle kunna utnyttjas är en mer avancerad bufferstruktur än den som används.  
+Om vi fick mer tid i projektet skulle tiden med all fördel läggas på optimeringsalgoritmer och förbättrandet av bussen. En av förbättringarna till bussen som skulle kunna utnyttjas är en mer avancerad bufferstruktur än den som används.
+Roboten har ett delvis färdigt stöd för att förbättra positioneringen med hjälp av avståndssensorerna för att på så sätt kunna ta bort delar av det akumulerande felet som uppstår. Denna funktionalitet fick delvis strykas för att ge tid åt mer essentiella funktioner, då problem uppstod med bussen nära projektets slut. Denna funktion skulle vara intressant att se fullfärdad.  
 
 %Hur skulle ni tänka er att ändra uppgiften för att göra den ännu mer intressant?
-I vår åsikt, så skulle tävlingsmomentena kunna göras mer intressanta. I nuvarande form ska RFID-taggar hittas. Dessa taggar måste besökas väldigt långsamt och varje ruta i hela kartan måste besökas för att hitta alla taggar. Detta tar bort en väldigt intressant utmaning, nämligen avsökningsoptimering, nyttjandet av sensorer med längre räckvidd och en god reglering vid höga hastigheter.
+I vår åsikt, så skulle tävlingsmomentena kunna göras mer intressanta. I nuvarande form ska RFID-taggar hittas. Dessa taggar måste besökas väldigt långsamt och varje ruta i hela kartan måste besökas för att hitta alla taggar. Detta tar bort väldigt intressanta utmaningar, nämligen avsökningsoptimering, nyttjandet av sensorer med längre räckvidd och en god reglering vid höga hastigheter.
 
+\newpage
+\section*{Referenser}
+\addcontentsline{toc}{section}{Referenser}
 
-\section{Referenser}
+Datablad för Atmega 1284p https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/atmega1284p.pdf
+
+http://qt-project.org/
+
+http://stackoverflow.com/
+
+http://www.atmel.com/images/doc8059.pdf
+
+http://www.avrfreaks.net/
+
+http://www.liu.se/cul/resurser/lips/kort-beskrivning-av-lips-modellen?l=sv
+
+http://www.qcustomplot.com/
+
+https://docs.isy.liu.se/twiki/bin/view/VanHeden
+
+Roos, Olof. 1995. Grundläggande datorteknik. upplaga 1. Studentlitteratur AB
+Söderkvist, Sune. 1996. Kretsteori och elektronik, utgåva 1. Tryckeriet Erik Larsson AB
 
 
 % ----------------------------- Appendix -----------------------------------------
@@ -332,6 +401,16 @@ I vår åsikt, så skulle tävlingsmomentena kunna göras mer intressanta. I nuv
 \appendix
 \pagestyle{empty}
 \newgeometry{left=2cm,right=2cm,bottom=2cm,top=2cm}
-\section{Appendix A}
+\section*{Appendix A}
+\addcontentsline{toc}{section}{Appendix A}
+\includepdf[pages=-]{../Kommunikation/kom.pdf}
+
+%\section{Appendix B}
+%\includepdf[pages=-]{../Regler/regler.pdf}
+
+%\section{Appendix C}
+%\includepdf[pages=-]{../Sensorer/Sensor.pdf}
+
+\label{komuppg.}
 LIPS-dokument och fördjupningar enligt ovan.
 \end{document}
