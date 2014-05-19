@@ -239,7 +239,16 @@ LCD-displayen tar relativt processorn lång tid på sig att rita ut ett tecken. 
 
 \subsection{Kartabstraktion}
 
-En karta abstraheras i form av en rektangel med ett rutnät med dimensionen 32x17 rutor med koordinaterna (0,0) i det övre vänstra hörnet. Det verkliga området skulle med liknande rutnät bli 16x16 rutor. För att kompensera för eventuella mätfel utökas matrisen något för att underlätta uppritningen. Felaktigheter i avläsning kan leda till att roboten i abstraktionen tillfälligt är utanför sitt givna område. Roboten kommer i början att placeras i punkten (16,1) och rita upp kartan utifrån detta. Det kommer då inte spela någon roll hur roboten är placerad i det verkliga systemet eftersom det finns utrymme för 15 rutor åt båda hållen inklusive marginaler. 
+
+En karta abstraheras i form av en rektangel med ett rutnät med dimensionen 32x17 rutor med koordinaterna (0,0) i det övre vänstra hörnet. Det verkliga området skulle med liknande rutnät bli 16x16 rutor. För att kompensera för eventuella mätfel utökas matrisen något för att underlätta uppritningen. Felaktigheter i avläsning kan leda till att roboten i abstraktionen tillfälligt är utanför sitt givna område. Roboten kommer i början att placeras i punkten (16,1) och rita upp kartan utifrån detta. Det kommer då inte spela någon roll hur roboten är placerad i det verkliga systemet eftersom det finns utrymme för 15 rutor åt båda hållen inklusive marginaler. Koordinatsystemet som används i robotens interna representation är ett vänstersystem, se figur~\ref{fig:coor}
+
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,width=0.2\textwidth]{coor.jpg}  %skala och filnamn. 
+  \end{center}
+  \caption{Vänstersystemet som används på roboten} %figurtext.
+  \label{fig:coor}
+\end{figure}
 
 En abstraktion av en matris i mjukvara skapas med hjälp utav nästlade arrayer, eller någon modern motsvarighet. I utvecklingsmiljön Atmel Studio finns språket C++ tillgängligt, men däremot ej C++ standardbibliotek med abstraktioner.
 
@@ -330,15 +339,15 @@ Resultatet
 
 
 %Vad skulle ni göra annorlunda om ni skulle göra om samma uppdrag?
-Om denna projektgrupp eller någon av dess medlemmar fick göra om detta uppdrag så skulle de använda en trådad processor istället för tre. En av de mest tidskrävande aktiviteterna har varit bussen, implementering och felsökning. Bussen är även den del av projektet som gett oss flest fel. Så två saker är säkra, om vi fick möjlighet att göra det utan en buss skulle vi göra det och om vi var tvugna att återigen göra en buss skulle denna påbörjas något tidigare och stresstestas hårt.
+Om denna projektgrupp eller någon av dess medlemmar fick göra om detta uppdrag så skulle de använda en multitrådad processor istället för tre. En av de mest tidskrävande aktiviteterna har varit bussen, implementering och felsökning. Bussen är även den del av projektet som gett oss flest fel. Så två saker är säkra, om vi fick möjlighet att göra det utan en buss skulle vi göra det och om vi var tvugna att återigen göra en buss skulle denna påbörjas något tidigare och stresstestas hårt.
 
 
 %Vad skulle ni vilja utveckla om ni fick mer tid?
 Om vi fick mer tid i projektet skulle tiden med all fördel läggas på optimeringsalgoritmer och förbättrandet av bussen. En av förbättringarna till bussen som skulle kunna utnyttjas är en mer avancerad bufferstruktur än den som används.
-Roboten har ett delvis färdigt stöd för att förbättra positioneringen med hjälp av avståndssensorerna för att på så sätt kunna ta bort delar av det akumulerande felet som uppstår. Denna funktionalitet fick strykas för att ge tid åt mer essentiella funktioner, då problem uppstod med bussen nära projektets slut. Denna funktion skulle vara intressant att se fullfärdad.  
+Roboten har ett delvis färdigt stöd för att förbättra positioneringen med hjälp av avståndssensorerna för att på så sätt kunna ta bort delar av det akumulerande felet som uppstår. Denna funktionalitet fick delvis strykas för att ge tid åt mer essentiella funktioner, då problem uppstod med bussen nära projektets slut. Denna funktion skulle vara intressant att se fullfärdad.  
 
 %Hur skulle ni tänka er att ändra uppgiften för att göra den ännu mer intressant?
-I vår åsikt, så skulle tävlingsmomentena kunna göras mer intressanta. I nuvarande form ska RFID-taggar hittas. Dessa taggar måste besökas väldigt långsamt och varje ruta i hela kartan måste besökas för att hitta alla taggar. Detta tar bort en väldigt intressant utmaning, nämligen avsökningsoptimering, nyttjandet av sensorer med längre räckvidd och en god reglering vid höga hastigheter.
+I vår åsikt, så skulle tävlingsmomentena kunna göras mer intressanta. I nuvarande form ska RFID-taggar hittas. Dessa taggar måste besökas väldigt långsamt och varje ruta i hela kartan måste besökas för att hitta alla taggar. Detta tar bort väldigt intressanta utmaningar, nämligen avsökningsoptimering, nyttjandet av sensorer med längre räckvidd och en god reglering vid höga hastigheter.
 
 
 \section{Referenser}
