@@ -197,6 +197,34 @@ För att undvika ovannämnda problem utnyttjas en dubbelbuffer. Första buffern 
 \subsection{Pulse Width Modulation}
 \subsection{LCD-display}
 \subsection{Kartabstraktion}
+
+En karta abstraheras i form av en rektangel med ett rutnät med dimensionen 33x17 rutor med koordinaterna (0,0) i det övre vänstra hörnet. Det verkliga området skulle med liknande rutnät bli 15x15 rutor. För att kompensera för eventuella mätfel utökas matrisen något för att underlätta uppritningen. Felaktigheter i avläsning kan leda till att roboten i abstraktionen tillfälligt är utanför sitt givna område. Roboten kommer i början att placeras i punkten (16,0) och rita upp kartan utifrån detta. Det kommer då inte spela någon roll hur roboten är placerad i det verkliga systemet eftersom det finns utrymme för 15 rutor åt båda hållen inklusive marginaler. 
+
+En abstraktion av en matris i mjukvara skapas med hjälp utav nästlade arrayer, eller någon modern motsvarighet. I utvecklingsmiljön Atmel Studio finns språket C++ tillgängligt, men däremot ej C++ standardbibliotek med abstraktioner.
+
+\subsubsection{Objektklasser}
+
+Kartmatrisen hålls inne i en containerklass med funktioner för att abstrahera access till den. I modern programmering är objekthantering ett kraftfullt verktyg för abstraktion. Klasserna som används följer nedan, med engelska namnet inom parantes.
+
+\begin{itemize}
+	\item Karta (Map)
+	\item Kartsektion (MapSection)
+	\item Robot (Robot)
+\end{itemize}
+
+I C++-implementeringen är Robot en dotterklass till MapSection. Detta då alla objekt i en matris måste vara av samma objekttyp. Roboten ärver då vissa egenskaper från MapSection - men innehåller klart mer logik för att hantera positionering och kartläggning. 
+
+MapSection kan anta ett antal olika tillstånd för att markera vilken typ av område det är. Nedan följer de tillstånd som implementerats i klassen MapSection: 
+
+\begin{itemize}
+	\item Stängt område (Closed)
+	\item Outforskat område (Unexplored)
+	\item Tomt område (Empty)
+	\item Brandhärd (Fire)
+\end{itemize}
+
+Till en början är alla områden outforskade. I takt med att sensordata kommer in och beräknas kan sedan roboten omvandla tillstånden hos objekten i kartan utefter given logik. 
+
 \subsection{Sensormodul}
 Roboten har nio olika sensorer. En RFID-läsare, ett gyroskop, en reflexsensor, en långdistansmätare, en mellandistansmätare och fyra kortdistansmätare. 
 RFID-läsaren ger ut en digital signal och behandlas med USART. Vid detektion av en RFID-tagg så stängs USART-avbrott av och ett kommando skickas till styrmodulen som säger till att vi hittat en brandhärd. 
