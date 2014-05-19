@@ -1,4 +1,4 @@
-\documentclass[a4paper,12pt,fleqn]{article}
+﻿\documentclass[a4paper,12pt,fleqn]{article}
 \usepackage{fixltx2e}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
@@ -140,7 +140,7 @@ Sammanfattningsvis består kraven bland annat av de delar som beskrivs av scenar
 \section{Kunskapsbas}
 
 %%Här behövs lite referenser sen
-Den litteratur som använts under projektets gång består till stor del av böcker inom grunderna för bland annat sannolikhetslära, datorteknik, elektronik, reglerteknik och matematisk analys. 
+Den litteratur som använts under projektets gång består till stor del av böcker inom grunderna för bland annat sannolikhetslära, datorteknik, elektronik, reglerteknik\footnote{Glad, Torkel och Ljung, Lennart. 2006. \textit{Reglerteknik - Grundläggande teori}. Upplaga 4:10. Lund. Studentlitteratur.} och matematisk analys. 
 Dessa har kombinerats med datablad för de komponenter som använts tagna från ISY:s sida VanHeden\footnote{\url{https://docs.isy.liu.se/twiki/bin/view/VanHeden}} och datablad från Atmel för 
 de processorer som modulerna baserats på\footnote{\url{http://www.atmel.com/images/doc8059.pdf}}. 
 Utöver detta har även diverse forum på internet berörande exempelvis \emph{C}-,\emph{C++}-\footnote{\url{http://stackoverflow.com/}} och \emph{AVR}-programmering\footnote{\url{http://www.avrfreaks.net/}} besökts.
@@ -149,24 +149,21 @@ Utöver detta har även diverse forum på internet berörande exempelvis \emph{C
 %Beskriv hur projektet har bedrivits och referera bland annat till LIPS-modellen, %systemskiss, projektplan och designspecifikation. Observera att designspecifikationen %belyser arbetsprocessen och inte den slutliga produkten så om ni uppdaterat %designspecifikationen löpande under projektet så kan ni infoga t ex den version som var %aktuell vid BP3.
 
 Det grundläggande upplägget på projektet har baserats på LiPS-modellen, det vill säga de olika faserna i arbetet och vad som bör göras. 
-De dokument som producerades under för-fasen så som systemskiss och projektplan skrevs gemensamt för att alla medlemmar skulle få en så bra inblick som möjligt i hur arbetet planerades. 
+De dokument som producerades under planeringsfasen så som systemskiss och projektplan skrevs gemensamt för att alla medlemmar skulle få en så bra inblick som möjligt i hur arbetet planerades. 
 För mer detaljerad beskrivning av arbetsupplägget hänvisas läsaren till ovan nämnda dokument (Se Systemskiss och Projektplan).
 
 Projektet har delats upp i mindre delprojekt som olika projektmedlemmar fått ansvara för. 
-Det har bland annat inneburit förberedande design av delprodukt (Se Designspecifikation) och implementering. 
-Vid ett delprojekts slutförande har hårdvaran eller den skrivna koden förklarats för de andra projektmedlemmarna och sedan slagits samman med resten av projektet. 
+Det har bland annat inneburit förberedande design av delprodukt (Se Designspecifikation) och implementering. Vid ett delprojekts slutförande har hårdvaran eller den skrivna koden förklarats för övriga projektmedlemmar och sedan integrerats med resten av projektet. 
 
-För att på ett smidigt vis slå samman kod och möjliggöra simultan programmering har en versionshanteringstjänst vid namn Github använts. 
-När hårdvara skulle utvecklas delades projektgruppen in modulvis, två personer per modul.
-Dialog hölls mellan grupperna för att säkerställa att portar och kontakter placerades på smidiga ställen.
+För att på ett smidigt vis slå samman kod och möjliggöra simultan programmering har en mjukvara för versionshantering vid namn Git\footnote{Git Source Control Management, \url{http://git-scm.com/}, hämtad 2014-05-19} använts tillsammans med ett kodförvar hos molntjänsten GitHub\footnote{hansfilipelo/MapMaster2001, \url{https://github.com/hansfilipelo/MapMaster2001}, hämtad 2014-05-19}. 
 
-Längre in i projektet ändrades grupperna något för att ge alla projektmedlemmar en chans att arbeta med varandra, men även för att det var färre delmoment att arbeta med. 
-I slutfasen av projektet turades gruppmedlemarna om att skriva den tekniska dokumentationen medan andra arbetade med roboten för att effektivisera arbetet.
+När hårdvara skulle utvecklas delades projektgruppen in modulvis, två personer per modul. Dialog hölls mellan grupperna för att säkerställa att portar och kontakter för gränssnitt mellan olika komponenter implementerades med störningsminimering och platsoptimering i åtanke.
+
+Längre in i projektet ändrades grupperna något för att ge alla projektmedlemmar en chans att arbeta med varandra, men också för att bättre kunna utnyttja unik spetskompetens hos gruppmedlemmarna på ett bättre sätt. I slutfasen av projektet turades gruppmedlemarna om att skriva den tekniska dokumentationen medan andra arbetade med roboten för att effektivisera arbetet.
 
 \section{Teknisk beskrivning}
 %Redovisa det tekniska resultatet och skrivuppgifterna på ett lämpligt sätt. Detaljerade beskrivningar på grindnivå i hårdvaran eller på instruktionsnivå i mjukvaran är i detta sammanhang oftast ointressant. Referera den tekniska dokumentationen och skrivuppgifterna för beskrivning av detaljer. Lyft fram egna kreativa lösningar!
-
-
+Roboten har implementerats med tre stycken AVR Atmega 1284p-processorer, med en kommunikationsbuss över SPI-länk\footnote{Datablad för Atmega 1284p \url{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/atmega1284p.pdf}, hämtad 2014-05-19}. En processor hanterar sensorer, en processor hanterar styrning och en processor agerar kommunikationslänk mellan de två förstnämnda samt en persondatormjukvara över Bluetooh. 
 
 \subsection{Kommunikation mellan processorer}
 Kommunikationen mellan processorerna sker via en Serial Peripheral Interface Bus, hädanefter refererad till som en SPI-buss.
@@ -193,7 +190,9 @@ För att undvika ovannämnda problem utnyttjas en dubbelbuffer. Första buffern 
 \subsection{PC-mjukvara med grafiskt gränssnitt}
 \subsection{Pulse Width Modulation}
 
-För att styra chassits motorer används AVR-processorn inbyggda pulsbreddsmodulering, PWM. 
+För att styra chassits motorer används AVR-processorn inbyggda pulsbreddsmodulering, PWM. Den som använts är en 8-bitars PWM, det vill säga att den styrs med värden mellan mellan 0 och 255 där 0 innebär att motorerna inte körs och där 255 leder till att roboten kör med 100\% av sin maxhastighet. 
+
+PWM fungerar så att en förutbestämd vågform jämförs med en bestämd referensspänning. Utifrån detta genereras en fyrkantsvåg baserat på om den förutbestämda vågen ligger över eller under referenspänningen. När den är över går utsignalen hög och när den är under går utsignalen låg. Detta resulterar i att tiderna som motorn är aktiv respektive avstängd kommer variera beroende på var referensspänningen sätts, vilket leder till olika hastigheter.
 
 \subsection{LCD-display}
 \subsection{Kartabstraktion}
