@@ -163,6 +163,14 @@ void handleInDataArray(){
 	//if [g 1] is received
 	if((sensormodul.inDataArray[1] == 'g') and (sensormodul.inDataArray[2] == 1)){
 		asm("");
+		if(segmentsTurned > 10){// + wheelTrim){
+			//------------Send------------------------------
+			sensormodul.outDataArray[0] = 1;
+			sensormodul.outDataArray[1] = 'W';
+			sensormodul.SPI_Send();
+			segmentsTurned = 0;
+			wheelmode = false;
+		}
 		gyromode = true;		//set gyromode to true
 		TCNT0 = 0x00;			//set timer to 0
 		asm("");
@@ -379,7 +387,6 @@ int main(void)
 				//------------Send------------------------------
 				sensormodul.outDataArray[0] = 1;
 				sensormodul.outDataArray[1] = 'W';
-				sen0++;
 				sensormodul.SPI_Send();
                 //delay and the repeat transmission to ensure that we correctly recieve transmission.
                 wheelmode = false;
