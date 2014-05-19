@@ -112,7 +112,7 @@
 %Lyft gärna fram det som ni anser är utmanande/intressant i uppdraget. 
 %Beskriv kortfattat dispositionen på rapporten.''
 
-En robot med tillgång till ett antal avståndssensorer, en reflexsensor, ett gyro och en RFID-sensor placeras i ett stängt område med dimension på up till 6x6 meter som är uppdelat i 40x40 centimeters segment. 
+En robot med tillgång till ett antal avståndssensorer, en reflexsensor, ett gyro och en RFID-sensor placeras i ett stängt område med dimension på upp till 6x6 meter som är uppdelat i 40x40 centimeters segment. 
 Den ska, med en vägg som startpunkt, helt autonomt kartlägga området genom att markera ut var väggar finns och var det finns områden som inte går att nå. 
 Den ska även markera ut var det går att finna RFID-taggar, som symboliserar brandhärdar. 
 Om inte hela det slutna området är kartlagt ska den upptäcka vilka segment som är oupptäckta, färdas dit och lägga till det i kartan. 
@@ -141,7 +141,7 @@ Sammanfattningsvis består kraven bland annat av de delar som beskrivs av scenar
 
 Det som av projektgruppen ansågs mest utmanande var att konstruera en fullt funkmtionell buss. Denna ställde till med problem då den i början ofta tappade bitar vilket gav upphov till besynnerligt beteende hos roboten. 
 
-Att få gyrot att fungera var även det en utmaning då det var ytterst viktigt att få rotationerna av roboten exakta. Utan exkata rotationer skulle nämligen roboten kunna positionsuppskatta fel.
+Att få gyrot att fungera var även det en utmaning då det var ytterst viktigt att få rotationerna av roboten exakta. Utan exakta rotationer skulle nämligen roboten kunna positionsuppskatta fel.
 
 Det sista svåra momentet var positionsskattningen. Att simultant positionsskatta och kartlägga visade sig vara lika svårt som förväntat.
 
@@ -180,7 +180,7 @@ Längre in i projektet ändrades grupperna något för att ge alla projektmedlem
 I slutfasen av projektet turades gruppmedlemmarna om att skriva den tekniska dokumentationen medan andra arbetade med roboten för att effektivisera arbetet.
 
 \subsection{Efter}
-I efterfasen överfördes projektresultatet till beställaren och projektet avslutades. En tävling hölls av mellan de olika projektgrupperna för att avgöra vilken robot som var bäst. 
+I efterfasen överfördes projektresultatet till beställaren och projektet avslutades. En tävling hölls mellan de olika projektgrupperna för att avgöra vilken robot som var bäst. 
 
 \section{Teknisk beskrivning}
 %Redovisa det tekniska resultatet och skrivuppgifterna på ett lämpligt sätt. Detaljerade beskrivningar på grindnivå i hårdvaran eller på instruktionsnivå i mjukvaran är i detta sammanhang oftast ointressant. Referera den tekniska dokumentationen och skrivuppgifterna för beskrivning av detaljer. Lyft fram egna kreativa lösningar!
@@ -198,7 +198,7 @@ Roboten har implementerats med tre stycken AVR Atmega 1284p-processorer, med en 
 Kommunikationen mellan processorerna sker via en Serial Peripheral Interface Bus, hädanefter refererad till som en SPI-buss.
 Roboten är konstruerad med tre processorer på två separata vir-kort och kopplas ihop med hjälp av en bandkabel. På roboten agerar kommunikationsmodulen master och de övriga två modulerna är slaves. SPI-bussen kan sammanfattas till att master skiftar ett 8 bitars register med en slave. SPI-bussen har alltså möjlighet för duplex dataöverföring. För ytterligare detaljer angående SPI-bussen se den tekniska dokumentationen.
 
-När master väljer en slave, genom Slave Select signalen, genereras ett avbrott på slave-processorn. Detta innebär att master kan skicka hämta data i princip var som helst i ett program på en slave-processor. För kommunikations som måste initieras från slave till master har vi kopplat en avbrottssignal som säger till master-processorn att påbörja SPI-kommunikation med aktuell slave-processor.
+När master väljer en slave, genom Slave Select signalen, genereras ett avbrott på slave-processorn. Detta innebär att master kan skicka/hämta data i princip var som helst i ett program på en slave-processor. För kommunikations som måste initieras från slave till master har vi kopplat en avbrottssignal som säger till master-processorn att påbörja SPI-kommunikation med aktuell slave-processor.
 
 \subsubsection{Datahantering}
 För att avbrotten ska bli så korta som möjligt på processorn så har datahanteringen på kommunikationsmodulen flyttats ut ur avbrott. Anledningen till detta är att så länge processorn befinner sig i avbrott skulle vidare avbrott kunna missas. Sanningsvariabler ifall ny data finns tillgänglig för datahantering används istället. Dessa sanningsvariabler avläses i master-processorns main-loop, vilket visas i flödesdiagrammet i figur~\ref{fig:SPIrec}. Detta ger att nya mottagningar kan påbörjas medan data behandlas, man får dock beakta att data i en given buffer måste behandlas innan den skrivs över av nästa kommunikation.
@@ -311,19 +311,18 @@ USART-avbrotten stängs av för att inte låsa sensormodulen med flera läsninga
 SLAM står för Simultaneous Localization And Mapping och innebär att roboten ska kunna skatta sin position samtidigt som den ritar upp en karta över området den färdas inom.
 
 \subsubsection{Astar}
-För att finna en bra färdväg från punkt A till B i kartan har en algoritm som kallas Astar implementerats. Algoritmen utgår ifrån Dijkstra''s algoritm, som löser problemet att finna billigaste vägen från nod A till B. Den fungerar så att den successivt besöker hörnpunkter i kartan och utgår från startpositionen. Algoritmen expanderar sedan utåt från startpunkten tills målet är hittat. Dijkstra’s algoritm ger garanterat den billigaste vägen, så länge som nodernas kostnader är positiva.\footnote{\url{http://theory.stanford.edu/~amitp/GameProgramming/AStarComparison.html#the-a-star-algorithm}}
+För att finna en bra färdväg från punkt A till B i kartan har en algoritm som kallas Astar implementerats. Algoritmen utgår ifrån Dijkstra''s algoritm, som löser problemet att finna billigaste vägen från nod A till B. Den fungerar så att den successivt besöker hörnpunkter i kartan och utgår från startpositionen. Algoritmen expanderar sedan utåt från startpunkten tills målet är hittat. Dijkstra’s algoritm ger garanterat den billigaste vägen, så länge som nodernas kostnader är positiva.\footnote{http://theory.stanford.edu/\textasciitilde amitp/GameProgramming/AStarComparison.html\#the-a-star-algorithm}
 
 Den Giriga Bäst-Först algoritmen fungerar på liknande sätt, förutom att den kan uppskatta hur långt från målet alla hörnpunker är. Istället för att välja noden som befinner sig närmast startpunkten väljer den här algoritmen den som ligger närmast slutpunkten. Astar algoritmen kombinerar det bästa av dessa två algoritmer och ger alltså garanterat den minst kostsamma vägen, på kortare tid än Dijkstras. \footnote{http://www.policyalmanac.org/games/aStarTutorial.htm}
-
-\\
-Nedan visas två exempel på färdväg som Astar-algoritmen har valt vid testning på PC. Färdvägen beskrivs med bokstaven R och vägg/hinder betecknas med bokstaven 0. Startpunkt (S) och slutpunk (F) har slumpats fram. 
+\newline
+I figur~\ref{fig:Astar} visas två exempel på färdväg som Astar-algoritmen har valt vid testning på PC. Färdvägen beskrivs med bokstaven R och vägg/hinder betecknas med bokstaven 0. Startpunkt (S) och slutpunk (F) har slumpats fram. 
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
   \includegraphics[width=0.5\textwidth]{Astar.png}  %skala och filnamn. 
   \caption{Färdväg efter att Astar-algoritmen har körts på kartan.}%figurtext.
   \end{center}
-  \label{fig:SPIrec}
+  \label{fig:Astar}
 \end{figure}
 
 \subsubsection{Positionsskattning}
