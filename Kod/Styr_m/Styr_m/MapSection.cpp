@@ -481,6 +481,10 @@ void Robot::rotateLeft(){
 		drive();
 	}
 	
+	// Corr our position on turns
+	updateRobotPosition();
+
+	
 	// Stop rotation and set gear to forward
 	setSpeed(0);
 	changeGear('f');
@@ -501,9 +505,8 @@ void Robot::rotateLeft(){
         changeDirection('f');
     }
 	
-	while(!newData){
-		
-	}
+	
+	waitForNewData();
 	this->robotRotated();
 		
 }
@@ -542,6 +545,9 @@ void Robot::rotateRight(){
  		drive();
 	}
 	
+	// Corr our position on turns
+	updateRobotPosition();
+	
 	// Stop rotation and set gear to forward
 	setSpeed(0);
 	changeGear('f');
@@ -562,9 +568,7 @@ void Robot::rotateRight(){
         changeDirection('f');
     }
 	
-	while(!newData){
-		asm("");
-	}
+	waitForNewData();
 	this->robotRotated();
 	
 }
@@ -1033,31 +1037,15 @@ void Robot::updateRobotPosition(){
 		sensorDifference = getFwdDistance() - ref*40;
     }
 	*/
-	
-	// The paramaters for sensor differences (references?) are called:
-	//these parameters may be removed, not used anywhere
-	fwdRefLong;
-	bwdRefLong;
-	fwdRefShort;
-	bwdRefShort;
-	
-	/* The paramaters for sensor differences (references?) are called:
-		fwdRefLong;
-		bwdRefLong;
-		fwdRefShort;
-		bwdRefShort;
-	*/
     
    if (wheelHasTurned){
 	   wheelHasTurned = false;
-	   if(fwdShortSensor>80){
-			commObj->reactivateWheelSensor();
-	   }
+		commObj->reactivateWheelSensor();
 	   //commObj->reactivateRFID();
 	   MapSection* tempSection;
 	   
 	   //halt
-	   //setUserSpeed(0);
+	   //setSpeed(0);
 	   //drive();
 
 	   
@@ -1332,7 +1320,7 @@ bool Robot::isWallFwdClose()
 	    if ( getFwdDistance() == 0 ) {
 		    return false;
 	    }
-	    if ( getFwdDistance() < 10 ){
+	    if ( getFwdDistance() < 15 ){
 		    return true;
 	    }
 	    else{
