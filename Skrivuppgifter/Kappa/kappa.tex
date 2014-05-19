@@ -1,4 +1,4 @@
-﻿\documentclass[a4paper,12pt,fleqn]{article}
+\documentclass[a4paper,12pt,fleqn]{article}
 \usepackage{fixltx2e}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
@@ -21,10 +21,7 @@
 
 %-------------------------------------------------------------------
 %Första sidan
-
 \begin{document}
-	
-
 	\pagestyle{fancy}
 \pagenumbering{roman}
 	\vspace*{\fill}
@@ -264,7 +261,7 @@ Läsningen slutförs när roboten svängt 90 grader och sensormodulen skickar et
 
 \subsubsection{Reflexsensor}
 Reflexsensorn, precis som vinkelhastighetsmätaren, körs på begäran av styrmodulen men låser inte sensormodulens avståndsmätningar. Reflexsensorn tas istället med i muxräkningen. Detta är nödvändigt då vi behöver leverera sensordata under färd tillskillnad från under rotation. Läsningar från reflexsensorn upphör då roboten färdats $40$ cm och sensormodulen skickar ett kommando till styrmodulen
-som säger att roboten nått ett nytt segment. Detta kommando skickas upp till tre gånger för att inte missas av kommunikationsmodulen. 
+som säger att roboten nått ett nytt segment. Detta kommando skickas upp till tre gånger för att inte missas av kommunikationsmodulen. xs
 
 \subsection{SLAM}
 
@@ -294,5 +291,4 @@ Hur skulle ni tänka er att ändra uppgiften för att göra den ännu mer intres
 \newgeometry{left=2cm,right=2cm,bottom=2cm,top=2cm}
 \section{Appendix A}
 LIPS-dokument och fördjupningar enligt ovan.
-\end{document}=======
->>>>>>> External Changes
+\end{document}
