@@ -793,7 +793,7 @@ void Robot::setBwdClosed(){
 				mom->convertSection(xCoord,yCoord - i - 1, 'e');
 			}
         }
-		if ( output == 0 && speed == 0 && !visitedByRobot && !mom->getVisited(xCoord,yCoord-1)) {
+		if ( output == 0 && speed == 0 && !isVisited && !mom->getVisited(xCoord,yCoord-1)) {
 			mom->convertSection(xCoord,yCoord - 1, 'c');
 		}
 	}
@@ -1101,7 +1101,7 @@ void Robot::updateRobotPosition(){
 				previousSection = tempSection;
                 
                 //put back last section and tell it, it has been visited.
-                previousSection->visitedByRobot = true;
+                previousSection->isVisited = true;
 				if (previousSection->getType() != 'f')
 				{
 					previousSection->setType('e');
@@ -1121,7 +1121,7 @@ void Robot::updateRobotPosition(){
 				//save temp section to previous section
 				previousSection = tempSection;
 				
-                previousSection->visitedByRobot = true;
+                previousSection->isVisited = true;
 				if (previousSection->getType() != 'f')
 				{
 					previousSection->setType('e');
@@ -1142,7 +1142,7 @@ void Robot::updateRobotPosition(){
 				//save temp section to previous section
 				previousSection = tempSection;
 				
-                previousSection->visitedByRobot = true;
+                previousSection->isVisited = true;
 				if (previousSection->getType() != 'f')
 				{
 					previousSection->setType('e');
@@ -1163,7 +1163,7 @@ void Robot::updateRobotPosition(){
 				//save temp section to previous section
 				previousSection = tempSection;
 				
-                previousSection->visitedByRobot = true;
+                previousSection->isVisited = true;
 				if (previousSection->getType() != 'f')
 				{
 					previousSection->setType('e');

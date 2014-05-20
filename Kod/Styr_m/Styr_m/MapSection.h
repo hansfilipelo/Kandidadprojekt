@@ -61,9 +61,10 @@ public:
     
     virtual bool isUnexplored();
     virtual int findUnexplored();
+	bool isVisited = false;
 	
 protected:
-    bool visitedByRobot =false;
+    
 	int xCoord;
 	int yCoord;
 	int step;
