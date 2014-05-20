@@ -25,6 +25,7 @@
 #include <string.h>
 #include "Abstraction.h"
 #include "Communication.h"
+#include <math.h>
 
 class Map;
 class Communication;
