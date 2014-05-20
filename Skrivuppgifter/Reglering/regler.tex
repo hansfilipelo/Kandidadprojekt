@@ -368,7 +368,7 @@ x^i_n \sim p(x_n|y_{1:n}),\;\;\;\;\;\; i = 1, ..., N
 
 Där, som tidigare nämts, $x$ är robotens tillstånd, $m$ är landmärkens position och $y$ är mätningarna för givet tillstånd.  
 
-Tillstånden samplas sedan flera gånger genom filtret tills dess att man med tillräckligt stor sannolikhet kan bestämma en vald väg med mest sannolikhet. Metoden har visat sig effektiv i praktiken. Nackdelen med metoden är att man genom omsampling av mätvärdena förlorar information som skulle kunna vara korrekt. Beroende på hur filtret prioriterar är det möjligt att man får en skev bild av omgivningen. 
+Tillstånden samplas sedan flera gånger genom filtret tills dess att man med tillräckligt stor sannolikhet kan säga vad systemets tillstånd är. Metoden har visat sig effektiv i praktiken. Nackdelen med metoden är att man genom omsampling av mätvärdena förlorar information som skulle kunna vara korrekt. Beroende på hur filtret prioriterar är det möjligt att man får en skev bild av omgivningen. 
 
 För att effektivisera filtreringen av mätvärden delas olika distinkt upptäckta objekt i robotens miljö in i olika zoner. Dessa zoner filtreras sedan individuellt för att få fram den mest sannolika positionen för objektet i zonen.
 
@@ -378,13 +378,14 @@ För att effektivisera filtreringen av mätvärden delas olika distinkt upptäck
 \newpage
 \section{Slutsats}
 
-Frågan som SLAM grundas på går nu att delvis besvara. Det går att kartlägga en omgivning utan att exakt veta sin position, men det behövs någon typ av skattning av positionen för att göra en rimlig kartläggning. Ju bättre skattningen är desto bättre kommer kartan bli i slutändan. Mer data och mer kvalitativ data bidrar till att förbättra skattningarna i kombination med olika typer av skattningsalgoritmer för att optimera och effektivisera processeringen av data. Problemet som kan uppstå då fler typer av sensorer används och större mängder data måste bearbetas är att beräkningskraften inte räcker till då filtren och mjukvaran som används för att implementera SLAM kan ställa för höga krav på beräkningsenheten.
+Frågan som SLAM grundas på går nu att delvis besvara. Det går att kartlägga en omgivning utan att exakt veta sin position, men det behövs någon typ av skattning av positionen för att göra en rimlig kartläggning. Ju bättre skattningen är desto bättre kommer kartan bli i slutändan. Mer data och mer kvalitativ data kan bidrar till att förbättra säkerheten på skattningarna. Detta skulle även kunna kombineras med olika typer av skattningsalgoritmer för att optimera och effektivisera processeringen av data. Problemet som kan uppstå då fler typer av sensorer används och större mängder data måste bearbetas är att beräkningskraften inte räcker till då filtren och mjukvaran som används för att implementera SLAM kan ställa för höga krav på beräkningsenheten.
+
 
 \section{Reflektion}
 
-Sett från det perspektiv vi granskar SLAM-problemet, inom ett kandidatprojekt, är avancerade FastSLAM-algoritmer för komplicerade för att implementera. Det måste dock alltid finnas någon typ av filter i en SLAM-implementering. Då beräkningar man gjort tidigare under kartläggningen ger konflikt med nuvarande mätning om huruvida en vägg faktiskt finns där eller ej. Enklare fall av filtrering kommer alltså behöva lösas vid vår framtida implementering. Vi kommer då att lösa det genom att låta roboten besöka området på nytt och ta ett beslut utifrån de nya mätdata vi får in. 
+Sett från det perspektiv vi granskar SLAM-problemet, inom ett kandidatprojekt, är avancerade SLAM-algoritmer för komplicerade för att implementera. Det kan dock vara fördelaktigt att använda någon typ av filter i en SLAM-implementering. Då beräkningar man gjort tidigare under kartläggningen till exempel ger konflikt med nuvarande mätning om huruvida en vägg faktiskt finns där eller ej. Enklare fall av filtrering kommer alltså behöva lösas vid vår framtida implementering. 
 
-Slutligen kan man säga att denna fördjupning inom SLAM givit oss bra förutsättningar att skapa en implementerbar metod för hur vår robot ska kartlägga sitt slutna område. Särskilt avsnitten om Kalmanfilter och tillståndsmodeller känns relevanta vid en enklare implementering. 
+Slutligen kan man säga att denna fördjupning inom SLAM givit oss bra förutsättningar att skapa en implementerbar metod för hur vår robot ska kartlägga sitt slutna område. 
 
 % --------------- Källförteckning ---------------------
 \newpage 
