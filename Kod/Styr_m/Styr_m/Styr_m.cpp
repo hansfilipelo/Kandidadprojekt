@@ -152,6 +152,8 @@ int main(void)
     abstractionObject->sendMap();
     
 	abstractionObject->reactivateWheelSensor();
+	_delay_ms(40);
+	abstractionObject->sendAStar(mapPointer->pathArray);
 	
 	for (;;) {       
         // Manual mode
