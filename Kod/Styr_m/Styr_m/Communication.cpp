@@ -134,6 +134,7 @@ void Communication::handleData(){
 		asm("");
 		asm("");
 		robotPointer->wheelHasTurned = true;
+		robotPointer->setRFID();
 		asm("");
 		asm("");
 	}

@@ -793,7 +793,7 @@ void Robot::setBwdClosed(){
 				mom->convertSection(xCoord,yCoord - i - 1, 'e');
 			}
         }
-		if ( output == 0 && speed == 0 && !isVisited && !mom->getVisited(xCoord,yCoord-1)) {
+		if ( output == 0 && speed == 0 && !mom->getVisited(xCoord,yCoord-1)) {
 			mom->convertSection(xCoord,yCoord - 1, 'c');
 		}
 	}
@@ -1075,7 +1075,8 @@ void Robot::updateRobotPosition(){
    if (wheelHasTurned){
 	   wheelHasTurned = false;
 	   commObj->reactivateWheelSensor();
-	    //commObj->reactivateRFID();
+	   //_delay_ms(5);
+	   //commObj->reactivateRFID();
 	   MapSection* tempSection;
 	   
 	   //halt
