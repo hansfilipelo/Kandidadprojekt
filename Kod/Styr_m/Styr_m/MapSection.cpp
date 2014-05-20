@@ -1075,7 +1075,8 @@ void Robot::updateRobotPosition(){
    if (wheelHasTurned){
 	   wheelHasTurned = false;
 	   commObj->reactivateWheelSensor();
-	    //commObj->reactivateRFID();
+	   //_delay_ms(5);
+	   //commObj->reactivateRFID();
 	   MapSection* tempSection;
 	   
 	   //halt
