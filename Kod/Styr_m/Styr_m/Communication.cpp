@@ -130,7 +130,7 @@ void Communication::handleData(){
 		asm("");
 	}
 	
-	if(this->inData[1] == 'W' && this->indata[2]==0){
+	if(this->inData[1] == 'W' && this->inData[2]==0){
 		asm("");
 		asm("");
 		robotPointer->wheelHasTurned = true;
@@ -139,7 +139,7 @@ void Communication::handleData(){
 		asm("");
 	}
     
-    if(this->inData[1] == 'W' && this->indata[2]==1){
+    if(this->inData[1] == 'W' && this->inData[2]==1){
 		asm("");
 		asm("");
         robotPointer->setRFID();

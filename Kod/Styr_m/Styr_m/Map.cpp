@@ -45,13 +45,6 @@ void Map::convertToPathFinding(){
 	}
 }
 
-//operator override is needed for A-star
-
-bool operator<(const node & a, const node & b)
-{
-	return a.getPriority() > b.getPriority();
-}
-
 // A-star algorithm.
 // The route returned is a string of direction digits.
 void Map::aStar(int xStart,int yStart,int xFinish,int yFinish)
@@ -100,7 +93,8 @@ void Map::aStar(int xStart,int yStart,int xFinish,int yFinish)
 		// from the list of open nodes
 		n0=new node( pqA[pqi].Atop().getxPos(), pqA[pqi].Atop().getyPos(),
 		pqA[pqi].Atop().getLevel(), pqA[pqi].Atop().getPriority());
-		
+        
+        
 		x=n0->getxPos(); y=n0->getyPos();
 		
 		pqA[pqi].Apop(); // remove the node from the open list

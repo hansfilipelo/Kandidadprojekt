@@ -1,7 +1,7 @@
 
 	CCC = g++
 	CCFLAGS = -g -std=c++11 -pedantic -Wall -Wextra 
-	OBJECTS = node.o Map.o MapSection.o Abstraction.o styrtest.o slave.o Communication.o
+	OBJECTS = queueAtmel.o node.o Map.o MapSection.o Abstraction.o styrtest.o slave.o Communication.o
 	BUILDDIR = BUILD
 
 styrtest: $(OBJECTS)
@@ -27,6 +27,9 @@ slave.o: ../slave.cpp
 
 node.o: ../node.cpp
 	$(CCC) $(CCFLAGS) -c ../node.cpp
+
+queueAtmel.o: ../queueAtmel.cpp
+	$(CCC) $(CCFLAGS) -c ../queueAtmel.cpp
 
 clean:
 	@ \rm -f ./*.o
