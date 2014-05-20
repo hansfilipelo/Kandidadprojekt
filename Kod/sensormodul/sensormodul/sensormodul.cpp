@@ -46,8 +46,7 @@ bool wheelmode = true;
 //------------------USART-------------------------
 unsigned char indata;				//data from USART-reading
 unsigned char startbit = 0x0A;		//start sequence for RFID-tags
-volatile bool RFIDinSquare = false;
-volatile bool reactivateRFID = false;
+volatile bool RFIDfound = false;
 
 //------------------GYRO--------------------------
 bool gyromode = false;				//flag for initializing gyroreadings
@@ -293,24 +292,9 @@ ISR(ADC_vect)
 //USART interrupt
 ISR(USART0_RX_vect){
 	indata=UDR0;		//receive data
-		
-		
-	// varför skickar vi tre ggr?
 	if(indata==startbit){
 		RfidCount++;
-		/*
-		sensormodul.outDataArray[0] = 1;
-		sensormodul.outDataArray[1] = 'R';
-		sensormodul.SPI_Send();				//send outDataArray
-		_delay_ms(5);
-		sensormodul.SPI_Send();				//send outDataArray
-		_delay_ms(5);
-		sensormodul.SPI_Send();				//send outDataArray
-		_delay_ms(150);
-		savepos = 0;
-		ADMUX = 0x20;
-		*/
-		RFIDinSquare = true;				
+		RFIDfound = true;
 		UCSR0B &= ~(1<<RXCIE0);				//disable USART interrups
 	}
 }
@@ -401,28 +385,20 @@ int main(void)
 				blacksegment = false;
 				asm("");
 			}
-			if((segmentsTurned > 15)&&(reactivateRFID)){
+			if(segmentsTurned > 12){
 				UCSR0B |= (1<<RXCIE0);							//enable USART interrups
-				reactivateRFID = false;
 			}
 			if(segmentsTurned > 21){// + wheelTrim)){
 				//------------Send------------------------------
-				sensormodul.outDataArray[0] = 2;
+				sensormodul.outDataArray[0] = 1;
 				sensormodul.outDataArray[1] = 'W';
-				if(RFIDinSquare){
-					sensormodul.outDataArray[2] = '1';
-					RFIDinSquare = false;
-					reactivateRFID = true;
-				}
-				else{
-					sensormodul.outDataArray[2] = '0';
-				}
 				sensormodul.SPI_Send();
                 //delay and the repeat transmission to ensure that we correctly recieve transmission.
                 wheelmode = false;
                 
                 savepos = 0;
 				ADMUX = 0x20;
+				sen0++;
 				
 				_delay_ms(5);
                 if(!wheelmode){
@@ -507,6 +483,20 @@ int main(void)
 			asm("");
 			sensor6[savepos]	= round(19.38*pow(spanning,4)-144.41*pow(spanning,3)+396.49*pow(spanning,2)-497.97*spanning+282.57);
 			
+		}
+		if(RFIDfound){
+			RFIDfound = false;
+			sensormodul.outDataArray[0] = 1;
+			sensormodul.outDataArray[1] = 'R';
+			sensormodul.SPI_Send();
+			_delay_ms(5);
+			sensormodul.SPI_Send();		//send 90 degree turn is complete
+			_delay_ms(5);
+			sensormodul.SPI_Send();
+			_delay_ms(150);
+			
+			savepos = 0;
+			ADMUX = 0x20;
 		}
 
 		if(ADMUX == 0x26){		//if ADMUX is 0x26
