@@ -378,11 +378,10 @@ För att effektivisera filtreringen av mätvärden delas olika distinkt upptäck
 \newpage
 \section{Slutsats}
 
-Frågan som SLAM grundas på går nu att delvis besvara. Det går att kartlägga en omgivning utan att exakt veta sin position, men det behövs någon typ av skattning av positionen för att göra en rimlig kartläggning. Ju bättre skattningen är desto bättre kommer kartan bli i slutändan. Mer data och mer kvalitativ data bidrar till att förbättra skattningarna i kombination med olika typer av skattningsalgoritmer för att optimera och effektivisera processeringen av data.
+Frågan som SLAM grundas på går nu att delvis besvara. Det går att kartlägga en omgivning utan att exakt veta sin position, men det behövs någon typ av skattning av positionen för att göra en rimlig kartläggning. Ju bättre skattningen är desto bättre kommer kartan bli i slutändan. Mer data och mer kvalitativ data bidrar till att förbättra skattningarna i kombination med olika typer av skattningsalgoritmer för att optimera och effektivisera processeringen av data. Problemet som kan uppstå då fler typer av sensorer används och större mängder data måste bearbetas är att beräkningskraften inte räcker till då filtren och mjukvaran som används för att implementera SLAM kan ställa för höga krav på beräkningsenheten.
 
-Till slut kan vi konstatera att SLAM används i många tillämpningar man kanske inte tänker på. Man kan också konstatera att algoritmerna, filtren och mjukvaran som används för att implementera SLAM ibland kan vara väldigt komplexa. Algoritmerna som viktar vilka partiklar ska sparas respektive förkastas kan byggas ut i stort sett hur mycket som helst. 
+Till slut kan vi även konstatera att SLAM används i många tillämpningar man kanske inte tänker på. 
 
-En sådan lösning skulle kunna baseras på en tillståndsrepresentation med ett tidsvariant, tidsdiskret Kalmanfilter. Genom att medelvärdesbilda sensordata kan man antagligen försumma mätstörningar och ändå få en acceptabel skattning av omgivningen utan partikelfilter. Reglerfel kan i sin tur sedan minimeras med bra modellering av hårdvaran implementeringen nyttjar. 
 
 \section{Reflektion}
 
