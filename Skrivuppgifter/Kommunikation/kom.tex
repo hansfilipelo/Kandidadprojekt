@@ -136,10 +136,17 @@ Användning av WLAN har ökat radikalt och blivit väldigt populärt på grund a
 \subsubsection{Stationer}
 Alla komponenter i ett WLAN utgörs av antingen stationer som kan vara noder eller accesspunkter. Alla stationerna har ett nätverkskort, wireless network interface controller (WNIC), som arbetar på samma lager som MAC-lagret (Se rubrik IEEE 802.11). Nätverkskortet använder antenn för att kommunicera med hjälp av radiovågor. En accesspunkt utgörs oftast av en router eller en switch medan en nod utgörs av en PC eller mobiltelefon.
 
+\subsubsection{Räckvidd och störkänslighet}
+WLAN har en räckvidd på mellan 10 och 100 meter.
+
+Det finns flertalet källor till störningar, ett exempel är andra trådlösa kommunikationstekniker som mobiltelefoner. Alla elektromagnetiska källor i aktuellt frekvensband kan vara en störningskälla, en vanlig sådan källa är mikrovågsugnar som skickar ut störningar i hela 2,4 GHz bandet.
+
+En av teknikerna för att minska eventuella störningar är att skicka sin data utspridd på olika frekvenser. Detta ger vid en störning på en viss frekvens att det är endast den delen av datasändningen som blir förstörd. Den förstörda datan kan då upptäckas och skickas om på en annan frekvens. Detta kallas ''spread spectrum'' och en vanlig implementering av den kallas ''frequency hopping'', (FH). Med FH kommer transmissioner att spridas ut på vissa frekvenser, där mer avancerade versioner av FH kan mäta i sin omgivning för att hitta lämpliga kanaler i bandet för kommunikationen. När enheten har hittat dessa kanaler så skapas en mask som sedan delas mellan enheterna som ska kommunicera sinsemellan.\footnote{
+How WiFi Works,http://www.i-programmer.info/programming/hardware/2767-how-wifi-works.html}
+
+
 \subsubsection{IEEE 802.11}
-IEEE 802.11-familjen består av en serie halv-duplex (kommunikationen kan ske i båda riktningarna men bara en riktning i taget) modulationstekniker som använder sig av samma MAC-protokoll. MAC-protokollet eller MAC-lagret är ett sublager i datalänklagret. Detta lager fungerar som en mellanhand mellan logical link control (LLC) och nätverkets fysiska lager och styr alltså hur nätverksnoderna får åtkomst till det fysiska skiktet (signal och binär överföring). IEEE 802.11.g har en räckvidd på cirka 30 meter medan IEEE 802.11.n har en räckvidd på cirka 50 meter.
-\\
-\newline
+IEEE 802.11-familjen består av en serie halv-duplex (kommunikationen kan ske i båda riktningarna men bara en riktning i taget) modulationstekniker som använder sig av samma MAC-protokoll. MAC-protokollet eller MAC-lagret är ett sublager i datalänklagret. Detta lager fungerar som en mellanhand mellan logical link control (LLC) och nätverkets fysiska lager och styr alltså hur nätverksnoderna får åtkomst till det fysiska skiktet (signal och binär överföring). IEEE 802.11.g har en räckvidd på cirka 30 meter medan IEEE 802.11.n har en räckvidd på cirka 50 meter. \\
 Standarden finns i flertalet versioner som använder sig av olika frekvensband och hastigheter. De vanligaste frekvensbanden är 2,4 och 5 GHz och hastigheten kan vara allt från 2 Mbit/s till 1 Gbit/s. IEEE 802.11 kräver att nod \emph{x} konstant lyssnar för att vara redo om en nod \emph{y} skulle försöka skicka data. Detta drar givetvis mycket ström men kan reduceras med hjälp av en Network Allocation Vector (NAV), som enkelt sett fungerar som en räknare. När räknaren är nollskild är systemet i vila, när räknaren är noll lyssnar systemet. Trådlösa stationer som har batteridrift kan därför spara ström genom att gå i vila och sen vakna till när räknaren är noll och då vara redo att ta emot data.\footnote{Holger Karl, Willig Andreas. Protocols and Architectures for Wireless Sensor Networks, Wiley, 2005}
 
 \subsubsection{WEP}
@@ -200,6 +207,11 @@ En annan typ av säkerhet som används är ''Just Work'', som utnyttjas när enh
 Aktiv avlyssning är när en enhet lägger sig mellan de två enheterna och vidarebefodrar kommunikationen mellan dem och kan vara väldigt svår att upptäcka.
 Vid passiv avlyssning försöker man endast lyssna av kommunikationen mellan två enheter.$^{\ref{Gupta2}}$
 
+\subsubsection{Räckvidd och störkänslighet}
+
+Bluetooth har en räckvidd på mellan 5 och 100 meter.
+Bluetooth som en medlem av IEEE-familjen har samma problem med störningar som WLAN, Bluetooth utnyttjar också ''Frequency Hopping''.
+
 \subsubsection{RS232}
 När den trådlösa delen av Bluetooth fungerar kan det vara intressant att diskutera vilken form av kommunikation själva hårdvaruenheterna som ska kommunicera med varandra får för typ av information. På en persondator, en vanlig mottagare av Bluetoothkommunikation, kommer den inbyggda Bluetooth-mottagaren alternativt Bluetooth dongel att virtualiseras som en serieport. Att kommunikationen blir seriell innebär att all information behöver konverteras till en följd av höga och låga bitar. RS232 är ett protokoll för sändning av just sådana paket. RS232 har stöd för asynkron kommunikation vilket blir eftertraktat när vi talar om trådlös kommunikation och information ofta kommer i små strömmer istället för  en enda kontinuerlig ström. Vid programmering av mottagning och sändning via RS232 på en persondator finns oftast väl etablerade standardbibliotek att använda.
 På enklare hårdvara t.ex. en ATmega1284p med ett FireFly BlueSMiRF GOLD-modem, kommer man att variera spänningen på ett antal pinnar direkt för att styra diverse kommunikationssignaler samt för sändningen och mottagningen.
@@ -241,22 +253,13 @@ Mesh-arkitekturen är en nätstruktur där alla noder i nätet har kontakt med m
 Säkerhetsåtgärderna i denna standard är baserade på symmetrisk kryptering även kallad delad-nyckel-kryptering. Denna metod använder samma nyckel vid kryptering som vid dekryptering och detta innebär givetvis en svaghet i säkerheten, men en tillräckligt stor nyckel ger oftast fullt tillräcklig säkerhet. 
 Standarden använder sig även av kontroll av vilka noder som är tillåtna, alltså vilka som får skicka data. Varje nod har en access control list (ACL), en lista över noder som är godkända att kommunicera med som noden har för att kunna jämföra med inkommande förfrågningar från andra noder.\footnote{Zimmermann, Hubert 1980} 
 Med ZigBee följer även ett koncept som heter ''Trust Center'' som möjliggör för noder att ansluta till nätverket, distribuera nycklar och ge möjligheten att kontrollera säkerheten hela vägen mellan två enheter. Det finns två olika säkerhetsnivåer, en gjord för hemmabruk och en för kommersiella applikationer. Den största skillnaden mellan de båda nivåerna är att den sistnämnda skapar och underhåller säkerhetsnycklar.\footnote{Wheeler Andy 2005}
+\subsubsection{Räckvidd och störkänslighet}
+Zigbee har en räckvidd mellan 10 och 100 meter.
 
-\subsection{Räckvidd och störkänslighet}
 I tabellen nedan visas räckvidden för respektive teknik. Alla teknikerna har ungefär samma räckvidd. \footnote{Comparing WLAN and ZigBee for embedded applications}
+IEEE 802.11, Bluetooth och ZigBee arbetar samtliga nära 2,4 GHz bandet och detta leder till möjligheter för störningar mellan de olika kommunikationsteknikerna. Dessa tre tekniker är alla godkända av IEEE 802 som utvecklar standarder för kommunikation via trådlösa medier. En del av att räknas till IEEE 802-familjen är att ta fram ett ''Coexistence Assurance Document'' och en plan för hur samtliga IEEE 802 tekniker ska kunna fungera gemensamt utan att påverka varandra mer än nödvändigt.\footnote{ZigBee and Wireless Radio Frequency Coexistence, 2007, https://docs.zigbee.org/zigbee-docs/dcn/07-5219.PDF}
+ZigBee utnyttjar också ''Frequency Hopping''. 
 
-\begin{tabular}{lcr}
-	\hline
-	Bluetooth & WLAN & Zigbee \\
-	5-100 m  & 50-100 m   & 10-100 m\\
-	\hline
- \end{tabular}
-\newline
-
-Det finns flertalet källor till störningar, ett exempel är andra trådlösa kommunikationstekniker som mobiltelefoner. Alla elektromagnetiska källor i aktuellt frekvensband kan vara en störningskälla, en vanlig sådan källa är mikrovågsugnar som skickar ut störningar i hela 2,4 GHz bandet.
-
-IEEE 802.11, Bluetooth och ZigBee arbetar samtliga nära 2,4 GHz bandet och detta leder till möjligheter för störningar mellan de olika kommunikationsteknikerna. Dessa tre tekniker är alla godkända av IEEE 802 som utvecklar standarder för kommunikation via trådlösa medier. En del av att räknas till IEEE 802-familjen är att ta fram ett ''Coexistence Assurance Document'' och en plan för hur samtliga IEEE 802 tekniker ska kunna fungera gemensamt utan att påverka varandra mer än nödvändigt.\footnote{ZigBee and Wireless Radio Frequency Coexistence, 2007, https://docs.zigbee.org/zigbee-docs/dcn/07-5219.PDF} En av teknikerna för att minska eventuella störningar är att skicka sin data utspridd på olika frekvenser. Detta ger vid en störning på en viss frekvens att det är endast den delen av datasändningen som blir förstörd. Den förstörda datan kan då upptäckas och skickas om på en annan frekvens. Detta kallas ''spread spectrum'' och en vanlig implementering av den kallas ''frequency hopping'', (FH). Med FH kommer transmissioner att spridas ut på vissa frekvenser, där mer avancerade versioner av FH kan mäta i sin omgivning för att hitta lämpliga kanaler i bandet för kommunikationen. När enheten har hittat dessa kanaler så skapas en mask som sedan delas mellan enheterna som ska kommunicera sinsemellan.\footnote{
-How WiFi Works,http://www.i-programmer.info/programming/hardware/2767-how-wifi-works.html}
 
 \newpage
 
