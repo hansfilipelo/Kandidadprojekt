@@ -251,6 +251,7 @@ int main(void)
 				
 					// get the route
 					mapPointer->aStar(xStart,yStart,xFinish,yFinish);
+					abstractionObject->sendAStar(mapPointer->pathArray);
 					robotPointer->goToAStar();
 					
 				}//drive around this island 
@@ -273,7 +274,6 @@ int main(void)
 			abstractionObject->sendMap();
 			asm("");
 		}
-	
 	}
 	return 0;
 }
