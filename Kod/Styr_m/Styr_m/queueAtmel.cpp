@@ -10,12 +10,12 @@
 
 using namespace std;
 
-queueAtmel::queueAtmel()
-{
-	for(unsigned int i=0; i<100; i++){
-		prioArray[i] = NULL;
-	}
-}
+//queueAtmel::queueAtmel()
+//{
+//	for(unsigned int i=0; i<10000; i++){
+//		prioArray[i] = NULL;
+//	}
+//}
 
 // ----------------------
 
@@ -28,11 +28,13 @@ void queueAtmel::Apush(node& nod)
     else {
         int pos = 0;
         // Lowest "priority" == highest priority and put last
-        while( (prioArray[pos]->getPriority() > nod.getPriority()) && pos < size ){
+        while( (pos < size) && (prioArray[pos]->getPriority() > nod.getPriority()) ){
+//            cout << "Pos: " << pos << endl;
+//            cout << "Size: " << size << endl;
             pos++;
         }
         
-        // If highest prio, put last
+        // Highest prio - put last
         if (pos == size) {
             prioArray[size] = &nod;
         }
@@ -61,17 +63,15 @@ bool queueAtmel::Aempty()
 
 node& queueAtmel::Atop()
 {
-	return *prioArray[0];
+	return *prioArray[size - 1];
 }
 
 // ----------------------
 
 void queueAtmel::Apop()
 {
-    delete prioArray[0];
-	for (int i = 0; i < size - 1; i++) {
-        prioArray[i] = prioArray[i+1];
-    }
+    delete prioArray[size - 1];
+    prioArray[size - 1] = NULL;
 	size--;
 }
 

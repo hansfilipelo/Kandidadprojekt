@@ -9,6 +9,7 @@
 #include "node.h"
 
 
+
 void node::updatePriority(const int & xDest, const int & yDest){
     priority=level+estimate(xDest, yDest)*10; //A*
 }
@@ -36,3 +37,5 @@ const int & node::estimate(const int & xDest, const int & yDest){
     
     return(d);
 }
+
+// -------------------

@@ -15,7 +15,7 @@
 class queueAtmel
 {     
 public:
-	queueAtmel();	
+	//queueAtmel();
 	
 	void Apush(node&);
 	void Apop();
@@ -25,7 +25,7 @@ public:
 	
 private:
 	int size = 0;
-	node* prioArray[100];
+	node* prioArray[10000];
 };
 
 
