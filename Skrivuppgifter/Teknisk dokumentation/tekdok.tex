@@ -445,7 +445,7 @@ $e = e_d + e_p$
 
 \subsection{Kommunikation}
 
-Styrmodulen kommunicerar med kommunikationsmodulen (master) över en SPI-buss. Bussen kopplas in på dedikerade pinnar för SPI-bussen på ATmega1284p-processorn. Kommunikationsmodulen kommer att agera master på bussen. 
+Styrmodulen kommunicerar med kommunikationsmodulen (master) över SPI-bussen. Bussen kopplas in på dedikerade pinnar för SPI-bussen på ATmega1284p-processorn. Kommunikationsmodulen kommer att agera master på bussen.
 
 De kommandon styrmodulen kommer att kunna hantera beskrivs i tabellen nedan. \newline
 
@@ -485,17 +485,26 @@ Sensormodulens uppgift är att hantera sensordata från robotens 9 sensorer och 
 
 En beskrivande bild av kopplingsschemat finns i appendix A.
 
-Port A användas som en A/D-omvandlare. PIN 39 kopplas till en reflexsensor, SFH300, PIN 40 kopplas till en avståndssensor för långdistans, GP\-2Y\-3A\-00\-3K\-0F, PIN 35-38 kopplas till avståndssensorer för kortdistans, GP\-2Y\-0A\-21\-YK, 
+Port A användas som en A/D-omvandlare. PIN 39 kopplas till en reflexsensor, se figur~\ref{fig:reflex}, SFH300, PIN 40 kopplas till en avståndssensor för långdistans, GP\-2Y\-3A\-00\-3K\-0F, PIN 35-38 kopplas till avståndssensorer för kortdistans, GP\-2Y\-0A\-21\-YK, 
 PIN 34 kopplas till en avståndssensor för mellandistans, GP2Y0A02YK, och PIN 35 kopplas till ett gyro för vinkelhastighetsmätning, ML\-X9\-06\-09. Port B används för busskommunikation. PIN 3 skickar avbrott till master, PIN 5 används till slave select master, PIN 6 tar emot data från bussen, PIN7 skickar data till bussen och till PIN 8 kopplas klockan från master. Till port C PIN 23 kopplas en RFID-läsare, Parallax-Reader. Port D används inte i denna modul. 
 
 PIN 31 och 11 kopplas till jord, PIN 13 kopplas till klocka från master, PIN 12 används inte i denna modul, PIN 9 kopplas till en avstudsad manuell switch, en resetknapp, PIN 32 kopplas till en spänningskälla på 5 V som används som referensspänning, PIN 10 kopplas också den till en spänningskälla på 5 V och PIN 30 kopplas genom ett LP-filter till samma externa spänningskälla.
+
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,width=0.6\linewidth]{bilder/sensorflode}  %skala och filnamn. 
+  \end{center}
+  \caption{Flödesdiagram för sensorhantering} %figurtext.
+  \label{fig:sensorflow}
+\end{figure}
+
 
 \subsection{Uppgift}
 Sensormodulens uppgift är att A/D-omvandla signaler från robotens avståndssensorer, reflexsensor och gyro för att sedan utnyttja dessa digitala värden för att uppskatta avstånd och tillryggalagd sträcka. Den har också som uppgift att detektera brandhärdar i form av RFID-taggar. I figur~\ref{fig:sensorflow} beskrivs hanteringen av sensordata.
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
-  \includegraphics[keepaspectratio=true,width=\linewidth]{bilder/sensorflode}  %skala och filnamn. 
+  \includegraphics[keepaspectratio=true,width=0.6\linewidth]{bilder/sensorflode}  %skala och filnamn. 
   \end{center}
   \caption{Flödesdiagram för sensorhantering} %figurtext.
   \label{fig:sensorflow}
