@@ -142,18 +142,20 @@ int main(){
     int sizeOfArray = int(mom->pathArray[0]) - 48;
     string route;
     
+    cout << sizeOfArray << endl;
+    
     for (int i=1;i < sizeOfArray+1 ; i++) {
         
         char p = mom->pathArray[i];
         
         char c;
-        if(p== 'h'){
+        if(p== 'l'){
             c = '0';
         }
-        else if(p== 'b'){
+        else if(p== 'f'){
             c = '1';
         }
-        else if(p== 'v'){
+        else if(p== 'r'){
             c = '2';
         }
         else{
@@ -197,6 +199,8 @@ int main(){
             cout<<endl;
         }
     }
+    
+    //getchar();
     
     delete testRobot;
     delete mom;

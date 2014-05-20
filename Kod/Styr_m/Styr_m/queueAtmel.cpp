@@ -70,9 +70,10 @@ node& queueAtmel::Atop()
 
 void queueAtmel::Apop()
 {
-    delete prioArray[size - 1];
-    prioArray[size - 1] = NULL;
-	size--;
+    if ( size != 0 ){
+        prioArray[size - 1] = NULL;
+        size--;
+    }
 }
 
 // ----------------------

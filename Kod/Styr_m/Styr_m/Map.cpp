@@ -114,13 +114,13 @@ void Map::aStar(int xStart,int yStart,int xFinish,int yFinish)
 				c=(int)(j+dir/2)%dir;
 				
 				switch (c) {
-					case 0 : pathArray[counter] = 'h';
+					case 0 : pathArray[counter] = 'l';
 					break;
-					case 1 : pathArray[counter] = 'b';
+					case 1 : pathArray[counter] = 'f';
 					break;
-					case 2 : pathArray[counter] = 'v';
+					case 2 : pathArray[counter] = 'r';
 					break;
-					case 3 : pathArray[counter] = 'f';
+					case 3 : pathArray[counter] = 'b';
 					break;
 					default:
 					break;

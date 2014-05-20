@@ -25,7 +25,7 @@ public:
 	
 private:
 	int size = 0;
-	node* prioArray[10000];
+	node* prioArray[1000];
 };
 
 
