@@ -58,9 +58,7 @@ void Map::aStar(int xStart,int yStart,int xFinish,int yFinish)
 	static int dx[dir]={1, 0, -1, 0};
 	static int dy[dir]={0, 1, 0, -1};
 	
-	//static priority_queue<node> pq[2]; // list of open (not-yet-tried) nodes
-	
-	queueAtmel pqA[2];
+	queueAtmel pqA[2]; // list of open (not-yet-tried) nodes
 	
 	static int pqi; // pq index
 	static node* n0;
@@ -279,33 +277,19 @@ void Map::getColAsChar(int col)
 
 void Map::fillClosedArea()
 {
-	bool firstC = false;
-    bool eAfterC = false;
-	// fill map with closed area from left
-    for (int y = 0; y < 17; y++) {
-		for (int x = 0; x < 32; x++) {
-            
-			if((this->getPos(x,y)->getType() != 'c' && !firstC)){
-                convertSection(x,y,'c');
-			}
-            else if ( this->getPos(x,y)->getType() == 'c' && !eAfterC ){
-                firstC = true;
-            }
-            else if ( this->getPos(x,y)->getType() == 'e' && firstC) {
-                eAfterC = true;
-            }
-            else if ( eAfterC && this->getPos(x,y)->getType() == 'c' ) {
-                eAfterC = false;
-                firstC = false;
-            }
-            else if ( !eAfterC && this->getPos(x,y)->getType() == 'u' ){
-                convertSection(x,y,'c');
-            }
-        }
-        
-        firstC = false;
-        eAfterC = false;
+	for (int y = 0; y < 17; y++) {
+		if(this->getPos(0,y)->getType() == 'u'){
+			this->getPos(0,y)->cancer();
+			return;
+		}
+		else if (this->getPos(31,y)->getType() == 'u')
+		{
+			this->getPos(31,y)->cancer();
+			return;
+		}
+
     }
+
 }
 //-----------------------------------
 // Checks if coordinates within map
@@ -343,36 +327,36 @@ void Map::printPathMap(){
 
 void Map::initMap(){
     char tempMap[32][17]={
-        {'u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u'},
-        {'u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u'},
-        {'u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u'},
-        {'u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u'},
-        {'u','u','u','u','u','u','u','u','c','u','u','u','u','u','u','u','u'},
-        {'u','u','u','u','u','u','u','u','c','u','u','u','u','u','u','u','u'},
-        {'u','u','u','u','u','u','u','u','c','u','u','u','u','u','u','u','u'},
-        {'u','u','u','u','u','u','u','u','c','u','u','u','u','u','u','u','u'},
-        {'u','u','c','c','c','c','c','c','c','c','c','c','c','c','u','u','u'},
-        {'u','u','u','u','u','u','u','u','c','u','u','u','u','u','u','u','u'},
-        {'u','u','u','u','u','u','u','u','c','u','u','u','u','u','u','u','u'},
-        {'u','u','u','u','u','u','u','u','c','u','u','u','u','u','u','u','u'},
-        {'u','u','u','u','u','u','u','u','c','u','u','u','u','u','u','u','u'},
-        {'u','u','u','u','u','u','u','u','c','u','u','u','u','u','u','u','u'},
-        {'u','u','u','u','u','u','u','u','c','u','u','u','u','u','u','u','u'},
-        {'u','u','u','u','u','u','u','u','c','u','u','u','u','u','u','u','u'},
-        {'u','u','u','u','u','u','u','u','c','u','u','u','u','u','u','u','u'},
-        {'u','u','u','u','u','u','u','u','c','u','u','u','u','u','u','u','u'},
-        {'u','u','u','u','u','u','u','u','c','u','u','u','u','u','u','u','u'},
-        {'u','u','u','u','u','u','u','u','c','u','u','u','u','u','u','u','u'},
-        {'u','u','u','u','u','u','u','u','c','u','u','u','u','u','u','u','u'},
-        {'u','u','u','u','u','u','u','u','c','u','u','u','u','u','u','u','u'},
-        {'u','u','u','u','u','u','u','u','c','u','u','u','u','u','u','u','u'},
-        {'u','u','u','u','u','u','u','u','c','u','u','u','u','u','u','u','u'},
-        {'u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u'},
-        {'u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u'},
-        {'u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u'},
-        {'u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u'},
-        {'u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u'},
-        {'u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u'},
+        {'u','u','u','u','u','u','u','c','c','c','c','c','c','c','c','u','u'},
+        {'u','u','c','c','c','c','c','u','u','u','u','u','u','u','u','c','u'},
+        {'u','c','u','u','u','u','c','u','u','u','u','u','u','u','u','c','u'},
+        {'u','c','u','u','u','u','c','u','u','u','u','u','u','u','u','c','u'},
+        {'u','c','u','u','u','u','c','u','u','u','u','u','u','u','u','c','u'},
+        {'u','c','u','u','u','u','c','u','u','u','u','u','u','u','u','c','u'},
+        {'u','c','u','u','u','u','c','u','u','u','u','u','u','u','u','c','u'},
+        {'u','c','u','u','u','u','c','u','u','u','u','u','u','u','u','c','u'},
+        {'u','c','u','u','u','u','c','u','u','u','u','c','c','c','c','c','u'},
+        {'u','c','u','u','u','u','c','u','u','u','u','u','u','u','u','c','u'},
+        {'u','c','u','u','u','u','c','u','u','u','u','u','u','u','u','c','u'},
+        {'u','c','u','u','u','u','c','u','u','u','u','u','u','u','u','c','u'},
+        {'u','c','u','u','u','u','c','u','u','u','u','u','u','u','u','c','u'},
+        {'u','c','u','u','u','u','c','u','u','u','u','u','u','u','u','c','u'},
+        {'u','c','u','u','u','u','c','u','u','u','u','u','u','u','u','c','u'},
+        {'u','c','u','u','u','u','c','u','u','u','u','u','u','u','u','c','u'},
+        {'u','c','u','u','u','u','c','u','u','u','u','u','u','u','u','c','u'},
+        {'u','c','u','u','u','u','c','u','u','u','u','u','u','u','u','c','u'},
+        {'u','c','u','u','u','u','c','u','u','u','u','u','u','u','u','c','u'},
+        {'u','c','u','u','u','u','c','u','u','u','u','u','u','u','u','c','u'},
+        {'u','c','u','u','u','u','c','u','u','u','u','u','u','u','u','c','u'},
+        {'u','c','u','u','u','u','u','u','u','u','u','u','u','u','u','c','u'},
+        {'u','c','u','u','u','u','u','u','u','u','u','u','u','u','u','c','u'},
+        {'u','c','u','u','u','u','u','u','u','u','u','u','u','u','u','c','u'},
+        {'u','c','u','u','u','u','u','u','u','u','u','u','u','u','u','c','u'},
+        {'u','c','u','u','u','u','u','u','u','u','u','u','u','u','u','c','u'},
+        {'u','c','u','u','u','u','u','u','u','u','u','u','u','u','u','c','u'},
+        {'u','c','u','u','u','u','u','u','u','u','u','u','u','u','u','c','u'},
+        {'u','c','u','u','u','u','u','u','u','u','u','u','u','u','u','c','u'},
+        {'u','u','c','c','c','c','c','c','c','c','c','c','c','c','c','u','u'},
         {'u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u'},
         {'u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u'},
     };

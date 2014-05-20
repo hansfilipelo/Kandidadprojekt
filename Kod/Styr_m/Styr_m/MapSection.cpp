@@ -143,6 +143,10 @@ int MapSection::findUnexplored(){
 // Checks if closed area is closed loop
 
 bool MapSection::isClosed(int origX, int origY, int fwdCounter, int bwdCounter){
+#if TESTING == 1
+    cout << "I am X: " << xCoord << " Y: " << yCoord << endl;
+    cout << "fwdCounter: " << fwdCounter << " bwdCounter: " << bwdCounter << endl;
+#endif
     
     if ( fwdCounter - bwdCounter < 3 ) {
 #if TESTING == 1
@@ -175,7 +179,7 @@ bool MapSection::isClosed(int origX, int origY, int fwdCounter, int bwdCounter){
         fwdCounter = fwdCounter + 1;
 	}
     // Check 10,5
-    else if ( (xCoord - 1 > 0) && (yCoord - 1 > 0) && (xCoord - 1 < 32) && (yCoord - 1 < 18) && mom->getPos(xCoord - 1, yCoord - 1)->getType() == 'c' && !mom->getPos(xCoord - 1, yCoord - 1)->hasBeenClosed ) {
+    else if ( mom->withinMap(xCoord - 1, yCoord - 1) && mom->getPos(xCoord - 1, yCoord - 1)->getType() == 'c' && !mom->getPos(xCoord - 1, yCoord - 1)->hasBeenClosed ) {
         
         nextX = xCoord - 1;
         nextY = yCoord - 1;
@@ -341,9 +345,9 @@ Robot::Robot(int xPos, int yPos, Map* inMom, Communication* inComm) : MapSection
 	type = 'r';
 	direction = 'f';
 	
-	Kd = 26;
-	Kp = 13;
-	Ref = 12;
+	Kd = 13;
+	Kp = 20;
+	Ref = 10;
 	
 	trimRight = 15;
 	trimLeft = 0;
@@ -952,7 +956,7 @@ void Robot::setRightClosed(){
 		output = 80/40;//if distance is great only print max 2 empty.
 	}
 	else{
-		output = rightFrontSensor/40;
+		output = rightFrontSensor/40;	//kanske borde ha +10 innan man delar med 40 för att robotens inte är längst till höger i rutan
 	}
 	
 	// Set closed section output + 1 steps away from robot.
@@ -1180,13 +1184,17 @@ void Robot::updateRobotPosition(){
 				//would like to throw some kind of error here.
 				return;
 		}
-	
+	if(commObj->isRFID){
+		setRFID();
+		commObj->isRFID=false;
+	}
 		if (okayToClose){
 			setFwdClosed();
 			setBwdClosed();
 			setRightClosed();
 			setLeftClosed();
 		}
+		backToStart(); // not tested fully, could still give nonsense.
        drive();
 		//backToStart(); // not tested fully, could still give nonsense.
    }
@@ -1389,7 +1397,7 @@ bool Robot::isWallFwdClose()
 	    if ( getFwdDistance() == 0 ) {
 		    return false;
 	    }
-	    if ( getFwdDistance() < 20 ){
+	    if ( getFwdDistance() < 15 ){
 		    return true;
 	    }
 	    else{
@@ -1462,10 +1470,10 @@ void Robot::waitForNewData()
 
 void Robot::backToStart()
 {
-	if((previousSection->getX() == 16) &&	(previousSection->getY()==1)){
-		if ( mom->getPos(xCoord,yCoord - 1)->isClosed(xCoord,yCoord - 1,0,0) ){
+	if((previousSection->getX() == 16) &&(previousSection->getY()==1)){
+		if ( mom->getPos(xCoord,yCoord - 1)->isClosed(xCoord,yCoord - 1,0,-3)){
 			mom->fillClosedArea();
-			startExplore = true;
+			//startExplore = true;
 		}
 	}
 }
@@ -1576,5 +1584,70 @@ void Robot::goToAStar(){
 
 void Robot::handleIsland()
 {
+	rotateLeft();
+/*
+				//lets try with only ifs
+				if(robotPointer->isCornerRight()){
+					while ( !(robotPointer->isCornerPassed()) && !(abstractionObject->getManual())) {
+						robotPointer->changeGear('f');
+						robotPointer->setSpeed(15);
+						robotPointer->drive();
+					}
+					//_delay_ms(25); // This delay ensures that we enter next segment.
+					robotPointer->rotateRight();
+					//said !iswallright lets try iscornerpassed
+					while ( robotPointer->isCornerPassed() && !(abstractionObject->getManual())) {
+						robotPointer->changeGear('f');
+						robotPointer->setSpeed(15);
+						robotPointer->drive();
+					}
+				}
+				
+				//was elseif before
+				if(robotPointer->isWallFwd()){
+					robotPointer->setSpeed(20);
+					robotPointer->changeGear('f');
+					while (!robotPointer->isWallFwdClose() && !(abstractionObject->getManual()))
+					{
+						robotPointer->drive();
+					}
+					robotPointer->setSpeed(0);
+					robotPointer->drive();
+
+
+					if(!robotPointer->isWallRight())
+					{
+						robotPointer->rotateRight();
+						//Drive forward untill robot has entered
+						while (!robotPointer->isWallRight() && !(abstractionObject->getManual())) {
+							robotPointer->changeGear('f');
+							robotPointer->setSpeed(25);
+							robotPointer->drive();
+						}
+					}
+
+					else
+					{
+						robotPointer->rotateLeft();
+					}
+					
+				}
+				else
+				{
+					if(!robotPointer->isWallRight())
+					{
+						robotPointer->rotateRight();
+					}
+					else
+					{
+						
+						// stod robotPointer->getUserSpeed() ist för 35
+						robotPointer->setSpeed(25);
+						robotPointer->changeGear('f');
+						robotPointer->drive();
+						robotPointer->adjustPosition();
+					}
+				}
 	
+	*/
 }
