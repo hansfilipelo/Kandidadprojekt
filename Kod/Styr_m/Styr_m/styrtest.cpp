@@ -11,6 +11,8 @@
 #include "Abstraction.h"
 #include "Communication.h"
 #include "slave.h"
+#include "queueAtmel.h"
+#include "node.h"
 
 using namespace std;
 
@@ -30,24 +32,57 @@ int main(){
     Robot* testRobot = new Robot(16,2,mom, testComm);
     testComm->setRobot(testRobot);
     
-    // Map testing
-    // -----------------------------
-    cout << "--------" << " Printing map " << "--------" << endl;
-    mom->convertToPathFinding();
-    mom->printPathMap();
-    cout << endl;
     
-    srand(time(NULL));
+    // queueAtmel-testing
+    
+    queueAtmel testQueue;
+    
+    node* sjua = new node(0,0,0,7);
+    node* nolla = new node(0,0,0,0);
+    node* etta = new node(0,0,0,2);
+    node* tvaa = new node(0,0,0,1);
+    node* trea = new node(0,0,0,3);
+    
+    cout << " Size: " << testQueue.Asize() << endl;
+    testQueue.Apush(*nolla);
+    cout << " Size: " << testQueue.Asize() << endl;
+    testQueue.Apush(*etta);
+    cout << " Size: " << testQueue.Asize() << endl;
+    testQueue.Apush(*tvaa);
+    cout << " Size: " << testQueue.Asize() << endl;
+    testQueue.Apush(*trea);
+    cout << " Size: " << testQueue.Asize() << endl;
+    testQueue.Apush(*sjua);
+    cout << " Size: " << testQueue.Asize() << endl;
     
     
-    // randomly select start and finish locations
     
-    int xA = 1;
-    int yA = 1;
-    int xB = 10;
-    int yB = 10;
+    while (!testQueue.Aempty()) {
+        cout << testQueue.Atop().getPriority() << endl;
+        testQueue.Apop();
+        cout << " Size: " << testQueue.Asize() << endl;
+    }
     
     
+    /*
+     // Map testing
+     // -----------------------------
+     cout << "--------" << " Printing map " << "--------" << endl;
+     mom->convertToPathFinding();
+     mom->printPathMap();
+     cout << endl;
+     
+     srand(time(NULL));
+     
+     
+     // randomly select start and finish locations
+     
+     int xA = 1;
+     int yA = 1;
+     int xB = 10;
+     int yB = 10;
+     
+     
      switch(rand()%8)
      {
      case 0: xA=0;yA=0;xB=n-1;yB=m-1; break;
@@ -60,46 +95,46 @@ int main(){
      case 7: xA=n-1;yA=m/2+1;xB=0;yB=m/2-1; break;
      }
      
-    
-    cout<<"Map Size (X,Y): "<<n<<","<<m<<endl;
-    cout<<"Start: "<<xA<<","<<yA<<endl;
-    cout<<"Finish: "<<xB<<","<<yB<<endl;
-    
-    // get the route
-    clock_t start = clock();
-    mom->aStar(xA, yA, xB, yB);
-    
-    //if(route=="") cout<<"An empty route generated!"<<endl;
-    clock_t end = clock();
-    double time_elapsed = double(end - start);
-    cout<<"Time to calculate the route (ms): "<<time_elapsed<<endl;
-    
-    cout<<"["<< mom->pathArray<<"]"<<endl;
-    
-    int sizeOfArray = int(mom->pathArray[0]) - 48;
-    string route;
-    
-    for (int i=1;i < sizeOfArray+1 ; i++) {
-        
-        char p = mom->pathArray[i];
-        
-        char c;
-        if(p== 'h'){
-            c = '0';
-        }
-        else if(p== 'b'){
-            c = '1';
-        }
-        else if(p== 'v'){
-            c = '2';
-        }
-        else{
-            c = '3';
-        }
-        route = route+c;
-    }
-    cout<< route<<endl;
-    
+     
+     cout<<"Map Size (X,Y): "<<n<<","<<m<<endl;
+     cout<<"Start: "<<xA<<","<<yA<<endl;
+     cout<<"Finish: "<<xB<<","<<yB<<endl;
+     
+     // get the route
+     clock_t start = clock();
+     mom->aStar(xA, yA, xB, yB);
+     
+     //if(route=="") cout<<"An empty route generated!"<<endl;
+     clock_t end = clock();
+     double time_elapsed = double(end - start);
+     cout<<"Time to calculate the route (ms): "<<time_elapsed<<endl;
+     
+     cout<<"["<< mom->pathArray<<"]"<<endl;
+     
+     int sizeOfArray = int(mom->pathArray[0]) - 48;
+     string route;
+     
+     for (int i=1;i < sizeOfArray+1 ; i++) {
+     
+     char p = mom->pathArray[i];
+     
+     char c;
+     if(p== 'h'){
+     c = '0';
+     }
+     else if(p== 'b'){
+     c = '1';
+     }
+     else if(p== 'v'){
+     c = '2';
+     }
+     else{
+     c = '3';
+     }
+     route = route+c;
+     }
+     cout<< route<<endl;
+     
      // follow the route on the map and display it
      if(route.length()>0)
      {
@@ -133,56 +168,9 @@ int main(){
      cout<<"F"; //finish
      cout<<endl;
      }
-     }
+     }*/
     
-    getchar(); // wait for a (Enter) keypress
     delete testRobot;
     delete mom;
 	return 0;
 }
-
-
-/*
- #include <stdio.h>
- #include <iostream>
- #include "MapSection.h"
- #include "Map.h"
- #include "Abstraction.h"
- #include "Communication.h"
- #include "slave.h"
- 
- using namespace std;
- 
- int main(){
- 
- //Initiate
- Map* mom = new Map();
- mom->initMap();
- Slave* testSlave = new Slave();
- Communication* testComm = new Communication(testSlave);
- Robot* testRobot = new Robot(16,2,mom, testComm);
- testComm->setRobot(testRobot);
- 
- // Map testing
- // -----------------------------
- cout << "--------" << " Printing map " << "--------" << endl;
- mom->printMap();
- cout << endl;
- 
- if ( mom->getPos(16,1)->isClosed(16,1,0,-3) ) {
- cout << "Map is closed." << endl;
- 
- mom->getPos(1,1)->cancer();
- mom->getPos(16,8)->cancer();
- mom->printMap();
- }
- else{
- cout << "Map is NOT closed." << endl;
- }
- 
- // Delete
- delete testRobot;
- delete mom;
- 
- return 0;
- }*/

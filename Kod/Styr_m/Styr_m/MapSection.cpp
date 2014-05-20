@@ -1,5 +1,5 @@
-#include "MapSection.h"
-#include "Map.h"
+#include "./MapSection.h"
+#include "./Map.h"
 
 using namespace std;
 
@@ -1571,4 +1571,9 @@ void Robot::goToAStar(){
 		while(!wheelHasTurned){}
 		updateRobotPosition();
 	}	
+}
+
+void Robot::handleIsland()
+{
+	
 }

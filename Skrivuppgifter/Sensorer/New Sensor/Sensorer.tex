@@ -123,7 +123,7 @@ Sensorerna som kommer undersökas är av de typer som finns tillgängliga på Li
 %-----------------------------------------------------------------
 \section{Problemformulering}
 Autonoma robotar blir allt vanligare och påträffas i allt från konstruktionsrobotar i industrimiljö till självgående gräsklippare för privatpersoner.
-Vid konstruktion av en autonom robot finns det i nuläget  en uppsjö av tekniker att använda för att navigera. Det vi söker besvara är hur dessa olika tekniker fungerar samt hur de kan tillämpas för att på ett effektivt sätt hjälpa en självgående robot att utföra sitt uppdrag.
+Vid konstruktion av en autonom robot finns det i nuläget  en mängd tekniker att använda för att navigera. Det vi söker besvara är hur dessa olika tekniker fungerar samt hur de kan tillämpas för att på ett effektivt sätt hjälpa en självgående robot att utföra sitt uppdrag.
 Vidare söks även nackdelar med de olika teknikerna, hur dessa kan undvikas och vilka styrkor de olika teknikerna har gentemot varandra.
 
 Frågorna som rapporten kommer att behandla är:
@@ -131,7 +131,7 @@ Frågorna som rapporten kommer att behandla är:
 
 \item Hur fungerar en trianguleringssensor? 
 
-\item Hur fungerar Time of flight sensorer?
+\item Hur fungerar Time-of-flight-sensorer?
 
 \item Hur fungerar en accelerometer? 
 
@@ -140,34 +140,35 @@ Frågorna som rapporten kommer att behandla är:
 \item Vad är nackdelarna respektive fördelarna med de olika sensorerna?
 
 \item Hur kan sensorerna användas för att navigera?
-\item Vilka sensorer passar sig bäst för en labyrintnavigerande och kartritande robot?
+\item Vilka sensorer passar bäst för en labyrintnavigerande och kartritande robot?
 \end{itemize}
 
 %-----------------------------------------------------------------
-\section{Fördjupningstext}
+\section{Sensortyper}
+
 \subsection{Avståndsmätare}
-En optisk sensor är ett typ av instrument som används för att med hjälp av ljus mäta avstånd till en yta.
+En optisk sensor är en typ av instrument som används för att med hjälp av ljus mäta avstånd till en yta.
 
 Sensorn som beskrivs nedan är en single-baseline optiksensor, vilket betyder att den opererar med endast ett sändar- och mottagarpar, och bedömer avstånd med hjälp av en typ av triangulering.
-En typisk single-baseline optisk sensor kräver fyra grundkomponenter för att fungera.
-En ljuskälla i form av t.ex. en laser, en lins för att fokusera det reflekterade ljuset på 
-en optisk sensor, samt en yta att reflektera ljuset mot, dvs ytan som avståndet skall mätas till.\footnote{http://www.altheris.com/products/laser-triangulation-technology-.htm, 2014}
+En typisk single-baseline optisk sensor kräver fyra grundkomponenter för att fungera:
+en ljuskälla i form av t.ex. en laser, en lins för att fokusera det reflekterade ljuset på 
+en optisk sensor, samt en yta att reflektera ljuset mot, dvs. ytan som avståndet skall mätas till.\footnote{http://www.altheris.com/products/laser-triangulation-technology-.htm, 2014}
 
 Ljuskällan riktas rakt mot den yta som avståndet ska mätas till och en ljuspuls avfyras. Ojämnheter i ytan gör att ljuspulsen reflekteras åt flera håll. Några av dessa ljusreflektioner kommer med största sannolikhet att studsa tillbaka mot sändaren.
 Strax under ljuskällan sitter en svagt vinklad sensor som tar emot den reflekterade ljuspulsen.  Var på sensorn som det reflekterade ljusets högsta koncentration uppmäts bestämmer med hjälp av trigonometri på vilket avstånd som avståndsmätaren uppfattar att reflektorn ligger.
 
 För att beräkna avståndet till reflektionskällan krävs kunskap om tre saker.
-Det lodräta avståndet mellan ljuskällan, även kallat måttstocken, vinklarna i de två trianglar som ljuskälla, lins, sensor och måttstockens startpunkt bildar. Slutligen krävs positionen på sensorn där det reflekterade ljusets intensitet är störst. Sensorn är placerad så att linsens fokalpunkt, det lodräta avstånd till den punkt där parallella ljusstrålar sammanfaller i ett maximum, ligger precis i djup med sensorn. Denna placering är logisk då detta får de infallande ljustrålarna att sammanfalla perfekt då de når sensorytan, vilket i sin tur ger högst intensitet.
+Det lodräta avståndet mellan ljuskällan, även kallat måttstocken, vinklarna i de två trianglar som ljuskälla, lins, sensor och måttstockens startpunkt bildar. Slutligen krävs positionen på sensorn där det reflekterade ljusets intensitet är störst. Sensorn är placerad så att linsens fokalpunkt, det lodräta avstånd till den punkt där parallella ljusstrålar sammanfaller i ett maximum, ligger precis i djup med sensorn. Denna placering är logisk då detta får de infallande ljustrålarna att sammanfalla perfekt när de når sensorytan, vilket i sin tur ger högst intensitet.
 
 \subsection{Triangulering}
-Triangulering är en avståndsbestämningsmetod som använder kända vinklar och simpel geometri för att bestämma det lodräta avståndet till ett föremål.
+Triangulering är en avståndsbestämningsmetod som använder kända vinklar och enkell geometri för att bestämma det lodräta avståndet till ett föremål.
 Om det horisontella avståndet, \begin{math}\delta\end{math} är känt fås det lodräta avståndet till punkten P av:
 \begin{equation}
 \label{eq:angle}
 \frac{P}{\delta}=tan(\beta)
 \end{equation}
 Denna ekvation kan vara missledande då den ger intrycket av att det inte finns maximal och minimal uppmätbar distans vilket tyvärr inte stämmer för optiska triangulationssensorer.
-Det finns nämligen ett antal faktorer som tillsammans bestämmer sensorns egenskaper\footnote{\label{Pears}Chapter 6 Optical Triangulation Range Sensors, N.E Pears, 1994}.
+Det finns nämligen ett antal faktorer som tillsammans bestämmer sensorns egenskaper\footnote{\label{Pears}Chapter 6 Optical Triangulation Range Sensors, Pears N.E , 1994}.
 
 I fallet med optisk sensor bestäms vinkeln \begin{math}\beta\end{math} med hjälp av de kända avstånden D och f. D ges av den optiska sensorn medan f är känt som linsens fokallängd. Om ett infallande ljusknippe infaller på sensorn kan \begin{math}\beta\end{math} bestämmas och därmed avståndet till P, men om  infallsvinkeln blir tillräckligt stor kommer det reflekterade ljusknippet att missa sensorn vilket kommer leda till att \begin{math}\beta\end{math} inte kan bestämmas.$^{\ref{Pears}}$ Se figur \ref{fig:sub1} respektive figur \ref{fig:sub2} för en illustration.
 
@@ -249,9 +250,9 @@ Ljus kan riktas mycket mer precist med tekniker som t.ex. laser vilket till stor
 
 
 \subsection{Ultraljudsavståndsmätare}
-Ultraljudssensorer använder sig av samma princip som fladdermöss och radar som uppskattar avståndet till ett objekt genom att tolka dess eko från ljudvågor. Med en högtalare genererar ultraljudssensorer högfrekvent ljud som studsar mot olika objekt. Ekot mottas och detekteras sedan av en ljudsensor. Ultraljudssensorn beräknar sedan tiden mellan utskick av ljud till mottagning av ekot. Eftersom ljudhastigheten i olika medier är känd kan avståndet till ett objekt beräknas med enkel matematik. En ultraljudssensor använder sig ofta av en transducer som omvandlar elektrisk energi till högfrekventa ultraljudsvågor och en för att omvandla ljudvågor till elektrisk energi som kan mätas.
+Ultraljudssensorer använder sig av samma princip som fladdermöss och radar som uppskattar avståndet till ett objekt genom att tolka dess eko från ljudvågor. Med en högtalare genererar ultraljudssensorer högfrekvent ljud som studsar mot olika objekt. Ultraljudssensorn beräknar sedan tiden mellan utskick av ljud till mottagning av ekot. Eftersom ljudhastigheten i olika medier är känd kan avståndet till ett objekt beräknas med enkel matematik. En ultraljudssensor använder sig ofta av en transducer som omvandlar elektrisk energi till högfrekventa ultraljudsvågor och en för att omvandla ljudvågor till elektrisk energi som kan mätas.
 
-En transducer är en komponent som konverterar energi till ultraljudsvågor. En hundvissla är ett exempel på en transducer, den omvandlar mekanisk energi från lufttryck till ljudvågor men de som används i avståndssensorer är betydligt mer komplicerade. Dessa konverterar elektrisk energi till ultraljudsvågor och består av piezoelektriska kristaller. Piezoelektriska kristaller ändrar storlek när man tillsätter en spänning. Genom att applicera en växelpänning över kristallerna kan man få dem att oscillera i höga frekvenser och på så sätt skapa högfrekventa ljudvågor. Eftersom dessa kristaller genererar en spänning när en kraft verkar på dem kan de kristaller som används för att skapa ljudvågorna även användas för att ta emot ekot.
+En transducer är en komponent som konverterar energi till ultraljudsvågor. En hundvissla är ett exempel på en transducer; den omvandlar mekanisk energi från lufttryck till ljudvågor men de som används i avståndssensorer är betydligt mer komplicerade. Dessa konverterar elektrisk energi till ultraljudsvågor och består av piezoelektriska kristaller. Piezoelektriska kristaller ändrar storlek när man tillsätter en spänning. Genom att applicera en växelpänning över kristallerna kan man få dem att oscillera i höga frekvenser och på så sätt skapa högfrekventa ljudvågor. Eftersom dessa kristaller genererar en spänning när en kraft verkar på dem kan de kristaller som används för att skapa ljudvågorna även användas för att ta emot ekot.
 \footnote{http://sv.wikipedia.org/wiki/Piezoelektricitet}
 
 Fördelar med avståndsmätare som använder sig av ultraljud är att de inte är känsliga för färg och transparens på det objekt man vill mäta avståndet till. De är heller inte känsliga för miljön, t.ex. dimma, ljusförhållanden, damm och smuts.
@@ -263,16 +264,16 @@ En nackdel med ultraljudmätaren vi har tillgång till (Devantech SRF04 Utrasoni
 \subsection{Gyroskop}
 Ett gyroskop är en sensor som används för att mäta vinkelhastigheten. För att göra detta använder man sig av corioliseffekten. Därför måste vi, för att förstå hur ett gyro fungerar, alltså först förstå corioliseffekten. Corioliseffekten beskriver hur rörliga objekts rörelseriktningar förändras när de betraktas av en observatör i en roterande referensram. Corioliskraften är den kraft som hör samman med effekten och är proportionell på rotationshastigheten. Kraften är liten men påverkar stora luftmassor då de rör sig över stora avstånd och långa tidsperioder. Till exempel är det corioloskraften som får orkaner att rotera. Ett gyro är känsligt för corioliskraften och använder sig av den för att mäta vinkelhastighet.
 
-Figur \ref{fig:jord} visar ett exempel på corioliseffekten. Vi tänker oss att den röda pricken är ett objekt i rörelse och den gröna pricken är en observatör som står stilla på den roterande jorden. Jorden blir då den roterande referensramen. Objektet rör sig söder ut sett från en inertialram, säg rymden. Observatören, som befinner sig öster om objektet, rör sig längsmed jorden och uppfattar därför inte objektets bana på samma sätt. Han ser en bana som är krökt åt väster.
+Figur \ref{fig:jord} visar ett exempel på corioliseffekten. Vi tänker oss att den röda pricken är ett objekt i rörelse och den gröna pricken är en observatör som står stilla på den roterande jorden. Jorden blir då den roterande referensramen. Objektet rör sig söder ut sett från en inertialram, säg rymden. Observatören, som befinner sig öster om objektet, rör sig längs med jorden och uppfattar därför inte objektets bana på samma sätt. Han ser en bana som är krökt åt väster.
 \footnote{http://sv.wikipedia.org/wiki/Corioliseffekten}
 
 
 \begin{figure}[h]
 \begin{center}
-\caption{\\http://sv.wikipedia.org/wiki/Corioliseffekten}
-\label{fig:jord}
 \includegraphics[width=0.3\textwidth]
 {Coriolisjord.png}
+\caption{\\http://sv.wikipedia.org/wiki/Corioliseffekten}
+\label{fig:jord}
 \end{center}
 \end{figure}
 
@@ -282,10 +283,10 @@ I figur \ref{fig:gyro} nedan visas ett enkelt gyroskop. Det byggs upp av ett snu
 
 \begin{figure}[h]
 \begin{center}
-\caption{\\http://commons.wikimedia.org/wiki/File:Gyroscopedrawing.jpg}
-\label{fig:gyro}
 \includegraphics[width=0.3\textwidth]
 {gyro.jpeg}
+\caption{\\http://commons.wikimedia.org/wiki/File:Gyroscopedrawing.jpg}
+\label{fig:gyro}
 \end{center}
 \end{figure}
 
@@ -305,14 +306,14 @@ MEMS-gyroskop tar idén från gyroskopen ovan men använder sig av MEMS iställe
 
 
 
-När massan m rör sig med hastigheten v längs x-axeln och med vinkelhastigheten $\Omega$ runt z-axeln uppstår en corioliskraft, den gula pilen i figur \ref{fig:coriolis}. Den fysiska förflyttningen som orsakas av corioliskraften kan läsas av med den kapacitiva sensorn. De flesta MEMS-gyroskop använder sig av två massor som oscillerar konstant i motsatta riktningar, vilket illustreras i figur \ref{fig:angular}. När man roterar massorna verkar då även corioliskraften åt olika håll vilket resulterar i att kapacitansen ändrar sig. Skillnaden i kapacitans är proportionell mot vinkelhastigheten och konverteras sedan till en analog eller digital utsignal.
+När massan m rör sig med hastigheten v längs x-axeln och med vinkelhastigheten $\Omega$ runt z-axeln uppstår en corioliskraft, den gula pilen i figur \ref{fig:coriolis}. Den fysiska förflyttningen som orsakas av corioliskraften kan läsas av med den kapacitiva sensorn. De flesta MEMS-gyroskop använder sig av två massor som oscillerar konstant i motsatta riktningar, vilket illustreras i figur \ref{fig:angular}. När man roterar massorna verkar även corioliskraften åt olika håll vilket resulterar i att kapacitansen ändrar sig. Skillnaden i kapacitans är proportionell mot vinkelhastigheten och konverteras sedan till en analog eller digital utsignal.
 
 \begin{figure}[h]
 \begin{center}
-\caption{\\http://electroiq.com/blog/2010/11/introduction-to-mems-gyroscopes/}
-\label{fig:angular}
 \includegraphics[width=0.3\textwidth]
 {angularv.png}
+\caption{\\http://electroiq.com/blog/2010/11/introduction-to-mems-gyroscopes/}
+\label{fig:angular}
 \end{center}
 \end{figure}
 
@@ -334,7 +335,7 @@ Gyron kan användas för att bestämma vinkel, men detta kräver en integrering 
 RFID står för radio-frequency identification och används för att läsa information från objekt, så kallade taggar, trådlöst via radiovågor. RFID kan delas in i flera olika grupper. Den billigaste, och den vi har tillgång till i kursen, kallas passiv RFID. I den passiva tekniken består taggarna av ett unikt nummer som endast kan läsas inom korta avstånd, ofta någon decimeter. Detta nummer kan sedan användas för att peka ut en plats i en databas med ytterligare information om taggen. Taggen består av ett microchip med en antenn men ingen egen strömkälla. Även läsaren har en antenn som skickar ut radiofrekvent energi. Energin från läsaren kan sedan tas upp av taggens antenn och konverteras till elektricitet. Microchippet i taggen får ström, kan modulera vågorna och skickar tillbaka dem till läsaren. Läsaren tar emot vågorna och omvandlar dem till digitalt data som motsvarar taggens nummer.
 \footnote{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/rfid-reader-v21.pdf}
 
-Aktiva RFID-raggar har, till skillnad från passiva taggar, sina egna strömkällor och även en sändare.
+Aktiva RFID-taggar har, till skillnad från passiva taggar, sina egna strömkällor och även en sändare.
 
 RFID kan användas på många sätt; t.ex. kan man sätta en tagg på en matvara och när en RFID-läsare läser av taggen kan den hämta information om varan i en databas. Taggarna fyller då ungefär samma funktion som streckkoder och man får ett system med tre delar. Del ett är taggar, del två en läsare och del tre en databas med information om varje tagg. Taggarna kan göras små och tekniken används i bl.a. passerkort.
 
@@ -353,36 +354,11 @@ Eftersom en brandhärd kommer att representeras av en RFID-tagg i tävlingen är
 
 
 \section*{Källförteckning}
-\addcontentsline{toc}{section}{K�llf�rt�ckning}
+\addcontentsline{toc}{section}{Källförtäckning}
 \addtocounter{section}{1}
-
-
-Piezoelektricitet, wikipedia.org. Hämtad \today:\newline
-http://sv.wikipedia.org/wiki/Piezoelektricitet
-
-Datablad för SRF04, Institutionen för systemteknik vid Linköpings universitet. Hämtad \today:\newline
-https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/srf04.pdf
 
 Corioliseffekten, wikipedia.org. Hämtad \today:\newline
 http://sv.wikipedia.org/wiki/Corioliseffekten
-
-Introduction to MEMS gyroscopes, electroiq.com. Hämtad \today:\newline
-http://electroiq.com/blog/2010/11/introduction-to-mems-gyroscopes/
-
-Datablad för MLX90609, Institutionen för systemteknik vid Linköpings universitet. Hämtad \today:\newline https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/MLX90609datasheet.pdf
-
-Datablad för Parallax-Reader, Institutionen för systemteknik vid Linköpings Universitet. Hämtad \today:\newline
-https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/rfid-reader-v21.pdf
-
-How RFID Works, electronics.howstuffworks.com. Hämtad \today:\newline
-http://electronics.howstuffworks.com/gadgets/high-tech-gadgets/rfid3.htm
-
-Quartarly Journal of Technology & Education Vol.1, 
-Shahram Mohammad Nejad, Saeed Olyaee, 2006
-http://www.srttu.edu/TeacherArticle/178.pdf
-
-Laser Triangulation Sensors:Technology Hämtad \today:\newline
-http://www.altheris.com/products/laser-triangulation-technology-.htm
 
 Chapter 4 Sensors for Map-Based Positioning Hämtad \today:\newline
 http://www.eng.yale.edu/ee-labs/morse/other/pos96ch4.pdf
@@ -390,3 +366,30 @@ http://www.eng.yale.edu/ee-labs/morse/other/pos96ch4.pdf
 Chapter 6 Optical Triangulation Range Sensors, N.E Pears, Hämtad \today:\newline 
 http://www-users.cs.york.ac.uk/nep/research/papers/agvChapterPears1994.pdf
 \end{document}
+
+Datablad för MLX90609, Institutionen för systemteknik vid Linköpings universitet. Hämtad \today:\newline https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/MLX90609datasheet.pdf
+
+Datablad för Parallax-Reader, Institutionen för systemteknik vid Linköpings Universitet. Hämtad \today:\newline
+https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/rfid-reader-v21.pdf
+
+Datablad för SRF04, Institutionen för systemteknik vid Linköpings universitet. Hämtad \today:\newline
+https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/srf04.pdf
+
+How RFID Works, electronics.howstuffworks.com. Hämtad \today:\newline
+http://electronics.howstuffworks.com/gadgets/high-tech-gadgets/rfid3.htm
+
+Introduction to MEMS gyroscopes, electroiq.com. Hämtad \today:\newline
+http://electroiq.com/blog/2010/11/introduction-to-mems-gyroscopes/
+
+Laser Triangulation Sensors:Technology Hämtad \today:\newline
+http://www.altheris.com/products/laser-triangulation-technology-.htm
+
+Piezoelektricitet, wikipedia.org. Hämtad \today:\newline
+http://sv.wikipedia.org/wiki/Piezoelektricitet
+
+Quartarly Journal of Technology & Education Vol.1, 
+Shahram Mohammad Nejad, Saeed Olyaee, 2006
+http://www.srttu.edu/TeacherArticle/178.pdf
+
+
+
