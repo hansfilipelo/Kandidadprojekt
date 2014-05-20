@@ -23,6 +23,7 @@ public:
     void sendRotateRequest();
 	void reactivateRFID();
 	void reactivateWheelSensor();
+	void sendAStar(char*);
     
 //flyttade från protected
 	unsigned char inData[27];
