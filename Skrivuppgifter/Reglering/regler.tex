@@ -318,25 +318,44 @@ y_n = Cx_n + Du_n + v
 \end{gather}
 och skattningen ges av
 \begin{gather}
-	\hat{x}_{n+1|n} = A_n\hat{x}_{n|n-1} + K_n(y_n-C_n) \\
-	K_n=A_nP_{n|n-1}C_n^T([C_nP_{n|n-1}C_n^T+R_2)^{-1}	\\
-	P_{n+1|n}=A_nP_{n|n-1}A_n^T+R_{1} 
-	        -A_nP_{n|n-1}C_n^T(C_nP_{n|n-1}C_n^T+R_1)^{-1}C_nP_{n|n-1}A_n^T
+	\hat{x}_{n|n-1} = A_n\hat{x}_{n|n-1} + B_n(u_n) \\
+	K_n = P_{n|n-1}C_{n}^T(C_{n}P_{n|n-1}C_{n}^T+R_2)^{-1}	\\
+	P_{n+1|n}=A_{n-1}P_{n|n-1}A_{n-1}^T+R_{1} \\
+	\hat{x}_{n|n} = \hat{x}_{n|n-1} + K_{t}(y_{t}-C_{t}+R_{2})
 \end{gather}
 där $R_1$ och $R_2$ är kovariansmatriserna för $e$ respektive $v$. $A$-,$B$-,$C$- och $D$-matriserna varierar med tiden. \footnote{Gustavsson, Fredrik; Ljung, Lennart; Millnert, Mille. 2000. \textit{Signalbehandling}. Andra upplagan. Lund. Studentlitteratur.
 }
 
 \subsubsection{EKF - Det utökade kalmanfiltret}
 
-Till skillnad från kalmanfiltret kan det utökade kalmanfiltret användas för att approximativt lösa icke-linjära SLAM-problem. Det som möjliggör detta är att filtrets matriser beräknas om för varje ny tillståndsskattning. Matriserna för filtret beräknas med hjälp av jacobianer (9), och systemet linjäriseras därmed kring varje skattat tillstånd för att kunna skatta nästa tillstånd. 
-
-Initalt sätts kovariansen, $R$,till ett väldigt stort värde innan man vet vilken kovarians sina mätningar i miljön har. Därefter plockas mätdata in och man beräknar sin K-matris för att beräkna nästkommande tillstånd enligt: 
+Till skillnad från kalmanfiltret kan det utökade kalmanfiltret (EKF) användas för att approximativt lösa icke-linjära SLAM-problem. Det som möjliggör detta är att filtrets matriser beräknas om för varje ny tillståndsskattning. Matriserna för filtret beräknas med hjälp av jacobianer (9), och systemet linjäriseras därmed kring varje skattat tillstånd för att kunna skatta nästa tillstånd. Antag tillståndsrepresentationen av ett icke-linjärt system: 
 
 \begin{gather}
-K[n+1] =  P[n]J[n]^{T}(J[n]P[n]J[n]^{T}+R[n])^{-1}
+	x_{t} = f(x_{t-1}, u_{t-1}) + e_{t-1}
+	y_{t} = h(x{t},u{t}) + v{t-1}
 \end{gather}
 
-Där J är jacobianen\label{equ:jacobian} som ges av partiella derivatorna hos mätdatat för avstånd till landmärken, $y[n] = h(x[n]^{r},m[n])$. \footnote{David Törnqvist. Estimation and Detection with Applications to Navigation.}
+Det utökade kalmanfiltret är då en linjärisering och av systemet och skattning av dess tillstånd, enligt: 
+
+\begin{gather}
+	\hat{x}_{t} = f(\hat{x}_{t-1}, u_{t-1})
+\end{gather}
+
+Matriserna $K$ och $T$ i filtret, samt skattningen $\hat{x}$ ges sedan av:
+
+\begin{gather}
+	P_{t|t-1} = F_{t-1}P_{t-1}^T+R_{1},\;\;\;\;\;\; med \; F_{t} = \frac{\delta f(x,u)}{\delta x}\big|_{(x,u) = (\hat{x}_{t|t-1}, u_{t})} \\
+	K_{t} = P_{t|t-1}H_{t}^T(H_{t}P_{t|t-1}H_{t}^T+R_{t})^{-1}\;\;\;\;\;\; med \; H_{t} = \frac{\delta H(x,u)}{\delta x}\big|_{(x,u) = (\hat{x}_{t|t-1}, u_{t})} \\
+	\hat{x}_{t|t} = \hat{x}_{t|t-1}+K_{t}(y_{t}-h(\hat{x}_{t|t-1},u_{t}))
+\end{gather}
+
+$P$ uppdateras sedan inför nästa tillstånd med: 
+
+\begin{gather}
+	P_{t|t} = (I-K_{t}H_{t})P_{t|t-1}
+\end{gather}
+
+Matriserna $H$ och $F$ är alltså Jacobianer för systemets tillståndsmatriser och linjäriseras därmed i varje punkt.\footnote{David Törnqvist. Estimation and Detection with Applications to Navigation, s 31.}
 
 \newpage
 
