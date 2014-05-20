@@ -177,7 +177,7 @@ int main(void)
 				if(robotPointer->isCornerRight()){
 					while ( !(robotPointer->isCornerPassed()) && !(abstractionObject->getManual())) {
 						robotPointer->changeGear('f');
-						robotPointer->setSpeed(15);
+						robotPointer->setSpeed(20);
 						robotPointer->drive();
 					}
 					//_delay_ms(25); // This delay ensures that we enter next segment.
@@ -185,14 +185,14 @@ int main(void)
 					//said !iswallright lets try iscornerpassed
 					while ( robotPointer->isCornerPassed() && !(abstractionObject->getManual())) {
 						robotPointer->changeGear('f');
-						robotPointer->setSpeed(15);
+						robotPointer->setSpeed(20);
 						robotPointer->drive();
 					}
 				}
 			
 				//was elseif before
 				if(robotPointer->isWallFwd()){
-					robotPointer->setSpeed(20);
+					robotPointer->setSpeed(25);
 					robotPointer->changeGear('f');
 					while (!robotPointer->isWallFwdClose() && !(abstractionObject->getManual()))
 					{
@@ -261,7 +261,7 @@ int main(void)
 			}
 		}
 		// Look for walls every 500th turn of main loop
-		if (i == 250) {
+		if (i == 3000) {
 			// Update position in map
 			robotPointer->updateRobotPosition();
 			i = 0;

@@ -31,7 +31,7 @@ public:
 	int row = 0;
     double assembleDouble(char, char, char, char);
 	bool getManual();
-    
+    volatile bool isRFID=false;
     
 protected:
     
@@ -41,6 +41,7 @@ protected:
     int dataLength;
     Slave* slavePointer;
     Robot* robotPointer;
+	
 	
 };
 

@@ -341,9 +341,9 @@ Robot::Robot(int xPos, int yPos, Map* inMom, Communication* inComm) : MapSection
 	type = 'r';
 	direction = 'f';
 	
-	Kd = 26;
-	Kp = 13;
-	Ref = 12;
+	Kd = 13;
+	Kp = 20;
+	Ref = 10;
 	
 	trimRight = 15;
 	trimLeft = 0;
@@ -951,7 +951,7 @@ void Robot::setRightClosed(){
 		output = 80/40;//if distance is great only print max 2 empty.
 	}
 	else{
-		output = rightFrontSensor/40;
+		output = rightFrontSensor/40;	//kanske borde ha +10 innan man delar med 40 för att robotens inte är längst till höger i rutan
 	}
 	
 	// Set closed section output + 1 steps away from robot.
@@ -1179,7 +1179,10 @@ void Robot::updateRobotPosition(){
 				//would like to throw some kind of error here.
 				return;
 		}
-	
+	if(commObj->isRFID){
+		setRFID();
+		commObj->isRFID=false;
+	}
 		if (okayToClose){
 			setFwdClosed();
 			setBwdClosed();
@@ -1387,7 +1390,7 @@ bool Robot::isWallFwdClose()
 	    if ( getFwdDistance() == 0 ) {
 		    return false;
 	    }
-	    if ( getFwdDistance() < 20 ){
+	    if ( getFwdDistance() < 15 ){
 		    return true;
 	    }
 	    else{
