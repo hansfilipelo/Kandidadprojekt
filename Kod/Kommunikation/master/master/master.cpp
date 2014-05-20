@@ -66,6 +66,10 @@ void handleDataFromSteer(){
 			Firefly.mapDone = true;
 		}
 	}
+	if(Bus.buffer[1]=='t'){
+		memcpy(Firefly.outDataArray, Bus.buffer,27);
+		Firefly.sendArray();
+	}
 	if(Bus.buffer[1]=='g'){
 		if ( !Bus.gyroActive )
 		{

@@ -37,7 +37,7 @@ public:
     void fillClosedArea();
     bool withinMap(int,int);
     int pathMap[32][17];
-    char pathArray[100];
+    char pathArray[100] = {8,'f','f','r','r','r','f','l','l'};
     void aStar(int, int, int, int);
 	char colArray[25];
 	
