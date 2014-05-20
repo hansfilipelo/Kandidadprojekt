@@ -360,6 +360,7 @@ Robot::Robot(int xPos, int yPos, Map* inMom, Communication* inComm) : MapSection
     commObj = inComm;
     previousSection = mom->getPos(xPos,yPos);
 	previousSection->setType('e');
+    previousSection->isVisited = true;
     mom->setSection(xPos,yPos,this);
 }
 
