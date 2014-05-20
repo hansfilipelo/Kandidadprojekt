@@ -130,11 +130,20 @@ void Communication::handleData(){
 		asm("");
 	}
 	
-	if(this->inData[1] == 'W'){
+	if(this->inData[1] == 'W' && this->indata[2]==0){
 		asm("");
 		asm("");
 		robotPointer->wheelHasTurned = true;
 		robotPointer->setRFID();
+		asm("");
+		asm("");
+	}
+    
+    if(this->inData[1] == 'W' && this->indata[2]==1){
+		asm("");
+		asm("");
+        robotPointer->setRFID();
+		robotPointer->wheelHasTurned = true;
 		asm("");
 		asm("");
 	}
