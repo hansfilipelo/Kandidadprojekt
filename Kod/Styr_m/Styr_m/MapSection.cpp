@@ -143,6 +143,10 @@ int MapSection::findUnexplored(){
 // Checks if closed area is closed loop
 
 bool MapSection::isClosed(int origX, int origY, int fwdCounter, int bwdCounter){
+#if TESTING == 1
+    cout << "I am X: " << xCoord << " Y: " << yCoord << endl;
+    cout << "fwdCounter: " << fwdCounter << " bwdCounter: " << bwdCounter << endl;
+#endif
     
     if ( fwdCounter - bwdCounter < 3 ) {
 #if TESTING == 1
@@ -175,7 +179,7 @@ bool MapSection::isClosed(int origX, int origY, int fwdCounter, int bwdCounter){
         fwdCounter = fwdCounter + 1;
 	}
     // Check 10,5
-    else if ( (xCoord - 1 > 0) && (yCoord - 1 > 0) && (xCoord - 1 < 32) && (yCoord - 1 < 18) && mom->getPos(xCoord - 1, yCoord - 1)->getType() == 'c' && !mom->getPos(xCoord - 1, yCoord - 1)->hasBeenClosed ) {
+    else if ( mom->withinMap(xCoord - 1, yCoord - 1) && mom->getPos(xCoord - 1, yCoord - 1)->getType() == 'c' && !mom->getPos(xCoord - 1, yCoord - 1)->hasBeenClosed ) {
         
         nextX = xCoord - 1;
         nextY = yCoord - 1;
