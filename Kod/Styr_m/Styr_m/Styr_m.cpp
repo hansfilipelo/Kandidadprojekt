@@ -273,7 +273,6 @@ int main(void)
 			abstractionObject->sendMap();
 			asm("");
 		}
-	
 	}
 	return 0;
 }
