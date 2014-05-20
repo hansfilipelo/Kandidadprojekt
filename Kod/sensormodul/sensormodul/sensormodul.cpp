@@ -35,7 +35,6 @@ volatile long int sen4;
 volatile long int sen5;
 volatile long int sen6;
 volatile int RfidCount = 0;
-
 //------------------ADC---------------------------
 volatile double decadc=0;			//variable used in the ADC-interrupt (decimal adc-value, ADC-value with 5 V ref)
 volatile bool ADCdone = false;		//Flag for checking if ADC is done
@@ -47,6 +46,8 @@ bool wheelmode = true;
 //------------------USART-------------------------
 unsigned char indata;				//data from USART-reading
 unsigned char startbit = 0x0A;		//start sequence for RFID-tags
+volatile bool RFIDinSquare = false;
+volatile bool reactivateRFID = false;
 
 //------------------GYRO--------------------------
 bool gyromode = false;				//flag for initializing gyroreadings
@@ -297,6 +298,7 @@ ISR(USART0_RX_vect){
 	// varför skickar vi tre ggr?
 	if(indata==startbit){
 		RfidCount++;
+		/*
 		sensormodul.outDataArray[0] = 1;
 		sensormodul.outDataArray[1] = 'R';
 		sensormodul.SPI_Send();				//send outDataArray
@@ -304,9 +306,11 @@ ISR(USART0_RX_vect){
 		sensormodul.SPI_Send();				//send outDataArray
 		_delay_ms(5);
 		sensormodul.SPI_Send();				//send outDataArray
-		_delay_ms(80);
+		_delay_ms(150);
 		savepos = 0;
-		ADMUX = 0x20;				
+		ADMUX = 0x20;
+		*/
+		RFIDinSquare = true;				
 		UCSR0B &= ~(1<<RXCIE0);				//disable USART interrups
 	}
 }
@@ -397,10 +401,22 @@ int main(void)
 				blacksegment = false;
 				asm("");
 			}
+			if((segmentsTurned > 15)&&(reactivateRFID)){
+				UCSR0B |= (1<<RXCIE0);							//enable USART interrups
+				reactivateRFID = false;
+			}
 			if(segmentsTurned > 21){// + wheelTrim)){
 				//------------Send------------------------------
-				sensormodul.outDataArray[0] = 1;
+				sensormodul.outDataArray[0] = 2;
 				sensormodul.outDataArray[1] = 'W';
+				if(RFIDinSquare){
+					sensormodul.outDataArray[2] = '1';
+					RFIDinSquare = false;
+					reactivateRFID = true;
+				}
+				else{
+					sensormodul.outDataArray[2] = '0';
+				}
 				sensormodul.SPI_Send();
                 //delay and the repeat transmission to ensure that we correctly recieve transmission.
                 wheelmode = false;

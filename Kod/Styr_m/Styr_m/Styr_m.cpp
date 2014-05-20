@@ -229,7 +229,7 @@ int main(void)
 					{
 					
 						// stod robotPointer->getUserSpeed() ist för 35
-						robotPointer->setSpeed(35);
+						robotPointer->setSpeed(25);
 						robotPointer->changeGear('f');
 						robotPointer->drive();
 						robotPointer->adjustPosition();
