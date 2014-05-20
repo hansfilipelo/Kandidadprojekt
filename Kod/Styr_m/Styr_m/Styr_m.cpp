@@ -23,8 +23,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "MapSection.h"
-#include "Map.h"
+#include "./MapSection.h"
+#include "./Map.h"
 #include "Abstraction.h"
 #include "Communication.h"
 #include "slave.h"
@@ -250,14 +250,13 @@ int main(void)
 					int yFinish = robotPointer->getFinishY();
 				
 					// get the route
-					//mapPointer->aStar(xStart,yStart,xFinish,yFinish);
+					mapPointer->aStar(xStart,yStart,xFinish,yFinish);
 					robotPointer->goToAStar();
 					
-				}
+				}//drive around this island 
 				if(robotPointer->foundIsland){
-					
+					robotPointer->handleIsland();
 				}
-
 			}
 		}
 		// Look for walls every 500th turn of main loop

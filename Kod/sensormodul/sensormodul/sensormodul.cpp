@@ -35,7 +35,6 @@ volatile long int sen4;
 volatile long int sen5;
 volatile long int sen6;
 volatile int RfidCount = 0;
-
 //------------------ADC---------------------------
 volatile double decadc=0;			//variable used in the ADC-interrupt (decimal adc-value, ADC-value with 5 V ref)
 volatile bool ADCdone = false;		//Flag for checking if ADC is done

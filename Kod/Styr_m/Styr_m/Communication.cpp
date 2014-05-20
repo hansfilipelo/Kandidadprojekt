@@ -138,6 +138,8 @@ void Communication::handleData(){
 		asm("");
 	}
     
+
+
     if( this->inData[1] == 'F' ){
         sendMapNow = true;
     }

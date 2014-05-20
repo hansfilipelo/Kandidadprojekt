@@ -1,5 +1,5 @@
-#include "MapSection.h"
-#include "Map.h"
+#include "./MapSection.h"
+#include "./Map.h"
 
 using namespace std;
 
@@ -360,6 +360,7 @@ Robot::Robot(int xPos, int yPos, Map* inMom, Communication* inComm) : MapSection
     commObj = inComm;
     previousSection = mom->getPos(xPos,yPos);
 	previousSection->setType('e');
+    previousSection->isVisited = true;
     mom->setSection(xPos,yPos,this);
 }
 
@@ -1573,4 +1574,9 @@ void Robot::goToAStar(){
 		while(!wheelHasTurned){}
 		updateRobotPosition();
 	}	
+}
+
+void Robot::handleIsland()
+{
+	
 }
