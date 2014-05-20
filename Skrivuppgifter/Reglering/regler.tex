@@ -380,9 +380,6 @@ För att effektivisera filtreringen av mätvärden delas olika distinkt upptäck
 
 Frågan som SLAM grundas på går nu att delvis besvara. Det går att kartlägga en omgivning utan att exakt veta sin position, men det behövs någon typ av skattning av positionen för att göra en rimlig kartläggning. Ju bättre skattningen är desto bättre kommer kartan bli i slutändan. Mer data och mer kvalitativ data bidrar till att förbättra skattningarna i kombination med olika typer av skattningsalgoritmer för att optimera och effektivisera processeringen av data. Problemet som kan uppstå då fler typer av sensorer används och större mängder data måste bearbetas är att beräkningskraften inte räcker till då filtren och mjukvaran som används för att implementera SLAM kan ställa för höga krav på beräkningsenheten.
 
-Till slut kan vi även konstatera att SLAM används i många tillämpningar man kanske inte tänker på. 
-
-
 \section{Reflektion}
 
 Sett från det perspektiv vi granskar SLAM-problemet, inom ett kandidatprojekt, är avancerade FastSLAM-algoritmer för att implementera. Det måste dock alltid finnas någon typ av filter i en SLAM-implementering. Då beräkningar man gjort tidigare under kartläggningen ger konflikt med nuvarande mätning om huruvida en vägg faktiskt finns där eller ej. Enklare fall av partikelfiltrering kommer alltså behöva lösas vid vår framtida implementering. Vi kommer då att lösa det genom att låta roboten besöka området på nytt och ta ett beslut utifrån de nya mätdata vi får in. 
