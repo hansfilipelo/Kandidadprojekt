@@ -183,7 +183,16 @@ Fall 3: Kartdata skickas från kommunikationsmodulen till PC, se figur~\ref{fig:
 \end{itemize}
 
 \subsection{Buss}
-Mellan processorerna används SPI som bussprotokoll. Kommunikationsmodulen agerar master medan styr- och sensormodul agerar slave. Kommunikation kommer alltid att initieras av master och om slave vill skicka data, genererar de ett avbrott på master som talar om att de har data som är redo att skickas. 
+Mellan processorerna används SPI som bussprotokoll. Kommunikationsmodulen agerar master medan styr- och sensormodul agerar slave. Kommunikation kommer alltid att initieras av master och om slave vill skicka data, genererar de ett avbrott på master som talar om att de har data som är redo att skickas. Bussen använder följande kopplingar för bussen:
+\begin{itemize}
+	\item MISO - Master Input Slave Output, data till master
+	\item MOSI - Master Output Slave Input, data till slave
+	\item SLAVEINT0 - Avbrott från slave 0
+	\item SLAVEINT1 - Avbrott från slave 1 
+	\item SLAVESELECT0 - Väljer denna processor som aktiv slav
+	\item SLAVESELECT1 - Väljer denna processor som aktiv slav
+	\item SCK - Serial Clock, klocka från master
+\end{itemize}
 
 \subsubsection{Kommunikationsprotokoll}
 Roboten har ett speciellt kommunikationsprotokoll som används både av Bluetooth och SPI-bussen. Protokollet är konstruerat så att den första byten definierar alltid längden på meddelandet. Nästföljande 2 bytes definierar kommandotyp och argument till den typen. Efter de 3 första bytes följer godtyckligt lång datamängd se figur 3.
@@ -196,15 +205,29 @@ Roboten har ett speciellt kommunikationsprotokoll som används både av Bluetoot
   \label{fig:bussprotocol}
 \end{figure}
 
-Alla olika kommadotyper är definierade i appendix C. 
+Alla olika kommadotyper är definierade i appendix C.
+
+\subsubsection{Slav-modulers mottagning}
+När vår master-modul initierar SPI-kommunikationen med en slave dras SlaveSelect-signalen för den givna processorn låg för att generera ett SPI-avbrott på sagda slave. När slave har tagit emot det antal bytes som specificeras av första byten i paketet genereras ett internt avbrott med hjälp av PCint16. I detta nya avbrott hanteras datan från transmissionen. En övergripande struktur angående mottagningen av SPI-trafik kan ses i flödesdiagrammet i figur~\ref{fig:spislave}
+
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,width=0.4\textwidth]{bilder/spislaverec.jpg}  %skala och filnamn. 
+  \end{center}
+  \caption{Översiktsbild av mottagning för en SPI-slav} %figurtext.
+  \label{fig:spislave}
+\end{figure}
+
+
+
+
 
 \subsubsection{Busstrafik}
-På bussen kommer följande data att skickas.
-\begin{itemize}
-	\item 
+På bussen kommer ett antal olika typer av kommandon att skickas. 
+
 \paragraph{Styrkommandon från PC}
 ~\\
-När styrkommandona skickas från PC, kommer kommunikationsmodulen skicka datat vidare till styrmodulen som utför kommandot.
+När styrkommandona skickas från PC, kommer kommunikationsmodulen skicka datan vidare till styrmodulen som utför kommandot.
 \paragraph{Konverterat sensordata}
 ~\\
 Sensordata kommer att behandlas i sensormodulen och därefter kommer modulen att skicka ett avbrott till master om att data finns tillgängligt. Mastern svarar och startar bussöverföringen.
@@ -279,7 +302,7 @@ Se schema i appendixet Scheman för anslutning av TxD och RxD, vilka sköter sä
 När vi skickar data till processorn så är detta avbrottshanterat. I avbrottet utnyttjas en databuffer vid namn inDataArray som sedan kopieras till bufferten pcHandle i datahanteringen av Bluetooth. Även Bluetooth datahanteras utanför avbrotten precis som SPI-kommunikationen.
 
 \subsection{Switchar}
-En switch ska styra om roboten exekverar programkod för autonom styrning eller manuell styrning. Ett avbrott signalerar till processorn att den ska byta programkod, avbrottet ligger på pin16 (INT0) se appendix A. 
+En switch ska styra om roboten exekverar programkod för autonom styrning eller manuell styrning. Denna switch kan även byta läge via ett virtuellt kommando från PC. Ett avbrott signalerar till processorn att den ska byta programkod, avbrottet ligger på pin16 (INT0) se appendix A. 
 Av/På-knappen styr strömförsörjningen till samtliga moduler. 
 
 % ----------------------------- Styrmodul --------------------------------------
@@ -287,7 +310,7 @@ Av/På-knappen styr strömförsörjningen till samtliga moduler.
 
 \newpage
 \section{Styrmodul}
-Styrmodulens (slave) huvudkomponent kommer  att bestå av en AVR-processor, Atmel ATmega1284p som får instruktioner från kommunikationsmodulen (master) via bussen. Processorn kommunicerar även med drivkretsen på chassit. Chassit är av typen Terminator som drivs av en NiMH- eller NiCd-ackumulator på 7.2V. Det har även fyra stycken växlade DC-motorer som är kopplade till varsitt drivhjul. 
+Styrmodulens (slave) huvudkomponent kommer att bestå av en AVR-processor, Atmel ATmega1284p som får instruktioner från kommunikationsmodulen (master) via bussen. Processorn kommunicerar även med drivkretsen på chassit. Chassit är av typen Terminator som drivs av en NiMH- eller NiCd-ackumulator på 7.2V. Det har även fyra stycken växlade DC-motorer som är kopplade till varsitt drivhjul. 
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
