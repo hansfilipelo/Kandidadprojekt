@@ -150,7 +150,7 @@ Kommunikation via bluetooth och buss följer ett speciellt egendefininerat proto
 
 
 \section{Kommunikationsmodul}
-Modulen hanterar kommunikation mellan robotens olika delkomponenter samt med persondatorn via Blåtand. Kommunikationsmodulen som syns i figur 3, kommer att agera master på robotens interna buss. Vid kommunikation mellan övriga moduler, dvs. sensor- och styrmodulen, kommer denna gå via kommunikationsmodulen. Kommunikationsmodulen levererar sensordata och manuella styrkommandon mellan roboten och PC-mjukvaran.
+Modulen hanterar kommunikation mellan robotens olika delkomponenter samt med persondatorn via Bluetooth. Kommunikationsmodulen som syns i figur 3, kommer att agera master på robotens interna buss. Vid kommunikation mellan övriga moduler, dvs. sensor- och styrmodulen, kommer denna gå via kommunikationsmodulen. Kommunikationsmodulen levererar sensordata och manuella styrkommandon mellan roboten och PC-mjukvaran.
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
@@ -174,7 +174,7 @@ Fall 3: Kartdata skickas från kommunikationsmodulen till PC, se figur~\ref{fig:
 \subsection{Komponenter}
 \begin{itemize}
   \item AVR processor av typen ATMega1284
-  \item Blåtandsdongel, Firefly, BlueSmirf Gold
+  \item Bluetoothsdongel, Firefly, BlueSmirf Gold
   \item LCD-Display
   \item Två stycken knappar
   \item Kristalloscillator EXO-3, 14.745 MHz
@@ -200,6 +200,8 @@ Alla olika kommadotyper är definierade i appendix C.
 
 \subsubsection{Busstrafik}
 På bussen kommer följande data att skickas.
+\begin{itemize}
+	\item 
 \paragraph{Styrkommandon från PC}
 ~\\
 När styrkommandona skickas från PC, kommer kommunikationsmodulen skicka datat vidare till styrmodulen som utför kommandot.
@@ -270,10 +272,12 @@ Vid skrivning till LCD-displayen kommer detta ske enligt flödesschemat~\ref{fig
   \label{fig:flowlcdwrite}
 \end{figure}
 
-\subsection{Blåtand}
-Blåtandskommunikationen kommer att utföras av ett Firefly-Bluesmirf gold (FBG) modem som parkopplas mot en persondator.
+\subsection{Bluetooth}
+Bluetoothkommunikationen kommer att utföras av ett Firefly-Bluesmirf gold (FBG) modem som parkopplas mot en persondator.
 FBG kommer att skicka information till persondator via protokollet RS232 enligt vad som är angivet på Vanheden. 
 Se schema i appendixet Scheman för anslutning av TxD och RxD, vilka sköter sändning och mottagning av data.
+När vi skickar data till processorn så är detta avbrottshanterat. I avbrottet utnyttjas en databuffer vid namn inDataArray som sedan kopieras till bufferten pcHandle i datahanteringen av Bluetooth. Även Bluetooth datahanteras utanför avbrotten precis som SPI-kommunikationen.
+
 \subsection{Switchar}
 En switch ska styra om roboten exekverar programkod för autonom styrning eller manuell styrning. Ett avbrott signalerar till processorn att den ska byta programkod, avbrottet ligger på pin16 (INT0) se appendix A. 
 Av/På-knappen styr strömförsörjningen till samtliga moduler. 
