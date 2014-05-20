@@ -14,9 +14,6 @@
 #endif
 
 #include "node.h"
-//#include <iterator>
-//#include <queue>
-//#include "Abstraction.h"
 #include <string.h>
 #include <stdio.h>
 #include "queueAtmel.h"

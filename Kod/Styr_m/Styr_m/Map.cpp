@@ -58,9 +58,7 @@ void Map::aStar(int xStart,int yStart,int xFinish,int yFinish)
 	static int dx[dir]={1, 0, -1, 0};
 	static int dy[dir]={0, 1, 0, -1};
 	
-	//static priority_queue<node> pq[2]; // list of open (not-yet-tried) nodes
-	
-	queueAtmel pqA[2];
+	queueAtmel pqA[2]; // list of open (not-yet-tried) nodes
 	
 	static int pqi; // pq index
 	static node* n0;
