@@ -277,33 +277,19 @@ void Map::getColAsChar(int col)
 
 void Map::fillClosedArea()
 {
-	bool firstC = false;
-    bool eAfterC = false;
-	// fill map with closed area from left
-    for (int y = 0; y < 17; y++) {
-		for (int x = 0; x < 32; x++) {
-            
-			if((this->getPos(x,y)->getType() != 'c' && !firstC)){
-                convertSection(x,y,'c');
-			}
-            else if ( this->getPos(x,y)->getType() == 'c' && !eAfterC ){
-                firstC = true;
-            }
-            else if ( this->getPos(x,y)->getType() == 'e' && firstC) {
-                eAfterC = true;
-            }
-            else if ( eAfterC && this->getPos(x,y)->getType() == 'c' ) {
-                eAfterC = false;
-                firstC = false;
-            }
-            else if ( !eAfterC && this->getPos(x,y)->getType() == 'u' ){
-                convertSection(x,y,'c');
-            }
-        }
-        
-        firstC = false;
-        eAfterC = false;
+	for (int y = 0; y < 17; y++) {
+		if((this->getPos(0,y)->getType() == 'u')){
+			this->getPos(0,y)->cancer();
+			return;
+		}
+		else if ((this->getPos(31,y)->getType() == 'u'))
+		{
+			this->getPos(31,y)->cancer();
+			return;
+		}
+
     }
+
 }
 //-----------------------------------
 // Checks if coordinates within map

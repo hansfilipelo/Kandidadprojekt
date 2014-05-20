@@ -1187,7 +1187,7 @@ void Robot::updateRobotPosition(){
 			setRightClosed();
 			setLeftClosed();
 		}
-		//backToStart(); // not tested fully, could still give nonsense.
+		backToStart(); // not tested fully, could still give nonsense.
    }
 }
 
@@ -1461,10 +1461,10 @@ void Robot::waitForNewData()
 
 void Robot::backToStart()
 {
-	if((previousSection->getX() == 16) &&	(previousSection->getY()==1)){
-		if ( mom->getPos(xCoord,yCoord - 1)->isClosed(xCoord,yCoord - 1,0,0) ){
+	if((previousSection->getX() == 16) &&(previousSection->getY()==1)){
+		if ( mom->getPos(xCoord,yCoord - 1)->isClosed(xCoord,yCoord - 1,0,-3)){
 			mom->fillClosedArea();
-			startExplore = true;
+			//startExplore = true;
 		}
 	}
 }
@@ -1575,5 +1575,70 @@ void Robot::goToAStar(){
 
 void Robot::handleIsland()
 {
+	rotateLeft();
+/*
+				//lets try with only ifs
+				if(robotPointer->isCornerRight()){
+					while ( !(robotPointer->isCornerPassed()) && !(abstractionObject->getManual())) {
+						robotPointer->changeGear('f');
+						robotPointer->setSpeed(15);
+						robotPointer->drive();
+					}
+					//_delay_ms(25); // This delay ensures that we enter next segment.
+					robotPointer->rotateRight();
+					//said !iswallright lets try iscornerpassed
+					while ( robotPointer->isCornerPassed() && !(abstractionObject->getManual())) {
+						robotPointer->changeGear('f');
+						robotPointer->setSpeed(15);
+						robotPointer->drive();
+					}
+				}
+				
+				//was elseif before
+				if(robotPointer->isWallFwd()){
+					robotPointer->setSpeed(20);
+					robotPointer->changeGear('f');
+					while (!robotPointer->isWallFwdClose() && !(abstractionObject->getManual()))
+					{
+						robotPointer->drive();
+					}
+					robotPointer->setSpeed(0);
+					robotPointer->drive();
+
+
+					if(!robotPointer->isWallRight())
+					{
+						robotPointer->rotateRight();
+						//Drive forward untill robot has entered
+						while (!robotPointer->isWallRight() && !(abstractionObject->getManual())) {
+							robotPointer->changeGear('f');
+							robotPointer->setSpeed(25);
+							robotPointer->drive();
+						}
+					}
+
+					else
+					{
+						robotPointer->rotateLeft();
+					}
+					
+				}
+				else
+				{
+					if(!robotPointer->isWallRight())
+					{
+						robotPointer->rotateRight();
+					}
+					else
+					{
+						
+						// stod robotPointer->getUserSpeed() ist för 35
+						robotPointer->setSpeed(25);
+						robotPointer->changeGear('f');
+						robotPointer->drive();
+						robotPointer->adjustPosition();
+					}
+				}
 	
+	*/
 }
