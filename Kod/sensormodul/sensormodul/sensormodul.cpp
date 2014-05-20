@@ -35,7 +35,6 @@ volatile long int sen4;
 volatile long int sen5;
 volatile long int sen6;
 volatile int RfidCount = 0;
-
 //------------------ADC---------------------------
 volatile double decadc=0;			//variable used in the ADC-interrupt (decimal adc-value, ADC-value with 5 V ref)
 volatile bool ADCdone = false;		//Flag for checking if ADC is done
@@ -304,7 +303,7 @@ ISR(USART0_RX_vect){
 		sensormodul.SPI_Send();				//send outDataArray
 		_delay_ms(5);
 		sensormodul.SPI_Send();				//send outDataArray
-		_delay_ms(80);
+		_delay_ms(150);
 		savepos = 0;
 		ADMUX = 0x20;				
 		UCSR0B &= ~(1<<RXCIE0);				//disable USART interrups
