@@ -41,6 +41,7 @@ C_SRCS +=  \
 ../Map.cpp \
 ../MapSection.cpp \
 ../node.cpp \
+../queueAtmel.cpp \
 ../slave.cpp \
 ../Styr_m.cpp
 
@@ -57,6 +58,7 @@ Communication.o \
 Map.o \
 MapSection.o \
 node.o \
+queueAtmel.o \
 slave.o \
 Styr_m.o
 
@@ -66,6 +68,7 @@ Communication.o \
 Map.o \
 MapSection.o \
 node.o \
+queueAtmel.o \
 slave.o \
 Styr_m.o
 
@@ -75,6 +78,7 @@ Communication.d \
 Map.d \
 MapSection.d \
 node.d \
+queueAtmel.d \
 slave.d \
 Styr_m.d
 
@@ -84,6 +88,7 @@ Communication.d \
 Map.d \
 MapSection.d \
 node.d \
+queueAtmel.d \
 slave.d \
 Styr_m.d
 
@@ -98,6 +103,8 @@ OUTPUT_FILE_DEP:= ./makedep.mk
 LIB_DEP+= 
 
 # AVR32/GNU C Compiler
+
+
 
 
 

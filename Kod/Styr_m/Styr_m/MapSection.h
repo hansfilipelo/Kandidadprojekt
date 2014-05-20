@@ -145,6 +145,7 @@ public:
 	void setFwdReference();
 	void setBwdReference();
 	void backToStart();
+	void handleIsland();
 	bool startExplore = false;
     
     int getRightDifference();
