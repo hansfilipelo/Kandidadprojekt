@@ -1232,7 +1232,7 @@ void Robot::robotRotated(){
 	if((RFIDmode)&&(rightFrontSensor < 20)){
 		setRightClosed();
 	}
-	else{
+	else if(!RFIDmode){
 		setFwdClosed();
 		setBwdClosed();
 		setRightClosed();
