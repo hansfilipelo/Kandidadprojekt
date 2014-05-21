@@ -185,9 +185,9 @@ Robot::Robot(int xPos, int yPos, Map* inMom, Communication* inComm) : MapSection
 	type = 'r';
 	direction = 'f';
 	
-	Kd = 13;
-	Kp = 20;
-	Ref = 10;
+	Kd = 7;
+	Kp = 6;
+	Ref = 12;
 	
 	trimRight = 15;
 	trimLeft = 0;
@@ -425,7 +425,7 @@ void Robot::rotateRight(){
 void Robot::turn(int pd){
     int output = floor(movementSpeed * 255 / 100);
 	
-	int pdOut = pd * movementSpeed * 0.01;
+	int pdOut = pd;
 	
 	// Protect against overflow
 	if (output+pdOut > 255 || output-pdOut < 0)
@@ -1297,18 +1297,20 @@ void Robot::waitForNewData()
 void Robot::backToStart()
 {
 	if(xCoord == 16 &&  yCoord==1 && direction == 'r' ){
-        // Activate explorer
+		
+		setSpeed(0);
+		drive();
+		// Activate explorer
         startExplore = true;
         
         // Cancer all u:s outside of closed area
-        /*for (int x = 0; x < 32; x=x+31) { //first and last col
+        for (int x = 0; x < 32; x=x+31) { //first and last col
             for (int y = 0; y < 17; y++) { //All rows
                 if ( mom->getPos(x,y)->getType() == 'u' ) {
                     mom->getPos(x,y)->cancer();
-                    return;
                 }
             }
-        }*/
+        }
 	}
 }
 

@@ -147,7 +147,7 @@ int main(void)
 	if((robotPointer->RFIDmode)&&(robotPointer->getFrontRightDistance() < 20)){
 		robotPointer->setRightClosed();
 	}
-	else{
+	else if(!robotPointer->RFIDmode){
 		robotPointer->setFwdClosed();
 	    robotPointer->setBwdClosed();
 	    robotPointer->setRightClosed();
@@ -210,6 +210,9 @@ int main(void)
 		
 	}
 /*--------------ExploreMode-----------------------------------------------------------------------*/
+	robotPointer->setSpeed(0);
+	robotPointer->drive();
+	
 	for(;;){
 
 				/*if(mapPointer->firstTimeMapping){
@@ -233,7 +236,24 @@ int main(void)
 				}
 				*///old untested a-star
 			robotPointer->explore();
+			if(!robotPointer->stillUnexplored()){
+				abstractionObject->sendMap();
+				break;
+			}
 		}
+		
+	for(;;){
+	asm("");
+	if(abstractionObject->sendMapNow){
+		asm("");
+		abstractionObject->sendMapNow=false;
+		abstractionObject->sendMap();
+		asm("");
+	}
+	asm("");
+	//bombo!
+	//return to home
+	}
 				
 		return 0;
 }

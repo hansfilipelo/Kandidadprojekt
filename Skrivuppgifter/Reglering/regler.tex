@@ -366,7 +366,7 @@ FastSLAM är en relativt modern teknik som använder ett så kallat partikelfilt
 x^i_n \sim p(x_n,m_n|y_{1:n}),\;\;\;\;\;\; i = 1, ..., N
 \end{gather}
 
-Där, som tidigare nämts, $x$ är robotens tillstånd, $m$ är landmärkens position och $y$ är mätningarna för givet tillstånd.  
+Där, som tidigare nämnts, $x$ är robotens tillstånd, $m$ är landmärkens position och $y$ är mätningarna för givet tillstånd.  
 
 Kortfattat bygger principen bakom FastSLAM på att sannolikhetsfördelning för landmärkens position och robotens tillstånd delas upp, där robotens position skattas med hjälp av ett partikelfilter och landmärken skattas med EKF. Nackdelen med metoden är att man genom omsampling av mätvärdena förlorar information som skulle kunna vara korrekt. Beroende på hur filtret prioriterar är det möjligt att man får en skev bild av omgivningen. 
 
@@ -379,10 +379,9 @@ För att effektivisera filtreringen av mätvärden delas olika distinkt upptäck
 \section{Slutsats}
 
 Frågan som SLAM grundas på går nu att delvis besvara. Det går att kartlägga en omgivning utan att exakt veta sin position, men det behövs någon typ av skattning av positionen för att göra en rimlig kartläggning. Ju bättre skattningen är desto bättre kommer kartan att bli i slutändan. Mer data och mer kvalitativ data kan bidra till att förbättra noggrannheten på skattningarna. FastSLAM verkar vara den metod som ger bäst skattning på tillstånden med minst beräkningar. Den slutsatsen är dock bara baserad på den teori som vi tagit upp i rapporten, eftersom inga tester genomförts i praktiken. En nackdel med FastSLAM är att det är många teoretiska delar som måste förstås för att kunna implementera
-det, på grund av att algoritmen innehåller två delar; partikelfilter och EKF, varav partikelfilter är
+det, på grund av att algoritmen innehåller två delar; partikelfilter och EKF.
 
-
-Problemet som kan uppstå då fler typer av sensorer används och större mängder data måste bearbetas är att beräkningskraften inte räcker till då filtren och mjukvaran som används för att implementera SLAM kan ställa för höga krav på beräkningsenheten.
+Ett problem som kan uppstå då fler typer av sensorer används och större mängder data måste bearbetas är att beräkningskraften inte räcker till då filtren och mjukvaran som används för att implementera SLAM kan ställa för höga krav på beräkningsenheten.
 
 
 \section{Reflektion}
@@ -424,7 +423,7 @@ International Journal of Robotics Research, 5(4), sida 56–68. Hämtad
 \url{http://www.frc.ri.cmu.edu/~hpm/project.archive/reference.file/Smith&Cheeseman.pdf}
 
 Weinberg, Harvey (1999), ''Dual Axis, Low g, Fully Integrated Accelerometers'', \url{http://www.analog.com/library/analogdialogue/archives/33-01/accel/index.html}. Hämtad 2014-05-12.
-\subsection{Websidor}
+\subsection*{Websidor}
 
 Introduction to MEMS gyroscopes. Solid State Technology, Insights for Electronics  Manufacturing (\url http://electroiq.com). \url{http://electroiq.com/blog/2010/11/introduction-to-mems-gyroscopes/}, hämtad 2014-05-06
 

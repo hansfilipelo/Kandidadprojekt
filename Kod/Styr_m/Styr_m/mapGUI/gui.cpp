@@ -364,7 +364,7 @@ void Gui::insertPathToMap()
     for(int i=1; i < size+1; i++){
 
         char c = pathArraySum[i];
-        std::cout<<"char :"<<c<<std::endl;
+        std::cout<<"direction:"<<c<<std::endl;
         if(c == 'f'){
             x++;
             mapArea[y][x] = 't';
