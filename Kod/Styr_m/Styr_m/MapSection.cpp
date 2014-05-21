@@ -1296,8 +1296,18 @@ void Robot::waitForNewData()
 void Robot::backToStart()
 {
 	if((previousSection->getX() == 16) && (previousSection->getY()==1 && direction == 'r' )){
-        mom->fillClosedArea();
-		startExplore = true;
+        // Activate explorer
+        startExplore = true;
+        
+        // Cancer all u:s outside of closed area
+        for (int x = 0; x < 32; x+31) { //first and last col
+            for (int y = 0; y < 17; y++) { //All rows
+                if ( mom->getPos(x,y)->getType() == 'u' ) {
+                    mom->getPos(x,y)->cancer();
+                    return;
+                }
+            }
+        }
 	}
 }
 
