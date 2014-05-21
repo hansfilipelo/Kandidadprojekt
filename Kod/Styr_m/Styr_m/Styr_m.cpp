@@ -153,7 +153,9 @@ int main(void)
     
 	abstractionObject->reactivateWheelSensor();
 	//endast för test av sendAstar
+#if TESTING == 0
 	_delay_ms(40);
+#endif
 	abstractionObject->sendAStar(mapPointer->pathArray);
 	
 	for (;;) {       

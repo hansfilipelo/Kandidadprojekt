@@ -281,6 +281,8 @@ void Communication::sendAStar(char* inArray)
 			slavePointer->outDataArray[i+3] = inArray[k*20+i];
 		}
 		slavePointer->SPI_Send();
+#if TESTING == 0
 		_delay_ms(40);
+#endif
 	}
 }
