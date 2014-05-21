@@ -141,6 +141,9 @@ int main(void)
 	int i = 0;
     //-----------------------------------------------------
     //right wall following loop
+	if((robotPointer->RFIDmode)&&(robotPointer->getBwdDistance() < 30)){
+		robotPointer->setBwdClosed();
+	}
 	if((robotPointer->RFIDmode)&&(robotPointer->getFrontRightDistance() < 20)){
 		robotPointer->setRightClosed();
 	}

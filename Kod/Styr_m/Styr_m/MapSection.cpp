@@ -1004,7 +1004,6 @@ void Robot::updateRobotPosition(){
 		setRFID();
 		commObj->isRFID=false;
 	}
-
 		if((RFIDmode)&&(rightFrontSensor < 20)&&(okayToClose)){
 			setRightClosed();
 		}
@@ -1216,7 +1215,7 @@ bool Robot::isWallFwdClose()
 	    if ( getFwdDistance() == 0 ) {
 		    return false;
 	    }
-	    if ( getFwdDistance() < 15 ){
+	    if ( getFwdDistance() < 20 ){
 		    return true;
 	    }
 	    else{
@@ -1227,6 +1226,9 @@ bool Robot::isWallFwdClose()
 // ----------------
 
 void Robot::robotRotated(){
+	if((RFIDmode)&&(getBwdDistance() < 30)&&(okayToClose)){
+		setBwdClosed();
+	}
 	if((RFIDmode)&&(rightFrontSensor < 20)){
 		setRightClosed();
 	}
@@ -1296,7 +1298,7 @@ void Robot::backToStart()
 {
 	if(xCoord == 16 &&  yCoord==1 && direction == 'r' ){
         // Activate explorer
-        startExplore = true;
+        //startExplore = true;
         
         // Cancer all u:s outside of closed area
         for (int x = 0; x < 32; x=x+31) { //first and last col
@@ -1394,3 +1396,161 @@ int Robot::getFrontRightDistance()
 {
 	return rightFrontSensor;
 }
+
+
+void Robot::explore(){
+    
+    //titta vŠnster
+    
+    while(stillUnexplored()){
+        if(lookForULeft()){
+            goAcross();
+        }else{
+            while(!wheelHasTurned){
+                followRight(); // follow right untill in new section.
+            }
+            updateRobotPosition();
+            setSpeed(0);
+            drive();
+        }
+        
+    }
+    //rotera och Œk till vŠggen
+    
+    //rotera v och hšgerfšlj
+    
+    //while(!unexploredInRow)
+    
+}
+
+bool Robot::lookForULeft();
+switch(direction){
+    case 'b' :
+        for(int i = xCoord ; xCoord > 0; i--){
+            if(mom->getPos(i,yCoord)->getType() == 'u'){
+                return true;
+            }
+        }
+        return false;
+//---------------------------------------------------------
+    case 'f' :
+        
+        for(int i = xCoord ; xCoord < 32; i++){
+            if(mom->getPos(i,yCoord)->getType() == 'u'){
+                return true;
+            }
+        }
+        return false;
+        
+//---------------------------------------------------------
+    case 'r' :
+        
+        for(int i = yCoord ; yCoord < 17; i++){
+            if(mom->getPos(xCoord,i)->getType() == 'u'){
+                return true;
+            }
+        }
+        return false;
+        
+//---------------------------------------------------------
+    case 'l' :
+        
+        for(int i = yCoord ; yCoord > 0; i--){
+            if(mom->getPos(xCoord,i)->getType() == 'u'){
+                return true;
+            }
+        }
+        return false;
+}
+
+void Robot::goAcross(){
+    rotateLeft();
+    
+    setSpeed(25);
+    changeGear('f');
+    while(!isWallFwd){
+        updateRobotPosition();
+        drive();
+    }
+    rotateLeft();
+}
+
+void Robot::followRight(){
+    
+    if(robotPointer->isCornerRight()){
+        while ( !(robotPointer->isCornerPassed()) && !(abstractionObject->getManual())) {
+            robotPointer->changeGear('f');
+            robotPointer->setSpeed(20);
+            robotPointer->drive();
+        }
+        //_delay_ms(25); // This delay ensures that we enter next segment.
+        robotPointer->rotateRight();
+        //said !iswallright lets try iscornerpassed
+        while ( robotPointer->isCornerPassed() && !(abstractionObject->getManual())) {
+            robotPointer->changeGear('f');
+            robotPointer->setSpeed(20);
+            robotPointer->drive();
+        }
+    }
+    
+    //was elseif before
+    if(robotPointer->isWallFwd()){
+        robotPointer->setSpeed(25);
+        robotPointer->changeGear('f');
+        while (!robotPointer->isWallFwdClose() && !(abstractionObject->getManual()))
+        {
+            robotPointer->drive();
+        }
+        robotPointer->setSpeed(0);
+        robotPointer->drive();
+        
+        
+        if(!robotPointer->isWallRight())
+        {
+            robotPointer->rotateRight();
+            //Drive forward untill robot has entered
+            while (!robotPointer->isWallRight() && !(abstractionObject->getManual())) {
+                robotPointer->changeGear('f');
+                robotPointer->setSpeed(25);
+                robotPointer->drive();
+            }
+        }
+        
+        else
+        {
+            robotPointer->rotateLeft();
+        }
+        
+    }
+    else
+    {
+        if(!robotPointer->isWallRight())
+        {
+            robotPointer->rotateRight();
+        }
+        else
+        {
+            
+            // stod robotPointer->getUserSpeed() ist fšr 35
+            robotPointer->setSpeed(25);
+            robotPointer->changeGear('f');
+            robotPointer->drive();
+            robotPointer->adjustPosition();
+        }
+    }
+    
+}
+
+
+bool Robot::stillUnexplored(){
+    for(int x = 0; x <32; x++){
+        for(int y = 0; y <17;y++){
+            if(mom->getPos(x,y)->getType() == 'u'){
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+
