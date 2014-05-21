@@ -1294,7 +1294,7 @@ void Robot::waitForNewData()
 
 void Robot::backToStart()
 {
-	if((previousSection->getX() == 16) && (previousSection->getY()==1 && direction == 'r' )){
+	if(xCoord == 16 &&  yCoord==1 && direction == 'r' )){
         // Activate explorer
         startExplore = true;
         
