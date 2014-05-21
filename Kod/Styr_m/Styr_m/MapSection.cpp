@@ -1305,7 +1305,6 @@ void Robot::backToStart()
             for (int y = 0; y < 17; y++) { //All rows
                 if ( mom->getPos(x,y)->getType() == 'u' ) {
                     mom->getPos(x,y)->cancer();
-                    return;
                 }
             }
         }
