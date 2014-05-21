@@ -114,6 +114,30 @@ void SerialPort::handleData(QByteArray inData){
         }
         return;
     }
+    if(inData[1] == 't'){
+        int pos = inData[2];
+        int size = inData[3];
+        int nrpos = size/20;
+
+        if (pos==0){
+            memcpy(GUI->pathArrayOne,QByteToArray(inData),27);
+        }
+        if (pos==1){
+            memcpy(GUI->pathArrayTwo,QByteToArray(inData),27);
+        }
+        if (pos==2){
+            memcpy(GUI->pathArrayThree,QByteToArray(inData),27);
+        }
+        if (pos==3){
+            memcpy(GUI->pathArrayFour,QByteToArray(inData),27);
+        }
+        if(pos==nrpos){
+            GUI->mergePathArray();
+            GUI->insertPathToMap();
+            GUI->updateMap();
+        }
+        return;
+    }
     if(inData[1] == 'S'){
 
         int sen0 = 100*inData[3]+10*inData[4]+inData[5];
@@ -128,6 +152,6 @@ void SerialPort::handleData(QByteArray inData){
         GUI->updateSensorValues(sen0,sen1,sen2,sen3,sen4,sen5,sen6,sen7);
 
         //std::cout << sen0 << '\n' << sen1 << '\n' << sen2 << '\n' << sen3 << '\n' << sen4 << '\n' << sen5 << '\n' << sen6 << '\n' << sen7 << std::endl;
-
     }
+
 }
