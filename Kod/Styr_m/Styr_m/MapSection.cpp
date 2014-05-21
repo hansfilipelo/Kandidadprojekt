@@ -189,7 +189,7 @@ bool MapSection::isClosed(int origX, int origY, int fwdCounter, int bwdCounter){
     else if ( mom->withinMap(xCoord, yCoord - 1) && mom->getPos(xCoord, yCoord - 1)->getType() == 'c' && !mom->getPos(xCoord, yCoord - 1)->hasBeenClosed ) {
         
         nextX = xCoord;
-        nextY = yCoord - 1;d
+        nextY = yCoord - 1;
         fwdCounter = fwdCounter + 1;
 	}
     // Check 1,5
@@ -1619,4 +1619,9 @@ void Robot::handleIsland()
 			adjustPosition();
 			}
 	}
+}
+
+int Robot::getFrontRightDistance()
+{
+	return rightFrontSensor;
 }

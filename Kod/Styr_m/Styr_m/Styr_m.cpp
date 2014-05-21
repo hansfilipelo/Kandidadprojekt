@@ -141,7 +141,7 @@ int main(void)
 	int i = 0;
     //-----------------------------------------------------
     //right wall following loop
-	if((robotPointer->RFIDmode)&&(robotPointer->rightFrontSensor < 20)){
+	if((robotPointer->RFIDmode)&&(robotPointer->getFrontRightDistance() < 20)){
 		robotPointer->setRightClosed();
 	}
 	else{
@@ -150,12 +150,11 @@ int main(void)
 	    robotPointer->setRightClosed();
 		robotPointer->setLeftClosed();
 	}
+	bool tst = true;
     
     abstractionObject->sendMap();
     
 	abstractionObject->reactivateWheelSensor();
-	
-	bool tst = true;
 	
 	for (;;) {       
         // Manual mode
@@ -176,11 +175,21 @@ int main(void)
 				/*------------------ HÖGERFÖLJNNG ---------------------- 
                  -------------------------------------------------------
                  -------------------------------------------------------*/
-                //endast för test av sendAstar
 				
 				if(tst){
+					// get the route
+		
+					mapPointer->convertToPathFinding();
+					int xStart = robotPointer->getX();
+					int yStart = robotPointer->getY();
+					robotPointer->findFinishPos();
+					int xFinish = robotPointer->getFinishX();
+					int yFinish = robotPointer->getFinishY();					
+					
+					mapPointer->aStar(1,16,5,16);
+	
 					abstractionObject->sendAStar(mapPointer->pathArray);
-					tst = false;
+ 					tst = false;
 				}
 				
 				//lets try with only ifs
@@ -251,7 +260,6 @@ int main(void)
                 -------------------------------------------------*/
 				if(mapPointer->firstTimeMapping){
 					mapPointer->firstTimeMapping = false;
-					//mapPointer->convertToPathFinding();
 					//Sets start and finnish coordinates
 					int xStart = robotPointer->getX();
 					int yStart = robotPointer->getY();
@@ -260,6 +268,7 @@ int main(void)
 					int yFinish = robotPointer->getFinishY();
 				
 					// get the route
+					mapPointer->convertToPathFinding();
 					mapPointer->aStar(xStart,yStart,xFinish,yFinish);
 					abstractionObject->sendAStar(mapPointer->pathArray);
 					robotPointer->goToAStar();
