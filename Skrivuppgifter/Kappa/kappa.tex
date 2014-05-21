@@ -126,15 +126,15 @@ När hela området är kartlagt ska roboten ta sig tillbaka till startpunkten oc
 \end{figure}
 
 Stora delar av arbetet med denna produkt består av att utnyttja den teoretiska kunskap som finns och att koppla den till praktiken för att sedan implementera principerna på roboten. 
-Detta innefattar bland annat reglerteori, digitalteknik, sannolikhetslära, optimering och matematisk analys.
+Detta innefattar bland annat reglerteori, digitalteknik, sannolikhetslära, optimering och matematisk analys.En av de största utmaningarna med robotens uppdrag är dock att rita ut en karta över området utan att veta var den befinner sig - men hur går det att veta var roboten befinner sig utan en karta?
 
-En av de största utmaningarna med robotens uppdrag är dock att rita ut en karta över området utan att veta var den befinner sig - men hur går det att veta var roboten befinner sig utan en karta? 
+I denna rapport diskuteras först teori kring att bygga en autonom robot för att sedan gå in på hur vilka metoder vi har använt för att utföra projektet. Därefter ger vi en teknisk beskrivning av de tekniker som vår robot använder sig av samt presenterar resultatet av projektet. Slutligen analyserar vi resultatet och lyfter fram våra reflektioner kring projektet. 
 
 \section{Problemformulering}
 %Redogör kort för kravbilden och referera till projektdirektiv och kravspecifikation för %att läsa detaljer.
 %Lägg återigen mest fokus på det som ni ansåg utmanande/intressant.
 
-Den slutgiltiga produkten ska uppfylla ett antal krav (Se Kravspecifikation) för att godkännas av beställaren. Principiellt ska roboten kunnas köra autonomt genom ett område (uppbyggt av kartongväggar) och vid rotation skicka en karta till en persondator som på ett prydligt sätt redovisar var roboten har sett. Roboten ska även kunna detektera brandhärdar som symboliseras med RFID-kort. Dessa kort placeras ut på slumpmässigt valda rutor på banan. 
+Den slutgiltiga produkten ska uppfylla ett antal krav (Se Kravspecifikation) för att godkännas av beställaren. Principiellt ska roboten kunnas köra autonomt genom ett område (uppbyggt av kartongväggar) och vid rotation skicka en karta till en persondator som på ett prydligt sätt redovisar vad roboten har sett. Roboten ska även kunna detektera brandhärdar som symboliseras med RFID-kort. Dessa kort placeras ut på slumpmässigt valda rutor på banan. 
 
 Kraven som ställts är delvis baserade på vad beställaren ville få levererat (Se Projektdirektiv för kartrobot) och delvis på sådant som projektgruppen ansåg var viktigt för robotens funktionalitet. Ett exempel på funktionalitet som har prioriterats är hantering av karta och sökalgoritmer som ansågs mest intressant dock även svårast att implementera. 
 Sammanfattningsvis består kraven bland annat av de delar som beskrivs av scenariot i inledningen. Den innehåller även en del krav på vilka delprodukter som ska vara klara vid vissa specifika datum.
@@ -148,7 +148,7 @@ Förutom kunskap från tidigare kurser har litteratur i form av webbsidor och b�
 Under projektets gång har gruppen haft hjälp av en handledare vid namn Peter Johansson, som är anställd på instutitionen för systemteknik vid Linköpings universitet. 
 
 \subsection{Litteratur}
-Den litteratur som använts under projektets gång består till stor del av böcker inom grunderna för bland annat sannolikhetslära, datorteknik\footnote{Roos, Olof. 1995. Grundläggande datorteknik. upplaga 1. Studentlitteratur AB}, elektronik\footnote{Söderkvist, Sune. 1996. Kretsteori och elektronik. utgåva 1. Tryckeriet Erik Larsson AB}, reglerteknik och matematisk analys.
+Den litteratur som använts under projektets gång består till stor del av böcker inom grunderna för bland annat sannolikhetslära, datorteknik\footnote{Roos, Olof. 1995. Grundläggande datorteknik. upplaga 1. Studentlitteratur AB}, elektronik\footnote{Söderkvist, Sune. 1996. Kretsteori och elektronik. utgåva 1. Tryckeriet Erik Larsson AB}, reglerteknik\footnote{Glad, Torkel och Ljung, Lennart (2006), \textit{Reglerteknik - Grundläggande teori}.} och matematisk analys.
 
 \subsection{Webb}
 Den ovannämnda litteraturen har kombinerats med datablad för de komponenter som använts tagna från ISY:s sida VanHeden\footnote{\url{https://docs.isy.liu.se/twiki/bin/view/VanHeden}} och datablad från Atmel för de processorer som modulerna baserats på\footnote{\url{http://www.atmel.com/images/doc8059.pdf}}. 
@@ -158,7 +158,7 @@ Utöver detta har även diverse forum på internet berörande exempelvis \emph{C
 \section{Genomförande}
 %Beskriv hur projektet har bedrivits och referera bland annat till LIPS-modellen, %systemskiss, projektplan och designspecifikation. Observera att designspecifikationen %belyser arbetsprocessen och inte den slutliga produkten så om ni uppdaterat %designspecifikationen löpande under projektet så kan ni infoga t ex den version som var %aktuell vid BP3.
 
-Det grundläggande upplägget av projektet har baserats på Lips-modellen\footnote{http://www.liu.se/cul/resurser/lips/kort-beskrivning-av-lips-modellen?l=sv}. Modellen innehåller tre stycken faser. FÖRE, UNDER och EFTER utförandet av projektet. Beslut angående projektets fortskridande tas vid så kallade beslutspunkter (förkortas BP) som ligger placerade löpande under de olika faserna. Utöver detta finns det även milstolpar som används för att kunna verifiera att projektet håller tidplanen. 
+Det grundläggande upplägget av projektet har baserats på Lips-modellen\footnote{http://www.liu.se/cul/resurser/lips/kort-beskrivning-av-lips-modellen?l=sv}. Modellen innehåller tre stycken faser. FÖRE, UNDER och EFTER utförandet av projektet. Beslut angående projektets fortskridande har tagits vid så kallade beslutspunkter (förkortas BP) som ligger placerade löpande under de olika faserna. Utöver detta finns det även milstolpar som används för att kunna verifiera att projektet håller tidplanen. 
 
 \subsection{Före}
 De dokument som producerades under för-fasen så som systemskiss och projektplan skrevs gemensamt för att alla medlemmar skulle få en så bra inblick som möjligt i hur arbetet planerades. För mer detaljerad beskrivning av arbetsupplägget hänvisas läsaren till ovan nämnda dokument (Se Systemskiss och Projektplan).
@@ -191,7 +191,7 @@ Roboten har implementerats med tre stycken AVR Atmega 1284p-processorer, med en 
 Kommunikationen mellan processorerna sker via en Serial Peripheral Interface Bus, hädanefter refererad till som en SPI-buss.
 Roboten är konstruerad med tre processorer på två separata vir-kort och kopplas ihop med hjälp av en bandkabel. På roboten agerar kommunikationsmodulen master och de övriga två modulerna är slaves. SPI-bussen kan sammanfattas till att master skiftar ett 8 bitars register med en slave. SPI-bussen har alltså möjlighet för duplex dataöverföring. För ytterligare detaljer angående SPI-bussen se den tekniska dokumentationen.
 
-När master väljer en slave, genom Slave Select signalen, genereras ett avbrott på slave-processorn. Detta innebär att master kan skicka/hämta data i princip var som helst i ett program på en slave-processor. För kommunikations som måste initieras från slave till master har vi kopplat en avbrottssignal som säger till master-processorn att påbörja SPI-kommunikation med aktuell slave-processor.
+När master väljer en slave, genom Slave Select signalen, genereras ett avbrott på slave-processorn. Detta innebär att master kan skicka/hämta data i princip var som helst i ett program på en slave-processor. För kommunikation som måste initieras från slave till master har vi kopplat en avbrottssignal som säger till master-processorn att påbörja SPI-kommunikation med aktuell slave-processor.
 
 \subsubsection{Datahantering}
 För att avbrotten ska bli så korta som möjligt på processorn så har datahanteringen på kommunikationsmodulen flyttats ut ur avbrott. Anledningen till detta är att så länge processorn befinner sig i avbrott skulle vidare avbrott kunna missas. Sanningsvariabler ifall ny data finns tillgänglig för datahantering används istället. Dessa sanningsvariabler avläses i master-processorns main-loop, vilket visas i flödesdiagrammet i figur~\ref{fig:SPIrec}. Detta ger att nya mottagningar kan påbörjas medan data behandlas, man får dock beakta att data i en given buffer måste behandlas innan den skrivs över av nästa kommunikation.
@@ -322,7 +322,7 @@ På styrmodulen ligger en karta i form av en array som uppdateras allteftersom r
 Vid sändning av kartan upp till master och sedan vidare till PC-mjukvaran konverteras objekten till bokstäver som sedan avgör färgerna i den uppritande kartan.
 
 \subsection{A-star}
-För att finna en bra färdväg från punkt A till B i kartan har en algoritm som kallas Astar implementerats. Algoritmen utgår ifrån Dijkstra''s algoritm, som löser problemet att finna billigaste vägen från nod A till B. Den fungerar så att den successivt besöker hörnpunkter i kartan och utgår från startpositionen. Algoritmen expanderar sedan utåt från startpunkten tills målet är hittat. Dijkstra’s algoritm ger garanterat den billigaste vägen, så länge som nodernas kostnader är positiva.\footnote{http://theory.stanford.edu/\textasciitilde amitp/GameProgramming/AStarComparison.html\#the-a-star-algorithm}
+En algoritm vid namn Astar har implementerats för att finna en bra färdväg från punkt A till B i kartan. Algoritmen utgår ifrån Dijkstra's algoritm, som löser problemet att finna billigaste vägen från nod A till B. Den fungerar så att den successivt besöker hörnpunkter i kartan och utgår från startpositionen. Algoritmen expanderar sedan utåt från startpunkten tills målet är hittat. Dijkstra’s algoritm ger garanterat den billigaste vägen, så länge som nodernas kostnader är positiva.\footnote{http://theory.stanford.edu/\textasciitilde amitp/GameProgramming/AStarComparison.html\#the-a-star-algorithm}
 
 Den Giriga Bäst-Först algoritmen fungerar på liknande sätt, förutom att den kan uppskatta hur långt från målet alla hörnpunkter är. Istället för att välja noden som befinner sig närmast startpunkten väljer den här algoritmen den som ligger närmast slutpunkten. Astar algoritmen kombinerar det bästa av dessa två algoritmer och ger alltså garanterat den minst kostsamma vägen, på kortare tid än Dijkstras. \footnote{http://www.policyalmanac.org/games/aStarTutorial.htm}
 \newline
@@ -344,14 +344,22 @@ Den slutgiltiga produkten styrs först och främst med hjälp av den tillhörand
 
 När det autonoma läget är aktiverat ska inte användaren behöva göra något utan allt ska sköta sig själv fram till dess att området är kartlagt. En mer detaljerad beskrivning går att finna i användarmanualen för MapMaster2001 (Se Användarmanual)
 
-%Kommentera om produkten klarade de kraven som ställdes upp i kravspecifikationen. 
+%Kommentera om produkten klarade de kraven som ställdes upp i kravspecifikationen.
+
+Roboten kan i autonomt läge kartlägga och leta efter RFID-taggar i 25\% av chassits maxhastighet.
+
+De flesta krav med prioritet 1 (se kravspecifikationen) är uppfyllda. Dessa är t.ex. de krav som har att göra med robotens rörelse, de som handlar om kartritning och de flesta krav på autonom körning. Roboten kan följa en högervägg och kartlägga större områden. Den kan dock inte åka genom öppna ytor, de segment som inte gränsar till någon vägg. Således har inte alla krav med prioritet 1 uppfyllts. 
 
 %Beskriv vilken prestanda produkten har och hur det har testats, hänvisa till eventuella %testprotokoll.
-Roboten kan i autonomt läge kartlägga och leta efter RFID-taggar i 25\% av chassits maxhastighet.
+
+Mindre funktioner, så som manuell styrning, kartläggning och avståndssensorernas felmarginal, har testats kontinuerligt under projektets gång. Tester på den slutgiltiga roboten har skett på banor med olika former och storlek. Kartritning, RFID-detektion, positionering, reglering och autonom styrning har då testats.
+
 
 
 \section{Slutsatser}
 %Slutsatser
+Vi är nöjda med projektet i helhet, trots att vi inte uppfyllde alla krav ett. Vi har trots allt gjort en fullt autonom robot som kan navigera och rita upp en karta i 
+
 Det som av projektgruppen ansågs mest utmanande var att konstruera en fullt funktionell buss. Denna ställde till med problem då den i början ofta tappade bitar vilket gav upphov till besynnerligt beteende hos roboten. 
 
 Att få gyrot att fungera var även det en utmaning då det var ytterst viktigt att få rotationerna av roboten så exakta som möjligt. Utan exakta rotationer skulle nämligen roboten kunna positionsuppskatta fel.
