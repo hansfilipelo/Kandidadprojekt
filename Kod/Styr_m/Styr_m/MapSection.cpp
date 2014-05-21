@@ -1,5 +1,5 @@
-#include "MapSection.h"
-#include "Map.h"
+#include "./MapSection.h"
+#include "./Map.h"
 
 using namespace std;
 
@@ -143,6 +143,10 @@ int MapSection::findUnexplored(){
 // Checks if closed area is closed loop
 
 bool MapSection::isClosed(int origX, int origY, int fwdCounter, int bwdCounter){
+#if TESTING == 1
+    cout << "I am X: " << xCoord << " Y: " << yCoord << endl;
+    cout << "fwdCounter: " << fwdCounter << " bwdCounter: " << bwdCounter << endl;
+#endif
     
     if ( fwdCounter - bwdCounter < 3 ) {
 #if TESTING == 1
@@ -175,7 +179,7 @@ bool MapSection::isClosed(int origX, int origY, int fwdCounter, int bwdCounter){
         fwdCounter = fwdCounter + 1;
 	}
     // Check 10,5
-    else if ( (xCoord - 1 > 0) && (yCoord - 1 > 0) && (xCoord - 1 < 32) && (yCoord - 1 < 18) && mom->getPos(xCoord - 1, yCoord - 1)->getType() == 'c' && !mom->getPos(xCoord - 1, yCoord - 1)->hasBeenClosed ) {
+    else if ( mom->withinMap(xCoord - 1, yCoord - 1) && mom->getPos(xCoord - 1, yCoord - 1)->getType() == 'c' && !mom->getPos(xCoord - 1, yCoord - 1)->hasBeenClosed ) {
         
         nextX = xCoord - 1;
         nextY = yCoord - 1;
@@ -185,7 +189,7 @@ bool MapSection::isClosed(int origX, int origY, int fwdCounter, int bwdCounter){
     else if ( mom->withinMap(xCoord, yCoord - 1) && mom->getPos(xCoord, yCoord - 1)->getType() == 'c' && !mom->getPos(xCoord, yCoord - 1)->hasBeenClosed ) {
         
         nextX = xCoord;
-        nextY = yCoord - 1;
+        nextY = yCoord - 1;d
         fwdCounter = fwdCounter + 1;
 	}
     // Check 1,5
@@ -297,7 +301,7 @@ bool MapSection::isClosed(int origX, int origY, int fwdCounter, int bwdCounter){
 }
 
 // -----------------------------
-// Cancer function for fillig unexplored spaces not reachable
+// Cancer function for filling unexplored spaces not reachable
 
 void MapSection::cancer(){
     this->setType('c');
@@ -341,9 +345,9 @@ Robot::Robot(int xPos, int yPos, Map* inMom, Communication* inComm) : MapSection
 	type = 'r';
 	direction = 'f';
 	
-	Kd = 26;
-	Kp = 13;
-	Ref = 8;
+	Kd = 13;
+	Kp = 20;
+	Ref = 10;
 	
 	trimRight = 15;
 	trimLeft = 0;
@@ -354,13 +358,13 @@ Robot::Robot(int xPos, int yPos, Map* inMom, Communication* inComm) : MapSection
 	fwdRefShort = 22;
 	bwdRefShort = 4; 
 	
-	
-	
 	rotateRightActive = false;
 	rotateLeftActive = false; 
     
     commObj = inComm;
     previousSection = mom->getPos(xPos,yPos);
+	previousSection->setType('e');
+    previousSection->isVisited = true;
     mom->setSection(xPos,yPos,this);
 }
 
@@ -710,9 +714,10 @@ void Robot::setFwdClosed(){
 				 mom->convertSection(xCoord,yCoord + i + 1, 'e');
 			}
 		}
-        if(output == 0){
+		// Probably not needed /H-F
+        /*if(output == 0 && speed == 0){
 	        mom->convertSection(xCoord,yCoord + 1, 'c');
-        }
+        }*/
 	}
 	// Direction 17->y->0, "bwd"
 	else if (direction == 'b'){
@@ -726,9 +731,10 @@ void Robot::setFwdClosed(){
 				mom->convertSection(xCoord,yCoord - i - 1, 'e');
 			}
         }
-		if(output == 0){
+		// Probably not needed /H-F
+		/*if(output == 0 && speed == 0){
 			mom->convertSection(xCoord,yCoord - 1, 'c');
-		}
+		}*/
 	}
 	// Direction 32->x->0, "left"
 	else if (direction == 'l'){									//left right kan vara omvänt, måste testas
@@ -742,9 +748,10 @@ void Robot::setFwdClosed(){
 				mom->convertSection(xCoord + i + 1,yCoord, 'e');
 			}
         }
-		if(output == 0){
+		// Probably not needed /H-F
+		/*if(output == 0 && speed == 0){
 			mom->convertSection(xCoord + 1,yCoord, 'c');
-		}
+		}*/
 	}
 	// Direction 0->x->32, "right"
 	else if (direction == 'r'){
@@ -758,9 +765,10 @@ void Robot::setFwdClosed(){
             mom->convertSection(xCoord - i - 1,yCoord, 'e');
 			}
         }
-		if(output == 0){
+		// Probably not needed /H-F
+		/*if(output == 0 && speed == 0){
 			mom->convertSection(xCoord - 1,yCoord, 'c');
-		}
+		}*/
 	}	
 }
 
@@ -790,6 +798,9 @@ void Robot::setBwdClosed(){
 				mom->convertSection(xCoord,yCoord - i - 1, 'e');
 			}
         }
+		if ( output == 0 && speed == 0 && !mom->getVisited(xCoord,yCoord-1)) {
+			mom->convertSection(xCoord,yCoord - 1, 'c');
+		}
 	}
 	// Direction 17->y->0, "bwd"
 	else if (direction == 'b'){
@@ -802,6 +813,9 @@ void Robot::setBwdClosed(){
 			if(mom->getPos(xCoord,yCoord + i + 1)->getType() != 'f' && mom->getPos(xCoord,yCoord + i + 1)->getType() != 'c'){
 				mom->convertSection(xCoord,yCoord + i + 1, 'e');
 			}
+		}
+		if ( output == 0 && speed == 0 && !mom->getVisited(xCoord,yCoord+1)) {
+			mom->convertSection(xCoord,yCoord + 1, 'c');
 		}
 	}
 	// Direction 0->x->32, "right"
@@ -816,6 +830,9 @@ void Robot::setBwdClosed(){
 				mom->convertSection(xCoord - i - 1,yCoord, 'e');
 			}
         }
+		if ( output == 0 && speed == 0  && !mom->getVisited(xCoord-1,yCoord)) {
+			mom->convertSection(xCoord - 1,yCoord, 'c');
+		}
 	}
 	// Direction 32->x->0, "left"
 	else if (direction == 'r'){
@@ -829,6 +846,9 @@ void Robot::setBwdClosed(){
 				mom->convertSection(xCoord + i + 1,yCoord, 'e');
 			}
         }
+		if ( output == 0 && speed == 0  && !mom->getVisited(xCoord+1,yCoord)) {
+			mom->convertSection(xCoord + 1,yCoord, 'c');
+		}
 	}
 }
 
@@ -863,7 +883,7 @@ void Robot::setLeftClosed(){
                 mom->convertSection(xCoord + i + 1,yCoord, 'e');
             }
         }
-        if(output == 0){
+        if(output == 0 && !mom->getVisited(xCoord+1,yCoord)){
 	        mom->convertSection(xCoord + 1,yCoord, 'c');
         }
 	}
@@ -882,7 +902,7 @@ void Robot::setLeftClosed(){
                 mom->convertSection(xCoord - i - 1,yCoord, 'e');
             }
         }
-		if(output == 0){
+		if(output == 0 && !mom->getVisited(xCoord-1,yCoord)){
 			mom->convertSection(xCoord - 1,yCoord, 'c');
 		}
 	}
@@ -899,7 +919,7 @@ void Robot::setLeftClosed(){
                 mom->convertSection(xCoord,yCoord - i - 1, 'e');
             }
         }
-		if(output == 0){
+		if(output == 0 && !mom->getVisited(xCoord,yCoord-1)){
 			mom->convertSection(xCoord,yCoord - 1, 'c');
 		}
 	}
@@ -916,7 +936,7 @@ void Robot::setLeftClosed(){
                 mom->convertSection(xCoord,yCoord + i + 1, 'e');
             }
         }
-		if(output == 0){
+		if(output == 0 && !mom->getVisited(xCoord,yCoord+1)){
 			mom->convertSection(xCoord,yCoord + 1, 'c');
 		}
 	}
@@ -936,7 +956,7 @@ void Robot::setRightClosed(){
 		output = 80/40;//if distance is great only print max 2 empty.
 	}
 	else{
-		output = rightFrontSensor/40;
+		output = rightFrontSensor/40;	//kanske borde ha +10 innan man delar med 40 för att robotens inte är längst till höger i rutan
 	}
 	
 	// Set closed section output + 1 steps away from robot.
@@ -952,7 +972,7 @@ void Robot::setRightClosed(){
                 mom->convertSection(xCoord - i - 1,yCoord, 'e');
             }
         }
-        if(output == 0){
+        if(output == 0 && !mom->getVisited(xCoord-1,yCoord)){
             mom->convertSection(xCoord - 1,yCoord, 'c');
         }
 	}
@@ -970,7 +990,7 @@ void Robot::setRightClosed(){
             }
             
         }
-        if(output == 0){
+        if(output == 0 && !mom->getVisited(xCoord+1,yCoord)){
             mom->convertSection(xCoord + 1,yCoord, 'c');
         }
 	}
@@ -986,7 +1006,7 @@ void Robot::setRightClosed(){
                 mom->convertSection(xCoord,yCoord + i + 1, 'e');
             }
         }
-        if(output == 0){
+        if(output == 0 && !mom->getVisited(xCoord,yCoord+1)){
             mom->convertSection(xCoord,yCoord + 1, 'c');
         }
         
@@ -1003,7 +1023,7 @@ void Robot::setRightClosed(){
                 mom->convertSection(xCoord,yCoord - i - 1, 'e');
             }
         }
-        if(output == 0){
+        if(output == 0 && !mom->getVisited(xCoord,yCoord-1)){
             mom->convertSection(xCoord,yCoord - 1, 'c');
         }
 	}
@@ -1034,43 +1054,20 @@ bool Robot::isCornerPassed(){
 // -----------------------------------------
 //Sets reference values and moves robot in map abstraction if robot has moved one square
 void Robot::updateRobotPosition(){
-	/*
-	if(validSensor == 'N'){
-        validSensor = determineValidSensor();
-    }
-    int sensorDifference = 0;
-    
-    if (validSensor == 'b'){
-		int ref = bwdReference/40;
-        sensorDifference = getBwdDistance() - ref*40;
-    }
-    else if(validSensor == 'f'){
-		int ref = fwdReference/40;
-		sensorDifference = getFwdDistance() - ref*40;
-    }
-	*/
-	
-/* The paramaters for sensor differences (references?) are called:
-		fwdRefLong;
-		bwdRefLong;
-		fwdRefShort;
-		bwdRefShort;
-*/
     
    if (wheelHasTurned){
 	   wheelHasTurned = false;
-		commObj->reactivateWheelSensor();
-	   //commObj->reactivateRFID();
+	   commObj->reactivateWheelSensor();
 	   MapSection* tempSection;
 	   
 	   //halt
 	   setSpeed(0);
 	   drive();
-		#if TESTING == 0
-		_delay_ms(250);
-	   #endif
-	   setSpeed(userSpeed);
-	   drive();
+		//#if TESTING == 0
+		//_delay_ms(250);
+	   //#endif
+	   setSpeed(userSpeed); //borde flyttas till efter switchen
+	   
 	   
 		switch (direction){
             
@@ -1084,6 +1081,13 @@ void Robot::updateRobotPosition(){
 				mom->setSection(xCoord,yCoord,previousSection);
 				//save temp section to previous section
 				previousSection = tempSection;
+                
+                //put back last section and tell it, it has been visited.
+                previousSection->isVisited = true;
+				if (previousSection->getType() != 'f')
+				{
+					previousSection->setType('e');
+				}
 				
 				yCoord++;
 				break;
@@ -1099,6 +1103,12 @@ void Robot::updateRobotPosition(){
 				//save temp section to previous section
 				previousSection = tempSection;
 				
+                previousSection->isVisited = true;
+				if (previousSection->getType() != 'f')
+				{
+					previousSection->setType('e');
+				}
+                
 				yCoord--;
             
 				break;
@@ -1114,6 +1124,12 @@ void Robot::updateRobotPosition(){
 				//save temp section to previous section
 				previousSection = tempSection;
 				
+                previousSection->isVisited = true;
+				if (previousSection->getType() != 'f')
+				{
+					previousSection->setType('e');
+				}
+                
 				xCoord--;
   
 				break;
@@ -1129,6 +1145,12 @@ void Robot::updateRobotPosition(){
 				//save temp section to previous section
 				previousSection = tempSection;
 				
+                previousSection->isVisited = true;
+				if (previousSection->getType() != 'f')
+				{
+					previousSection->setType('e');
+				}
+				
 				xCoord++;
             
 				break;
@@ -1138,13 +1160,23 @@ void Robot::updateRobotPosition(){
 				//would like to throw some kind of error here.
 				return;
 		}
-	
-		if (okayToClose){
+	if(commObj->isRFID){
+		setRFID();
+		commObj->isRFID=false;
+	}
+
+		if((RFIDmode)&&(rightFrontSensor < 20)&&(okayToClose)){
+			setRightClosed();
+		}
+		else if (okayToClose){
 			setFwdClosed();
 			setBwdClosed();
 			setRightClosed();
 			setLeftClosed();
 		}
+		backToStart(); // not tested fully, could still give nonsense.
+		drive();
+		//backToStart(); // not tested fully, could still give nonsense.
    }
 }
 
@@ -1356,10 +1388,15 @@ bool Robot::isWallFwdClose()
 // ----------------
 
 void Robot::robotRotated(){
-	setFwdClosed();
-	setBwdClosed();
-	setRightClosed();
-	setLeftClosed();
+	if((RFIDmode)&&(rightFrontSensor < 20)){
+		setRightClosed();
+	}
+	else{
+		setFwdClosed();
+		setBwdClosed();
+		setRightClosed();
+		setLeftClosed();
+	}
 }
 
 //-----------------
@@ -1416,4 +1453,170 @@ void Robot::waitForNewData()
 
 // ----------------------
 
+void Robot::backToStart()
+{
+	if((previousSection->getX() == 16) &&(previousSection->getY()==1)){
+		if ( mom->getPos(xCoord,yCoord - 1)->isClosed(xCoord,yCoord - 1,0,-3)){
+			mom->fillClosedArea();
+			//startExplore = true;
+		}
+	}
+}
 
+// Exploring
+// -----------------------
+
+void Robot::findFinishPos(){
+    for (int i = 0; i < 32; i++) {
+        for (int it = 0; it < 17; i++) {
+            if ( mom->getPos(i,it)->getType() == 'u' ) {
+                finishX = i;
+                finishY = it;
+                break;
+            }
+        }
+    }
+}
+
+int Robot::getFinishX(){
+    return finishX;
+}
+
+int Robot::getFinishY(){
+	return finishY;
+}
+
+void Robot::goToAStar(){
+	int sizeOfArray = int(mom->pathArray[0]) - 48;
+
+	for (int i=1;i < sizeOfArray+1 ; i++) {
+		
+		char p = mom->pathArray[i];
+		
+		if(p == 'r'){
+			if(direction == 'r'){
+				break;
+			}
+			else if(direction=='l'){
+				rotateRight();
+				rotateRight();
+			}
+			else if(direction=='f'){
+				rotateRight();
+			}
+			else if(direction=='b'){
+				rotateLeft();
+			}
+		}
+		else if(p == 'l'){
+			if(direction == 'r'){
+				rotateRight();
+				rotateRight();
+			}
+			else if(direction=='l'){
+				break;
+			}
+			else if(direction=='f'){
+				rotateLeft();
+			}
+			else if(direction=='b'){
+				rotateRight();
+			}
+		}
+		else if(p == 'f'){
+			if(direction == 'r'){
+				rotateLeft();
+			}
+			else if(direction=='l'){
+				rotateRight();
+			}
+			else if(direction=='f'){
+				break;
+			}
+			else if(direction=='b'){
+				rotateRight();
+				rotateRight();
+			}
+		}
+		else if(p == 'b'){
+			if(direction == 'r'){
+				rotateRight();
+			}
+			else if(direction=='l'){
+				rotateLeft();
+			}
+			else if(direction=='f'){
+				rotateRight();
+				rotateRight();
+			}
+			else if(direction=='b'){
+				break;
+			}
+		}
+		//checks if wall
+		if(isWallFwd()){
+			foundIsland = true;
+			return;
+		}
+		
+		changeGear('f');
+		setSpeed(25);
+		drive();
+		while(!wheelHasTurned){}
+		updateRobotPosition();
+	}	
+}
+
+void Robot::handleIsland()
+{
+	rotateLeft();
+			//lets try with only ifs
+	if(isCornerRight()){
+		while (!isCornerPassed()) {
+			changeGear('f');
+			setSpeed(15);
+			drive();
+			}
+			//_delay_ms(25); // This delay ensures that we enter next segment.
+			rotateRight();
+			//said !iswallright lets try iscornerpassed
+		while (isCornerPassed()) {
+				changeGear('f');
+				setSpeed(15);
+				drive();
+			}
+	}
+	if(isWallFwd()){
+		setSpeed(20);
+		changeGear('f');
+		while (!isWallFwdClose()){
+			drive();
+			}
+			setSpeed(0);
+			drive();
+			if(!isWallRight()){
+				rotateRight();
+				//Drive forward untill robot has entered
+				while (!isWallRight()) {
+					changeGear('f');
+					setSpeed(25);
+					drive();
+					}
+				}
+			else{
+				rotateLeft();
+			}	
+	}
+	else{
+		if(!isWallRight()){
+			rotateRight();
+		}
+		else{
+			// stod getUserSpeed() ist för 35
+			setSpeed(25);
+			changeGear('f');
+			drive();
+			adjustPosition();
+			}
+	}
+}

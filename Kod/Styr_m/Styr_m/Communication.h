@@ -23,6 +23,7 @@ public:
     void sendRotateRequest();
 	void reactivateRFID();
 	void reactivateWheelSensor();
+	void sendAStar(char*);
     
 //flyttade från protected
 	unsigned char inData[27];
@@ -31,7 +32,7 @@ public:
 	int row = 0;
     double assembleDouble(char, char, char, char);
 	bool getManual();
-    
+    volatile bool isRFID=false;
     
 protected:
     
@@ -41,6 +42,7 @@ protected:
     int dataLength;
     Slave* slavePointer;
     Robot* robotPointer;
+	
 	
 };
 

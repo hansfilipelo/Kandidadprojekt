@@ -23,8 +23,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "MapSection.h"
-#include "Map.h"
+#include "./MapSection.h"
+#include "./Map.h"
 #include "Abstraction.h"
 #include "Communication.h"
 #include "slave.h"
@@ -132,9 +132,6 @@ int main(void)
 	
 #endif
 	
-	
-	
-	
 	robotPointer->waitForNewData(); 
 	robotPointer->waitForNewData();
 	robotPointer->setFwdReference();
@@ -144,14 +141,21 @@ int main(void)
 	int i = 0;
     //-----------------------------------------------------
     //right wall following loop
-    robotPointer->setFwdClosed();
-    robotPointer->setBwdClosed();
-    robotPointer->setRightClosed();
-    robotPointer->setLeftClosed();
+	if((robotPointer->RFIDmode)&&(robotPointer->rightFrontSensor < 20)){
+		robotPointer->setRightClosed();
+	}
+	else{
+		robotPointer->setFwdClosed();
+	    robotPointer->setBwdClosed();
+	    robotPointer->setRightClosed();
+		robotPointer->setLeftClosed();
+	}
     
     abstractionObject->sendMap();
     
 	abstractionObject->reactivateWheelSensor();
+	
+	bool tst = true;
 	
 	for (;;) {       
         // Manual mode
@@ -167,74 +171,107 @@ int main(void)
 			}
         }
         // Automatic mode
-        else {            
-			//----------------------Högerföljare----------
-			//lets try with only ifs
-			if(robotPointer->isCornerRight()){
-				while ( !(robotPointer->isCornerPassed()) && !(abstractionObject->getManual())) {
-					robotPointer->changeGear('f');
-					robotPointer->setSpeed(15);
-					robotPointer->drive();
+        else {
+			if(!robotPointer->startExplore){
+				/*------------------ HÖGERFÖLJNNG ---------------------- 
+                 -------------------------------------------------------
+                 -------------------------------------------------------*/
+                //endast för test av sendAstar
+				
+				if(tst){
+					abstractionObject->sendAStar(mapPointer->pathArray);
+					tst = false;
 				}
-				//_delay_ms(25); // This delay ensures that we enter next segment.
-				robotPointer->rotateRight();
-				//said !iswallright lets try iscornerpassed
-				while ( robotPointer->isCornerPassed() && !(abstractionObject->getManual())) {
-					robotPointer->changeGear('f');
-					robotPointer->setSpeed(15);
-					robotPointer->drive();
-				}
-			}
-			
-			//was elseif before
-			if(robotPointer->isWallFwd()){
-				robotPointer->setSpeed(20);
-				robotPointer->changeGear('f');
-				while (!robotPointer->isWallFwdClose() && !(abstractionObject->getManual()))
-				{
-					robotPointer->drive();
-				}
-				robotPointer->setSpeed(0);
-				robotPointer->drive();
-
-
-				if(!robotPointer->isWallRight())
-				{
-					robotPointer->rotateRight();
-					//Drive forward untill robot has entered
-					while (!robotPointer->isWallRight() && !(abstractionObject->getManual())) {
+				
+				//lets try with only ifs
+				if(robotPointer->isCornerRight()){
+					while ( !(robotPointer->isCornerPassed()) && !(abstractionObject->getManual())) {
 						robotPointer->changeGear('f');
-						robotPointer->setSpeed(25);
+						robotPointer->setSpeed(20);
+						robotPointer->drive();
+					}
+					//_delay_ms(25); // This delay ensures that we enter next segment.
+					robotPointer->rotateRight();
+					//said !iswallright lets try iscornerpassed
+					while ( robotPointer->isCornerPassed() && !(abstractionObject->getManual())) {
+						robotPointer->changeGear('f');
+						robotPointer->setSpeed(20);
 						robotPointer->drive();
 					}
 				}
-
-				else
-				{
-					robotPointer->rotateLeft();
-				}
-				
-			}
-			else
-			{
-				if(!robotPointer->isWallRight())
-				{
-					robotPointer->rotateRight();
-				}
-				else
-				{
-					
-					// stod robotPointer->getUserSpeed() ist för 35
-					robotPointer->setSpeed(35);
+			
+				//was elseif before
+				if(robotPointer->isWallFwd()){
+					robotPointer->setSpeed(25);
 					robotPointer->changeGear('f');
+					while (!robotPointer->isWallFwdClose() && !(abstractionObject->getManual()))
+					{
+						robotPointer->drive();
+					}
+					robotPointer->setSpeed(0);
 					robotPointer->drive();
-					robotPointer->adjustPosition();
+
+
+					if(!robotPointer->isWallRight())
+					{
+						robotPointer->rotateRight();
+						//Drive forward untill robot has entered
+						while (!robotPointer->isWallRight() && !(abstractionObject->getManual())) {
+							robotPointer->changeGear('f');
+							robotPointer->setSpeed(25);
+							robotPointer->drive();
+						}
+					}
+
+					else
+					{
+						robotPointer->rotateLeft();
+					}
+				
+				}
+				else
+				{
+					if(!robotPointer->isWallRight())
+					{
+						robotPointer->rotateRight();
+					}
+					else
+					{
+					
+						// stod robotPointer->getUserSpeed() ist för 35
+						robotPointer->setSpeed(25);
+						robotPointer->changeGear('f');
+						robotPointer->drive();
+						robotPointer->adjustPosition();
+					}
+				}
+			}
+			else{
+				/*--------------KARTLÄGGNING----------------------
+                -------------------------------------------------*/
+				if(mapPointer->firstTimeMapping){
+					mapPointer->firstTimeMapping = false;
+					//mapPointer->convertToPathFinding();
+					//Sets start and finnish coordinates
+					int xStart = robotPointer->getX();
+					int yStart = robotPointer->getY();
+					robotPointer->findFinishPos();
+					int xFinish = robotPointer->getFinishX();
+					int yFinish = robotPointer->getFinishY();
+				
+					// get the route
+					mapPointer->aStar(xStart,yStart,xFinish,yFinish);
+					abstractionObject->sendAStar(mapPointer->pathArray);
+					robotPointer->goToAStar();
+					
+				}//drive around this island 
+				if(robotPointer->foundIsland){
+					robotPointer->handleIsland();
 				}
 			}
 		}
-    
 		// Look for walls every 500th turn of main loop
-		if (i == 250) {
+		if (i == 3000) {
 			// Update position in map
 			robotPointer->updateRobotPosition();
 			i = 0;
@@ -247,8 +284,6 @@ int main(void)
 			abstractionObject->sendMap();
 			asm("");
 		}
-	
-}
-
-return 0;
+	}
+	return 0;
 }

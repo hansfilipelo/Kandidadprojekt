@@ -25,6 +25,7 @@
 #include <string.h>
 #include "Abstraction.h"
 #include "Communication.h"
+#include <math.h>
 
 class Map;
 class Communication;
@@ -61,8 +62,10 @@ public:
     
     virtual bool isUnexplored();
     virtual int findUnexplored();
+	bool isVisited = false;
 	
 protected:
+    
 	int xCoord;
 	int yCoord;
 	int step;
@@ -84,7 +87,7 @@ protected:
 // ------------------------------------------------
 // Subclass Robot
 
-class Robot : protected MapSection
+class Robot : public MapSection
 {
 public:
     Robot(int xPos, int yPos, Map* inMom, Communication* inComm);
@@ -142,11 +145,16 @@ public:
     void updateRobotPosition();
 	void setFwdReference();
 	void setBwdReference();
+	void backToStart();
+	void handleIsland();
+	bool startExplore = false;
     
     int getRightDifference();
     int getUserSpeed();
+	void goToAStar();
 	
 	bool wheelHasTurned = false;
+	bool foundIsland = false;
     
     // Automatic control
     void turn(int pd); //Positive or negative value will decide left or right
@@ -160,7 +168,14 @@ public:
 	volatile bool newData = false;
 	volatile bool okayToClose = true;
     
+    // Exploring in the middle
+    int getFinishX();
+    int getFinishY();
+    void findFinishPos();
+    
 protected:
+    int finishX;
+    int finishY;
     int getRightDistance();
 	int getLeftDistance();
 	int getFwdDistance();
@@ -171,6 +186,7 @@ protected:
     int bwdLongSensor;
     int fwdShortSensor;
     int bwdShortSensor;
+	bool RFIDmode = false;
 	
     int rightFrontSensor;
     int rightBackSensor;

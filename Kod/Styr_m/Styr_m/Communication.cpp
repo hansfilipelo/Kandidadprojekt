@@ -125,7 +125,7 @@ void Communication::handleData(){
     if (this->inData[1] == 'R') {
 	    asm("");
 	    asm("");
-		robotPointer->setRFID();
+		isRFID=true;
 		asm("");
 		asm("");
 	}
@@ -138,6 +138,7 @@ void Communication::handleData(){
 		asm("");
 	}
     
+
     if( this->inData[1] == 'F' ){
         sendMapNow = true;
     }
@@ -261,4 +262,25 @@ void Communication::reactivateWheelSensor(){
 		slavePointer->SPI_Send();
 	}
 #endif
+}
+
+void Communication::sendAStar(char* inArray)
+{
+	int sizeOfArray = inArray[0];//- 48;
+	int timesToSend = 1 + sizeOfArray/20;
+	
+	slavePointer->outDataArray[0] = 22;
+	slavePointer->outDataArray[1] = 't';	
+	
+	for(int k=0; k<timesToSend; k++){
+		slavePointer->outDataArray[2] = k;
+		slavePointer->outDataArray[3] = sizeOfArray;
+		
+		for (int i=1; i<20;i++)
+		{
+			slavePointer->outDataArray[i+3] = inArray[k*20+i];
+		}
+		slavePointer->SPI_Send();
+		_delay_ms(40);
+	}
 }

@@ -11,14 +11,12 @@
 
 #if TESTING == 1
 #include <iostream>
-#include <queue>
 #endif
 
 #include "node.h"
-#include "Abstraction.h"
 #include <string.h>
 #include <stdio.h>
-
+#include "queueAtmel.h"
 
 class MapSection;
 class Robot;
@@ -30,6 +28,7 @@ public:
     Map();
     ~Map();
 	
+	void convertToPathFinding();
 	void setSection(int, int, MapSection*);
 	void convertSection(int,int,char);
 	//char* getColAsChar(int);
@@ -37,11 +36,14 @@ public:
 	MapSection* getPos(int,int);
     void fillClosedArea();
     bool withinMap(int,int);
-    void convertToPathFinding();
     int pathMap[32][17];
-    char pathArray[100];
-    void aStar(const int &, const int &,const int &, const int &);
+    char pathArray[100] = {8,'f','f','r','r','r','f','l','l'};
+    void aStar(int, int, int, int);
 	char colArray[25];
+	
+	bool firstTimeMapping = true;
+    bool getVisited(int,int);
+    void setVisited(int,int,bool);
     
 #if TESTING == 1
     void printMap();

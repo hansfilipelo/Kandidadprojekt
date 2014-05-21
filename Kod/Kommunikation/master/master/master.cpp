@@ -66,6 +66,10 @@ void handleDataFromSteer(){
 			Firefly.mapDone = true;
 		}
 	}
+	if(Bus.buffer[1]=='t'){
+		memcpy(Firefly.outDataArray, Bus.buffer,27);
+		Firefly.sendArray();
+	}
 	if(Bus.buffer[1]=='g'){
 		if ( !Bus.gyroActive )
 		{
@@ -109,6 +113,11 @@ void handleDataFromSensor(){
         }
 		
 	}
+	if(Bus.buffer[1] == 'R'){
+		Bus.outDataArray[0] = 1;
+		Bus.outDataArray[1] = 'R';
+		Bus.sendArray(1);
+	}
 	if(Bus.buffer[1] == 'S'){
 		// copy data to Bus outDataArray
 		memcpy(Bus.outDataArray, Bus.buffer,27);
@@ -135,14 +144,7 @@ void handleDataFromSensor(){
 			Bus.gyroActive = false;
 		}
 	}
-	if(Bus.buffer[1] == 'R'){
-		if (Bus.rfidActive){
-			Bus.outDataArray[0] = 1;
-			Bus.outDataArray[1] = 'R';
-			Bus.sendArray(1);
-			Bus.rfidActive = false;
-		}
-	}
+	
 }
 
 #if DEBUG == 0
@@ -164,10 +166,11 @@ ISR(INT2_vect){
 }
 //Sensor module wants to send data
 ISR(INT1_vect){
-	cli();
+	asm("");
 	Bus.receiveArray(0);
+	asm("");
 	ReceiveFromSensor = true;
-	sei();
+	asm("");
 }
 
 ISR(PCINT2_vect){
