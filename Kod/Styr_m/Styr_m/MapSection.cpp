@@ -1091,7 +1091,7 @@ void Robot::updateRobotPosition(){
 		_delay_ms(250);
 	   #endif
 	   setSpeed(userSpeed); //borde flyttas till efter switchen
-	   drive();
+	   
 	   
 		switch (direction){
             
@@ -1195,6 +1195,8 @@ void Robot::updateRobotPosition(){
 			setLeftClosed();
 		}
 		backToStart(); // not tested fully, could still give nonsense.
+       drive();
+		//backToStart(); // not tested fully, could still give nonsense.
    }
 }
 

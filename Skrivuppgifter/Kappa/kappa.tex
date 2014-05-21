@@ -139,13 +139,6 @@ Den slutgiltiga produkten ska uppfylla ett antal krav (Se Kravspecifikation) fö
 Kraven som ställts är delvis baserade på vad beställaren ville få levererat (Se Projektdirektiv för kartrobot) och delvis på sådant som projektgruppen ansåg var viktigt för robotens funktionalitet. Ett exempel på funktionalitet som har prioriterats är hantering av karta och sökalgoritmer som ansågs mest intressant dock även svårast att implementera. 
 Sammanfattningsvis består kraven bland annat av de delar som beskrivs av scenariot i inledningen. Den innehåller även en del krav på vilka delprodukter som ska vara klara vid vissa specifika datum.
 
-Det som av projektgruppen ansågs mest utmanande var att konstruera en fullt funkmtionell buss. Denna ställde till med problem då den i början ofta tappade bitar vilket gav upphov till besynnerligt beteende hos roboten. 
-
-Att få gyrot att fungera var även det en utmaning då det var ytterst viktigt att få rotationerna av roboten exakta. Utan exakta rotationer skulle nämligen roboten kunna positionsuppskatta fel.
-
-Det sista svåra momentet var positionsskattningen. Att simultant positionsskatta och kartlägga visade sig vara lika svårt som förväntat.
-
-
 
 \section{Kunskapsbas}
 
@@ -325,13 +318,13 @@ SLAM står för Simultaneous Localization And Mapping och innebär att roboten s
 Positionsskattning fungerar genom att reflexsensor uppskattar när roboten rört sig 40 cm. Dessa 40 cm representerar ett segment i vår kartrepresentation och närmre upplösning krävs ej då minsta objektet som ska kartläggas är 40 cm. Roboten innehåller information om vilken riktning den färdas i och får information från sensormodulen om avståndet som färdats. Roboten förflyttas i kartan i aktuell riktning. Vid rotation uppdateras riktningen. 
 
 \subsubsection{Kartläggning}
-På styrmodulen ligger en karta i form av en array som uppdateras allt eftersom roboten åker och tar in ny mätdata. Arrayen innehåller objekt som kan vara av typen, explored, unexplored, closed och fire. En fördel med att ha objekt i arrayen är t.ex. att funktioner för att överblick och dra slutsatser kring kartan blir väldigt lätta att implementera. T.ex. kan man kolla om en vägg tillhör en köksö genom att helt enkel fråga ett objekt som är closed, isClosed? Ett rekursivt anrop sker då mellan alla närliggade vägger och om väggarna utgör en sluten cirkel, kan hela köksön markes som sluten på kartan. 
+På styrmodulen ligger en karta i form av en array som uppdateras allteftersom roboten åker och tar in ny mätdata. Arrayen innehåller objekt som kan vara av typen, explored, unexplored, closed och fire. En fördel med att ha objekt i arrayen är t.ex. att funktioner för att överblick och dra slutsatser kring kartan blir väldigt lätta att implementera. T.ex. kan man kolla om en vägg tillhör en köksö genom att helt enkel fråga ett objekt som är closed, isClosed? Ett rekursivt anrop sker då mellan alla närliggande väggar och om väggarna utgör en sluten cirkel, kan hela köksön markes som sluten på kartan. 
 Vid sändning av kartan upp till master och sedan vidare till PC-mjukvaran konverteras objekten till bokstäver som sedan avgör färgerna i den uppritande kartan.
 
 \subsection{A-star}
 För att finna en bra färdväg från punkt A till B i kartan har en algoritm som kallas Astar implementerats. Algoritmen utgår ifrån Dijkstra''s algoritm, som löser problemet att finna billigaste vägen från nod A till B. Den fungerar så att den successivt besöker hörnpunkter i kartan och utgår från startpositionen. Algoritmen expanderar sedan utåt från startpunkten tills målet är hittat. Dijkstra’s algoritm ger garanterat den billigaste vägen, så länge som nodernas kostnader är positiva.\footnote{http://theory.stanford.edu/\textasciitilde amitp/GameProgramming/AStarComparison.html\#the-a-star-algorithm}
 
-Den Giriga Bäst-Först algoritmen fungerar på liknande sätt, förutom att den kan uppskatta hur långt från målet alla hörnpunker är. Istället för att välja noden som befinner sig närmast startpunkten väljer den här algoritmen den som ligger närmast slutpunkten. Astar algoritmen kombinerar det bästa av dessa två algoritmer och ger alltså garanterat den minst kostsamma vägen, på kortare tid än Dijkstras. \footnote{http://www.policyalmanac.org/games/aStarTutorial.htm}
+Den Giriga Bäst-Först algoritmen fungerar på liknande sätt, förutom att den kan uppskatta hur långt från målet alla hörnpunkter är. Istället för att välja noden som befinner sig närmast startpunkten väljer den här algoritmen den som ligger närmast slutpunkten. Astar algoritmen kombinerar det bästa av dessa två algoritmer och ger alltså garanterat den minst kostsamma vägen, på kortare tid än Dijkstras. \footnote{http://www.policyalmanac.org/games/aStarTutorial.htm}
 \newline
 I figur~\ref{fig:Astar} visas två exempel på färdväg som Astar-algoritmen har valt vid testning på PC. Färdvägen beskrivs med bokstaven R och vägg/hinder betecknas med bokstaven 0. Startpunkt (S) och slutpunk (F) har slumpats fram. 
 
@@ -351,24 +344,26 @@ Den slutgiltiga produkten styrs först och främst med hjälp av den tillhörand
 
 När det autonoma läget är aktiverat ska inte användaren behöva göra något utan allt ska sköta sig själv fram till dess att området är kartlagt. En mer detaljerad beskrivning går att finna i användarmanualen för MapMaster2001 (Se Användarmanual)
 
-%Kommentera om produkten klarade de kraven som ställdes upp i kravspecifikationen.
-%Beskriv vilken prestanda produkten har och hur det har testats, hänvisa till eventuella %testprotokoll. 
-Roboten uppfyller i princip alla krav av högsta prioritet som ställts och även en del av lägre prioritet. Bland annat så kan roboten i 25\% av försöken kartlägga ett område helt korrekt och finna ett flertal brandhärdar och markera ut dem på kartan. Kartan ritas då upp i PC-mjukvaran tillsammans med grafer för den senaste sensordatan.
+%Kommentera om produkten klarade de kraven som ställdes upp i kravspecifikationen. 
 
-
+%Beskriv vilken prestanda produkten har och hur det har testats, hänvisa till eventuella %testprotokoll.
+Roboten kan i autonomt läge kartlägga och leta efter RFID-taggar i 25\% av chassits maxhastighet.
 
 
 \section{Slutsatser}
 %Slutsatser
+Det som av projektgruppen ansågs mest utmanande var att konstruera en fullt funktionell buss. Denna ställde till med problem då den i början ofta tappade bitar vilket gav upphov till besynnerligt beteende hos roboten. 
 
+Att få gyrot att fungera var även det en utmaning då det var ytterst viktigt att få rotationerna av roboten så exakta som möjligt. Utan exakta rotationer skulle nämligen roboten kunna positionsuppskatta fel.
+
+Det sista svåra momentet var positionsskattningen. Att simultant positionsskatta och kartlägga visade sig vara lika svårt som förväntat.
 
 %Sammanfatta arbetet. 
-
 
 %Lyft fram det ni är mest nöjda med.
 Vi är väldigt nöjda med är vår implementering av kartritningen, slutning av områden och vår A*-sökalgoritm. Vi är även väldigt nöjda och stolta över objektstrukturen och klass nyttjandet som hela projektgruppen gjort under projektets gång.
 
-%Reflektera över resultatet såväl tekniskt som över genomförandet. Referera efterstudien.
+%Reflektera över resultatet såväl tekniskt som över genomförandet. Referera efterstudien.ƒ
 %Framtida arbete
 
 
@@ -416,7 +411,14 @@ Söderkvist, Sune. 1996. Kretsteori och elektronik, utgåva 1. Tryckeriet Erik L
 \newgeometry{left=2cm,right=2cm,bottom=2cm,top=2cm}
 \section*{Appendix A}
 \addcontentsline{toc}{section}{Appendix A}
+\label{komuppg.}
 \includepdf[pages=-]{../Kommunikation/kom.pdf}
+\section*{Appendix B}
+\addcontentsline{toc}{section}{Appendix B}
+\includepdf[pages=-]{../Reglering/regler.pdf}
+\section*{Appendix C}
+\addcontentsline{toc}{section}{Appendix C}
+\includepdf[pages=-]{../Sensorer/Sensorer.pdf}
 
 %\section{Appendix B}
 %\includepdf[pages=-]{../Regler/regler.pdf}
@@ -424,6 +426,6 @@ Söderkvist, Sune. 1996. Kretsteori och elektronik, utgåva 1. Tryckeriet Erik L
 %\section{Appendix C}
 %\includepdf[pages=-]{../Sensorer/Sensor.pdf}
 
-\label{komuppg.}
-LIPS-dokument och fördjupningar enligt ovan.
+
+%LIPS-dokument och fördjupningar enligt ovan.
 \end{document}

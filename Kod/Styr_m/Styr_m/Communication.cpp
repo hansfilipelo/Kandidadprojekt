@@ -274,9 +274,11 @@ void Communication::sendAStar(char* inArray)
 	
 	for(int k=0; k<timesToSend; k++){
 		slavePointer->outDataArray[2] = k;
-		for (int i=1; i<21;i++)
+		slavePointer->outDataArray[3] = sizeOfArray;
+		
+		for (int i=1; i<20;i++)
 		{
-			slavePointer->outDataArray[i+2] = inArray[k*20+i];
+			slavePointer->outDataArray[i+3] = inArray[k*20+i];
 		}
 		slavePointer->SPI_Send();
 		_delay_ms(40);
