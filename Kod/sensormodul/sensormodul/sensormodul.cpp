@@ -321,7 +321,7 @@ int main(void)
 	while(1){				// Wait forever
 		
 		while(gyromode){		//while gyromode is true
-			if(segmentsTurned > 7){
+			if(segmentsTurned > 12){
 				//------------Send------------------------------
 				sensormodul.outDataArray[0] = 1;
 				sensormodul.outDataArray[1] = 'W';

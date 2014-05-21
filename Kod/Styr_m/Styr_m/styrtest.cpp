@@ -41,19 +41,20 @@ int main(){
     Robot* testRobot = new Robot(16,2,mom, testComm);
     testComm->setRobot(testRobot);
     
+    /*
     //filltest
     mom->printMap();
     
     cout << endl;
     
-    int isTest = (int)mom->getPos(16,1)->isClosed(16,1,0,-3);
+    int isTest = (int)mom->getPos(16,1)->isClosed(16,1,0,-3,16,1);
     
     cout << "isClosed?: " << isTest << endl;
     
     cout << endl;
     mom->fillClosedArea();
     
-    mom->printMap();
+    mom->printMap();*/
     
     /*
      // queueAtmel-testing

@@ -343,11 +343,55 @@ void Gui::updateMap(){
                 scene->addItem(temp);
                 scene->addItem(robot);
             }
+            else if(mapArea[rad][kol]=='t'){
+                temp->setBrush(Qt::yellow);
+                scene->addItem(temp);
+            }
             else{
                 std::cout << mapArea[rad][kol] << std::endl;
             }
         }
 
+    }
+}
+
+void Gui::insertPathToMap()
+{
+    //defines start coordinates
+    int x = 4;
+    int y = 16;
+    int size = pathArraySum[0];
+    for(int i=1; i < size+1; i++){
+
+        char c = pathArraySum[i];
+        std::cout<<"char :"<<c<<std::endl;
+        if(c == 'f'){
+            x++;
+            mapArea[y][x] = 't';
+        }
+        else if(c == 'r'){
+            y--;
+            mapArea[y][x] = 't';
+        }
+        else if(c == 'b'){
+            x--;
+            mapArea[y][x] = 't';
+        }
+        else if(c == 'l'){
+            y++;
+            mapArea[y][x] = 't';
+        }
+    }
+}
+
+void Gui::mergePathArray()
+{
+    pathArraySum[0]=pathArrayOne[3];
+    for(int i=1; i<21; i++){
+        pathArraySum[i]=pathArrayOne[i+3];
+        pathArraySum[20+i]=pathArrayTwo[i+3];
+        pathArraySum[40+i]=pathArrayThree[i+3];
+        pathArraySum[60+i]=pathArrayFour[i+3];
     }
 }
 

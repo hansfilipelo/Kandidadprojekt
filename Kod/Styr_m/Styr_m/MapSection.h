@@ -50,7 +50,6 @@ public:
     virtual MapSection* getLeft();
     virtual MapSection* getRight();
     
-    virtual bool isClosed(int origX, int origY, int fwdCounter, int bwdCounter);
     virtual void cancer();
     
     /*
@@ -80,7 +79,7 @@ protected:
 	Map* mom;
     char next;
     
-    volatile bool hasBeenClosed = false;
+    bool hasBeenClosed = false;
 };
 
 
@@ -155,6 +154,7 @@ public:
 	
 	bool wheelHasTurned = false;
 	bool foundIsland = false;
+	bool RFIDmode = true;
     
     // Automatic control
     void turn(int pd); //Positive or negative value will decide left or right
@@ -172,14 +172,15 @@ public:
     int getFinishX();
     int getFinishY();
     void findFinishPos();
-    
+	int getFrontRightDistance();
+    int getBwdDistance();
+	
 protected:
     int finishX;
     int finishY;
     int getRightDistance();
 	int getLeftDistance();
 	int getFwdDistance();
-	int getBwdDistance();
 	
     
 	int fwdLongSensor;
