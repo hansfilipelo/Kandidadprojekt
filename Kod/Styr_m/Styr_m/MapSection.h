@@ -150,7 +150,6 @@ public:
     
     int getRightDifference();
     int getUserSpeed();
-	void goToAStar();
 	
 	bool wheelHasTurned = false;
 	bool foundIsland = false;
