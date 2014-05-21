@@ -258,29 +258,6 @@ int main(void)
 					}
 				}
 			}
-			else{
-				/*--------------KARTLÄGGNING----------------------
-                -------------------------------------------------*/
-				if(mapPointer->firstTimeMapping){
-					mapPointer->firstTimeMapping = false;
-					//Sets start and finnish coordinates
-					int xStart = robotPointer->getX();
-					int yStart = robotPointer->getY();
-					robotPointer->findFinishPos();
-					int xFinish = robotPointer->getFinishX();
-					int yFinish = robotPointer->getFinishY();
-				
-					// get the route
-					mapPointer->convertToPathFinding();
-					mapPointer->aStar(xStart,yStart,xFinish,yFinish);
-					abstractionObject->sendAStar(mapPointer->pathArray);
-					robotPointer->goToAStar();
-					
-				}//drive around this island 
-				if(robotPointer->foundIsland){
-					robotPointer->handleIsland();
-				}
-			}
 		}
 		// Look for walls every 500th turn of main loop
 		if (i == 3000) {
