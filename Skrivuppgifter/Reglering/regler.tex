@@ -363,12 +363,12 @@ Matriserna $H$ och $F$ är alltså Jacobianer för systemets tillståndsmatriser
 FastSLAM är en relativt modern teknik som använder ett så kallat partikelfilter för att filtrera mätdata, där varje tänkbart tillstånd för systemet ses som en partikel. De mest sannolika värdena sparas och de minst sannolika tillstånden förkastas. Man kallar det här för en omsampling då man utgår från en sampelmängd av tillstånd och sedan uppdaterar denna när man får nya mätningar\footnote{David Törnqvist. Estimation and Detection with Applications to Navigation.}. Antag att partikelfiltret plockar ut $N$ tillstånd ur den totala mängden tillstånd. 
 
 \begin{gather}
-x^i_n \sim p(x_n|y_{1:n}),\;\;\;\;\;\; i = 1, ..., N
+x^i_n \sim p(x_n,m_n|y_{1:n}),\;\;\;\;\;\; i = 1, ..., N
 \end{gather}
 
 Där, som tidigare nämts, $x$ är robotens tillstånd, $m$ är landmärkens position och $y$ är mätningarna för givet tillstånd.  
 
-Tillstånden samplas sedan flera gånger genom filtret tills dess att man med tillräckligt stor sannolikhet kan säga vad systemets tillstånd är. Metoden har visat sig effektiv i praktiken. Nackdelen med metoden är att man genom omsampling av mätvärdena förlorar information som skulle kunna vara korrekt. Beroende på hur filtret prioriterar är det möjligt att man får en skev bild av omgivningen. 
+Kortfattat bygger principen bakom FastSLAM på att sannolikhetsfördelning för landmärkens position och robotens tillstånd delas upp, där robotens position skattas med hjälp av ett partikelfilter och landmärken skattas med EKF. Nackdelen med metoden är att man genom omsampling av mätvärdena förlorar information som skulle kunna vara korrekt. Beroende på hur filtret prioriterar är det möjligt att man får en skev bild av omgivningen. 
 
 För att effektivisera filtreringen av mätvärden delas olika distinkt upptäckta objekt i robotens miljö in i olika zoner. Dessa zoner filtreras sedan individuellt för att få fram den mest sannolika positionen för objektet i zonen.
 
@@ -378,7 +378,11 @@ För att effektivisera filtreringen av mätvärden delas olika distinkt upptäck
 \newpage
 \section{Slutsats}
 
-Frågan som SLAM grundas på går nu att delvis besvara. Det går att kartlägga en omgivning utan att exakt veta sin position, men det behövs någon typ av skattning av positionen för att göra en rimlig kartläggning. Ju bättre skattningen är desto bättre kommer kartan bli i slutändan. Mer data och mer kvalitativ data kan bidrar till att förbättra säkerheten på skattningarna. Detta skulle även kunna kombineras med olika typer av skattningsalgoritmer för att optimera och effektivisera processeringen av data. Problemet som kan uppstå då fler typer av sensorer används och större mängder data måste bearbetas är att beräkningskraften inte räcker till då filtren och mjukvaran som används för att implementera SLAM kan ställa för höga krav på beräkningsenheten.
+Frågan som SLAM grundas på går nu att delvis besvara. Det går att kartlägga en omgivning utan att exakt veta sin position, men det behövs någon typ av skattning av positionen för att göra en rimlig kartläggning. Ju bättre skattningen är desto bättre kommer kartan att bli i slutändan. Mer data och mer kvalitativ data kan bidra till att förbättra noggrannheten på skattningarna. FastSLAM verkar vara den metod som ger bäst skattning på tillstånden med minst beräkningar. Den slutsatsen är dock bara baserad på den teori som vi tagit upp i rapporten, eftersom inga tester genomförts i praktiken. En nackdel med FastSLAM är att det är många teoretiska delar som måste förstås för att kunna implementera
+det, på grund av att algoritmen innehåller två delar; partikelfilter och EKF, varav partikelfilter är
+
+
+Problemet som kan uppstå då fler typer av sensorer används och större mängder data måste bearbetas är att beräkningskraften inte räcker till då filtren och mjukvaran som används för att implementera SLAM kan ställa för höga krav på beräkningsenheten.
 
 
 \section{Reflektion}

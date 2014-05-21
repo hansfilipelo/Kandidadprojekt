@@ -40,19 +40,16 @@ int main(){
     Communication* testComm = new Communication(testSlave);
     Robot* testRobot = new Robot(16,2,mom, testComm);
     testComm->setRobot(testRobot);
-   
-    /*
+    
+    
     //filltest
     mom->printMap();
     
     cout << endl;
     
-    int isTest = (int)mom->getPos(16,1)->isClosed(16,1,0,-3);
-    
-    cout << "isClosed?: " << isTest << endl;
+    mom->getPos(31,16)->cancer();
     
     cout << endl;
-    mom->fillClosedArea();
     
     mom->printMap();
 

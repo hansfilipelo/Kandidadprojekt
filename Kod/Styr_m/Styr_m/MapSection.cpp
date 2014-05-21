@@ -139,166 +139,6 @@ int MapSection::findUnexplored(){
 	}
 }
 
-// ------------------------
-// Checks if closed area is closed loop
-
-bool MapSection::isClosed(int origX, int origY, int fwdCounter, int bwdCounter){
-#if TESTING == 1
-    cout << "I am X: " << xCoord << " Y: " << yCoord << endl;
-    cout << "fwdCounter: " << fwdCounter << " bwdCounter: " << bwdCounter << endl;
-#endif
-    
-    if ( fwdCounter - bwdCounter < 3 ) {
-#if TESTING == 1
-        cout << "xCoor: " << xCoord << endl;
-		cout << "yCoord: " << yCoord << endl;
-        cout << "fwdCounter: " << fwdCounter << endl;
-        cout << "bwdCounter: " << bwdCounter << endl;
-#endif
-        
-        hasBeenClosed = false;
-        return false;
-    }
-    
-    if ( ((abs(xCoord-origX) < 2) && (abs(yCoord-origY) < 2)) && fwdCounter > 10 ) {
-        hasBeenClosed = false;
-        return true;
-    }
-    
-    int nextX;
-    int nextY;
-    
-    this->hasBeenClosed = true;
-    
-    // Using clock as direction pointer in comments
-    // Check 9
-    if (mom->withinMap(xCoord - 1,yCoord) && mom->getPos(xCoord - 1, yCoord)->getType() == 'c' && !mom->getPos(xCoord - 1, yCoord)->hasBeenClosed ) {
-        
-        nextX = xCoord - 1;
-        nextY = yCoord;
-        fwdCounter = fwdCounter + 1;
-	}
-    // Check 10,5
-    else if ( mom->withinMap(xCoord - 1, yCoord - 1) && mom->getPos(xCoord - 1, yCoord - 1)->getType() == 'c' && !mom->getPos(xCoord - 1, yCoord - 1)->hasBeenClosed ) {
-        
-        nextX = xCoord - 1;
-        nextY = yCoord - 1;
-        fwdCounter = fwdCounter + 1;
-	}
-    // Check 12
-    else if ( mom->withinMap(xCoord, yCoord - 1) && mom->getPos(xCoord, yCoord - 1)->getType() == 'c' && !mom->getPos(xCoord, yCoord - 1)->hasBeenClosed ) {
-        
-        nextX = xCoord;
-        nextY = yCoord - 1;
-        fwdCounter = fwdCounter + 1;
-	}
-    // Check 1,5
-    else if (mom->withinMap(xCoord + 1, yCoord - 1) && mom->getPos(xCoord + 1, yCoord - 1)->getType() == 'c' && !mom->getPos(xCoord + 1, yCoord - 1)->hasBeenClosed ) {
-        
-        nextX = xCoord + 1;
-        nextY = yCoord - 1;
-        fwdCounter = fwdCounter + 1;
-	}
-    // Check 3
-    else if (mom->withinMap(xCoord + 1, yCoord) && mom->getPos(xCoord + 1, yCoord)->getType() == 'c' && !mom->getPos(xCoord + 1, yCoord)->hasBeenClosed ) {
-        
-        nextX = xCoord + 1;
-        nextY = yCoord;
-        fwdCounter = fwdCounter + 1;
-	}
-    // Check 4,5
-    else if ( mom->withinMap(xCoord + 1, yCoord + 1) && mom->getPos(xCoord + 1, yCoord + 1)->getType() == 'c' && !mom->getPos(xCoord + 1, yCoord + 1)->hasBeenClosed ) {
-        
-        nextX = xCoord + 1;
-        nextY = yCoord + 1;
-        fwdCounter = fwdCounter + 1;
-	}
-    // Check 6
-    else if ( mom->withinMap(xCoord, yCoord + 1) && mom->getPos(xCoord, yCoord + 1)->getType() == 'c' && !mom->getPos(xCoord, yCoord + 1)->hasBeenClosed ) {
-        
-        nextX = xCoord;
-        nextY = yCoord + 1;
-        fwdCounter = fwdCounter + 1;
-	}
-    // Check 7,5
-    else if ( mom->withinMap(xCoord - 1, yCoord + 1) && mom->getPos(xCoord - 1, yCoord + 1)->getType() == 'c' && !mom->getPos(xCoord - 1, yCoord + 1)->hasBeenClosed ) {
-        
-        nextX = xCoord - 1;
-        nextY = yCoord + 1;
-        fwdCounter = fwdCounter + 1;
-    }
-    // ----------------------------------------------------
-    // Using clock as direction pointer in comments. Now checking without hasBeenClosed
-    // Check 9
-    else if (mom->withinMap(xCoord - 1,yCoord) && mom->getPos(xCoord - 1, yCoord)->getType() == 'c' ) {
-        
-        nextX = xCoord - 1;
-        nextY = yCoord;
-        bwdCounter = bwdCounter + 1;
-	}
-    // Check 10,5
-    else if ( mom->withinMap(xCoord - 1, yCoord - 1) && mom->getPos(xCoord - 1, yCoord - 1)->getType() == 'c' ) {
-        
-        nextX = xCoord - 1;
-        nextY = yCoord - 1;
-        bwdCounter = bwdCounter + 1;
-	}
-    // Check 12
-    else if ( mom->withinMap(xCoord, yCoord - 1) && mom->getPos(xCoord, yCoord - 1)->getType() == 'c' ) {
-        
-        nextX = xCoord;
-        nextY = yCoord - 1;
-        bwdCounter = bwdCounter + 1;
-	}
-    // Check 1,5
-    else if ( mom->withinMap(xCoord + 1, yCoord - 1) && mom->getPos(xCoord + 1, yCoord - 1)->getType() == 'c' ) {
-        
-        nextX = xCoord + 1;
-        nextY = yCoord - 1;
-        bwdCounter = bwdCounter + 1;
-	}
-    // Check 3
-    else if (mom->withinMap(xCoord + 1, yCoord) && mom->getPos(xCoord + 1, yCoord)->getType() == 'c' ) {
-        
-        nextX = xCoord + 1;
-        nextY = yCoord;
-        bwdCounter = bwdCounter + 1;
-	}
-    // Check 4,5
-    else if ( mom->withinMap(xCoord + 1, yCoord + 1) && mom->getPos(xCoord + 1, yCoord + 1)->getType() == 'c' ) {
-        
-        nextX = xCoord + 1;
-        nextY = yCoord + 1;
-        bwdCounter = bwdCounter + 1;
-	}
-    // Check 6
-    else if ( mom->withinMap(xCoord, yCoord + 1) && mom->getPos(xCoord, yCoord + 1)->getType() == 'c' ) {
-        
-        nextX = xCoord;
-        nextY = yCoord + 1;
-        bwdCounter = bwdCounter + 1;
-	}
-    // Check 7,5
-    else if ( mom->withinMap(xCoord - 1, yCoord + 1) && mom->getPos(xCoord - 1, yCoord + 1)->getType() == 'c' ) {
-        
-        nextX = xCoord - 1;
-        nextY = yCoord + 1;
-        bwdCounter = bwdCounter + 1;
-    }
-    else {
-#if TESTING == 1
-		cout << "xCoor: " << xCoord << endl;
-		cout << "yCoord: " << yCoord << endl;
-#endif
-        hasBeenClosed = false;
-		return false;
-    }
-    
-    volatile bool output = mom->getPos(nextX, nextY)->isClosed(origX, origY, fwdCounter, bwdCounter);
-    hasBeenClosed = false;
-    return output;
-    
-}
 
 // -----------------------------
 // Cancer function for filling unexplored spaces not reachable
@@ -332,10 +172,10 @@ void MapSection::cancer(){
 
 
 /*	-------------------------------------------------------------
-
-						ROBOT
-					
-	-----------------------------------------------------------*/
+ 
+ ROBOT
+ 
+ -----------------------------------------------------------*/
 
 // Construct ---------------------------
 // Since this is a subclass - the MapSection constructor runs first.
@@ -356,10 +196,10 @@ Robot::Robot(int xPos, int yPos, Map* inMom, Communication* inComm) : MapSection
 	bwdRefLong = 2;
 	
 	fwdRefShort = 22;
-	bwdRefShort = 4; 
+	bwdRefShort = 4;
 	
 	rotateRightActive = false;
-	rotateLeftActive = false; 
+	rotateLeftActive = false;
     
     commObj = inComm;
     previousSection = mom->getPos(xPos,yPos);
@@ -376,41 +216,41 @@ Robot::~Robot(){
 // Sets direction to travel
 
 void Robot::changeGear(char inGear){
-		
-        currentGear = inGear;
-        if (inGear == 'b'){
-            
-            gear = inGear;
-            
-            #if TESTING == 0
-			PORTD &= ~(1<<PORTD4); //0x10;
-			PORTD &= ~(1<<PORTD5); //0x20;
-            #endif
-		}
-		else if (inGear == 'r'){
-            gear = inGear;
-            
-            #if TESTING == 0
-			PORTD &= ~(1<<PORTD5);
-			PORTD |= (1<<PORTD4);
-            #endif
-		}
-		else if (inGear == 'l'){
-            gear = inGear;
-            
-            #if TESTING == 0
-			PORTD &= ~(1<<PORTD4);
-			PORTD |= (1<<PORTD5);
-            #endif
-		}
-		else if (inGear == 'f'){
-            gear = inGear;
-            
-            #if TESTING == 0
-			PORTD |= (1<<PORTD4);
-			PORTD |= (1<<PORTD5);
-            #endif
-		}
+    
+    currentGear = inGear;
+    if (inGear == 'b'){
+        
+        gear = inGear;
+        
+#if TESTING == 0
+        PORTD &= ~(1<<PORTD4); //0x10;
+        PORTD &= ~(1<<PORTD5); //0x20;
+#endif
+    }
+    else if (inGear == 'r'){
+        gear = inGear;
+        
+#if TESTING == 0
+        PORTD &= ~(1<<PORTD5);
+        PORTD |= (1<<PORTD4);
+#endif
+    }
+    else if (inGear == 'l'){
+        gear = inGear;
+        
+#if TESTING == 0
+        PORTD &= ~(1<<PORTD4);
+        PORTD |= (1<<PORTD5);
+#endif
+    }
+    else if (inGear == 'f'){
+        gear = inGear;
+        
+#if TESTING == 0
+        PORTD |= (1<<PORTD4);
+        PORTD |= (1<<PORTD5);
+#endif
+    }
 }
 
 // ------------------------------------
@@ -419,7 +259,7 @@ void Robot::setRFID(){
 }
 
 
-// Drives 
+// Drives
 
 void Robot::drive(){
 	if (speed < 101)
@@ -435,10 +275,10 @@ void Robot::drive(){
             outputLeft = floor(speed * 255 / 100);
             outputRight = floor(speed * 255 /100);
 		}
-		#if TESTING == 0
+#if TESTING == 0
 		OCR2A = outputLeft;
 		OCR2B = outputRight;
-		#endif
+#endif
 	}
 	else {
 #if TESTING == 0
@@ -513,7 +353,7 @@ void Robot::rotateLeft(){
 	
 	waitForNewData();
 	this->robotRotated();
-		
+    
 }
 
 // Stops rotation
@@ -590,16 +430,16 @@ void Robot::turn(int pd){
 	// Protect against overflow
 	if (output+pdOut > 255 || output-pdOut < 0)
 	{
-		#if TESTING == 0
+#if TESTING == 0
 		OCR2A = 0; //Negative value on pd will turn left, positive right
 		OCR2B = 0;
-		#endif
+#endif
 	}
 	else {
-		#if TESTING == 0
+#if TESTING == 0
 		OCR2A = output+pdOut; //Negative value on pd will turn left, positive right
 		OCR2B = output-pdOut;
-		#endif
+#endif
 	}
 }
 
@@ -611,7 +451,7 @@ void Robot::fwdLongValueIn(char fwd[3]){
     fwdLongSensor = 100 * fwd[0];
     fwdLongSensor += 10 * fwd[1];
     fwdLongSensor += fwd[2];
-
+    
 #if TESTING == 1
     cout << "fwdValueIn" << endl;
     cout << fwdLongSensor << endl;
@@ -711,13 +551,13 @@ void Robot::setFwdClosed(){
                 break;
             }
 			if(mom->getPos(xCoord,yCoord + i + 1)->getType() != 'f' && mom->getPos(xCoord,yCoord + i + 1)->getType() != 'c'){
-				 mom->convertSection(xCoord,yCoord + i + 1, 'e');
+                mom->convertSection(xCoord,yCoord + i + 1, 'e');
 			}
 		}
 		// Probably not needed /H-F
         /*if(output == 0 && speed == 0){
-	        mom->convertSection(xCoord,yCoord + 1, 'c');
-        }*/
+         mom->convertSection(xCoord,yCoord + 1, 'c');
+         }*/
 	}
 	// Direction 17->y->0, "bwd"
 	else if (direction == 'b'){
@@ -733,8 +573,8 @@ void Robot::setFwdClosed(){
         }
 		// Probably not needed /H-F
 		/*if(output == 0 && speed == 0){
-			mom->convertSection(xCoord,yCoord - 1, 'c');
-		}*/
+         mom->convertSection(xCoord,yCoord - 1, 'c');
+         }*/
 	}
 	// Direction 32->x->0, "left"
 	else if (direction == 'l'){									//left right kan vara omvänt, måste testas
@@ -750,8 +590,8 @@ void Robot::setFwdClosed(){
         }
 		// Probably not needed /H-F
 		/*if(output == 0 && speed == 0){
-			mom->convertSection(xCoord + 1,yCoord, 'c');
-		}*/
+         mom->convertSection(xCoord + 1,yCoord, 'c');
+         }*/
 	}
 	// Direction 0->x->32, "right"
 	else if (direction == 'r'){
@@ -762,14 +602,14 @@ void Robot::setFwdClosed(){
                 break;
             }
 			if(mom->getPos(xCoord - i - 1,yCoord)->getType() != 'f' && mom->getPos(xCoord - i - 1,yCoord)->getType() != 'c'){
-            mom->convertSection(xCoord - i - 1,yCoord, 'e');
+                mom->convertSection(xCoord - i - 1,yCoord, 'e');
 			}
         }
 		// Probably not needed /H-F
 		/*if(output == 0 && speed == 0){
-			mom->convertSection(xCoord - 1,yCoord, 'c');
-		}*/
-	}	
+         mom->convertSection(xCoord - 1,yCoord, 'c');
+         }*/
+	}
 }
 
 // ------------------------------------------------
@@ -856,19 +696,19 @@ void Robot::setBwdClosed(){
 
 void Robot::setLeftClosed(){
 	
-		int output = 0;
-	    
-	    if(leftMidSensor < 40){
-		    output = 10/40;
-	    }
-	    else if(leftMidSensor > 150) { // this value might need to be calibrated
-		    output = 160/40;				//if distance is great only print max 2 empty.
-	    }
-
-	    else{
-		    output = leftMidSensor/40;
-	    }
-
+    int output = 0;
+    
+    if(leftMidSensor < 40){
+        output = 10/40;
+    }
+    else if(leftMidSensor > 150) { // this value might need to be calibrated
+        output = 160/40;				//if distance is great only print max 2 empty.
+    }
+    
+    else{
+        output = leftMidSensor/40;
+    }
+    
 	// Set closed section output + 1 steps away from robot.
 	// Direction 0->y->17, "fwd"
 	if (direction == 'f'){
@@ -887,8 +727,8 @@ void Robot::setLeftClosed(){
 	        mom->convertSection(xCoord + 1,yCoord, 'c');
         }
 	}
-
-		
+    
+    
 	// Direction 17->y->0, "bwd"
 	else if (direction == 'b'){
         
@@ -949,8 +789,8 @@ void Robot::setRightClosed(){
 	int output = 0;
     
     /*if( getRightDifference() < -5 || getRightDifference() > 5){
-        return; //the too great uncertainty if.
-    }*/
+     return; //the too great uncertainty if.
+     }*/
 	
 	if ( rightFrontSensor > 60 ) { // this value might need to be calibrated
 		output = 80/40;//if distance is great only print max 2 empty.
@@ -1055,29 +895,29 @@ bool Robot::isCornerPassed(){
 //Sets reference values and moves robot in map abstraction if robot has moved one square
 void Robot::updateRobotPosition(){
     
-   if (wheelHasTurned){
-	   wheelHasTurned = false;
-	   commObj->reactivateWheelSensor();
-	   MapSection* tempSection;
-	   
-	   //halt
-	   setSpeed(0);
-	   drive();
+    if (wheelHasTurned){
+        wheelHasTurned = false;
+        commObj->reactivateWheelSensor();
+        MapSection* tempSection;
+        
+        //halt
+        //setSpeed(0);
+        //drive();
 		//#if TESTING == 0
 		//_delay_ms(250);
-	   //#endif
-	   setSpeed(userSpeed); //borde flyttas till efter switchen
-	   
-	   
+        //#endif
+        //setSpeed(userSpeed); //borde flyttas till efter switchen
+        
+        
 		switch (direction){
-            
-//-------------------------Direction is forwards in map-------------------
+                
+                //-------------------------Direction is forwards in map-------------------
 			case 'f':
 				//save section about to move into to temp container
 				tempSection = mom->getPos(xCoord,yCoord+1);
 				//move robot to new section
 				mom->setSection(xCoord,yCoord+1,this);
-				//put previousSection back to last position. 
+				//put previousSection back to last position.
 				mom->setSection(xCoord,yCoord,previousSection);
 				//save temp section to previous section
 				previousSection = tempSection;
@@ -1091,8 +931,8 @@ void Robot::updateRobotPosition(){
 				
 				yCoord++;
 				break;
-            
-//-------------------------Direction is backwards in map-------------------
+                
+                //-------------------------Direction is backwards in map-------------------
 			case 'b':
 				//save section about to move into to temp container
 				tempSection = mom->getPos(xCoord,yCoord-1);
@@ -1110,10 +950,10 @@ void Robot::updateRobotPosition(){
 				}
                 
 				yCoord--;
-            
+                
 				break;
-            
-//-------------------------Direction is right in map-----------------------
+                
+                //-------------------------Direction is right in map-----------------------
 			case 'r':
 				//save section about to move into to temp container
 				tempSection = mom->getPos(xCoord-1,yCoord);
@@ -1131,10 +971,10 @@ void Robot::updateRobotPosition(){
 				}
                 
 				xCoord--;
-  
+                
 				break;
-            
-//-------------------------Direction is left in map------------------------
+                
+                //-------------------------Direction is left in map------------------------
 			case 'l':
 				//save section about to move into to temp container
 				tempSection = mom->getPos(xCoord+1,yCoord);
@@ -1152,19 +992,18 @@ void Robot::updateRobotPosition(){
 				}
 				
 				xCoord++;
-            
+                
 				break;
-            
-	//-------------------------Direction is undefined.-------------------------
+                
+                //-------------------------Direction is undefined.-------------------------
 			default :
 				//would like to throw some kind of error here.
 				return;
 		}
-	if(commObj->isRFID){
-		setRFID();
-		commObj->isRFID=false;
-	}
-
+        if(commObj->isRFID){
+            setRFID();
+            commObj->isRFID=false;
+        }
 		if((RFIDmode)&&(rightFrontSensor < 20)&&(okayToClose)){
 			setRightClosed();
 		}
@@ -1174,10 +1013,9 @@ void Robot::updateRobotPosition(){
 			setRightClosed();
 			setLeftClosed();
 		}
-		backToStart(); // not tested fully, could still give nonsense.
-		drive();
-		//backToStart(); // not tested fully, could still give nonsense.
-   }
+		backToStart();
+		//drive();
+    }
 }
 
 // -----------------------------------------
@@ -1227,20 +1065,20 @@ void Robot::changeDirection(char inDirection){
 // ----------------------------------------
 // Get column from Map and send to Comm
 
-void Robot::getColAsChar(int col){	
-		// Sending 19 positions of interest
-		colArray[0] = 23;
-		// Sending Map data command
-		colArray[1] = 'M';
-		// Sending column number
-		colArray[2] = col;
-
-		for (int it = 0; it < 17; it++)
-		{
-			// Type of the block we are looking at
-			colArray[it+3] = mom->getPos(col,it)->getType();
-		}
-	}
+void Robot::getColAsChar(int col){
+    // Sending 19 positions of interest
+    colArray[0] = 23;
+    // Sending Map data command
+    colArray[1] = 'M';
+    // Sending column number
+    colArray[2] = col;
+    
+    for (int it = 0; it < 17; it++)
+    {
+        // Type of the block we are looking at
+        colArray[it+3] = mom->getPos(col,it)->getType();
+    }
+}
 
 
 
@@ -1292,7 +1130,7 @@ void Robot::setSpeed(int inSpeed)
 	movementSpeed=inSpeed;
 }
 
-// ------------------------ 
+// ------------------------
 // Sets reference for mapping
 
 void Robot::setFwdReference(){
@@ -1374,20 +1212,23 @@ int Robot::getUserSpeed(){
 
 bool Robot::isWallFwdClose()
 {
-	    if ( getFwdDistance() == 0 ) {
-		    return false;
-	    }
-	    if ( getFwdDistance() < 15 ){
-		    return true;
-	    }
-	    else{
-		    return false;
-	    }
+    if ( getFwdDistance() == 0 ) {
+        return false;
+    }
+    if ( getFwdDistance() < 20 ){
+        return true;
+    }
+    else{
+        return false;
+    }
 }
 
 // ----------------
 
 void Robot::robotRotated(){
+	if((RFIDmode)&&(getBwdDistance() < 30)&&(okayToClose)){
+		setBwdClosed();
+	}
 	if((RFIDmode)&&(rightFrontSensor < 20)){
 		setRightClosed();
 	}
@@ -1455,11 +1296,19 @@ void Robot::waitForNewData()
 
 void Robot::backToStart()
 {
-	if((previousSection->getX() == 16) &&(previousSection->getY()==1)){
-		if ( mom->getPos(xCoord,yCoord - 1)->isClosed(xCoord,yCoord - 1,0,-3)){
-			mom->fillClosedArea();
-			//startExplore = true;
-		}
+	if(xCoord == 16 &&  yCoord==1 && direction == 'r' ){
+        // Activate explorer
+        //startExplore = true;
+        
+        // Cancer all u:s outside of closed area
+        for (int x = 0; x < 32; x=x+31) { //first and last col
+            for (int y = 0; y < 17; y++) { //All rows
+                if ( mom->getPos(x,y)->getType() == 'u' ) {
+                    mom->getPos(x,y)->cancer();
+                    return;
+                }
+            }
+        }
 	}
 }
 
@@ -1486,126 +1335,48 @@ int Robot::getFinishY(){
 	return finishY;
 }
 
-void Robot::goToAStar(){
-	int sizeOfArray = int(mom->pathArray[0]) - 48;
+// -------------------------------------------
 
-	for (int i=1;i < sizeOfArray+1 ; i++) {
-		
-		char p = mom->pathArray[i];
-		
-		if(p == 'r'){
-			if(direction == 'r'){
-				break;
-			}
-			else if(direction=='l'){
-				rotateRight();
-				rotateRight();
-			}
-			else if(direction=='f'){
-				rotateRight();
-			}
-			else if(direction=='b'){
-				rotateLeft();
-			}
-		}
-		else if(p == 'l'){
-			if(direction == 'r'){
-				rotateRight();
-				rotateRight();
-			}
-			else if(direction=='l'){
-				break;
-			}
-			else if(direction=='f'){
-				rotateLeft();
-			}
-			else if(direction=='b'){
-				rotateRight();
-			}
-		}
-		else if(p == 'f'){
-			if(direction == 'r'){
-				rotateLeft();
-			}
-			else if(direction=='l'){
-				rotateRight();
-			}
-			else if(direction=='f'){
-				break;
-			}
-			else if(direction=='b'){
-				rotateRight();
-				rotateRight();
-			}
-		}
-		else if(p == 'b'){
-			if(direction == 'r'){
-				rotateRight();
-			}
-			else if(direction=='l'){
-				rotateLeft();
-			}
-			else if(direction=='f'){
-				rotateRight();
-				rotateRight();
-			}
-			else if(direction=='b'){
-				break;
-			}
-		}
-		//checks if wall
-		if(isWallFwd()){
-			foundIsland = true;
-			return;
-		}
-		
-		changeGear('f');
-		setSpeed(25);
-		drive();
-		while(!wheelHasTurned){}
-		updateRobotPosition();
-	}	
-}
 
 void Robot::handleIsland()
 {
 	rotateLeft();
-			//lets try with only ifs
+    //lets try with only ifs
 	if(isCornerRight()){
 		while (!isCornerPassed()) {
 			changeGear('f');
 			setSpeed(15);
 			drive();
-			}
-			//_delay_ms(25); // This delay ensures that we enter next segment.
-			rotateRight();
-			//said !iswallright lets try iscornerpassed
+        }
+        //_delay_ms(25); // This delay ensures that we enter next segment.
+        rotateRight();
+        //said !iswallright lets try iscornerpassed
 		while (isCornerPassed()) {
-				changeGear('f');
-				setSpeed(15);
-				drive();
-			}
+            changeGear('f');
+            setSpeed(15);
+            drive();
+        }
 	}
 	if(isWallFwd()){
 		setSpeed(20);
 		changeGear('f');
 		while (!isWallFwdClose()){
 			drive();
-			}
-			setSpeed(0);
-			drive();
-			if(!isWallRight()){
-				rotateRight();
-				//Drive forward untill robot has entered
-				while (!isWallRight()) {
-					changeGear('f');
-					setSpeed(25);
-					drive();
-					}
-				}
-			else{
-				rotateLeft();
-			}	
+        }
+        setSpeed(0);
+        drive();
+        if(!isWallRight()){
+            rotateRight();
+            //Drive forward untill robot has entered
+            while (!isWallRight()) {
+                changeGear('f');
+                setSpeed(25);
+                drive();
+            }
+        }
+        else{
+            rotateLeft();
+        }
 	}
 	else{
 		if(!isWallRight()){
@@ -1617,7 +1388,7 @@ void Robot::handleIsland()
 			changeGear('f');
 			drive();
 			adjustPosition();
-			}
+        }
 	}
 }
 
@@ -1625,3 +1396,162 @@ int Robot::getFrontRightDistance()
 {
 	return rightFrontSensor;
 }
+
+
+void Robot::explore(){
+    
+    //titta vŠnster
+    
+    while(stillUnexplored()){
+        if(lookForULeft()){
+            goAcross();
+        }else{
+            while(!wheelHasTurned){
+                followRight(); // follow right untill in new section.
+            }
+            updateRobotPosition();
+            setSpeed(0);
+            drive();
+        }
+        
+    }
+    //rotera och Œk till vŠggen
+    
+    //rotera v och hšgerfšlj
+    
+    //while(!unexploredInRow)
+    
+}
+
+bool Robot::lookForULeft(){
+    switch(direction){
+        case 'b' :
+            for(int i = xCoord ; xCoord > 0; i--){
+                if(mom->getPos(i,yCoord)->getType() == 'u'){
+                    return true;
+                }
+            }
+            return false;
+            //---------------------------------------------------------
+        case 'f' :
+            
+            for(int i = xCoord ; xCoord < 32; i++){
+                if(mom->getPos(i,yCoord)->getType() == 'u'){
+                    return true;
+                }
+            }
+            return false;
+            
+            //---------------------------------------------------------
+        case 'r' :
+            
+            for(int i = yCoord ; yCoord < 17; i++){
+                if(mom->getPos(xCoord,i)->getType() == 'u'){
+                    return true;
+                }
+            }
+            return false;
+            
+            //---------------------------------------------------------
+        case 'l' :
+            
+            for(int i = yCoord ; yCoord > 0; i--){
+                if(mom->getPos(xCoord,i)->getType() == 'u'){
+                    return true;
+                }
+            }
+            return false;
+    }
+}
+
+void Robot::goAcross(){
+    rotateLeft();
+    
+    setSpeed(25);
+    changeGear('f');
+    while(!isWallFwd()){
+        updateRobotPosition();
+        drive();
+    }
+    rotateLeft();
+}
+
+void Robot::followRight(){
+    
+    if(this->isCornerRight()){
+        while ( !(this->isCornerPassed()) && !(commObj->getManual())) {
+            this->changeGear('f');
+            this->setSpeed(20);
+            this->drive();
+        }
+        //_delay_ms(25); // This delay ensures that we enter next segment.
+        this->rotateRight();
+        //said !iswallright lets try iscornerpassed
+        while ( this->isCornerPassed() && !(commObj->getManual())) {
+            this->changeGear('f');
+            this->setSpeed(20);
+            this->drive();
+        }
+    }
+    
+    //was elseif before
+    if(this->isWallFwd()){
+        this->setSpeed(25);
+        this->changeGear('f');
+        while (!this->isWallFwdClose() && !(commObj->getManual()))
+        {
+            this->drive();
+        }
+        this->setSpeed(0);
+        this->drive();
+        
+        
+        if(!this->isWallRight())
+        {
+            this->rotateRight();
+            //Drive forward untill robot has entered
+            while (!this->isWallRight() && !(commObj->getManual())) {
+                this->changeGear('f');
+                this->setSpeed(25);
+                this->drive();
+            }
+        }
+        
+        else
+        {
+            this->rotateLeft();
+        }
+        
+    }
+    else
+    {
+        if(!this->isWallRight())
+        {
+            this->rotateRight();
+        }
+        else
+        {
+            
+            // stod robotPointer->getUserSpeed() ist fšr 35
+            this->setSpeed(25);
+            this->changeGear('f');
+            this->drive();
+            this->adjustPosition();
+        }
+    }
+    
+}
+
+
+bool Robot::stillUnexplored(){
+    for(int x = 0; x <32; x++){
+        for(int y = 0; y <17;y++){
+            if(mom->getPos(x,y)->getType() == 'u'){
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+

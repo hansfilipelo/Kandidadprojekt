@@ -141,6 +141,9 @@ int main(void)
 	int i = 0;
     //-----------------------------------------------------
     //right wall following loop
+	if((robotPointer->RFIDmode)&&(robotPointer->getBwdDistance() < 30)){
+		robotPointer->setBwdClosed();
+	}
 	if((robotPointer->RFIDmode)&&(robotPointer->getFrontRightDistance() < 20)){
 		robotPointer->setRightClosed();
 	}
@@ -186,9 +189,9 @@ int main(void)
 					int xFinish = robotPointer->getFinishX();
 					int yFinish = robotPointer->getFinishY();					
 					
-					mapPointer->aStar(1,16,5,16);
+					//mapPointer->aStar(1,16,5,16);
 	
-					abstractionObject->sendAStar(mapPointer->pathArray);
+					//abstractionObject->sendAStar(mapPointer->pathArray);
  					tst = false;
 				}
 				
@@ -253,29 +256,6 @@ int main(void)
 						robotPointer->drive();
 						robotPointer->adjustPosition();
 					}
-				}
-			}
-			else{
-				/*--------------KARTLÄGGNING----------------------
-                -------------------------------------------------*/
-				if(mapPointer->firstTimeMapping){
-					mapPointer->firstTimeMapping = false;
-					//Sets start and finnish coordinates
-					int xStart = robotPointer->getX();
-					int yStart = robotPointer->getY();
-					robotPointer->findFinishPos();
-					int xFinish = robotPointer->getFinishX();
-					int yFinish = robotPointer->getFinishY();
-				
-					// get the route
-					mapPointer->convertToPathFinding();
-					mapPointer->aStar(xStart,yStart,xFinish,yFinish);
-					abstractionObject->sendAStar(mapPointer->pathArray);
-					robotPointer->goToAStar();
-					
-				}//drive around this island 
-				if(robotPointer->foundIsland){
-					robotPointer->handleIsland();
 				}
 			}
 		}
