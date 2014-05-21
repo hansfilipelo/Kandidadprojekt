@@ -186,8 +186,8 @@ Robot::Robot(int xPos, int yPos, Map* inMom, Communication* inComm) : MapSection
 	direction = 'f';
 	
 	Kd = 7;
-	Kp = 4;
-	Ref = 10;
+	Kp = 6;
+	Ref = 12;
 	
 	trimRight = 15;
 	trimLeft = 0;
@@ -1232,7 +1232,7 @@ void Robot::robotRotated(){
 	if((RFIDmode)&&(rightFrontSensor < 20)){
 		setRightClosed();
 	}
-	else{
+	else if(!RFIDmode){
 		setFwdClosed();
 		setBwdClosed();
 		setRightClosed();
@@ -1297,8 +1297,11 @@ void Robot::waitForNewData()
 void Robot::backToStart()
 {
 	if(xCoord == 16 &&  yCoord==1 && direction == 'r' ){
-        // Activate explorer
-        //startExplore = true;
+		
+		setSpeed(0);
+		drive();
+		// Activate explorer
+        startExplore = true;
         
         // Cancer all u:s outside of closed area
         for (int x = 0; x < 32; x=x+31) { //first and last col

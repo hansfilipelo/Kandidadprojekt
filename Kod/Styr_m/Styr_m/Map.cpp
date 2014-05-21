@@ -79,12 +79,9 @@ void Map::aStar(int xStart,int yStart,int xFinish,int yFinish)
 	}
 	
 	// create the start node and push into list of open nodes
-    cout<<xStart<<endl;
-    cout<<yStart<<endl;
+  
 	node tmp2(xStart, yStart, 0, 0);
     n2 = &tmp2;
-    cout<<xStart<<endl;
-    cout<<yStart<<endl;
 	n2->updatePriority(xFinish, yFinish);
 	pqA[pqi].Apush(*n2);
     
