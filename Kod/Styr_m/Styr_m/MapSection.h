@@ -172,6 +172,9 @@ public:
     int getFinishX();
     int getFinishY();
     void findFinishPos();
+    void explore();
+    bool lookForULeft();
+    void goAcross();
     
 protected:
     int finishX;
@@ -246,6 +249,8 @@ protected:
 	
 	bool rotateRightActive;
 	bool rotateLeftActive;
+    void followRight();
+    bool stillUnexplored();
 	
     };
 
