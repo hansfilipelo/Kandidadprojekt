@@ -154,7 +154,7 @@ public:
 	
 	bool wheelHasTurned = false;
 	bool foundIsland = false;
-	bool RFIDmode = false;
+	bool RFIDmode = true;
     
     // Automatic control
     void turn(int pd); //Positive or negative value will decide left or right
@@ -173,14 +173,14 @@ public:
     int getFinishY();
     void findFinishPos();
 	int getFrontRightDistance();
-    
+    int getBwdDistance();
+	
 protected:
     int finishX;
     int finishY;
     int getRightDistance();
 	int getLeftDistance();
 	int getFwdDistance();
-	int getBwdDistance();
 	
     
 	int fwdLongSensor;

@@ -1004,7 +1004,6 @@ void Robot::updateRobotPosition(){
 		setRFID();
 		commObj->isRFID=false;
 	}
-
 		if((RFIDmode)&&(rightFrontSensor < 20)&&(okayToClose)){
 			setRightClosed();
 		}
@@ -1227,6 +1226,9 @@ bool Robot::isWallFwdClose()
 // ----------------
 
 void Robot::robotRotated(){
+	if((RFIDmode)&&(getBwdDistance() < 30)&&(okayToClose)){
+		setBwdClosed();
+	}
 	if((RFIDmode)&&(rightFrontSensor < 20)){
 		setRightClosed();
 	}
