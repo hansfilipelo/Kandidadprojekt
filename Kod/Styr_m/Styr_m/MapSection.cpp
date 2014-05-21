@@ -1215,7 +1215,7 @@ bool Robot::isWallFwdClose()
 	    if ( getFwdDistance() == 0 ) {
 		    return false;
 	    }
-	    if ( getFwdDistance() < 15 ){
+	    if ( getFwdDistance() < 20 ){
 		    return true;
 	    }
 	    else{
@@ -1296,9 +1296,9 @@ void Robot::waitForNewData()
 
 void Robot::backToStart()
 {
-	if(xCoord == 16 &&  yCoord==1 && direction == 'r' )){
+	if(xCoord == 16 &&  yCoord==1 && direction == 'r' ){
         // Activate explorer
-        startExplore = true;
+        //startExplore = true;
         
         // Cancer all u:s outside of closed area
         for (int x = 0; x < 32; x+31) { //first and last col
