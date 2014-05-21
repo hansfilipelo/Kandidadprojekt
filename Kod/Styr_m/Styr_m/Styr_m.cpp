@@ -186,9 +186,9 @@ int main(void)
 					int xFinish = robotPointer->getFinishX();
 					int yFinish = robotPointer->getFinishY();					
 					
-					mapPointer->aStar(1,16,5,16);
+					//mapPointer->aStar(1,16,5,16);
 	
-					abstractionObject->sendAStar(mapPointer->pathArray);
+					//abstractionObject->sendAStar(mapPointer->pathArray);
  					tst = false;
 				}
 				

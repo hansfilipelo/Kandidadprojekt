@@ -901,12 +901,12 @@ void Robot::updateRobotPosition(){
 	   MapSection* tempSection;
 	   
 	   //halt
-	   setSpeed(0);
-	   drive();
+	   //setSpeed(0);
+	   //drive();
 		//#if TESTING == 0
 		//_delay_ms(250);
 	   //#endif
-	   setSpeed(userSpeed); //borde flyttas till efter switchen
+	   //setSpeed(userSpeed); //borde flyttas till efter switchen
 	   
 	   
 		switch (direction){
@@ -1014,9 +1014,8 @@ void Robot::updateRobotPosition(){
 			setRightClosed();
 			setLeftClosed();
 		}
-		backToStart(); // not tested fully, could still give nonsense.
-		drive();
-		//backToStart(); // not tested fully, could still give nonsense.
+		backToStart(); 
+		//drive();
    }
 }
 
