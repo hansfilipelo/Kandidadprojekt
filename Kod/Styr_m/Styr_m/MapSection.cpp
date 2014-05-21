@@ -1298,17 +1298,17 @@ void Robot::backToStart()
 {
 	if(xCoord == 16 &&  yCoord==1 && direction == 'r' ){
         // Activate explorer
-        //startExplore = true;
+        startExplore = true;
         
         // Cancer all u:s outside of closed area
-        for (int x = 0; x < 32; x=x+31) { //first and last col
+        /*for (int x = 0; x < 32; x=x+31) { //first and last col
             for (int y = 0; y < 17; y++) { //All rows
                 if ( mom->getPos(x,y)->getType() == 'u' ) {
                     mom->getPos(x,y)->cancer();
                     return;
                 }
             }
-        }
+        }*/
 	}
 }
 

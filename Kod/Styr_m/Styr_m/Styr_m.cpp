@@ -174,94 +174,45 @@ int main(void)
         }
         // Automatic mode
         else {
-			if(!robotPointer->startExplore){
+			
 				/*------------------ HÖGERFÖLJNNG ---------------------- 
                  -------------------------------------------------------
                  -------------------------------------------------------*/
 				
-				if(tst){
-					// get the route
-		
-					mapPointer->convertToPathFinding();
-					int xStart = robotPointer->getX();
-					int yStart = robotPointer->getY();
-					robotPointer->findFinishPos();
-					int xFinish = robotPointer->getFinishX();
-					int yFinish = robotPointer->getFinishY();					
-					
-					//mapPointer->aStar(1,16,5,16);
-	
-					//abstractionObject->sendAStar(mapPointer->pathArray);
- 					tst = false;
-				}
-				
-				//lets try with only ifs
-				if(robotPointer->isCornerRight()){
-					while ( !(robotPointer->isCornerPassed()) && !(abstractionObject->getManual())) {
-						robotPointer->changeGear('f');
-						robotPointer->setSpeed(20);
-						robotPointer->drive();
-					}
-					//_delay_ms(25); // This delay ensures that we enter next segment.
-					robotPointer->rotateRight();
-					//said !iswallright lets try iscornerpassed
-					while ( robotPointer->isCornerPassed() && !(abstractionObject->getManual())) {
-						robotPointer->changeGear('f');
-						robotPointer->setSpeed(20);
-						robotPointer->drive();
-					}
-				}
-			
-				//was elseif before
-				if(robotPointer->isWallFwd()){
-					robotPointer->setSpeed(25);
-					robotPointer->changeGear('f');
-					while (!robotPointer->isWallFwdClose() && !(abstractionObject->getManual()))
-					{
-						robotPointer->drive();
-					}
-					robotPointer->setSpeed(0);
-					robotPointer->drive();
-
-
-					if(!robotPointer->isWallRight())
-					{
-						robotPointer->rotateRight();
-						//Drive forward untill robot has entered
-						while (!robotPointer->isWallRight() && !(abstractionObject->getManual())) {
-							robotPointer->changeGear('f');
-							robotPointer->setSpeed(25);
-							robotPointer->drive();
-						}
-					}
-
-					else
-					{
-						robotPointer->rotateLeft();
-					}
-				
-				}
-				else
-				{
-					if(!robotPointer->isWallRight())
-					{
-						robotPointer->rotateRight();
-					}
-					else
-					{
-					
-						// stod robotPointer->getUserSpeed() ist för 35
-						robotPointer->setSpeed(25);
-						robotPointer->changeGear('f');
-						robotPointer->drive();
-						robotPointer->adjustPosition();
-					}
+			if(tst){
+				// get the route
+				mapPointer->convertToPathFinding();
+				int xStart = robotPointer->getX();
+				int yStart = robotPointer->getY();
+				robotPointer->findFinishPos();
+				int xFinish = robotPointer->getFinishX();
+				int yFinish = robotPointer->getFinishY();					
+				//mapPointer->aStar(1,16,5,16);
+				//abstractionObject->sendAStar(mapPointer->pathArray);
+ 				tst = false;
+			}
+			while(!robotPointer->wheelHasTurned){
+				robotPointer->followRight();
+				if(abstractionObject->sendMapNow){
+					asm("");
+					abstractionObject->sendMapNow=false;
+					abstractionObject->sendMap();
+					asm("");
 				}
 			}
-			else{
-				/*--------------KARTLÄGGNING----------------------
-                -------------------------------------------------*/
-				if(mapPointer->firstTimeMapping){
+			robotPointer->updateRobotPosition();
+			
+			if(robotPointer->startExplore){
+				break;
+			}
+						
+		}
+		
+	}
+/*--------------ExploreMode-----------------------------------------------------------------------*/
+	for(;;){
+
+				/*if(mapPointer->firstTimeMapping){
 					mapPointer->firstTimeMapping = false;
 					//Sets start and finnish coordinates
 					int xStart = robotPointer->getX();
@@ -280,22 +231,9 @@ int main(void)
 				if(robotPointer->foundIsland){
 					robotPointer->handleIsland();
 				}
-			}
+				*///old untested a-star
+			robotPointer->explore();
 		}
-		// Look for walls every 500th turn of main loop
-		if (i == 3000) {
-			// Update position in map
-			robotPointer->updateRobotPosition();
-			i = 0;
-		}
-		i++;
-    
-		if(abstractionObject->sendMapNow){
-			asm("");
-			abstractionObject->sendMapNow=false;
-			abstractionObject->sendMap();
-			asm("");
-		}
-	}
-	return 0;
+				
+		return 0;
 }

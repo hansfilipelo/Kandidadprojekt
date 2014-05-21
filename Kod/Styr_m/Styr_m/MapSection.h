@@ -177,6 +177,7 @@ public:
     void explore();
     bool lookForULeft();
     void goAcross();
+	void followRight();
     
 protected:
     int finishX;
@@ -250,7 +251,6 @@ protected:
 	
 	bool rotateRightActive;
 	bool rotateLeftActive;
-    void followRight();
     bool stillUnexplored();
 	
     };
