@@ -266,8 +266,8 @@ void Communication::reactivateWheelSensor(){
 
 void Communication::sendAStar(char* inArray)
 {
-	int sizeOfArray = inArray[0] - 48;
-	int timesToSend = sizeOfArray/20;
+	int sizeOfArray = inArray[0]- 48;
+	int timesToSend = 1 + sizeOfArray/20;
 	
 	slavePointer->outDataArray[0] = 22;
 	slavePointer->outDataArray[1] = 't';	

@@ -132,9 +132,6 @@ int main(void)
 	
 #endif
 	
-	
-	
-	
 	robotPointer->waitForNewData(); 
 	robotPointer->waitForNewData();
 	robotPointer->setFwdReference();
@@ -144,19 +141,20 @@ int main(void)
 	int i = 0;
     //-----------------------------------------------------
     //right wall following loop
-    robotPointer->setFwdClosed();
-    robotPointer->setBwdClosed();
-    robotPointer->setRightClosed();
-    robotPointer->setLeftClosed();
+	if((robotPointer->RFIDmode)&&(robotPointer->getFrontRightDistance() < 20)){
+		robotPointer->setRightClosed();
+	}
+	else{
+		robotPointer->setFwdClosed();
+	    robotPointer->setBwdClosed();
+	    robotPointer->setRightClosed();
+		robotPointer->setLeftClosed();
+	}
+	bool tst = true;
     
     abstractionObject->sendMap();
     
 	abstractionObject->reactivateWheelSensor();
-	//endast för test av sendAstar
-#if TESTING == 0
-	_delay_ms(40);
-#endif
-	abstractionObject->sendAStar(mapPointer->pathArray);
 	
 	for (;;) {       
         // Manual mode
@@ -177,7 +175,23 @@ int main(void)
 				/*------------------ HÖGERFÖLJNNG ---------------------- 
                  -------------------------------------------------------
                  -------------------------------------------------------*/
-                
+				
+				if(tst){
+					// get the route
+		
+					mapPointer->convertToPathFinding();
+					int xStart = robotPointer->getX();
+					int yStart = robotPointer->getY();
+					robotPointer->findFinishPos();
+					int xFinish = robotPointer->getFinishX();
+					int yFinish = robotPointer->getFinishY();					
+					
+					mapPointer->aStar(1,16,5,16);
+	
+					abstractionObject->sendAStar(mapPointer->pathArray);
+ 					tst = false;
+				}
+				
 				//lets try with only ifs
 				if(robotPointer->isCornerRight()){
 					while ( !(robotPointer->isCornerPassed()) && !(abstractionObject->getManual())) {
@@ -246,7 +260,6 @@ int main(void)
                 -------------------------------------------------*/
 				if(mapPointer->firstTimeMapping){
 					mapPointer->firstTimeMapping = false;
-					//mapPointer->convertToPathFinding();
 					//Sets start and finnish coordinates
 					int xStart = robotPointer->getX();
 					int yStart = robotPointer->getY();
@@ -255,6 +268,7 @@ int main(void)
 					int yFinish = robotPointer->getFinishY();
 				
 					// get the route
+					mapPointer->convertToPathFinding();
 					mapPointer->aStar(xStart,yStart,xFinish,yFinish);
 					abstractionObject->sendAStar(mapPointer->pathArray);
 					robotPointer->goToAStar();
