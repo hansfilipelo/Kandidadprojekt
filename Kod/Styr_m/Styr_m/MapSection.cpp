@@ -1570,69 +1570,53 @@ void Robot::goToAStar(){
 void Robot::handleIsland()
 {
 	rotateLeft();
-/*
-				//lets try with only ifs
-				if(robotPointer->isCornerRight()){
-					while ( !(robotPointer->isCornerPassed()) && !(abstractionObject->getManual())) {
-						robotPointer->changeGear('f');
-						robotPointer->setSpeed(15);
-						robotPointer->drive();
-					}
-					//_delay_ms(25); // This delay ensures that we enter next segment.
-					robotPointer->rotateRight();
-					//said !iswallright lets try iscornerpassed
-					while ( robotPointer->isCornerPassed() && !(abstractionObject->getManual())) {
-						robotPointer->changeGear('f');
-						robotPointer->setSpeed(15);
-						robotPointer->drive();
-					}
-				}
-				
-				//was elseif before
-				if(robotPointer->isWallFwd()){
-					robotPointer->setSpeed(20);
-					robotPointer->changeGear('f');
-					while (!robotPointer->isWallFwdClose() && !(abstractionObject->getManual()))
-					{
-						robotPointer->drive();
-					}
-					robotPointer->setSpeed(0);
-					robotPointer->drive();
-
-
-					if(!robotPointer->isWallRight())
-					{
-						robotPointer->rotateRight();
-						//Drive forward untill robot has entered
-						while (!robotPointer->isWallRight() && !(abstractionObject->getManual())) {
-							robotPointer->changeGear('f');
-							robotPointer->setSpeed(25);
-							robotPointer->drive();
-						}
-					}
-
-					else
-					{
-						robotPointer->rotateLeft();
-					}
-					
-				}
-				else
-				{
-					if(!robotPointer->isWallRight())
-					{
-						robotPointer->rotateRight();
-					}
-					else
-					{
-						
-						// stod robotPointer->getUserSpeed() ist för 35
-						robotPointer->setSpeed(25);
-						robotPointer->changeGear('f');
-						robotPointer->drive();
-						robotPointer->adjustPosition();
+			//lets try with only ifs
+	if(isCornerRight()){
+		while (!isCornerPassed()) {
+			changeGear('f');
+			setSpeed(15);
+			drive();
+			}
+			//_delay_ms(25); // This delay ensures that we enter next segment.
+			rotateRight();
+			//said !iswallright lets try iscornerpassed
+		while (isCornerPassed()) {
+				changeGear('f');
+				setSpeed(15);
+				drive();
+			}
+	}
+	if(isWallFwd()){
+		setSpeed(20);
+		changeGear('f');
+		while (!isWallFwdClose()){
+			drive();
+			}
+			setSpeed(0);
+			drive();
+			if(!isWallRight()){
+				rotateRight();
+				//Drive forward untill robot has entered
+				while (!isWallRight()) {
+					changeGear('f');
+					setSpeed(25);
+					drive();
 					}
 				}
-	
-	*/
+			else{
+				rotateLeft();
+			}	
+	}
+	else{
+		if(!isWallRight()){
+			rotateRight();
+		}
+		else{
+			// stod getUserSpeed() ist för 35
+			setSpeed(25);
+			changeGear('f');
+			drive();
+			adjustPosition();
+			}
+	}
 }

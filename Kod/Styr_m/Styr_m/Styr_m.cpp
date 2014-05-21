@@ -132,9 +132,6 @@ int main(void)
 	
 #endif
 	
-	
-	
-	
 	robotPointer->waitForNewData(); 
 	robotPointer->waitForNewData();
 	robotPointer->setFwdReference();
@@ -157,9 +154,8 @@ int main(void)
     abstractionObject->sendMap();
     
 	abstractionObject->reactivateWheelSensor();
-	//endast för test av sendAstar
-	_delay_ms(40);
-	abstractionObject->sendAStar(mapPointer->pathArray);
+	
+	bool tst = true;
 	
 	for (;;) {       
         // Manual mode
@@ -180,7 +176,13 @@ int main(void)
 				/*------------------ HÖGERFÖLJNNG ---------------------- 
                  -------------------------------------------------------
                  -------------------------------------------------------*/
-                
+                //endast för test av sendAstar
+				
+				if(tst){
+					abstractionObject->sendAStar(mapPointer->pathArray);
+					tst = false;
+				}
+				
 				//lets try with only ifs
 				if(robotPointer->isCornerRight()){
 					while ( !(robotPointer->isCornerPassed()) && !(abstractionObject->getManual())) {
