@@ -132,7 +132,7 @@ Beskrivning av regleralgoritmer mm.
 
 \subsection{Ingående delsystem}
 Roboten består av tre delsystem, en buss, ett chassi samt en tillhörande mjukvara för persondator. Sensormodulen hanterar analoga sensorsignaler och omvandlar dessa till användbart mätdata som skickas vidare till kommunikationsmodulen och styrmodulen. 
-Kommunikationsenheten agerar master och sköter all kommunikation mellan de andra enheterna. Kommunikationsmodulen sköter även kommunikationen mellan PC och roboten via en bluetoothadapter. Styrenheten sköter robotens fyra drivande motorer, kartläggning samt tar beslut om körriktning vid autonom operation.
+Kommunikationsenheten agerar buss-master och sköter all kommunikation mellan de andra enheterna. Kommunikationsmodulen sköter även kommunikationen mellan PC och roboten via en bluetoothadapter. Styrenheten sköter robotens fyra drivande motorer, kartläggning samt tar beslut om körriktning vid autonom operation.
 De tre delsystemen kommunicerar via en SPI-buss och är byggda runt processorerna ATMEL Atmega 1284p med 16KByte SRAM som har visat sig fullt tillräckligt för att kunna använda C++ och en objektorienterad programmeringsstruktur.
 
 Chassit har fyra PWM-motorer, placerade längst fram och längst bak på sidorna av chassit. Motorerna är monterade i chassit, vilket betyder att rotation utförs genom att en rotationshastighetsdifferens införs mellan motorparen. Rotationer görs alltid med 90 graders svängar som utförs med hjälp av gyrot som är placerat på sensormodulen. 
@@ -141,7 +141,7 @@ Sensorerna som tillhör sensormodulen, förutom robotens RFID-läsare,är placer
 Under roboten sitter en RFID-läsare för upptäcka RFIDmarkerade brandhärder.
 
 \subsection{Kommunikation via buss}
-En buss med protokoll SPI kommer att sköta kommunikationen mellan robotens tre delsystem. SPI-protokollet är ett fullt-duplext kommunikationsprotokoll som fungerar genom att byta 8 lokala bitar med 8 bitar från modulen den kommunicerar med. 
+En buss med protokoll SPI sköter kommunikationen mellan robotens tre delsystem. SPI-protokollet är ett fullt-duplext kommunikationsprotokoll som fungerar genom att byta 8 lokala bitar med 8 bitar från modulen den kommunicerar med. 
 
 Kommunikation via bluetooth och buss följer ett speciellt egendefininerat protokoll. 
 
@@ -183,6 +183,9 @@ Fall 3: Kartdata skickas från kommunikationsmodulen till PC, se figur~\ref{fig:
 \end{itemize}
 
 \subsection{Buss}
+<<<<<<< HEAD
+Mellan processorerna används SPI som bussprotokoll. Kommunikationsmodulen agerar master medan styr- och sensormodul agerar slaves. Kommunikation kommer alltid att initieras av master och om slave vill skicka data, genererar de ett avbrott på master som talar om att de har data som är redo att skickas. 
+=======
 Mellan processorerna används SPI som bussprotokoll. Kommunikationsmodulen agerar master medan styr- och sensormodul agerar slave. Kommunikation kommer alltid att initieras av master och om slave vill skicka data, genererar de ett avbrott på master som talar om att de har data som är redo att skickas. Bussen använder följande kopplingar för bussen:
 \begin{itemize}
 	\item MISO - Master Input Slave Output, data till master
@@ -193,6 +196,7 @@ Mellan processorerna används SPI som bussprotokoll. Kommunikationsmodulen agera
 	\item SLAVESELECT1 - Väljer denna processor som aktiv slav
 	\item SCK - Serial Clock, klocka från master
 \end{itemize}
+>>>>>>> 12199e2efbff89d8ea67ec229c5f1fca6f058259
 
 \subsubsection{Kommunikationsprotokoll}
 Roboten har ett speciellt kommunikationsprotokoll som används både av Bluetooth och SPI-bussen. Protokollet är konstruerat så att den första byten definierar alltid längden på meddelandet. Nästföljande 2 bytes definierar kommandotyp och argument till den typen. Efter de 3 första bytes följer godtyckligt lång datamängd se figur 3.
@@ -233,7 +237,7 @@ När styrkommandona skickas från PC, kommer kommunikationsmodulen skicka datan 
 Sensordata kommer att behandlas i sensormodulen och därefter kommer modulen att skicka ett avbrott till master om att data finns tillgängligt. Mastern svarar och startar bussöverföringen.
 \paragraph{Kartabstraktion så styrenheten kan välja färdväg}
 ~\\
-Kartabstraktionen och robotens position kommer att uppdateras allt eftersom ny sensordata kommer in. Efter att ny sensordata har  mottagits av masters, skickar mastern ut sensordata till styrenheten.
+Kartabstraktionen och robotens position kommer att uppdateras allt eftersom ny sensordata kommer in. Efter att ny sensordata har mottagits av master skickar mastern ut sensordata till styrenheten.
 \paragraph{Kommandon för inställning av reglerparametrar.}
 ~\\
 Kommandon mottags via blåtand från PC på mastern, som skickar detta vidare till styrenheten. 
@@ -243,16 +247,16 @@ Kommandot skickas från styrmodulen via mastern som speglar ner kommandot till s
 
 \paragraph{Gyro aktivering och bekräftelse}
 ~\\
-Kommandot skickas från styrmodulen via mastern som speglar ner kommandot till sensormodulen. Sensormodulen startar då Gyro-omvandling och skickar bekräftelse till styrmodulen när roboten har roterat 90 grader är detekterat. 
+Kommandot skickas från styrmodulen via mastern som speglar ner kommandot till sensormodulen. Sensormodulen startar då Gyro-omvandling och skickar bekräftelse till styrmodulen när roboten har roterat 90 grader. 
 
 \paragraph{Hjulsensor aktivering och bekräftelse}
 ~\\
-Kommandot skickas från styrmodulen via mastern som speglar ner kommandot till sensormodulen. Sensormodulen startar då en hjulsensormätning och skickar bekräftelse till styrmodulen när roboten har åkt fram 40 cm är. 
+Kommandot skickas från styrmodulen via mastern som speglar ner kommandot till sensormodulen. Sensormodulen startar då en hjulsensormätning och skickar bekräftelse till styrmodulen när roboten har färdats 40 cm. 
 
 \subsection{LCD-Display}
-Sensordata och annan information från roboten visas på en alfanumerisk-display, närmare bestämt  LCD JM162A. Displayen kommer visar sensordata på 4 rader × 16 tecken.
+Sensordata och annan information från roboten visas på en alfanumerisk-display, närmare bestämt  LCD JM162A. Displayen kommer användas för att visa sensordata samt eventuella parametrar för debugging under testfasen.
 Displayen kommer anslutas till processorn enligt kretschemat i appendix A. 
-Vid varje uppstart kommer initiering av LCD-display göras och då följa nedanstående flödesschema. Varje steg startas med att processorn skickar ett kommando till ingångarna på LCD-displayen. Kommandon finns specificerade i databladet\footnote{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/jm162a.pdf}. LCD-displayen sitter på mastermodulen och för att inte låsa mastermodulen under tiden då datan  skrivs ut på diaplyen har ett buffersystem implementerats. Buffersystemet gör så att mainprogrammet i mastern inte låser ner sig när data skrivs till displayen. Buffern håller koll på vilken rad och kolumn som för tillfället ska skrivas ut och kan därför avsluta skrivningen direkt efter att 0 eller 1 karaktär är utskriven på displayen och därefter kan mastern återgå till mainloopen för att hantera inkommande eller mottagande data.  
+Vid varje uppstart kommer initiering av LCD-display göras och då följa nedanstående flödesschema. Varje steg startas med att processorn skickar ett kommando till ingångarna på LCD-displayen. Kommandon finns specificerade i databladet\footnote{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/jm162a.pdf}. LCD-displayen sitter på mastermodulen och för att inte låsa mastermodulen under tiden då datan  skrivs ut på diaplyen har ett buffersystem implementerats. Buffersystemet gör så att mainprogrammet i mastern inte låser ner sig när data skrivs till displayen. Buffern håller koll på vilken rad och kolumn som för tillfället ska skrivas ut och kan därför avsluta skrivningen direkt efter att 0 eller 1 karaktär är utskriven på displayen. Därefter kan mastern återgå till mainloopen för att hantera inkommande eller mottagande data. Genom att hantera skrivningar på detta vis undviker vi att låsa kommunikationsmodulen vid de tidskrävande LCD-skrivningarna.
 
 \subsubsection{Uppstart}
 	
@@ -279,7 +283,7 @@ Vid uppstart av systemet kommer LCD-displayen att initieras enligt flödes\-sche
 
 \subsubsection{Skrivning}
 
-Vid skrivning till LCD-displayen kommer detta ske enligt flödesschemat~\ref{fig:flowlcdwrite}
+Skrivning till LCD-displayen kommer ske enligt flödesschemat~\ref{fig:flowlcdwrite}
 \begin{itemize}
   \item Start write procedure - Startar skrivning till LCD-displayen
   \item Clear - Rensar hela displayen
@@ -302,7 +306,12 @@ Se schema i appendixet Scheman för anslutning av TxD och RxD, vilka sköter sä
 När vi skickar data till processorn så är detta avbrottshanterat. I avbrottet utnyttjas en databuffer vid namn inDataArray som sedan kopieras till bufferten pcHandle i datahanteringen av Bluetooth. Även Bluetooth datahanteras utanför avbrotten precis som SPI-kommunikationen.
 
 \subsection{Switchar}
+<<<<<<< HEAD
+En switch ska styra om roboten exekverar programkod för autonom styrning eller manuell styrning. Ett avbrott signalerar till processorn att den ska byta programkod, avbrottet ligger på pin16 (INT0) se appendix A. 
+Bytet mellan autonomt och manuellt läge kan även göras via PC-mjukvaran.
+=======
 En switch ska styra om roboten exekverar programkod för autonom styrning eller manuell styrning. Denna switch kan även byta läge via ett virtuellt kommando från PC. Ett avbrott signalerar till processorn att den ska byta programkod, avbrottet ligger på pin16 (INT0) se appendix A. 
+>>>>>>> 12199e2efbff89d8ea67ec229c5f1fca6f058259
 Av/På-knappen styr strömförsörjningen till samtliga moduler. 
 
 % ----------------------------- Styrmodul --------------------------------------
@@ -417,7 +426,7 @@ Unreachable section kommer att representera ett block på kartan som är inringa
 
 \paragraph{Fire} 
 ~\\
-Fire kommer att representera plats där det finns eldhärd. 
+Fire kommer att representera plats där det finns eldhärd, dvs. en RFID-tagg. 
 \newpage
 % ------------------- Reglering -----------------------
 
@@ -425,14 +434,16 @@ Fire kommer att representera plats där det finns eldhärd.
 
 Roboten kommer kunna styras dels autonomt men också manuellt via PC-mjukvara. 
 
-\subsubsection{PD-reglering av styrning}
-Styrmodulen kommer att få sensordata skickad till sig från sensormodulen. Denna sensordata kommer att användas till att PD-reglera riktningen då man följer en vägg. 
+\subsubsection{Reglering av styrning}
+Styrmodulen kommer att få sensordata skickad till sig från sensormodulen. Detta data kommer att användas till att reglera riktningen då man följer en vägg. Roboten använderts sig av en tvåviktad proportionell reglering 
 
-Den proportionella delen av regleringen kommer fås från avståndet till vägg vid sidan av roboten. 
-
+Den första proportionella delen av regleringen reglerar avståndet från senorerna på robotens högersida jämfört med ett internt referensavstånd. Denna reglering ser till att roboten håller sig inom ett rimligt avstånd till den vägg som följs.
 $ e_p = K_{p}*avst\text{\it{å}}ndssensordata $
 
-Där K är en konstant- Den deriverande delen av regleringen ges av differensen mellan den främre avståndssensorn och den bakre: 
+Där K_{p} är en konstant.
+
+Den andra proportionella reglering försöker minimera differensen mellan båda sensorerna på högersidan. Detta innebär i praktiken att  roboten försöker räta ut sig. Denna typ av reglering medför även en minskad risk att de främre och bakre sensorerna ska ger fel värden genom att slå i en sidovägg.
+Den deriverande delen av regleringen ges av differensen mellan den främre avståndssensorn och den bakre: 
 
 $ e_d = K_{D}*(fram - bak) $
 
@@ -489,14 +500,6 @@ Port A användas som en A/D-omvandlare. PIN 39 kopplas till en reflexsensor, se 
 PIN 34 kopplas till en avståndssensor för mellandistans, GP2Y0A02YK, och PIN 35 kopplas till ett gyro för vinkelhastighetsmätning, ML\-X9\-06\-09. Port B används för busskommunikation. PIN 3 skickar avbrott till master, PIN 5 används till slave select master, PIN 6 tar emot data från bussen, PIN7 skickar data till bussen och till PIN 8 kopplas klockan från master. Till port C PIN 23 kopplas en RFID-läsare, Parallax-Reader. Port D används inte i denna modul. 
 
 PIN 31 och 11 kopplas till jord, PIN 13 kopplas till klocka från master, PIN 12 används inte i denna modul, PIN 9 kopplas till en avstudsad manuell switch, en resetknapp, PIN 32 kopplas till en spänningskälla på 5 V som används som referensspänning, PIN 10 kopplas också den till en spänningskälla på 5 V och PIN 30 kopplas genom ett LP-filter till samma externa spänningskälla.
-
-\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
-  \begin{center}
-  \includegraphics[keepaspectratio=true,width=0.6\linewidth]{bilder/sensorflode}  %skala och filnamn. 
-  \end{center}
-  \caption{Flödesdiagram för sensorhantering} %figurtext.
-  \label{fig:sensorflow}
-\end{figure}
 
 
 \subsection{Uppgift}
@@ -557,6 +560,13 @@ Summan som används har tagits fram och kalibrerats med hjälp av tester.
 Sensorerna kommer att vara placerade engligt bilden i figur~\ref{fig:sensoroverview} .
 
 \section{Slutsatser}
+Fler sensorer skulle kunnat förbättra kartläggning och positionering. Processorn har dock enbart 8 pinnar för ADC vilket leder till att endast 8 st sensorer med analoga utsignaler kan användas. Ett sätt att komma runt detta problem är att använda en extern mux.
+Detta alternativ diskuterades i gruppen. Vi hade dock redan implementerat en fullt fungerande sensormodul, där de 8 ADC-pinnarna var fyllda, och valde därför att behålla strukturen vi hade för att unvika en tidskrävande ombyggnad från grunden.
+
+Kortdistanssensorerna på robotens högra sida har en räckvidd på 10-80 cm. Då roboten vid reglering kan vara närmare väggen än 10 cm kan detta bli ett problem. Ett sätt att lösa problemet på är att byta sensorerna till sensorer med räckvidden 4-30 cm, 
+GP2D120 som går att läsa om på Vanheden\footnote{\url{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/gp2d120.pdf}}. Ett byte av sensorer skulle dock innebära större begränsningar vid kartläggning.
+Sensorerna var först placerade längst ut på robotens högra sida och genom att flytta dem längre in på roboten lyckades vi öka marginalen för regleringen. Vi valde därför att inte byta ut sensorerna.
+
 Vilka förbättringar skulle kunna göras?
 
 \section{Referenser}
