@@ -16,13 +16,13 @@
 //#include <queue>
 
 using namespace std;
-/*
+
 const int n=32; // horizontal size of the map
 const int m=17; // vertical size size of the map
 const int dir = 4;
 static int dx[dir]={1, 0, -1, 0};
 static int dy[dir]={0, 1, 0, -1};
-*/
+
 
 /*
  bool operator<(const node & a, const node & b)
@@ -52,8 +52,7 @@ int main(){
     cout << endl;
     
     mom->printMap();
-    
-    /*
+
      // queueAtmel-testing
      
      queueAtmel testQueue;
@@ -104,7 +103,6 @@ int main(){
      cout << " Size: " << pq.size() << endl;
      }*/
     
-    /*
     // Map testing
     // -----------------------------
     cout << "--------" << " Printing map " << "--------" << endl;
@@ -117,7 +115,7 @@ int main(){
     
     // randomly select start and finish locations
     
-    int xA = 1;
+    int xA = 30;
     int yA = 1;
     int xB = 10;
     int yB = 10;
@@ -134,7 +132,6 @@ int main(){
         case 6: xA=0;yA=m/2-1;xB=n-1;yB=m/2+1; break;
         case 7: xA=n-1;yA=m/2+1;xB=0;yB=m/2-1; break;
     }
-    
     
     
     cout<<"Map Size (X,Y): "<<n<<","<<m<<endl;
@@ -212,7 +209,6 @@ int main(){
             cout<<endl;
         }
     }
-    */
     //getchar();
     
     delete testRobot;
