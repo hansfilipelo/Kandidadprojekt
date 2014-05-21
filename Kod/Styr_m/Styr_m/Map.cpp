@@ -62,7 +62,8 @@ void Map::aStar(int xStart,int yStart,int xFinish,int yFinish)
 	
 	static int pqi; // pq index
 	static node* n0;
-	static node* m0;
+    static node* n2;
+    static node* m0;
 	static int i, j, x, y, xdx, ydy;
 	static int c;
 	pqi=0;
@@ -78,20 +79,24 @@ void Map::aStar(int xStart,int yStart,int xFinish,int yFinish)
 	}
 	
 	// create the start node and push into list of open nodes
-	n0=new node(xStart, yStart, 0, 0);
-	n0->updatePriority(xFinish, yFinish);
-	pqA[pqi].Apush(*n0);
-
-	open_nodes_map[x][y]=n0->getPriority(); // mark it on the open nodes map
+    cout<<xStart<<endl;
+    cout<<yStart<<endl;
+	node tmp2(xStart, yStart, 0, 0);
+    n2 = &tmp2;
+    cout<<xStart<<endl;
+    cout<<yStart<<endl;
+	n2->updatePriority(xFinish, yFinish);
+	pqA[pqi].Apush(*n2);
+    
+	open_nodes_map[x][y]=n2->getPriority(); // mark it on the open nodes map
 	
 	// A* search
 	while(!pqA[pqi].Aempty())
 	{
 		// get the current node w/ the highest priority
 		// from the list of open nodes
-		n0=new node( pqA[pqi].Atop().getxPos(), pqA[pqi].Atop().getyPos(),
-		pqA[pqi].Atop().getLevel(), pqA[pqi].Atop().getPriority());
-        
+		node tmp( pqA[pqi].Atop().getxPos(), pqA[pqi].Atop().getyPos(),pqA[pqi].Atop().getLevel(), pqA[pqi].Atop().getPriority());
+        n0 = &tmp;
         
 		x=n0->getxPos(); y=n0->getyPos();
 		
@@ -113,15 +118,15 @@ void Map::aStar(int xStart,int yStart,int xFinish,int yFinish)
 				
 				switch (c) {
 					case 0 : pathArray[counter] = 'l';
-					break;
+                        break;
 					case 1 : pathArray[counter] = 'f';
-					break;
+                        break;
 					case 2 : pathArray[counter] = 'r';
-					break;
+                        break;
 					case 3 : pathArray[counter] = 'b';
-					break;
+                        break;
 					default:
-					break;
+                        break;
 				}
 				x+=dx[j];
 				y+=dy[j];
@@ -135,10 +140,10 @@ void Map::aStar(int xStart,int yStart,int xFinish,int yFinish)
 			for (int k=1; k < size; k++){
 				reversedArray[size-k] = pathArray[k-1];
 			}
-
+            
 			memcpy(pathArray,reversedArray,size);
 			// garbage collection
-			delete n0;
+			n0=NULL;
 			// empty the leftover nodes
 			while(!pqA[pqi].Aempty()) pqA[pqi].Apop();
 			return;
@@ -149,12 +154,11 @@ void Map::aStar(int xStart,int yStart,int xFinish,int yFinish)
 		{
 			xdx=x+dx[i]; ydy=y+dy[i];
 			
-			if(!(xdx<0 || xdx>n-1 || ydy<0 || ydy>m-1 || pathMap[xdx][ydy]==1
-			|| closed_nodes_map[xdx][ydy]==1))
+			if(!(xdx<0 || xdx>n-1 || ydy<0 || ydy>m-1 || pathMap[xdx][ydy]==1 || closed_nodes_map[xdx][ydy]==1))
 			{
 				// generate a child node
-				m0=new node( xdx, ydy, n0->getLevel(),
-				n0->getPriority());
+				m0 = new node( xdx, ydy, n0->getLevel(),n0->getPriority());
+                
 				m0->nextLevel(i);
 				m0->updatePriority(xFinish, yFinish);
 				
@@ -177,8 +181,7 @@ void Map::aStar(int xStart,int yStart,int xFinish,int yFinish)
 					// by emptying one pq to the other one
 					// except the node to be replaced will be ignored
 					// and the new node will be pushed in instead
-					while(!(pqA[pqi].Atop().getxPos()==xdx &&
-					pqA[pqi].Atop().getyPos()==ydy))
+                    while(!(pqA[pqi].Atop().getxPos()==xdx && pqA[pqi].Atop().getyPos()==ydy))
 					{
 						pqA[1-pqi].Apush(pqA[pqi].Atop());
 						pqA[pqi].Apop();
@@ -186,7 +189,9 @@ void Map::aStar(int xStart,int yStart,int xFinish,int yFinish)
 					pqA[pqi].Apop(); // remove the wanted node
 					
 					// empty the larger size pq to the smaller one
-					if(pqA[pqi].Asize()>pqA[1-pqi].Asize()) pqi=1-pqi;
+					if(pqA[pqi].Asize()>pqA[1-pqi].Asize()){
+                        pqi=1-pqi;
+                    }
 					while(!pqA[pqi].Aempty())
 					{
 						pqA[1-pqi].Apush(pqA[pqi].Atop());
@@ -198,7 +203,7 @@ void Map::aStar(int xStart,int yStart,int xFinish,int yFinish)
 				else delete m0; // garbage collection
 			}
 		}
-		delete n0; // garbage collection
+		n0=NULL; // garbage collection
 	}
 	pathArray[0]='F';
 	return;
@@ -230,28 +235,28 @@ void Map::convertSection(int xPos, int yPos, char inType){
 
 // ---------------- getColAsChar ------------
 /*
-char* Map::getColAsChar(int col)
-{
-	// Char sent to communications unit
-	char* output = new char[25];
-	// String telling type of the object we are interested in.
-    
-    // Abstraction for buss communications
-    // Sending 19 positions of interest
-    int crap = 19;
-    output[0] = 23;
-    // Sending Map data command
-    output[1] = 'M';
-    // Sending column number
-    output[2] = col;
-    
-	for (int it = 0; it < 17; it++){
-        // Type of the block we are looking at
-        output[it+3] = this->getPos(col,it)->getType();
-	}
-    return output;
-}
-*/
+ char* Map::getColAsChar(int col)
+ {
+ // Char sent to communications unit
+ char* output = new char[25];
+ // String telling type of the object we are interested in.
+ 
+ // Abstraction for buss communications
+ // Sending 19 positions of interest
+ int crap = 19;
+ output[0] = 23;
+ // Sending Map data command
+ output[1] = 'M';
+ // Sending column number
+ output[2] = col;
+ 
+ for (int it = 0; it < 17; it++){
+ // Type of the block we are looking at
+ output[it+3] = this->getPos(col,it)->getType();
+ }
+ return output;
+ }
+ */
 
 
 void Map::getColAsChar(int col)
@@ -264,7 +269,7 @@ void Map::getColAsChar(int col)
 	colArray[1] = 'M';
 	// Sending column number
 	colArray[2] = col;
-
+    
 	for (int it = 0; it < 17; it++)
 	{
 		// Type of the block we are looking at
@@ -287,9 +292,9 @@ void Map::fillClosedArea()
 			this->getPos(31,y)->cancer();
 			return;
 		}
-
+        
     }
-
+    
 }
 //-----------------------------------
 // Checks if coordinates within map
@@ -327,36 +332,36 @@ void Map::printPathMap(){
 
 void Map::initMap(){
     char tempMap[32][17]={
-        {'u','u','u','u','u','u','u','c','c','c','c','c','c','c','c','u','u'},
-        {'u','u','c','c','c','c','c','u','u','u','u','u','u','u','u','c','u'},
-        {'u','c','u','u','u','u','c','u','u','u','u','u','u','u','u','c','u'},
-        {'u','c','u','u','u','u','c','u','u','u','u','u','u','u','u','c','u'},
-        {'u','c','u','u','u','u','c','u','u','u','u','u','u','u','u','c','u'},
-        {'u','c','u','u','u','u','c','u','u','u','u','u','u','u','u','c','u'},
-        {'u','c','u','u','u','u','c','u','u','u','u','u','u','u','u','c','u'},
-        {'u','c','u','u','u','u','c','u','u','u','u','u','u','u','u','c','u'},
-        {'u','c','u','u','u','u','c','u','u','u','u','c','c','c','c','c','u'},
-        {'u','c','u','u','u','u','c','u','u','u','u','u','u','u','u','c','u'},
-        {'u','c','u','u','u','u','c','u','u','u','u','u','u','u','u','c','u'},
-        {'u','c','u','u','u','u','c','u','u','u','u','u','u','u','u','c','u'},
-        {'u','c','u','u','u','u','c','u','u','u','u','u','u','u','u','c','u'},
-        {'u','c','u','u','u','u','c','u','u','u','u','u','u','u','u','c','u'},
-        {'u','c','u','u','u','u','c','u','u','u','u','u','u','u','u','c','u'},
-        {'u','c','u','u','u','u','c','u','u','u','u','u','u','u','u','c','u'},
-        {'u','c','u','u','u','u','c','u','u','u','u','u','u','u','u','c','u'},
-        {'u','c','u','u','u','u','c','u','u','u','u','u','u','u','u','c','u'},
-        {'u','c','u','u','u','u','c','u','u','u','u','u','u','u','u','c','u'},
-        {'u','c','u','u','u','u','c','u','u','u','u','u','u','u','u','c','u'},
-        {'u','c','u','u','u','u','c','u','u','u','u','u','u','u','u','c','u'},
-        {'u','c','u','u','u','u','u','u','u','u','u','u','u','u','u','c','u'},
-        {'u','c','u','u','u','u','u','u','u','u','u','u','u','u','u','c','u'},
-        {'u','c','u','u','u','u','u','u','u','u','u','u','u','u','u','c','u'},
-        {'u','c','u','u','u','u','u','u','u','u','u','u','u','u','u','c','u'},
-        {'u','c','u','u','u','u','u','u','u','u','u','u','u','u','u','c','u'},
-        {'u','c','u','u','u','u','u','u','u','u','u','u','u','u','u','c','u'},
-        {'u','c','u','u','u','u','u','u','u','u','u','u','u','u','u','c','u'},
-        {'u','c','u','u','u','u','u','u','u','u','u','u','u','u','u','c','u'},
-        {'u','u','c','c','c','c','c','c','c','c','c','c','c','c','c','u','u'},
+        {'u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u'},
+        {'u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u'},
+        {'u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u'},
+        {'u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u'},
+        {'u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u'},
+        {'u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u'},
+        {'u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u'},
+        {'u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u'},
+        {'u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u'},
+        {'u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u'},
+        {'u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u'},
+        {'u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u'},
+        {'u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u'},
+        {'u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u'},
+        {'u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u'},
+        {'u','c','c','c','c','c','c','c','c','c','c','c','c','c','c','u','u'},
+        {'u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u'},
+        {'u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u'},
+        {'u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u'},
+        {'u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u'},
+        {'u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u'},
+        {'u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u'},
+        {'u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u'},
+        {'u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u'},
+        {'u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u'},
+        {'u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u'},
+        {'u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u'},
+        {'u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u'},
+        {'u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u'},
+        {'u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u'},
         {'u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u'},
         {'u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u','u'},
     };
