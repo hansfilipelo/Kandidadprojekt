@@ -186,6 +186,7 @@ protected:
     int bwdLongSensor;
     int fwdShortSensor;
     int bwdShortSensor;
+	bool RFIDmode;
 	
     int rightFrontSensor;
     int rightBackSensor;

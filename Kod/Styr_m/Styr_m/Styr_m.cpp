@@ -144,10 +144,15 @@ int main(void)
 	int i = 0;
     //-----------------------------------------------------
     //right wall following loop
-    robotPointer->setFwdClosed();
-    robotPointer->setBwdClosed();
-    robotPointer->setRightClosed();
-    robotPointer->setLeftClosed();
+	if((robotPointer->RFIDmode)&&(robotPointer->rightFrontSensor < 20)){
+		robotPointer->setRightClosed();
+	}
+	else{
+		robotPointer->setFwdClosed();
+	    robotPointer->setBwdClosed();
+	    robotPointer->setRightClosed();
+		robotPointer->setLeftClosed();
+	}
     
     abstractionObject->sendMap();
     

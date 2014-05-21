@@ -189,7 +189,7 @@ bool MapSection::isClosed(int origX, int origY, int fwdCounter, int bwdCounter){
     else if ( mom->withinMap(xCoord, yCoord - 1) && mom->getPos(xCoord, yCoord - 1)->getType() == 'c' && !mom->getPos(xCoord, yCoord - 1)->hasBeenClosed ) {
         
         nextX = xCoord;
-        nextY = yCoord - 1;
+        nextY = yCoord - 1;d
         fwdCounter = fwdCounter + 1;
 	}
     // Check 1,5
@@ -301,7 +301,7 @@ bool MapSection::isClosed(int origX, int origY, int fwdCounter, int bwdCounter){
 }
 
 // -----------------------------
-// Cancer function for fillig unexplored spaces not reachable
+// Cancer function for filling unexplored spaces not reachable
 
 void MapSection::cancer(){
     this->setType('c');
@@ -1054,42 +1054,18 @@ bool Robot::isCornerPassed(){
 // -----------------------------------------
 //Sets reference values and moves robot in map abstraction if robot has moved one square
 void Robot::updateRobotPosition(){
-	/*
-	if(validSensor == 'N'){
-        validSensor = determineValidSensor();
-    }
-    int sensorDifference = 0;
-    
-    if (validSensor == 'b'){
-		int ref = bwdReference/40;
-        sensorDifference = getBwdDistance() - ref*40;
-    }
-    else if(validSensor == 'f'){
-		int ref = fwdReference/40;
-		sensorDifference = getFwdDistance() - ref*40;
-    }
-	*/
-	
-/* The paramaters for sensor differences (references?) are called:
-		fwdRefLong;
-		bwdRefLong;
-		fwdRefShort;
-		bwdRefShort;
-*/
     
    if (wheelHasTurned){
 	   wheelHasTurned = false;
 	   commObj->reactivateWheelSensor();
-	   //_delay_ms(5);
-	   //commObj->reactivateRFID();
 	   MapSection* tempSection;
 	   
 	   //halt
 	   setSpeed(0);
 	   drive();
-		#if TESTING == 0
-		_delay_ms(250);
-	   #endif
+		//#if TESTING == 0
+		//_delay_ms(250);
+	   //#endif
 	   setSpeed(userSpeed); //borde flyttas till efter switchen
 	   
 	   
@@ -1188,14 +1164,18 @@ void Robot::updateRobotPosition(){
 		setRFID();
 		commObj->isRFID=false;
 	}
-		if (okayToClose){
+
+		if((RFIDmode)&&(rightFrontSensor < 20)&&(okayToClose)){
+			setRightClosed();
+		}
+		else if (okayToClose){
 			setFwdClosed();
 			setBwdClosed();
 			setRightClosed();
 			setLeftClosed();
 		}
 		backToStart(); // not tested fully, could still give nonsense.
-       drive();
+		drive();
 		//backToStart(); // not tested fully, could still give nonsense.
    }
 }
@@ -1408,10 +1388,15 @@ bool Robot::isWallFwdClose()
 // ----------------
 
 void Robot::robotRotated(){
-	setFwdClosed();
-	setBwdClosed();
-	setRightClosed();
-	setLeftClosed();
+	if((RFIDmode)&&(rightFrontSensor < 20)){
+		setRightClosed();
+	}
+	else{
+		setFwdClosed();
+		setBwdClosed();
+		setRightClosed();
+		setLeftClosed();
+	}
 }
 
 //-----------------
