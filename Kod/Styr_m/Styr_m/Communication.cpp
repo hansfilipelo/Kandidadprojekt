@@ -266,8 +266,8 @@ void Communication::reactivateWheelSensor(){
 
 void Communication::sendAStar(char* inArray)
 {
-	int sizeOfArray = inArray[0] - 48;
-	int timesToSend = sizeOfArray/20;
+	int sizeOfArray = inArray[0]- 48;
+	int timesToSend = 1 + sizeOfArray/20;
 	
 	slavePointer->outDataArray[0] = 22;
 	slavePointer->outDataArray[1] = 't';	
@@ -281,6 +281,8 @@ void Communication::sendAStar(char* inArray)
 			slavePointer->outDataArray[i+3] = inArray[k*20+i];
 		}
 		slavePointer->SPI_Send();
+#if TESTING == 0
 		_delay_ms(40);
+#endif
 	}
 }

@@ -31,11 +31,18 @@ public:
     void updateSensorValues(int value0,int value1, int value2, int value3, int value4, int value5, int value6,int value7);
     void updatePlots();
     void updateMap();
+    void insertPathToMap();
+    void mergePathArray();
     void insertRow(char inArray[27]);
     int startPort();
     int connectStatus;
     void labelSet(QString);
     char mapArea[32][27];
+    char pathArraySum[100];
+    char pathArrayOne[27];
+    char pathArrayTwo[27];
+    char pathArrayThree[27];
+    char pathArrayFour[27];
     void saveToFile();
 
 private slots:
