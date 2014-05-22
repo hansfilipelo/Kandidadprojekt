@@ -398,8 +398,7 @@ Styrmodulens (slave) huvudkomponent kommer att bestå av en AVR-processor, Atmel
 \subsection{Komponenter}
 \begin{itemize}
 	\item Chassi
-	\item Systemchip - Atmel ATmega1284p
-	\item Tryckknappar för debugging av styrfunktionalitet
+	\item Systemchip - Atmel ATmega1284p (1)
 	\item Batteri, 7.2 V
 	\item Resetknapp
 \end{itemize}
@@ -431,8 +430,8 @@ För fullständigt kopplingsschema - se Appendix.
 % ------------------- Styrning och kartläggning -----------------------
 
 \subsubsection{Kartabstraktion}
-Kartan kommer att abstraheras som en matris där objekt sparas, detta löses i form av en arrays med dimensionerna 32x17.
-Tillgängliga undertyper kommer att vara:
+Kartan abstraheras som en matris där objekt sparas, detta löses i form av en arrays med dimensionerna 32x17.
+Tillgängliga undertyper är:
 
 \begin{itemize}
 \item{EmptySection}
@@ -446,7 +445,7 @@ Robot är en egen klass med polymorfiskt arv från mapSection.
 
 \paragraph{EmptySection} 
 ~\\
-EmptySection kommer att representera en tom sektion av kartan. Objektet EmptySection kan svara på frågan om huruvida den eller andra EmptySection som angränsar till ojektet i fråga i sin tur angränsar till outforskat område. 
+EmptySection representeras av en tom sektion av kartan. 
 
 \paragraph{UnexploredSection} 
 ~\\
@@ -459,14 +458,16 @@ Robot kommer att representera robotens position på kartan.
 \paragraph{Closed} 
 ~\\
 Om en sektion är stängd sätts den till closed.
+
 \paragraph{Fire} 
 ~\\
 Fire kommer att representera plats där det finns eldhärd, dvs. en RFID-tagg. 
 \newpage
 
+% ---------------- Styrning o kartl --------------
 
 \subsection{Styrning och kartläggning}
-Det ska implementeras två olika avsökningsalgoritmer. De kommer användas beroende på vilket uppdrag roboten ska genomföra. Algoritmerna kommer att skrivas med hjälp av C++ och köras från processorns interna minne. 
+Det har implementeras två olika avsökningsalgoritmer. Dessa kan aktiveras beroende på vilket uppdrag roboten ska utföra. Algoritmerna kommer att skrivas med hjälp av C++ och köras från processorns interna minne. 
 
 \subsubsection{Kartläggninsalgoritm}
 
@@ -597,6 +598,8 @@ kommunikationsmodulen, via en SPI-buss.
 För att kunna detektera RFID-taggen så krävs en RFID-läsare. Vi kommer att använda Par\-all\-ax-Read\-er\footnote{\url{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/rfid-reader-v21.pdf}}. 
 SOUT på RFID-sensorn, PIN 3, kopplas till port C, PIN 23, på processon. RFID-läsaren använder sig av serielprotokollet asynkron USART för att skicka data från RFID-korten vidare till CPU:n. Pinne 23 som RFID-läsaren är inkopplad på har stöd för seriell kommunikation och konfigureras för att matcha dataöverföringshastigheten från läsaren.
 
+<<<<<<< Local Changes
+Då brus kan ge upphov en falsk RFID-läsning, så kontroller=======
 Då brus kan ge upphov en falsk RFID-läsning, så kontrolleras att mottaget data matchar vissa symboler. Vi har valt att leta efter en start byte, 0x0A, som indikerar början på en RFID-taggs unika id. För att ytterligare säkerställla en korrekt läsning görs denna kontroll två gånger innan kommandot för upptäckt brandhärd skickas till master.
 
 \subsubsection{Reflexsensor}
@@ -780,4 +783,4 @@ Busskommunikationen fungerade ej perfekt och skulle ha kunnat förbättrats. En 
 	
 \end{tabular}
 
-\end{document}
+\end{document}>>>>>>> External Changes
