@@ -47,7 +47,7 @@
 		\vspace{3pt} %Whitespace 3 pts
 	    \begin{tabular}{| p{3cm} | p{3cm} | p{3cm} |} %tabell, 4 horizontella |, 3 cm emellan dem.
 	    \hline %översta horizontella linjen.
-	    Granskad & tobgr602 & \today \\ \hline % & -tecken för att "gå till nästa ruta" 
+	    Granskad & tobgr602, hanel742 & \today \\ \hline % & -tecken för att "gå till nästa ruta" 
 		Godkänd & - & - \\ \hline % avslutas med \\ och \hline.
 
 	    \end{tabular}
@@ -324,7 +324,11 @@ och skattningen ges av
 	\hat{x}_{n|n} = \hat{x}_{n|n-1} + K_{t}(y_{t}-C_{t}+R_{2})\\
 	P_{n|n}=(I-K_nC_n)P_{n|n-1}	
 \end{gather}
+<<<<<<< HEAD
 där $R_1$ och $R_2$ är kovariansmatriserna för $e_n$ respektive $v_n$. $A_n$-,$B_n$-,$C_n$- och $D_n$-matriserna varierar med tiden. \footnote{Gustafsson, F; Ljung, L; Millnert, M. (2000). \textit{Signalbehandling}. Andra upplagan. Lund. Studentlitteratur.
+=======
+där $R_1$ och $R_2$ är kovariansmatriserna för $e_n$ respektive $v_n$. $A_n$-,$B_n$-,$C_n$- och $D_n$-matriserna varierar med tiden.\footnote{Gustafsson, Fredrik; Ljung, Lennart; Millnert, Mille. (2000). \textit{Signalbehandling}. Andra upplagan. Lund. Studentlitteratur.
+>>>>>>> fbe93425e86312dbf282382153ee9def712b280f
 }
 
 \subsubsection{EKF - Det utökade kalmanfiltret}
@@ -384,7 +388,6 @@ För att effektivisera filtreringen av mätvärden delas olika distinkt upptäck
 Frågan som SLAM grundas på går nu att delvis besvara. Det går att kartlägga en omgivning utan att exakt veta sin position, men det behövs någon typ av skattning av positionen för att göra en rimlig kartläggning. Ju bättre skattningen är desto bättre kommer kartan att bli i slutändan. Mer data och data av högre kvalitét kan bidra till att förbättra noggrannheten på skattningarna. FastSLAM verkar vara den metod som ger bäst skattning på tillstånden med minst beräkningar. Den slutsatsen är dock bara baserad på den teori som vi tagit upp i rapporten, eftersom inga tester genomförts i praktiken. En nackdel med FastSLAM är att det är många teoretiska delar som måste förstås för att man ska kunna implementera det, på grund av att algoritmen innehåller två delar; partikelfilter och EKF.
 
 Ett problem som kan uppstå då fler typer av sensorer används och större mängder data måste bearbetas är att beräkningskraften inte räcker till då filtren och mjukvaran som används för att implementera SLAM kan ställa för höga krav på beräkningsenheten.
-
 
 \section{Reflektion}
 
