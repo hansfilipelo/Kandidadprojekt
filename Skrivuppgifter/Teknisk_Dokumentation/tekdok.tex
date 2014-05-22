@@ -273,7 +273,7 @@ Komponenterna är numrerade och finns att hitta i kretsschemat, se Appendix A.
 \subsection{Buss}
 Mellan processorerna används SPI som bussprotokoll. Kommunikationsmodulen agerar master medan styr- och sensormodul agerar slaves. Kommunikation kommer alltid att initieras av master och om slave vill skicka data, genererar de ett avbrott på master som talar om att de har data som är redo att skickas. 
 
-Mellan processorerna används SPI som bussprotokoll. Kommunikationsmodulen agerar master medan styr- och sensormodul agerar slave. Kommunikation kommer alltid att initieras av master och om slave vill skicka data, genererar de ett avbrott på master som talar om att de har data som är redo att skickas. Bussen använder följande kopplingar för bussen:
+Mellan processorerna används SPI som bussprotokoll. Kommunikationsmodulen agerar master medan styr- och sensormodul agerar slave. Kommunikation kommer alltid att initieras av master och om slave vill skicka data genererar de ett avbrott på master som talar om att de har data som är redo att skickas. Bussen använder följande kopplingar för bussen:
 \begin{itemize}
 	\item MISO - Master Input Slave Output, data till master
 	\item MOSI - Master Output Slave Input, data till slave
@@ -325,9 +325,9 @@ Kommandot skickas från styrmodulen via mastern som speglar ner kommandot till s
 Kommandot skickas från styrmodulen via mastern som speglar ner kommandot till sensormodulen. Sensormodulen startar då en hjulsensormätning och skickar bekräftelse till styrmodulen när roboten har färdats 40 cm. 
 
 \subsection{LCD-Display}
-Sensordata och annan information från roboten visas på en alfanumerisk-display, närmare bestämt  LCD JM162A. Displayen kommer användas för att visa sensordata samt eventuella parametrar för debugging under testfasen.
-Displayen kommer anslutas till processorn enligt kretschemat i appendix A. 
-Vid varje uppstart kommer initiering av LCD-display göras och då följa nedanstående flödesschema. Varje steg startas med att processorn skickar ett kommando till ingångarna på LCD-displayen. Kommandon finns specificerade i databladet\footnote{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/jm162a.pdf}. LCD-displayen sitter på mastermodulen och för att inte låsa mastermodulen under tiden då datan skrivs ut på diaplyen har ett buffersystem implementerats. Buffersystemet gör så att mainprogrammet i mastern inte låser när data skrivs till displayen. Buffern håller koll på vilken rad och kolumn som för tillfället ska skrivas ut och kan därför avsluta skrivningen direkt efter att ingen eller en karaktär är utskriven på displayen. Därefter kan mastern återgå till mainloopen för att hantera inkommande eller mottagande data. Genom att hantera skrivningar på detta vis undviker vi att låsa kommunikationsmodulen vid de tidskrävande LCD-skrivningarna.
+Sensordata och annan information från roboten visas på en alfanumerisk-display, närmare bestämt  LCD JM162A. Displayen används för att visa sensordata samt eventuella parametrar för debugging under testfasen.
+Displayen kommer är ansluten till processorn enligt kretschemat i appendix A. 
+Vid varje uppstart initieras LCD-displayen enligt nedanstående flödesschema. Varje steg startas med att processorn skickar ett kommando till ingångarna på LCD-displayen. Kommandon finns specificerade i databladet\footnote{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/jm162a.pdf}. Skrivning till displayen tar tid och för att inte låsa ner mastermodulen helt har ett buffersystem implementerats. Buffern håller koll på vilken rad och kolumn som för tillfället ska skrivas ut och kan därför avsluta skrivningen direkt efter att ingen eller en karaktär är utskriven på displayen. Därefter kan mastern återgå till mainloopen för att hantera inkommande eller mottagande data. Genom att hantera skrivningar på detta vis undviker vi att låsa kommunikationsmodulen vid de tidskrävande LCD-skrivningarna.
 
 \subsubsection{Uppstart}
 	
@@ -371,28 +371,27 @@ Skrivning till LCD-displayen kommer ske enligt flödesschemat~\ref{fig:flowlcdwr
 \end{figure}
 
 \subsection{Bluetooth}
-Bluetoothkommunikationen kommer att utföras av ett Firefly-Bluesmirf gold (FBG) modem som parkopplas mot en persondator.
-FBG kommer att skicka information till persondator via protokollet RS232 enligt vad som är angivet på Vanheden. 
+Bluetoothkommunikationen utförs av ett Firefly-Bluesmirf gold (FBG) modem som parkopplas mot en persondator.
+FBG skickar information till persondator via protokollet RS232 enligt vad som är angivet på Vanheden. 
 Se schema i appendixet Scheman för anslutning av TxD och RxD, vilka sköter sändning och mottagning av data.
 När vi skickar data till processorn så är detta avbrottshanterat. I avbrottet utnyttjas en databuffer vid namn inDataArray som sedan kopieras till bufferten pcHandle i datahanteringen av Bluetooth. Även Bluetooth datahanteras utanför avbrotten precis som SPI-kommunikationen.
 
 \subsubsection{Skickning av kartan}
-För att undvika problem vid mottagning av kartan på PC sidan skickas en rad i taget med hjälp av en timer. Main-loopen på kommunikationsmodulen kollar en gång per main-loop om det är okej att skicka en rad. När timern genererar ett avbrott sätts en flagga att ytterligare en rad är redo att skicka. När samtliga rader har skickats över sätts flaggan som avgör om kartrader ska skickas över till false. 
+För att undvika problem vid mottagning av kartan på PC sidan skickas en rad i taget med hjälp av en timer. Main-loopen på kommunikationsmodulen kollar en gång per main-loop om det är okej att skicka en rad. När timern genererar ett avbrott sätts en flagga att ytterligare en rad är redo att skickas. När samtliga rader har skickats över, sätts flaggan som avgör om kartrader ska skickas över till false.
 
 \subsection{Switchar}
-En switch ska styra om roboten exekverar programkod för autonom styrning eller manuell styrning. Denna switch kan även byta läge via ett virtuellt kommando från PC. Ett avbrott signalerar till processorn att den ska byta programkod, avbrottet ligger på pin16 (INT0) se appendix A. 
-Av/På-knappen styr strömförsörjningen till samtliga moduler. 
+En switch ska styra om roboten exekverar programkod för autonom styrning eller manuell styrning. Denna switch kan även byta läge via ett virtuellt kommando från PC. Ett avbrott signalerar till processorn att den ska byta programkod, avbrottet ligger på pin16 (INT0) se appendix A. Av/På-knappen styr strömförsörjningen till samtliga moduler. 
 
 % ----------------------------- Styrmodul --------------------------------------
 % --------------------------------------------------------------------------------
 
 \newpage
 \section{Styrmodul}
-Styrmodulens (slave) huvudkomponent kommer består av en AVR-processor, Atmel ATmega1284p som får instruktioner från kommunikationsmodulen (master) via bussen. Styrmodulen kommunicerar även med drivkretsen på chassit. Chassit är av typen Terminator som drivs av en NiMH- eller NiCd-ackumulator på 7.2V. Det har även fyra stycken växlade DC-motorer som är kopplade till varsitt drivhjul. 
+Styrmodulens (slave) huvudkomponent kommer består av en AVR-processor, Atmel ATmega1284p som får instruktioner från kommunikationsmodulen (master) via bussen. Styrmodulen kommunicerar även med drivkretsen på chassit. Chassit är av typen Terminator som drivs av en NiMH- eller NiCd-ackumulator på 7.2V. Det har även fyra stycken växlade DC-motorer som är kopplade till var sitt drivhjul. 
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
-  \includegraphics[keepaspectratio=true,width=0.5\linewidth]{bilder/styrmodul}  %skala och filnamn. 
+  \includegraphics[keepaspectratio=true,width=\linewidth]{bilder/styrmodul}  %skala och filnamn. 
   \end{center}
   \caption{Översikt styrmodul} %figurtext.
   \label{fig:styr} %glöm inte att uppdatera era labels
@@ -402,12 +401,13 @@ Styrmodulens (slave) huvudkomponent kommer består av en AVR-processor, Atmel AT
 % ----------- Komponenter ------------------
 
 \subsection{Komponenter}
-\begin{itemize}
+Komponenterna är numrerade och finns att hitta i kretsschemat, se Appendix A.
+\begin{enumerate}
+	\item Systemchip - Atmel ATmega1284p
+	\item Resetknapp
 	\item Chassi
-	\item Systemchip - Atmel ATmega1284p (1)
 	\item Batteri, 7.2 V
-	\item Resetknapp (2)
-\end{itemize}
+\end{enumerate}
 \subsection{Signaler}
 Motorerna kommer att styras parvis med två signaler per sida:
 \begin{itemize}
@@ -539,7 +539,7 @@ Sensormodulens uppgift är att hantera sensordata från robotens 9 sensorer och 
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
-  \includegraphics[keepaspectratio=true,width=0.5\linewidth]{bilder/overblicksensor}  %skala och filnamn. 
+  \includegraphics[keepaspectratio=true,width=\linewidth]{bilder/overblicksensor}  %skala och filnamn. 
   \end{center}
   \caption{Överblick av sensormodulen} %figurtext.
   \label{fig:sensoroverview}
@@ -594,8 +594,6 @@ kommunikationsmodulen, via en SPI-buss.
 För att kunna detektera RFID-taggen så krävs en RFID-läsare. Vi kommer att använda Par\-all\-ax-Read\-er\footnote{\url{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/rfid-reader-v21.pdf}}. 
 SOUT på RFID-sensorn, PIN 3, kopplas till port C, PIN 23, på processon. RFID-läsaren använder sig av serielprotokollet asynkron USART för att skicka data från RFID-korten vidare till CPU:n. Pinne 23 som RFID-läsaren är inkopplad på har stöd för seriell kommunikation och konfigureras för att matcha dataöverföringshastigheten från läsaren.
 
-<<<<<<< Local Changes
-Då brus kan ge upphov en falsk RFID-läsning, så kontroller=======
 Då brus kan ge upphov en falsk RFID-läsning, så kontrolleras att mottaget data matchar vissa symboler. Vi har valt att leta efter en start byte, 0x0A, som indikerar början på en RFID-taggs unika id. För att ytterligare säkerställla en korrekt läsning görs denna kontroll två gånger innan kommandot för upptäckt brandhärd skickas till master.
 
 \subsubsection{Reflexsensor}
@@ -618,9 +616,6 @@ Summan som används har tagits fram och kalibrerats med hjälp av tester.
 
 \subsubsection{Övriga komponenter}
 Övriga komponenter så som ett batteri på 7.2 V och en resetknapp kommer att användas till denna modul.
-
-\subsection{Övergripande design}
-Sensorerna kommer att vara placerade engligt bilden i figur \ref{fig:sensoroverview} .
 
 \section{PCmjukvara}
 Det grafiska gränssnittet är skriver i Qt 5.3.0 och är designad i QtCreator och mjukvaran är skriven för att vara kompatibelt med MacOSX.
