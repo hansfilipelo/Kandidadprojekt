@@ -16,6 +16,20 @@ Map::Map(){
     }
 }
 
+void Map::fillUnexplored()
+{
+	for (int x = 0; x < 32; x++)
+	{
+		for (int y = 0; y < 17; y++)
+		{
+			if (this->getPos(x,y)->getType() == 'u')
+			{
+				this->convertSection(x,y,'e');
+			}
+		}
+	}
+}
+
 // -----------------------------------------
 
 Map::~Map(){
@@ -377,6 +391,11 @@ void Map::initMap(){
         }
     }
 }
+
+// ------------------------------
+// After finish - do this
+
+
 
 
 

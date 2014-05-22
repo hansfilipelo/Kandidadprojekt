@@ -352,6 +352,8 @@ void Robot::rotateLeft(){
 	
 	
 	waitForNewData();
+	waitForNewData();
+	waitForNewData();
 	this->robotRotated();
     
 }
@@ -430,6 +432,8 @@ void Robot::rotateRight(){
     }
 	
 	waitForNewData();
+	waitForNewData();
+	waitForNewData();
 	this->robotRotated();
 	
 }
@@ -442,7 +446,7 @@ void Robot::turn(int pd){
 	int pdOut = pd;
 	
 	// Protect against overflow
-	if (output+pdOut > 190 || output-pdOut < 0)
+	if (output+pdOut > 140 || output-pdOut < 0)
 	{
 #if TESTING == 0
 		OCR2A = output; //Negative value on pd will turn left, positive right
@@ -719,14 +723,16 @@ void Robot::setLeftClosed(){
 	int output = 0;
     
     if(leftMidSensor < 40){
-        output = 10/40;
+        output = 0;
     }
-    else if(leftMidSensor > 60){ // this value might need to be calibrated
-        output = 80/40;				//if distance is great only print max 3 empty.
-    }
-    
+	else if(leftMidSensor > 39 && leftMidSensor < 60){
+		output = 1;
+	}
+	else if( leftMidSensor > 79 && leftMidSensor < 100){
+		output = 2;
+	}
     else{
-        output = leftMidSensor/40;
+        return;
     }
     
 	// Set closed section output + 1 steps away from robot.
@@ -743,7 +749,7 @@ void Robot::setLeftClosed(){
                 mom->convertSection(xCoord + i + 1,yCoord, 'e');
             }
         }
-		if(output< 4 && !mom->getVisited(xCoord+1+output,yCoord) && mom->getPos(xCoord + output + 1, yCoord)->getType() != 'c'){
+		if(output< 3 && !mom->getVisited(xCoord+1+output,yCoord) && mom->getPos(xCoord + output + 1, yCoord)->getType() != 'c'){
 			mom->convertSection(xCoord + output + 1,yCoord, 'c');
 			islandToLeft = true;
 		}
