@@ -618,6 +618,9 @@ void Robot::setBwdClosed(){
 	
 	int output = 0;
 	
+	if(speed != 0){
+		return;
+	}
 	if (getBwdDistance() > 300) {
 		output = 280/40;
 	}
@@ -698,7 +701,7 @@ void Robot::setLeftClosed(){
 	
     int output = 0;
     
-    if(leftMidSensor < 40){
+    if(leftMidSensor < 35){
         output = 10/40;
     }
     else if(leftMidSensor > 150) { // this value might need to be calibrated
@@ -723,9 +726,14 @@ void Robot::setLeftClosed(){
                 mom->convertSection(xCoord + i + 1,yCoord, 'e');
             }
         }
+		if(output< 4 && !mom->getVisited(xCoord+1+output,yCoord) && mom->getPos(xCoord + output + 1, yCoord)->getType() != 'c' && islandMode){
+			mom->convertSection(xCoord + output + 1,yCoord, 'c');
+			//islandToLeft = true;
+		}
+		/*
         if(output == 0 && !mom->getVisited(xCoord+1,yCoord)){
 	        mom->convertSection(xCoord + 1,yCoord, 'c');
-        }
+        }*/
 	}
     
     
@@ -742,8 +750,9 @@ void Robot::setLeftClosed(){
                 mom->convertSection(xCoord - i - 1,yCoord, 'e');
             }
         }
-		if(output == 0 && !mom->getVisited(xCoord-1,yCoord)){
-			mom->convertSection(xCoord - 1,yCoord, 'c');
+		if(output < 4 && !mom->getVisited(xCoord-1-output,yCoord) && mom->getPos(xCoord - output - 1, yCoord)->getType() != 'c' && islandMode){
+			mom->convertSection(xCoord - output - 1,yCoord, 'c');
+			//islandToLeft = true;
 		}
 	}
 	// Direction 0->x->32, "right"
@@ -759,8 +768,9 @@ void Robot::setLeftClosed(){
                 mom->convertSection(xCoord,yCoord - i - 1, 'e');
             }
         }
-		if(output == 0 && !mom->getVisited(xCoord,yCoord-1)){
-			mom->convertSection(xCoord,yCoord - 1, 'c');
+		if(output < 4  && !mom->getVisited(xCoord,yCoord-1-output) && mom->getPos(xCoord, yCoord - 1 - output)->getType() != 'c' && islandMode){
+			mom->convertSection(xCoord,yCoord - 1 - output, 'c');
+			//islandToLeft = true;
 		}
 	}
 	// Direction 32->x->0, "left"
@@ -776,8 +786,9 @@ void Robot::setLeftClosed(){
                 mom->convertSection(xCoord,yCoord + i + 1, 'e');
             }
         }
-		if(output == 0 && !mom->getVisited(xCoord,yCoord+1)){
-			mom->convertSection(xCoord,yCoord + 1, 'c');
+		if(output < 4  && !mom->getVisited(xCoord,yCoord+1+output) && mom->getPos(xCoord, yCoord + output + 1)->getType() != 'c' && islandMode){
+			mom->convertSection(xCoord,yCoord + 1 + output, 'c');
+			//islandToLeft = true;
 		}
 	}
 }
