@@ -232,7 +232,7 @@ Där DNC står för ''Do not care''.
 
 
 \section{Kommunikationsmodul}
-Modulen hanterar kommunikation mellan robotens olika delkomponenter samt med persondatorn via Bluetooth. Kommunikationsmodulen som syns i figur 3, kommer att agera master på robotens interna buss. Vid kommunikation mellan övriga moduler, dvs. sensor- och styrmodulen, kommer denna gå via kommunikationsmodulen. Kommunikationsmodulen levererar sensordata och manuella styrkommandon mellan roboten och PC-mjukvaran.
+Modulen hanterar kommunikation mellan robotens olika del samt med persondatorn via Bluetooth. Kommunikationsmodulen som syns i figur 3, kommer att agera master på robotens interna buss. Vid kommunikation mellan övriga moduler, dvs. sensor- och styrmodulen, kommer denna gå via kommunikationsmodulen. Kommunikationsmodulen levererar sensordata och manuella styrkommandon mellan roboten och PC-mjukvaran.
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
@@ -254,15 +254,16 @@ Fall 2: Sensormodulen signalerar att ny sensordata är redo, se  figur~\ref{fig:
 Fall 3: Kartdata skickas från kommunikationsmodulen till PC, se figur~\ref{fig:case3flow}. 
  
 \subsection{Komponenter}
-\begin{itemize}
+Komponenterna är numrerade och finns att hitta i kretsschemat, se Appendix A.
+\begin{enumerate}
   \item AVR processor av typen ATMega1284
   \item Bluetoothsdongel, Firefly, BlueSmirf Gold
   \item LCD-Display
-  \item Två stycken knappar
+  \item Resetknapp
+  \item Manuell/Autonom knapp
   \item Kristalloscillator EXO-3, 14.745 MHz
   \item Lysdiod
-  \item Bandkabel
-\end{itemize}
+\end{enumerate}
 
 \subsection{Buss}
 Mellan processorerna används SPI som bussprotokoll. Kommunikationsmodulen agerar master medan styr- och sensormodul agerar slaves. Kommunikation kommer alltid att initieras av master och om slave vill skicka data, genererar de ett avbrott på master som talar om att de har data som är redo att skickas. 
