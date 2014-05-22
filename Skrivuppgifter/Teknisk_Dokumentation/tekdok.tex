@@ -388,7 +388,7 @@ En switch ska styra om roboten exekverar programkod för autonom styrning eller 
 
 \newpage
 \section{Styrmodul}
-Styrmodulens (slave) huvudkomponent kommer består av en AVR-processor, Atmel ATmega1284p som får instruktioner från kommunikationsmodulen (master) via bussen. Styrmodulen kommunicerar även med drivkretsen på chassit. Chassit är av typen Terminator som drivs av en NiMH- eller NiCd-ackumulator på 7.2V. Det har även fyra stycken växlade DC-motorer som är kopplade till var sitt drivhjul. 
+Styrmodulens (slave) huvudkomponent består av en AVR-processor, Atmel ATmega1284p som får instruktioner från kommunikationsmodulen (master) via bussen. Styrmodulen kommunicerar även med drivkretsen på chassit. Chassit är av typen Terminator som drivs av en NiMH- eller NiCd-ackumulator på 7.2V. Det har även fyra stycken växlade DC-motorer som är kopplade till var sitt drivhjul. 
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
@@ -410,7 +410,7 @@ Komponenterna är numrerade och finns att hitta i kretsschemat, se Appendix A.
 	\item Batteri, 7.2 V
 \end{enumerate}
 \subsection{Signaler}
-Motorerna kommer att styras parvis med två signaler per sida:
+Motorerna styrs parvis med två signaler per sida:
 \begin{itemize}
 	\item DIRL - Styr den vänstra motorns rotationsriktning
 	\item DIRR - Styr den högra motorns rotationsriktning
@@ -455,11 +455,11 @@ EmptySection representeras av en tom sektion av kartan.
 
 \paragraph{UnexploredSection} 
 ~\\
-UnexploredSection kommer att representera en outforskad sektion av kartan. 
+UnexploredSection representerar en outforskad sektion av kartan. 
 
 \paragraph{Robot} 
 ~\\
-Robot kommer att representera robotens position på kartan. 
+Robot representerar robotens position på kartan. 
 
 \paragraph{Closed} 
 ~\\
@@ -467,7 +467,7 @@ Om en sektion är stängd sätts den till closed.
 
 \paragraph{Fire} 
 ~\\
-Fire kommer att representera plats där det finns eldhärd, dvs. en RFID-tagg. 
+Fire representerra plats där det finns eldhärd, dvs. en RFID-tagg. 
 \newpage
 
 \subsection{Styrning och kartläggning}
@@ -475,7 +475,7 @@ Det har implementeras två olika avsökningsalgoritmer. Dessa kan aktiveras bero
 
 \subsubsection{Kartläggninsalgoritm}
 
-Kartläggningsalgoritmen utformas så att roboten börjar med att placera sig så att en vägg går att finna på höger sida. Roboten kommer sedan följa väggen till dess att den kan rita upp ett slutet område att arbeta utifrån. Nästa steg blir att kartlägga områden som ännu ej är kartlagda. Om en köksö upptäcks kommer roboten se till att rita upp hela köksön innan den går vidare. På detta sätt fortsätter algoritmen till dess att alla delar av rummet är kartlagda. 
+Kartläggningsalgoritmen är utformad så att roboten börjar med att placera sig så att en vägg går att finna på höger sida. Roboten kommer sedan följa väggen till dess att den kan rita upp ett slutet område att arbeta utifrån. Nästa steg blir att kartlägga områden som ännu ej är kartlagda. Om en köksö upptäcks kommer roboten åka ut till köksön och sedan se till att rita upp hela köksön innan den går vidare. På detta sätt fortsätter algoritmen till dess att alla delar av rummet är kartlagda. 
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
@@ -518,8 +518,8 @@ $ e_p = K_{p}*avst\text{\it{å}}ndssensordata $
 
 Där $K_{p}$ är en konstant.
 
-Den andra proportionella reglering försöker minimera differensen mellan båda sensorerna på högersidan. Detta innebär i praktiken att  roboten försöker räta ut sig. Denna typ av reglering medför även en minskad risk att de främre och bakre sensorerna ska ger fel värden genom att slå i en sidovägg.
-Den deriverande delen av regleringen ges av differensen mellan den främre avståndssensorn och den bakre: 
+Den deriverande delen av regleringen försöker minimera differensen mellan båda sensorerna på högersidan. Detta innebär i praktiken att roboten försöker räta ut sig. Denna typ av reglering medför även en minskad risk att de främre och bakre sensorerna ska ger fel värden genom att slå i en sidovägg.
+
 
 $ e_d = K_{D}*(fram - bak) $
 
@@ -527,7 +527,7 @@ Totala felet ges då av:
 
 $e = e_d + e_p$
 
-Konstanterna $K_{p}$ och $K_{d}$ kan dels väljas i persondatormjukvaran, men de initieras som standard till $K_{p}=6$ och $K_{d}=7$.
+Konstanterna $K_{p}$ och $K_{d}$ kan dels väljas i persondatormjukvaran, men de initieras som standard till $K_{p}=5$ och $K_{d}=7$.
 
 \newpage
 
