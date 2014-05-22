@@ -1,3 +1,5 @@
+%kommentera all kod.
+
 \documentclass[a4paper,12pt,fleqn]{article}
 \usepackage{fixltx2e}
 \usepackage[utf8]{inputenc}
@@ -45,7 +47,7 @@
 		\vspace{3pt} %Whitespace 3 pts
 	    \begin{tabular}{| p{3cm} | p{3cm} | p{3cm} |} %tabell, 4 horizontella |, 3 cm emellan dem.
 	    \hline %översta horizontella linjen.
-	    Granskad & NE,TG & \today \\ \hline % & -tecken för att "gå till nästa ruta" 
+	    Granskad & NE,TG,HFE & \today \\ \hline % & -tecken för att "gå till nästa ruta" 
 		Godkänd & - & - \\ \hline % avslutas med \\ och \hline.
 
 	    \end{tabular}
@@ -100,6 +102,8 @@
 \addto\captionsswedish{\renewcommand{\contentsname}{Innehållsförteckning}}
 
 \tableofcontents
+\newpage
+\listoffigures
 \thispagestyle{fancy}
 \newpage
 
@@ -121,7 +125,7 @@ Robotens syfte är att kartlägga ett rum och finna en fiktiv eldhärd så snabb
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
-  \includegraphics[keepaspectratio=true,,width=0.5\textwidth]{../Kappa/robot.png}  %skala och filnamn. 
+  \includegraphics[keepaspectratio=true,,width=0.5\linewidth]{../Kappa/robot.png}  %skala och filnamn. 
   \end{center}
   \caption{MapMaster2001} %figurtext.
   \label{fig:robot}
@@ -135,9 +139,11 @@ Det här är MapMaster2001. En kartritande robot med bred funktionalitet. MapMas
   \item Läsa av sin omgivning med 6 avståndssensorer
   \item Mäta sin färdväg med en reflexsensor
   \item Indikera autonomt/manuellt läge med en lysdiod
-  \item Styras via BlueTooth med hjälp av en persondatormjukvara med ett modernt GUI
+  \item Styras via Bluetooth med hjälp av en persondatormjukvara med ett modernt GUI
   \item Spara sensordata på persondator och plotta denna via inbyggd grafritningsfunktion
 \end{itemize}
+
+All mjukvara tillhörande MapMaster2001 samt dokument finns att hitta på GitHub\footnote{https://github.com/hansfilipelo/MapMaster2001}
 
 \newpage
 \section{Teori}
@@ -145,14 +151,13 @@ Det här är MapMaster2001. En kartritande robot med bred funktionalitet. MapMas
 
 \subsection{Kartläggning}
 
-Vid kartläggning kommer roboten att börja med att placera sig så att en vägg går att finna på höger sida. Roboten kommer sedan följa väggen till dess att den kan rita upp ett slutet område att arbeta utifrån. Nästa steg blir att kartlägga områden som ännu ej är kartlagda. Om en köksö upptäcks kommer roboten se till att rita upp hela köksön innan den går vidare. På detta sätt fortsätter algoritmen till dess att alla delar av rummet är kartlagda. 
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
   \includegraphics[keepaspectratio=true,scale=0.5]{bilder/Flode_kartritning.jpg}  %skala och filnamn. 
   \end{center}
   \caption{Flödesschema kartläggning} %figurtext.
-  \label{fig:fire} %glöm inte att uppdatera era labels
+  \label{fig:mapFlow} %glöm inte att uppdatera era labels
 \end{figure}
 
 Djupare teori kring kartläggning och positionering finns i Appendix
@@ -171,10 +176,9 @@ Djupare teori kring kartläggning och positionering finns i Appendix
   \label{fig:overview}
 \end{figure}
 
-\subsection{Ingående delsystem}
-Roboten består av tre delsystem, en buss, ett chassi samt en tillhörande mjukvara för persondator. Sensormodulen hanterar analoga sensorsignaler och omvandlar dessa till användbart mätdata som skickas vidare till kommunikationsmodulen och styrmodulen. 
-Kommunikationsenheten agerar buss-master och sköter all kommunikation mellan de andra enheterna. Kommunikationsmodulen sköter även kommunikationen mellan PC och roboten via en bluetoothadapter. Styrenheten sköter robotens fyra drivande motorer, kartläggning samt tar beslut om körriktning vid autonom operation.
-De tre delsystemen kommunicerar via en SPI-buss och är byggda runt processorerna ATMEL Atmega 1284p med 16KByte SRAM som har visat sig fullt tillräckligt för att kunna använda C++ och en objektorienterad programmeringsstruktur.
+Roboten består tre delsystem. En kommunikationsmodul, en sensormodul och en styrmodul. Utöver dessa tre moduler finns en buss mellan den, ett chassi samt en tillhörande mjukvara för persondator. Sensormodulen hanterar analoga sensorsignaler och omvandlar dessa till användbart mätdata som skickas vidare till kommunikationsmodulen och styrmodulen. 
+Kommunikationsenheten agerar buss-master och sköter all kommunikation mellan de andra enheterna. Kommunikationsmodulen sköter även kommunikationen mellan PC och roboten via en bluetoothadapter. Styrenheten sköter robotens fyra drivande motorer, kartläggning och positionsskattning samt tar beslut om körriktning vid autonom operation. 
+De tre delsystemen kommunicerar via en SPI-buss och är byggda runt processorerna ATMEL Atmega 1284p med 16KByte SRAM. 
 
 Chassit har fyra PWM-motorer, placerade längst fram och längst bak på sidorna av chassit. Motorerna är monterade i chassit, vilket betyder att rotation utförs genom att en rotationshastighetsdifferens införs mellan motorparen. Rotationer görs alltid med 90 graders svängar som utförs med hjälp av gyrot som är placerat på sensormodulen. 
 
@@ -182,7 +186,19 @@ Sensorerna som tillhör sensormodulen, förutom robotens RFID-läsare,är placer
 Under roboten sitter en RFID-läsare för upptäcka RFIDmarkerade brandhärder.
 
 \subsection{Kommunikation via buss}
-En buss med protokoll SPI sköter kommunikationen mellan robotens tre delsystem. SPI-protokollet är ett fullt-duplext kommunikationsprotokoll som fungerar genom att byta 8 lokala bitar med 8 bitar från modulen den kommunicerar med. 
+En buss som kommunicerar över protokollet SPI sköter kommunikationen mellan robotens tre delsystem. SPI-protokollet är ett fullt-duplext kommunikationsprotokoll som fungerar genom att byta 8 lokala bitar med 8 bitar från modulen den kommunicerar med. 
+
+I mjukvarulagret av bussen användes ett egenimplementerat protokoll som används för både transmissioner över Bluetooth och SPI. Protokollet är konstruerat så att den första byten definierar alltid längden på meddelandet. Nästföljande 2 bytes definierar kommandotyp och argument till den typen. Efter de 3 första bytes följer godtyckligt lång datamängd se figur 3. 
+
+Specificerat bussprotokoll är enbart halv-duplex, d v s man kan enbart skicka data i en riktning åt gången, hela kapaciteten hos SPI utnyttjas alltså inte. 
+
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,scale=0.6]{bilder/Bussprotokoll.png}  %skala och filnamn. 
+  \end{center}
+  \caption{Översiktsbild av kommunikationsprotokollet} %figurtext.
+  \label{fig:bussprotocol}
+\end{figure}
 
 Bussens tillgängliga kommandon är:
 
@@ -195,13 +211,21 @@ Bussens tillgängliga kommandon är:
 	halt & 1 & h & DNC & DNC \\ \hline
 	Kör framåt & 3 & f & DNC & Hastighet (0-100) \\ \hline
 	Kör bakåt & 3 & b & DNC & Hastighet (0-100) \\ \hline
-	Aktivera skicka karta & 1 & F & DNC & DNC \\ \hline
-	Sätt variabler för reglering & 11 & P & 0 & Kp(10-tal, 1-tal, 10-del, 100-del) \\ \hline
-	Sensordata & 0x07 & Komm & Styr & Ta emot sensordata från master \\ \hline
-	Sätt reglerkonstanter & 0x08 & Komm & Styr & Sätter värden för konstanter till PD-reglering \\ \hline
+	Aktivera autonomt läge & 1 & a & DNC & DNC \\ \hline
+	Aktivera manuellt läge & 1 & q & DNC & DNC \\ \hline
+	Säg åt styrmodul att skicka karta & 1 & F & DNC & DNC \\ \hline
+	Sätt variabler för reglering & 11 & P & 0 & Kp(10-tal, 1-tal, 10-del, 100-del), Kd(10-tal, 1-tal, 10-del, 100-del), Referensavstånd \\ \hline
+	Sensordata & 26 & S & DNC & Sensor0(100-tal, 10-tal, 1-tal), Sensor2... , Sensor6(100-tal, 10-tal, 1-tal) \\ \hline
+	Kalibrera gyro & 2 & g & 0 & DNC \\ \hline
+	Börja mäta med gryo & 2 & g & 1 & DNC \\ \hline
+	Svängt 90 grader & 1 & G & DNC & DNC \\ \hline
+	RFID detekterad & 1 & R & DNC & DNC \\ \hline
+	Tillåt RFID-avläsning & 1 & r & DNC & DNC \\ \hline
+	En rad av kartan & 19 & M & Radnr & Chars (u, c, e eller f) \\ \hline
+	Konfirmering av mottagen kartrad & 2 & m & Radnr & DNC \\ \hline
 \end{tabular}
-
-Kommunikation via bluetooth och buss följer ett speciellt egendefininerat protokoll. 
+~\\
+Där DNC står för ''Do not care''.
 
 % ----------------------------- Kommunikationsmodul ------------------------------
 % --------------------------------------------------------------------------------
@@ -253,20 +277,6 @@ Mellan processorerna används SPI som bussprotokoll. Kommunikationsmodulen agera
 	\item SLAVESELECT1 - Väljer denna processor som aktiv slav
 	\item SCK - Serial Clock, klocka från master
 \end{itemize}
->>>>>>> 12199e2efbff89d8ea67ec229c5f1fca6f058259
-
-\subsubsection{Kommunikationsprotokoll}
-Roboten har ett speciellt kommunikationsprotokoll som används både av Bluetooth och SPI-bussen. Protokollet är konstruerat så att den första byten definierar alltid längden på meddelandet. Nästföljande 2 bytes definierar kommandotyp och argument till den typen. Efter de 3 första bytes följer godtyckligt lång datamängd se figur 3.
-
-\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
-  \begin{center}
-  \includegraphics[keepaspectratio=true,scale=0.6]{bilder/Bussprotokoll.png}  %skala och filnamn. 
-  \end{center}
-  \caption{Översiktsbild av kommunikationsprotokollet} %figurtext.
-  \label{fig:bussprotocol}
-\end{figure}
-
-Alla olika kommadotyper är definierade i appendix C.
 
 \subsubsection{Slav-modulers mottagning}
 När vår master-modul initierar SPI-kommunikationen med en slave dras SlaveSelect-signalen för den givna processorn låg för att generera ett SPI-avbrott på sagda slave. När slave har tagit emot det antal bytes som specificeras av första byten i paketet genereras ett internt avbrott med hjälp av PCint16. I detta nya avbrott hanteras datan från transmissionen. En övergripande struktur angående mottagningen av SPI-trafik kan ses i flödesdiagrammet i figur~\ref{fig:spislave}
@@ -279,12 +289,10 @@ När vår master-modul initierar SPI-kommunikationen med en slave dras SlaveSele
   \label{fig:spislave}
 \end{figure}
 
-
-
-
-
 \subsubsection{Busstrafik}
-På bussen kommer ett antal olika typer av kommandon att skickas. 
+På bussen kommer ett antal olika typer av kommandon att skickas. Dessa förklaras i paragraferna nedan. 
+Tyngre och snabbt på varandra följande transmissioner kan leda till låsningar av bussen i form av att till exempel sensordata slutar levereras till Bluetoothmodulen eller att ett kommando missas. Därför hanteras de tyngsta transmissionerna med en konfirmationsstruktur.
+De tyngsta kommandona utförs endast på ickekritiska tillfällen i respektive slavmodul.
 
 \paragraph{Styrkommandon från PC}
 ~\\
@@ -313,7 +321,7 @@ Kommandot skickas från styrmodulen via mastern som speglar ner kommandot till s
 \subsection{LCD-Display}
 Sensordata och annan information från roboten visas på en alfanumerisk-display, närmare bestämt  LCD JM162A. Displayen kommer användas för att visa sensordata samt eventuella parametrar för debugging under testfasen.
 Displayen kommer anslutas till processorn enligt kretschemat i appendix A. 
-Vid varje uppstart kommer initiering av LCD-display göras och då följa nedanstående flödesschema. Varje steg startas med att processorn skickar ett kommando till ingångarna på LCD-displayen. Kommandon finns specificerade i databladet\footnote{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/jm162a.pdf}. LCD-displayen sitter på mastermodulen och för att inte låsa mastermodulen under tiden då datan  skrivs ut på diaplyen har ett buffersystem implementerats. Buffersystemet gör så att mainprogrammet i mastern inte låser ner sig när data skrivs till displayen. Buffern håller koll på vilken rad och kolumn som för tillfället ska skrivas ut och kan därför avsluta skrivningen direkt efter att 0 eller 1 karaktär är utskriven på displayen. Därefter kan mastern återgå till mainloopen för att hantera inkommande eller mottagande data. Genom att hantera skrivningar på detta vis undviker vi att låsa kommunikationsmodulen vid de tidskrävande LCD-skrivningarna.
+Vid varje uppstart kommer initiering av LCD-display göras och då följa nedanstående flödesschema. Varje steg startas med att processorn skickar ett kommando till ingångarna på LCD-displayen. Kommandon finns specificerade i databladet\footnote{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/jm162a.pdf}. LCD-displayen sitter på mastermodulen och för att inte låsa mastermodulen under tiden då datan skrivs ut på diaplyen har ett buffersystem implementerats. Buffersystemet gör så att mainprogrammet i mastern inte låser när data skrivs till displayen. Buffern håller koll på vilken rad och kolumn som för tillfället ska skrivas ut och kan därför avsluta skrivningen direkt efter att ingen eller en karaktär är utskriven på displayen. Därefter kan mastern återgå till mainloopen för att hantera inkommande eller mottagande data. Genom att hantera skrivningar på detta vis undviker vi att låsa kommunikationsmodulen vid de tidskrävande LCD-skrivningarna.
 
 \subsubsection{Uppstart}
 	
@@ -329,7 +337,7 @@ Vid uppstart av systemet kommer LCD-displayen att initieras enligt flödes\-sche
 
 \begin{figure}[htp]
 	  \begin{center}
-	  \includegraphics[keepaspectratio=true,scale=0.4]{bilder/startup}  %skala och filnamn. 
+	  \includegraphics[keepaspectratio=true,width=0.4\linewidth]{bilder/startup}  %skala och filnamn. 
 	  \end{center}
 	  \caption{Uppstart av LCD-display} %figurtext.
 	  \label{fig:flowlcdstart}
@@ -350,7 +358,7 @@ Skrivning till LCD-displayen kommer ske enligt flödesschemat~\ref{fig:flowlcdwr
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
-  \includegraphics[keepaspectratio=true,scale=0.4]{bilder/write}  %skala och filnamn. 
+  \includegraphics[keepaspectratio=true,width=0.5\linewidth]{bilder/write}  %skala och filnamn. 
   \end{center}
   \caption{Skrivning till LCD-display} %figurtext.
   \label{fig:flowlcdwrite}
@@ -362,13 +370,11 @@ FBG kommer att skicka information till persondator via protokollet RS232 enligt 
 Se schema i appendixet Scheman för anslutning av TxD och RxD, vilka sköter sändning och mottagning av data.
 När vi skickar data till processorn så är detta avbrottshanterat. I avbrottet utnyttjas en databuffer vid namn inDataArray som sedan kopieras till bufferten pcHandle i datahanteringen av Bluetooth. Även Bluetooth datahanteras utanför avbrotten precis som SPI-kommunikationen.
 
+\subsubsection{Skickning av kartan}
+För att undvika problem vid mottagning av kartan på PC sidan skickas en rad i taget med hjälp av en timer. Main-loopen på kommunikationsmodulen kollar en gång per main-loop om det är okej att skicka en rad. När timern genererar ett avbrott sätts en flagga att ytterligare en rad är redo att skicka. När samtliga rader har skickats över sätts flaggan som avgör om kartrader ska skickas över till false. 
+
 \subsection{Switchar}
-<<<<<<< HEAD
-En switch ska styra om roboten exekverar programkod för autonom styrning eller manuell styrning. Ett avbrott signalerar till processorn att den ska byta programkod, avbrottet ligger på pin16 (INT0) se appendix A. 
-Bytet mellan autonomt och manuellt läge kan även göras via PC-mjukvaran.
-=======
 En switch ska styra om roboten exekverar programkod för autonom styrning eller manuell styrning. Denna switch kan även byta läge via ett virtuellt kommando från PC. Ett avbrott signalerar till processorn att den ska byta programkod, avbrottet ligger på pin16 (INT0) se appendix A. 
->>>>>>> 12199e2efbff89d8ea67ec229c5f1fca6f058259
 Av/På-knappen styr strömförsörjningen till samtliga moduler. 
 
 % ----------------------------- Styrmodul --------------------------------------
@@ -380,7 +386,7 @@ Styrmodulens (slave) huvudkomponent kommer att bestå av en AVR-processor, Atmel
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
-  \includegraphics[keepaspectratio=true,scale=0.5]{bilder/styrmodul}  %skala och filnamn. 
+  \includegraphics[keepaspectratio=true,width=0.5\linewidth]{bilder/styrmodul}  %skala och filnamn. 
   \end{center}
   \caption{Översikt styrmodul} %figurtext.
   \label{fig:styr} %glöm inte att uppdatera era labels
@@ -424,46 +430,19 @@ För fullständigt kopplingsschema - se Appendix.
 \newpage
 % ------------------- Styrning och kartläggning -----------------------
 
-\subsection{Styrning och kartläggning}
-Det ska implementeras två olika avsökningsalgoritmer. De kommer användas beroende på vilket uppdrag roboten ska genomföra. Algoritmerna kommer att skrivas med hjälp av C++ och köras från processorns interna minne. 
-
-\subsubsection{Kartläggninsalgoritm}
-
-Kartläggningsalgoritmen utformas så att roboten börjar med att placera sig så att en vägg går att finna på höger sida. Roboten kommer sedan följa väggen till dess att den kan rita upp ett slutet område att arbeta utifrån. Nästa steg blir att kartlägga områden som ännu ej är kartlagda. Om en köksö upptäcks kommer roboten se till att rita upp hela köksön innan den går vidare. På detta sätt fortsätter algoritmen till dess att alla delar av rummet är kartlagda. 
-
-\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
-  \begin{center}
-  \includegraphics[keepaspectratio=true,scale=0.5]{bilder/flode_brandhard.jpg}  %skala och filnamn. 
-  \end{center}
-  \caption{Flödesschema kartläggningsalgoritm} %figurtext.
-  \label{fig:map} %glöm inte att uppdatera era labels
-\end{figure}
-
-\newpage
-
-\subsubsection{Brandhärdssökning}
-
-Brandhärdssökningen kommer att gå till på liknande sätt som kartläggningsalgoritmen, dock kommer den vara långsammare på grund av att varje ruta i området måste besökas. Efter att området slutits använder roboten sig av radavsökning för att systematiskt besöka alla rutor. Om en RFID-tag upptäcks ska detta noteras.
-
-\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
-  \begin{center}
-  \includegraphics[keepaspectratio=true,scale=0.5]{bilder/Flode_kartritning.jpg}  %skala och filnamn. 
-  \end{center}
-  \caption{Flödesschema brandhärdssökning} %figurtext.
-  \label{fig:fire} %glöm inte att uppdatera era labels
-\end{figure}
-
-
 \subsubsection{Kartabstraktion}
-Kartan kommer att abstraheras som en matris där objekt sparas. Objektklasserna kommer att ha en moderklass med namn MapSection de sedan ärver från. Tillgängliga underklasser kommer att vara:
+Kartan kommer att abstraheras som en matris där objekt sparas, detta löses i form av en arrays med dimensionerna 32x17.
+Tillgängliga undertyper kommer att vara:
 
 \begin{itemize}
 \item{EmptySection}
 \item{UnexploredSection}
 \item{Robot}
-\item{UnreachableSection}
+\item{Closed}
 \item{Fire}
 \end{itemize}
+
+Robot är en egen klass med polymorfiskt arv från mapSection.
 
 \paragraph{EmptySection} 
 ~\\
@@ -477,14 +456,49 @@ UnexploredSection kommer att representera en outforskad sektion av kartan.
 ~\\
 Robot kommer att representera robotens position på kartan. 
 
-\paragraph{UnreachableSection} 
+\paragraph{Closed} 
 ~\\
-Unreachable section kommer att representera ett block på kartan som är inringat av väggar. Dessa block kommer kunna svara på om de representerar ett slutet område och även om de angränsar till outforskat område. 
-
+Om en sektion är stängd sätts den till closed.
 \paragraph{Fire} 
 ~\\
 Fire kommer att representera plats där det finns eldhärd, dvs. en RFID-tagg. 
 \newpage
+
+
+\subsection{Styrning och kartläggning}
+Det ska implementeras två olika avsökningsalgoritmer. De kommer användas beroende på vilket uppdrag roboten ska genomföra. Algoritmerna kommer att skrivas med hjälp av C++ och köras från processorns interna minne. 
+
+\subsubsection{Kartläggninsalgoritm}
+
+Kartläggningsalgoritmen utformas så att roboten börjar med att placera sig så att en vägg går att finna på höger sida. Roboten kommer sedan följa väggen till dess att den kan rita upp ett slutet område att arbeta utifrån. Nästa steg blir att kartlägga områden som ännu ej är kartlagda. Om en köksö upptäcks kommer roboten se till att rita upp hela köksön innan den går vidare. På detta sätt fortsätter algoritmen till dess att alla delar av rummet är kartlagda. 
+
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,width=0.8\linewidth]{bilder/flode_brandhard.jpg}  %skala och filnamn. 
+  \end{center}
+  \caption{Flödesschema kartläggningsalgoritm} %figurtext.
+  \label{fig:map} %glöm inte att uppdatera era labels
+\end{figure}
+
+\paragraph{Stänging och slutning av bana}
+När roboten har åkt längs högerväggen och återvänder till startkoordinaterna samt har färdriktningen höger i kartabstraktionen anses kartan vara sluten. När kartan är sluten anses fortfarande objekt utanför inramningen att vara outforskade. Då dessa är omöjliga att besöka startas ett anrop till samtliga objekt längs y-axeln på koordinaterna x = 0 och x = 31. Funktionen ber objektet att bli av typen closed om den inte redan är det. Är objektet closed avslutas funktionen där, annars ber den alla sina direkta grannar att även de utföra funktionen. Denna funktion stänger alltså alla objekt i ett område avgränsat av andra closed-objekt.
+
+\newpage
+
+\subsubsection{Brandhärdssökning}
+
+Brandhärdssökningen kommer att gå till på liknande sätt som kartläggningsalgoritmen, dock kommer den vara långsammare på grund av att varje ruta i området måste besökas. Efter att området slutits använder roboten sig av radavsökning för att systematiskt besöka alla rutor. Om en RFID-tag upptäcks ska detta noteras.
+
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,width=0.5\linewidth]{bilder/Flode_kartritning.jpg}  %skala och filnamn. 
+  \end{center}
+  \caption{Flödesschema brandhärdssökning} %figurtext.
+  \label{fig:fire} %glöm inte att uppdatera era labels
+\end{figure}
+
+
+
 % ------------------- Reglering -----------------------
 
 \subsection{Reglering}
@@ -528,7 +542,7 @@ Sensormodulens uppgift är att hantera sensordata från robotens 9 sensorer och 
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
-  \includegraphics[keepaspectratio=true,width=\linewidth]{bilder/overblicksensor}  %skala och filnamn. 
+  \includegraphics[keepaspectratio=true,width=0.5\linewidth]{bilder/overblicksensor}  %skala och filnamn. 
   \end{center}
   \caption{Överblick av sensormodulen} %figurtext.
   \label{fig:sensoroverview}
@@ -609,6 +623,37 @@ Summan som används har tagits fram och kalibrerats med hjälp av tester.
 \subsection{Övergripande design}
 Sensorerna kommer att vara placerade engligt bilden i figur \ref{fig:sensoroverview} .
 
+\section{PCmjukvara}
+Det grafiska gränssnittet är skriver i Qt 5.3.0 och är designad i QtCreator och mjukvaran är skriven för att vara kompatibelt med MacOSX.
+Qt har eventhantering. Qt kallar dessa events för slots och de kan liknas med avbrott.
+\subsection{Bluetooth}
+Bluetooth mottagningen på PC fungerar genom att modulen i PC virtualiserar en seriellport som sedan data kan skickas på. För att skapa porten utnyttjas den inbyggda klassen i Qt, QSerialPort. Denna initialiserar Bluetooth kopplingen och sätter inställningar som läs-skriv läge, BaudRate, antal databitar, paritet och stopbitar.
+Det är alltid exakt 27 bytes per transmission.
+
+\subsection{Läsning av Bluetooth}
+När data kommer till Bluetooth-enheten skickas ett avbrott till mainprogrammet och denna påbörjar mottagning i funktionen HandleReadyRead(). Denna funktion förklaras i flödesdiagrammet figur~\ref{fig:BTpc}
+
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,width=0.6\linewidth]{bilder/bluetoothpc.jpg}  %skala och filnamn. 
+  \end{center}
+  \caption{Flödesdiagram Bluetooth mottagning} %figurtext.
+  \label{fig:BTpc}
+\end{figure}
+
+\subsection{Skrivning till Bluetooth}
+Skrivning till Bluetooth-enheten sker via den, i QSerialPort, inbyggda medlemsfunktionen write. I filen order.cpp finns en klass som sköter abstraktion mellan det grafiska användargränssnittet och QSerialPort. Denna har alla kommandoarrayer specificerade i sig och skickar vidare data till serialport objektet som sedan skriver denna data till Bluetooth-enheten. 
+
+\subsection{Sensorgrafer}
+Med hjälp av klassen QCustomPlot kan vi skapa grafer för plottning av sensordata från roboten. När det grafiska användargränssnittet startar sätts en timer igång. Varje gång sensor data kommer till Bluetooth-enheten tidsstämplas denna och detta används för att rita tidsberoende sensorgrafer med historik. 
+Dessa grafer kan sparas ned. Då skapas en ny mapp i användarens hemkatalog kallad MapMaster och i den en textfil. Med hjälp av ett menyval, Data->Review data, öppnas ett nytt fönster med interaktiva plottar som då kan analyseras.
+
+\subsection{Styrkommandon}
+Samtliga styrkommandon är slots och funktioner utförs när knappar i det grafiska användargränssnittet trycks på eller när motsvarande knapp på tangentbordet trycks in. 
+Styrkommandofunktionerna läser av hastighetsslidern och skickar sedan styrkommandot till roboten. 
+\subsection{Kartan}
+Kartan använder sig av Qts inbyggda klass QGraphicsScene. Objekt med dimension 10x10 skapas upp och placeras för att skapa kartan.
+
 \section{Slutsatser}
 Fler sensorer skulle kunnat förbättra kartläggning och positionering. Processorn har dock enbart 8 pinnar för ADC vilket leder till att endast 8 st sensorer med analoga utsignaler kan användas. Ett sätt att komma runt detta problem är att använda en extern mux.
 Detta alternativ diskuterades i gruppen. Vi hade dock redan implementerat en fullt fungerande sensormodul, där de 8 ADC-pinnarna var fyllda, och valde därför att behålla strukturen vi hade för att unvika en tidskrävande ombyggnad från grunden.
@@ -617,9 +662,10 @@ Kortdistanssensorerna på robotens högra sida har en räckvidd på 10-80 cm. D�
 GP2D120 som går att läsa om på Vanheden\footnote{\url{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/gp2d120.pdf}}. Ett byte av sensorer skulle dock innebära större begränsningar vid kartläggning.
 Sensorerna var först placerade längst ut på robotens högra sida och genom att flytta dem längre in på roboten lyckades vi öka marginalen för regleringen. Vi valde därför att inte byta ut sensorerna.
 
-Vilka förbättringar skulle kunna göras?
-
-\section{Referenser}
+Busskommunikationen fungerade ej perfekt och skulle ha kunnat förbättrats. En bufferstruktur med flertalet pekare skulle ha kunnat nyttjas. Dessutom skulle en struktur där master frågar slave-enheterna med jämna mellanrum om data istället för avbrott från slave-enheterna ha kunnat hjälpt implementeringens stabilitet.
+\newpage
+\section*{Referenser}
+\addcontentsline{toc}{section}{Referenser}
 
 
 
@@ -630,12 +676,13 @@ Vilka förbättringar skulle kunna göras?
 \appendix
 \pagestyle{empty}
 \newgeometry{left=2cm,right=2cm,bottom=2cm,top=2cm}
-\section{Appendix A - Kopplingsscheman}
-\subsection{Kopplingsschema för kommunikationsmodul}
+\section*{Appendix A - Kopplingsscheman}
+\addcontentsline{toc}{section}{Appendix A - Kopplingsscheman}
+\subsection*{Kopplingsschema för kommunikationsmodul}
 
 \begin{figure}[ht] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
-  \includegraphics[keepaspectratio=true,width=\linewidth]{bilder/kom_uptodate.png}  %skala och filnamn. 
+  \includegraphics[keepaspectratio=true,width=\linewidth]{bilder/Kom_uptodate.png}  %skala och filnamn. 
   \end{center}
   \caption{Kopplingsschema kommunikationsmodul} %figurtext.
   \label{fig:kopplingkom} %glöm inte att uppdatera era labels
@@ -643,7 +690,7 @@ Vilka förbättringar skulle kunna göras?
  \clearpage %flushes picture cache to place now
  
 
-\subsection{Kopplingsschema för styrmodul}
+\subsection*{Kopplingsschema för styrmodul}
 
 \begin{figure}[ht] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
@@ -655,7 +702,7 @@ Vilka förbättringar skulle kunna göras?
  \clearpage %flushes picture cache to place now
  
 
-\subsection{Kopplingsschema för sensormodull}
+\subsection*{Kopplingsschema för sensormodull}
 
 \begin{figure}[ht] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
@@ -668,7 +715,8 @@ Vilka förbättringar skulle kunna göras?
  
 
 \newpage
-\section{Appendix B - Flödesscheman}
+\section*{Appendix B - Flödesscheman}
+\addcontentsline{toc}{section}{Appendix B - Flödesscheman}
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
@@ -702,7 +750,9 @@ Vilka förbättringar skulle kunna göras?
 \clearpage %flushes picture cache to place now
 \newpage
 
-\section{Appendix C - Kommandon}
+\section*{Appendix C - Kommandon}
+\addcontentsline{toc}{section}{Appendix C - Kommandon}
+
 
 \begin{tabular}{| p{4cm} | p{2.5cm} | p{2.5cm} | p{2.5cm} | p{3.7cm} |}
 	\hline
