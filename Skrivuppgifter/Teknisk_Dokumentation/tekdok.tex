@@ -382,7 +382,7 @@ Av/På-knappen styr strömförsörjningen till samtliga moduler.
 
 \newpage
 \section{Styrmodul}
-Styrmodulens (slave) huvudkomponent kommer att bestå av en AVR-processor, Atmel ATmega1284p som får instruktioner från kommunikationsmodulen (master) via bussen. Processorn kommunicerar även med drivkretsen på chassit. Chassit är av typen Terminator som drivs av en NiMH- eller NiCd-ackumulator på 7.2V. Det har även fyra stycken växlade DC-motorer som är kopplade till varsitt drivhjul. 
+Styrmodulens (slave) huvudkomponent kommer består av en AVR-processor, Atmel ATmega1284p som får instruktioner från kommunikationsmodulen (master) via bussen. Styrmodulen kommunicerar även med drivkretsen på chassit. Chassit är av typen Terminator som drivs av en NiMH- eller NiCd-ackumulator på 7.2V. Det har även fyra stycken växlade DC-motorer som är kopplade till varsitt drivhjul. 
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
@@ -400,7 +400,7 @@ Styrmodulens (slave) huvudkomponent kommer att bestå av en AVR-processor, Atmel
 	\item Chassi
 	\item Systemchip - Atmel ATmega1284p (1)
 	\item Batteri, 7.2 V
-	\item Resetknapp
+	\item Resetknapp (2)
 \end{itemize}
 \subsection{Signaler}
 Motorerna kommer att styras parvis med två signaler per sida:
@@ -411,8 +411,8 @@ Motorerna kommer att styras parvis med två signaler per sida:
 	\item PWMR - Pulsbreddmodulerad signal som styr den högra motorns hastighet.
 \end{itemize}
 ~\\
-Dessa kopplas direkt från processorn till chassits drivkrets enligt bild.
-Styrmodulen kommer att vara ansluten till bussen med hjälp av MISO- och MOSI-pinnarna.
+Dessa är kopplade direkt från processorn till chassits drivkrets enligt bild.
+Styrmodulen är ansluten till bussen med hjälp av MISO- och MOSI-pinnarna.
 
 \begin{itemize}
 	\item MISO - Master Input Slave Output, data skickas till master
@@ -422,7 +422,7 @@ Styrmodulen kommer att vara ansluten till bussen med hjälp av MISO- och MOSI-pi
 	\item SCK - Serial Clock, klocka från master
 \end{itemize}
 ~\\
-Utöver detta kommer en tryckknapp anslutas till RESET för att förhindra att felaktig programmering av processorn. 
+Utöver detta är en tryckknapp ansluten till RESET för att förenkla felsökning och uppstart. 
 
 För fullständigt kopplingsschema - se Appendix. 
 
@@ -430,8 +430,7 @@ För fullständigt kopplingsschema - se Appendix.
 % ------------------- Styrning och kartläggning -----------------------
 
 \subsubsection{Kartabstraktion}
-Kartan abstraheras som en matris där objekt sparas, detta löses i form av en arrays med dimensionerna 32x17.
-Tillgängliga undertyper är:
+Kartan abstraheras som en matris där objekt sparas, detta löses i form av en arrays med dimensionerna 32x17. Tillgängliga undertyper är:
 
 \begin{itemize}
 \item{EmptySection}
@@ -464,10 +463,8 @@ Om en sektion är stängd sätts den till closed.
 Fire kommer att representera plats där det finns eldhärd, dvs. en RFID-tagg. 
 \newpage
 
-% ---------------- Styrning o kartl --------------
-
 \subsection{Styrning och kartläggning}
-Det har implementeras två olika avsökningsalgoritmer. Dessa kan aktiveras beroende på vilket uppdrag roboten ska utföra. Algoritmerna kommer att skrivas med hjälp av C++ och köras från processorns interna minne. 
+Det har implementeras två olika avsökningsalgoritmer. Dessa kan aktiveras beroende på vilket uppdrag roboten ska utföra. 
 
 \subsubsection{Kartläggninsalgoritm}
 
@@ -475,7 +472,7 @@ Kartläggningsalgoritmen utformas så att roboten börjar med att placera sig s�
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
-  \includegraphics[keepaspectratio=true,width=0.8\linewidth]{bilder/flode_brandhard.jpg}  %skala och filnamn. 
+  \includegraphics[keepaspectratio=true,width=0.8\linewidth]{bilder/Flode_kartritning.jpg}  %skala och filnamn. 
   \end{center}
   \caption{Flödesschema kartläggningsalgoritm} %figurtext.
   \label{fig:map} %glöm inte att uppdatera era labels
@@ -488,11 +485,11 @@ När roboten har åkt längs högerväggen och återvänder till startkoordinate
 
 \subsubsection{Brandhärdssökning}
 
-Brandhärdssökningen kommer att gå till på liknande sätt som kartläggningsalgoritmen, dock kommer den vara långsammare på grund av att varje ruta i området måste besökas. Efter att området slutits använder roboten sig av radavsökning för att systematiskt besöka alla rutor. Om en RFID-tag upptäcks ska detta noteras.
+Brandhärdssökningen kommer att gå till på liknande sätt som kartläggningsalgoritmen, dock kommer den vara långsammare på grund av att varje ruta i området måste besökas. Efter att området slutits besöker roboten området block för block för att systematiskt besöka alla rutor. Om en RFID-tag upptäcks ska detta noteras och markeras som rött i programvaran för persondatorn.
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
-  \includegraphics[keepaspectratio=true,width=0.5\linewidth]{bilder/Flode_kartritning.jpg}  %skala och filnamn. 
+  \includegraphics[keepaspectratio=true,width=0.5\linewidth]{bilder/flode_brandhard.jpg}  %skala och filnamn. 
   \end{center}
   \caption{Flödesschema brandhärdssökning} %figurtext.
   \label{fig:fire} %glöm inte att uppdatera era labels
@@ -504,10 +501,10 @@ Brandhärdssökningen kommer att gå till på liknande sätt som kartläggningsa
 
 \subsection{Reglering}
 
-Roboten kommer kunna styras dels autonomt men också manuellt via PC-mjukvara. 
+Roboten kan köras autonomt också manuellt via PC-mjukvara. Då roboten körs autonomt kan den reglera längs en vägg. 
 
 \subsubsection{Reglering av styrning}
-Styrmodulen kommer att få sensordata skickad till sig från sensormodulen. Detta data kommer att användas till att reglera riktningen då man följer en vägg. Roboten använderts sig av en tvåviktad proportionell reglering 
+Styrmodulen får sensordata skickad till sig från sensormodulen. Denna data används till att reglera riktningen då man följer en vägg. Roboten använder sig av en tvåviktad proportionell reglering 
 
 Den första proportionella delen av regleringen reglerar avståndet från senorerna på robotens högersida jämfört med ett internt referensavstånd. Denna reglering ser till att roboten håller sig inom ett rimligt avstånd till den vägg som följs.
 $ e_p = K_{p}*avst\text{\it{å}}ndssensordata $
@@ -523,14 +520,7 @@ Totala felet ges då av:
 
 $e = e_d + e_p$
 
-
-% ----------- Kommunikation ------------------
-
-\subsection{Kommunikation}
-
-Styrmodulen kommunicerar med kommunikationsmodulen (master) över SPI-bussen. Bussen kopplas in på dedikerade pinnar för SPI-bussen på ATmega1284p-processorn. Kommunikationsmodulen kommer att agera master på bussen.
-
-De kommandon styrmodulen kommer att kunna hantera beskrivs i tabellen nedan. \newline
+Konstanterna $K_{p}$ och $K_{d}$ kan dels väljas i persondatormjukvaran, men de initieras som standard till $K_{p}=6$ och $K_{d}=7$.
 
 \newpage
 
