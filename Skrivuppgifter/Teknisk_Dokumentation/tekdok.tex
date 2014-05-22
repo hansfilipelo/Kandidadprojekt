@@ -102,6 +102,8 @@
 \addto\captionsswedish{\renewcommand{\contentsname}{Innehållsförteckning}}
 
 \tableofcontents
+\newpage
+\listoffigures
 \thispagestyle{fancy}
 \newpage
 
@@ -137,9 +139,11 @@ Det här är MapMaster2001. En kartritande robot med bred funktionalitet. MapMas
   \item Läsa av sin omgivning med 6 avståndssensorer
   \item Mäta sin färdväg med en reflexsensor
   \item Indikera autonomt/manuellt läge med en lysdiod
-  \item Styras via BlueTooth med hjälp av en persondatormjukvara med ett modernt GUI
+  \item Styras via Bluetooth med hjälp av en persondatormjukvara med ett modernt GUI
   \item Spara sensordata på persondator och plotta denna via inbyggd grafritningsfunktion
 \end{itemize}
+
+All mjukvara tillhörande MapMaster2001 samt dokument finns att hitta på GitHub\footnote{https://github.com/hansfilipelo/MapMaster2001}
 
 \newpage
 \section{Teori}
@@ -153,7 +157,7 @@ Det här är MapMaster2001. En kartritande robot med bred funktionalitet. MapMas
   \includegraphics[keepaspectratio=true,scale=0.5]{bilder/Flode_kartritning.jpg}  %skala och filnamn. 
   \end{center}
   \caption{Flödesschema kartläggning} %figurtext.
-  \label{fig:fire} %glöm inte att uppdatera era labels
+  \label{fig:mapFlow} %glöm inte att uppdatera era labels
 \end{figure}
 
 Djupare teori kring kartläggning och positionering finns i Appendix
@@ -619,6 +623,37 @@ Summan som används har tagits fram och kalibrerats med hjälp av tester.
 \subsection{Övergripande design}
 Sensorerna kommer att vara placerade engligt bilden i figur \ref{fig:sensoroverview} .
 
+\section{PCmjukvara}
+Det grafiska gränssnittet är skriver i Qt 5.3.0 och är designad i QtCreator och mjukvaran är skriven för att vara kompatibelt med MacOSX.
+Qt har eventhantering. Qt kallar dessa events för slots och de kan liknas med avbrott.
+\subsection{Bluetooth}
+Bluetooth mottagningen på PC fungerar genom att modulen i PC virtualiserar en seriellport som sedan data kan skickas på. För att skapa porten utnyttjas den inbyggda klassen i Qt, QSerialPort. Denna initialiserar Bluetooth kopplingen och sätter inställningar som läs-skriv läge, BaudRate, antal databitar, paritet och stopbitar.
+Det är alltid exakt 27 bytes per transmission.
+
+\subsection{Läsning av Bluetooth}
+När data kommer till Bluetooth-enheten skickas ett avbrott till mainprogrammet och denna påbörjar mottagning i funktionen HandleReadyRead(). Denna funktion förklaras i flödesdiagrammet figur~\ref{fig:BTpc}
+
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,width=0.6\linewidth]{bilder/bluetoothpc.jpg}  %skala och filnamn. 
+  \end{center}
+  \caption{Flödesdiagram Bluetooth mottagning} %figurtext.
+  \label{fig:BTpc}
+\end{figure}
+
+\subsection{Skrivning till Bluetooth}
+Skrivning till Bluetooth-enheten sker via den, i QSerialPort, inbyggda medlemsfunktionen write. I filen order.cpp finns en klass som sköter abstraktion mellan det grafiska användargränssnittet och QSerialPort. Denna har alla kommandoarrayer specificerade i sig och skickar vidare data till serialport objektet som sedan skriver denna data till Bluetooth-enheten. 
+
+\subsection{Sensorgrafer}
+Med hjälp av klassen QCustomPlot kan vi skapa grafer för plottning av sensordata från roboten. När det grafiska användargränssnittet startar sätts en timer igång. Varje gång sensor data kommer till Bluetooth-enheten tidsstämplas denna och detta används för att rita tidsberoende sensorgrafer med historik. 
+Dessa grafer kan sparas ned. Då skapas en ny mapp i användarens hemkatalog kallad MapMaster och i den en textfil. Med hjälp av ett menyval, Data->Review data, öppnas ett nytt fönster med interaktiva plottar som då kan analyseras.
+
+\subsection{Styrkommandon}
+Samtliga styrkommandon är slots och funktioner utförs när knappar i det grafiska användargränssnittet trycks på eller när motsvarande knapp på tangentbordet trycks in. 
+Styrkommandofunktionerna läser av hastighetsslidern och skickar sedan styrkommandot till roboten. 
+\subsection{Kartan}
+Kartan använder sig av Qts inbyggda klass QGraphicsScene. Objekt med dimension 10x10 skapas upp och placeras för att skapa kartan.
+
 \section{Slutsatser}
 Fler sensorer skulle kunnat förbättra kartläggning och positionering. Processorn har dock enbart 8 pinnar för ADC vilket leder till att endast 8 st sensorer med analoga utsignaler kan användas. Ett sätt att komma runt detta problem är att använda en extern mux.
 Detta alternativ diskuterades i gruppen. Vi hade dock redan implementerat en fullt fungerande sensormodul, där de 8 ADC-pinnarna var fyllda, och valde därför att behålla strukturen vi hade för att unvika en tidskrävande ombyggnad från grunden.
@@ -627,9 +662,10 @@ Kortdistanssensorerna på robotens högra sida har en räckvidd på 10-80 cm. D�
 GP2D120 som går att läsa om på Vanheden\footnote{\url{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/gp2d120.pdf}}. Ett byte av sensorer skulle dock innebära större begränsningar vid kartläggning.
 Sensorerna var först placerade längst ut på robotens högra sida och genom att flytta dem längre in på roboten lyckades vi öka marginalen för regleringen. Vi valde därför att inte byta ut sensorerna.
 
-Vilka förbättringar skulle kunna göras?
-
-\section{Referenser}
+Busskommunikationen fungerade ej perfekt och skulle ha kunnat förbättrats. En bufferstruktur med flertalet pekare skulle ha kunnat nyttjas. Dessutom skulle en struktur där master frågar slave-enheterna med jämna mellanrum om data istället för avbrott från slave-enheterna ha kunnat hjälpt implementeringens stabilitet.
+\newpage
+\section*{Referenser}
+\addcontentsline{toc}{section}{Referenser}
 
 
 
@@ -640,8 +676,9 @@ Vilka förbättringar skulle kunna göras?
 \appendix
 \pagestyle{empty}
 \newgeometry{left=2cm,right=2cm,bottom=2cm,top=2cm}
-\section{Appendix A - Kopplingsscheman}
-\subsection{Kopplingsschema för kommunikationsmodul}
+\section*{Appendix A - Kopplingsscheman}
+\addcontentsline{toc}{section}{Appendix A - Kopplingsscheman}
+\subsection*{Kopplingsschema för kommunikationsmodul}
 
 \begin{figure}[ht] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
@@ -653,7 +690,7 @@ Vilka förbättringar skulle kunna göras?
  \clearpage %flushes picture cache to place now
  
 
-\subsection{Kopplingsschema för styrmodul}
+\subsection*{Kopplingsschema för styrmodul}
 
 \begin{figure}[ht] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
@@ -665,7 +702,7 @@ Vilka förbättringar skulle kunna göras?
  \clearpage %flushes picture cache to place now
  
 
-\subsection{Kopplingsschema för sensormodull}
+\subsection*{Kopplingsschema för sensormodull}
 
 \begin{figure}[ht] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
@@ -678,7 +715,8 @@ Vilka förbättringar skulle kunna göras?
  
 
 \newpage
-\section{Appendix B - Flödesscheman}
+\section*{Appendix B - Flödesscheman}
+\addcontentsline{toc}{section}{Appendix B - Flödesscheman}
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
@@ -712,7 +750,9 @@ Vilka förbättringar skulle kunna göras?
 \clearpage %flushes picture cache to place now
 \newpage
 
-\section{Appendix C - Kommandon}
+\section*{Appendix C - Kommandon}
+\addcontentsline{toc}{section}{Appendix C - Kommandon}
+
 
 \begin{tabular}{| p{4cm} | p{2.5cm} | p{2.5cm} | p{2.5cm} | p{3.7cm} |}
 	\hline
