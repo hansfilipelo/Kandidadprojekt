@@ -442,11 +442,11 @@ void Robot::turn(int pd){
 	int pdOut = pd;
 	
 	// Protect against overflow
-	if (output+pdOut > 255 || output-pdOut < 0)
+	if (output+pdOut > 190 || output-pdOut < 0)
 	{
 #if TESTING == 0
-		OCR2A = 0; //Negative value on pd will turn left, positive right
-		OCR2B = 0;
+		OCR2A = output; //Negative value on pd will turn left, positive right
+		OCR2B = output;
 #endif
 	}
 	else {
@@ -712,7 +712,7 @@ void Robot::setBwdClosed(){
 // -------------- To the left --------------------------
 
 void Robot::setLeftClosed(){
-    if(!islandMode){// && !exploringIsland){
+    if(!islandMode && !exploringIsland){
 	    return;
     }
 	int output = 0;
