@@ -16,7 +16,6 @@
 #include <avr/interrupt.h>
 
 #endif
-
 #if TESTING == 1
 #include <iostream>
 #endif
@@ -183,6 +182,20 @@ public:
     int exploreX=0;
     int exploreY=0;
     bool isHome();
+
+	
+	
+	
+//functions and variables for island detection and exploration
+	bool islandToLeft = false;
+	bool exploringIsland = false;
+	void exploreIsland();
+	int timesMovedOnIsland = 0;
+	int islandStartX = 0;
+	int islandStartY = 0;
+	void savePosition();
+	
+	
     
     
     void goHome();
