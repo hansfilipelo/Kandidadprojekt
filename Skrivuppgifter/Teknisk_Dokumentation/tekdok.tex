@@ -117,8 +117,12 @@ MapMaster2001 är en robot vars uppgift är att underlätta för nödpersonal vi
 
 MapMaster2001 kartlägger sin omgivning och skickar sedan information om denna till en persondator som ritar ut en karta på en skärm. MapMaster2001 hittar eldhärden och markerar denna på kartan så att undsättningspersonal enkelt kan släcka elden. 
 
+\subsection{Bakgrund}
+Under tredje året på Teknisk fysik och elektroteknik (Y) på Linköpings Universitet utförs ett kandidatarbete
+med inriktning fysik eller elektroteknik. Denna rapport behandlar ett elektroteknikkandidatprojekt som utförts av sex studenter. Projektgruppen valde att konstruera en kartritande robot på grund av utmaning kring kodning av kartritning och positionsskattning. Detta projekt genomförs årligen av tredjeårsstudenter på Y men har från och med detta år utökats till ett kandidatarbete. 
+
 \subsection{Syfte och Mål}
-Robotens syfte är att kartlägga ett rum och finna en fiktiv eldhärd så snabbt som möjligt. 
+Syftet med den här kandidatarbete är att konstruera och leverera en fullt autonom robot som ska kunna kartlägga ett begränsat område. Inom området ska RFID-taggar finns utplacerade för att indikera brandhärdar. Roboten i sig ska bestå av tre stycken moduler som ska kunna kommunicera med varandra. Modulerna ska ha olika ansvarsområden för att kunna utföra parallella aktiviteter. 
 
 \newpage
 \section{Produkt}
@@ -145,6 +149,7 @@ Det här är MapMaster2001. En kartritande robot med bred funktionalitet. MapMas
 
 All mjukvara tillhörande MapMaster2001 samt dokument finns att hitta på GitHub\footnote{https://github.com/hansfilipelo/MapMaster2001}
 
+Ett användningsområde för Mapmaster 2001 är att den kan underlätta för nödpersonal vid uppdrag i gasfyllda eller rökfyllda lokaler. MapMaster2001 kan skickas in i brandhärjat rum, alternativt ett rum med en gasläcka, innan undsättningspersonal skickas in. 
 \newpage
 \section{Teori}
 
@@ -202,10 +207,10 @@ Specificerat bussprotokoll är enbart halv-duplex, d v s man kan enbart skicka d
 
 Bussens tillgängliga kommandon är:
 
-\begin{tabular}{| p{0.25\textwidth} | p{0.15\textwidth} | p{0.075\textwidth} | p{0.075\textwidth} | p{0.35\textwidth} |}
+\begin{tabular}{| p{0.20\textwidth} | p{0.15\textwidth} | p{0.1\textwidth} | p{0.12\textwidth} | p{0.33\textwidth} |}
 	\hline
 	\rowcolor{listinggray}
-	\textbf{Funktion} & \textbf{Datalängd} & \textbf{Kodord} & \textbf{ev argument} & \textbf{datastruktur} \\ \hline
+	\textbf{Funktion} & \textbf{Datalängd} & \textbf{Kodord} & \textbf{argument} & \textbf{datastruktur} \\ \hline
 	Rotera vänster & 3 & r & 0 & Hastighet (0-100) \\ \hline
 	Rotera höger & 3 & r & 1 & Hastighet (0-100) \\ \hline
 	halt & 1 & h & DNC & DNC \\ \hline
@@ -226,7 +231,7 @@ Bussens tillgängliga kommandon är:
 \end{tabular}
 ~\\
 Där DNC står för ''Do not care''.
-
+\newpage
 % ----------------------------- Kommunikationsmodul ------------------------------
 % --------------------------------------------------------------------------------
 
