@@ -1007,7 +1007,7 @@ void Robot::updateRobotPosition(){
 		if((RFIDmode)&&(rightFrontSensor < 20)&&(okayToClose)){
 			setRightClosed();
 		}
-		else if (okayToClose){
+		else if (okayToClose && !RFIDmode){
 			setFwdClosed();
 			setBwdClosed();
 			setRightClosed();
@@ -1595,5 +1595,7 @@ void Robot::goHome(){
             exploreY = yCoord;
         }
     }
+	setSpeed(0);
+	drive();
 }
 
