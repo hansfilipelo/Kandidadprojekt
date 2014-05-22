@@ -232,7 +232,7 @@ Där DNC står för ''Do not care''.
 
 
 \section{Kommunikationsmodul}
-Modulen hanterar kommunikation mellan robotens olika delkomponenter samt med persondatorn via Bluetooth. Kommunikationsmodulen som syns i figur 3, kommer att agera master på robotens interna buss. Vid kommunikation mellan övriga moduler, dvs. sensor- och styrmodulen, kommer denna gå via kommunikationsmodulen. Kommunikationsmodulen levererar sensordata och manuella styrkommandon mellan roboten och PC-mjukvaran.
+Modulen hanterar kommunikation mellan robotens olika del samt med persondatorn via Bluetooth. Kommunikationsmodulen som syns i figur 3, kommer att agera master på robotens interna buss. Vid kommunikation mellan övriga moduler, dvs. sensor- och styrmodulen, kommer denna gå via kommunikationsmodulen. Kommunikationsmodulen levererar sensordata och manuella styrkommandon mellan roboten och PC-mjukvaran.
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
@@ -254,15 +254,16 @@ Fall 2: Sensormodulen signalerar att ny sensordata är redo, se  figur~\ref{fig:
 Fall 3: Kartdata skickas från kommunikationsmodulen till PC, se figur~\ref{fig:case3flow}. 
  
 \subsection{Komponenter}
-\begin{itemize}
+Komponenterna är numrerade och finns att hitta i kretsschemat, se Appendix A.
+\begin{enumerate}
   \item AVR processor av typen ATMega1284
   \item Bluetoothsdongel, Firefly, BlueSmirf Gold
   \item LCD-Display
-  \item Två stycken knappar
+  \item Resetknapp
+  \item Manuell/Autonom knapp
   \item Kristalloscillator EXO-3, 14.745 MHz
   \item Lysdiod
-  \item Bandkabel
-\end{itemize}
+\end{enumerate}
 
 \subsection{Buss}
 Mellan processorerna används SPI som bussprotokoll. Kommunikationsmodulen agerar master medan styr- och sensormodul agerar slaves. Kommunikation kommer alltid att initieras av master och om slave vill skicka data, genererar de ett avbrott på master som talar om att de har data som är redo att skickas. 
@@ -382,7 +383,7 @@ Av/På-knappen styr strömförsörjningen till samtliga moduler.
 
 \newpage
 \section{Styrmodul}
-Styrmodulens (slave) huvudkomponent kommer att bestå av en AVR-processor, Atmel ATmega1284p som får instruktioner från kommunikationsmodulen (master) via bussen. Processorn kommunicerar även med drivkretsen på chassit. Chassit är av typen Terminator som drivs av en NiMH- eller NiCd-ackumulator på 7.2V. Det har även fyra stycken växlade DC-motorer som är kopplade till varsitt drivhjul. 
+Styrmodulens (slave) huvudkomponent kommer består av en AVR-processor, Atmel ATmega1284p som får instruktioner från kommunikationsmodulen (master) via bussen. Styrmodulen kommunicerar även med drivkretsen på chassit. Chassit är av typen Terminator som drivs av en NiMH- eller NiCd-ackumulator på 7.2V. Det har även fyra stycken växlade DC-motorer som är kopplade till varsitt drivhjul. 
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
@@ -398,10 +399,9 @@ Styrmodulens (slave) huvudkomponent kommer att bestå av en AVR-processor, Atmel
 \subsection{Komponenter}
 \begin{itemize}
 	\item Chassi
-	\item Systemchip - Atmel ATmega1284p
-	\item Tryckknappar för debugging av styrfunktionalitet
+	\item Systemchip - Atmel ATmega1284p (1)
 	\item Batteri, 7.2 V
-	\item Resetknapp
+	\item Resetknapp (2)
 \end{itemize}
 \subsection{Signaler}
 Motorerna kommer att styras parvis med två signaler per sida:
@@ -412,8 +412,8 @@ Motorerna kommer att styras parvis med två signaler per sida:
 	\item PWMR - Pulsbreddmodulerad signal som styr den högra motorns hastighet.
 \end{itemize}
 ~\\
-Dessa kopplas direkt från processorn till chassits drivkrets enligt bild.
-Styrmodulen kommer att vara ansluten till bussen med hjälp av MISO- och MOSI-pinnarna.
+Dessa är kopplade direkt från processorn till chassits drivkrets enligt bild.
+Styrmodulen är ansluten till bussen med hjälp av MISO- och MOSI-pinnarna.
 
 \begin{itemize}
 	\item MISO - Master Input Slave Output, data skickas till master
@@ -423,7 +423,7 @@ Styrmodulen kommer att vara ansluten till bussen med hjälp av MISO- och MOSI-pi
 	\item SCK - Serial Clock, klocka från master
 \end{itemize}
 ~\\
-Utöver detta kommer en tryckknapp anslutas till RESET för att förhindra att felaktig programmering av processorn. 
+Utöver detta är en tryckknapp ansluten till RESET för att förenkla felsökning och uppstart. 
 
 För fullständigt kopplingsschema - se Appendix. 
 
@@ -431,8 +431,7 @@ För fullständigt kopplingsschema - se Appendix.
 % ------------------- Styrning och kartläggning -----------------------
 
 \subsubsection{Kartabstraktion}
-Kartan kommer att abstraheras som en matris där objekt sparas, detta löses i form av en arrays med dimensionerna 32x17.
-Tillgängliga undertyper kommer att vara:
+Kartan abstraheras som en matris där objekt sparas, detta löses i form av en arrays med dimensionerna 32x17. Tillgängliga undertyper är:
 
 \begin{itemize}
 \item{EmptySection}
@@ -446,7 +445,7 @@ Robot är en egen klass med polymorfiskt arv från mapSection.
 
 \paragraph{EmptySection} 
 ~\\
-EmptySection kommer att representera en tom sektion av kartan. Objektet EmptySection kan svara på frågan om huruvida den eller andra EmptySection som angränsar till ojektet i fråga i sin tur angränsar till outforskat område. 
+EmptySection representeras av en tom sektion av kartan. 
 
 \paragraph{UnexploredSection} 
 ~\\
@@ -459,14 +458,14 @@ Robot kommer att representera robotens position på kartan.
 \paragraph{Closed} 
 ~\\
 Om en sektion är stängd sätts den till closed.
+
 \paragraph{Fire} 
 ~\\
 Fire kommer att representera plats där det finns eldhärd, dvs. en RFID-tagg. 
 \newpage
 
-
 \subsection{Styrning och kartläggning}
-Det ska implementeras två olika avsökningsalgoritmer. De kommer användas beroende på vilket uppdrag roboten ska genomföra. Algoritmerna kommer att skrivas med hjälp av C++ och köras från processorns interna minne. 
+Det har implementeras två olika avsökningsalgoritmer. Dessa kan aktiveras beroende på vilket uppdrag roboten ska utföra. 
 
 \subsubsection{Kartläggninsalgoritm}
 
@@ -474,7 +473,7 @@ Kartläggningsalgoritmen utformas så att roboten börjar med att placera sig s�
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
-  \includegraphics[keepaspectratio=true,width=0.8\linewidth]{bilder/flode_brandhard.jpg}  %skala och filnamn. 
+  \includegraphics[keepaspectratio=true,width=0.8\linewidth]{bilder/Flode_kartritning.jpg}  %skala och filnamn. 
   \end{center}
   \caption{Flödesschema kartläggningsalgoritm} %figurtext.
   \label{fig:map} %glöm inte att uppdatera era labels
@@ -487,11 +486,11 @@ När roboten har åkt längs högerväggen och återvänder till startkoordinate
 
 \subsubsection{Brandhärdssökning}
 
-Brandhärdssökningen kommer att gå till på liknande sätt som kartläggningsalgoritmen, dock kommer den vara långsammare på grund av att varje ruta i området måste besökas. Efter att området slutits använder roboten sig av radavsökning för att systematiskt besöka alla rutor. Om en RFID-tag upptäcks ska detta noteras.
+Brandhärdssökningen kommer att gå till på liknande sätt som kartläggningsalgoritmen, dock kommer den vara långsammare på grund av att varje ruta i området måste besökas. Efter att området slutits besöker roboten området block för block för att systematiskt besöka alla rutor. Om en RFID-tag upptäcks ska detta noteras och markeras som rött i programvaran för persondatorn.
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
-  \includegraphics[keepaspectratio=true,width=0.5\linewidth]{bilder/Flode_kartritning.jpg}  %skala och filnamn. 
+  \includegraphics[keepaspectratio=true,width=0.5\linewidth]{bilder/flode_brandhard.jpg}  %skala och filnamn. 
   \end{center}
   \caption{Flödesschema brandhärdssökning} %figurtext.
   \label{fig:fire} %glöm inte att uppdatera era labels
@@ -503,10 +502,10 @@ Brandhärdssökningen kommer att gå till på liknande sätt som kartläggningsa
 
 \subsection{Reglering}
 
-Roboten kommer kunna styras dels autonomt men också manuellt via PC-mjukvara. 
+Roboten kan köras autonomt också manuellt via PC-mjukvara. Då roboten körs autonomt kan den reglera längs en vägg. 
 
 \subsubsection{Reglering av styrning}
-Styrmodulen kommer att få sensordata skickad till sig från sensormodulen. Detta data kommer att användas till att reglera riktningen då man följer en vägg. Roboten använderts sig av en tvåviktad proportionell reglering 
+Styrmodulen får sensordata skickad till sig från sensormodulen. Denna data används till att reglera riktningen då man följer en vägg. Roboten använder sig av en tvåviktad proportionell reglering 
 
 Den första proportionella delen av regleringen reglerar avståndet från senorerna på robotens högersida jämfört med ett internt referensavstånd. Denna reglering ser till att roboten håller sig inom ett rimligt avstånd till den vägg som följs.
 $ e_p = K_{p}*avst\text{\it{å}}ndssensordata $
@@ -522,14 +521,7 @@ Totala felet ges då av:
 
 $e = e_d + e_p$
 
-
-% ----------- Kommunikation ------------------
-
-\subsection{Kommunikation}
-
-Styrmodulen kommunicerar med kommunikationsmodulen (master) över SPI-bussen. Bussen kopplas in på dedikerade pinnar för SPI-bussen på ATmega1284p-processorn. Kommunikationsmodulen kommer att agera master på bussen.
-
-De kommandon styrmodulen kommer att kunna hantera beskrivs i tabellen nedan. \newline
+Konstanterna $K_{p}$ och $K_{d}$ kan dels väljas i persondatormjukvaran, men de initieras som standard till $K_{p}=6$ och $K_{d}=7$.
 
 \newpage
 
@@ -597,6 +589,8 @@ kommunikationsmodulen, via en SPI-buss.
 För att kunna detektera RFID-taggen så krävs en RFID-läsare. Vi kommer att använda Par\-all\-ax-Read\-er\footnote{\url{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/rfid-reader-v21.pdf}}. 
 SOUT på RFID-sensorn, PIN 3, kopplas till port C, PIN 23, på processon. RFID-läsaren använder sig av serielprotokollet asynkron USART för att skicka data från RFID-korten vidare till CPU:n. Pinne 23 som RFID-läsaren är inkopplad på har stöd för seriell kommunikation och konfigureras för att matcha dataöverföringshastigheten från läsaren.
 
+<<<<<<< Local Changes
+Då brus kan ge upphov en falsk RFID-läsning, så kontroller=======
 Då brus kan ge upphov en falsk RFID-läsning, så kontrolleras att mottaget data matchar vissa symboler. Vi har valt att leta efter en start byte, 0x0A, som indikerar början på en RFID-taggs unika id. För att ytterligare säkerställla en korrekt läsning görs denna kontroll två gånger innan kommandot för upptäckt brandhärd skickas till master.
 
 \subsubsection{Reflexsensor}
@@ -750,37 +744,7 @@ Busskommunikationen fungerade ej perfekt och skulle ha kunnat förbättrats. En 
 \clearpage %flushes picture cache to place now
 \newpage
 
-\section*{Appendix C - Kommandon}
-\addcontentsline{toc}{section}{Appendix C - Kommandon}
-
-
-\begin{tabular}{| p{4cm} | p{2.5cm} | p{2.5cm} | p{2.5cm} | p{3.7cm} |}
-	\hline
-	\textbf{Beskrivning} & \textbf{Datalängd} & \textbf{Kommando} & \textbf{Argument} & \textbf{Data} \\ \hline
-	Rotera vänster & 3 & r & 0 & 1 byte, speed \\\hline
-	Rotera höger & 3 & r & 1 & 1 byte, speed \\\hline
-	Halt & 3 & h & 0 & - \\\hline
-	Framåt & 3 & f & 0 & 1 byte, speed \\\hline
-	Bakåt & 3 & b & 0 & 1 byte, speed \\\hline
-	Fetch Map & 1 & F & - & -\\\hline
-	Gyro kalibrering & 2 & g & 0 & - \\\hline
-	Aktivera gyro & 2 & g & 1 & - \\\hline
-	Deaktivera gyro & 2 & g & 2 & - \\\hline
-
-	Gyro 90 grader & 1 & G & - & - \\\hline
-	RFID detekterad & 1 & R & - & - \\\hline
-	Aktivera RFID & 1 & r & - & - \\\hline
-	Kartkolumn & 19 & M & Kolumn nr& Kartkolumn\\\hline
-	Bekräftar kartkolumn & 2 & m & Kolumn nr & - \\\hline
-	Manuellt läge & 1 & a & - & - \\\hline
-	Autonomt läge & 1 & q & - & - \\\hline
-	Gyro medurskonstant & 5 & k & 0 & 3 byte,\newline [100tal 10tal 1tal]\\\hline
-	Gyro moturskonstant & 5 & k & 1 & 3 byte,\newline [100tal 10tal 1tal]\\\hline
-	Sensordata 0-9 & 26 & S & A & 24 bytes sensordata,\newline 8x[100tal 10tal 1tal]\\\hline
-	
-\end{tabular}
-\newpage
-\section{Appendix D - Användarmanual}
+\section{Appendix C - Användarmanual}
 Roboten kan köras i två lägen, antingen i manuellt eller autonomt läge. För att börja använda Mapmaster 2001, slå på huvudströmbrytaren placerad på bakre delen av robotens chassi. Efter detta kan det vara av god sed att trycka på de båda svarta knapparna på respektive virkort. Dessa är reset-knappar och roboten är nu redo att kopplas upp mot persondatorn. 
 
 \subsection{Bluetooth}
@@ -831,4 +795,4 @@ Nedan följer en lista med tillhörande bild för att du som användare ska kunn
 \end{figure}
 
 
-\end{document}
+\end{document}>>>>>>> External Changes
