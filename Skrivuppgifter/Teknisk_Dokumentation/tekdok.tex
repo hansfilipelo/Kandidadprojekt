@@ -118,8 +118,12 @@ MapMaster2001 är en robot vars uppgift är att underlätta för nödpersonal vi
 
 MapMaster2001 kartlägger sin omgivning och skickar sedan information om denna till en persondator som ritar ut en karta på en skärm. MapMaster2001 hittar eldhärden och markerar denna på kartan så att undsättningspersonal enkelt kan släcka elden. 
 
+\subsection{Bakgrund}
+Under tredje året på Teknisk fysik och elektroteknik (Y) på Linköpings Universitet utförs ett kandidatarbete
+med inriktning fysik eller elektroteknik. Denna rapport behandlar ett elektroteknikkandidatprojekt som utförts av sex studenter. Projektgruppen valde att konstruera en kartritande robot på grund av utmaning kring kodning av kartritning och positionsskattning. Detta projekt genomförs årligen av tredjeårsstudenter på Y men har från och med detta år utökats till ett kandidatarbete. 
+
 \subsection{Syfte och Mål}
-Robotens syfte är att kartlägga ett rum och finna en fiktiv eldhärd så snabbt som möjligt. 
+Syftet med den här kandidatarbete är att konstruera och leverera en fullt autonom robot som ska kunna kartlägga ett begränsat område. Inom området ska RFID-taggar finns utplacerade för att indikera brandhärdar. Roboten i sig ska bestå av tre stycken moduler som ska kunna kommunicera med varandra. Modulerna ska ha olika ansvarsområden för att kunna utföra parallella aktiviteter. 
 
 \newpage
 \section{Produkt}
@@ -146,6 +150,7 @@ Det här är MapMaster2001. En kartritande robot med bred funktionalitet. MapMas
 
 All mjukvara tillhörande MapMaster2001 samt dokument finns att hitta på GitHub\footnote{https://github.com/hansfilipelo/MapMaster2001}
 
+Ett användningsområde för Mapmaster 2001 är att den kan underlätta för nödpersonal vid uppdrag i gasfyllda eller rökfyllda lokaler. MapMaster2001 kan skickas in i brandhärjat rum, alternativt ett rum med en gasläcka, innan undsättningspersonal skickas in. 
 \newpage
 \section{Teori}
 
@@ -203,10 +208,10 @@ Specificerat bussprotokoll är enbart halv-duplex, d v s man kan enbart skicka d
 
 Bussens tillgängliga kommandon är:
 
-\begin{tabular}{| p{0.25\textwidth} | p{0.15\textwidth} | p{0.075\textwidth} | p{0.075\textwidth} | p{0.35\textwidth} |}
+\begin{tabular}{| p{0.20\textwidth} | p{0.15\textwidth} | p{0.1\textwidth} | p{0.12\textwidth} | p{0.33\textwidth} |}
 	\hline
 	\rowcolor{listinggray}
-	\textbf{Funktion} & \textbf{Datalängd} & \textbf{Kodord} & \textbf{ev argument} & \textbf{datastruktur} \\ \hline
+	\textbf{Funktion} & \textbf{Datalängd} & \textbf{Kodord} & \textbf{argument} & \textbf{datastruktur} \\ \hline
 	Rotera vänster & 3 & r & 0 & Hastighet (0-100) \\ \hline
 	Rotera höger & 3 & r & 1 & Hastighet (0-100) \\ \hline
 	halt & 1 & h & DNC & DNC \\ \hline
@@ -227,13 +232,13 @@ Bussens tillgängliga kommandon är:
 \end{tabular}
 ~\\
 Där DNC står för ''Do not care''.
-
+\newpage
 % ----------------------------- Kommunikationsmodul ------------------------------
 % --------------------------------------------------------------------------------
 
 
 \section{Kommunikationsmodul}
-Modulen hanterar kommunikation mellan robotens olika delkomponenter samt med persondatorn via Bluetooth. Kommunikationsmodulen som syns i figur 3, kommer att agera master på robotens interna buss. Vid kommunikation mellan övriga moduler, dvs. sensor- och styrmodulen, kommer denna gå via kommunikationsmodulen. Kommunikationsmodulen levererar sensordata och manuella styrkommandon mellan roboten och PC-mjukvaran.
+Modulen hanterar kommunikation mellan robotens olika del samt med persondatorn via Bluetooth. Kommunikationsmodulen som syns i figur 3, kommer att agera master på robotens interna buss. Vid kommunikation mellan övriga moduler, dvs. sensor- och styrmodulen, kommer denna gå via kommunikationsmodulen. Kommunikationsmodulen levererar sensordata och manuella styrkommandon mellan roboten och PC-mjukvaran.
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
@@ -255,20 +260,21 @@ Fall 2: Sensormodulen signalerar att ny sensordata är redo, se  figur~\ref{fig:
 Fall 3: Kartdata skickas från kommunikationsmodulen till PC, se figur~\ref{fig:case3flow}. 
  
 \subsection{Komponenter}
-\begin{itemize}
+Komponenterna är numrerade och finns att hitta i kretsschemat, se Appendix A.
+\begin{enumerate}
   \item AVR processor av typen ATMega1284
   \item Bluetoothsdongel, Firefly, BlueSmirf Gold
   \item LCD-Display
-  \item Två stycken knappar
+  \item Resetknapp
+  \item Manuell/Autonom knapp
   \item Kristalloscillator EXO-3, 14.745 MHz
   \item Lysdiod
-  \item Bandkabel
-\end{itemize}
+\end{enumerate}
 
 \subsection{Buss}
 Mellan processorerna används SPI som bussprotokoll. Kommunikationsmodulen agerar master medan styr- och sensormodul agerar slaves. Kommunikation kommer alltid att initieras av master och om slave vill skicka data, genererar de ett avbrott på master som talar om att de har data som är redo att skickas. 
 
-Mellan processorerna används SPI som bussprotokoll. Kommunikationsmodulen agerar master medan styr- och sensormodul agerar slave. Kommunikation kommer alltid att initieras av master och om slave vill skicka data, genererar de ett avbrott på master som talar om att de har data som är redo att skickas. Bussen använder följande kopplingar för bussen:
+Mellan processorerna används SPI som bussprotokoll. Kommunikationsmodulen agerar master medan styr- och sensormodul agerar slave. Kommunikation kommer alltid att initieras av master och om slave vill skicka data genererar de ett avbrott på master som talar om att de har data som är redo att skickas. Bussen använder följande kopplingar för bussen:
 \begin{itemize}
 	\item MISO - Master Input Slave Output, data till master
 	\item MOSI - Master Output Slave Input, data till slave
@@ -320,9 +326,9 @@ Kommandot skickas från styrmodulen via mastern som speglar ner kommandot till s
 Kommandot skickas från styrmodulen via mastern som speglar ner kommandot till sensormodulen. Sensormodulen startar då en hjulsensormätning och skickar bekräftelse till styrmodulen när roboten har färdats 40 cm. 
 
 \subsection{LCD-Display}
-Sensordata och annan information från roboten visas på en alfanumerisk-display, närmare bestämt  LCD JM162A. Displayen kommer användas för att visa sensordata samt eventuella parametrar för debugging under testfasen.
-Displayen kommer anslutas till processorn enligt kretschemat i appendix A. 
-Vid varje uppstart kommer initiering av LCD-display göras och då följa nedanstående flödesschema. Varje steg startas med att processorn skickar ett kommando till ingångarna på LCD-displayen. Kommandon finns specificerade i databladet\footnote{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/jm162a.pdf}. LCD-displayen sitter på mastermodulen och för att inte låsa mastermodulen under tiden då datan skrivs ut på diaplyen har ett buffersystem implementerats. Buffersystemet gör så att mainprogrammet i mastern inte låser när data skrivs till displayen. Buffern håller koll på vilken rad och kolumn som för tillfället ska skrivas ut och kan därför avsluta skrivningen direkt efter att ingen eller en karaktär är utskriven på displayen. Därefter kan mastern återgå till mainloopen för att hantera inkommande eller mottagande data. Genom att hantera skrivningar på detta vis undviker vi att låsa kommunikationsmodulen vid de tidskrävande LCD-skrivningarna.
+Sensordata och annan information från roboten visas på en alfanumerisk-display, närmare bestämt  LCD JM162A. Displayen används för att visa sensordata samt eventuella parametrar för debugging under testfasen.
+Displayen kommer är ansluten till processorn enligt kretschemat i appendix A. 
+Vid varje uppstart initieras LCD-displayen enligt nedanstående flödesschema. Varje steg startas med att processorn skickar ett kommando till ingångarna på LCD-displayen. Kommandon finns specificerade i databladet\footnote{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/jm162a.pdf}. Skrivning till displayen tar tid och för att inte låsa ner mastermodulen helt har ett buffersystem implementerats. Buffern håller koll på vilken rad och kolumn som för tillfället ska skrivas ut och kan därför avsluta skrivningen direkt efter att ingen eller en karaktär är utskriven på displayen. Därefter kan mastern återgå till mainloopen för att hantera inkommande eller mottagande data. Genom att hantera skrivningar på detta vis undviker vi att låsa kommunikationsmodulen vid de tidskrävande LCD-skrivningarna.
 
 \subsubsection{Uppstart}
 	
@@ -366,28 +372,27 @@ Skrivning till LCD-displayen kommer ske enligt flödesschemat~\ref{fig:flowlcdwr
 \end{figure}
 
 \subsection{Bluetooth}
-Bluetoothkommunikationen kommer att utföras av ett Firefly-Bluesmirf gold (FBG) modem som parkopplas mot en persondator.
-FBG kommer att skicka information till persondator via protokollet RS232 enligt vad som är angivet på Vanheden. 
+Bluetoothkommunikationen utförs av ett Firefly-Bluesmirf gold (FBG) modem som parkopplas mot en persondator.
+FBG skickar information till persondator via protokollet RS232 enligt vad som är angivet på Vanheden. 
 Se schema i appendixet Scheman för anslutning av TxD och RxD, vilka sköter sändning och mottagning av data.
 När vi skickar data till processorn så är detta avbrottshanterat. I avbrottet utnyttjas en databuffer vid namn inDataArray som sedan kopieras till bufferten pcHandle i datahanteringen av Bluetooth. Även Bluetooth datahanteras utanför avbrotten precis som SPI-kommunikationen.
 
 \subsubsection{Skickning av kartan}
-För att undvika problem vid mottagning av kartan på PC sidan skickas en rad i taget med hjälp av en timer. Main-loopen på kommunikationsmodulen kollar en gång per main-loop om det är okej att skicka en rad. När timern genererar ett avbrott sätts en flagga att ytterligare en rad är redo att skicka. När samtliga rader har skickats över sätts flaggan som avgör om kartrader ska skickas över till false. 
+För att undvika problem vid mottagning av kartan på PC sidan skickas en rad i taget med hjälp av en timer. Main-loopen på kommunikationsmodulen kollar en gång per main-loop om det är okej att skicka en rad. När timern genererar ett avbrott sätts en flagga att ytterligare en rad är redo att skickas. När samtliga rader har skickats över, sätts flaggan som avgör om kartrader ska skickas över till false.
 
 \subsection{Switchar}
-En switch ska styra om roboten exekverar programkod för autonom styrning eller manuell styrning. Denna switch kan även byta läge via ett virtuellt kommando från PC. Ett avbrott signalerar till processorn att den ska byta programkod, avbrottet ligger på pin16 (INT0) se appendix A. 
-Av/På-knappen styr strömförsörjningen till samtliga moduler. 
+En switch ska styra om roboten exekverar programkod för autonom styrning eller manuell styrning. Denna switch kan även byta läge via ett virtuellt kommando från PC. Ett avbrott signalerar till processorn att den ska byta programkod, avbrottet ligger på pin16 (INT0) se appendix A. Av/På-knappen styr strömförsörjningen till samtliga moduler. 
 
 % ----------------------------- Styrmodul --------------------------------------
 % --------------------------------------------------------------------------------
 
 \newpage
 \section{Styrmodul}
-Styrmodulens (slave) huvudkomponent kommer att bestå av en AVR-processor, Atmel ATmega1284p som får instruktioner från kommunikationsmodulen (master) via bussen. Processorn kommunicerar även med drivkretsen på chassit. Chassit är av typen Terminator som drivs av en NiMH- eller NiCd-ackumulator på 7.2V. Det har även fyra stycken växlade DC-motorer som är kopplade till varsitt drivhjul. 
+Styrmodulens (slave) huvudkomponent kommer består av en AVR-processor, Atmel ATmega1284p som får instruktioner från kommunikationsmodulen (master) via bussen. Styrmodulen kommunicerar även med drivkretsen på chassit. Chassit är av typen Terminator som drivs av en NiMH- eller NiCd-ackumulator på 7.2V. Det har även fyra stycken växlade DC-motorer som är kopplade till var sitt drivhjul. 
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
-  \includegraphics[keepaspectratio=true,width=0.5\linewidth]{bilder/styrmodul}  %skala och filnamn. 
+  \includegraphics[keepaspectratio=true,width=\linewidth]{bilder/styrmodul}  %skala och filnamn. 
   \end{center}
   \caption{Översikt styrmodul} %figurtext.
   \label{fig:styr} %glöm inte att uppdatera era labels
@@ -397,13 +402,13 @@ Styrmodulens (slave) huvudkomponent kommer att bestå av en AVR-processor, Atmel
 % ----------- Komponenter ------------------
 
 \subsection{Komponenter}
-\begin{itemize}
-	\item Chassi
+Komponenterna är numrerade och finns att hitta i kretsschemat, se Appendix A.
+\begin{enumerate}
 	\item Systemchip - Atmel ATmega1284p
-	\item Tryckknappar för debugging av styrfunktionalitet
-	\item Batteri, 7.2 V
 	\item Resetknapp
-\end{itemize}
+	\item Chassi
+	\item Batteri, 7.2 V
+\end{enumerate}
 \subsection{Signaler}
 Motorerna kommer att styras parvis med två signaler per sida:
 \begin{itemize}
@@ -413,8 +418,8 @@ Motorerna kommer att styras parvis med två signaler per sida:
 	\item PWMR - Pulsbreddmodulerad signal som styr den högra motorns hastighet.
 \end{itemize}
 ~\\
-Dessa kopplas direkt från processorn till chassits drivkrets enligt bild.
-Styrmodulen kommer att vara ansluten till bussen med hjälp av MISO- och MOSI-pinnarna.
+Dessa är kopplade direkt från processorn till chassits drivkrets enligt bild.
+Styrmodulen är ansluten till bussen med hjälp av MISO- och MOSI-pinnarna.
 
 \begin{itemize}
 	\item MISO - Master Input Slave Output, data skickas till master
@@ -424,7 +429,7 @@ Styrmodulen kommer att vara ansluten till bussen med hjälp av MISO- och MOSI-pi
 	\item SCK - Serial Clock, klocka från master
 \end{itemize}
 ~\\
-Utöver detta kommer en tryckknapp anslutas till RESET för att förhindra att felaktig programmering av processorn. 
+Utöver detta är en tryckknapp ansluten till RESET för att förenkla felsökning och uppstart. 
 
 För fullständigt kopplingsschema - se Appendix. 
 
@@ -432,8 +437,7 @@ För fullständigt kopplingsschema - se Appendix.
 % ------------------- Styrning och kartläggning -----------------------
 
 \subsubsection{Kartabstraktion}
-Kartan kommer att abstraheras som en matris där objekt sparas, detta löses i form av en arrays med dimensionerna 32x17.
-Tillgängliga undertyper kommer att vara:
+Kartan abstraheras som en matris där objekt sparas, detta löses i form av en arrays med dimensionerna 32x17. Tillgängliga undertyper är:
 
 \begin{itemize}
 \item{EmptySection}
@@ -447,7 +451,7 @@ Robot är en egen klass med polymorfiskt arv från mapSection.
 
 \paragraph{EmptySection} 
 ~\\
-EmptySection kommer att representera en tom sektion av kartan. Objektet EmptySection kan svara på frågan om huruvida den eller andra EmptySection som angränsar till ojektet i fråga i sin tur angränsar till outforskat område. 
+EmptySection representeras av en tom sektion av kartan. 
 
 \paragraph{UnexploredSection} 
 ~\\
@@ -460,14 +464,14 @@ Robot kommer att representera robotens position på kartan.
 \paragraph{Closed} 
 ~\\
 Om en sektion är stängd sätts den till closed.
+
 \paragraph{Fire} 
 ~\\
 Fire kommer att representera plats där det finns eldhärd, dvs. en RFID-tagg. 
 \newpage
 
-
 \subsection{Styrning och kartläggning}
-Det ska implementeras två olika avsökningsalgoritmer. De kommer användas beroende på vilket uppdrag roboten ska genomföra. Algoritmerna kommer att skrivas med hjälp av C++ och köras från processorns interna minne. 
+Det har implementeras två olika avsökningsalgoritmer. Dessa kan aktiveras beroende på vilket uppdrag roboten ska utföra. 
 
 \subsubsection{Kartläggninsalgoritm}
 
@@ -475,7 +479,7 @@ Kartläggningsalgoritmen utformas så att roboten börjar med att placera sig s�
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
-  \includegraphics[keepaspectratio=true,width=0.8\linewidth]{bilder/flode_brandhard.jpg}  %skala och filnamn. 
+  \includegraphics[keepaspectratio=true,width=0.8\linewidth]{bilder/Flode_kartritning.jpg}  %skala och filnamn. 
   \end{center}
   \caption{Flödesschema kartläggningsalgoritm} %figurtext.
   \label{fig:map} %glöm inte att uppdatera era labels
@@ -488,11 +492,11 @@ När roboten har åkt längs högerväggen och återvänder till startkoordinate
 
 \subsubsection{Brandhärdssökning}
 
-Brandhärdssökningen kommer att gå till på liknande sätt som kartläggningsalgoritmen, dock kommer den vara långsammare på grund av att varje ruta i området måste besökas. Efter att området slutits använder roboten sig av radavsökning för att systematiskt besöka alla rutor. Om en RFID-tag upptäcks ska detta noteras.
+Brandhärdssökningen kommer att gå till på liknande sätt som kartläggningsalgoritmen, dock kommer den vara långsammare på grund av att varje ruta i området måste besökas. Efter att området slutits besöker roboten området block för block för att systematiskt besöka alla rutor. Om en RFID-tag upptäcks ska detta noteras och markeras som rött i programvaran för persondatorn.
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
-  \includegraphics[keepaspectratio=true,width=0.5\linewidth]{bilder/Flode_kartritning.jpg}  %skala och filnamn. 
+  \includegraphics[keepaspectratio=true,width=0.5\linewidth]{bilder/flode_brandhard.jpg}  %skala och filnamn. 
   \end{center}
   \caption{Flödesschema brandhärdssökning} %figurtext.
   \label{fig:fire} %glöm inte att uppdatera era labels
@@ -504,10 +508,10 @@ Brandhärdssökningen kommer att gå till på liknande sätt som kartläggningsa
 
 \subsection{Reglering}
 
-Roboten kommer kunna styras dels autonomt men också manuellt via PC-mjukvara. 
+Roboten kan köras autonomt också manuellt via PC-mjukvara. Då roboten körs autonomt kan den reglera längs en vägg. 
 
 \subsubsection{Reglering av styrning}
-Styrmodulen kommer att få sensordata skickad till sig från sensormodulen. Detta data kommer att användas till att reglera riktningen då man följer en vägg. Roboten använderts sig av en tvåviktad proportionell reglering 
+Styrmodulen får sensordata skickad till sig från sensormodulen. Denna data används till att reglera riktningen då man följer en vägg. Roboten använder sig av en tvåviktad proportionell reglering 
 
 Den första proportionella delen av regleringen reglerar avståndet från senorerna på robotens högersida jämfört med ett internt referensavstånd. Denna reglering ser till att roboten håller sig inom ett rimligt avstånd till den vägg som följs.
 $ e_p = K_{p}*avst\text{\it{å}}ndssensordata $
@@ -523,14 +527,7 @@ Totala felet ges då av:
 
 $e = e_d + e_p$
 
-
-% ----------- Kommunikation ------------------
-
-\subsection{Kommunikation}
-
-Styrmodulen kommunicerar med kommunikationsmodulen (master) över SPI-bussen. Bussen kopplas in på dedikerade pinnar för SPI-bussen på ATmega1284p-processorn. Kommunikationsmodulen kommer att agera master på bussen.
-
-De kommandon styrmodulen kommer att kunna hantera beskrivs i tabellen nedan. \newline
+Konstanterna $K_{p}$ och $K_{d}$ kan dels väljas i persondatormjukvaran, men de initieras som standard till $K_{p}=6$ och $K_{d}=7$.
 
 \newpage
 
@@ -543,7 +540,7 @@ Sensormodulens uppgift är att hantera sensordata från robotens 9 sensorer och 
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
-  \includegraphics[keepaspectratio=true,width=0.5\linewidth]{bilder/overblicksensor}  %skala och filnamn. 
+  \includegraphics[keepaspectratio=true,width=\linewidth]{bilder/overblicksensor}  %skala och filnamn. 
   \end{center}
   \caption{Överblick av sensormodulen} %figurtext.
   \label{fig:sensoroverview}
@@ -620,9 +617,6 @@ Summan som används har tagits fram och kalibrerats med hjälp av tester.
 
 \subsubsection{Övriga komponenter}
 Övriga komponenter så som ett batteri på 7.2 V och en resetknapp kommer att användas till denna modul.
-
-\subsection{Övergripande design}
-Sensorerna kommer att vara placerade engligt bilden i figur \ref{fig:sensoroverview} .
 
 \section{PCmjukvara}
 Det grafiska gränssnittet är skriver i Qt 5.3.0 och är designad i QtCreator och mjukvaran är skriven för att vara kompatibelt med MacOSX.
@@ -751,6 +745,55 @@ Busskommunikationen fungerade ej perfekt och skulle ha kunnat förbättrats. En 
 \clearpage %flushes picture cache to place now
 \newpage
 
+\section{Appendix C - Användarmanual}
+Roboten kan köras i två lägen, antingen i manuellt eller autonomt läge. För att börja använda Mapmaster 2001, slå på huvudströmbrytaren placerad på bakre delen av robotens chassi. Efter detta kan det vara av god sed att trycka på de båda svarta knapparna på respektive virkort. Dessa är reset-knappar och roboten är nu redo att kopplas upp mot persondatorn. 
+
+\subsection{Bluetooth}
+Efter att du har startat upp din robot är det dags att ansluta roboten via Bluetooth till din persondator. Beroende på vilket operativsystem din dator kör kommer du behöva vidta olika åtgärder:
+ 
+\subsubsection{Mac OSx}
+Med fördel har du en Mac och kan bara starta upp programmet och vänta på att du får kontakt med roboten. Att en länk har upprättats mellan dator och robot ser du lättast genom att kolla i programmet och se att programmets grafer börjar röra på sig. Får du sensordata, har du uppkoppling.
+
+\subsubsection{Windows etc.}
+Om du sitter på en dator som använder sig av något annat operativsystem än Mac OSx, måste filen gui.cpp ändras efter specifikationen på den blåtands enhet som du använder dig av. Efter att gui.cpp är korrekt ändrad är det bara att starta programmet och vänta på uppkoppling. Läs ovan under rubriken Mac OSx för att se hur du vet att du har uppkoppling. 
+
+\subsection{Manuell körning}
+I manuellt läge kan roboten enkelt manövreras med hjälp av piltangenterna på din dator.
+\begin{itemize}
+	\item Uppåt-pil - Roboten kör rakt fram
+	\item Nedåt-pil - Roboten kör rakt bak
+	\item Höger-pil - Roboten svänger 90 grader höger
+	\item Vänster-pil - Roboten svänger 90 grader vänster
+\end{itemize}
+Orsaken till att roboten endast utför 90graders svängar är för att kartläggningen ska bli korrekt i manuellt läge. Utöver detta kan du även sätta vilken hastighet du vill att roboten ska köra i. Detta gör du i slidern "speed" i programvaran. Se figur 2. 
+
+\subsection{Autonom körning}
+Om du vill växla roboten till att köra autonomt, placera då först roboten med baksidan 10 cm från en kartongvägg i banan. Banan måste bestå av 40x40 segment för att roboten ska kunna kartlägga korrekt, se appendix A i kravspecifikationen. För att starta autonom körning tryck CMD+x i programmet eller tryck på den grå knappen som är placerad på den översta virkortet på roboten. Roboten kommer då börja att åka och kartlägga banan. Allt eftersom roboten åker kommer du se hur kartan växer fram bit för bit i det vita rutnätet som syns i figur 1. 
+
+\subsection{Programvara}
+Nedan följer en lista med tillhörande bild för att du som användare ska kunna få en överblick på alla kommadon som finns och hur du kör dem. 
+
+\begin{enumerate}
+	\item Robotens sensorvärden uppritat i realtid  
+	\item Vid autonom körning så PD-reglrerar roboten längs väggar. Här sätts konstanterna till regleringen.
+	\item Denna knapp skickar nya PD-konstanter till roboten.
+	\item Sparar undan data från sensor så man i efterhand kan plocka fram och granska det. 
+	\item Upprättar Bluetooth kommunikation om det inte redan finns.
+	\item Hämtar och uppdaterar kartan, bör endast utföras då roboten står still.
+	\item Återställer Bluetooth om den har låst sig.
+	\item Dra i slidern för att ställa in robotens hastighet, fungerar ej i autonomt läge.
+	\item Dessa värden används för att trimma in robotens förmåga att åka helt rakt fram. 
+	\item Genom att klicka \emph{Data->review data} öppnas ett nytt fönster där den intresserade kan zooma i graferna och undersöka sensorvärdena närmare.  
+\end{enumerate}	
 
 
-\end{document}
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,width=1\textwidth]{bilder/Gui_manual.png}  %skala och filnamn. 
+  \end{center}
+  \caption{GUI} %figurtext.
+  \label{fig:reflex} %glöm inte att uppdatera era labels
+\end{figure}
+
+
+\end{document}>>>>>>> External Changes
