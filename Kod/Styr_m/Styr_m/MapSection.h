@@ -130,6 +130,7 @@ public:
     bool isWallRight();
     bool isCornerRight();
     bool isWallFwd();
+	bool isWallFwdExplore();
     bool isWallLeft();
 	bool isWallFwdClose();
     
@@ -154,7 +155,6 @@ public:
 	bool wheelHasTurned = false;
 	bool foundIsland = false;
 	volatile bool RFIDmode = false;
-	bool islandMode = false;
     
     // Automatic control
     void turn(int pd); //Positive or negative value will decide left or right
@@ -201,7 +201,8 @@ public:
     
     
     void goHome();
-    
+    int rotationCount = 0;
+	
 protected:
     int finishX;
     int finishY;
@@ -275,7 +276,6 @@ protected:
 	
 	bool rotateRightActive;
 	bool rotateLeftActive;
-
 	
     };
 
