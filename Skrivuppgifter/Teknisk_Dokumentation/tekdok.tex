@@ -109,11 +109,24 @@
 %Översikt
 
 \section{Inledning} 
-Bakgrund och syfte. 
+MapMaster2001 är en robot vars uppgift är att underlätta för nödpersonal vid uppdrag i gasfyllda eller rökfyllda lokaler. MapMaster2001 kan skickas in i brandhärjat rum, alternativt ett rum med en gasläcka, innan undsättningspersonal skickas in. 
+
+MapMaster2001 kartlägger sin omgivning och skickar sedan information om denna till en persondator som ritar ut en karta på en skärm. MapMaster2001 hittar eldhärden och markerar denna på kartan så att undsättningspersonal enkelt kan släcka elden. 
+
+\subsection{Syfte och Mål}
+Robotens syfte är att kartlägga ett rum och finna en fiktiv eldhärd så snabbt som möjligt. 
 
 \section{Produkt}
-En bild på produkten och en beskrivning av hur den fungerar.
-Beskriv vad den används till.
+
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,,width=0.5\textwidth]{../Kappa/robot.png}  %skala och filnamn. 
+  \end{center}
+  \caption{MapMaster2001} %figurtext.
+  \label{fig:robot}
+\end{figure}
+
+Det här är MapMaster2001.  
 
 \section{Teori}
 Beskrivning av regleralgoritmer mm.
@@ -157,7 +170,7 @@ Modulen hanterar kommunikation mellan robotens olika delkomponenter samt med per
   \includegraphics[keepaspectratio=true,width=\linewidth]{bilder/kom_overview.png}  %skala och filnamn. 
   \end{center}
   \caption{Översiktsbild av kommunikationsdelen av systemet} %figurtext.
-  \label{fig:overview}
+  \label{fig:overviewKom}
 \end{figure}
 \newpage
 \subsection{Kommunikationsfall}
@@ -183,9 +196,8 @@ Fall 3: Kartdata skickas från kommunikationsmodulen till PC, se figur~\ref{fig:
 \end{itemize}
 
 \subsection{Buss}
-<<<<<<< HEAD
 Mellan processorerna används SPI som bussprotokoll. Kommunikationsmodulen agerar master medan styr- och sensormodul agerar slaves. Kommunikation kommer alltid att initieras av master och om slave vill skicka data, genererar de ett avbrott på master som talar om att de har data som är redo att skickas. 
-=======
+
 Mellan processorerna används SPI som bussprotokoll. Kommunikationsmodulen agerar master medan styr- och sensormodul agerar slave. Kommunikation kommer alltid att initieras av master och om slave vill skicka data, genererar de ett avbrott på master som talar om att de har data som är redo att skickas. Bussen använder följande kopplingar för bussen:
 \begin{itemize}
 	\item MISO - Master Input Slave Output, data till master
@@ -440,7 +452,7 @@ Styrmodulen kommer att få sensordata skickad till sig från sensormodulen. Dett
 Den första proportionella delen av regleringen reglerar avståndet från senorerna på robotens högersida jämfört med ett internt referensavstånd. Denna reglering ser till att roboten håller sig inom ett rimligt avstånd till den vägg som följs.
 $ e_p = K_{p}*avst\text{\it{å}}ndssensordata $
 
-Där K_{p} är en konstant.
+Där $K_{p}$ är en konstant.
 
 Den andra proportionella reglering försöker minimera differensen mellan båda sensorerna på högersidan. Detta innebär i praktiken att  roboten försöker räta ut sig. Denna typ av reglering medför även en minskad risk att de främre och bakre sensorerna ska ger fel värden genom att slå i en sidovägg.
 Den deriverande delen av regleringen ges av differensen mellan den främre avståndssensorn och den bakre: 
@@ -496,7 +508,15 @@ Sensormodulens uppgift är att hantera sensordata från robotens 9 sensorer och 
 
 En beskrivande bild av kopplingsschemat finns i appendix A.
 
-Port A användas som en A/D-omvandlare. PIN 39 kopplas till en reflexsensor, se figur~\ref{fig:reflex}, SFH300, PIN 40 kopplas till en avståndssensor för långdistans, GP\-2Y\-3A\-00\-3K\-0F, PIN 35-38 kopplas till avståndssensorer för kortdistans, GP\-2Y\-0A\-21\-YK, 
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,width=0.5\textwidth]{../Kappa/reflexsensor.png}  %skala och filnamn. 
+  \end{center}
+  \caption{Reflexsensor} %figurtext.
+  \label{fig:reflex} %glöm inte att uppdatera era labels
+\end{figure}
+
+Port A användas som en A/D-omvandlare. PIN 39 kopplas till en reflexsensor, se figur \ref{fig:reflex}, SFH300, PIN 40 kopplas till en avståndssensor för långdistans, GP\-2Y\-3A\-00\-3K\-0F, PIN 35-38 kopplas till avståndssensorer för kortdistans, GP\-2Y\-0A\-21\-YK, 
 PIN 34 kopplas till en avståndssensor för mellandistans, GP2Y0A02YK, och PIN 35 kopplas till ett gyro för vinkelhastighetsmätning, ML\-X9\-06\-09. Port B används för busskommunikation. PIN 3 skickar avbrott till master, PIN 5 används till slave select master, PIN 6 tar emot data från bussen, PIN7 skickar data till bussen och till PIN 8 kopplas klockan från master. Till port C PIN 23 kopplas en RFID-läsare, Parallax-Reader. Port D används inte i denna modul. 
 
 PIN 31 och 11 kopplas till jord, PIN 13 kopplas till klocka från master, PIN 12 används inte i denna modul, PIN 9 kopplas till en avstudsad manuell switch, en resetknapp, PIN 32 kopplas till en spänningskälla på 5 V som används som referensspänning, PIN 10 kopplas också den till en spänningskälla på 5 V och PIN 30 kopplas genom ett LP-filter till samma externa spänningskälla.
@@ -557,7 +577,7 @@ Summan som används har tagits fram och kalibrerats med hjälp av tester.
 Övriga komponenter så som ett batteri på 7.2 V och en resetknapp kommer att användas till denna modul.
 
 \subsection{Övergripande design}
-Sensorerna kommer att vara placerade engligt bilden i figur~\ref{fig:sensoroverview} .
+Sensorerna kommer att vara placerade engligt bilden i figur \ref{fig:sensoroverview} .
 
 \section{Slutsatser}
 Fler sensorer skulle kunnat förbättra kartläggning och positionering. Processorn har dock enbart 8 pinnar för ADC vilket leder till att endast 8 st sensorer med analoga utsignaler kan användas. Ett sätt att komma runt detta problem är att använda en extern mux.
