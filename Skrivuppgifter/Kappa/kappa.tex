@@ -136,8 +136,7 @@ I denna rapport diskuteras först teori kring att bygga en autonom robot för at
 
 Den slutgiltiga produkten ska uppfylla ett antal krav (Se Kravspecifikation) för att godkännas av beställaren. Principiellt ska roboten kunnas köra autonomt genom ett område (uppbyggt av kartongväggar) och vid rotation skicka en karta till en persondator som på ett prydligt sätt redovisar vad roboten har sett. Roboten ska även kunna detektera brandhärdar som symboliseras med RFID-kort. Dessa kort placeras ut på slumpmässigt valda rutor på banan. 
 
-Kraven som ställts är delvis baserade på vad beställaren ville få levererat (Se Projektdirektiv för kartrobot) och delvis på sådant som projektgruppen ansåg var viktigt för robotens funktionalitet. Ett exempel på funktionalitet som har prioriterats är hantering av karta och sökalgoritmer som ansågs mest intressant dock även svårast att implementera. 
-Sammanfattningsvis består kraven bland annat av de delar som beskrivs av scenariot i inledningen. Den innehåller även en del krav på vilka delprodukter som ska vara klara vid vissa specifika datum.
+Kraven som ställts är delvis baserade på vad beställaren ville få levererat (Se Projektdirektiv för kartrobot) och delvis på sådant som projektgruppen ansåg var viktigt för robotens funktionalitet. Ett exempel på funktionalitet som borde prioriteras är hantering av karta och sökalgoritmer, dock så kan det vara så att det även är det svåraste att implementera. Sammanfattningsvis består kraven bland annat av de delar som beskrivs av scenariot i inledningen. Den innehåller även en del krav på vilka delprodukter som ska vara klara vid vissa specifika datum.
 
 
 \section{Kunskapsbas}
@@ -321,6 +320,7 @@ Positionsskattning fungerar genom att reflexsensor uppskattar när roboten rört
 På styrmodulen ligger en karta i form av en array som uppdateras allteftersom roboten åker och tar in ny mätdata. Arrayen innehåller objekt som kan vara av typen, explored, unexplored, closed och fire. En fördel med att ha objekt i arrayen är t.ex. att funktioner för att överblick och dra slutsatser kring kartan blir väldigt lätta att implementera. T.ex. kan man kolla om en vägg tillhör en köksö genom att helt enkel fråga ett objekt som är closed, isClosed? Ett rekursivt anrop sker då mellan alla närliggande väggar och om väggarna utgör en sluten cirkel, kan hela köksön markes som sluten på kartan. 
 Vid sändning av kartan upp till master och sedan vidare till PC-mjukvaran konverteras objekten till bokstäver som sedan avgör färgerna i den uppritande kartan.
 
+\newpage
 \subsection{A-star}
 En algoritm vid namn Astar har implementerats för att finna en bra färdväg från punkt A till B i kartan. Algoritmen utgår ifrån Dijkstra's algoritm, som löser problemet att finna billigaste vägen från nod A till B. Den fungerar så att den successivt besöker hörnpunkter i kartan och utgår från startpositionen. Algoritmen expanderar sedan utåt från startpunkten tills målet är hittat. Dijkstra’s algoritm ger garanterat den billigaste vägen, så länge som nodernas kostnader är positiva.\footnote{http://theory.stanford.edu/\textasciitilde amitp/GameProgramming/AStarComparison.html\#the-a-star-algorithm}
 
@@ -355,59 +355,61 @@ De flesta krav med prioritet 1 (se kravspecifikationen) är uppfyllda. Dessa är
 Mindre funktioner, så som manuell styrning, kartläggning och avståndssensorernas felmarginal, har testats kontinuerligt under projektets gång. Tester på den slutgiltiga roboten har skett på banor med olika former och storlek. Kartritning, RFID-detektion, positionering, reglering och autonom styrning har då testats.
 
 
-
+\newpage
 \section{Slutsatser}
 %Slutsatser
-Vi är nöjda med projektet i helhet, trots att vi inte uppfyllde alla krav ett. Vi har trots allt gjort en fullt autonom robot som kan navigera och rita upp en karta i 
+Vi är nöjda med projektet i helhet, trots att vi inte uppfyllde alla krav av prioritet ett. Vi har trots allt gjort en fullt autonom robot med tillhörande mjukvara som kan navigera och rita upp en karta. 
 
 Det som av projektgruppen ansågs mest utmanande var att konstruera en fullt funktionell buss. Denna ställde till med problem då den i början ofta tappade bitar vilket gav upphov till besynnerligt beteende hos roboten. 
 
 Att få gyrot att fungera var även det en utmaning då det var ytterst viktigt att få rotationerna av roboten så exakta som möjligt. Utan exakta rotationer skulle nämligen roboten kunna positionsuppskatta fel.
 
-Det sista svåra momentet var positionsskattningen. Att simultant positionsskatta och kartlägga visade sig vara lika svårt som förväntat.
+Det sista svåra momentet var simultan positionsskattning och kartläggning. Att simultant positionsskatta och kartlägga visade sig vara precis lika svårt som förväntat - om inte än svårare utan standardnivåbilbioteken (STL) från C++. 
 
 %Sammanfatta arbetet. 
 
 %Lyft fram det ni är mest nöjda med.
-Vi är väldigt nöjda med är vår implementering av kartritningen, slutning av områden och vår A*-sökalgoritm. Vi är även väldigt nöjda och stolta över objektstrukturen och klass nyttjandet som hela projektgruppen gjort under projektets gång.
-
+Det vi är nöjda med som projektgrupp är implementering av kartritning och kartläggning, slutning av områden och vår A*-sökalgoritm (vilken letar upp vägar till outforskade områden). Vi är även stolta över det realtivt modulära bussprotokoll vi konstruerat. Vi är även väldigt nöjda och stolta över objektstrukturen och klassnyttjandet som hela projektgruppen brukat under projektets gång.
+Vi har hela tiden planerat för en modulär struktur - tyvärr har kompilatorsamlingen AVR-GCC och AVR-processorernas bristfälliga stöd grusat våra möjligheter att bygga riktigt så modulärt vi önskat. 
 %Reflektera över resultatet såväl tekniskt som över genomförandet. Referera efterstudien.ƒ
 %Framtida arbete
 
 
 %Vad skulle ni göra annorlunda om ni skulle göra om samma uppdrag?
-Om denna projektgrupp eller någon av dess medlemmar fick göra om detta uppdrag så skulle de använda en multitrådad processor istället för tre. En av de mest tidskrävande aktiviteterna har varit bussen, implementering och felsökning. Bussen är även den del av projektet som gett oss flest fel. Så två saker är säkra, om vi fick möjlighet att göra det utan en buss skulle vi göra det och om vi var tvugna att återigen göra en buss skulle denna påbörjas något tidigare och stresstestas hårt.
+Såhär i tillbakablick, om vår projektgrupp eller någon av dess medlemmar fick göra om detta uppdrag skulle den/dem använda en kraftfullare processor från exempelvis ARM tillsammans med ett operativsystem, exempelvis GNU/Linux. Detta skulle ge möjlighet till multitrådning, tillgång till högnivåbibliotek och bra kompilatorer. Skulle man få välja helt fritt, d v s slippa kravet på tre processorer hos roboten, skulle enbart en sådan processor kunna nyttjas. 
 
+En av de mest tidskrävande aktiviteterna har varit implementering och felsökning av bussen. Bussen är även den del av projektet som gett oss flest fel. Så två saker är säkra, om vi fick möjlighet att göra det utan en buss skulle vi göra det och om vi var tvugna att återigen göra en buss skulle denna inte leverera så mycket data den gör i dagens implementering. 
 
 %Vad skulle ni vilja utveckla om ni fick mer tid?
 Om vi fick mer tid i projektet skulle tiden med all fördel läggas på optimeringsalgoritmer och förbättrandet av bussen. En av förbättringarna till bussen som skulle kunna utnyttjas är en mer avancerad bufferstruktur än den som används.
-Roboten har ett delvis färdigt stöd för att förbättra positioneringen med hjälp av avståndssensorerna för att på så sätt kunna ta bort delar av det akumulerande felet som uppstår. Denna funktionalitet fick delvis strykas för att ge tid åt mer essentiella funktioner, då problem uppstod med bussen nära projektets slut. Denna funktion skulle vara intressant att se fullfärdad.  
+
+Roboten har ett delvis färdigt stöd för att förbättra positioneringen med hjälp av avståndssensorerna för att på så sätt kunna ta bort delar av det ackumulerande felet som uppstår. Denna funktionalitet fick delvis strykas för att ge tid åt mer essentiella funktioner, då problem uppstod med hårdvara och även bussen nära projektets slut. Denna funktion skulle vara intressant att se fullt implementerad.  
 
 %Hur skulle ni tänka er att ändra uppgiften för att göra den ännu mer intressant?
-I vår åsikt, så skulle tävlingsmomentena kunna göras mer intressanta. I nuvarande form ska RFID-taggar hittas. Dessa taggar måste besökas väldigt långsamt och varje ruta i hela kartan måste besökas för att hitta alla taggar. Detta tar bort väldigt intressanta utmaningar, nämligen avsökningsoptimering, nyttjandet av sensorer med längre räckvidd och en god reglering vid höga hastigheter.
+Allt som allt har det ändå varit ett kul projekt att vara en del av. Att positionera och kartlägga samt implementera en buss är inga lätta uppgifter. Möjligtvis skulle man, enligt vår åsikt, kunna förbättra tävlingsmomentet för projektets sluttävling. Enligt nuvarande tävlingsregler ska RFID-taggar hittas för att detektera fiktiva brandhärder. Dessa taggar måste besökas väldigt långsamt och varje ruta i hela kartan måste besökas för att hitta alla taggar. Detta tar bort väldigt intressanta utmaningar, nämligen avsökningsoptimering, nyttjandet av sensorer med längre räckvidd och svårigheten i att bibehålla god reglering vid höga hastigheter. 
 
 \newpage
 \section*{Referenser}
 \addcontentsline{toc}{section}{Referenser}
 
-Datablad för Atmega 1284p https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/atmega1284p.pdf
+AVR freaks forum, \url{http://www.avrfreaks.net/}, februari till maj. 
 
-http://qt-project.org/
+Datablad för Atmega 1284p \url{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/atmega1284p.pdf}, hämtad hämtad 2014-05-19
 
-http://stackoverflow.com/
-
-http://www.atmel.com/images/doc8059.pdf
-
-http://www.avrfreaks.net/
-
-http://www.liu.se/cul/resurser/lips/kort-beskrivning-av-lips-modellen?l=sv
-
-http://www.qcustomplot.com/
-
-https://docs.isy.liu.se/twiki/bin/view/VanHeden
-
-Roos, Olof. 1995. Grundläggande datorteknik. upplaga 1. Studentlitteratur AB
+Roos, Olof. 1995. \textit{Grundläggande datorteknik}. upplaga 1. Studentlitteratur AB
 Söderkvist, Sune. 1996. Kretsteori och elektronik, utgåva 1. Tryckeriet Erik Larsson AB
+
+Glad, Torkel och Ljung, Lennart. 2006. \textit{Reglerteknik - Grundläggande teori}. Upplaga 4:10. Lund. Studentlitteratur.
+
+ISYs databladsserver Vanheden, \url{https://docs.isy.liu.se/twiki/bin/view/VanHeden}, februari till maj.
+
+Projektmodellen LiPS, \url{http://www.liu.se/cul/resurser/lips/kort-beskrivning-av-lips-modellen?l=sv}, hämtad 2014-05-19
+
+Qt project, \url{http://qt-project.org/}, februari till maj. 
+
+Q custom plot, datapresentationsbibliotek för Qt-ramverket, \url{http://www.qcustomplot.com/}, hämtad 2014-05-19.
+
+Stack overflow, \url{http://stackoverflow.com/}, februari till maj.
 
 
 % ----------------------------- Appendix -----------------------------------------
