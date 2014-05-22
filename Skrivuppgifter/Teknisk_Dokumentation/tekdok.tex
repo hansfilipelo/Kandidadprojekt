@@ -372,7 +372,7 @@ Det ska implementeras två olika avsökningsalgoritmer. De kommer användas bero
 
 \subsubsection{Kartläggninsalgoritm}
 
-Kartläggningsalgoritmen utformas så att roboten börjar med att placera sig så att en vägg går att finna på höger sida. Roboten kommer sedan följa väggen till dess att den kan rita upp ett slutet område att arbeta utifrån. Nästa steg blir att kartlägga områden som ännu ej är kartlagda. Om en köksö upptäcks kommer roboten se till att rita upp hela köksön innan den går vidare. På detta sätt fortsätter algoritmen till dess att alla delar av rummet är kartlagda. 
+Kartläggningsalgoritmen utformas så att roboten börjar med att placera sig så att en vägg går att finna på höger sida. Roboten kommer sedan följa väggen till dess att den kan rita upp ett slutet område att arbeta utifrån. Nästa steg blir att kartlägga områden som ännu ej är kartlagda. Om en köksö upptäcks kommer roboten se till att rita upp hela köksön innan den går vidare. På detta sätt fortsätter algoritmen till dess att alla delar av rummet är kartlagda. En köksö kan inte ha ett kortaste avstånd från ytterväggen längre än 120 cm. Denna sträcka mäts mellan två parallella väggar.
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
@@ -440,7 +440,7 @@ Styrmodulen kommer att få sensordata skickad till sig från sensormodulen. Dett
 Den första proportionella delen av regleringen reglerar avståndet från senorerna på robotens högersida jämfört med ett internt referensavstånd. Denna reglering ser till att roboten håller sig inom ett rimligt avstånd till den vägg som följs.
 $ e_p = K_{p}*avst\text{\it{å}}ndssensordata $
 
-Där K_{p} är en konstant.
+Där $K_{p}$ är en konstant.
 
 Den andra proportionella reglering försöker minimera differensen mellan båda sensorerna på högersidan. Detta innebär i praktiken att  roboten försöker räta ut sig. Denna typ av reglering medför även en minskad risk att de främre och bakre sensorerna ska ger fel värden genom att slå i en sidovägg.
 Den deriverande delen av regleringen ges av differensen mellan den främre avståndssensorn och den bakre: 
