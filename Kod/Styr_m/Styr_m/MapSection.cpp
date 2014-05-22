@@ -698,10 +698,11 @@ void Robot::setBwdClosed(){
 // -------------- To the left --------------------------
 
 void Robot::setLeftClosed(){
-	
+	if(!islandMode){
+		return;
+	}
     int output = 0;
-    
-    if(leftMidSensor < 35){
+    if(leftMidSensor < 40){
         output = 10/40;
     }
     else if(leftMidSensor > 150) { // this value might need to be calibrated
@@ -722,7 +723,7 @@ void Robot::setLeftClosed(){
                 break;
             }
             // Explored except if closed since short range sensors have higher priority
-            if ( mom->getPos(xCoord + i + 1, yCoord)->getType() != 'c' && mom->getPos(xCoord + i + 1, yCoord)->getType() != 'f' ){
+            if ( mom->getPos(xCoord + i + 1, yCoord)->getType() != 'c' && mom->getPos(xCoord + i + 1, yCoord)->getType() != 'f'){
                 mom->convertSection(xCoord + i + 1,yCoord, 'e');
             }
         }

@@ -29,6 +29,7 @@ Map::~Map(){
 
 bool Map::getVisited(int xPos,int yPos){
     return mapArea[xPos][yPos]->isVisited;
+	
 }
 
 
