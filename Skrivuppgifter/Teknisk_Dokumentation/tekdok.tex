@@ -184,19 +184,20 @@ Djupare teori kring kartläggning och positionering finns i Appendix
 
 Roboten består tre delsystem. En kommunikationsmodul, en sensormodul och en styrmodul. Utöver dessa tre moduler finns en buss mellan den, ett chassi samt en tillhörande mjukvara för persondator. Sensormodulen hanterar analoga sensorsignaler och omvandlar dessa till användbart mätdata som skickas vidare till kommunikationsmodulen och styrmodulen. 
 Kommunikationsenheten agerar buss-master och sköter all kommunikation mellan de andra enheterna. Kommunikationsmodulen sköter även kommunikationen mellan PC och roboten via en bluetoothadapter. Styrenheten sköter robotens fyra drivande motorer, kartläggning och positionsskattning samt tar beslut om körriktning vid autonom operation. 
-De tre delsystemen kommunicerar via en SPI-buss och är byggda runt processorerna ATMEL Atmega 1284p med 16KByte SRAM. 
+De tre delsystemen kommunicerar via en SPI-buss med ett eget specificerat protokoll och är byggda runt processorerna ATMEL Atmega 1284p med 16KByte SRAM. 
 
-Chassit har fyra PWM-motorer, placerade längst fram och längst bak på sidorna av chassit. Motorerna är monterade i chassit, vilket betyder att rotation utförs genom att en rotationshastighetsdifferens införs mellan motorparen. Rotationer görs alltid med 90 graders svängar som utförs med hjälp av gyrot som är placerat på sensormodulen. 
+Chassit har fyra PWM-motorer, placerade längst fram och längst bak på sidorna av chassit. Motorerna är stelmonterade i chassit vilket betyder att rotation utförs genom att en rotationshastighetsdifferens införs mellan motorparen. Rotationer görs alltid med 90 graders svängar, som utförs med hjälp av gyrot som är placerat på sensormodulen. 
 
-Sensorerna som tillhör sensormodulen, förutom robotens RFID-läsare,är placerade på ett sådant sätt att sensorer interfererar minimalt med varandra. En långdistanssensorer av typ GP\-2Y\-3A\-00\-3K\-0F är placerad bak på roboten och används för positionering. På höger sida av roboten har 2 stycken kortdistanssensorer placerats för att ge indata till PD-regleringen. På vänster sida sitter en medeldistanssensor som kommer användas för att upptäcka sidokorridorer och öppna ytor.
-Under roboten sitter en RFID-läsare för upptäcka RFIDmarkerade brandhärder.
+Sensorerna som tillhör sensormodulen, förutom robotens RFID-läsare, är placerade på ett sådant sätt att sensorer interfererar minimalt med varandra. En långdistanssensorer av typ GP\-2Y\-3A\-00\-3K\-0F är placerad bak på roboten. Denna sensor arbetar tillsammans med en kortdistanssenror med att positionera roboten. Då interferens uppkommer då dessa olika sensorer placeras i samma höjd, sitter långdistanssensorn upphöjd på ett metallbläck. På höger sida av roboten har två stycken kortdistanssensorer placerats för att ge indata till robotens PD-reglering. På vänster sida sitter en medeldistanssensor som används för att upptäcka sidokorridorer, öppna ytor och så kallade öar, slutna konstruktioner som inte tillhör ytterväggen.
+Under roboten sitter en RFID-läsare som vid upptäckt RFID-tagg skickar en signal över USART innehållande taggens id-nummer till sensormodulen som för denna upptäckt vidare till de andra modulerna.
 
 \subsection{Kommunikation via buss}
-En buss som kommunicerar över protokollet SPI sköter kommunikationen mellan robotens tre delsystem. SPI-protokollet är ett fullt-duplext kommunikationsprotokoll som fungerar genom att byta 8 lokala bitar med 8 bitar från modulen den kommunicerar med. 
+En buss som kommunicerar över protokollet SPI sköter kommunikationen mellan robotens tre delsystem. SPI-protokollet är ett fullt-duplext kommunikationsprotokoll som fungerar genom att byta åtta lokala bitar med 8 bitar från modulen den kommunicerar med. 
 
-I mjukvarulagret av bussen användes ett egenimplementerat protokoll som används för både transmissioner över Bluetooth och SPI. Protokollet är konstruerat så att den första byten definierar alltid längden på meddelandet. Nästföljande 2 bytes definierar kommandotyp och argument till den typen. Efter de 3 första bytes följer godtyckligt lång datamängd se figur 3. 
+I mjukvarulagret av bussen används ett egenimplementerat protokoll för både transmissioner över Bluetooth och SPI. Protokollet är konstruerat så att den första byten definierar längden på meddelandet som skickats. Nästföljande två bytes definierar kommandotyp och argument till den typen, t.ex. Sensordata från sensor 1, A1.
+Efter de tre första bytes följer godtyckligt lång datamängd se figur 3. 
 
-Specificerat bussprotokoll är enbart halv-duplex, d v s man kan enbart skicka data i en riktning åt gången, hela kapaciteten hos SPI utnyttjas alltså inte. 
+Specificerat bussprotokoll är enbart halv-duplex, dvs. data kan enbart skickas i en riktning åt gången, hela kapaciteten hos SPI utnyttjas därmed inte. 
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
@@ -238,7 +239,9 @@ Där DNC står för ''Do not care''.
 
 
 \section{Kommunikationsmodul}
-Modulen hanterar kommunikation mellan robotens olika del samt med persondatorn via Bluetooth. Kommunikationsmodulen som syns i figur 3, kommer att agera master på robotens interna buss. Vid kommunikation mellan övriga moduler, dvs. sensor- och styrmodulen, kommer denna gå via kommunikationsmodulen. Kommunikationsmodulen levererar sensordata och manuella styrkommandon mellan roboten och PC-mjukvaran.
+Modulen hanterar kommunikation mellan robotens olika del samt med persondatorn via Bluetooth. Kommunikationsmodulen som syns i figur 3, kommer att agera master på robotens interna buss. Detta betyder att allt datautbyte som sker mellan moduler initieras av modulen. 
+Vid kommunikation mellan övriga moduler, dvs. mellan sensor- och styrmodul, kommer denna information först gå via kommunikationsmodulen för att sedan skickas vidare.
+Kommunikationsmodulen är även ansvarig för transmission av sensordata och manuella styrkommandon mellan roboten och PC-mjukvaran.
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
