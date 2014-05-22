@@ -779,5 +779,56 @@ Busskommunikationen fungerade ej perfekt och skulle ha kunnat förbättrats. En 
 	Sensordata 0-9 & 26 & S & A & 24 bytes sensordata,\newline 8x[100tal 10tal 1tal]\\\hline
 	
 \end{tabular}
+\newpage
+\section{Appendix D - Användarmanual}
+Roboten kan köras i två lägen, antingen i manuellt eller autonomt läge. För att börja använda Mapmaster 2001, slå på huvudströmbrytaren placerad på bakre delen av robotens chassi. Efter detta kan det vara av god sed att trycka på de båda svarta knapparna på respektive virkort. Dessa är reset-knappar och roboten är nu redo att kopplas upp mot persondatorn. 
+
+\subsection{Bluetooth}
+Efter att du har startat upp din robot är det dags att ansluta roboten via Bluetooth till din persondator. Beroende på vilket operativsystem din dator kör kommer du behöva vidta olika åtgärder:
+ 
+\subsubsection{Mac OSx}
+Med fördel har du en Mac och kan bara starta upp programmet och vänta på att du får kontakt med roboten. Att en länk har upprättats mellan dator och robot ser du lättast genom att kolla i programmet och se att programmets grafer börjar röra på sig. Får du sensordata, har du uppkoppling.
+
+\subsubsection{Windows etc.}
+Om du sitter på en dator som använder sig av något annat operativsystem än Mac OSx, måste filen gui.cpp ändras efter specifikationen på den blåtands enhet som du använder dig av. Efter att gui.cpp är korrekt ändrad är det bara att starta programmet och vänta på uppkoppling. Läs ovan under rubriken Mac OSx för att se hur du vet att du har uppkoppling. 
+
+\subsection{Manuell körning}
+I manuellt läge kan roboten enkelt manövreras med hjälp av piltangenterna på din dator.
+\begin{itemize}
+	\item Uppåt-pil - Roboten kör rakt fram
+	\item Nedåt-pil - Roboten kör rakt bak
+	\item Höger-pil - Roboten svänger 90 grader höger
+	\item Vänster-pil - Roboten svänger 90 grader vänster
+\end{itemize}
+Orsaken till att roboten endast utför 90graders svängar är för att kartläggningen ska bli korrekt i manuellt läge. Utöver detta kan du även sätta vilken hastighet du vill att roboten ska köra i. Detta gör du i slidern "speed" i programvaran. Se figur 2. 
+
+\subsection{Autonom körning}
+Om du vill växla roboten till att köra autonomt, placera då först roboten med baksidan 10 cm från en kartongvägg i banan. Banan måste bestå av 40x40 segment för att roboten ska kunna kartlägga korrekt, se appendix A i kravspecifikationen. För att starta autonom körning tryck CMD+x i programmet eller tryck på den grå knappen som är placerad på den översta virkortet på roboten. Roboten kommer då börja att åka och kartlägga banan. Allt eftersom roboten åker kommer du se hur kartan växer fram bit för bit i det vita rutnätet som syns i figur 1. 
+
+\subsection{Programvara}
+Nedan följer en lista med tillhörande bild för att du som användare ska kunna få en överblick på alla kommadon som finns och hur du kör dem. 
+
+\begin{enumerate}
+	\item Robotens sensorvärden uppritat i realtid  
+	\item Vid autonom körning så PD-reglrerar roboten längs väggar. Här sätts konstanterna till regleringen.
+	\item Denna knapp skickar nya PD-konstanter till roboten.
+	\item Sparar undan data från sensor så man i efterhand kan plocka fram och granska det. 
+	\item Upprättar Bluetooth kommunikation om det inte redan finns.
+	\item Hämtar och uppdaterar kartan, bör endast utföras då roboten står still.
+	\item Återställer Bluetooth om den har låst sig.
+	\item Dra i slidern för att ställa in robotens hastighet, fungerar ej i autonomt läge.
+	\item Dessa värden används för att trimma in robotens förmåga att åka helt rakt fram. 
+	\item Genom att klicka \emph{Data->review data} öppnas ett nytt fönster där den intresserade kan zooma i graferna och undersöka sensorvärdena närmare.  
+\end{enumerate}	
+
+
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,width=1\textwidth]{bilder/Gui_manual.png}  %skala och filnamn. 
+  \end{center}
+  \caption{GUI} %figurtext.
+  \label{fig:reflex} %glöm inte att uppdatera era labels
+\end{figure}
+
 
 \end{document}
