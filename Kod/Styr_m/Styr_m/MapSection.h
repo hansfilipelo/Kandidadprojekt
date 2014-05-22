@@ -144,7 +144,7 @@ public:
     void updateRobotPosition();
 	void setFwdReference();
 	void setBwdReference();
-	void backToStart();
+	void closeMap();
 	void handleIsland();
 	bool startExplore = false;
     
@@ -179,6 +179,12 @@ public:
     void goAcross();
 	void followRight();
 	bool stillUnexplored();
+    int exploreX=0;
+    int exploreY=0;
+    bool isHome();
+    
+    
+    void goHome();
     
 protected:
     int finishX;
@@ -213,6 +219,7 @@ protected:
     int leftBackReference;
     int rightFrontReference;
     int rightBackReference;
+    int detected; // number of times a square has been attempted to be visited.
     
     
     //Values concerning automatic control

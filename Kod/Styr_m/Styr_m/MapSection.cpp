@@ -1013,7 +1013,9 @@ void Robot::updateRobotPosition(){
 			setRightClosed();
 			setLeftClosed();
 		}
-		backToStart();
+		if(isHome()){
+            closeMap();
+        }
 		//drive();
     }
 }
@@ -1294,26 +1296,30 @@ void Robot::waitForNewData()
 
 // ----------------------
 
-void Robot::backToStart()
+void Robot::closeMap()
 {
-	if(xCoord == 16 &&  yCoord==1 && direction == 'r' ){
-		
-		setSpeed(0);
-		drive();
-		// Activate explorer
-        startExplore = true;
-        
-        // Cancer all u:s outside of closed area
-        for (int x = 0; x < 32; x=x+31) { //first and last col
-            for (int y = 0; y < 17; y++) { //All rows
-                if ( mom->getPos(x,y)->getType() == 'u' ) {
-                    mom->getPos(x,y)->cancer();
-                }
+    setSpeed(0);
+    drive();
+	// Activate explorer
+    startExplore = true;
+    // Cancer all u:s outside of closed area
+    for (int x = 0; x < 32; x=x+31) { //first and last col
+        for (int y = 0; y < 17; y++) { //All rows
+            if ( mom->getPos(x,y)->getType() == 'u' ) {
+                mom->getPos(x,y)->cancer();
             }
         }
-	}
+    }
 }
 
+
+bool Robot::isHome(){
+    if(xCoord == 16 &&  yCoord==1 && direction == 'r'){
+        return true;
+    }else{
+        return false;
+    }
+}
 // Exploring
 // -----------------------
 
@@ -1407,6 +1413,8 @@ void Robot::explore(){
     while(stillUnexplored()){
         if(lookForULeft()){
             goAcross();
+            exploreX = xCoord;
+            exploreY = yCoord;
         }else{
             while(!wheelHasTurned){
                 followRight(); // follow right untill in new section.
@@ -1414,15 +1422,11 @@ void Robot::explore(){
             updateRobotPosition();
             setSpeed(0);
             drive();
+            if(xCoord == exploreX && yCoord == exploreY){
+                goAcross();
+            }
         }
-        
     }
-    //rotera och Œk till vŠggen
-    
-    //rotera v och hšgerfšlj
-    
-    //while(!unexploredInRow)
-    
 }
 
 bool Robot::lookForULeft(){
@@ -1430,7 +1434,13 @@ bool Robot::lookForULeft(){
         case 'b' :
             for(int i = xCoord ; xCoord > 0; i--){
                 if(mom->getPos(i,yCoord)->getType() == 'u'){
-                    return true;
+                    if(mom->getPos(i,yCoord)->detected > 2){
+                        mom->getPos(i,yCoord)->setType('c');
+                    }
+                    else{
+                        mom->getPos(i,yCoord)->detected++;
+                        return true;
+                    }
                 }
             }
             return false;
@@ -1439,7 +1449,13 @@ bool Robot::lookForULeft(){
             
             for(int i = xCoord ; xCoord < 32; i++){
                 if(mom->getPos(i,yCoord)->getType() == 'u'){
-                    return true;
+                    if(mom->getPos(i,yCoord)->detected > 2){
+                        mom->getPos(i,yCoord)->setType('c');
+                    }
+                    else{
+                        mom->getPos(i,yCoord)->detected++;
+                        return true;
+                    }
                 }
             }
             return false;
@@ -1448,7 +1464,11 @@ bool Robot::lookForULeft(){
         case 'r' :
             
             for(int i = yCoord ; yCoord < 17; i++){
-                if(mom->getPos(xCoord,i)->getType() == 'u'){
+                if(mom->getPos(xCoord,i)->detected > 2){
+                    mom->getPos(xCoord,i)->setType('c');
+                }
+                else{
+                    mom->getPos(xCoord,i)->detected++;
                     return true;
                 }
             }
@@ -1458,7 +1478,11 @@ bool Robot::lookForULeft(){
         case 'l' :
             
             for(int i = yCoord ; yCoord > 0; i--){
-                if(mom->getPos(xCoord,i)->getType() == 'u'){
+                if(mom->getPos(xCoord,i)->detected > 2){
+                    mom->getPos(xCoord,i)->setType('c');
+                }
+                else{
+                    mom->getPos(xCoord,i)->detected++;
                     return true;
                 }
             }
@@ -1556,4 +1580,20 @@ bool Robot::stillUnexplored(){
     return false;
 }
 
+
+void Robot::goHome(){
+    exploreX = xCoord;
+    exploreY = yCoord;
+    while(!isHome()){
+        while(!wheelHasTurned){
+            followRight(); // follow right untill in new section.
+        }
+        updateRobotPosition();
+        if(exploreX == xCoord && exploreY == yCoord){
+            goAcross();
+            exploreX = xCoord;
+            exploreY = yCoord;
+        }
+    }
+}
 
