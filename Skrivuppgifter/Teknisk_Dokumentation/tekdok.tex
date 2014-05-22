@@ -141,15 +141,11 @@ Det här är MapMaster2001. En kartritande robot med bred funktionalitet. MapMas
 
 \newpage
 \section{Teori}
-Simultan positionering och kartläggning (SLAM) är ett problem som grundar sig i följande frågeställning: Utan att veta var vi är - hur kartlägger vi då vår omgivning? Åt andra hållet får man ställa sig frågan - hur vet vi var vi befinner oss utan en karta?
 
-Det är inte helt enkelt att lösa dessa frågor, men det finns approximativa lösningar på SLAM-problemet. Gemensamt för alla lösningar är att de bygger på möjligheten att läsa av sin omgivning i kombination med
-sannolikhetsteori. Då sensordata aldrig kan antas vara exakt använder man sannolikhetsteori för att göra rimlighetsbedömningar i de stickprov av mätningar sensorerna ger.
 
 \subsection{Kartläggning}
 
-
-Kartläggningsalgoritmen utformas så att roboten börjar med att placera sig så att en vägg går att finna på höger sida. Roboten kommer sedan följa väggen till dess att den kan rita upp ett slutet område att arbeta utifrån. Nästa steg blir att kartlägga områden som ännu ej är kartlagda. Om en köksö upptäcks kommer roboten se till att rita upp hela köksön innan den går vidare. På detta sätt fortsätter algoritmen till dess att alla delar av rummet är kartlagda. 
+Vid kartläggning kommer roboten att börja med att placera sig så att en vägg går att finna på höger sida. Roboten kommer sedan följa väggen till dess att den kan rita upp ett slutet område att arbeta utifrån. Nästa steg blir att kartlägga områden som ännu ej är kartlagda. Om en köksö upptäcks kommer roboten se till att rita upp hela köksön innan den går vidare. På detta sätt fortsätter algoritmen till dess att alla delar av rummet är kartlagda. 
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
@@ -158,6 +154,9 @@ Kartläggningsalgoritmen utformas så att roboten börjar med att placera sig s�
   \caption{Flödesschema kartläggning} %figurtext.
   \label{fig:fire} %glöm inte att uppdatera era labels
 \end{figure}
+
+Djupare teori kring kartläggning och positionering finns i Appendix
+
 
 %-----------------------------------------------------------------
 %Systemet
@@ -184,6 +183,23 @@ Under roboten sitter en RFID-läsare för upptäcka RFIDmarkerade brandhärder.
 
 \subsection{Kommunikation via buss}
 En buss med protokoll SPI sköter kommunikationen mellan robotens tre delsystem. SPI-protokollet är ett fullt-duplext kommunikationsprotokoll som fungerar genom att byta 8 lokala bitar med 8 bitar från modulen den kommunicerar med. 
+
+Bussens tillgängliga kommandon är:
+
+\begin{tabular}{| p{0.25\textwidth} | p{0.15\textwidth} | p{0.075\textwidth} | p{0.075\textwidth} | p{0.35\textwidth} |}
+	\hline
+	\rowcolor{listinggray}
+	\textbf{Funktion} & \textbf{Datalängd} & \textbf{Kodord} & \textbf{ev argument} & \textbf{datastruktur} \\ \hline
+	Rotera vänster & 3 & r & 0 & Hastighet (0-100) \\ \hline
+	Rotera höger & 3 & r & 1 & Hastighet (0-100) \\ \hline
+	halt & 1 & h & DNC & DNC \\ \hline
+	Kör framåt & 3 & f & DNC & Hastighet (0-100) \\ \hline
+	Kör bakåt & 3 & b & DNC & Hastighet (0-100) \\ \hline
+	Aktivera skicka karta & 1 & F & DNC & DNC \\ \hline
+	Sätt variabler för reglering & 11 & P & 0 & Kp(10-tal, 1-tal, 10-del, 100-del) \\ \hline
+	Sensordata & 0x07 & Komm & Styr & Ta emot sensordata från master \\ \hline
+	Sätt reglerkonstanter & 0x08 & Komm & Styr & Sätter värden för konstanter till PD-reglering \\ \hline
+\end{tabular}
 
 Kommunikation via bluetooth och buss följer ett speciellt egendefininerat protokoll. 
 
@@ -500,21 +516,6 @@ $e = e_d + e_p$
 Styrmodulen kommunicerar med kommunikationsmodulen (master) över SPI-bussen. Bussen kopplas in på dedikerade pinnar för SPI-bussen på ATmega1284p-processorn. Kommunikationsmodulen kommer att agera master på bussen.
 
 De kommandon styrmodulen kommer att kunna hantera beskrivs i tabellen nedan. \newline
-
-\begin{tabular}{| p{0.25\textwidth} | p{0.15\textwidth} | p{0.075\textwidth} | p{0.075\textwidth} | p{0.35\textwidth} |}
-	\hline
-	\rowcolor{listinggray}
-	\textbf{Funktion} & \textbf{Kommando} & \textbf{Från} & \textbf{Till} & \textbf{Förklaring} \\ \hline
-	Nödstopp & 0x00 & Komm & Styr & Stanna alla motorer \\ \hline
-	Autonom styrning & 0x01 & Komm & Styr & Aktivera PD-reglering och styralgoritmer \\ \hline
-	Manuell styrning & 0x02 & Komm & Styr & Avaktivera PD-reglering och styralgoritmer \\ \hline
-	Framåt & 0x03 & Komm & Styr & Kör framåt \\ \hline
-	Bakåt & 0x04 & Komm & Styr & Kör bakåt \\ \hline
-	Vänster & 0x05 & Komm & Styr & Sväng vänster \\ \hline
-	Höger & 0x06 & Komm & Styr & Sväng höger \\ \hline
-	Sensordata & 0x07 & Komm & Styr & Ta emot sensordata från master \\ \hline
-	Sätt reglerkonstanter & 0x08 & Komm & Styr & Sätter värden för konstanter till PD-reglering \\ \hline
-\end{tabular}
 
 \newpage
 
