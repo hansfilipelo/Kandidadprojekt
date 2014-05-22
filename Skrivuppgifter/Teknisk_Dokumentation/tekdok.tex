@@ -116,6 +116,7 @@ MapMaster2001 kartlägger sin omgivning och skickar sedan information om denna t
 \subsection{Syfte och Mål}
 Robotens syfte är att kartlägga ett rum och finna en fiktiv eldhärd så snabbt som möjligt. 
 
+\newpage
 \section{Produkt}
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
@@ -126,13 +127,28 @@ Robotens syfte är att kartlägga ett rum och finna en fiktiv eldhärd så snabb
   \label{fig:robot}
 \end{figure}
 
-Det här är MapMaster2001.  
+Det här är MapMaster2001. En kartritande robot med bred funktionalitet. MapMaster2001 kan bland annat: 
 
+\begin{itemize}
+  \item Kartlägga slutna rum
+  \item Reglera längs väggar
+  \item Läsa av sin omgivning med 6 avståndssensorer
+  \item Mäta sin färdväg med en reflexsensor
+  \item Indikera autonomt/manuellt läge med en lysdiod
+  \item Styras via BlueTooth med hjälp av en persondatormjukvara med ett modernt GUI
+  \item Spara sensordata på persondator och plotta denna via inbyggd grafritningsfunktion
+\end{itemize}
+
+\newpage
 \section{Teori}
-Beskrivning av regleralgoritmer mm.
+Simultan positionering och kartläggning (SLAM) är ett problem som grundar sig i följande frågeställning: Utan att veta var vi är - hur kartlägger vi då vår omgivning? Åt andra hållet får man ställa sig frågan - hur vet vi var vi befinner oss utan en karta?
+
+Det är inte helt enkelt att lösa dessa frågor, men det finns approximativa lösningar på SLAM-problemet. Gemensamt för alla lösningar är att de bygger på möjligheten att läsa av sin omgivning i kombination med
+sannolikhetsteori. Då sensordata aldrig kan antas vara exakt använder man sannolikhetsteori för att göra rimlighetsbedömningar i de stickprov av mätningar sensorerna ger.
 
 %-----------------------------------------------------------------
 %Systemet
+\newpage
 \section{System}
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
