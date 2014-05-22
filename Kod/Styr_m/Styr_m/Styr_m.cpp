@@ -190,9 +190,10 @@ int main(void)
 			}
 		}
 		robotPointer->updateRobotPosition();
-		if(robotPointer->isHome())
+		if(robotPointer->islandMode)
 		{
 			asm("");
+			_delay_ms(1000);
 			break;
 			asm("");
 		}
@@ -202,7 +203,6 @@ int main(void)
 /*------------------HÖGERFÖLJNNG ----------------------
 --------------------IslandMode-------------------------
 -------------------------------------------------------*/
-	robotPointer->islandMode = true;
 	
 	for (;;) {
 		robotPointer->exploreIsland();
