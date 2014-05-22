@@ -171,10 +171,9 @@ Djupare teori kring kartläggning och positionering finns i Appendix
   \label{fig:overview}
 \end{figure}
 
-\subsection{Ingående delsystem}
-Roboten består av tre delsystem, en buss, ett chassi samt en tillhörande mjukvara för persondator. Sensormodulen hanterar analoga sensorsignaler och omvandlar dessa till användbart mätdata som skickas vidare till kommunikationsmodulen och styrmodulen. 
-Kommunikationsenheten agerar buss-master och sköter all kommunikation mellan de andra enheterna. Kommunikationsmodulen sköter även kommunikationen mellan PC och roboten via en bluetoothadapter. Styrenheten sköter robotens fyra drivande motorer, kartläggning samt tar beslut om körriktning vid autonom operation.
-De tre delsystemen kommunicerar via en SPI-buss och är byggda runt processorerna ATMEL Atmega 1284p med 16KByte SRAM som har visat sig fullt tillräckligt för att kunna använda C++ och en objektorienterad programmeringsstruktur.
+Roboten består tre delsystem. En kommunikationsmodul, en sensormodul och en styrmodul. Utöver dessa tre moduler finns en buss mellan den, ett chassi samt en tillhörande mjukvara för persondator. Sensormodulen hanterar analoga sensorsignaler och omvandlar dessa till användbart mätdata som skickas vidare till kommunikationsmodulen och styrmodulen. 
+Kommunikationsenheten agerar buss-master och sköter all kommunikation mellan de andra enheterna. Kommunikationsmodulen sköter även kommunikationen mellan PC och roboten via en bluetoothadapter. Styrenheten sköter robotens fyra drivande motorer, kartläggning och positionsskattning samt tar beslut om körriktning vid autonom operation. 
+De tre delsystemen kommunicerar via en SPI-buss och är byggda runt processorerna ATMEL Atmega 1284p med 16KByte SRAM. 
 
 Chassit har fyra PWM-motorer, placerade längst fram och längst bak på sidorna av chassit. Motorerna är monterade i chassit, vilket betyder att rotation utförs genom att en rotationshastighetsdifferens införs mellan motorparen. Rotationer görs alltid med 90 graders svängar som utförs med hjälp av gyrot som är placerat på sensormodulen. 
 
@@ -182,7 +181,19 @@ Sensorerna som tillhör sensormodulen, förutom robotens RFID-läsare,är placer
 Under roboten sitter en RFID-läsare för upptäcka RFIDmarkerade brandhärder.
 
 \subsection{Kommunikation via buss}
-En buss med protokoll SPI sköter kommunikationen mellan robotens tre delsystem. SPI-protokollet är ett fullt-duplext kommunikationsprotokoll som fungerar genom att byta 8 lokala bitar med 8 bitar från modulen den kommunicerar med. 
+En buss som kommunicerar över protokollet SPI sköter kommunikationen mellan robotens tre delsystem. SPI-protokollet är ett fullt-duplext kommunikationsprotokoll som fungerar genom att byta 8 lokala bitar med 8 bitar från modulen den kommunicerar med. 
+
+I mjukvarulagret av bussen användes ett egenimplementerat protokoll som används för både transmissioner över Bluetooth och SPI. Protokollet är konstruerat så att den första byten definierar alltid längden på meddelandet. Nästföljande 2 bytes definierar kommandotyp och argument till den typen. Efter de 3 första bytes följer godtyckligt lång datamängd se figur 3. 
+
+Specificerat bussprotokoll är enbart halv-duplex, d v s man kan enbart skicka data i en riktning åt gången, hela kapaciteten hos SPI utnyttjas alltså inte. 
+
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,scale=0.6]{bilder/Bussprotokoll.png}  %skala och filnamn. 
+  \end{center}
+  \caption{Översiktsbild av kommunikationsprotokollet} %figurtext.
+  \label{fig:bussprotocol}
+\end{figure}
 
 Bussens tillgängliga kommandon är:
 
@@ -195,13 +206,21 @@ Bussens tillgängliga kommandon är:
 	halt & 1 & h & DNC & DNC \\ \hline
 	Kör framåt & 3 & f & DNC & Hastighet (0-100) \\ \hline
 	Kör bakåt & 3 & b & DNC & Hastighet (0-100) \\ \hline
-	Aktivera skicka karta & 1 & F & DNC & DNC \\ \hline
-	Sätt variabler för reglering & 11 & P & 0 & Kp(10-tal, 1-tal, 10-del, 100-del) \\ \hline
-	Sensordata & 0x07 & Komm & Styr & Ta emot sensordata från master \\ \hline
-	Sätt reglerkonstanter & 0x08 & Komm & Styr & Sätter värden för konstanter till PD-reglering \\ \hline
+	Aktivera autonomt läge & 1 & a & DNC & DNC \\ \hline
+	Aktivera manuellt läge & 1 & q & DNC & DNC \\ \hline
+	Säg åt styrmodul att skicka karta & 1 & F & DNC & DNC \\ \hline
+	Sätt variabler för reglering & 11 & P & 0 & Kp(10-tal, 1-tal, 10-del, 100-del), Kd(10-tal, 1-tal, 10-del, 100-del), Referensavstånd \\ \hline
+	Sensordata & 26 & S & DNC & Sensor0(100-tal, 10-tal, 1-tal), Sensor2... , Sensor6(100-tal, 10-tal, 1-tal) \\ \hline
+	Kalibrera gyro & 2 & g & 0 & DNC \\ \hline
+	Börja mäta med gryo & 2 & g & 1 & DNC \\ \hline
+	Svängt 90 grader & 1 & G & DNC & DNC \\ \hline
+	RFID detekterad & 1 & R & DNC & DNC \\ \hline
+	Tillåt RFID-avläsning & 1 & r & DNC & DNC \\ \hline
+	En rad av kartan & 19 & M & Radnr & Chars (u, c, e eller f) \\ \hline
+	Konfirmering av mottagen kartrad & 2 & m & Radnr & DNC \\ \hline
 \end{tabular}
-
-Kommunikation via bluetooth och buss följer ett speciellt egendefininerat protokoll. 
+~\\
+Där DNC står för ''Do not care''.
 
 % ----------------------------- Kommunikationsmodul ------------------------------
 % --------------------------------------------------------------------------------
@@ -253,20 +272,6 @@ Mellan processorerna används SPI som bussprotokoll. Kommunikationsmodulen agera
 	\item SLAVESELECT1 - Väljer denna processor som aktiv slav
 	\item SCK - Serial Clock, klocka från master
 \end{itemize}
->>>>>>> 12199e2efbff89d8ea67ec229c5f1fca6f058259
-
-\subsubsection{Kommunikationsprotokoll}
-Roboten har ett speciellt kommunikationsprotokoll som används både av Bluetooth och SPI-bussen. Protokollet är konstruerat så att den första byten definierar alltid längden på meddelandet. Nästföljande 2 bytes definierar kommandotyp och argument till den typen. Efter de 3 första bytes följer godtyckligt lång datamängd se figur 3.
-
-\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
-  \begin{center}
-  \includegraphics[keepaspectratio=true,scale=0.6]{bilder/Bussprotokoll.png}  %skala och filnamn. 
-  \end{center}
-  \caption{Översiktsbild av kommunikationsprotokollet} %figurtext.
-  \label{fig:bussprotocol}
-\end{figure}
-
-Alla olika kommadotyper är definierade i appendix C.
 
 \subsubsection{Slav-modulers mottagning}
 När vår master-modul initierar SPI-kommunikationen med en slave dras SlaveSelect-signalen för den givna processorn låg för att generera ett SPI-avbrott på sagda slave. När slave har tagit emot det antal bytes som specificeras av första byten i paketet genereras ett internt avbrott med hjälp av PCint16. I detta nya avbrott hanteras datan från transmissionen. En övergripande struktur angående mottagningen av SPI-trafik kan ses i flödesdiagrammet i figur~\ref{fig:spislave}
