@@ -702,6 +702,7 @@ void Robot::setLeftClosed(){
 		return;
 	}
     int output = 0;
+    
     if(leftMidSensor < 40){
         output = 10/40;
     }
@@ -729,7 +730,7 @@ void Robot::setLeftClosed(){
         }
 		if(output< 4 && !mom->getVisited(xCoord+1+output,yCoord) && mom->getPos(xCoord + output + 1, yCoord)->getType() != 'c' && islandMode){
 			mom->convertSection(xCoord + output + 1,yCoord, 'c');
-			//islandToLeft = true;
+			islandToLeft = true;
 		}
 		/*
         if(output == 0 && !mom->getVisited(xCoord+1,yCoord)){
@@ -753,7 +754,7 @@ void Robot::setLeftClosed(){
         }
 		if(output < 4 && !mom->getVisited(xCoord-1-output,yCoord) && mom->getPos(xCoord - output - 1, yCoord)->getType() != 'c' && islandMode){
 			mom->convertSection(xCoord - output - 1,yCoord, 'c');
-			//islandToLeft = true;
+			islandToLeft = true;
 		}
 	}
 	// Direction 0->x->32, "right"
@@ -771,7 +772,7 @@ void Robot::setLeftClosed(){
         }
 		if(output < 4  && !mom->getVisited(xCoord,yCoord-1-output) && mom->getPos(xCoord, yCoord - 1 - output)->getType() != 'c' && islandMode){
 			mom->convertSection(xCoord,yCoord - 1 - output, 'c');
-			//islandToLeft = true;
+			islandToLeft = true;
 		}
 	}
 	// Direction 32->x->0, "left"
@@ -789,7 +790,7 @@ void Robot::setLeftClosed(){
         }
 		if(output < 4  && !mom->getVisited(xCoord,yCoord+1+output) && mom->getPos(xCoord, yCoord + output + 1)->getType() != 'c' && islandMode){
 			mom->convertSection(xCoord,yCoord + 1 + output, 'c');
-			//islandToLeft = true;
+			islandToLeft = true;
 		}
 	}
 }
@@ -923,6 +924,7 @@ void Robot::updateRobotPosition(){
 	        setRFID();
 	        commObj->isRFID=false;
         }
+        
 		switch (direction){
                 
                 //-------------------------Direction is forwards in map-------------------
@@ -1024,6 +1026,8 @@ void Robot::updateRobotPosition(){
 			setLeftClosed();
 		}
 		if(isHome()){
+			setSpeed(0);
+			drive();
             closeMap();
         }
 		//drive();
@@ -1439,6 +1443,47 @@ void Robot::explore(){
     }
 }
 
+void Robot::exploreIsland(){
+	if(!islandToLeft && !exploringIsland){
+		while(!wheelHasTurned){
+			followRight();
+			if(commObj->sendMapNow){
+				asm("");
+				commObj->sendMapNow=false;
+				commObj->sendMap();
+				asm("");
+			}
+		}
+		
+	}
+	updateRobotPosition();
+	if(islandToLeft && !exploringIsland){
+		goAcross();
+		rotateLeft();
+		savePosition();
+		exploringIsland = true;
+		islandToLeft = false;
+		timesMovedOnIsland = 0;
+	}
+	
+	else if(exploringIsland){
+		while(!wheelHasTurned){
+			followRight();
+		}
+		updateRobotPosition();
+		
+		if(xCoord == islandStartX && yCoord == islandStartY && (timesMovedOnIsland != 0)){
+			goAcross();
+			exploringIsland = false;
+			islandToLeft = false;
+		}
+		timesMovedOnIsland++;
+		
+	}
+	
+	
+	}
+
 bool Robot::lookForULeft(){
     switch(direction){
         case 'b' :
@@ -1509,7 +1554,7 @@ void Robot::goAcross(){
         updateRobotPosition();
         drive();
     }
-    rotateLeft();
+
 }
 
 void Robot::followRight(){
@@ -1607,5 +1652,11 @@ void Robot::goHome(){
     }
 	setSpeed(0);
 	drive();
+}
+
+
+void Robot::savePosition(){
+	islandStartX = xCoord;
+	islandStartY = yCoord;
 }
 
