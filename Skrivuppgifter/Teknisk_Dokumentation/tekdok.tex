@@ -1,3 +1,5 @@
+%kommentera all kod.
+
 \documentclass[a4paper,12pt,fleqn]{article}
 \usepackage{fixltx2e}
 \usepackage[utf8]{inputenc}
@@ -264,7 +266,9 @@ När vår master-modul initierar SPI-kommunikationen med en slave dras SlaveSele
 \end{figure}
 
 \subsubsection{Busstrafik}
-På bussen kommer ett antal olika typer av kommandon att skickas. Dessa förklaras i paragraferna nedan.
+På bussen kommer ett antal olika typer av kommandon att skickas. Dessa förklaras i paragraferna nedan. 
+Tyngre och snabbt på varandra följande transmissioner kan leda till låsningar av bussen i form av att till exempel sensordata slutar levereras till Bluetoothmodulen eller att ett kommando missas. Därför hanteras de tyngsta transmissionerna med en konfirmationsstruktur.
+De tyngsta kommandona utförs endast på ickekritiska tillfällen i respektive slavmodul.
 
 \paragraph{Styrkommandon från PC}
 ~\\
@@ -289,6 +293,8 @@ Kommandot skickas från styrmodulen via mastern som speglar ner kommandot till s
 \paragraph{Hjulsensor aktivering och bekräftelse}
 ~\\
 Kommandot skickas från styrmodulen via mastern som speglar ner kommandot till sensormodulen. Sensormodulen startar då en hjulsensormätning och skickar bekräftelse till styrmodulen när roboten har färdats 40 cm. 
+
+\subsection{Kartan över Blå}
 
 \subsection{LCD-Display}
 Sensordata och annan information från roboten visas på en alfanumerisk-display, närmare bestämt  LCD JM162A. Displayen kommer användas för att visa sensordata samt eventuella parametrar för debugging under testfasen.
@@ -341,6 +347,9 @@ Bluetoothkommunikationen kommer att utföras av ett Firefly-Bluesmirf gold (FBG)
 FBG kommer att skicka information till persondator via protokollet RS232 enligt vad som är angivet på Vanheden. 
 Se schema i appendixet Scheman för anslutning av TxD och RxD, vilka sköter sändning och mottagning av data.
 När vi skickar data till processorn så är detta avbrottshanterat. I avbrottet utnyttjas en databuffer vid namn inDataArray som sedan kopieras till bufferten pcHandle i datahanteringen av Bluetooth. Även Bluetooth datahanteras utanför avbrotten precis som SPI-kommunikationen.
+
+\subsubsection{Skickning av kartan}
+För att undvika problem vid mottagning av kartan på PC sidan skickas en rad i taget med hjälp av en timer. Main-loopen på kommunikationsmodulen kollar en gång per main-loop om det är okej att skicka en rad. När timern genererar ett avbrott sätts en flagga att ytterligare en rad är redo att skicka. När samtliga rader har skickats över sätts flaggan som avgör om kartrader ska skickas över till false. 
 
 \subsection{Switchar}
 En switch ska styra om roboten exekverar programkod för autonom styrning eller manuell styrning. Denna switch kan även byta läge via ett virtuellt kommando från PC. Ett avbrott signalerar till processorn att den ska byta programkod, avbrottet ligger på pin16 (INT0) se appendix A. 
@@ -399,6 +408,41 @@ För fullständigt kopplingsschema - se Appendix.
 \newpage
 % ------------------- Styrning och kartläggning -----------------------
 
+\subsubsection{Kartabstraktion}
+Kartan kommer att abstraheras som en matris där objekt sparas, detta löses i form av en arrays med dimensionerna 32x17.
+Tillgängliga undertyper kommer att vara:
+
+\begin{itemize}
+\item{EmptySection}
+\item{UnexploredSection}
+\item{Robot}
+\item{Closed}
+\item{Fire}
+\end{itemize}
+
+Robot är en egen klass med polymorfiskt arv från mapSection.
+
+\paragraph{EmptySection} 
+~\\
+EmptySection kommer att representera en tom sektion av kartan. Objektet EmptySection kan svara på frågan om huruvida den eller andra EmptySection som angränsar till ojektet i fråga i sin tur angränsar till outforskat område. 
+
+\paragraph{UnexploredSection} 
+~\\
+UnexploredSection kommer att representera en outforskad sektion av kartan. 
+
+\paragraph{Robot} 
+~\\
+Robot kommer att representera robotens position på kartan. 
+
+\paragraph{Closed} 
+~\\
+Om en sektion är stängd sätts den till closed.
+\paragraph{Fire} 
+~\\
+Fire kommer att representera plats där det finns eldhärd, dvs. en RFID-tagg. 
+\newpage
+
+
 \subsection{Styrning och kartläggning}
 Det ska implementeras två olika avsökningsalgoritmer. De kommer användas beroende på vilket uppdrag roboten ska genomföra. Algoritmerna kommer att skrivas med hjälp av C++ och köras från processorns interna minne. 
 
@@ -413,6 +457,9 @@ Kartläggningsalgoritmen utformas så att roboten börjar med att placera sig s�
   \caption{Flödesschema kartläggningsalgoritm} %figurtext.
   \label{fig:map} %glöm inte att uppdatera era labels
 \end{figure}
+
+\paragraph{Stänging och slutning av bana}
+När roboten har åkt längs högerväggen och återvänder till startkoordinaterna samt har färdriktningen höger i kartabstraktionen anses kartan vara sluten. När kartan är sluten anses fortfarande objekt utanför inramningen att vara outforskade. Då dessa är omöjliga att besöka startas ett anrop till samtliga objekt längs y-axeln på koordinaterna x = 0 och x = 31. Funktionen ber objektet att bli av typen closed om den inte redan är det. Är objektet closed avslutas funktionen där, annars ber den alla sina direkta grannar att även de utföra funktionen. Denna funktion stänger alltså alla objekt i ett område avgränsat av andra closed-objekt.
 
 \newpage
 
@@ -429,37 +476,7 @@ Brandhärdssökningen kommer att gå till på liknande sätt som kartläggningsa
 \end{figure}
 
 
-\subsubsection{Kartabstraktion}
-Kartan kommer att abstraheras som en matris där objekt sparas. Objektklasserna kommer att ha en moderklass med namn MapSection de sedan ärver från. Tillgängliga underklasser kommer att vara:
 
-\begin{itemize}
-\item{EmptySection}
-\item{UnexploredSection}
-\item{Robot}
-\item{UnreachableSection}
-\item{Fire}
-\end{itemize}
-
-\paragraph{EmptySection} 
-~\\
-EmptySection kommer att representera en tom sektion av kartan. Objektet EmptySection kan svara på frågan om huruvida den eller andra EmptySection som angränsar till ojektet i fråga i sin tur angränsar till outforskat område. 
-
-\paragraph{UnexploredSection} 
-~\\
-UnexploredSection kommer att representera en outforskad sektion av kartan. 
-
-\paragraph{Robot} 
-~\\
-Robot kommer att representera robotens position på kartan. 
-
-\paragraph{UnreachableSection} 
-~\\
-Unreachable section kommer att representera ett block på kartan som är inringat av väggar. Dessa block kommer kunna svara på om de representerar ett slutet område och även om de angränsar till outforskat område. 
-
-\paragraph{Fire} 
-~\\
-Fire kommer att representera plats där det finns eldhärd, dvs. en RFID-tagg. 
-\newpage
 % ------------------- Reglering -----------------------
 
 \subsection{Reglering}
@@ -506,6 +523,10 @@ De kommandon styrmodulen kommer att kunna hantera beskrivs i tabellen nedan. \ne
 	Sensordata & 0x07 & Komm & Styr & Ta emot sensordata från master \\ \hline
 	Sätt reglerkonstanter & 0x08 & Komm & Styr & Sätter värden för konstanter till PD-reglering \\ \hline
 \end{tabular}
+
+\subsubsection{Kartskickning till Kommunikationsmodulen}
+Då kartan är den enskilt tyngsta transmissionen som utförs över bussen så skickas denna i den tidpunkt vi dömt som minst kritisk för styrmodulen. Detta är precis innan en rotation, då roboten står still och inte utför någon reglering. 
+Kartan skickas en rad i taget och sedan väntar den på en mottagningsbekräftelse innan den skickar nästa. För att denna while inte ska kunna låsa modulen helt så har den en timeout som ser till att bryta loopen om den inte fått svar efter 5000 loopar.
 
 \newpage
 
