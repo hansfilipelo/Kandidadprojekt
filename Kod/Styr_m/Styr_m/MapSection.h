@@ -62,6 +62,7 @@ public:
     virtual bool isUnexplored();
     virtual int findUnexplored();
 	bool isVisited = false;
+    int detected = 0;
 	
 protected:
     
@@ -219,7 +220,7 @@ protected:
     int leftBackReference;
     int rightFrontReference;
     int rightBackReference;
-    int detected; // number of times a square has been attempted to be visited.
+    // number of times a square has been attempted to be visited.
     
     
     //Values concerning automatic control

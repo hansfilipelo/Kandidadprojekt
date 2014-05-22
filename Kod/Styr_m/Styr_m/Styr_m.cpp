@@ -138,7 +138,7 @@ int main(void)
 	robotPointer->setBwdReference();
     
 	// Iterator for mapping
-	int i = 0;
+    
     //-----------------------------------------------------
     //right wall following loop
 	if((robotPointer->RFIDmode)&&(robotPointer->getBwdDistance() < 30)){
