@@ -712,16 +712,17 @@ void Robot::setBwdClosed(){
 // -------------- To the left --------------------------
 
 void Robot::setLeftClosed(){
-    if(!islandMode && !exploringIsland){
+    if(!islandMode || exploringIsland){
 	    return;
     }
+	
 	int output = 0;
     
     if(leftMidSensor < 40){
         output = 10/40;
     }
-    else if(leftMidSensor > 150) { // this value might need to be calibrated
-        output = 160/40;				//if distance is great only print max 2 empty.
+    else if(leftMidSensor > 60){ // this value might need to be calibrated
+        output = 80/40;				//if distance is great only print max 3 empty.
     }
     
     else{
@@ -824,6 +825,9 @@ void Robot::setRightClosed(){
 	}
 	else{
 		output = rightFrontSensor/40;	//kanske borde ha +10 innan man delar med 40 för att robotens inte är längst till höger i rutan
+	}
+	if (output != 0){
+		return;
 	}
 	
 	// Set closed section output + 1 steps away from robot.
@@ -1468,10 +1472,10 @@ void Robot::exploreIsland(){
 	}
 	updateRobotPosition();
 	if(islandToLeft && !exploringIsland){
+		exploringIsland = true;
 		goAcross();
 		rotateLeft();
 		savePosition();
-		exploringIsland = true;
 		islandToLeft = false;
 		timesMovedOnIsland = 0;
 	}
