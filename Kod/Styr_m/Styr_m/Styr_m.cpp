@@ -132,13 +132,13 @@ int main(void)
 	
 #endif
 	
-	robotPointer->waitForNewData(); 
+	robotPointer->waitForNewData();
 	robotPointer->waitForNewData();
 	robotPointer->setFwdReference();
 	robotPointer->setBwdReference();
     
 	// Iterator for mapping
-	int i = 0;
+    
     //-----------------------------------------------------
     //right wall following loop
 	if((robotPointer->RFIDmode)&&(robotPointer->getBwdDistance() < 30)){
@@ -159,7 +159,7 @@ int main(void)
     
 	abstractionObject->reactivateWheelSensor();
 	
-	for (;;) {       
+	for (;;) {
         // Manual mode
         if (abstractionObject->getManual()) {
             asm("");
@@ -175,10 +175,10 @@ int main(void)
         // Automatic mode
         else {
 			
-				/*------------------ HÖGERFÖLJNNG ---------------------- 
-                 -------------------------------------------------------
-                 -------------------------------------------------------*/
-				
+            /*------------------ HÖGERFÖLJNNG ----------------------
+             -------------------------------------------------------
+             -------------------------------------------------------*/
+            
 			if(tst){
 				// get the route
 				mapPointer->convertToPathFinding();
@@ -186,7 +186,7 @@ int main(void)
 				int yStart = robotPointer->getY();
 				robotPointer->findFinishPos();
 				int xFinish = robotPointer->getFinishX();
-				int yFinish = robotPointer->getFinishY();					
+				int yFinish = robotPointer->getFinishY();
 				//mapPointer->aStar(1,16,5,16);
 				//abstractionObject->sendAStar(mapPointer->pathArray);
  				tst = false;
@@ -205,55 +205,37 @@ int main(void)
 			if(robotPointer->startExplore){
 				break;
 			}
-						
+            
 		}
 		
 	}
-/*--------------ExploreMode-----------------------------------------------------------------------*/
+    /*--------------ExploreMode-----------------------------------------------------------------------*/
 	robotPointer->setSpeed(0);
 	robotPointer->drive();
 	
 	for(;;){
-
-				/*if(mapPointer->firstTimeMapping){
-					mapPointer->firstTimeMapping = false;
-					//Sets start and finnish coordinates
-					int xStart = robotPointer->getX();
-					int yStart = robotPointer->getY();
-					robotPointer->findFinishPos();
-					int xFinish = robotPointer->getFinishX();
-					int yFinish = robotPointer->getFinishY();
-				
-					// get the route
-					mapPointer->convertToPathFinding();
-					mapPointer->aStar(xStart,yStart,xFinish,yFinish);
-					abstractionObject->sendAStar(mapPointer->pathArray);
-					robotPointer->goToAStar();
-					
-				}//drive around this island 
-				if(robotPointer->foundIsland){
-					robotPointer->handleIsland();
-				}
-				*///old untested a-star
-			robotPointer->explore();
-			if(!robotPointer->stillUnexplored()){
-				abstractionObject->sendMap();
-				break;
-			}
-		}
-		
+        
+        robotPointer->explore();
+        if(!robotPointer->stillUnexplored()){
+            abstractionObject->sendMap();
+            break;
+        }
+    }
+    
 	for(;;){
-	asm("");
-	if(abstractionObject->sendMapNow){
-		asm("");
-		abstractionObject->sendMapNow=false;
-		abstractionObject->sendMap();
-		asm("");
+        asm("");
+        robotPointer->goHome();
+        
+        if(abstractionObject->sendMapNow){
+            asm("");
+            abstractionObject->sendMapNow=false;
+            abstractionObject->sendMap();
+            asm("");
+        }
+        asm("");
+        //bombo!
+        //return to home
 	}
-	asm("");
-	//bombo!
-	//return to home
-	}
-				
-		return 0;
+    
+    return 0;
 }
