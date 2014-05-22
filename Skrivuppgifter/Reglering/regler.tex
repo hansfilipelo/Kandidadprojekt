@@ -200,7 +200,7 @@ För en accelerometer används en massa som hålls fast av en arm med en viss el
 \end{figure}
 
 En gyrosensor av MEMS-typ (Micro Electro-Mechanical System) utnyttjar att två lika stora massor som oscillerar konstant i motsatta riktningar påverkas av corioliskraften vid rotation. Kraften verkar i olika riktningar på de två massorna vilket leder till en förändring i kapacitans.
-Skillnaden i kapacitans har visat sig vara proportionell mot vinkelhastigheten, och därför går det att bestämma vinkelhastigheten med hjälp av ett gyro av denna typ \footnote{Introduction to MEMS gyroscopes. Solid State Technology, Insights for Electronics  Manufacturing (\url http://electroiq.com).Hämtad 6 maj 2014: \url{http://electroiq.com/blog/2010/11/introduction-to-mems-gyroscopes/}}. 
+Skillnaden i kapacitans har visat sig vara proportionell mot vinkelhastigheten, och därför går det att bestämma vinkelhastigheten med hjälp av ett gyro av denna typ \footnote{Introduction to MEMS gyroscopes. Solid State Technology, Insights for Electronics  Manufacturing (\url http://electroiq.com). Hämtad 6 maj 2014: \url{http://electroiq.com/blog/2010/11/introduction-to-mems-gyroscopes/}}. 
 
 \subsubsection{Hjulsensorer}
 
@@ -210,7 +210,7 @@ Ett problem med hjulsensorer är att de inte ger en helt korrekt hastighets- och
 
 \subsubsection{Andra typer av sensorer}
 
-I denna rapport berör vi mest fallet att SLAM baseras på optiska avståndssensorer, hjulsensorer och gyro, men det finns även andra typer av sensorer som går att använda. Till exempel finns det implementeringar som använder sig av kameror för att finna landmärken och sedan använda dessa som referenser. Det krävs dock mer avancerade algoritmer för att finna lämpliga landmärken i detta fall \footnote{Karlsson, N.; Goncalves, L.; Munich, M.E.; Pirjanian, P. ''The vSLAM Algorithm for Navigation in Natural Environments''. Evolution Robotics, Inc.}.
+I denna rapport berör vi mest fallet att SLAM baseras på optiska avståndssensorer, hjulsensorer och gyro, men det finns även andra typer av sensorer som går att använda. Till exempel finns det implementeringar som använder sig av kameror för att finna landmärken och sedan använda dessa som referenser. Det krävs dock mer avancerade algoritmer för att finna lämpliga landmärken i detta fall \footnote{Karlsson, N.; Goncalves, L.; Munich, M.E.; Pirjanian, P. (2005). ''The vSLAM Algorithm for Navigation in Natural Environments''. Evolution Robotics, Inc.}.
 
 Något som också provats är SLAM utan användning av någon typ av optisk utrustning där man istället förlitar sig på känsel. Med hjälp av känselsensorer, som efterliknar djurs morrhår, försöker man då kartlägga ett helt mörklagt rum. Denna metod har dock inte gett så bra resultat med de tekniker som existerar i dag\footnote{Fox, C.; Evans, M.; Pearson, M.; Prescott, T. (2012)
 ''Tactile SLAM with a biomimetic whiskered robot''. 2012 IEEE International Conference on Robotics and Automation. Hämtad 28 mars 2014:
@@ -318,7 +318,7 @@ y_n = C_nx_n + D_nu_n + v
 \end{gather}
 och skattningen ges av
 \begin{gather}
-	\hat{x}_{n|n-1} = A_{n-1}\hat{x}_{n-1} + B_{n-1}(u_{n-1}) \\
+	\hat{x}_{n|n-1} = A_{n-1}\hat{x}_{n-1} + B_{n-1}u_{n-1} \\
 	P_{n|n-1}=A_{n-1}P_{n-1|n-1}A^T_{n-1}+R_1 \\
 	K_n = P_{n-1}C_{n}^T(C_{n}P_{n|n-1}C_{n}^T+R_2)^{-1}	\\
 	\hat{x}_{n|n} = \hat{x}_{n|n-1} + K_{t}(y_{t}-C_{t}+R_{2})\\
