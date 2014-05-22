@@ -45,7 +45,7 @@
 		\vspace{3pt} %Whitespace 3 pts
 	    \begin{tabular}{| p{3cm} | p{3cm} | p{3cm} |} %tabell, 4 horizontella |, 3 cm emellan dem.
 	    \hline %översta horizontella linjen.
-	    Granskad & NE,TG & \today \\ \hline % & -tecken för att "gå till nästa ruta" 
+	    Granskad & NE,TG,HFE & \today \\ \hline % & -tecken för att "gå till nästa ruta" 
 		Godkänd & - & - \\ \hline % avslutas med \\ och \hline.
 
 	    \end{tabular}
@@ -120,7 +120,7 @@ Robotens syfte är att kartlägga ett rum och finna en fiktiv eldhärd så snabb
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
-  \includegraphics[keepaspectratio=true,,width=0.5\textwidth]{../Kappa/robot.png}  %skala och filnamn. 
+  \includegraphics[keepaspectratio=true,,width=0.5\linewidth]{../Kappa/robot.png}  %skala och filnamn. 
   \end{center}
   \caption{MapMaster2001} %figurtext.
   \label{fig:robot}
@@ -157,6 +157,20 @@ Under roboten sitter en RFID-läsare för upptäcka RFIDmarkerade brandhärder.
 En buss med protokoll SPI sköter kommunikationen mellan robotens tre delsystem. SPI-protokollet är ett fullt-duplext kommunikationsprotokoll som fungerar genom att byta 8 lokala bitar med 8 bitar från modulen den kommunicerar med. 
 
 Kommunikation via bluetooth och buss följer ett speciellt egendefininerat protokoll. 
+
+\subsubsection{Kommunikationsprotokoll}
+Roboten har ett speciellt kommunikationsprotokoll som används både av Bluetooth och SPI-bussen. Protokollet är konstruerat så att den första byten definierar alltid längden på meddelandet. Nästföljande 2 bytes definierar kommandotyp och argument till den typen. Efter de 3 första bytes följer godtyckligt lång datamängd se figur 3.
+
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,width=0.5\linewidth]{bilder/Bussprotokoll.png}  %skala och filnamn. 
+  \end{center}
+  \caption{Översiktsbild av kommunikationsprotokollet} %figurtext.
+  \label{fig:bussprotocol}
+\end{figure}
+
+Alla olika kommadotyper är definierade i appendix C.
+
 
 % ----------------------------- Kommunikationsmodul ------------------------------
 % --------------------------------------------------------------------------------
@@ -208,20 +222,6 @@ Mellan processorerna används SPI som bussprotokoll. Kommunikationsmodulen agera
 	\item SLAVESELECT1 - Väljer denna processor som aktiv slav
 	\item SCK - Serial Clock, klocka från master
 \end{itemize}
->>>>>>> 12199e2efbff89d8ea67ec229c5f1fca6f058259
-
-\subsubsection{Kommunikationsprotokoll}
-Roboten har ett speciellt kommunikationsprotokoll som används både av Bluetooth och SPI-bussen. Protokollet är konstruerat så att den första byten definierar alltid längden på meddelandet. Nästföljande 2 bytes definierar kommandotyp och argument till den typen. Efter de 3 första bytes följer godtyckligt lång datamängd se figur 3.
-
-\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
-  \begin{center}
-  \includegraphics[keepaspectratio=true,scale=0.6]{bilder/Bussprotokoll.png}  %skala och filnamn. 
-  \end{center}
-  \caption{Översiktsbild av kommunikationsprotokollet} %figurtext.
-  \label{fig:bussprotocol}
-\end{figure}
-
-Alla olika kommadotyper är definierade i appendix C.
 
 \subsubsection{Slav-modulers mottagning}
 När vår master-modul initierar SPI-kommunikationen med en slave dras SlaveSelect-signalen för den givna processorn låg för att generera ett SPI-avbrott på sagda slave. När slave har tagit emot det antal bytes som specificeras av första byten i paketet genereras ett internt avbrott med hjälp av PCint16. I detta nya avbrott hanteras datan från transmissionen. En övergripande struktur angående mottagningen av SPI-trafik kan ses i flödesdiagrammet i figur~\ref{fig:spislave}
@@ -234,12 +234,8 @@ När vår master-modul initierar SPI-kommunikationen med en slave dras SlaveSele
   \label{fig:spislave}
 \end{figure}
 
-
-
-
-
 \subsubsection{Busstrafik}
-På bussen kommer ett antal olika typer av kommandon att skickas. 
+På bussen kommer ett antal olika typer av kommandon att skickas. Dessa förklaras i paragraferna nedan.
 
 \paragraph{Styrkommandon från PC}
 ~\\
@@ -268,7 +264,7 @@ Kommandot skickas från styrmodulen via mastern som speglar ner kommandot till s
 \subsection{LCD-Display}
 Sensordata och annan information från roboten visas på en alfanumerisk-display, närmare bestämt  LCD JM162A. Displayen kommer användas för att visa sensordata samt eventuella parametrar för debugging under testfasen.
 Displayen kommer anslutas till processorn enligt kretschemat i appendix A. 
-Vid varje uppstart kommer initiering av LCD-display göras och då följa nedanstående flödesschema. Varje steg startas med att processorn skickar ett kommando till ingångarna på LCD-displayen. Kommandon finns specificerade i databladet\footnote{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/jm162a.pdf}. LCD-displayen sitter på mastermodulen och för att inte låsa mastermodulen under tiden då datan  skrivs ut på diaplyen har ett buffersystem implementerats. Buffersystemet gör så att mainprogrammet i mastern inte låser ner sig när data skrivs till displayen. Buffern håller koll på vilken rad och kolumn som för tillfället ska skrivas ut och kan därför avsluta skrivningen direkt efter att 0 eller 1 karaktär är utskriven på displayen. Därefter kan mastern återgå till mainloopen för att hantera inkommande eller mottagande data. Genom att hantera skrivningar på detta vis undviker vi att låsa kommunikationsmodulen vid de tidskrävande LCD-skrivningarna.
+Vid varje uppstart kommer initiering av LCD-display göras och då följa nedanstående flödesschema. Varje steg startas med att processorn skickar ett kommando till ingångarna på LCD-displayen. Kommandon finns specificerade i databladet\footnote{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/jm162a.pdf}. LCD-displayen sitter på mastermodulen och för att inte låsa mastermodulen under tiden då datan skrivs ut på diaplyen har ett buffersystem implementerats. Buffersystemet gör så att mainprogrammet i mastern inte låser när data skrivs till displayen. Buffern håller koll på vilken rad och kolumn som för tillfället ska skrivas ut och kan därför avsluta skrivningen direkt efter att ingen eller en karaktär är utskriven på displayen. Därefter kan mastern återgå till mainloopen för att hantera inkommande eller mottagande data. Genom att hantera skrivningar på detta vis undviker vi att låsa kommunikationsmodulen vid de tidskrävande LCD-skrivningarna.
 
 \subsubsection{Uppstart}
 	
@@ -284,7 +280,7 @@ Vid uppstart av systemet kommer LCD-displayen att initieras enligt flödes\-sche
 
 \begin{figure}[htp]
 	  \begin{center}
-	  \includegraphics[keepaspectratio=true,scale=0.4]{bilder/startup}  %skala och filnamn. 
+	  \includegraphics[keepaspectratio=true,width=0.4\linewidth]{bilder/startup}  %skala och filnamn. 
 	  \end{center}
 	  \caption{Uppstart av LCD-display} %figurtext.
 	  \label{fig:flowlcdstart}
@@ -305,7 +301,7 @@ Skrivning till LCD-displayen kommer ske enligt flödesschemat~\ref{fig:flowlcdwr
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
-  \includegraphics[keepaspectratio=true,scale=0.4]{bilder/write}  %skala och filnamn. 
+  \includegraphics[keepaspectratio=true,width=0.5\linewidth]{bilder/write}  %skala och filnamn. 
   \end{center}
   \caption{Skrivning till LCD-display} %figurtext.
   \label{fig:flowlcdwrite}
@@ -318,12 +314,7 @@ Se schema i appendixet Scheman för anslutning av TxD och RxD, vilka sköter sä
 När vi skickar data till processorn så är detta avbrottshanterat. I avbrottet utnyttjas en databuffer vid namn inDataArray som sedan kopieras till bufferten pcHandle i datahanteringen av Bluetooth. Även Bluetooth datahanteras utanför avbrotten precis som SPI-kommunikationen.
 
 \subsection{Switchar}
-<<<<<<< HEAD
-En switch ska styra om roboten exekverar programkod för autonom styrning eller manuell styrning. Ett avbrott signalerar till processorn att den ska byta programkod, avbrottet ligger på pin16 (INT0) se appendix A. 
-Bytet mellan autonomt och manuellt läge kan även göras via PC-mjukvaran.
-=======
 En switch ska styra om roboten exekverar programkod för autonom styrning eller manuell styrning. Denna switch kan även byta läge via ett virtuellt kommando från PC. Ett avbrott signalerar till processorn att den ska byta programkod, avbrottet ligger på pin16 (INT0) se appendix A. 
->>>>>>> 12199e2efbff89d8ea67ec229c5f1fca6f058259
 Av/På-knappen styr strömförsörjningen till samtliga moduler. 
 
 % ----------------------------- Styrmodul --------------------------------------
@@ -335,7 +326,7 @@ Styrmodulens (slave) huvudkomponent kommer att bestå av en AVR-processor, Atmel
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
-  \includegraphics[keepaspectratio=true,scale=0.5]{bilder/styrmodul}  %skala och filnamn. 
+  \includegraphics[keepaspectratio=true,width=0.5\linewidth]{bilder/styrmodul}  %skala och filnamn. 
   \end{center}
   \caption{Översikt styrmodul} %figurtext.
   \label{fig:styr} %glöm inte att uppdatera era labels
@@ -388,7 +379,7 @@ Kartläggningsalgoritmen utformas så att roboten börjar med att placera sig s�
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
-  \includegraphics[keepaspectratio=true,scale=0.5]{bilder/flode_brandhard.jpg}  %skala och filnamn. 
+  \includegraphics[keepaspectratio=true,width=0.8\linewidth]{bilder/flode_brandhard.jpg}  %skala och filnamn. 
   \end{center}
   \caption{Flödesschema kartläggningsalgoritm} %figurtext.
   \label{fig:map} %glöm inte att uppdatera era labels
@@ -402,7 +393,7 @@ Brandhärdssökningen kommer att gå till på liknande sätt som kartläggningsa
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
-  \includegraphics[keepaspectratio=true,scale=0.5]{bilder/Flode_kartritning.jpg}  %skala och filnamn. 
+  \includegraphics[keepaspectratio=true,width=0.5\linewidth]{bilder/Flode_kartritning.jpg}  %skala och filnamn. 
   \end{center}
   \caption{Flödesschema brandhärdssökning} %figurtext.
   \label{fig:fire} %glöm inte att uppdatera era labels
@@ -498,7 +489,7 @@ Sensormodulens uppgift är att hantera sensordata från robotens 9 sensorer och 
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
-  \includegraphics[keepaspectratio=true,width=\linewidth]{bilder/overblicksensor}  %skala och filnamn. 
+  \includegraphics[keepaspectratio=true,width=0.5\linewidth]{bilder/overblicksensor}  %skala och filnamn. 
   \end{center}
   \caption{Överblick av sensormodulen} %figurtext.
   \label{fig:sensoroverview}
