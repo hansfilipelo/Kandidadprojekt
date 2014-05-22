@@ -618,7 +618,10 @@ void Robot::setBwdClosed(){
 	
 	int output = 0;
 	
-	if (getBwdDistance() > 280) {
+	if(speed != 0){
+		return;
+	}
+	if (getBwdDistance() > 300) {
 		output = 280/40;
 	}
 	else{
