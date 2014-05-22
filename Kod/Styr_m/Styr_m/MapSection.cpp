@@ -701,7 +701,7 @@ void Robot::setLeftClosed(){
 	
     int output = 0;
     
-    if(leftMidSensor < 35){
+    if(leftMidSensor < 40){
         output = 10/40;
     }
     else if(leftMidSensor > 150) { // this value might need to be calibrated
@@ -728,7 +728,7 @@ void Robot::setLeftClosed(){
         }
 		if(output< 4 && !mom->getVisited(xCoord+1+output,yCoord) && mom->getPos(xCoord + output + 1, yCoord)->getType() != 'c' && islandMode){
 			mom->convertSection(xCoord + output + 1,yCoord, 'c');
-			//islandToLeft = true;
+			islandToLeft = true;
 		}
 		/*
         if(output == 0 && !mom->getVisited(xCoord+1,yCoord)){
@@ -752,7 +752,7 @@ void Robot::setLeftClosed(){
         }
 		if(output < 4 && !mom->getVisited(xCoord-1-output,yCoord) && mom->getPos(xCoord - output - 1, yCoord)->getType() != 'c' && islandMode){
 			mom->convertSection(xCoord - output - 1,yCoord, 'c');
-			//islandToLeft = true;
+			islandToLeft = true;
 		}
 	}
 	// Direction 0->x->32, "right"
@@ -770,7 +770,7 @@ void Robot::setLeftClosed(){
         }
 		if(output < 4  && !mom->getVisited(xCoord,yCoord-1-output) && mom->getPos(xCoord, yCoord - 1 - output)->getType() != 'c' && islandMode){
 			mom->convertSection(xCoord,yCoord - 1 - output, 'c');
-			//islandToLeft = true;
+			islandToLeft = true;
 		}
 	}
 	// Direction 32->x->0, "left"
@@ -788,7 +788,7 @@ void Robot::setLeftClosed(){
         }
 		if(output < 4  && !mom->getVisited(xCoord,yCoord+1+output) && mom->getPos(xCoord, yCoord + output + 1)->getType() != 'c' && islandMode){
 			mom->convertSection(xCoord,yCoord + 1 + output, 'c');
-			//islandToLeft = true;
+			islandToLeft = true;
 		}
 	}
 }
@@ -918,7 +918,10 @@ void Robot::updateRobotPosition(){
 		//_delay_ms(250);
         //#endif
         //setSpeed(userSpeed); //borde flyttas till efter switchen
-        
+        if(commObj->isRFID){
+	        setRFID();
+	        commObj->isRFID=false;
+        }
         
 		switch (direction){
                 
@@ -1011,10 +1014,6 @@ void Robot::updateRobotPosition(){
 				//would like to throw some kind of error here.
 				return;
 		}
-        if(commObj->isRFID){
-            setRFID();
-            commObj->isRFID=false;
-        }
 		if((RFIDmode)&&(rightFrontSensor < 20)&&(okayToClose)){
 			setRightClosed();
 		}
@@ -1025,6 +1024,8 @@ void Robot::updateRobotPosition(){
 			setLeftClosed();
 		}
 		if(isHome()){
+			setSpeed(0);
+			drive();
             closeMap();
         }
 		//drive();
@@ -1451,10 +1452,12 @@ void Robot::exploreIsland(){
 				asm("");
 			}
 		}
-		updateRobotPosition();
+		
 	}
-	else if(islandToLeft && !exploringIsland){
+	updateRobotPosition();
+	if(islandToLeft && !exploringIsland){
 		goAcross();
+		rotateLeft();
 		savePosition();
 		exploringIsland = true;
 		islandToLeft = false;
@@ -1549,7 +1552,7 @@ void Robot::goAcross(){
         updateRobotPosition();
         drive();
     }
-   // rotateLeft();
+
 }
 
 void Robot::followRight(){

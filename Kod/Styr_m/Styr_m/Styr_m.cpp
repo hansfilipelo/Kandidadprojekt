@@ -192,7 +192,9 @@ int main(void)
 		robotPointer->updateRobotPosition();
 		if(robotPointer->isHome())
 		{
+			asm("");
 			break;
+			asm("");
 		}
 	}
 	
@@ -200,15 +202,15 @@ int main(void)
 /*------------------HÖGERFÖLJNNG ----------------------
 --------------------IslandMode-------------------------
 -------------------------------------------------------*/
-	//robotPointer->islandMode = true;
-
+	robotPointer->islandMode = true;
 	
 	for (;;) {
-
 		robotPointer->exploreIsland();
 		if(robotPointer->isHome())
 		{
+			asm("");
 			break;
+			asm("");
 		}
 	}
             
@@ -231,8 +233,7 @@ int main(void)
 	//this loop was used for exploring unknown areas not connected to islands, it was also made to after exploration 
 	//return the robot to its starting pos
 	
-	for(;;){
-        
+	for(;;){        
         robotPointer->explore();
         if(!robotPointer->stillUnexplored()){
             abstractionObject->sendMap();
