@@ -143,15 +143,10 @@ Det här är MapMaster2001. En kartritande robot med bred funktionalitet. MapMas
 
 \newpage
 \section{Teori}
-Simultan positionering och kartläggning (SLAM) är ett problem som grundar sig i följande frågeställning: Utan att veta var vi är - hur kartlägger vi då vår omgivning? Åt andra hållet får man ställa sig frågan - hur vet vi var vi befinner oss utan en karta?
 
-Det är inte helt enkelt att lösa dessa frågor, men det finns approximativa lösningar på SLAM-problemet. Gemensamt för alla lösningar är att de bygger på möjligheten att läsa av sin omgivning i kombination med
-sannolikhetsteori. Då sensordata aldrig kan antas vara exakt använder man sannolikhetsteori för att göra rimlighetsbedömningar i de stickprov av mätningar sensorerna ger.
 
 \subsection{Kartläggning}
 
-
-Kartläggningsalgoritmen utformas så att roboten börjar med att placera sig så att en vägg går att finna på höger sida. Roboten kommer sedan följa väggen till dess att den kan rita upp ett slutet område att arbeta utifrån. Nästa steg blir att kartlägga områden som ännu ej är kartlagda. Om en köksö upptäcks kommer roboten se till att rita upp hela köksön innan den går vidare. På detta sätt fortsätter algoritmen till dess att alla delar av rummet är kartlagda. 
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
@@ -160,6 +155,9 @@ Kartläggningsalgoritmen utformas så att roboten börjar med att placera sig s�
   \caption{Flödesschema kartläggning} %figurtext.
   \label{fig:fire} %glöm inte att uppdatera era labels
 \end{figure}
+
+Djupare teori kring kartläggning och positionering finns i Appendix
+
 
 %-----------------------------------------------------------------
 %Systemet
@@ -174,10 +172,9 @@ Kartläggningsalgoritmen utformas så att roboten börjar med att placera sig s�
   \label{fig:overview}
 \end{figure}
 
-\subsection{Ingående delsystem}
-Roboten består av tre delsystem, en buss, ett chassi samt en tillhörande mjukvara för persondator. Sensormodulen hanterar analoga sensorsignaler och omvandlar dessa till användbart mätdata som skickas vidare till kommunikationsmodulen och styrmodulen. 
-Kommunikationsenheten agerar buss-master och sköter all kommunikation mellan de andra enheterna. Kommunikationsmodulen sköter även kommunikationen mellan PC och roboten via en bluetoothadapter. Styrenheten sköter robotens fyra drivande motorer, kartläggning samt tar beslut om körriktning vid autonom operation.
-De tre delsystemen kommunicerar via en SPI-buss och är byggda runt processorerna ATMEL Atmega 1284p med 16KByte SRAM som har visat sig fullt tillräckligt för att kunna använda C++ och en objektorienterad programmeringsstruktur.
+Roboten består tre delsystem. En kommunikationsmodul, en sensormodul och en styrmodul. Utöver dessa tre moduler finns en buss mellan den, ett chassi samt en tillhörande mjukvara för persondator. Sensormodulen hanterar analoga sensorsignaler och omvandlar dessa till användbart mätdata som skickas vidare till kommunikationsmodulen och styrmodulen. 
+Kommunikationsenheten agerar buss-master och sköter all kommunikation mellan de andra enheterna. Kommunikationsmodulen sköter även kommunikationen mellan PC och roboten via en bluetoothadapter. Styrenheten sköter robotens fyra drivande motorer, kartläggning och positionsskattning samt tar beslut om körriktning vid autonom operation. 
+De tre delsystemen kommunicerar via en SPI-buss och är byggda runt processorerna ATMEL Atmega 1284p med 16KByte SRAM. 
 
 Chassit har fyra PWM-motorer, placerade längst fram och längst bak på sidorna av chassit. Motorerna är monterade i chassit, vilket betyder att rotation utförs genom att en rotationshastighetsdifferens införs mellan motorparen. Rotationer görs alltid med 90 graders svängar som utförs med hjälp av gyrot som är placerat på sensormodulen. 
 
@@ -185,23 +182,46 @@ Sensorerna som tillhör sensormodulen, förutom robotens RFID-läsare,är placer
 Under roboten sitter en RFID-läsare för upptäcka RFIDmarkerade brandhärder.
 
 \subsection{Kommunikation via buss}
-En buss med protokoll SPI sköter kommunikationen mellan robotens tre delsystem. SPI-protokollet är ett fullt-duplext kommunikationsprotokoll som fungerar genom att byta 8 lokala bitar med 8 bitar från modulen den kommunicerar med. 
+En buss som kommunicerar över protokollet SPI sköter kommunikationen mellan robotens tre delsystem. SPI-protokollet är ett fullt-duplext kommunikationsprotokoll som fungerar genom att byta 8 lokala bitar med 8 bitar från modulen den kommunicerar med. 
 
-Kommunikation via bluetooth och buss följer ett speciellt egendefininerat protokoll. 
+I mjukvarulagret av bussen användes ett egenimplementerat protokoll som används för både transmissioner över Bluetooth och SPI. Protokollet är konstruerat så att den första byten definierar alltid längden på meddelandet. Nästföljande 2 bytes definierar kommandotyp och argument till den typen. Efter de 3 första bytes följer godtyckligt lång datamängd se figur 3. 
 
-\subsubsection{Kommunikationsprotokoll}
-Roboten har ett speciellt kommunikationsprotokoll som används både av Bluetooth och SPI-bussen. Protokollet är konstruerat så att den första byten definierar alltid längden på meddelandet. Nästföljande 2 bytes definierar kommandotyp och argument till den typen. Efter de 3 första bytes följer godtyckligt lång datamängd se figur 3.
+Specificerat bussprotokoll är enbart halv-duplex, d v s man kan enbart skicka data i en riktning åt gången, hela kapaciteten hos SPI utnyttjas alltså inte. 
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
-  \includegraphics[keepaspectratio=true,width=0.5\linewidth]{bilder/Bussprotokoll.png}  %skala och filnamn. 
+  \includegraphics[keepaspectratio=true,scale=0.6]{bilder/Bussprotokoll.png}  %skala och filnamn. 
   \end{center}
   \caption{Översiktsbild av kommunikationsprotokollet} %figurtext.
   \label{fig:bussprotocol}
 \end{figure}
 
-Alla olika kommadotyper är definierade i appendix C.
+Bussens tillgängliga kommandon är:
 
+\begin{tabular}{| p{0.25\textwidth} | p{0.15\textwidth} | p{0.075\textwidth} | p{0.075\textwidth} | p{0.35\textwidth} |}
+	\hline
+	\rowcolor{listinggray}
+	\textbf{Funktion} & \textbf{Datalängd} & \textbf{Kodord} & \textbf{ev argument} & \textbf{datastruktur} \\ \hline
+	Rotera vänster & 3 & r & 0 & Hastighet (0-100) \\ \hline
+	Rotera höger & 3 & r & 1 & Hastighet (0-100) \\ \hline
+	halt & 1 & h & DNC & DNC \\ \hline
+	Kör framåt & 3 & f & DNC & Hastighet (0-100) \\ \hline
+	Kör bakåt & 3 & b & DNC & Hastighet (0-100) \\ \hline
+	Aktivera autonomt läge & 1 & a & DNC & DNC \\ \hline
+	Aktivera manuellt läge & 1 & q & DNC & DNC \\ \hline
+	Säg åt styrmodul att skicka karta & 1 & F & DNC & DNC \\ \hline
+	Sätt variabler för reglering & 11 & P & 0 & Kp(10-tal, 1-tal, 10-del, 100-del), Kd(10-tal, 1-tal, 10-del, 100-del), Referensavstånd \\ \hline
+	Sensordata & 26 & S & DNC & Sensor0(100-tal, 10-tal, 1-tal), Sensor2... , Sensor6(100-tal, 10-tal, 1-tal) \\ \hline
+	Kalibrera gyro & 2 & g & 0 & DNC \\ \hline
+	Börja mäta med gryo & 2 & g & 1 & DNC \\ \hline
+	Svängt 90 grader & 1 & G & DNC & DNC \\ \hline
+	RFID detekterad & 1 & R & DNC & DNC \\ \hline
+	Tillåt RFID-avläsning & 1 & r & DNC & DNC \\ \hline
+	En rad av kartan & 19 & M & Radnr & Chars (u, c, e eller f) \\ \hline
+	Konfirmering av mottagen kartrad & 2 & m & Radnr & DNC \\ \hline
+\end{tabular}
+~\\
+Där DNC står för ''Do not care''.
 
 % ----------------------------- Kommunikationsmodul ------------------------------
 % --------------------------------------------------------------------------------
@@ -293,8 +313,6 @@ Kommandot skickas från styrmodulen via mastern som speglar ner kommandot till s
 \paragraph{Hjulsensor aktivering och bekräftelse}
 ~\\
 Kommandot skickas från styrmodulen via mastern som speglar ner kommandot till sensormodulen. Sensormodulen startar då en hjulsensormätning och skickar bekräftelse till styrmodulen när roboten har färdats 40 cm. 
-
-\subsection{Kartan över Blå}
 
 \subsection{LCD-Display}
 Sensordata och annan information från roboten visas på en alfanumerisk-display, närmare bestämt  LCD JM162A. Displayen kommer användas för att visa sensordata samt eventuella parametrar för debugging under testfasen.
@@ -509,25 +527,6 @@ Styrmodulen kommunicerar med kommunikationsmodulen (master) över SPI-bussen. Bu
 
 De kommandon styrmodulen kommer att kunna hantera beskrivs i tabellen nedan. \newline
 
-\begin{tabular}{| p{0.25\textwidth} | p{0.15\textwidth} | p{0.075\textwidth} | p{0.075\textwidth} | p{0.35\textwidth} |}
-	\hline
-	\rowcolor{listinggray}
-	\textbf{Funktion} & \textbf{Kommando} & \textbf{Från} & \textbf{Till} & \textbf{Förklaring} \\ \hline
-	Nödstopp & 0x00 & Komm & Styr & Stanna alla motorer \\ \hline
-	Autonom styrning & 0x01 & Komm & Styr & Aktivera PD-reglering och styralgoritmer \\ \hline
-	Manuell styrning & 0x02 & Komm & Styr & Avaktivera PD-reglering och styralgoritmer \\ \hline
-	Framåt & 0x03 & Komm & Styr & Kör framåt \\ \hline
-	Bakåt & 0x04 & Komm & Styr & Kör bakåt \\ \hline
-	Vänster & 0x05 & Komm & Styr & Sväng vänster \\ \hline
-	Höger & 0x06 & Komm & Styr & Sväng höger \\ \hline
-	Sensordata & 0x07 & Komm & Styr & Ta emot sensordata från master \\ \hline
-	Sätt reglerkonstanter & 0x08 & Komm & Styr & Sätter värden för konstanter till PD-reglering \\ \hline
-\end{tabular}
-
-\subsubsection{Kartskickning till Kommunikationsmodulen}
-Då kartan är den enskilt tyngsta transmissionen som utförs över bussen så skickas denna i den tidpunkt vi dömt som minst kritisk för styrmodulen. Detta är precis innan en rotation, då roboten står still och inte utför någon reglering. 
-Kartan skickas en rad i taget och sedan väntar den på en mottagningsbekräftelse innan den skickar nästa. För att denna while inte ska kunna låsa modulen helt så har den en timeout som ser till att bryta loopen om den inte fått svar efter 5000 loopar.
-
 \newpage
 
 
@@ -646,7 +645,7 @@ Vilka förbättringar skulle kunna göras?
 
 \begin{figure}[ht] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
-  \includegraphics[keepaspectratio=true,width=\linewidth]{bilder/kom_uptodate.png}  %skala och filnamn. 
+  \includegraphics[keepaspectratio=true,width=\linewidth]{bilder/Kom_uptodate.png}  %skala och filnamn. 
   \end{center}
   \caption{Kopplingsschema kommunikationsmodul} %figurtext.
   \label{fig:kopplingkom} %glöm inte att uppdatera era labels
