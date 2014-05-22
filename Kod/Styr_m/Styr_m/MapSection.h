@@ -154,7 +154,7 @@ public:
 	bool wheelHasTurned = false;
 	bool foundIsland = false;
 	volatile bool RFIDmode = false;
-	
+	bool islandMode = false;
     
     // Automatic control
     void turn(int pd); //Positive or negative value will decide left or right
