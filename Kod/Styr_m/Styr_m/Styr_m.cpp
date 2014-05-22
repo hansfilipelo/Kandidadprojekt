@@ -217,7 +217,7 @@ int main(void)
 	robotPointer->setSpeed(0);
 	robotPointer->drive();
 	
-	//this loop exists to stop robot from reseting after completed alogorithm
+	//this loop exists to stop robot from reseting after completed algorithm
 	//it also allows the robot to send the current map
 	for(;;){
 		 if(abstractionObject->sendMapNow){
