@@ -288,8 +288,8 @@ Genom att sedan välja olika $K$-matriser får observatören olika egenskaper i 
 
 Antag att systemet (4)-(5) påverkas av mätstörningen $e$ och systemstörningen $v$ som specificerades i problemformuleringen
 \begin{gather}
-\dot{x}=Ax+Bu+e \\
-y=Cx+Du+v
+\dot{x}=Ax+Bu+v \\
+y=Cx+Du+e
 \end{gather}
 
 Skattningsfelet ges då istället av: 
@@ -313,8 +313,8 @@ I många praktiska tillämpningar antas $R_{1}$ och $R_{2}$ vara diagonalmatrise
 
 För att beskriva det utökade kalmanfiltret behöver vi först beskriva det tidsdiskreta och tidsvarianta kalmanfiltret. Systemet beskrivs då som 
 \begin{gather}
-x_{n+1} = A_nx_n + B_nu_n+e \\
-y_n = C_nx_n + D_nu_n + v
+x_{n+1} = A_nx_n + B_nu_n+v \\
+y_n = C_nx_n + D_nu_n + e
 \end{gather}
 och skattningen ges av
 \begin{gather}
@@ -324,7 +324,7 @@ och skattningen ges av
 	\hat{x}_{n|n} = \hat{x}_{n|n-1} + K_{t}(y_{t}-C_{t}+R_{2})\\
 	P_{n|n}=(I-K_nC_n)P_{n|n-1}	
 \end{gather}
-där $R_1$ och $R_2$ är kovariansmatriserna för $e_n$ respektive $v_n$. $A_n$-,$B_n$-,$C_n$- och $D_n$-matriserna varierar med tiden. \footnote{Gustafsson, Fredrik; Ljung, Lennart; Millnert, Mille. (2000). \textit{Signalbehandling}. Andra upplagan. Lund. Studentlitteratur.
+där $R_1$ och $R_2$ är kovariansmatriserna för $e_n$ respektive $v_n$. $A_n$-,$B_n$-,$C_n$- och $D_n$-matriserna varierar med tiden.\footnote{Gustafsson, Fredrik; Ljung, Lennart; Millnert, Mille. (2000). \textit{Signalbehandling}. Andra upplagan. Lund. Studentlitteratur.
 }
 
 \subsubsection{EKF - Det utökade kalmanfiltret}
@@ -332,8 +332,8 @@ där $R_1$ och $R_2$ är kovariansmatriserna för $e_n$ respektive $v_n$. $A_n$-
 Till skillnad från kalmanfiltret kan det utökade kalmanfiltret (EKF) användas för att approximativt lösa icke-linjära SLAM-problem. Det som möjliggör detta är att filtrets matriser beräknas om för varje ny tillståndsskattning. Matriserna för filtret beräknas med hjälp av jacobianer, och systemet linjäriseras därmed kring varje skattat tillstånd för att kunna skatta nästa tillstånd. Antag tillståndsrepresentationen av ett icke-linjärt system kan skrivas
 
 \begin{gather}
-	x_{t} = f(x_{t-1}, u_{t-1}) + e_{t-1} \\
-	y_{t} = h(x_{t},u_{t}) + v_{t-1}
+	x_{t} = f(x_{t-1}, u_{t-1}) + v_{t-1} \\
+	y_{t} = h(x_{t},u_{t}) + e_{t-1}
 \end{gather}
 
 Det utökade kalmanfiltret baseras då på en linjärisering av systemet och ger en prediktion av dess tillstånd, enligt:
