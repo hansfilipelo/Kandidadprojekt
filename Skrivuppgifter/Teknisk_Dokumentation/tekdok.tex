@@ -204,7 +204,7 @@ Fire representera plats där det finns eldhärd, dvs. en RFID-tagg.
 \newpage
 
 \subsubsection{Styrning och kartläggning}
-Det har implementeras två olika avsökningsalgoritmer. Dessa kan aktiveras beroende på vilket uppdrag roboten ska utföra. 
+Positionering och kartläggning sker med hjälp av ett stort antal sensorer och utefter många fördefinerade villkor. När roboten kartlägger kör den vinkelräta svängar för att underlätta sin positionering, och algoritmerna för kartläggning följer. 
 
 \paragraph{Kartläggninsalgoritm}
 
@@ -223,20 +223,6 @@ När roboten har åkt längs högerväggen och återvänder till startkoordinate
 
 \paragraph{Avsökning av ''köksöar''}
 När roboten sedan slutit hela området börjar den utforska om det finns några så kallade ''köksöar''. Köksöar inom ett avstånd av 120 centimeter detekteras. När en sådan detekteras åker robten ut till ''köksön'' och sluter detta område med hjälp av sina kortdistanssensorer på höger sida. Roboten återvänder sedan till områdets yttervägg tills den hittar en ny ''köksö''. När roboten åkt ett varv återvänder den till utgångspunkten varpå kartläggningen är slutförd. 
-
-\newpage
-
-\paragraph{Brandhärdssökning}
-
-Brandhärdssökningen kommer att gå till på liknande sätt som kartläggningsalgoritmen, dock kommer den vara långsammare på grund av att varje ruta i området måste besökas. Efter att området slutits besöker roboten området block för block för att systematiskt besöka alla rutor. Om en RFID-tag upptäcks ska detta noteras och markeras som rött i programvaran för persondatorn.
-
-\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
-  \begin{center}
-  \includegraphics[keepaspectratio=true,width=0.5\linewidth]{bilder/flode_brandhard.jpg}  %skala och filnamn. 
-  \end{center}
-  \caption{Flödesschema brandhärdssökning} %figurtext.
-  \label{fig:fire} %glöm inte att uppdatera era labels
-\end{figure}
 
 För ytterligare fördjupning i SLAM-problemet - se Kappan och dokumentet \textit{''Simultan positionering och kartläggning''}\footnote{Grundström, T. Elo, H-F (2014), \textit{''Simultan positionering och kartläggning''}}.
 
