@@ -221,6 +221,9 @@ Kartläggningsalgoritmen är utformad så att roboten börjar med att placera si
 \paragraph{Stänging och slutning av bana}
 När roboten har åkt längs högerväggen och återvänder till startkoordinaterna samt har färdriktningen höger i kartabstraktionen anses kartan vara sluten. När kartan är sluten anses fortfarande objekt utanför inramningen att vara outforskade. Då dessa är omöjliga att besöka startas ett anrop till samtliga objekt längs y-axeln på koordinaterna x = 0 och x = 31. Funktionen ber objektet att bli av typen closed om den inte redan är det. Är objektet closed avslutas funktionen där, annars ber den alla sina direkta grannar att även de utföra funktionen. Denna funktion stänger alltså alla objekt i ett område avgränsat av andra closed-objekt.
 
+\paragraph{Avsökning av ''köksöar''}
+När roboten sedan slutit hela området börjar den utforska om det finns några så kallade ''köksöar''. Köksöar inom ett avstånd av 120 centimeter detekteras. När en sådan detekteras åker robten ut till ''köksön'' och sluter detta område med hjälp av sina kortdistanssensorer på höger sida. Roboten återvänder sedan till områdets yttervägg tills den hittar en ny ''köksö''. När roboten åkt ett varv återvänder den till utgångspunkten varpå kartläggningen är slutförd. 
+
 \newpage
 
 \paragraph{Brandhärdssökning}
@@ -666,6 +669,8 @@ Kartan använder sig av Qts inbyggda klass QGraphicsScene. Objekt med dimension 
 
 \newpage
 \section{Förslag på förbättringar av MapMaster2001}
+
+I takt med projektets gång har vi märkt att vi kunnat göra vissa saker på annat sätt - och kunnat utföra dem både bättre och snabbare. Detta är naturligt i en arbetsprocess och ger oss lärdom för framtiden. Utifrån det vi har lärt oss kan vi konstatera att vi skulle kunna utföra vissa förbättringar av MapMaster2001. 
 
 \subsection{Arkitektur \label{head:arch}}
 
