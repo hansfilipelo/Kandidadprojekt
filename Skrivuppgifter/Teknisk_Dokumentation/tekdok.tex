@@ -832,6 +832,9 @@ Orsaken till att roboten endast utför vinkelräta svängar är för att kartlä
 \subsection{Autonom körning}
 Om du vill växla roboten till att köra autonomt, placera då först roboten med baksidan 10 cm från en yttervägg av specificerat område. Banan måste bestå av 40x40 segment för att roboten ska kunna kartlägga korrekt, se appendix A i kravspecifikationen. För att starta autonom körning tryck CMD+X i programmet eller tryck på den grå knappen som är placerad på den översta virkortet på roboten. Roboten kommer då börja att åka och kartlägga banan. Allt eftersom roboten åker kommer du se hur kartan växer fram bit för bit i det vita rutnätet som syns i figur 1. 
 
+\subsubsection{Felsökning}
+Vid start av autonom körning är det viktigt att robotens moduler är korrekt initierade. Det kan därför vara bra att återställa först mastermodulen och sedan styr- och sensormodul genom att trycka på respektive reset-knapp. Resetknapparna är svarta och sitter placerade på respektive virkort. Resetknapparna återställer endast den processor som är monterad på samma virkort som den knappen i fråga.  
+
 \subsection{Övriga kommandon}
 Utöver kommandon för manuell körning finns även
 \begin{itemize}
