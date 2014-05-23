@@ -15,16 +15,16 @@
 #include "slave.h"
 
 //------------sensorer----------------------
-volatile int numOfSamples = 25;		//number of samples for mean value
+volatile int numOfSamples = 30;		//number of samples for mean value
 volatile int savepos = 0;			//counter for the storage array
 
-volatile int sensor0[25];			//arrays for sensordata
-volatile int sensor1[25];
-volatile int sensor2[25];
-volatile int sensor3[25];
-volatile int sensor4[25];
-volatile int sensor5[25];
-volatile int sensor6[25];
+volatile int sensor0[30];			//arrays for sensordata
+volatile int sensor1[30];
+volatile int sensor2[30];
+volatile int sensor3[30];
+volatile int sensor4[30];
+volatile int sensor5[30];
+volatile int sensor6[30];
 
 
 volatile long int sen0;				//integers for mean distance
@@ -76,8 +76,15 @@ void Sensor_Init()
 {
 	//PB0 gyro
 	//PB1 wheel has turned
-	DDRB |= (1<<DDB0)|(1<<DDB1);	//PB0 och PB1 till outputs
+	DDRB |= (1<<DDB0)|(1<<DDB1);	//PB0 och PB1 as outputs
 	PORTB &= ~((1<<PORTB0)|(1<<PORTB1));
+	
+	//PD2 gyro
+	//PD3 wheel activate
+	DDRD &= ~((DDD2)|(DDD3));		//PD2 och PD3 as inputs
+	
+	EIMSK = 0b0000011;				//enable INT0 and INT1
+	EICRA = 0b00001111;
 	
 	DDRA = 0x00;			// Configure PortA as input
 	
@@ -252,6 +259,20 @@ void sendSensors(){
     sensormodul.SPI_Send();			//send outDataArray
 }
 //------------------------------------INTERRUPTS---------------------------------
+//activate gyro
+ISR(INT0_vect){
+	asm("");
+	gyromode = true;		//set gyromode to true
+	TCNT0 = 0x00;			//set timer to 0
+	asm("");
+}
+	
+//activate wheelsensor
+ISR(INT1_vect){
+	segmentsTurned = 0;
+	Wheel_Init();
+	wheelmode = true;
+}
 
 //SPI interrupt
 //Extremt känslig för tillägg av kod
@@ -331,14 +352,14 @@ int main(void)
 				/*sensormodul.outDataArray[0] = 1;
 				sensormodul.outDataArray[1] = 'W';
 				sensormodul.SPI_Send();
-				_delay_ms(5);
+				_delay_ms(8);
 				sensormodul.SPI_Send();		//send 90 degree turn is complete
-				_delay_ms(5);
+				_delay_ms(8);
 				sensormodul.SPI_Send();*/
-				PORTB |= (1<<PORTB0);	
+				PORTB |= (1<<PORTB1);	
 				_delay_us(5);
-				PORTB &= ~(1<<PORTB0);
-				
+				PORTB &= ~(1<<PORTB1);
+				_delay_ms(30);
 				segmentsTurned = 0;
 				wheelmode = false;
 			}
@@ -358,21 +379,18 @@ int main(void)
 				savepos = 0;
 				ADMUX = 0x20;
                 segmentsTurned=0;
-				
-				
 				sei();
 				// Redundancy on bus - send three times to master
 				/*sensormodul.SPI_Send();
-				_delay_ms(5);
+				_delay_ms(8);
 				sensormodul.SPI_Send();		//send 90 degree turn is complete
-				_delay_ms(5);
+				_delay_ms(8);
 				sensormodul.SPI_Send();
-			
-				_delay_ms(180);*/
+							_delay_ms(130);*/
 				
-				PORTB |= (1<<PORTB1);
+				PORTB |= (1<<PORTB0);
 				_delay_us(5);
-				PORTB &= ~(1<<PORTB1);
+				PORTB &= ~(1<<PORTB0);
 				
 			}
 			sei();				//allow interrupts
@@ -399,29 +417,36 @@ int main(void)
 			if(segmentsTurned > 12){
 				UCSR0B |= (1<<RXCIE0);							//enable USART interrups
 			}
-			if(segmentsTurned > 21){// + wheelTrim)){
+			if(segmentsTurned > 23){// + wheelTrim)){
 				//------------Send------------------------------
+				/*
 				sensormodul.outDataArray[0] = 1;
 				sensormodul.outDataArray[1] = 'W';
 				sensormodul.SPI_Send();
-                //delay and the repeat transmission to ensure that we correctly recieve transmission.
+                */
+				
+				PORTB |= (1<<PORTB1);
+				_delay_us(5);
+				PORTB &= ~(1<<PORTB1);
+				
+				//delay and the repeat transmission to ensure that we correctly recieve transmission.
                 wheelmode = false;
                 
                 savepos = 0;
 				ADMUX = 0x20;
 				sen0++;
-				
-				_delay_ms(5);
+				/*
+				_delay_ms(8);
                 if(!wheelmode){
                     sensormodul.SPI_Send();
                 }
                 
-                _delay_ms(5);
+                _delay_ms(8);
                 if(!wheelmode){
                     sensormodul.SPI_Send();
                 }
-				_delay_ms(180);
-                
+				_delay_ms(130);
+                */
                 //leave wheelmode.
 				
                 //reset AD-conversion loop to give new fresh values. And to not interrupt crucial
@@ -500,11 +525,11 @@ int main(void)
 			sensormodul.outDataArray[0] = 1;
 			sensormodul.outDataArray[1] = 'R';
 			sensormodul.SPI_Send();
-			_delay_ms(5);
+			_delay_ms(8);
 			sensormodul.SPI_Send();		//send 90 degree turn is complete
-			_delay_ms(5);
+			_delay_ms(8);
 			sensormodul.SPI_Send();
-			_delay_ms(150);
+			_delay_ms(180);
 			
 			savepos = 0;
 			ADMUX = 0x20;

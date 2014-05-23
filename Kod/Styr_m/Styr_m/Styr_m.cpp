@@ -55,8 +55,25 @@ ISR(BADISR_vect){
 	
 	volatile int p;
 	p++;
+	asm("");	
+}
+//Gyro
+ISR(INT0_vect){
 	asm("");
-	
+	asm("");
+	robotPointer->stopRotation();
+	robotPointer->robotRotated();
+	asm("");
+	asm("");
+}
+//Wheel
+ISR(INT1_vect){
+	asm("");
+	asm("");
+	robotPointer->wheelHasTurned = true;
+	robotPointer->rotationCount = 0;
+	asm("");
+	asm("");
 }
 
 ISR(SPI_STC_vect){
@@ -94,7 +111,7 @@ void pwm_init()
 	// Set Port 20 and 21 as outputs (for PWM)
 	// Set port 18 and 19 as outputs (for choosing direction)
 	// Set port 16 and 17 as inputs (for manual controllers)
-	DDRD = 0xF0;
+	DDRD |= 0xF0;
 	
 	// Initiate gear as 00
 	PORTD |= (0<<PORTD4) | (0<<PORTD5);
@@ -111,13 +128,15 @@ int main(void)
     // Set up interrupts
 	cli();
 	//MCUCR = 0b00000000;
-	//EIMSK = 0b00000011;
-	//EICRA = 0b00001111;
+	
+	EIMSK = 0b0000011;
+	EICRA = 0b00001111;
 	//SMCR = 0x01;
 	
 	
     // Initiates PWM
 	pwm_init();
+	DDRD &= ~((1<<DDD2)|(1<<DDD3));
 	
 	
 	abstractionObject->setRobot(robotPointer);
@@ -190,6 +209,7 @@ int main(void)
 			}
 		}
 		robotPointer->updateRobotPosition();
+		
 		if(robotPointer->islandMode)
 		{
 			asm("");

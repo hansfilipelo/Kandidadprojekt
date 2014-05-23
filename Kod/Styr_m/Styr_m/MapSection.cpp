@@ -446,7 +446,7 @@ void Robot::turn(int pd){
 	int pdOut = pd;
 	
 	// Protect against overflow
-	if (output+pdOut > 140 || output-pdOut < 0)
+	if (output+pdOut > 160 || output-pdOut < 0)
 	{
 #if TESTING == 0
 		OCR2A = output; //Negative value on pd will turn left, positive right
@@ -933,6 +933,7 @@ bool Robot::isCornerPassed(){
 void Robot::updateRobotPosition(){
     
     if (wheelHasTurned){
+		//for debugging
         wheelHasTurned = false;
         commObj->reactivateWheelSensor();
         MapSection* tempSection;
@@ -1584,7 +1585,9 @@ void Robot::followRight(){
             setSpeed(20);
             drive();
             if(isCornerPassed()){
-	            _delay_ms(200);
+	            _delay_ms(110);
+				setSpeed(0);
+				drive();
 				break;
             }
        }
