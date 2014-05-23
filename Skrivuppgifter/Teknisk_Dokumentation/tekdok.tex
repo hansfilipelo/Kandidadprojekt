@@ -637,11 +637,15 @@ GND på sensorerna sätts till jord, Vcc och Vin sätts till hög och PIN 3 på 
  
 Data från sensorerna behövs för att detektera väggar och skapa en kartabstraktion. Data sensorerna på sidan används för att reglera roboten under färd och sensorerna framtill och baktill används, som nämnts ovan, för att trimma reflexsensorn.
 
+För mer information omhur sensorer anvönds för att bedömma avstånd se appendix c i kappan.
+
 \subsubsection{Vinkelhastighetssensor (gyro)}
 För att underlätta beräkningar av körriktningar och hålla koll på hur mycket roboten svängt används en vinkelhastighetssensor eller gyro, MLX\-90\-609\footnote{Datablad för MLX\-90\-609, \url{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/MLX90609\_datasheet.pdf}. hämtad 2014-05-23}. OUTAR på gyron, PIN 24, kopplas direkt till bussen för att minska brus. Gyrot skickar en spänning mellan 0.5 och 4.5 V där 2.5 V motsvarar vinkelhastighet noll. Sensormodulen börjar mäta på gyrot då ett kommando från styrmodulen mottagits. Sensormodulen skickar i sin tur tillbaka ett kommando då roboten svängt 90 grader. Sensormodulen låser sig till endast mätningar på gyroskopet under svängar.
 
 Då roboten endast kommer att använda sig av ortogonala svängar så räcker det med att gyrot används för att mäta ortogonala svängar. Om man adderar vinkelhastigheter med ett jämt tidsintervall så blir summan alltid lika stor vid 90 grader.
 Summan som används har tagits fram och kalibrerats med hjälp av tester.
+
+För mer information om gyro se appendix C i kappan.
 
 \subsubsection{Övriga komponenter}
 Övriga komponenter så som ett batteri på 7.2 V och en reset-knapp kommer att användas till denna modul.
