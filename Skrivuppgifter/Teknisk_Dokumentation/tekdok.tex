@@ -256,7 +256,7 @@ Konstanterna $K_{p}$ och $K_{d}$ kan dels väljas i mjukvaran för persondator, 
 \subsection{Filtrering av analoga insignaler}
 
 \subsection{Trådlös kommunikation med robot}
-För den trådlösa kommunikationen med roboten används Bluetooth. En kortare rapport angående olika typer av trådlös kommunikation finns att tillgå i fördjupningsuppgiften \emph{Kommunikation} som kan hittas i Kappan - Appendix A
+För den trådlösa kommunikationen med roboten används Bluetooth. En kortare undersökning angående olika typer av trådlös kommunikation finns att tillgå i fördjupningsuppgiften \emph{''Trådlös Kommunikation''}\footnote{Ericson, N. Edhammer, J. (2014), \textit{''Trådlös kommunikation''}} som kan hittas i Kappan - Appendix A
 
 %-----------------------------------------------------------------
 %Systemet
@@ -365,6 +365,20 @@ Komponenterna är numrerade och finns att hitta i kretsschemat, se~\ref{fig:kopp
   \item Lysdiod
 \end{enumerate}
 
+\subsection{Huvudloop}
+
+Huvudloopen på kommunikationsmodulen kollar ett antal sanningsvariabler för att avgöra om ny data finns tillgänglig för datahantering. För flödet, se figur~\ref{fig:mainmaster}
+
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,width=0.8\textwidth]{bilder/mainmaster.jpg}  %skala och filnamn. 
+  \end{center}
+  \caption{Kommunikationsmodulens huvudloop} %figurtext.
+  \label{fig:mainmaster}
+\end{figure}
+
+
+
 \subsection{Buss}
 Mellan processorerna används SPI som bussprotokoll. Kommunikationsmodulen agerar master medan styr- och sensormodul agerar slaves. Kommunikation kommer alltid att initieras av master och om slave vill skicka data, genererar de ett avbrott på master som talar om att de har data som är redo att skickas. Bussen använder följande kopplingar:
 \begin{itemize}
@@ -376,6 +390,20 @@ Mellan processorerna används SPI som bussprotokoll. Kommunikationsmodulen agera
 	\item SLAVESELECT1 - Väljer denna processor som aktiv slav.
 	\item SCK - Serial Clock, klocka från master.
 \end{itemize}
+
+\subsubsection{Master-modulens mottagning}
+
+Master modulen hämtar data från en slave när den signalerar att data finns redo genom ett av avbrotten INT0 eller INT1. Där INT0 tillhör sensormodulen och INT1 tillhör styrmodulen. Datahantering sker utanför avbrotten genom att sanningsvariabler sätts i avbrotten efter färdig mottagning av data.
+Slave skickar som första data längden på överföringen. Det är denna som gör att vi kan säga när mottagningen är klar. Hela metoden kan utläsas ur flödesschemat i figur~\ref{fig:spimaster}
+
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,width=0.4\textwidth]{bilder/masterinterrupt.jpg}  %skala och filnamn. 
+  \end{center}
+  \caption{Mottagning av data från slave} %figurtext.
+  \label{fig:spimaster}
+\end{figure}
+
 
 \subsubsection{Slave-modulers mottagning}
 När vår master-modul initierar SPI-kommunikationen med en slave dras SlaveSelect-signalen för den givna processorn låg för att generera ett SPI-avbrott på sagda slave. När slave har tagit emot det antal bytes som specificeras av första byten i paketet genereras ett internt avbrott med hjälp av PCint16. I detta nya avbrott hanteras datan från transmissionen. En övergripande struktur angående mottagningen av SPI-trafik kan ses i flödesdiagrammet i figur~\ref{fig:spislave}
