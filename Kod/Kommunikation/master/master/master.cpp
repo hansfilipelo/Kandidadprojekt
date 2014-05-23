@@ -71,14 +71,14 @@ void handleDataFromSteer(){
 		Firefly.sendArray();
 	}
 	if(Bus.buffer[1]=='g'){
-		if ( !Bus.gyroActive )
-		{
+		//if ( !Bus.gyroActive )
+		//{
 			Bus.outDataArray[0] = 2;
 			Bus.outDataArray[1] = 'g';
 			Bus.outDataArray[2] = 1;
 			Bus.sendArray(0);
 			Bus.gyroActive = true;
-		}
+		//}
 	}
 	if(Bus.buffer[1]=='r'){
 		if ( !Bus.rfidActive ){
@@ -89,13 +89,13 @@ void handleDataFromSteer(){
 		}
 	}
 	if(Bus.buffer[1]=='w'){
-		if (!Bus.waitingForW)
-		{
+		//if (!Bus.waitingForW)
+		//{
 			Bus.outDataArray[0] = 1;
 			Bus.outDataArray[1] = 'w';
 			Bus.waitingForW = true;
 			Bus.sendArray(0);
-		}
+		//}
 	}
 }
 
