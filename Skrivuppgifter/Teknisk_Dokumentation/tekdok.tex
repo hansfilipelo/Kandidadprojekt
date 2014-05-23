@@ -141,20 +141,23 @@ Syftet med detta kandidatarbetet är att konstruera och leverera en fullt autono
 \newpage
 \section{Produkt}
 
+Mapmaster 2001, en autonom kartritande robot med bred funktionalitet, vars syfte är att kunna användas för att lokalisera brandhärdar i rökfyllda rum. Roboten kan autonomt navigera och i realtid rita upp karta av rummet den opererar i. Den markerar även eventuella brandhärdar på kartan så brandmän och annan undsättningspersonal kan få information på förhand om var faran finns. 
+
+Under projeket har en prototyp tagits fram och testats på speciella banor enligt kravspecifikation. Roboten har många kvaliteter och är en bra början för att i en senare version kunna operera i ett mer verkligt senario som nämns ovan. 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
-  \includegraphics[keepaspectratio=true,,width=0.5\linewidth]{../Kappa/robot.png}  %skala och filnamn. 
+  \includegraphics[keepaspectratio=true,,width=0.4\linewidth]{../Kappa/robot.png}  %skala och filnamn. 
   \end{center}
   \caption{MapMaster2001} %figurtext.
   \label{fig:robot}
 \end{figure}
 
-Det här är MapMaster2001, en kartritande robot med bred funktionalitet. MapMaster2001 kan bland annat: 
+Navigering och positionering är två saker som roboten måste utföra med oerhörd precision. För att kunna åstadkomma detta så har Mapmaster 2001 försetts med en rad egenskaper som är listade nedan. MapMaster2001 kan bland annat: 
 
 \begin{itemize}
   \item Kartlägga slutna rum.
   \item Reglera längs väggar.
-  \item Läsa av sin omgivning med 6 avståndssensorer.
+  \item Läsa av sin omgivning med 5 avståndssensorer.
   \item Mäta sin färdväg med en reflexsensor.
   \item Indikera autonomt/manuellt läge med en lysdiod.
   \item Styras via Bluetooth med hjälp av mjukvara för persondator med ett modernt GUI.
