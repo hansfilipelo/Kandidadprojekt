@@ -203,9 +203,9 @@ void Communication::sendRow(unsigned int inRow){
 // Asks for measure of angles
 
 void Communication::sendRotateRequest(){
-   PORTB |= (1<<PORTB0);
-   _delay_us(5);
-   PORTB &= ~(1<<PORTB0);
+    slavePointer->outDataArray[0] = 2;
+    slavePointer->outDataArray[1] = 'g';
+	slavePointer->outDataArray[2] = 1;
     
 #if TESTING == 0
     slavePointer->SPI_Send();
@@ -248,9 +248,9 @@ void Communication::reactivateRFID(){
 
 
 void Communication::reactivateWheelSensor(){
-	 PORTB |= (1<<PORTB1);
-	 _delay_us(5);
-	 PORTB &= ~(1<<PORTB1);
+	slavePointer->outDataArray[0] = 1;
+	slavePointer->outDataArray[1] = 'w';
+	slavePointer->SPI_Send();
 
 #if TESTING == 0
 	_delay_ms(5);

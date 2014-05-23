@@ -1585,7 +1585,7 @@ void Robot::followRight(){
             setSpeed(20);
             drive();
             if(isCornerPassed()){
-	            _delay_ms(110);
+	            _delay_ms(175);
 				setSpeed(0);
 				drive();
 				break;
