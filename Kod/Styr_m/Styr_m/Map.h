@@ -41,6 +41,8 @@ public:
     void aStar(int, int, int, int);
 	char colArray[25];
 	
+	void fillUnexplored();
+	
 	bool firstTimeMapping = true;
     bool getVisited(int,int);
     void setVisited(int,int,bool);

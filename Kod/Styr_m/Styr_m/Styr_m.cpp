@@ -215,9 +215,12 @@ int main(void)
 	}
             
 		
-    /*--------------ExploreMode-----------------------------------------------------------------------*/
+    //----------------FINISHED MODE----------------------------//
 	robotPointer->setSpeed(0);
 	robotPointer->drive();
+	
+	mapPointer->fillUnexplored();
+	abstractionObject->sendMap();
 	
 	//this loop exists to stop robot from reseting after completed algorithm
 	//it also allows the robot to send the current map
@@ -229,7 +232,7 @@ int main(void)
 			 asm("");
 		 }
 	}
-	
+	/*--------------ExploreMode-----------------------------------------------------------------------*/
 	//this loop was used for exploring unknown areas not connected to islands, it was also made to after exploration 
 	//return the robot to its starting pos
 	

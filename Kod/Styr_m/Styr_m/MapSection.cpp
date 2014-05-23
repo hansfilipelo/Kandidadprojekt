@@ -352,6 +352,8 @@ void Robot::rotateLeft(){
 	
 	
 	waitForNewData();
+	waitForNewData();
+	waitForNewData();
 	this->robotRotated();
     
 }
@@ -430,6 +432,8 @@ void Robot::rotateRight(){
     }
 	
 	waitForNewData();
+	waitForNewData();
+	waitForNewData();
 	this->robotRotated();
 	
 }
@@ -442,11 +446,11 @@ void Robot::turn(int pd){
 	int pdOut = pd;
 	
 	// Protect against overflow
-	if (output+pdOut > 255 || output-pdOut < 0)
+	if (output+pdOut > 140 || output-pdOut < 0)
 	{
 #if TESTING == 0
-		OCR2A = 0; //Negative value on pd will turn left, positive right
-		OCR2B = 0;
+		OCR2A = output; //Negative value on pd will turn left, positive right
+		OCR2B = output;
 #endif
 	}
 	else {
@@ -712,20 +716,23 @@ void Robot::setBwdClosed(){
 // -------------- To the left --------------------------
 
 void Robot::setLeftClosed(){
-    if(!islandMode){// && !exploringIsland){
+    if(!islandMode || exploringIsland){
 	    return;
     }
+	
 	int output = 0;
     
     if(leftMidSensor < 40){
-        output = 10/40;
+        output = 0;
     }
-    else if(leftMidSensor > 150) { // this value might need to be calibrated
-        output = 160/40;				//if distance is great only print max 2 empty.
-    }
-    
+	else if(leftMidSensor > 39 && leftMidSensor < 60){
+		output = 1;
+	}
+	else if( leftMidSensor > 79 && leftMidSensor < 100){
+		output = 2;
+	}
     else{
-        output = leftMidSensor/40;
+        return;
     }
     
 	// Set closed section output + 1 steps away from robot.
@@ -742,7 +749,7 @@ void Robot::setLeftClosed(){
                 mom->convertSection(xCoord + i + 1,yCoord, 'e');
             }
         }
-		if(output< 4 && !mom->getVisited(xCoord+1+output,yCoord) && mom->getPos(xCoord + output + 1, yCoord)->getType() != 'c'){
+		if(output< 3 && !mom->getVisited(xCoord+1+output,yCoord) && mom->getPos(xCoord + output + 1, yCoord)->getType() != 'c'){
 			mom->convertSection(xCoord + output + 1,yCoord, 'c');
 			islandToLeft = true;
 		}
@@ -824,6 +831,9 @@ void Robot::setRightClosed(){
 	}
 	else{
 		output = rightFrontSensor/40;	//kanske borde ha +10 innan man delar med 40 för att robotens inte är längst till höger i rutan
+	}
+	if (output != 0){
+		return;
 	}
 	
 	// Set closed section output + 1 steps away from robot.
@@ -1468,10 +1478,10 @@ void Robot::exploreIsland(){
 	}
 	updateRobotPosition();
 	if(islandToLeft && !exploringIsland){
+		exploringIsland = true;
 		goAcross();
 		rotateLeft();
 		savePosition();
-		exploringIsland = true;
 		islandToLeft = false;
 		timesMovedOnIsland = 0;
 	}
