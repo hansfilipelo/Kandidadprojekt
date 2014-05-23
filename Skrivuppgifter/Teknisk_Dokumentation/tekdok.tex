@@ -654,8 +654,24 @@ Kartan använder sig av Qts inbyggda klass QGraphicsScene. Objekt med dimension 
 
 \subsection{Arkitektur}
 
-Atmega 1284p-processorns begränsade beräkningskapacitet i kombination med det begränsade C++-stödet i kompilatorn AVR-GCC har försvårat arbetet med kartabstraktion och utforskningsalgoritmer. För att skapa avancerade algoritmer på relativt kort tid behöver man utnyttja mer högnivåbibliotek 
+Atmega 1284p-processorns begränsade beräkningskapacitet i kombination med det begränsade C++-stödet i kompilatorn AVR-GCC har kraftigt försvårat arbetet med kartabstraktion och utforskningsalgoritmer. Om man vill skapa avancerade algoritmer på relativt kort tid underlättar det om man kan utnyttja högnivåbibliotek, t ex STL från C++. Under projektets gång har vi bland annat implementerat en C++-klass på egen hand för att kunna skriva kartläggningsalgoritmer. 
 
+Om vi skulle göra detta projekt igen skulle vi använda oss av en plattform som bygger på en ARM-processor och kan köra Debian GNU/Linux. Detta skulle dels ge oss tillgång till högnivåbibliotek, men också till threading och processorer med mer beräkningskraft, vilket skulle underlätta arbetet markant. 
+
+För att fortfarande klara av kravet på tre processorer hos enheten kan man använda en Atmega 1284 som styrrelä och en för att kontrollera LCD-displayen, men alla tunga beräkningar skulle kunna utföras på ARM-processorn. 
+
+
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,,width=0.5\linewidth]{bilder/Forslag_forbattring.png}  %skala och filnamn. 
+  \end{center}
+  \caption{MapMaster2001} %figurtext.
+  \label{fig:arch}
+\end{figure}
+
+Den här systemarkitekturen skulle också minska belastningen på den egenimplementerade bussen, vilken vi haft problem med då vi lastar den hårt. 
+
+\newpage
 \subsection{Sensorer}
 Kortdistanssensorerna på robotens högra sida har en räckvidd på 10-80 cm. Då roboten vid reglering kan vara närmare väggen än 10 cm kan detta bli ett problem. Ett sätt att lösa problemet på är att byta sensorerna till sensorer med räckvidden 4-30 cm, 
 GP2D120 som går att läsa om på Vanheden\footnote{\url{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/gp2d120.pdf}}. Ett byte av sensorer skulle kunna innebära större begränsningar vid kartläggning - men vid nuvarande implementering är det ej en faktor.
