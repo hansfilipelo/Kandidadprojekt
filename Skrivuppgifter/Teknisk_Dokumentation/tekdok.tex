@@ -148,25 +148,106 @@ Det här är MapMaster2001. En kartritande robot med bred funktionalitet. MapMas
   \item Spara sensordata på persondator och plotta denna via inbyggd grafritningsfunktion
 \end{itemize}
 
-All mjukvara tillhörande MapMaster2001 samt dokument finns att hitta på GitHub\footnote{https://github.com/hansfilipelo/MapMaster2001}
+All mjukvara tillhörande MapMaster2001 samt dokument finns att hitta på GitHub.\footnote{https://github.com/hansfilipelo/MapMaster2001}
 
 Ett användningsområde för Mapmaster 2001 är att den kan underlätta för nödpersonal vid uppdrag i gasfyllda eller rökfyllda lokaler. MapMaster2001 kan skickas in i brandhärjat rum, alternativt ett rum med en gasläcka, innan undsättningspersonal skickas in. 
 \newpage
 \section{Teori}
 
+% ------------------- Styrning och kartläggning -----------------------
 
-\subsection{Kartläggning}
+\subsection{Kartabstraktion}
+Kartan abstraheras som en matris där objekt sparas, detta löses i form av en arrays med dimensionerna 32x17. Tillgängliga undertyper är:
 
+\begin{itemize}
+\item{EmptySection}
+\item{UnexploredSection}
+\item{Robot}
+\item{Closed}
+\item{Fire}
+\end{itemize}
+
+Robot är en egen klass med polymorfiskt arv från mapSection.
+
+\paragraph{EmptySection} 
+~\\
+EmptySection representeras av en tom sektion av kartan. 
+
+\paragraph{UnexploredSection} 
+~\\
+UnexploredSection representerar en outforskad sektion av kartan. 
+
+\paragraph{Robot} 
+~\\
+Robot representerar robotens position på kartan. 
+
+\paragraph{Closed} 
+~\\
+Om en sektion är stängd sätts den till closed.
+
+\paragraph{Fire} 
+~\\
+Fire representerra plats där det finns eldhärd, dvs. en RFID-tagg. 
+\newpage
+
+\subsubsection{Styrning och kartläggning}
+Det har implementeras två olika avsökningsalgoritmer. Dessa kan aktiveras beroende på vilket uppdrag roboten ska utföra. 
+
+\paragraph{Kartläggninsalgoritm}
+
+Kartläggningsalgoritmen är utformad så att roboten börjar med att placera sig så att en vägg går att finna på höger sida. Roboten kommer sedan följa väggen till dess att den kan rita upp ett slutet område att arbeta utifrån. Nästa steg blir att kartlägga områden som ännu ej är kartlagda. Om en köksö upptäcks kommer roboten åka ut till köksön och sedan se till att rita upp hela köksön innan den går vidare. På detta sätt fortsätter algoritmen till dess att alla delar av rummet är kartlagda. 
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
-  \includegraphics[keepaspectratio=true,scale=0.5]{bilder/Flode_kartritning.jpg}  %skala och filnamn. 
+  \includegraphics[keepaspectratio=true,width=0.8\linewidth]{bilder/Flode_kartritning.jpg}  %skala och filnamn. 
   \end{center}
-  \caption{Flödesschema kartläggning} %figurtext.
-  \label{fig:mapFlow} %glöm inte att uppdatera era labels
+  \caption{Flödesschema kartläggningsalgoritm} %figurtext.
+  \label{fig:map} %glöm inte att uppdatera era labels
 \end{figure}
 
-Djupare teori kring kartläggning och positionering finns i Appendix
+\paragraph{Stänging och slutning av bana}
+När roboten har åkt längs högerväggen och återvänder till startkoordinaterna samt har färdriktningen höger i kartabstraktionen anses kartan vara sluten. När kartan är sluten anses fortfarande objekt utanför inramningen att vara outforskade. Då dessa är omöjliga att besöka startas ett anrop till samtliga objekt längs y-axeln på koordinaterna x = 0 och x = 31. Funktionen ber objektet att bli av typen closed om den inte redan är det. Är objektet closed avslutas funktionen där, annars ber den alla sina direkta grannar att även de utföra funktionen. Denna funktion stänger alltså alla objekt i ett område avgränsat av andra closed-objekt.
+
+\newpage
+
+\paragraph{Brandhärdssökning}
+
+Brandhärdssökningen kommer att gå till på liknande sätt som kartläggningsalgoritmen, dock kommer den vara långsammare på grund av att varje ruta i området måste besökas. Efter att området slutits besöker roboten området block för block för att systematiskt besöka alla rutor. Om en RFID-tag upptäcks ska detta noteras och markeras som rött i programvaran för persondatorn.
+
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,width=0.5\linewidth]{bilder/flode_brandhard.jpg}  %skala och filnamn. 
+  \end{center}
+  \caption{Flödesschema brandhärdssökning} %figurtext.
+  \label{fig:fire} %glöm inte att uppdatera era labels
+\end{figure}
+
+För ytterligare fördjupning i SLAM-problemet - se Kappan och dokumentet \textit{''Simultan poisitonering och kartläggning''}\footnote{Grundström, T. Elo, H-F (2014), \textit{''Simultan poisitionering och kartläggning''}}.
+
+% ------------------- Reglering -----------------------
+
+\subsection{Reglering}
+
+Roboten kan köras autonomt också manuellt via PC-mjukvara. Då roboten körs autonomt kan den reglera längs en vägg. 
+
+\subsubsection{Reglering av styrning}
+Styrmodulen får sensordata skickad till sig från sensormodulen. Detta data används till att reglera riktningen då man följer en vägg. Roboten använder sig av en tvåviktad proportionell reglering. 
+
+Den första proportionella delen av regleringen reglerar avståndet från sensorerna på robotens högersida jämfört med ett internt referensavstånd. Denna reglering ser till att roboten håller sig inom ett rimligt avstånd till den vägg som följs.
+$ e_p = K_{p}*avst\text{\it{å}}ndssensordata $
+
+Där $K_{p}$ är en konstant.
+
+Den deriverande delen av regleringen försöker minimera differensen mellan båda sensorerna på högersidan. Detta innebär i praktiken att roboten försöker räta ut sig. Denna typ av reglering medför även en minskad risk att de främre och bakre sensorerna ska ger fel värden genom att slå i en sidovägg.
+
+
+$ e_d = K_{D}*(fram - bak) $
+
+Totala felet ges då av: 
+
+$e = e_d + e_p$
+
+Konstanterna $K_{p}$ och $K_{d}$ kan dels väljas i persondatormjukvaran, men de initieras som standard till $K_{p}=5$ och $K_{d}=7$.
 
 
 %-----------------------------------------------------------------
@@ -190,6 +271,9 @@ Chassit har fyra PWM-motorer, placerade längst fram och längst bak på sidorna
 
 Sensorerna som tillhör sensormodulen, förutom robotens RFID-läsare, är placerade på ett sådant sätt att sensorer interfererar minimalt med varandra. En långdistanssensorer av typ GP\-2Y\-3A\-00\-3K\-0F är placerad bak på roboten. Denna sensor arbetar tillsammans med en kortdistanssenror med att positionera roboten. Då interferens uppkommer då dessa olika sensorer placeras i samma höjd, sitter långdistanssensorn upphöjd på ett metallbläck. På höger sida av roboten har två stycken kortdistanssensorer placerats för att ge indata till robotens PD-reglering. På vänster sida sitter en medeldistanssensor som används för att upptäcka sidokorridorer, öppna ytor och så kallade öar, slutna konstruktioner som inte tillhör ytterväggen.
 Under roboten sitter en RFID-läsare som vid upptäckt RFID-tagg skickar en signal över USART innehållande taggens id-nummer till sensormodulen som för denna upptäckt vidare till de andra modulerna.
+
+\subsection{Programmering av robot}
+Robotens mjukvara, dels bifogad till detta dokument samt dels tillgänglig på Github\footnote{\url{https://github.com/hansfilipelo/MapMaster2001}}, programmeras via Atmel Studio. Efter uppkoppling behöver robotens tre delsystem programmeras individuellt. 
 
 \subsection{Kommunikation via buss}
 En buss som kommunicerar över protokollet SPI sköter kommunikationen mellan robotens tre delsystem. SPI-protokollet är ett fullt-duplext kommunikationsprotokoll som fungerar genom att byta åtta lokala bitar med 8 bitar från modulen den kommunicerar med. 
@@ -386,11 +470,13 @@ För att undvika problem vid mottagning av kartan på PC sidan skickas en rad i 
 \subsection{Switchar}
 En switch ska styra om roboten exekverar programkod för autonom styrning eller manuell styrning. Denna switch kan även byta läge via ett virtuellt kommando från PC. Ett avbrott signalerar till processorn att den ska byta programkod, avbrottet ligger på pin16 (INT0) se appendix A. Av/På-knappen styr strömförsörjningen till samtliga moduler. 
 
-% ----------------------------- Styrmodul --------------------------------------
+% ----------------------------- Styrmodul ----------------------------------------
 % --------------------------------------------------------------------------------
 
 \newpage
 \section{Styrmodul}
+Styrmodulen kontrollerar styrningen hos roboten, och gör även beräkningar för kartläggning och positionering. 
+
 Styrmodulens (slave) huvudkomponent består av en AVR-processor, Atmel ATmega1284p som får instruktioner från kommunikationsmodulen (master) via bussen. Styrmodulen kommunicerar även med drivkretsen på chassit. Chassit är av typen Terminator som drivs av en NiMH- eller NiCd-ackumulator på 7.2V. Det har även fyra stycken växlade DC-motorer som är kopplade till var sitt drivhjul. 
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
@@ -405,10 +491,10 @@ Styrmodulens (slave) huvudkomponent består av en AVR-processor, Atmel ATmega128
 % ----------- Komponenter ------------------
 
 \subsection{Komponenter}
-Komponenterna är numrerade och finns att hitta i kretsschemat, se Appendix A.
+Komponenterna är numrerade och finns att hitta i kretsschemat, se kopplingsschema styrmodul~\ref{fig:kopplingstyr}.
 \begin{enumerate}
-	\item Systemchip - Atmel ATmega1284p
-	\item Resetknapp
+	\item Systemchip - Atmel ATmega1284p (1)
+	\item Resetknapp (2)
 	\item Chassi
 	\item Batteri, 7.2 V
 \end{enumerate}
@@ -435,102 +521,6 @@ Styrmodulen är ansluten till bussen med hjälp av MISO- och MOSI-pinnarna.
 Utöver detta är en tryckknapp ansluten till RESET för att förenkla felsökning och uppstart. 
 
 För fullständigt kopplingsschema - se Appendix. 
-
-\newpage
-% ------------------- Styrning och kartläggning -----------------------
-
-\subsubsection{Kartabstraktion}
-Kartan abstraheras som en matris där objekt sparas, detta löses i form av en arrays med dimensionerna 32x17. Tillgängliga undertyper är:
-
-\begin{itemize}
-\item{EmptySection}
-\item{UnexploredSection}
-\item{Robot}
-\item{Closed}
-\item{Fire}
-\end{itemize}
-
-Robot är en egen klass med polymorfiskt arv från mapSection.
-
-\paragraph{EmptySection} 
-~\\
-EmptySection representeras av en tom sektion av kartan. 
-
-\paragraph{UnexploredSection} 
-~\\
-UnexploredSection representerar en outforskad sektion av kartan. 
-
-\paragraph{Robot} 
-~\\
-Robot representerar robotens position på kartan. 
-
-\paragraph{Closed} 
-~\\
-Om en sektion är stängd sätts den till closed.
-
-\paragraph{Fire} 
-~\\
-Fire representerra plats där det finns eldhärd, dvs. en RFID-tagg. 
-\newpage
-
-\subsection{Styrning och kartläggning}
-Det har implementeras två olika avsökningsalgoritmer. Dessa kan aktiveras beroende på vilket uppdrag roboten ska utföra. 
-
-\subsubsection{Kartläggninsalgoritm}
-
-Kartläggningsalgoritmen är utformad så att roboten börjar med att placera sig så att en vägg går att finna på höger sida. Roboten kommer sedan följa väggen till dess att den kan rita upp ett slutet område att arbeta utifrån. Nästa steg blir att kartlägga områden som ännu ej är kartlagda. Om en köksö upptäcks kommer roboten åka ut till köksön och sedan se till att rita upp hela köksön innan den går vidare. På detta sätt fortsätter algoritmen till dess att alla delar av rummet är kartlagda. 
-
-\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
-  \begin{center}
-  \includegraphics[keepaspectratio=true,width=0.8\linewidth]{bilder/Flode_kartritning.jpg}  %skala och filnamn. 
-  \end{center}
-  \caption{Flödesschema kartläggningsalgoritm} %figurtext.
-  \label{fig:map} %glöm inte att uppdatera era labels
-\end{figure}
-
-\paragraph{Stänging och slutning av bana}
-När roboten har åkt längs högerväggen och återvänder till startkoordinaterna samt har färdriktningen höger i kartabstraktionen anses kartan vara sluten. När kartan är sluten anses fortfarande objekt utanför inramningen att vara outforskade. Då dessa är omöjliga att besöka startas ett anrop till samtliga objekt längs y-axeln på koordinaterna x = 0 och x = 31. Funktionen ber objektet att bli av typen closed om den inte redan är det. Är objektet closed avslutas funktionen där, annars ber den alla sina direkta grannar att även de utföra funktionen. Denna funktion stänger alltså alla objekt i ett område avgränsat av andra closed-objekt.
-
-\newpage
-
-\subsubsection{Brandhärdssökning}
-
-Brandhärdssökningen kommer att gå till på liknande sätt som kartläggningsalgoritmen, dock kommer den vara långsammare på grund av att varje ruta i området måste besökas. Efter att området slutits besöker roboten området block för block för att systematiskt besöka alla rutor. Om en RFID-tag upptäcks ska detta noteras och markeras som rött i programvaran för persondatorn.
-
-\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
-  \begin{center}
-  \includegraphics[keepaspectratio=true,width=0.5\linewidth]{bilder/flode_brandhard.jpg}  %skala och filnamn. 
-  \end{center}
-  \caption{Flödesschema brandhärdssökning} %figurtext.
-  \label{fig:fire} %glöm inte att uppdatera era labels
-\end{figure}
-
-
-
-% ------------------- Reglering -----------------------
-
-\subsection{Reglering}
-
-Roboten kan köras autonomt också manuellt via PC-mjukvara. Då roboten körs autonomt kan den reglera längs en vägg. 
-
-\subsubsection{Reglering av styrning}
-Styrmodulen får sensordata skickad till sig från sensormodulen. Detta data används till att reglera riktningen då man följer en vägg. Roboten använder sig av en tvåviktad proportionell reglering. 
-
-Den första proportionella delen av regleringen reglerar avståndet från sensorerna på robotens högersida jämfört med ett internt referensavstånd. Denna reglering ser till att roboten håller sig inom ett rimligt avstånd till den vägg som följs.
-$ e_p = K_{p}*avst\text{\it{å}}ndssensordata $
-
-Där $K_{p}$ är en konstant.
-
-Den deriverande delen av regleringen försöker minimera differensen mellan båda sensorerna på högersidan. Detta innebär i praktiken att roboten försöker räta ut sig. Denna typ av reglering medför även en minskad risk att de främre och bakre sensorerna ska ger fel värden genom att slå i en sidovägg.
-
-
-$ e_d = K_{D}*(fram - bak) $
-
-Totala felet ges då av: 
-
-$e = e_d + e_p$
-
-Konstanterna $K_{p}$ och $K_{d}$ kan dels väljas i persondatormjukvaran, men de initieras som standard till $K_{p}=5$ och $K_{d}=7$.
 
 \newpage
 
@@ -622,8 +612,16 @@ Summan som används har tagits fram och kalibrerats med hjälp av tester.
 Övriga komponenter så som ett batteri på 7.2 V och en resetknapp kommer att användas till denna modul.
 
 \section{PCmjukvara}
-Det grafiska gränssnittet är skriver i Qt 5.3.0 och är designad i QtCreator och mjukvaran är skriven för att vara kompatibelt med MacOSX.
+Det grafiska gränssnittet är skrivet i Qt 5.3.0 och är designat i QtCreator. Mjukvaran är skriven för att vara kompatibel med MacOSX.
+
+\subsection{Systemkrav}
+\begin{itemize}
+	\item Mac OS X 10.7 eller senare
+	\item Ramverket Qt, version 5.3
+\end{itemize}
+
 Qt har eventhantering. Qt kallar dessa events för slots och de kan liknas med avbrott.
+
 \subsection{Bluetooth}
 Bluetooth mottagningen på PC fungerar genom att modulen i PC virtualiserar en seriellport som sedan data kan skickas på. För att skapa porten utnyttjas den inbyggda klassen i Qt, QSerialPort. Denna initialiserar Bluetooth kopplingen och sätter inställningar som läs-skriv läge, BaudRate, antal databitar, paritet och stopbitar.
 Det är alltid exakt 27 bytes per transmission.
@@ -748,17 +746,28 @@ Busskommunikationen fungerade ej perfekt och skulle ha kunnat förbättrats. En 
 \clearpage %flushes picture cache to place now
 \newpage
 
+% ---------------------- ANVÄNDARMANUAL ---------------------------------------------------------
+% ---------------------- ---------------------- ---------------------- ----------------------
 \section{Appendix C - Användarmanual}
-Roboten kan köras i två lägen, antingen i manuellt eller autonomt läge. För att börja använda Mapmaster 2001, slå på huvudströmbrytaren placerad på bakre delen av robotens chassi. Efter detta kan det vara av god sed att trycka på de båda svarta knapparna på respektive virkort. Dessa är reset-knappar och roboten är nu redo att kopplas upp mot persondatorn. 
+
+Efter roboten har kopplats upp och programmerats med Atmel Studio kan roboten börja användas. 
+
+Roboten kan köras i två lägen, antingen i manuellt eller autonomt läge. För att börja använda Mapmaster 2001, slå på huvudströmbrytaren placerad på bakre delen av robotens chassi. Placera sedan roboten i sin utgånsposition. 
+
+Efter detta kan det vara av god sed att trycka på de båda svarta knapparna på respektive virkort. Dessa är återställningsknappar och roboten är nu redo att kopplas upp till persondatorn. 
 
 \subsection{Bluetooth}
-Efter att du har startat upp din robot är det dags att ansluta roboten via Bluetooth till din persondator. Beroende på vilket operativsystem din dator kör kommer du behöva vidta olika åtgärder:
- 
-\subsubsection{Mac OSx}
-Med fördel har du en Mac och kan bara starta upp programmet och vänta på att du får kontakt med roboten. Att en länk har upprättats mellan dator och robot ser du lättast genom att kolla i programmet och se att programmets grafer börjar röra på sig. Får du sensordata, har du uppkoppling.
+Aktivera Bluetooth via menyn i menyraden: 
 
-\subsubsection{Windows etc.}
-Om du sitter på en dator som använder sig av något annat operativsystem än Mac OSx, måste filen gui.cpp ändras efter specifikationen på den blåtands enhet som du använder dig av. Efter att gui.cpp är korrekt ändrad är det bara att starta programmet och vänta på uppkoppling. Läs ovan under rubriken Mac OSx för att se hur du vet att du har uppkoppling. 
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,width=0.5\textwidth]{bilder/bluethooth.png}  %skala och filnamn. 
+  \end{center}
+  \caption{Bluetooth i OS X} %figurtext.
+  \label{fig:bluetooth}
+\end{figure}
+
+Efter att du har startat upp din robot är det dags att ansluta roboten via Bluetooth till din persondator. Starta programmet mapGui.app för MapMaster och vänta på att du får kontakt med roboten. Att en länk har upprättats mellan dator och robot ser du lättast genom att kolla i programmet och se att programmets grafer börjar röra på sig. Får du sensordata, har du uppkoppling. 
 
 \subsection{Manuell körning}
 I manuellt läge kan roboten enkelt manövreras med hjälp av piltangenterna på din dator.
@@ -767,11 +776,13 @@ I manuellt läge kan roboten enkelt manövreras med hjälp av piltangenterna på
 	\item Nedåt-pil - Roboten kör rakt bak
 	\item Höger-pil - Roboten svänger 90 grader höger
 	\item Vänster-pil - Roboten svänger 90 grader vänster
+	\item Mellanslag - Roboten stannar
 \end{itemize}
+
 Orsaken till att roboten endast utför 90graders svängar är för att kartläggningen ska bli korrekt i manuellt läge. Utöver detta kan du även sätta vilken hastighet du vill att roboten ska köra i. Detta gör du i slidern "speed" i programvaran. Se figur 2. 
 
 \subsection{Autonom körning}
-Om du vill växla roboten till att köra autonomt, placera då först roboten med baksidan 10 cm från en kartongvägg i banan. Banan måste bestå av 40x40 segment för att roboten ska kunna kartlägga korrekt, se appendix A i kravspecifikationen. För att starta autonom körning tryck CMD+x i programmet eller tryck på den grå knappen som är placerad på den översta virkortet på roboten. Roboten kommer då börja att åka och kartlägga banan. Allt eftersom roboten åker kommer du se hur kartan växer fram bit för bit i det vita rutnätet som syns i figur 1. 
+Om du vill växla roboten till att köra autonomt, placera då först roboten med baksidan 10 cm från en yttervägg av specificerat område. Banan måste bestå av 40x40 segment för att roboten ska kunna kartlägga korrekt, se appendix A i kravspecifikationen. För att starta autonom körning tryck CMD+X i programmet eller tryck på den grå knappen som är placerad på den översta virkortet på roboten. Roboten kommer då börja att åka och kartlägga banan. Allt eftersom roboten åker kommer du se hur kartan växer fram bit för bit i det vita rutnätet som syns i figur 1. 
 
 \subsection{Programvara}
 Nedan följer en lista med tillhörande bild för att du som användare ska kunna få en överblick på alla kommadon som finns och hur du kör dem. 
