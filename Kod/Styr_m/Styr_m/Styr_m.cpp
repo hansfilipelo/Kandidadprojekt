@@ -129,6 +129,9 @@ int main(void)
 	cli();
 	//MCUCR = 0b00000000;
 	
+	DDRB |= (1<<DDB0)|(1<<DDB1);	//PB0 och PB1 till outputs
+	PORTB &= ~((1<<PORTB0)|(1<<PORTB1));
+	
 	EIMSK = 0b0000011;
 	EICRA = 0b00001111;
 	//SMCR = 0x01;
