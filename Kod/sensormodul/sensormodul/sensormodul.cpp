@@ -74,6 +74,11 @@ void USART_Init( unsigned int baud )
 //Sensor initialization
 void Sensor_Init()
 {
+	//PB0 gyro
+	//PB1 wheel has turned
+	DDRB |= (1<<DDB0)|(1<<DDB1);	//PB0 och PB1 till outputs
+	PORTB &= ~((1<<PORTB0)|(1<<PORTB1));
+	
 	DDRA = 0x00;			// Configure PortA as input
 	
 	ADCSRA = 0x8F;			// Enable the ADC and its interrupt feature
@@ -323,13 +328,16 @@ int main(void)
 		while(gyromode){		//while gyromode is true
 			if(segmentsTurned > 12){
 				//------------Send------------------------------
-				sensormodul.outDataArray[0] = 1;
+				/*sensormodul.outDataArray[0] = 1;
 				sensormodul.outDataArray[1] = 'W';
 				sensormodul.SPI_Send();
 				_delay_ms(8);
 				sensormodul.SPI_Send();		//send 90 degree turn is complete
 				_delay_ms(8);
-				sensormodul.SPI_Send();
+				sensormodul.SPI_Send();*/
+				PORTB |= (1<<PORTB1);	
+				_delay_us(5);
+				PORTB &= ~(1<<PORTB1);
 				_delay_ms(30);
 				segmentsTurned = 0;
 				wheelmode = false;
@@ -350,18 +358,18 @@ int main(void)
 				savepos = 0;
 				ADMUX = 0x20;
                 segmentsTurned=0;
-				
-				
 				sei();
 				// Redundancy on bus - send three times to master
-				sensormodul.SPI_Send();
+				/*sensormodul.SPI_Send();
 				_delay_ms(8);
 				sensormodul.SPI_Send();		//send 90 degree turn is complete
 				_delay_ms(8);
 				sensormodul.SPI_Send();
-			
-				_delay_ms(130);
+							_delay_ms(130);*/
 				
+				PORTB |= (1<<PORTB0);
+				_delay_us(5);
+				PORTB &= ~(1<<PORTB0);
 				
 			}
 			sei();				//allow interrupts
@@ -388,18 +396,25 @@ int main(void)
 			if(segmentsTurned > 12){
 				UCSR0B |= (1<<RXCIE0);							//enable USART interrups
 			}
-			if(segmentsTurned > 21){// + wheelTrim)){
+			if(segmentsTurned > 23){// + wheelTrim)){
 				//------------Send------------------------------
+				/*
 				sensormodul.outDataArray[0] = 1;
 				sensormodul.outDataArray[1] = 'W';
 				sensormodul.SPI_Send();
-                //delay and the repeat transmission to ensure that we correctly recieve transmission.
+                */
+				
+				PORTB |= (1<<PORTB1);
+				_delay_us(5);
+				PORTB &= ~(1<<PORTB1);
+				
+				//delay and the repeat transmission to ensure that we correctly recieve transmission.
                 wheelmode = false;
                 
                 savepos = 0;
 				ADMUX = 0x20;
 				sen0++;
-				
+				/*
 				_delay_ms(8);
                 if(!wheelmode){
                     sensormodul.SPI_Send();
@@ -410,7 +425,7 @@ int main(void)
                     sensormodul.SPI_Send();
                 }
 				_delay_ms(130);
-                
+                */
                 //leave wheelmode.
 				
                 //reset AD-conversion loop to give new fresh values. And to not interrupt crucial

@@ -934,8 +934,6 @@ void Robot::updateRobotPosition(){
     
     if (wheelHasTurned){
 		//for debugging
-		setSpeed(0);
-		drive();
         wheelHasTurned = false;
         commObj->reactivateWheelSensor();
         MapSection* tempSection;

@@ -322,7 +322,7 @@ Kommandot skickas från styrmodulen via mastern som speglar ner kommandot till s
 
 \paragraph{Gyro aktivering och bekräftelse}
 ~\\
-Kommandot skickas från styrmodulen via mastern som speglar ner kommandot till sensormodulen. Sensormodulen startar då Gyro-omvandling och skickar bekräftelse till styrmodulen när roboten har roterat 90 grader. 
+Kommandot skickas från styrmodulen via mastern som speglar ner kommandot till sensormodulen. Sensormodulen startar då en Gyro-omvandling och skickar bekräftelse till styrmodulen när roboten har roterat 90 grader något håll. 
 
 \paragraph{Hjulsensor aktivering och bekräftelse}
 ~\\
@@ -514,9 +514,9 @@ Brandhärdssökningen kommer att gå till på liknande sätt som kartläggningsa
 Roboten kan köras autonomt också manuellt via PC-mjukvara. Då roboten körs autonomt kan den reglera längs en vägg. 
 
 \subsubsection{Reglering av styrning}
-Styrmodulen får sensordata skickad till sig från sensormodulen. Denna data används till att reglera riktningen då man följer en vägg. Roboten använder sig av en tvåviktad proportionell reglering 
+Styrmodulen får sensordata skickad till sig från sensormodulen. Detta data används till att reglera riktningen då man följer en vägg. Roboten använder sig av en tvåviktad proportionell reglering. 
 
-Den första proportionella delen av regleringen reglerar avståndet från senorerna på robotens högersida jämfört med ett internt referensavstånd. Denna reglering ser till att roboten håller sig inom ett rimligt avstånd till den vägg som följs.
+Den första proportionella delen av regleringen reglerar avståndet från sensorerna på robotens högersida jämfört med ett internt referensavstånd. Denna reglering ser till att roboten håller sig inom ett rimligt avstånd till den vägg som följs.
 $ e_p = K_{p}*avst\text{\it{å}}ndssensordata $
 
 Där $K_{p}$ är en konstant.
@@ -539,7 +539,7 @@ Konstanterna $K_{p}$ och $K_{d}$ kan dels väljas i persondatormjukvaran, men de
 % --------------------------------------------------------------------------------
 
 \section{Sensormodul}
-Sensormodulens uppgift är att hantera sensordata från robotens 9 sensorer och sända detta vidare till kommunikationsmodulen i ett hanterbart format. Sensormmdulen är byggd kring AVR-processorn ATMEL 1284p. En överblick av systemet visas i figur~\ref{fig:sensoroverview}.
+Sensormodulens uppgift är att hantera sensordata från robotens nio sensorer och sända detta vidare till kommunikationsmodulen i ett hanterbart format. Sensormomdulen är byggd kring AVR-processorn ATMEL 1284p. En överblick av systemet visas i figur~\ref{fig:sensoroverview}.
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
@@ -551,7 +551,7 @@ Sensormodulens uppgift är att hantera sensordata från robotens 9 sensorer och 
 
 \subsection{Kopplingsschema}
 
-En beskrivande bild av kopplingsschemat finns i appendix A.
+För en beskrivande bild av kopplingsschemat se appendix A.
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
@@ -561,14 +561,14 @@ En beskrivande bild av kopplingsschemat finns i appendix A.
   \label{fig:reflex} %glöm inte att uppdatera era labels
 \end{figure}
 
-Port A användas som en A/D-omvandlare. PIN 39 kopplas till en reflexsensor, se figur \ref{fig:reflex}, SFH300, PIN 40 kopplas till en avståndssensor för långdistans, GP\-2Y\-3A\-00\-3K\-0F, PIN 35-38 kopplas till avståndssensorer för kortdistans, GP\-2Y\-0A\-21\-YK, 
+Port A används som en A/D-omvandlare. PIN 39 kopplas till en reflexsensor, se figur \ref{fig:reflex}, SFH300, PIN 40 kopplas till en avståndssensor för långdistans, GP\-2Y\-3A\-00\-3K\-0F, PIN 35-38 kopplas till avståndssensorer för kortdistans, GP\-2Y\-0A\-21\-YK, 
 PIN 34 kopplas till en avståndssensor för mellandistans, GP2Y0A02YK, och PIN 35 kopplas till ett gyro för vinkelhastighetsmätning, ML\-X9\-06\-09. Port B används för busskommunikation. PIN 3 skickar avbrott till master, PIN 5 används till slave select master, PIN 6 tar emot data från bussen, PIN7 skickar data till bussen och till PIN 8 kopplas klockan från master. Till port C PIN 23 kopplas en RFID-läsare, Parallax-Reader. Port D används inte i denna modul. 
 
 PIN 31 och 11 kopplas till jord, PIN 13 kopplas till klocka från master, PIN 12 används inte i denna modul, PIN 9 kopplas till en avstudsad manuell switch, en resetknapp, PIN 32 kopplas till en spänningskälla på 5 V som används som referensspänning, PIN 10 kopplas också den till en spänningskälla på 5 V och PIN 30 kopplas genom ett LP-filter till samma externa spänningskälla.
 
 
 \subsection{Uppgift}
-Sensormodulens uppgift är att A/D-omvandla signaler från robotens avståndssensorer, reflexsensor och gyro för att sedan utnyttja dessa digitala värden för att uppskatta avstånd och tillryggalagd sträcka. Den har också som uppgift att detektera brandhärdar i form av RFID-taggar. I figur~\ref{fig:sensorflow} beskrivs hanteringen av sensordata.
+Sensormodulens uppgift är att A/D-omvandla signaler från robotens avståndssensorer, reflexsensor och gyro för att sedan utnyttja dessa digitala värden för att uppskatta avstånd och tillryggalagd sträcka. Den har även som uppgift att detektera brandhärdar som i detta fall representeras av RFID-taggar. I figur~\ref{fig:sensorflow} beskrivs hanteringen av sensordata.
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
@@ -591,12 +591,12 @@ Sensormodulens uppgift är att A/D-omvandla signaler från robotens avståndssen
 ~\\
 
 \subsubsection{Systemchip}
-Modulens processor är en Atmel ATmega1284p\footnote{\url{http://www.atmel.com/ja/jp/Images/doc8059.pdf}}. Processorn kommer kontinuerligt att hämta data från alla sensorer via processorns inbyggda A/D-omvandlare med tillhörande mux. Denna är programmerbar och kommer att innehålla de program som behövs för att konvertera signalerna till avstånd, tillryggalagd sträcka och detektion av RFID-tagg. Sensormodulen bildar ett medelvärde, beräknat från 25 mätningar, från varje avståndssensor och skickar det kontinuerligt till master, 
+Modulens processor är en Atmel ATmega1284p\footnote{\url{http://www.atmel.com/ja/jp/Images/doc8059.pdf}}. Processorn kommer kontinuerligt att hämta data från alla sensorer via processorns inbyggda A/D-omvandlare med tillhörande mux. Denna är programmerbar och kommer att innehålla de program som behövs för att konvertera signalerna till avstånd, tillryggalagd sträcka och upptäckta RFID-taggar. Sensormodulen bildar ett medelvärde, beräknat från 25 mätningar, från varje avståndssensor och skickar det kontinuerligt till master, 
 kommunikationsmodulen, via en SPI-buss.
 
 \subsubsection{RFID-sensor}
 För att kunna detektera RFID-taggen så krävs en RFID-läsare. Vi kommer att använda Par\-all\-ax-Read\-er\footnote{\url{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/rfid-reader-v21.pdf}}. 
-SOUT på RFID-sensorn, PIN 3, kopplas till port C, PIN 23, på processon. RFID-läsaren använder sig av serielprotokollet asynkron USART för att skicka data från RFID-korten vidare till CPU:n. Pinne 23 som RFID-läsaren är inkopplad på har stöd för seriell kommunikation och konfigureras för att matcha dataöverföringshastigheten från läsaren.
+SOUT på RFID-sensorn, PIN 3, kopplas till port C, PIN 23, på processon. RFID-läsaren använder sig av seriellprotokollet asynkron USART för att skicka data från RFID-korten vidare till CPU:n. Pinne 23 som RFID-läsaren är inkopplad på har stöd för seriell kommunikation och konfigureras för att matcha dataöverföringshastigheten från läsaren.
 
 Då brus kan ge upphov en falsk RFID-läsning, så kontrolleras att mottaget data matchar vissa symboler. Vi har valt att leta efter en start byte, 0x0A, som indikerar början på en RFID-taggs unika id. För att ytterligare säkerställla en korrekt läsning görs denna kontroll två gånger innan kommandot för upptäckt brandhärd skickas till master.
 
