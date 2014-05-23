@@ -611,12 +611,13 @@ Summan som används har tagits fram och kalibrerats med hjälp av tester.
 \subsubsection{Övriga komponenter}
 Övriga komponenter så som ett batteri på 7.2 V och en resetknapp kommer att användas till denna modul.
 
-\section{PCmjukvara}
-Det grafiska gränssnittet är skrivet i Qt 5.3.0 och är designat i QtCreator. Mjukvaran är skriven för att vara kompatibel med MacOSX.
+\section{Persondatormjukvara}
+Det grafiska gränssnittet är skrivet i Qt 5.3.0 och är designat i QtCreator. Mjukvaran är skriven för att vara kompatibel med Mac OS X.
 
 \subsection{Systemkrav}
 \begin{itemize}
-	\item Mac OS X 10.7 eller senare
+	\item Mac OS X 10.9 eller senare
+	\item Xcode command line tools
 	\item Ramverket Qt, version 5.3
 \end{itemize}
 
@@ -779,7 +780,7 @@ I manuellt läge kan roboten enkelt manövreras med hjälp av piltangenterna på
 	\item Mellanslag - Roboten stannar
 \end{itemize}
 
-Orsaken till att roboten endast utför 90graders svängar är för att kartläggningen ska bli korrekt i manuellt läge. Utöver detta kan du även sätta vilken hastighet du vill att roboten ska köra i. Detta gör du i slidern "speed" i programvaran. Se figur 2. 
+Orsaken till att roboten endast utför 90graders svängar är för att kartläggningen ska bli korrekt i manuellt läge. Utöver detta kan du även sätta vilken hastighet du vill att roboten ska köra i. Detta gör du i slidern ''speed'' i programvaran. Se figur 2. 
 
 \subsection{Autonom körning}
 Om du vill växla roboten till att köra autonomt, placera då först roboten med baksidan 10 cm från en yttervägg av specificerat område. Banan måste bestå av 40x40 segment för att roboten ska kunna kartlägga korrekt, se appendix A i kravspecifikationen. För att starta autonom körning tryck CMD+X i programmet eller tryck på den grå knappen som är placerad på den översta virkortet på roboten. Roboten kommer då börja att åka och kartlägga banan. Allt eftersom roboten åker kommer du se hur kartan växer fram bit för bit i det vita rutnätet som syns i figur 1. 
