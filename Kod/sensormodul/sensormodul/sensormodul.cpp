@@ -15,16 +15,16 @@
 #include "slave.h"
 
 //------------sensorer----------------------
-volatile int numOfSamples = 25;		//number of samples for mean value
+volatile int numOfSamples = 30;		//number of samples for mean value
 volatile int savepos = 0;			//counter for the storage array
 
-volatile int sensor0[25];			//arrays for sensordata
-volatile int sensor1[25];
-volatile int sensor2[25];
-volatile int sensor3[25];
-volatile int sensor4[25];
-volatile int sensor5[25];
-volatile int sensor6[25];
+volatile int sensor0[30];			//arrays for sensordata
+volatile int sensor1[30];
+volatile int sensor2[30];
+volatile int sensor3[30];
+volatile int sensor4[30];
+volatile int sensor5[30];
+volatile int sensor6[30];
 
 
 volatile long int sen0;				//integers for mean distance
@@ -326,11 +326,11 @@ int main(void)
 				sensormodul.outDataArray[0] = 1;
 				sensormodul.outDataArray[1] = 'W';
 				sensormodul.SPI_Send();
-				_delay_ms(5);
+				_delay_ms(8);
 				sensormodul.SPI_Send();		//send 90 degree turn is complete
-				_delay_ms(5);
+				_delay_ms(8);
 				sensormodul.SPI_Send();
-				
+				_delay_ms(30);
 				segmentsTurned = 0;
 				wheelmode = false;
 			}
@@ -355,12 +355,12 @@ int main(void)
 				sei();
 				// Redundancy on bus - send three times to master
 				sensormodul.SPI_Send();
-				_delay_ms(5);
+				_delay_ms(8);
 				sensormodul.SPI_Send();		//send 90 degree turn is complete
-				_delay_ms(5);
+				_delay_ms(8);
 				sensormodul.SPI_Send();
 			
-				_delay_ms(180);
+				_delay_ms(130);
 				
 				
 			}
@@ -400,16 +400,16 @@ int main(void)
 				ADMUX = 0x20;
 				sen0++;
 				
-				_delay_ms(5);
+				_delay_ms(8);
                 if(!wheelmode){
                     sensormodul.SPI_Send();
                 }
                 
-                _delay_ms(5);
+                _delay_ms(8);
                 if(!wheelmode){
                     sensormodul.SPI_Send();
                 }
-				_delay_ms(180);
+				_delay_ms(130);
                 
                 //leave wheelmode.
 				
@@ -489,11 +489,11 @@ int main(void)
 			sensormodul.outDataArray[0] = 1;
 			sensormodul.outDataArray[1] = 'R';
 			sensormodul.SPI_Send();
-			_delay_ms(5);
+			_delay_ms(8);
 			sensormodul.SPI_Send();		//send 90 degree turn is complete
-			_delay_ms(5);
+			_delay_ms(8);
 			sensormodul.SPI_Send();
-			_delay_ms(150);
+			_delay_ms(180);
 			
 			savepos = 0;
 			ADMUX = 0x20;
