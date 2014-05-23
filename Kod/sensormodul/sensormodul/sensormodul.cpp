@@ -76,8 +76,15 @@ void Sensor_Init()
 {
 	//PB0 gyro
 	//PB1 wheel has turned
-	DDRB |= (1<<DDB0)|(1<<DDB1);	//PB0 och PB1 till outputs
+	DDRB |= (1<<DDB0)|(1<<DDB1);	//PB0 och PB1 as outputs
 	PORTB &= ~((1<<PORTB0)|(1<<PORTB1));
+	
+	//PD2 gyro
+	//PD3 wheel activate
+	DDRD &= ~((DDD2)|(DDD3));		//PD2 och PD3 as inputs
+	
+	EIMSK = 0b0000011;				//enable INT0 and INT1
+	EICRA = 0b00001111;
 	
 	DDRA = 0x00;			// Configure PortA as input
 	
@@ -252,6 +259,20 @@ void sendSensors(){
     sensormodul.SPI_Send();			//send outDataArray
 }
 //------------------------------------INTERRUPTS---------------------------------
+//activate gyro
+ISR(INT0_vect){
+	asm("");
+	gyromode = true;		//set gyromode to true
+	TCNT0 = 0x00;			//set timer to 0
+	asm("");
+}
+	
+//activate wheelsensor
+ISR(INT1_vect){
+	segmentsTurned = 0;
+	Wheel_Init();
+	wheelmode = true;
+}
 
 //SPI interrupt
 //Extremt känslig för tillägg av kod
