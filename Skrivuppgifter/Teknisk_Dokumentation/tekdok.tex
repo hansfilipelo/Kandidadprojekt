@@ -620,7 +620,7 @@ Det grafiska gränssnittet är skrivet i Qt 5.3.0 och är designat i QtCreator. 
 \subsection{Bluetooth}
 Bluetooth mottagningen på PC fungerar genom att modulen i PC virtualiserar en seriellport som sedan data kan skickas på. För att skapa porten utnyttjas den inbyggda klassen i Qt, QSerialPort. Denna initialiserar Bluetooth kopplingen och sätter inställningar som läs-skriv läge, BaudRate, antal databitar, paritet och stopbitar. Det är alltid exakt 27 bytes per transmission. 
 
-Qt har eventhantering. Qt kallar dessa events för slots och de kan liknas med avbrott.
+Qt har händelsehantering. Qt kallar dessa händelser för slots och de kan liknas med avbrott.
 
 \subsection{Läsning av Bluetooth}
 När data kommer till Bluetooth-enheten skickas ett avbrott till mainprogrammet och denna påbörjar mottagning i funktionen HandleReadyRead(). Denna funktion förklaras i flödesdiagrammet figur~\ref{fig:BTpc}
