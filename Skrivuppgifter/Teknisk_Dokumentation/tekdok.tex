@@ -652,7 +652,7 @@ Kartan använder sig av Qts inbyggda klass QGraphicsScene. Objekt med dimension 
 \newpage
 \section{Förslag på förbättringar av MapMaster2001}
 
-\subsection{Arkitektur}
+\subsection{Arkitektur \label{head:arch}}
 
 Atmega 1284p-processorns begränsade beräkningskapacitet i kombination med det begränsade C++-stödet i kompilatorn AVR-GCC har kraftigt försvårat arbetet med kartabstraktion och utforskningsalgoritmer. Om man vill skapa avancerade algoritmer på relativt kort tid underlättar det om man kan utnyttja högnivåbibliotek, t ex STL från C++. Under projektets gång har vi bland annat implementerat en C++-klass på egen hand för att kunna skriva kartläggningsalgoritmer. 
 
@@ -672,14 +672,19 @@ För att fortfarande klara av kravet på tre processorer hos enheten kan man anv
 Den här systemarkitekturen skulle också minska belastningen på den egenimplementerade bussen, vilken vi haft problem med då vi lastar den hårt. 
 
 \newpage
+\subsection{Busskommunikation}
+Busskommunikationen fungerade aldrig helt klanderfritt och skulle ha kunnat förbättrats. En bufferstruktur med flertalet pekare skulle ha kunnat nyttjas. Dessutom skulle en struktur där buss-mastern frågar slav-enheterna med jämna mellanrum om data istället för avbrott från slave-enheterna ha kunnat hjälpt implementeringens stabilitet, men däremot ökat responstiden för överföringen. 
+
 \subsection{Sensorer}
 Kortdistanssensorerna på robotens högra sida har en räckvidd på 10-80 cm. Då roboten vid reglering kan vara närmare väggen än 10 cm kan detta bli ett problem. Ett sätt att lösa problemet på är att byta sensorerna till sensorer med räckvidden 4-30 cm, 
 GP2D120\footnote{\url{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/gp2d120.pdf}}. Ett byte av sensorer skulle dock innebära större begränsningar vid kartläggning.
 Sensorerna var först placerade längst ut på robotens högra sida och genom att flytta dem längre in på roboten lyckades vi öka marginalen för regleringen. Vi valde därför att inte byta ut sensorerna.
 
-Busskommunikationen fungerade ej perfekt och skulle ha kunnat förbättrats. En bufferstruktur med flertalet pekare skulle ha kunnat nyttjas. Dessutom skulle en struktur där master frågar slave-enheterna med jämna mellanrum om data istället för avbrott från slave-enheterna ha kunnat hjälpt implementeringens stabilitet.
+\subsection{Styralgoritmer}
 
-\subsection{Styrmodul}
+Med en systemarkitektur likt den föreslagen i avsnitt~\ref{head:arch} skulle det förenkla implementering av avancerade vägfinnaralgoritmer. I projektets gång har vi utnyttjat en så kallad A-star-algoritm (A*), vilken fungerar i testmiljön med GNU Compiler Collection för Mac OS och Linux, som tyvärr ej fungerar med AVR-GCC och Atmegaprocessorn. 
+
+A*-algoritmen skulle kunnat implementerats i förslaget på förbättrad systemarkitektur. 
 
 \subsection{}
 
