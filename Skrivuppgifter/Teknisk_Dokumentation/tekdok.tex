@@ -1,7 +1,7 @@
 %kommentera all kod.
 %subsection{Kommunikation} se över
+%kommunikationsmodulen blandad Teori och hårdvara. 
 %Numrering av alla komponenter på Sensormodulen
-%Ta bort ack ur Fall1 och 2 i flödesscheman.
 \documentclass[a4paper,12pt,fleqn]{article}
 \usepackage{fixltx2e}
 \usepackage[utf8]{inputenc}
@@ -369,7 +369,7 @@ Komponenterna är numrerade och finns att hitta i kretsschemat, se~\ref{fig:kopp
   \item Lysdiod
 \end{enumerate}
 
-\subsection{Huvudloop}
+\subsection{Kommunikationsmodulens huvudloop}
 
 Huvudloopen på kommunikationsmodulen kollar ett antal sanningsvariabler för att avgöra om ny data finns tillgänglig för datahantering. För flödet, se figur~\ref{fig:mainmaster}
 
@@ -380,8 +380,6 @@ Huvudloopen på kommunikationsmodulen kollar ett antal sanningsvariabler för at
   \caption{Kommunikationsmodulens huvudloop} %figurtext.
   \label{fig:mainmaster}
 \end{figure}
-
-
 
 \subsection{Buss}
 Mellan processorerna används SPI som bussprotokoll. Kommunikationsmodulen agerar master medan styr- och sensormodul agerar slaves. Kommunikation kommer alltid att initieras av master och om slave vill skicka data, genererar de ett avbrott på master som talar om att de har data som är redo att skickas. Bussen använder följande kopplingar:
@@ -504,7 +502,7 @@ När vi skickar data till processorn så är detta avbrottshanterat. I avbrottet
 För att undvika problem vid mottagning av kartan på PC sidan skickas en rad i taget med hjälp av en timer. Main-loopen på kommunikationsmodulen kollar en gång per huvud-loop om det är okej att skicka en rad. När timern genererar ett avbrott sätts en flagga att ytterligare en rad är redo att skickas. När samtliga rader har skickats över, sätts flaggan som avgör om kartrader ska skickas över till false.
 
 \subsection{Switchar}
-En switch ska styra om roboten exekverar programkod för autonom styrning eller manuell styrning. Denna switch kan även byta läge via ett virtuellt kommando från PC. Ett avbrott signalerar till processorn att den ska byta programkod, avbrottet ligger på pin16 (INT0) se appendix A. Av/På-knappen styr strömförsörjningen till samtliga moduler. 
+En switch styr om roboten exekverar programkod för autonom styrning eller manuell styrning. Denna switch kan även byta läge via ett virtuellt kommando från PC. Ett avbrott signalerar till processorn att den ska byta programkod, avbrottet ligger på pin16 (INT0) se appendix A. Av/På-knappen styr strömförsörjningen till samtliga moduler. 
 
 % ----------------------------- Styrmodul ----------------------------------------
 % --------------------------------------------------------------------------------
@@ -623,7 +621,7 @@ kommunikationsmodulen, via en SPI-buss.
 
 \subsubsection{RFID-sensor}
 För att kunna detektera RFID-taggen så krävs en RFID-läsare. Vi kommer att använda Par\-all\-ax-Read\-er\footnote{Datablad för Par\-all\-ax-Read\-er\, \url{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/rfid-reader-v21.pdf}, hämtad 2014-05-23}. 
-SOUT på RFID-sensorn, PIN 3, kopplas till port C, PIN 23, på processon. RFID-läsaren använder sig av serieprotokollet asynkron USART för att skicka data från RFID-korten vidare till CPU:n. Pinne 23 som RFID-läsaren är inkopplad på har stöd för seriell kommunikation och konfigureras för att matcha dataöverföringshastigheten från läsaren.
+SOUT på RFID-sensorn, PIN 3, kopplas till port C, PIN 23, på processorn. RFID-läsaren använder sig av serieprotokollet asynkron USART för att skicka data från RFID-korten vidare till CPU:n. Pinne 23 som RFID-läsaren är inkopplad på har stöd för seriell kommunikation och konfigureras för att matcha dataöverföringshastigheten från läsaren.
 
 Då brus kan ge upphov en falsk RFID-läsning, så kontrolleras att mottaget data matchar vissa symboler. Vi har valt att leta efter en start byte, 0x0A, som indikerar början på en RFID-taggs unika id. För att ytterligare säkerställa en korrekt läsning görs denna kontroll två gånger innan kommandot för upptäckt brandhärd skickas till master.
 
