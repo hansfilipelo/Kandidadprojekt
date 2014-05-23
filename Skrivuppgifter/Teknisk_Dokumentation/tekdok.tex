@@ -1,6 +1,7 @@
 %kommentera all kod.
 %subsection{Kommunikation} se över
 %Numrering av alla komponenter på Sensormodulen
+%Ta bort ack ur Fall1 och 2 i flödesscheman.
 \documentclass[a4paper,12pt,fleqn]{article}
 \usepackage{fixltx2e}
 \usepackage[utf8]{inputenc}
@@ -208,7 +209,7 @@ Fire representera plats där det finns eldhärd, dvs. en RFID-tagg.
 \newpage
 
 \subsubsection{Styrning och kartläggning}
-Positionering och kartläggning sker med hjälp av ett stort antal sensorer och utefter många fördefinerade villkor. När roboten kartlägger kör den vinkelräta svängar för att underlätta sin positionering, och algoritmerna för kartläggning följer. 
+Positionering och kartläggning sker med hjälp av ett stort antal sensorer och utefter många fördefinierade villkor. När roboten kartlägger kör den vinkelräta svängar för att underlätta sin positionering, och algoritmerna för kartläggning följer. 
 
 \paragraph{Kartläggninsalgoritm}
 
@@ -226,7 +227,7 @@ Kartläggningsalgoritmen är utformad så att roboten börjar med att placera si
 När roboten har åkt längs högerväggen och återvänder till startkoordinaterna samt har färdriktningen höger i kartabstraktionen anses kartan vara sluten. När kartan är sluten anses fortfarande objekt utanför inramningen att vara outforskade. Då dessa är omöjliga att besöka startas ett anrop till samtliga objekt längs y-axeln på koordinaterna x = 0 och x = 31. Funktionen ber objektet att bli av typen closed om den inte redan är det. Är objektet closed avslutas funktionen där, annars ber den alla sina direkta grannar att även de utföra funktionen. Denna funktion stänger alltså alla objekt i ett område avgränsat av andra closed-objekt.
 
 \paragraph{Avsökning av ''köksöar''}
-När roboten sedan slutit hela området börjar den utforska om det finns några så kallade ''köksöar''. Köksöar inom ett avstånd av 120 centimeter detekteras. När en sådan detekteras åker robten ut till ''köksön'' och sluter detta område med hjälp av sina kortdistanssensorer på höger sida. Roboten återvänder sedan till områdets yttervägg tills den hittar en ny ''köksö''. När roboten åkt ett varv återvänder den till utgångspunkten varpå kartläggningen är slutförd. 
+När roboten sedan slutit hela området börjar den utforska om det finns några så kallade ''köksöar''. Köksöar inom ett avstånd av 120 centimeter detekteras. När en sådan detekteras åker roboten ut till ''köksön'' och sluter detta område med hjälp av sina kortdistanssensorer på höger sida. Roboten återvänder sedan till områdets yttervägg tills den hittar en ny ''köksö''. När roboten åkt ett varv återvänder den till utgångspunkten varpå kartläggningen är slutförd. 
 
 För ytterligare fördjupning i SLAM-problemet - se Kappan och dokumentet \textit{''Simultan positionering och kartläggning''}\footnote{Grundström, T. Elo, H-F (2014), \textit{''Simultan positionering och kartläggning''}}.
 
@@ -237,7 +238,7 @@ För ytterligare fördjupning i SLAM-problemet - se Kappan och dokumentet \texti
 Roboten kan köras autonomt också manuellt via PC-mjukvara. Då roboten körs autonomt kan den reglera längs en vägg. 
 
 \subsubsection{Reglering av styrning}
-Styrmodulen får sensordata skickad till sig från sensormodulen. Detta data används till att reglera riktningen då man följer en vägg.
+Styrmodulen får sensor-data skickad till sig från sensormodulen. Detta data används till att reglera riktningen då man följer en vägg.
 
 Den proportionella delen av regleringen reglerar avståndet från sensorerna på robotens högersida jämfört med ett internt referensavstånd. Denna reglering ser till att roboten håller sig inom ett rimligt avstånd till den vägg som följs.
 $ e_p = K_{p}*avst\text{\it{å}}ndssensordata $
