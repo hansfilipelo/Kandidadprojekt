@@ -1585,7 +1585,7 @@ void Robot::followRight(){
             setSpeed(20);
             drive();
             if(isCornerPassed()){
-	            _delay_ms(175);
+	            _delay_ms(200);
 				setSpeed(0);
 				drive();
 				break;
@@ -1698,7 +1698,7 @@ bool Robot::isWallFwdExplore()
 	 if ( getFwdDistance() == 0 ) {
 		 return false;
 	 }
-	 if ( getFwdDistance() < 30 ){
+	 if ( getFwdDistance() < 25 ){
 		 return true;
 	 }
 	 else{
