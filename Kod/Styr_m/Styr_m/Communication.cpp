@@ -134,6 +134,7 @@ void Communication::handleData(){
 		asm("");
 		asm("");
 		robotPointer->wheelHasTurned = true;
+		robotPointer->rotationCount = 0;
 		asm("");
 		asm("");
 	}

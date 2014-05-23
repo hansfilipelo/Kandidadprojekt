@@ -383,9 +383,9 @@ För att effektivisera filtreringen av mätvärden delas olika distinkt upptäck
 \newpage
 \section{Slutsats}
 
-Frågan som SLAM grundas på går nu att delvis besvara. Det går att kartlägga en omgivning utan att exakt veta sin position, men det behövs någon typ av skattning av positionen för att göra en rimlig kartläggning. Ju bättre skattningen är desto bättre kommer kartan att bli i slutändan. Mer data och data av högre kvalitét kan bidra till att förbättra noggrannheten på skattningarna. FastSLAM verkar vara den metod som ger bäst skattning på tillstånden med minst beräkningar. Den slutsatsen är dock bara baserad på den teori som vi tagit upp i rapporten, eftersom inga tester genomförts i praktiken. En nackdel med FastSLAM är att det är många teoretiska delar som måste förstås för att man ska kunna implementera det, på grund av att algoritmen innehåller två delar; partikelfilter och EKF.
+Frågan som SLAM grundas på går nu att delvis besvara. Det går att kartlägga en omgivning utan att exakt veta sin position, men det behövs någon typ av skattning av positionen för att göra en rimlig kartläggning. Ju bättre skattningen är desto bättre kommer kartan att bli i slutändan. Mer data och data av högre kvalitét kan bidra till att förbättra noggrannheten på skattningarna. FastSLAM verkar vara en metod som ger en bra skattning av tillstånden med relativt lite beräkningar. Den slutsatsen är dock bara baserad på den teori som vi tagit upp i rapporten, eftersom inga tester genomförts i praktiken. En nackdel med FastSLAM är att det är två relativt teorikrävande komponenter som måste förstås för att man ska kunna implementera det, partikelfilter och EKF.
 
-Ett problem som kan uppstå då fler typer av sensorer används och större mängder data måste bearbetas är att beräkningskraften inte räcker till då filtren och mjukvaran som används för att implementera SLAM kan ställa för höga krav på beräkningsenheten.
+Ett problem som kan uppstå då fler typer av sensorer används och större mängder data måste bearbetas är att beräkningskraften inte räcker till då filtren och mjukvaran som används för att implementera SLAM kan ställa för höga krav på beräkningsenheten. 
 
 \section{Reflektion}
 

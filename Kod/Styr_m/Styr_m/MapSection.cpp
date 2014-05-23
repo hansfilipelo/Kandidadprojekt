@@ -186,7 +186,7 @@ Robot::Robot(int xPos, int yPos, Map* inMom, Communication* inComm) : MapSection
 	direction = 'f';
 	
 	Kd = 7;
-	Kp = 6;
+	Kp = 5;
 	Ref = 12;
 	
 	trimRight = 15;
@@ -352,6 +352,8 @@ void Robot::rotateLeft(){
 	
 	
 	waitForNewData();
+	waitForNewData();
+	waitForNewData();
 	this->robotRotated();
     
 }
@@ -378,8 +380,22 @@ void Robot::rotateRight(){
 	//---------
 	// First send stuff to sensor module
 	// When we have rotated 90 degrees sensor module will send a signal which will deactivate rotate
-	//---------
+	//--------
+	
+	// Protect against missing corners
+	if (rotationCount > 4)
+	{
+		setSpeed(25);
+		drive();
+		while (!wheelHasTurned)
+		{
+			asm("");
+		}
+		updateRobotPosition();
+		return;
+	}
 	commObj->sendRotateRequest();
+	rotationCount++;
 	
     // Turns
     changeGear('r');
@@ -416,6 +432,8 @@ void Robot::rotateRight(){
     }
 	
 	waitForNewData();
+	waitForNewData();
+	waitForNewData();
 	this->robotRotated();
 	
 }
@@ -428,11 +446,11 @@ void Robot::turn(int pd){
 	int pdOut = pd;
 	
 	// Protect against overflow
-	if (output+pdOut > 255 || output-pdOut < 0)
+	if (output+pdOut > 140 || output-pdOut < 0)
 	{
 #if TESTING == 0
-		OCR2A = 0; //Negative value on pd will turn left, positive right
-		OCR2B = 0;
+		OCR2A = output; //Negative value on pd will turn left, positive right
+		OCR2B = output;
 #endif
 	}
 	else {
@@ -618,8 +636,11 @@ void Robot::setBwdClosed(){
 	
 	int output = 0;
 	
-	if (getBwdDistance() > 300) {
-		output = 280/40;
+	if(speed != 0 || gear != 'l'){
+		return;
+	}
+	if (getBwdDistance() > 80) {
+		output = 80/40;
 	}
 	else{
 		output = getBwdDistance()/40; //ser vissa problem med detta.
@@ -695,18 +716,23 @@ void Robot::setBwdClosed(){
 // -------------- To the left --------------------------
 
 void Robot::setLeftClosed(){
+    if(!islandMode || exploringIsland){
+	    return;
+    }
 	
-    int output = 0;
+	int output = 0;
     
     if(leftMidSensor < 40){
-        output = 10/40;
+        output = 0;
     }
-    else if(leftMidSensor > 150) { // this value might need to be calibrated
-        output = 160/40;				//if distance is great only print max 2 empty.
-    }
-    
+	else if(leftMidSensor > 39 && leftMidSensor < 60){
+		output = 1;
+	}
+	else if( leftMidSensor > 79 && leftMidSensor < 100){
+		output = 2;
+	}
     else{
-        output = leftMidSensor/40;
+        return;
     }
     
 	// Set closed section output + 1 steps away from robot.
@@ -719,13 +745,18 @@ void Robot::setLeftClosed(){
                 break;
             }
             // Explored except if closed since short range sensors have higher priority
-            if ( mom->getPos(xCoord + i + 1, yCoord)->getType() != 'c' && mom->getPos(xCoord + i + 1, yCoord)->getType() != 'f' ){
+            if ( mom->getPos(xCoord + i + 1, yCoord)->getType() != 'c' && mom->getPos(xCoord + i + 1, yCoord)->getType() != 'f'){
                 mom->convertSection(xCoord + i + 1,yCoord, 'e');
             }
         }
+		if(output< 3 && !mom->getVisited(xCoord+1+output,yCoord) && mom->getPos(xCoord + output + 1, yCoord)->getType() != 'c'){
+			mom->convertSection(xCoord + output + 1,yCoord, 'c');
+			islandToLeft = true;
+		}
+		/*
         if(output == 0 && !mom->getVisited(xCoord+1,yCoord)){
 	        mom->convertSection(xCoord + 1,yCoord, 'c');
-        }
+        }*/
 	}
     
     
@@ -742,8 +773,9 @@ void Robot::setLeftClosed(){
                 mom->convertSection(xCoord - i - 1,yCoord, 'e');
             }
         }
-		if(output == 0 && !mom->getVisited(xCoord-1,yCoord)){
-			mom->convertSection(xCoord - 1,yCoord, 'c');
+		if(output < 4 && !mom->getVisited(xCoord-1-output,yCoord) && mom->getPos(xCoord - output - 1, yCoord)->getType() != 'c'){
+			mom->convertSection(xCoord - output - 1,yCoord, 'c');
+			islandToLeft = true;
 		}
 	}
 	// Direction 0->x->32, "right"
@@ -759,8 +791,9 @@ void Robot::setLeftClosed(){
                 mom->convertSection(xCoord,yCoord - i - 1, 'e');
             }
         }
-		if(output == 0 && !mom->getVisited(xCoord,yCoord-1)){
-			mom->convertSection(xCoord,yCoord - 1, 'c');
+		if(output < 4  && !mom->getVisited(xCoord,yCoord-1-output) && mom->getPos(xCoord, yCoord - 1 - output)->getType() != 'c'){
+			mom->convertSection(xCoord,yCoord - 1 - output, 'c');
+			islandToLeft = true;
 		}
 	}
 	// Direction 32->x->0, "left"
@@ -776,8 +809,9 @@ void Robot::setLeftClosed(){
                 mom->convertSection(xCoord,yCoord + i + 1, 'e');
             }
         }
-		if(output == 0 && !mom->getVisited(xCoord,yCoord+1)){
-			mom->convertSection(xCoord,yCoord + 1, 'c');
+		if(output < 4  && !mom->getVisited(xCoord,yCoord+1+output) && mom->getPos(xCoord, yCoord + output + 1)->getType() != 'c'){
+			mom->convertSection(xCoord,yCoord + 1 + output, 'c');
+			islandToLeft = true;
 		}
 	}
 }
@@ -797,6 +831,9 @@ void Robot::setRightClosed(){
 	}
 	else{
 		output = rightFrontSensor/40;	//kanske borde ha +10 innan man delar med 40 för att robotens inte är längst till höger i rutan
+	}
+	if (output != 0){
+		return;
 	}
 	
 	// Set closed section output + 1 steps away from robot.
@@ -884,7 +921,7 @@ int Robot::meanValueArray(char* inputArray, int iterations) {
 }
 
 bool Robot::isCornerPassed(){
-	if (rightBackSensor > 30)
+	if (rightBackSensor > 25)
 	{
 		return true;
 	}
@@ -907,7 +944,10 @@ void Robot::updateRobotPosition(){
 		//_delay_ms(250);
         //#endif
         //setSpeed(userSpeed); //borde flyttas till efter switchen
-        
+        if(commObj->isRFID){
+	        setRFID();
+	        commObj->isRFID=false;
+        }
         
 		switch (direction){
                 
@@ -1000,10 +1040,6 @@ void Robot::updateRobotPosition(){
 				//would like to throw some kind of error here.
 				return;
 		}
-        if(commObj->isRFID){
-            setRFID();
-            commObj->isRFID=false;
-        }
 		if((RFIDmode)&&(rightFrontSensor < 20)&&(okayToClose)){
 			setRightClosed();
 		}
@@ -1014,7 +1050,10 @@ void Robot::updateRobotPosition(){
 			setLeftClosed();
 		}
 		if(isHome()){
+			setSpeed(0);
+			drive();
             closeMap();
+			islandMode = true;
         }
 		//drive();
     }
@@ -1090,12 +1129,7 @@ int Robot::getFwdDistance(){
 }
 
 int Robot::getBwdDistance(){
-	if(bwdShortSensor < 80){
-		return bwdShortSensor;
-	}
-	else{
-		return bwdLongSensor;
-	}
+	return bwdShortSensor;
 }
 
 int Robot::getRightDistance(){
@@ -1171,8 +1205,8 @@ bool Robot::isWallRight(){
 bool Robot::isCornerRight(){
 	
     if ( rightFrontSensor > rightCornerFront && rightBackSensor < rightCornerBack ){
-		volatile bool shitFace = true;
-        return shitFace;
+		volatile bool stuff = true;
+        return stuff;
     }
     else {
         return false;
@@ -1429,6 +1463,45 @@ void Robot::explore(){
     }
 }
 
+void Robot::exploreIsland(){
+	if(!islandToLeft && !exploringIsland){
+		while(!wheelHasTurned){
+			followRight();
+			if(commObj->sendMapNow){
+				asm("");
+				commObj->sendMapNow=false;
+				commObj->sendMap();
+				asm("");
+			}
+		}
+		
+	}
+	updateRobotPosition();
+	if(islandToLeft && !exploringIsland){
+		exploringIsland = true;
+		goAcross();
+		rotateLeft();
+		savePosition();
+		islandToLeft = false;
+		timesMovedOnIsland = 0;
+	}
+	
+	else if(exploringIsland){
+		while(!wheelHasTurned){
+			followRight();
+		}
+		updateRobotPosition();
+		
+		if(xCoord == islandStartX && yCoord == islandStartY && (timesMovedOnIsland != 0)){
+			goAcross();
+			rotateLeft();
+			exploringIsland = false;
+			islandToLeft = false;
+		}
+		timesMovedOnIsland++;
+	}
+}
+
 bool Robot::lookForULeft(){
     switch(direction){
         case 'b' :
@@ -1495,38 +1568,47 @@ void Robot::goAcross(){
     
     setSpeed(25);
     changeGear('f');
-    while(!isWallFwd()){
+	drive();
+    while(!isWallFwdExplore()){
         updateRobotPosition();
-        drive();
+        
     }
-    rotateLeft();
 }
 
 void Robot::followRight(){
     
-    if(this->isCornerRight()){
-        while ( !(this->isCornerPassed()) && !(commObj->getManual())) {
-            this->changeGear('f');
-            this->setSpeed(20);
-            this->drive();
-        }
-        //_delay_ms(25); // This delay ensures that we enter next segment.
-        this->rotateRight();
+    if(isCornerRight()){
+		
+       while ( !isCornerPassed() && !(commObj->getManual())) {
+            changeGear('f');
+            setSpeed(20);
+            drive();
+            if(isCornerPassed()){
+	            _delay_ms(200);
+				break;
+            }
+       }
+        // This delay ensures that we enter next segment.
+        rotateRight();
         //said !iswallright lets try iscornerpassed
-        while ( this->isCornerPassed() && !(commObj->getManual())) {
-            this->changeGear('f');
-            this->setSpeed(20);
-            this->drive();
+        
+		this->changeGear('f');
+		this->setSpeed(20);
+		
+		while (isCornerPassed() && !(commObj->getManual())) {
+         this->drive();
         }
     }
     
     //was elseif before
-    if(this->isWallFwd()){
+    if(!isCornerRight()&&isWallFwd()){
         this->setSpeed(25);
         this->changeGear('f');
+		this->drive();
         while (!this->isWallFwdClose() && !(commObj->getManual()))
         {
-            this->drive();
+         asm("");
+		 asm("");  
         }
         this->setSpeed(0);
         this->drive();
@@ -1536,10 +1618,13 @@ void Robot::followRight(){
         {
             this->rotateRight();
             //Drive forward untill robot has entered
-            while (!this->isWallRight() && !(commObj->getManual())) {
-                this->changeGear('f');
-                this->setSpeed(25);
-                this->drive();
+             this->changeGear('f');
+             this->setSpeed(25);
+             this->drive();
+			
+			while (!this->isWallRight() && !(commObj->getManual())) {
+               asm("");
+               asm("");
             }
         }
         
@@ -1549,7 +1634,7 @@ void Robot::followRight(){
         }
         
     }
-    else
+    else if(!isCornerRight())
     {
         if(!this->isWallRight())
         {
@@ -1597,5 +1682,24 @@ void Robot::goHome(){
     }
 	setSpeed(0);
 	drive();
+}
+
+
+void Robot::savePosition(){
+	islandStartX = xCoord;
+	islandStartY = yCoord;
+}
+
+bool Robot::isWallFwdExplore()
+{
+	 if ( getFwdDistance() == 0 ) {
+		 return false;
+	 }
+	 if ( getFwdDistance() < 30 ){
+		 return true;
+	 }
+	 else{
+		 return false;
+	 }
 }
 

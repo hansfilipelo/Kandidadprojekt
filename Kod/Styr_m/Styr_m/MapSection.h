@@ -16,7 +16,6 @@
 #include <avr/interrupt.h>
 
 #endif
-
 #if TESTING == 1
 #include <iostream>
 #endif
@@ -131,6 +130,7 @@ public:
     bool isWallRight();
     bool isCornerRight();
     bool isWallFwd();
+	bool isWallFwdExplore();
     bool isWallLeft();
 	bool isWallFwdClose();
     
@@ -154,7 +154,7 @@ public:
 	
 	bool wheelHasTurned = false;
 	bool foundIsland = false;
-	volatile bool RFIDmode = true;
+	volatile bool RFIDmode = false;
     
     // Automatic control
     void turn(int pd); //Positive or negative value will decide left or right
@@ -183,10 +183,26 @@ public:
     int exploreX=0;
     int exploreY=0;
     bool isHome();
+
+	
+	
+	
+//functions and variables for island detection and exploration
+	bool islandToLeft = false;
+	bool exploringIsland = false;
+	void exploreIsland();
+	int timesMovedOnIsland = 0;
+	int islandStartX = 0;
+	int islandStartY = 0;
+	void savePosition();
+	bool islandMode = false;
+	
+	
     
     
     void goHome();
-    
+    int rotationCount = 0;
+	
 protected:
     int finishX;
     int finishY;
@@ -260,7 +276,6 @@ protected:
 	
 	bool rotateRightActive;
 	bool rotateLeftActive;
-
 	
     };
 

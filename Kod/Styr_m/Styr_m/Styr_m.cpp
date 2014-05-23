@@ -153,16 +153,16 @@ int main(void)
 	    robotPointer->setRightClosed();
 		robotPointer->setLeftClosed();
 	}
-	bool tst = true;
     
     abstractionObject->sendMap();
     
 	abstractionObject->reactivateWheelSensor();
 	
-	for (;;) {
-        // Manual mode
-        if (abstractionObject->getManual()) {
-            asm("");
+	
+	for(;;){		
+		// Manual mode
+		if (abstractionObject->getManual()) {
+			asm("");
 			if (robotPointer->getRotateRightActive())
 			{
 				robotPointer->rotateRight();
@@ -171,26 +171,14 @@ int main(void)
 			else if ( robotPointer->getRotateLeftActive() ){
 				robotPointer->rotateLeft();
 			}
-        }
-        // Automatic mode
-        else {
-			
-            /*------------------ HÖGERFÖLJNNG ----------------------
-             -------------------------------------------------------
-             -------------------------------------------------------*/
-            
-			if(tst){
-				// get the route
-				mapPointer->convertToPathFinding();
-				int xStart = robotPointer->getX();
-				int yStart = robotPointer->getY();
-				robotPointer->findFinishPos();
-				int xFinish = robotPointer->getFinishX();
-				int yFinish = robotPointer->getFinishY();
-				//mapPointer->aStar(1,16,5,16);
-				//abstractionObject->sendAStar(mapPointer->pathArray);
- 				tst = false;
-			}
+		}
+		
+/*------------------HÖGERFÖLJNNG ----------------------
+--------------------FollowWallMode-------------------------
+-------------------------------------------------------*/
+		
+		
+		else{
 			while(!robotPointer->wheelHasTurned){
 				robotPointer->followRight();
 				if(abstractionObject->sendMapNow){
@@ -200,21 +188,55 @@ int main(void)
 					asm("");
 				}
 			}
-			robotPointer->updateRobotPosition();
-			
-			if(robotPointer->startExplore){
-				break;
-			}
-            
 		}
-		
+		robotPointer->updateRobotPosition();
+		if(robotPointer->islandMode)
+		{
+			asm("");
+			_delay_ms(1000);
+			break;
+			asm("");
+		}
 	}
-    /*--------------ExploreMode-----------------------------------------------------------------------*/
+	
+	
+/*------------------HÖGERFÖLJNNG ----------------------
+--------------------IslandMode-------------------------
+-------------------------------------------------------*/
+	
+	for (;;) {
+		robotPointer->exploreIsland();
+		if(robotPointer->isHome())
+		{
+			asm("");
+			break;
+			asm("");
+		}
+	}
+            
+		
+    //----------------FINISHED MODE----------------------------//
 	robotPointer->setSpeed(0);
 	robotPointer->drive();
 	
+	mapPointer->fillUnexplored();
+	abstractionObject->sendMap();
+	
+	//this loop exists to stop robot from reseting after completed algorithm
+	//it also allows the robot to send the current map
 	for(;;){
-        
+		 if(abstractionObject->sendMapNow){
+			 asm("");
+			 abstractionObject->sendMapNow=false;
+			 abstractionObject->sendMap();
+			 asm("");
+		 }
+	}
+	/*--------------ExploreMode-----------------------------------------------------------------------*/
+	//this loop was used for exploring unknown areas not connected to islands, it was also made to after exploration 
+	//return the robot to its starting pos
+	
+	for(;;){        
         robotPointer->explore();
         if(!robotPointer->stillUnexplored()){
             abstractionObject->sendMap();
