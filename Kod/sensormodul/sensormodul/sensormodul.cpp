@@ -360,7 +360,7 @@ int main(void)
 				_delay_ms(5);
 				sensormodul.SPI_Send();
 			
-				_delay_ms(150);
+				_delay_ms(180);
 				
 				
 			}
@@ -409,7 +409,7 @@ int main(void)
                 if(!wheelmode){
                     sensormodul.SPI_Send();
                 }
-				_delay_ms(150);
+				_delay_ms(180);
                 
                 //leave wheelmode.
 				
