@@ -22,6 +22,7 @@
 
 \include{pagestyle}
 
+
 %-------------------------------------------------------------------
 %Första sidan
 
@@ -321,9 +322,9 @@ Där DNC står för ''Do not care''.
 
 
 \section{Kommunikationsmodul}
-Modulen hanterar kommunikation mellan robotens olika del samt med persondatorn via Bluetooth. Kommunikationsmodulen som syns i figur 3, kommer att agera master på robotens interna buss. Detta betyder att allt datautbyte som sker mellan moduler initieras av modulen. 
+Modulen hanterar kommunikation mellan robotens olika delar samt med persondatorn via Bluetooth. Kommunikationsmodulen som syns i figur~\ref{fig:robot}, kommer att agera master på robotens interna buss. Detta betyder att allt datautbyte som sker mellan moduler initieras av modulen. 
 Vid kommunikation mellan övriga moduler, dvs. mellan sensor- och styrmodul, kommer denna information först gå via kommunikationsmodulen för att sedan skickas vidare.
-Kommunikationsmodulen är även ansvarig för transmission av sensordata och manuella styrkommandon mellan roboten och PC-mjukvaran.
+Kommunikationsmodulen är även ansvarig för transmission av sensor-data och manuella styrkommandon mellan roboten och PC-mjukvaran.
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
@@ -340,12 +341,12 @@ Kommunikationsmodulen skickar data mellan de olika enheterna. Ett par olika komm
 
 Fall 1: Kommunikationsmodulen skickar manuella styrkommandon till styrmodulen, se figur~\ref{fig:case1flow}.
 
-Fall 2: Sensormodulen signalerar att ny sensordata är redo, se  figur~\ref{fig:case2flow}.
+Fall 2: Sensormodulen signalerar att ny sensor-data är redo, se  figur~\ref{fig:case2flow}.
 
 Fall 3: Kartdata skickas från kommunikationsmodulen till PC, se figur~\ref{fig:case3flow}. 
  
 \subsection{Komponenter}
-Komponenterna är numrerade och finns att hitta i kretsschemat, se Appendix A.
+Komponenterna är numrerade och finns att hitta i kretsschemat, se~\ref{fig:kopplingstyr}
 \begin{enumerate}
   \item AVR processor av typen ATMega1284
   \item Bluetooth-dongel, Firefly, BlueSmirf Gold
@@ -368,7 +369,7 @@ Mellan processorerna används SPI som bussprotokoll. Kommunikationsmodulen agera
 	\item SCK - Serial Clock, klocka från master.
 \end{itemize}
 
-\subsubsection{Slav-modulers mottagning}
+\subsubsection{Slave-modulers mottagning}
 När vår master-modul initierar SPI-kommunikationen med en slave dras SlaveSelect-signalen för den givna processorn låg för att generera ett SPI-avbrott på sagda slave. När slave har tagit emot det antal bytes som specificeras av första byten i paketet genereras ett internt avbrott med hjälp av PCint16. I detta nya avbrott hanteras datan från transmissionen. En övergripande struktur angående mottagningen av SPI-trafik kan ses i flödesdiagrammet i figur~\ref{fig:spislave}
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
@@ -382,14 +383,14 @@ När vår master-modul initierar SPI-kommunikationen med en slave dras SlaveSele
 \subsubsection{Busstrafik}
 På bussen kommer ett antal olika typer av kommandon att skickas. Dessa förklaras i paragraferna nedan. 
 Tyngre och snabbt på varandra följande transmissioner kan leda till låsningar av bussen i form av att till exempel sensordata slutar levereras till Bluetoothmodulen eller att ett kommando missas. Därför hanteras de tyngsta transmissionerna med en konfirmationsstruktur.
-De tyngsta kommandona utförs endast på icke-kritiska tillfällen i respektive slavmodul.
+De tyngsta kommandona utförs endast på icke-kritiska tillfällen i respektive slave-modul.
 
 \paragraph{Styrkommandon från PC}
 ~\\
 När styrkommandona skickas från PC, kommer kommunikationsmodulen skicka datan vidare till styrmodulen som utför kommandot.
-\paragraph{Konverterat sensordata}
+\paragraph{Konverterat sensor-data}
 ~\\
-Sensordata kommer att behandlas i sensormodulen och därefter kommer modulen att skicka ett avbrott till master om att data finns tillgängligt. Mastern svarar och startar bussöverföringen.
+Sensor-data kommer att behandlas i sensormodulen och därefter kommer modulen att skicka ett avbrott till master om att data finns tillgängligt. Mastern svarar och startar bussöverföringen.
 \paragraph{Kartabstraktion så styrenheten kan välja färdväg}
 ~\\
 Kartabstraktionen och robotens position kommer att uppdateras allt eftersom ny sensordata kommer in. Efter att ny sensordata har mottagits av master skickar mastern ut sensordata till styrenheten.
