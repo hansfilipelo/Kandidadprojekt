@@ -9,7 +9,7 @@
 
 void Slave::SPI_Init()
 {
-	DDRB = (1<<DDB6);	// Set MISO output, all others input
+	DDRB |= (1<<DDB6);	// Set MISO output, all others input
 	/* Enable SPI */
 	SPCR = (1<<SPE)|(1<<SPIE)|(1<<SPR0);
 	SPCR &= ~(1<<MSTR);
