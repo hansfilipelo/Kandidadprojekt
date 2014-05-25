@@ -5,7 +5,6 @@
 *File: order.cpp
 *Purpose: Class for all commands sent from PC to robot.
 *
-*Created by: Jens Edhammer (jened502), Tobias Grundström (tobgr602) 
 *
 ********************************************************/
 #include "order.h"

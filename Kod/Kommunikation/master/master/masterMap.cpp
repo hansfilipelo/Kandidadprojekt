@@ -6,7 +6,6 @@
 *Purpose: container for the mapbuffer on Com-module
 *  awaiting to be sent to PC.
 *
-*Created by: Hans-Filip Elo (hanel427), Jens Edhammer (jened502)
 *
 ********************************************************/
 

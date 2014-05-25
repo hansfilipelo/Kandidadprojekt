@@ -5,9 +5,6 @@
 *File: master.cpp
 *Purpose: main code for the communication-module.
 *
-*Created by: Niklas Ericson (niker917), David Habrman (davha227)
-*	Jens Edhammer (jened502), Hans-Filip Elo (hanel742), 
-*	Tobias Grundström (tobgr602), Erik Ekelund (eriek984)
 *
 ********************************************************/
 
