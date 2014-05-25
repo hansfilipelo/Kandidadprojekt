@@ -659,20 +659,21 @@ PIN 31 och 11 kopplas till jord, PIN 13 kopplas till klocka från master, PIN 12
 
 \subsection{Komponenter}
 Komponenterna är numrerade och finns att hitta i kopplingsschemat för sensormodulen ~\ref{fig:kopplingsensor}.
-\begin{itemize}
+\begin{enumerate}
+	\item Reflexsensor - SFH300
+	\item Avståndssensor för längre avstånd - GP\-2Y3A\-00\-3K\-0F
+	\item 4 st avståndssensorer för kortare avstånd - GP\-2Y\-0A\-21\-YK
+	\item Avståndssensor för mellan avstånd - GP2Y0A02YK
+	\item Vinkelhastighetssensor - MLX\-90\-609
+	\item RFID-sensor - Par\-all\-ax-Read\-er\
 	\item Systemchip - Atmel ATmega1284p
-	\item RFID-sensor - Par\-all\-ax-Read\-er\ (6)
-	\item Reflexsensor - SFH300 (1)
-	\item Avståndssensor för längre avstånd - GP\-2Y3A\-00\-3K\-0F (2)
-	\item Avståndssensor för mellan avstånd - GP2Y0A02YK (4)
-	\item 4 st avståndssensorer för kortare avstånd - GP\-2Y\-0A\-21\-YK (3)
-	\item Vinkelhastighetssensor - MLX\-90\-609 (5)
-\end{itemize}
+\end{enumerate}
 ~\\
 
 \subsubsection{Systemchip}
 Modulens processor är en Atmel ATmega1284p\footnote{Datablad för Atmega 1284p, \url{http://www.atmel.com/ja/jp/Images/doc8059.pdf}, hämtad 2014-05-23}. Processorn hämtar kontinuerligt data från alla sensorer via processorns inbyggda A/D-omvandlare med tillhörande mux. Denna är programmerbar och innehåller de program som behövs för att konvertera signalerna till avstånd, tillryggalagd sträcka, svängar och upptäckta RFID-taggar. Sensormodulen bildar ett medelvärde, beräknat från 30 mätningar, från varje avståndssensor och skickar det kontinuerligt till master, 
 kommunikationsmodulen, via en SPI-buss.
+
 
 \subsubsection{RFID-sensor}
 För att kunna detektera RFID-taggen så krävs en RFID-läsare. Vi använder oss av Par\-all\-ax-Read\-er\footnote{Datablad för Par\-all\-ax-Read\-er\, \url{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/rfid-reader-v21.pdf}, hämtad 2014-05-23}. 
