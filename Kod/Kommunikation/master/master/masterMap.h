@@ -1,3 +1,18 @@
+/******************************************************
+*
+*Code was produced as part of the project MapMaster2001
+*
+*File: masterMap.h
+*Purpose: container for the mapbuffer on Com-module
+*	awaiting to be sent to PC. Contains mapArea which holds
+*	all the mapsections.
+*
+*Created by: Hans-Filip Elo (hane742), Jens Edhammer (jened502)
+*
+********************************************************/
+
+
+
 #ifndef _Map_h
 #define _Map_h
 
@@ -19,12 +34,6 @@ class Map
 {
 public:
 	char mapArea[32][27];
-	//unsigned char** mapPtr[14];
-	
-	//char* getColAsChar(int);
-    //void setColAsChar(char*);
-    //void setSection(int, int, char*);
-    //char* getPos(int x, int y);
     
 #if DEBUG == 1
     void printMap();

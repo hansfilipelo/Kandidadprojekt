@@ -1,10 +1,13 @@
-//
-//  order.h
-//  
-//
-//  Created by Jens Edhammer on 2014-04-08.
-//
-//
+/******************************************************
+*
+*Code was produced as part of the project MapMaster2001
+*
+*File: order.h
+*Purpose: Class for all commands sent from PC to robot.
+*
+*Created by: Jens Edhammer (jened502), Tobias Grundström (tobgr602) 
+*
+********************************************************/
 
 class SerialPort;
 

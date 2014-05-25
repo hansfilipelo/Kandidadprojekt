@@ -1,12 +1,8 @@
-/*
- * slave.cpp
- *
- * Created: 4/7/2014 3:21:49 PM
- *  Author: niker917 davha227
- */ 
 
 #include "slave.h"
 
+
+// Initiates SPI slave
 void Slave::SPI_Init()
 {
     
@@ -35,6 +31,9 @@ void Slave::SPI_Init()
 	return;
 }
 
+// ----------------------------
+
+// When slave wants to send - ask master through interrupt
 void Slave::SPI_Send(){
 	position=0;
 	
@@ -47,6 +46,9 @@ void Slave::SPI_Send(){
     
 	return;
 }
+
+// ------------------------------------
+// Interrupts needed in main for any slave
 
 /*
 ISR(SPI_STC_vect){

@@ -1,10 +1,9 @@
-//
-//  node.h
-//
-//
-//  Created by Niklas Ericson on 2014-05-16.
-//
-//
+/*
+ File: queueAtmel.h
+ Purpose: Class helping A-star algorithm. Not implemented on robot. 
+    Re-implementation of C++ class queue.
+ */
+
 
 #ifndef queueATMEL_H
 #define queueATMEL_H

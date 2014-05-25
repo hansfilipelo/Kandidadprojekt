@@ -1,10 +1,8 @@
-//
-//  node.h
-//
-//
-//  Created by Niklas Ericson on 2014-05-16.
-//
-//
+/*
+ File: node.h
+ Purpose: Class helping A-star algorithm. Not implemented on robot.
+ */
+
 
 #ifndef NODE
 #define NODE

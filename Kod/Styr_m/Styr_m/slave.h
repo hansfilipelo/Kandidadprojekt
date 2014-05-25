@@ -1,9 +1,8 @@
 /*
- * slave.h
- *
- * Created: 4/7/2014 3:21:49 PM
- *  Author: niker917 davha227
- */ 
+ File: slave.h
+ Purpose: Class implementing functions for communications with bus master.
+ */
+
 #ifndef SLAVE
 #define SLAVE
 

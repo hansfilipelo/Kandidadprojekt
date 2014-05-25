@@ -1,18 +1,32 @@
-/*
- * bluetooth.cpp
- *
- * Created: 4/7/2014 3:21:49 PM
- *  Author: niker917 davha227
- */ 
-
+/******************************************************
+*
+*Code was produced as part of the project MapMaster2001
+*
+*File: spi.cpp
+*Purpose: Class for functions and buffers concerning bluetooth
+*
+*Created by: Niklas Ericson (niker917), David Habrman (davha227)
+*	Jens Edhammer (jened502)
+*
+********************************************************/
+ 
 #include "spi.h"
 #include "bluetooth.h"
+
+/*
+ *	Constructor. Takes pointers to the map and bluetooth classes.
+ */
 
 Spi::Spi(Bluetooth* ptr, Map* inMap){
 	bluetoothPointer = ptr;
 	mapPointer = inMap;
     init();
 }
+
+
+/*
+ *	Initialization of SPI on module, configured as master.
+ */
 
 void Spi::init(){
     
@@ -35,6 +49,12 @@ void Spi::init(){
 	EIMSK |= (1<<INT0)|(1<<INT2)|(1<<INT1);
 	EICRA |= (1<<ISC01)|(1<<ISC00)|(1<<ISC11)|(1<<ISC10)|(1<<ISC21)|(1<<ISC20);
 }
+
+
+/*
+ *	Transfer current SPDR register with slave's SPDR register.
+ */
+
 
 char Spi::transfer(char outData, unsigned int slave)
 {
@@ -62,6 +82,13 @@ char Spi::transfer(char outData, unsigned int slave)
 	return inData;
 }
 
+
+/*
+ *	Perform the function transfer for the appropriate
+ * 	amount of times specified as the length in the first
+ * 	element of the outarray.
+ */
+
 void Spi::sendArray(unsigned int slave){
 	
 	unsigned int length = 0;
@@ -73,11 +100,17 @@ void Spi::sendArray(unsigned int slave){
 	}
 }
 
+
+/*
+ *	Perform the transfer function as many time as needed specified
+ *	by the first incoming byte.
+ */
+
 void Spi::receiveArray(unsigned int slave){
 	
 	inDataArray[0] = transfer(0x00,slave);
 	unsigned int length = inDataArray[0];
-	_delay_us(6);//om data inte kommer fram korrekt, testa dÂ att hˆja denna.
+	_delay_us(6); // delay to ensure enough time between transmissions.
 	for (unsigned int i=1; i<=length; i++)
 	{
 		inDataArray[i] = transfer(0x00, slave);
@@ -85,24 +118,3 @@ void Spi::receiveArray(unsigned int slave){
 	}
 }
 
-
-
-unsigned char* Spi::getInDataArray()
-{
-	unsigned char* outPtr = new unsigned char;
-	
-	for (int i = 0; i < 27; i++)
-	{
-		outPtr[i] = inDataArray[i];
-	}
-	return outPtr;
-}
-
-void Spi::requestRow( unsigned int row)
-{
-	outDataArray[0] = 2;
-	outDataArray[1] = 'm';
-	outDataArray[2] =  row;
-	
-	sendArray(1);	
-}
