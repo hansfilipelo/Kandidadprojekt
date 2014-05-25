@@ -136,7 +136,6 @@ public:
 	char colArray[25];
 	
 	
-    int meanValueArray(char* inputArray, int iterations);
 	bool isCornerPassed();
     void updateRobotPosition();
 	void setFwdReference();

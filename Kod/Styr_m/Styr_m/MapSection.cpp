@@ -386,6 +386,8 @@ void Robot::rotateRight(){
 }
 
 //-----------------------------------------
+// Turns robot slowly left or right, decided by the adjustposition function.
+// Sets different speeds on the DC-engines.
 
 void Robot::turn(int pd){
     int output = floor(movementSpeed * 255 / 100);
@@ -490,7 +492,7 @@ void Robot::rightFrontValueIn(char right[3]){
 }
 
 // --------------------------------------------
-// Sets walls in Map
+// setClosed functions sets walls in Map.
 
 void Robot::setFwdClosed(){
 	
@@ -519,11 +521,7 @@ void Robot::setFwdClosed(){
                 mom->convertSection(xCoord,yCoord + i + 1, 'e');
 			}
 		}
-		// Probably not needed /H-F
-        /*if(output == 0 && speed == 0){
-         mom->convertSection(xCoord,yCoord + 1, 'c');
-         }*/
-	}
+    }
 	// Direction 17->y->0, "bwd"
 	else if (direction == 'b'){
         
@@ -536,10 +534,7 @@ void Robot::setFwdClosed(){
 				mom->convertSection(xCoord,yCoord - i - 1, 'e');
 			}
         }
-		// Probably not needed /H-F
-		/*if(output == 0 && speed == 0){
-         mom->convertSection(xCoord,yCoord - 1, 'c');
-         }*/
+	
 	}
 	// Direction 32->x->0, "left"
 	else if (direction == 'l'){									//left right kan vara omvänt, måste testas
@@ -553,10 +548,7 @@ void Robot::setFwdClosed(){
 				mom->convertSection(xCoord + i + 1,yCoord, 'e');
 			}
         }
-		// Probably not needed /H-F
-		/*if(output == 0 && speed == 0){
-         mom->convertSection(xCoord + 1,yCoord, 'c');
-         }*/
+	
 	}
 	// Direction 0->x->32, "right"
 	else if (direction == 'r'){
@@ -569,11 +561,7 @@ void Robot::setFwdClosed(){
 			if(mom->getPos(xCoord - i - 1,yCoord)->getType() != 'f' && mom->getPos(xCoord - i - 1,yCoord)->getType() != 'c'){
                 mom->convertSection(xCoord - i - 1,yCoord, 'e');
 			}
-        }
-		// Probably not needed /H-F
-		/*if(output == 0 && speed == 0){
-         mom->convertSection(xCoord - 1,yCoord, 'c');
-         }*/
+        
 	}
 }
 
@@ -590,7 +578,7 @@ void Robot::setBwdClosed(){
 		output = 80/40;
 	}
 	else{
-		output = getBwdDistance()/40; //ser vissa problem med detta.
+		output = getBwdDistance()/40;
 	}
 	
 	// Set closed section output + 1 steps away from robot.
@@ -700,10 +688,6 @@ void Robot::setLeftClosed(){
 			mom->convertSection(xCoord + output + 1,yCoord, 'c');
 			islandToLeft = true;
 		}
-		/*
-        if(output == 0 && !mom->getVisited(xCoord+1,yCoord)){
-	        mom->convertSection(xCoord + 1,yCoord, 'c');
-        }*/
 	}
     
     
@@ -769,9 +753,6 @@ void Robot::setRightClosed(){
 	
 	int output = 0;
     
-    /*if( getRightDifference() < -5 || getRightDifference() > 5){
-     return; //the too great uncertainty if.
-     }*/
 	
 	if ( rightFrontSensor > 60 ) { // this value might need to be calibrated
 		output = 80/40;//if distance is great only print max 2 empty.
@@ -854,19 +835,7 @@ void Robot::setRightClosed(){
 }
 
 //------------------------------------------------------
-
-int Robot::meanValueArray(char* inputArray, int iterations) {
-    // Create reasonable valid data from latest reads.
-    int total = 0;
-	int iter = iterations;
-	
-	for (int i = 0; i < iter; i++){
-		total = total + getValueFromArray(inputArray,i);
-	}
-	
-	return total / iter;
-}
-
+// Checks to see if the robot has passed a corner.
 bool Robot::isCornerPassed(){
 	if (rightBackSensor > 25)
 	{
@@ -885,13 +854,6 @@ void Robot::updateRobotPosition(){
         commObj->reactivateWheelSensor();
         MapSection* tempSection;
         
-        //halt
-        //setSpeed(0);
-        //drive();
-		//#if TESTING == 0
-		//_delay_ms(250);
-        //#endif
-        //setSpeed(userSpeed); //borde flyttas till efter switchen
         if(commObj->isRFID){
 	        setRFID();
 	        commObj->isRFID=false;
@@ -1003,7 +965,6 @@ void Robot::updateRobotPosition(){
             closeMap();
 			islandMode = true;
         }
-		//drive();
     }
 }
 
@@ -1020,6 +981,10 @@ char Robot::determineValidSensor(){
 }
 
 //------------------------------------------
+// Control function. Compares reference value to
+// actual sensor value to decide error.
+// Also checks if robot is traveling straight ahead.
+// Uses the turn function to adjust the robots position.
 
 
 
@@ -1098,6 +1063,8 @@ int Robot::getLeftDistance(){
 	}
 }
 
+
+//Changes the control parameters to the values set in GUI.
 void Robot::setControlParameters(double inputKp, double inputKd, int inputRef, int trimLeft, int trimRight){
     Kp=inputKp;
     Kd=inputKd;
@@ -1132,9 +1099,9 @@ void Robot::setUserSpeed(int inSpeed)
 	movementSpeed = inSpeed;
 }
 
-// --------------------------
 
-// -----------------------
+// ---------------------------------------------------------
+//Checks to see if there is a wall to the right of the robot.
 
 bool Robot::isWallRight(){
 	
@@ -1148,7 +1115,8 @@ bool Robot::isWallRight(){
     }
 }
 
-// --------------------------
+// -------------------------------------------------------
+// Checks if there is a corner to the right.
 
 bool Robot::isCornerRight(){
 	
@@ -1177,7 +1145,8 @@ bool Robot::isWallFwd(){
     
 }
 
-// --------------------------
+// ----------------------------------------------------------
+//Returns the difference between the sensors on the right side
 
 int Robot::getRightDifference(){
     int front;
@@ -1207,7 +1176,9 @@ bool Robot::isWallFwdClose()
     }
 }
 
-// ----------------
+// -------------------------------------------------
+// Function that closes sections depending on what
+// situation and mode that is active
 
 void Robot::robotRotated(){
 	if((RFIDmode)&&(getBwdDistance() < 30)&&(okayToClose)){
@@ -1255,12 +1226,14 @@ bool Robot::getRotateLeftActive()
 	return rotateLeftActive;
 }
 
-// ----------------------
+// --------------------------------
+// Function used as a delay in main loop
+// so that robot won't do anything until sensor
+// data has been updated
 
 void Robot::waitForNewData()
 {
 #if TESTING == 0
-	// This is ugly but DONT'T FUCKING TOUCH THIS! /H-F and Jens
 	asm("");
 	volatile int temp = bwdShortSensor;
 	asm("");
@@ -1276,7 +1249,8 @@ void Robot::waitForNewData()
 #endif
 }
 
-// ----------------------
+// ----------------------------------------
+// Used at the end of mapping to close the entire map if possible.
 
 void Robot::closeMap()
 {
@@ -1294,7 +1268,8 @@ void Robot::closeMap()
     }
 }
 
-
+//-----------------------------------------------------
+// Checks if robot has returned to start position.
 bool Robot::isHome(){
     if(xCoord == 16 &&  yCoord==1 && direction == 'r'){
         return true;
@@ -1302,6 +1277,7 @@ bool Robot::isHome(){
         return false;
     }
 }
+
 // Exploring
 // -----------------------
 
@@ -1326,12 +1302,13 @@ int Robot::getFinishY(){
 }
 
 // -------------------------------------------
+// Algorithm for robot behaviour at an "island".
+// Island is a part of the map that is in the middle of an empty area.
 
 
 void Robot::handleIsland()
 {
 	rotateLeft();
-    //lets try with only ifs
 	if(isCornerRight()){
 		while (!isCornerPassed()) {
 			changeGear('f');
@@ -1340,7 +1317,6 @@ void Robot::handleIsland()
         }
         //_delay_ms(25); // This delay ensures that we enter next segment.
         rotateRight();
-        //said !iswallright lets try iscornerpassed
 		while (isCornerPassed()) {
             changeGear('f');
             setSpeed(15);
@@ -1373,7 +1349,6 @@ void Robot::handleIsland()
 			rotateRight();
 		}
 		else{
-			// stod getUserSpeed() ist för 35
 			setSpeed(25);
 			changeGear('f');
 			drive();
@@ -1389,8 +1364,6 @@ int Robot::getFrontRightDistance()
 
 
 void Robot::explore(){
-    
-    //titta vŠnster
     
     while(stillUnexplored()){
         if(lookForULeft()){
@@ -1410,6 +1383,10 @@ void Robot::explore(){
         }
     }
 }
+
+//---------------------------------------------
+// Algorithm for exploring an "island", covers all
+// the different situations that can occur.
 
 void Robot::exploreIsland(){
 	if(!islandToLeft && !exploringIsland){
@@ -1511,6 +1488,10 @@ bool Robot::lookForULeft(){
     }
 }
 
+//-------------------------------------
+//Positions robot for driving across an open area
+// and drives untill a wall has been reached.
+
 void Robot::goAcross(){
     rotateLeft();
     
@@ -1522,6 +1503,11 @@ void Robot::goAcross(){
         
     }
 }
+
+//-------------------------------------------
+// Algorithm for following a wall on the right
+// side of the robot.
+// Covers many different cases and situations that can occur.
 
 void Robot::followRight(){
     
@@ -1540,7 +1526,6 @@ void Robot::followRight(){
        }
         // This delay ensures that we enter next segment.
         rotateRight();
-        //said !iswallright lets try iscornerpassed
         
 		this->changeGear('f');
 		this->setSpeed(20);
@@ -1550,7 +1535,6 @@ void Robot::followRight(){
         }
     }
     
-    //was elseif before
     if(!isCornerRight()&&isWallFwd()){
         this->setSpeed(25);
         this->changeGear('f');
@@ -1593,7 +1577,6 @@ void Robot::followRight(){
         else
         {
             
-            // stod robotPointer->getUserSpeed() ist fšr 35
             this->setSpeed(25);
             this->changeGear('f');
             this->drive();
@@ -1604,6 +1587,10 @@ void Robot::followRight(){
 }
 
 
+
+//------------------------------------
+// Returns true if there are any sections that
+// are unexplored
 bool Robot::stillUnexplored(){
     for(int x = 0; x <32; x++){
         for(int y = 0; y <17;y++){
@@ -1615,6 +1602,8 @@ bool Robot::stillUnexplored(){
     return false;
 }
 
+//--------------------------------------------------------
+// Runs until robot has returned to starting position.
 
 void Robot::goHome(){
     exploreX = xCoord;
@@ -1635,11 +1624,17 @@ void Robot::goHome(){
 }
 
 
+//----------------------------------------------------------
+// Saves robot position, helps in island exploring.
+// Robot will know when to return to outer wall.
+
 void Robot::savePosition(){
 	islandStartX = xCoord;
 	islandStartY = yCoord;
 }
 
+//--------------------------------------------------------------
+// Checks distance to wall at front of robot.
 bool Robot::isWallFwdExplore()
 {
 	 if ( getFwdDistance() == 0 ) {
