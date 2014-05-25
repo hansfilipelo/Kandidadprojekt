@@ -1,3 +1,16 @@
+/******************************************************
+*
+*Code was produced as part of the project MapMaster2001
+*
+*File: serialport.cpp
+*Purpose: Class for handling and using serialport bound to bluetooth.
+*
+*Created by: Jens Edhammer (jened502), Tobias Grundström (tobgr602) 
+*
+*Code produced in part from qt example, which can be found. 
+*  https://qt.gitorious.org/qt/qtserialport/source/c82120dd86881e964bf5104b608932d9e2ec7da4:examples/serialport/creaderasync/serialportreader.cpp
+*
+********************************************************/
 #include "serialport.h"
 
 #include <QCoreApplication>
@@ -6,6 +19,10 @@
 #include <QChar>
 
 QT_USE_NAMESPACE
+
+/*
+ *	Constructor of SerialPort. Connection of relevant slots.
+ */
 
 SerialPort::SerialPort(QSerialPort *serialPort, QObject *parent)
     : QObject(parent)
