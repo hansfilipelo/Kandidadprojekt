@@ -1,8 +1,6 @@
 /*
- * STYR.c
- *
- * Created: 3/27/2014 11:58:55 AM
- *  Author: hanel742 och tobgr602
+ File: Styr_m.cpp
+ Purpose: Main file for steer module. Interrupts and main loop implemented here.
  */
 
 #define F_CPU 14745600
@@ -33,11 +31,8 @@
 
 
 
-// Intiating global variables
+// Intiating global variables, which wee need since they are the only variables accessible from interrupts.
 // -----------------------------
-// Chooses direction
-//static int gear = 0;
-//static int speed = 0;
 Slave steerModuleSlave;
 Slave* slavePointer = &steerModuleSlave;
 Communication* abstractionObject = new Communication(slavePointer);
@@ -57,7 +52,7 @@ ISR(BADISR_vect){
 	p++;
 	asm("");	
 }
-//Gyro
+//Gyro interrupd
 ISR(INT0_vect){
 	asm("");
 	asm("");
@@ -66,7 +61,7 @@ ISR(INT0_vect){
 	asm("");
 	asm("");
 }
-//Wheel
+//Wheel counter interrupt
 ISR(INT1_vect){
 	asm("");
 	asm("");
@@ -76,6 +71,8 @@ ISR(INT1_vect){
 	asm("");
 }
 
+
+// Interrupt for copying bus data to buffer
 ISR(SPI_STC_vect){
 	steerModuleSlave.position++;
 	SPDR = steerModuleSlave.outDataArray[steerModuleSlave.position];
@@ -92,12 +89,13 @@ ISR(SPI_STC_vect){
 	}
 }
 
+// Interrupt for handling bus data
 ISR(PCINT2_vect){
 	abstractionObject->handleData();
 }
 
 // ---------------------------------
-
+// Initiates pwm for steer control
 void pwm_init()
 {
 	OCR2A = 0;
@@ -128,7 +126,6 @@ int main(void)
     // Set up interrupts
 	cli();
 	//MCUCR = 0b00000000;
-	
 	EIMSK = 0b0000011;
 	EICRA = 0b00001111;
 	//SMCR = 0x01;
@@ -139,6 +136,7 @@ int main(void)
 	DDRD &= ~((1<<DDD2)|(1<<DDD3));
 	
 	
+    // Initiate with gear forward (PWM default is backwards)
 	abstractionObject->setRobot(robotPointer);
     robotPointer->changeDirection('f');
 	robotPointer->changeGear('f');
@@ -151,12 +149,11 @@ int main(void)
 	
 #endif
 	
+    // Wait for new data and then mapping
 	robotPointer->waitForNewData();
 	robotPointer->waitForNewData();
 	robotPointer->setFwdReference();
 	robotPointer->setBwdReference();
-    
-	// Iterator for mapping
     
     //-----------------------------------------------------
     //right wall following loop
@@ -192,8 +189,8 @@ int main(void)
 			}
 		}
 		
-/*------------------HÖGERFÖLJNNG ----------------------
---------------------FollowWallMode-------------------------
+/*------------------ Right wall follower ----------------------
+--------------------OuterWallMode-------------------------
 -------------------------------------------------------*/
 		
 		
@@ -220,7 +217,7 @@ int main(void)
 	}
 	
 	
-/*------------------HÖGERFÖLJNNG ----------------------
+/*------------------Right wall follower ----------------------
 --------------------IslandMode-------------------------
 -------------------------------------------------------*/
 	
@@ -253,7 +250,7 @@ int main(void)
 		 }
 	}
 	/*--------------ExploreMode-----------------------------------------------------------------------*/
-	//this loop was used for exploring unknown areas not connected to islands, it was also made to after exploration 
+	//this loop was used for exploring unknown areas not connected to islands, it was also for after exploration
 	//return the robot to its starting pos
 	
 	for(;;){        
@@ -266,6 +263,7 @@ int main(void)
     
 	for(;;){
         asm("");
+        //return to home
         robotPointer->goHome();
         
         if(abstractionObject->sendMapNow){
@@ -275,8 +273,7 @@ int main(void)
             asm("");
         }
         asm("");
-        //bombo!
-        //return to home
+        //bombo! <-- Not implemented :(
 	}
     
     return 0;

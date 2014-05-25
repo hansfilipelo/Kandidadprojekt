@@ -1,10 +1,3 @@
-//
-//  node.cpp
-//  
-//
-//  Created by Niklas Ericson on 2014-05-16.
-//
-//
 
 #include "node.h"
 
