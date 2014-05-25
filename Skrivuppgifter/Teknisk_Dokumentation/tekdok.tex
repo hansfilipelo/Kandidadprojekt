@@ -17,20 +17,20 @@
 \usepackage{adjustbox}
 \usepackage{textcomp}
 \usepackage[T1]{fontenc}
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
 \usepackage{listings}
-\usepackage{xcolor,colortbl}
 \usepackage{hyperref}
 \usepackage{tocloft}
 
-%% Footnotes-Listing %%
+% %% Footnotes-Listing %%
 \newcommand{\listfootnotesname}{Referenser}% 'List of Footnotes' title 
 \newlistof[chapter]{footnotes}{fnt}{\listfootnotesname}% New 'List of...' for footnotes 
 \let\oldfootnote\footnote % Save the old \footnote{...} command 
-\renewcommand\footnote[1]{% Redefine the new footnote to also add 'List of Footnote' entries. 
-    \refstepcounter{footnotes}% Add and step a reference to the footnote/counter. 
-    \oldfootnote{#1}% Make a regular footnote. 
-    \addcontentsline{fnt}{footnotes}{\protect 
-\numberline{\thefootnotes}#1}% Add the 'List of...' entry. 
+ \renewcommand\footnote[1]{% Redefine the new footnote to also add 'List of Footnote' entries. 
+     \refstepcounter{footnotes}% Add and step a reference to the footnote/counter. 
+     \oldfootnote{#1}% Make a regular footnote. 
+     \addcontentsline{fnt}{footnotes}{\protect 
+ \numberline{\thefootnotes}#1}% Add the 'List of...' entry. 
 }
 
 \include{pagestyle}
@@ -944,5 +944,11 @@ Nedan följer en lista med tillhörande bild, figur~\ref{fig:gui_man} för att d
   \label{fig:gui_man} %glöm inte att uppdatera era labels
 \end{figure}
 
+\section{Programvara}
+
+\lstset{language=C++}
+
+
+\lstinputlisting[language=C++]{../../Kod/Styr_m/Styr_m/MapSection.cpp}
 
 \end{document}
