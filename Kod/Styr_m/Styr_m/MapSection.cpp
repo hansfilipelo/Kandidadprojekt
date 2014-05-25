@@ -24,7 +24,7 @@ MapSection::MapSection(int x,int y, Map* inMom, char createType){
 MapSection::~MapSection(){};
 
 // ----------------------------
-// Set stuff
+// Set coordinates and map segment type.
 
 void MapSection::setX(int coord){
 	xCoord=coord;
@@ -53,6 +53,7 @@ char MapSection::getType(){
 }
 
 //---------------------------------------------------------
+// Retrieves coordinates of different sections relative to asked section.
 
 MapSection* MapSection::getTop(){
 	return mom->getPos(xCoord, yCoord + 1);
@@ -75,6 +76,7 @@ MapSection* MapSection::getRight(){
 
 
 //----------------------------------------------------------
+// Check to see if the asked section is of type "unexplored"
 
 bool MapSection::isUnexplored(){
 	if (type == 'u') {
@@ -85,62 +87,7 @@ bool MapSection::isUnexplored(){
 	}
 }
 
-// SLAM algorithms -------------------------------------
-
-int MapSection::findUnexplored(){
-	int topCounter;
-	int botCounter;
-	int leftCounter;
-	int rightCounter;
-	
-	if (getTop()->isUnexplored()){
-		topCounter=1;
-	}
-	else{
-		topCounter= getTop()->findUnexplored()+1;
-	}
-	
-	if (getBottom()->isUnexplored()){
-		botCounter=1;
-	}
-	else{
-		botCounter= getBottom()->findUnexplored()+1;
-	}
-	
-	if (getLeft()->isUnexplored()){
-		leftCounter=1;
-	}
-	else{
-		leftCounter= getLeft()->findUnexplored()+1;
-	}
-	
-	if (getRight()->isUnexplored()){
-		rightCounter=1;
-	}
-	else{
-		rightCounter= getRight()->findUnexplored()+1;
-	}
-	
-	if(topCounter < botCounter || topCounter < leftCounter || topCounter < rightCounter){
-		next = 't';
-		return topCounter;
-	}
-	else if (botCounter < leftCounter || botCounter < rightCounter){
-		next = 'b';
-		return botCounter;
-	}
-	else if (leftCounter < rightCounter){
-		next = 'l';
-		return leftCounter;
-	}
-	else {
-		next = 'r';
-		return rightCounter;
-	}
-}
-
-
-// -----------------------------
+// --------------------------------------------------------------
 // Cancer function for filling unexplored spaces not reachable
 
 void MapSection::cancer(){

@@ -1,3 +1,8 @@
+/*
+ File: MapSection.h
+ Purpose: Class working as the different segments that the map is made of. The Subclass robot works as both the segment of the map that contains the robot and as the class that controls the robot, it contains both PD-regulation algorithms as well as steer commands and exploring algorithms.
+ */
+
 #ifndef _MapSection_h
 #define _MapSection_h
 
@@ -52,7 +57,6 @@ public:
     virtual void cancer();
     
     virtual bool isUnexplored();
-    virtual int findUnexplored();
 	bool isVisited = false;
     int detected = 0;
 	

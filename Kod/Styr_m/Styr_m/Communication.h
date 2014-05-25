@@ -1,5 +1,5 @@
 /*
- File: Communicaiton.h
+ File: Communication.h
  Purpose: Class working as abstraction layer between the logical (software) robot and the bus slave. 
  */
 
