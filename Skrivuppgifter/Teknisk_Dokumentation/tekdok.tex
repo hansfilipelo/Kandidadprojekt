@@ -238,7 +238,7 @@ För ytterligare fördjupning i SLAM-problemet - se Kappan och dokumentet \texti
 Roboten kan köras autonomt också manuellt via PC-mjukvara. Då roboten körs autonomt kan den reglera längs en vägg. 
 
 \subsubsection{Reglering av styrning}
-Styrmodulen får sensor-data skickad till sig från sensormodulen. Detta data används till att reglera riktningen då man följer en vägg.
+Styrmodulen får sensordata skickad till sig från sensormodulen. Detta data används till att reglera riktningen då man följer en vägg.
 
 Den proportionella delen av regleringen reglerar avståndet från sensorerna på robotens högersida jämfört med ett internt referensavstånd. Denna reglering ser till att roboten håller sig inom ett rimligt avstånd till den vägg som följs.
 $ e_p = K_{p}*avst\text{\it{å}}ndssensordata $
@@ -554,7 +554,9 @@ Styrmodulen är ansluten till bussen med hjälp av MISO- och MOSI-pinnarna.
 ~\\
 Utöver detta är en tryckknapp ansluten till RESET för att förenkla felsökning och uppstart. 
 
-För fullständigt kopplingsschema - se Appendix. 
+\subsection{Konstruktion av styrmodul}
+
+Vid konstruktion av styrmodulen används chassit som grund. Till chassit kopplas batteriet med den medföljande strömkabeln. Systemchippet placeras tillsammans med resetknappen och en sockel för JTAG, som används vid programmering av modulen, på ett virkort. Utöver detta kopplas även en extern klocka in, i form av en kristalloscillator. Signalerna för bussen kopplas till en egen sockel för att underlätta användning av bandkabel mellan moduler. För fullständigt kopplingsschema till styrmodulen, se Appendix. 
 
 \newpage
 
