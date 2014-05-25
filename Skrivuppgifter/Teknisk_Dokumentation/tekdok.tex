@@ -257,10 +257,92 @@ $e = e_d + e_p$
 Konstanterna $K_{p}$ och $K_{d}$ kan dels väljas i mjukvaran för persondator, men de initieras som standard till $K_{p}=5$ och $K_{d}=7$.
 
 
+%------------------Signalbehandling
+
 \subsection{Filtrering av analoga insignaler}
 
-\subsection{Trådlös kommunikation med robot}
+
+
+%-----------------Kommunikation
+\subsection{Kommunikation}
+Eftersom roboten byggs och styrs med tre moduler med en processor var krävs kommunikation mellan processorerna, denna utförs med en buss. Bussen som används är en SPI-buss.
+Dessutom för att kunna få kartan ritad på en PC krävs trådlös kommunikation mellan robot och PC.
+
+\subsubsection{Trådlös kommunikation}
 För den trådlösa kommunikationen med roboten används Bluetooth. En kortare undersökning angående olika typer av trådlös kommunikation finns att tillgå i fördjupningsuppgiften \emph{''Trådlös Kommunikation''}\footnote{Ericson, N. Edhammer, J. (2014), \textit{''Trådlös kommunikation''}} som kan hittas i Kappan - Appendix A
+Kommunikationen över Bluetooth utförs av Firefly-Bluesmirf Gold (FBG), figur~\ref{fig:firefly}, ett modem som parkopplas mot en persondator.
+FBG skickar information till persondator via protokollet RS232 enligt vad som är angivet på Vanheden. 
+Se appendix Scheman för schema över anslutning av TxD och RxD, vilka sköter sändning och mottagning av data.
+När vi skickar data till processorn så är detta avbrottshanterat. I avbrottet utnyttjas en databuffer vid namn inDataArray som sedan kopieras till bufferten pcHandle i datahanteringen av Bluetooth. Även Bluetooth datahanteras utanför avbrotten precis som SPI-kommunikationen.
+
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,width=0.4\textwidth]{bilder/robotbilder/Firefly.jpg}  %skala och filnamn. 
+  \end{center}
+  \caption{FireFly-BlueSmirf Gold monterad på roboten} %figurtext.
+  \label{fig:firefly}
+\end{figure}
+
+
+\paragraph{Skickning av kartan}
+För att undvika problem vid mottagning av kartan på PC sidan skickas en rad i taget med hjälp av en timer. Main-loopen på kommunikationsmodulen kollar en gång per huvud-loop om det är okej att skicka en rad. När timern genererar ett avbrott sätts en flagga att ytterligare en rad är redo att skickas. När samtliga rader har skickats över, sätts flaggan som avgör om kartrader ska skickas över till false.
+
+\subsubsection{Master-modulens mottagning över buss}
+
+Master modulen hämtar data från en slave när den signalerar att data finns redo genom ett av avbrotten INT0 eller INT1. Där INT0 tillhör sensormodulen och INT1 tillhör styrmodulen. Datahantering sker utanför avbrotten genom att sanningsvariabler sätts i avbrotten efter färdig mottagning av data.
+Slave skickar som första data längden på överföringen. Det är denna som gör att vi kan säga när mottagningen är klar. Hela metoden kan utläsas ur flödesschemat i figur~\ref{fig:spimaster}
+
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,width=0.4\textwidth]{bilder/masterinterrupt.jpg}  %skala och filnamn. 
+  \end{center}
+  \caption{Mottagning av data från slave} %figurtext.
+  \label{fig:spimaster}
+\end{figure}
+
+
+\subsubsection{Slave-modulers mottagning över buss}
+När vår master-modul initierar SPI-kommunikationen med en slave dras SlaveSelect-signalen för den givna processorn låg för att generera ett SPI-avbrott på sagda slave. När slave har tagit emot det antal bytes som specificeras av första byten i paketet genereras ett internt avbrott med hjälp av PCint16. I detta nya avbrott hanteras datan från transmissionen. En övergripande struktur angående mottagningen av SPI-trafik kan ses i flödesdiagrammet i figur~\ref{fig:spislave}
+
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,width=0.4\textwidth]{bilder/spislaverec.jpg}  %skala och filnamn. 
+  \end{center}
+  \caption{Översiktsbild av mottagning för en SPI-slav} %figurtext.
+  \label{fig:spislave}
+\end{figure}
+
+\subsubsection{Busstrafik}
+På bussen kommer ett antal olika typer av kommandon att skickas. Dessa förklaras i paragraferna nedan. 
+Tyngre och snabbt på varandra följande transmissioner kan leda till låsningar av bussen i form av att till exempel sensordata slutar levereras till Bluetoothmodulen eller att ett kommando missas. Därför hanteras de tyngsta transmissionerna med en konfirmationsstruktur.
+De tyngsta kommandona utförs endast på icke-kritiska tillfällen i respektive slave-modul.
+
+\paragraph{Styrkommandon från PC}
+~\\
+När styrkommandona skickas från PC, kommer kommunikationsmodulen skicka datan vidare till styrmodulen som utför kommandot.
+\paragraph{Konverterat sensor-data}
+~\\
+Sensor-data kommer att behandlas i sensormodulen och därefter kommer modulen att skicka ett avbrott till master om att data finns tillgängligt. Mastern svarar och startar bussöverföringen.
+\paragraph{Kartabstraktion så styrenheten kan välja färdväg}
+~\\
+Kartabstraktionen och robotens position kommer att uppdateras allt eftersom ny sensordata kommer in. Efter att ny sensordata har mottagits av master skickar mastern ut sensordata till styrenheten.
+\paragraph{Kommandon för inställning av reglerparametrar.}
+~\\
+Kommandon mottags via blåtand från PC på mastern, som skickar detta vidare till styrenheten. 
+\paragraph{RFID aktivering och bekräftelse}
+~\\
+Kommandot skickas från styrmodulen via mastern som speglar ner kommandot till sensormodulen. Sensormodulen startar då RFID-läsning och skickar bekräftelse till styrmodulen när RFID-kortet är detekterat.  
+
+\paragraph{Aktivering av gyro och bekräftelse}
+~\\
+Kommandot skickas från styrmodulen via mastern som speglar ner kommandot till sensormodulen. Sensormodulen startar då en Gyro-omvandling och skickar bekräftelse till styrmodulen när roboten har roterat 90 grader något håll. 
+
+\paragraph{Aktivering av hjulsensor och bekräftelse}
+~\\
+Kommandot skickas från styrmodulen via mastern som speglar ner kommandot till sensormodulen. Sensormodulen startar då en mätning på hjulsensorn och skickar bekräftelse till styrmodulen när roboten har färdats 40 cm. 
+
+
+
 
 %-----------------------------------------------------------------
 %Systemet
@@ -393,59 +475,6 @@ Mellan processorerna används SPI som bussprotokoll. Kommunikationsmodulen agera
 	\item SCK - Serial Clock, klocka från master.
 \end{itemize}
 
-\subsubsection{Master-modulens mottagning}
-
-Master modulen hämtar data från en slave när den signalerar att data finns redo genom ett av avbrotten INT0 eller INT1. Där INT0 tillhör sensormodulen och INT1 tillhör styrmodulen. Datahantering sker utanför avbrotten genom att sanningsvariabler sätts i avbrotten efter färdig mottagning av data.
-Slave skickar som första data längden på överföringen. Det är denna som gör att vi kan säga när mottagningen är klar. Hela metoden kan utläsas ur flödesschemat i figur~\ref{fig:spimaster}
-
-\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
-  \begin{center}
-  \includegraphics[keepaspectratio=true,width=0.4\textwidth]{bilder/masterinterrupt.jpg}  %skala och filnamn. 
-  \end{center}
-  \caption{Mottagning av data från slave} %figurtext.
-  \label{fig:spimaster}
-\end{figure}
-
-
-\subsubsection{Slave-modulers mottagning}
-När vår master-modul initierar SPI-kommunikationen med en slave dras SlaveSelect-signalen för den givna processorn låg för att generera ett SPI-avbrott på sagda slave. När slave har tagit emot det antal bytes som specificeras av första byten i paketet genereras ett internt avbrott med hjälp av PCint16. I detta nya avbrott hanteras datan från transmissionen. En övergripande struktur angående mottagningen av SPI-trafik kan ses i flödesdiagrammet i figur~\ref{fig:spislave}
-
-\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
-  \begin{center}
-  \includegraphics[keepaspectratio=true,width=0.4\textwidth]{bilder/spislaverec.jpg}  %skala och filnamn. 
-  \end{center}
-  \caption{Översiktsbild av mottagning för en SPI-slav} %figurtext.
-  \label{fig:spislave}
-\end{figure}
-
-\subsubsection{Busstrafik}
-På bussen kommer ett antal olika typer av kommandon att skickas. Dessa förklaras i paragraferna nedan. 
-Tyngre och snabbt på varandra följande transmissioner kan leda till låsningar av bussen i form av att till exempel sensordata slutar levereras till Bluetoothmodulen eller att ett kommando missas. Därför hanteras de tyngsta transmissionerna med en konfirmationsstruktur.
-De tyngsta kommandona utförs endast på icke-kritiska tillfällen i respektive slave-modul.
-
-\paragraph{Styrkommandon från PC}
-~\\
-När styrkommandona skickas från PC, kommer kommunikationsmodulen skicka datan vidare till styrmodulen som utför kommandot.
-\paragraph{Konverterat sensor-data}
-~\\
-Sensor-data kommer att behandlas i sensormodulen och därefter kommer modulen att skicka ett avbrott till master om att data finns tillgängligt. Mastern svarar och startar bussöverföringen.
-\paragraph{Kartabstraktion så styrenheten kan välja färdväg}
-~\\
-Kartabstraktionen och robotens position kommer att uppdateras allt eftersom ny sensordata kommer in. Efter att ny sensordata har mottagits av master skickar mastern ut sensordata till styrenheten.
-\paragraph{Kommandon för inställning av reglerparametrar.}
-~\\
-Kommandon mottags via blåtand från PC på mastern, som skickar detta vidare till styrenheten. 
-\paragraph{RFID aktivering och bekräftelse}
-~\\
-Kommandot skickas från styrmodulen via mastern som speglar ner kommandot till sensormodulen. Sensormodulen startar då RFID-läsning och skickar bekräftelse till styrmodulen när RFID-kortet är detekterat.  
-
-\paragraph{Aktivering av gyro och bekräftelse}
-~\\
-Kommandot skickas från styrmodulen via mastern som speglar ner kommandot till sensormodulen. Sensormodulen startar då en Gyro-omvandling och skickar bekräftelse till styrmodulen när roboten har roterat 90 grader något håll. 
-
-\paragraph{Aktivering av hjulsensor och bekräftelse}
-~\\
-Kommandot skickas från styrmodulen via mastern som speglar ner kommandot till sensormodulen. Sensormodulen startar då en mätning på hjulsensorn och skickar bekräftelse till styrmodulen när roboten har färdats 40 cm. 
 
 \subsection{LCD-Display}
 Sensordata och annan information från roboten visas på en alfanumerisk-display, närmare bestämt LCD JM162A. Displayen används för att visa sensordata samt eventuella parametrar för debugging under tester. Displayen är ansluten till processorn enligt kretschemat i appendix A. 
@@ -492,14 +521,6 @@ Skrivning till LCD-displayen kommer ske enligt flödesschemat~\ref{fig:flowlcdwr
   \label{fig:flowlcdwrite}
 \end{figure}
 
-\subsection{Bluetooth}
-Kommunikationen över Bluetooth utförs av Firefly-Bluesmirf gold (FBG), ett modem som parkopplas mot en persondator.
-FBG skickar information till persondator via protokollet RS232 enligt vad som är angivet på Vanheden. 
-Se appendix Scheman för schema över anslutning av TxD och RxD, vilka sköter sändning och mottagning av data.
-När vi skickar data till processorn så är detta avbrottshanterat. I avbrottet utnyttjas en databuffer vid namn inDataArray som sedan kopieras till bufferten pcHandle i datahanteringen av Bluetooth. Även Bluetooth datahanteras utanför avbrotten precis som SPI-kommunikationen.
-
-\subsubsection{Skickning av kartan}
-För att undvika problem vid mottagning av kartan på PC sidan skickas en rad i taget med hjälp av en timer. Main-loopen på kommunikationsmodulen kollar en gång per huvud-loop om det är okej att skicka en rad. När timern genererar ett avbrott sätts en flagga att ytterligare en rad är redo att skickas. När samtliga rader har skickats över, sätts flaggan som avgör om kartrader ska skickas över till false.
 
 \subsection{Switchar}
 En switch styr om roboten exekverar programkod för autonom styrning eller manuell styrning. Denna switch kan även byta läge via ett virtuellt kommando från PC. Ett avbrott signalerar till processorn att den ska byta programkod, avbrottet ligger på pin16 (INT0) se appendix A. Av/På-knappen styr strömförsörjningen till samtliga moduler. 
@@ -556,7 +577,15 @@ Utöver detta är en tryckknapp ansluten till RESET för att förenkla felsökni
 
 \subsection{Konstruktion av styrmodul}
 
-Vid konstruktion av styrmodulen används chassit som grund. Till chassit kopplas batteriet med den medföljande strömkabeln. Systemchippet placeras tillsammans med resetknappen och en sockel för JTAG, som används vid programmering av modulen, på ett virkort. Utöver detta kopplas även en extern klocka in, i form av en kristalloscillator. Signalerna för bussen kopplas till en egen sockel för att underlätta användning av bandkabel mellan moduler. För fullständigt kopplingsschema till styrmodulen, se Appendix. 
+Vid konstruktion av styrmodulen används chassit som grund. Till chassit kopplas batteriet med den medföljande strömkabeln. Systemchippet placeras tillsammans med resetknappen och en sockel för JTAG, som används vid programmering av modulen, på ett virkort. Utöver detta kopplas även en extern klocka in, i form av en kristalloscillator. Signalerna för bussen kopplas till en egen sockel för att underlätta användning av bandkabel mellan moduler, bandkabel syns i figur\ref{fig:band}. För fullständigt kopplingsschema till styrmodulen, se Appendix. 
+
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,width=0.5\linewidth]{bilder/robotbilder/Bandkabel.jpg}  %skala och filnamn. 
+  \end{center}
+  \caption{Bandkabel mellan virkorten} %figurtext.
+  \label{fig:band}
+\end{figure}
 
 \newpage
 
