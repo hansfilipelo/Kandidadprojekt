@@ -261,7 +261,16 @@ Konstanterna $K_{p}$ och $K_{d}$ kan dels väljas i mjukvaran för persondator, 
 %------------------Signalbehandling
 
 \subsection{Filtrering av analoga insignaler}
+För att det ska vara möjligt för roboten att utföra sitt uppdrag krävs ett flertal sensorer. Roboten använder sig därför av flera avståndssensorer, ett gyroskop, en reflexsensor och en RFID-läsare. De flesta av dessa (alla utom RFID-läsaren) ger analoga utsignaler. Dessa sensorer A/D-konverteras internt på processorn och kopplas till processorns ADC-pinnar. Processorn har en intern mux kopplad till ADC-pinnarna som gör det möjligt att välja den aktuella insignalen, alltså vilken sensor som skall avläsas. Det digitala värde som kommer från A/D-konverteringen är inte ett avstånd angett i meter eller en vinkelhastiget given i grader per sekund utan värdet är istället en spänningsreferens. Spänningsreferensen kan sedan konverteras till ett avstånd, en vinkelhastighet eller en gråskala (reflexsensorn).
 
+\subsubsection{Avståndssensorer}
+Roboten använder sig av två olika typer av sensorer, mellandistans (20-150 cm) och kortdistans (10-80 cm). Avståndssensorerna är dock uppbyggda på samma sätt och ger en analog spänningsreferens. Spänningsreferensen A/D-omvandlas och måste sedan konverteras till ett avstånd. För att göra detta togs två olika formler, en för varje typ av avståndssensor. Formlerna togs fram genom att notera vilken spänningsreferens som representerade vilket avstånd, plotta avstånd mot spänning och slutligen togs en fjärdegradskurva, som passade plotten, fram. 
+
+\subsubsection{Reflexsensor}
+För att beräkna den sträckan som roboten kört så används en reflexsensor. På ett av robotens hjul tejpas en papparsskiva fast. Skivan består av tolv ''tårtbitar'', varannan vit och varannan svart. När hjulet snurrar så läser reflexsensorn av hur många gånger som ''tårtbitarna'' skiftat färg. Sensorn ger en analog utsignal som representerar en gråskala. Mörkare avläsningsyta ger en högre utsignal och ljusare ger en lägre. Ett tröskelvärde införs och sedan räknas varje gång den A/D-omvandlade signalen skiftar sida om tröskelvärdet. Genom att multiplicera räknaren med hjulets omkreds delat på tolv så kan den tillryggalagda sträckan beräknas.
+
+\subsubsection{Gyroskop}
+Gyroskopet ger en spänningsreferens som representerar vinkelhastighet. Dess A/D-omvandlade referens omvandlas dock inte till vinkelhastighet. Vi utnyttjar istället den digitala spänningsreferensen och adderar respektive subtraherar den från en tänkt ''vinkel'' med jämna mellanrum. Då intervallen mellan varje läsning är lika vet vi att en perfekt 90-graderssväng representeras av en summa. För att ta fram summan utfördes en enkel kalibrering genom att snurra på roboten 90 grader och se vad summan blev. 
 
 
 \newpage
