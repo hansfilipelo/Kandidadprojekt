@@ -7,7 +7,6 @@
 *	awaiting to be sent to PC. Contains mapArea which holds
 *	all the mapsections.
 *
-*Created by: Hans-Filip Elo (hane742), Jens Edhammer (jened502)
 *
 ********************************************************/
 

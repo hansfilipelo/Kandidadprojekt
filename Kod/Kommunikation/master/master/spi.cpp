@@ -5,8 +5,6 @@
 *File: spi.cpp
 *Purpose: Class for functions and buffers concerning bluetooth
 *
-*Created by: Niklas Ericson (niker917), David Habrman (davha227)
-*	Jens Edhammer (jened502)
 *
 ********************************************************/
  

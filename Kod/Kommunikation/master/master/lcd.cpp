@@ -5,8 +5,6 @@
 *File: lcd.cpp
 *Purpose: 
 *
-*Created by: Niklas Ericson (niker917), David Habrman (davha227)
-*	Jens Edhammer (jened502)
 *
 ********************************************************/
 
