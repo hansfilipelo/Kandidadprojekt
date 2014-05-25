@@ -287,6 +287,20 @@ När vi skickar data till processorn så är detta avbrottshanterat. I avbrottet
 \paragraph{Skickning av kartan}
 För att undvika problem vid mottagning av kartan på PC sidan skickas en rad i taget med hjälp av en timer. Main-loopen på kommunikationsmodulen kollar en gång per huvud-loop om det är okej att skicka en rad. När timern genererar ett avbrott sätts en flagga att ytterligare en rad är redo att skickas. När samtliga rader har skickats över, sätts flaggan som avgör om kartrader ska skickas över till false.
 
+\subsection{Kommunikationsmodulens huvudloop}
+
+Huvudloopen på kommunikationsmodulen kollar ett antal sanningsvariabler för att avgöra om ny data finns tillgänglig för datahantering. För flödet, se figur~\ref{fig:mainmaster}
+
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,width=0.8\textwidth]{bilder/mainmaster.jpg}  %skala och filnamn. 
+  \end{center}
+  \caption{Kommunikationsmodulens huvudloop} %figurtext.
+  \label{fig:mainmaster}
+\end{figure}
+
+
+
 \subsubsection{Master-modulens mottagning över buss}
 
 Master modulen hämtar data från en slave när den signalerar att data finns redo genom ett av avbrotten INT0 eller INT1. Där INT0 tillhör sensormodulen och INT1 tillhör styrmodulen. Datahantering sker utanför avbrotten genom att sanningsvariabler sätts i avbrotten efter färdig mottagning av data.
@@ -451,17 +465,7 @@ Komponenterna är numrerade och finns att hitta i kretsschemat, se~\ref{fig:kopp
   \item Lysdiod
 \end{enumerate}
 
-\subsection{Kommunikationsmodulens huvudloop}
 
-Huvudloopen på kommunikationsmodulen kollar ett antal sanningsvariabler för att avgöra om ny data finns tillgänglig för datahantering. För flödet, se figur~\ref{fig:mainmaster}
-
-\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
-  \begin{center}
-  \includegraphics[keepaspectratio=true,width=0.8\textwidth]{bilder/mainmaster.jpg}  %skala och filnamn. 
-  \end{center}
-  \caption{Kommunikationsmodulens huvudloop} %figurtext.
-  \label{fig:mainmaster}
-\end{figure}
 
 \subsection{Buss}
 Mellan processorerna används SPI som bussprotokoll. Kommunikationsmodulen agerar master medan styr- och sensormodul agerar slaves. Kommunikation kommer alltid att initieras av master och om slave vill skicka data, genererar de ett avbrott på master som talar om att de har data som är redo att skickas. Bussen använder följande kopplingar:
@@ -524,6 +528,11 @@ Skrivning till LCD-displayen kommer ske enligt flödesschemat~\ref{fig:flowlcdwr
 
 \subsection{Switchar}
 En switch styr om roboten exekverar programkod för autonom styrning eller manuell styrning. Denna switch kan även byta läge via ett virtuellt kommando från PC. Ett avbrott signalerar till processorn att den ska byta programkod, avbrottet ligger på pin16 (INT0) se appendix A. Av/På-knappen styr strömförsörjningen till samtliga moduler. 
+
+\subsection{Konstruktion}
+Kommunikationsmodulen är monterad på ett separat virkort och bussledningarna kopplas till en bandkabel för sammankoppling med det andra virkortet.  Bandkabeln förser även virkortet med spänning.
+Bluetooth-modemet kopplas in i en av de redan existerande socklarna på virkortet. Även för JTAG på kommunikationsmodulen utnyttjas en redan existerande sockel. LCD-Displayen samt switch-knappen placeras på kortet och viras fast. Resetknappen är konstruerad med ett pull-up motstånd för detaljerad information se kopplingsschema i figur~\ref{fig:kopplingkom}
+Utöver detta kopplas även en extern klocka in, i form av en kristalloscillator.
 
 % ----------------------------- Styrmodul ----------------------------------------
 % --------------------------------------------------------------------------------
