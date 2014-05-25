@@ -257,12 +257,14 @@ $e = e_d + e_p$
 Konstanterna $K_{p}$ och $K_{d}$ kan dels väljas i mjukvaran för persondator, men de initieras som standard till $K_{p}=5$ och $K_{d}=7$.
 
 
+\newpage
 %------------------Signalbehandling
 
 \subsection{Filtrering av analoga insignaler}
 
 
 
+\newpage
 %-----------------Kommunikation
 \subsection{Kommunikation}
 Eftersom roboten byggs och styrs med tre moduler med en processor var krävs kommunikation mellan processorerna, denna utförs med en buss. Bussen som används är en SPI-buss.
@@ -584,6 +586,7 @@ Styrmodulen är ansluten till bussen med hjälp av MISO- och MOSI-pinnarna.
 ~\\
 Utöver detta är en tryckknapp ansluten till RESET för att förenkla felsökning och uppstart. 
 
+\newpage
 \subsection{Konstruktion av styrmodul}
 
 Vid konstruktion av styrmodulen används chassit som grund. Till chassit kopplas batteriet med den medföljande strömkabeln. Systemchippet placeras tillsammans med resetknappen och en sockel för JTAG, som används vid programmering av modulen, på ett virkort. Utöver detta kopplas även en extern klocka in, i form av en kristalloscillator. Signalerna för bussen kopplas till en egen sockel för att underlätta användning av bandkabel mellan moduler, bandkabel syns i figur\ref{fig:band}. För fullständigt kopplingsschema till styrmodulen, se Appendix. 
@@ -603,7 +606,7 @@ Vid konstruktion av styrmodulen används chassit som grund. Till chassit kopplas
 % --------------------------------------------------------------------------------
 
 \section{Sensormodul}
-Sensormodulens uppgift är att hantera sensordata från robotens nio sensorer och sända detta vidare till kommunikationsmodulen i ett hanterbart format. Sensormomdulen är byggd kring AVR-processorn ATMEL 1284p. En överblick av systemet visas i figur~\ref{fig:sensoroverview}.
+Sensormodulens uppgift är att A/D-omvandla signaler från robotens avståndssensorer, reflexsensor och gyro för att sedan sända detta vidare till kommunikationsmodulen i ett hanterbart format. Den har även som uppgift att detektera brandhärdar som i detta fall representeras av RFID-taggar. I figur~\ref{fig:sensorflow} beskrivs hanteringen av sensordata. Sensormomdulen är byggd kring AVR-processorn ATMEL 1284p. En överblick av systemet visas i figur~\ref{fig:sensoroverview}.
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
@@ -629,10 +632,6 @@ Port A används som en A/D-omvandlare. PIN 39 kopplas till en reflexsensor, se f
 PIN 34 kopplas till en avståndssensor för mellandistans, GP2Y0A02YK, och PIN 35 kopplas till ett gyro för vinkelhastighetsmätning, ML\-X9\-06\-09. Port B används för busskommunikation. PIN 3 skickar avbrott till master, PIN 5 används till slave select master, PIN 6 tar emot data från bussen, PIN7 skickar data till bussen och till PIN 8 kopplas klockan från master. Till port C PIN 23 kopplas en RFID-läsare, Parallax-Reader. Port D används inte i denna modul. 
 
 PIN 31 och 11 kopplas till jord, PIN 13 kopplas till klocka från master, PIN 12 används inte i denna modul, PIN 9 kopplas till en avstudsad manuell switch, en reset-knapp, PIN 32 kopplas till en spänningskälla på 5 V som används som referensspänning, PIN 10 kopplas också den till en spänningskälla på 5 V och PIN 30 kopplas genom ett LP-filter till samma externa spänningskälla.
-
-
-\subsection{Uppgift}
-Sensormodulens uppgift är att A/D-omvandla signaler från robotens avståndssensorer, reflexsensor och gyro för att sedan utnyttja dessa digitala värden för att uppskatta avstånd och tillryggalagd sträcka. Den har även som uppgift att detektera brandhärdar som i detta fall representeras av RFID-taggar. I figur~\ref{fig:sensorflow} beskrivs hanteringen av sensordata.
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
@@ -702,7 +701,7 @@ Det grafiska gränssnittet är skrivet i Qt 5.3.0 och är designat i QtCreator. 
 \end{itemize}
 
 \subsection{Bluetooth}
-Bluetooth mottagningen på PC fungerar genom att modulen i PC virtualiserar en seriellport som sedan data kan skickas på. För att skapa porten utnyttjas den inbyggda klassen i Qt, QSerialPort. Denna initialiserar Bluetooth kopplingen och sätter inställningar som läs-skriv läge, BaudRate, antal databitar, paritet och stopbitar. Det är alltid exakt 27 bytes per transmission. 
+Bluetooth mottagningen på PC fungerar genom att modulen i PC virtualiserar en seriellport som sedan data kan skickas på. För att skapa porten utnyttjas den inbyggda klassen i Qt, QSerialPort. Denna initialiserar Bluetooth kopplingen och sätter inställningar som läs-skriv läge, BaudRate, antal databitar, paritet och stopbitar. Det är alltid exakt 27 bytes per transmission enligt specificerat protokoll, se figur {fig:bussprotocol}. 
 
 Qt har händelsehantering. Qt kallar dessa händelser för slots och de kan liknas med avbrott.
 
@@ -736,7 +735,7 @@ Kartan använder sig av Qts inbyggda klass QGraphicsScene. Objekt med dimension 
 \newpage
 \section{Förslag på förbättringar av MapMaster2001}
 
-I takt med projektets gång har vi märkt att vi kunnat göra vissa saker på annat sätt - och kunnat utföra dem både bättre och snabbare. Detta är naturligt i en arbetsprocess och ger oss lärdom för framtiden. Utifrån det vi har lärt oss kan vi konstatera att vi skulle kunna utföra vissa förbättringar av MapMaster2001. 
+I takt med projektets gång har vi märkt att vi kunnat göra vissa saker på annat sätt - och kunnat utföra dem både bättre och snabbare. Detta är naturligt i en arbetsprocess och ger oss lärdom för framtiden. Utifrån det vi har lärt oss kan vi konstatera att vi, om vi skulle göra projektet på nytt, skulle göra följande förbättringar av MapMaster2001. 
 
 \subsection{Arkitektur \label{head:arch}}
 
