@@ -1,10 +1,17 @@
+/******************************************************
+*
+*Code was produced as part of the project MapMaster2001
+*
+*File: lcd.cpp
+*Purpose: 
+*
+*Created by: Niklas Ericson (niker917), David Habrman (davha227)
+*	Jens Edhammer (jened502)
+*
+********************************************************/
+
 /*
- * lcd.cpp
- *
- * Created: 4/14/2014 11:13:42 AM
- *  Author: davha227
- *
- *  Virat kablage
+ *  Cables and ports.
  *  Rs -> PORTA5
  *  R/W -> PORTA6
  *  E -> PORTA7

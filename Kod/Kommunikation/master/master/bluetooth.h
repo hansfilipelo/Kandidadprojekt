@@ -1,9 +1,16 @@
-/*
- * Bluetooth.h
- *
- * Created: 4/7/2014 3:21:49 PM
- *  Author: niker917
- */ 
+/******************************************************
+*
+*Code was produced as part of the project MapMaster2001
+*
+*File: bluetooth.cpp
+*Purpose: Class for functions and buffers concerning bluetooth
+*
+*Created by: Niklas Ericson (niker917), David Habrman (davha227)
+*	Jens Edhammer (jened502)
+*
+********************************************************/
+
+
 #ifndef BLUETOOTH
 #define BLUETOOTH
 
