@@ -51,13 +51,6 @@ public:
     
     virtual void cancer();
     
-    /*
-    virtual void setTop(MapSection*);
-    virtual void setBottom(MapSection*);
-    virtual void setLeft(MapSection*);
-    virtual void setRight(MapSection*);
-     */
-    
     virtual bool isUnexplored();
     virtual int findUnexplored();
 	bool isVisited = false;
@@ -135,7 +128,6 @@ public:
 	bool isWallFwdClose();
     
     void changeDirection(char);
-    //char* getColAsChar(int col); colArray
     void getColAsChar(int col);
 	char colArray[25];
 	
@@ -196,10 +188,6 @@ public:
 	int islandStartY = 0;
 	void savePosition();
 	bool islandMode = false;
-	
-	
-    
-    
     void goHome();
     int rotationCount = 0;
 	
