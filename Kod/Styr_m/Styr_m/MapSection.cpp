@@ -93,6 +93,7 @@ bool MapSection::isUnexplored(){
 void MapSection::cancer(){
     this->setType('c');
     
+    // Using clock as direction argument
     // 9 o clock
     if ( mom->withinMap(xCoord - 1,yCoord) && mom->getPos(xCoord - 1, yCoord)->getType() == 'u' ) {
         
@@ -1157,7 +1158,8 @@ int Robot::getRightDifference(){
 }
 
 
-// ---------------------------
+// ---------------------------------------------------
+// Gets speed set by user, used for ovverriding auto speed
 
 int Robot::getUserSpeed(){
     return userSpeed;
@@ -1278,7 +1280,7 @@ bool Robot::isHome(){
     }
 }
 
-// Exploring
+// Exploring - not implemented
 // -----------------------
 
 void Robot::findFinishPos(){
@@ -1362,7 +1364,9 @@ int Robot::getFrontRightDistance()
 	return rightFrontSensor;
 }
 
-
+// ----------------------------------------------
+// Finds islands in map
+    
 void Robot::explore(){
     
     while(stillUnexplored()){
