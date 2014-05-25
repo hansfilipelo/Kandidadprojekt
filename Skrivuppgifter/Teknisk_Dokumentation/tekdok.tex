@@ -637,7 +637,7 @@ För en beskrivande bild av kopplingsschemat se appendix A.
   \label{fig:reflex} %glöm inte att uppdatera era labels
 \end{figure}
 
-Port A används som en A/D-omvandlare. PIN 39 kopplas till en reflexsensor, se figur \ref{fig:reflex}, SFH300, PIN 40 kopplas till en avståndssensor för långdistans, GP\-2Y\-3A\-00\-3K\-0F, PIN 35-38 kopplas till avståndssensorer för kortdistans, GP\-2Y\-0A\-21\-YK, 
+Port A används som en A/D-omvandlare. PIN 39 kopplas till en reflexsensor, se figur \ref{fig:reflex}, SFH300, PIN 35-38 kopplas till avståndssensorer för kortdistans, GP\-2Y\-0A\-21\-YK, 
 PIN 34 kopplas till en avståndssensor för mellandistans, GP2Y0A02YK, och PIN 35 kopplas till ett gyro för vinkelhastighetsmätning, ML\-X9\-06\-09. Port B används för busskommunikation. PIN 3 skickar avbrott till master, PIN 5 används till slave select master, PIN 6 tar emot data från bussen, PIN7 skickar data till bussen och till PIN 8 kopplas klockan från master. Till port C PIN 23 kopplas en RFID-läsare, Parallax-Reader. Port D används inte i denna modul. 
 
 PIN 31 och 11 kopplas till jord, PIN 13 kopplas till klocka från master, PIN 12 används inte i denna modul, PIN 9 kopplas till en avstudsad manuell switch, en reset-knapp, PIN 32 kopplas till en spänningskälla på 5 V som används som referensspänning, PIN 10 kopplas också den till en spänningskälla på 5 V och PIN 30 kopplas genom ett LP-filter till samma externa spänningskälla.
@@ -677,11 +677,11 @@ Då brus kan ge upphov en falsk RFID-läsning, så kontrolleras att mottaget dat
 Reflexsensorn, SFH300\footnote{Datablad för SFH300, \url{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/sfh300.pdf}, hämtad 2014-05-23}, används för att beräkna tillryggalagd sträcka. Sensormodulen skickar ett kommando till styrmodulen då roboten åkt 40 cm, alltså då roboten kommit till ett nytt 40x40-segment. För att beräkna den tillryggalagda sträckan fästs en pappersskiva på ett av robotens hjul. Skivan består av 6 vita och 6 svarta lika stora ''tårtbitar'', vilket ses i figur~\ref{fig:reflex}. Reflexsensorn detekterar varje gång skivan byter färg och på så sätt kan sträckan räknas ut.
 
 \subsubsection{Avståndssensorer}
-Roboten kommer att ha sex stycken av\-stånds\-sensorer varav en är för långdistans, GP\-2Y3A\-00\-3K\-0F 40-300 cm\footnote{Datablad för GP\-2Y3A\-00\-3K\-0F, \url{ https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/gp2y3a003k0f.pdf}, hämtad 2014-05-23}, en för mellandistans, GP2Y0A02YK 20-150 cm\footnote{Datablad för GP2Y0A02YK, \url{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/gp2y0a02_e.pdf}, hämtad 2014-05-23}, och resterande 4 är för \hyphenation{kortdistans},GP\-2Y\-0A\-21\-YK 10-80 cm\footnote{Datablad för GP\-2Y\-0A\-21\-YK, \url{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/gp2y0a21.pdf}, hämtad 2014-05-23}. Långdistanssensorn placeras fram på roboten och mellandistanssensorn placeras på robotens vänstra sida. Två av kortdistanssensorerna placeras på robotens högra sida, en placeras fram på roboten och den sista placeras på robotens baksida.
+Roboten kommer att ha fem stycken av\-stånds\-sensorer varav en är för mellandistans, GP2Y0A02YK 20-150 cm\footnote{Datablad för GP2Y0A02YK, \url{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/gp2y0a02_e.pdf}, hämtad 2014-05-23}, och resterande 4 är för \hyphenation{kortdistans},GP\-2Y\-0A\-21\-YK 10-80 cm\footnote{Datablad för GP\-2Y\-0A\-21\-YK, \url{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/gp2y0a21.pdf}, hämtad 2014-05-23}.Mellandistanssensorn placeras på robotens vänstra sida, två av kortdistanssensorerna placeras på robotens högra sida, en placeras fram på roboten och den sista placeras på robotens baksida
 
-PIN 6 på långdistanssensorn och PIN 1 på kortdistanssensorerna och medeldistanssensorn kopplas till port A, PIN 39, PIN 35-38 respektive PIN 34 på processorn. Sensorerna skickar alltså sin data till processorn för A/D-omvandling och tolkning.
+PIN 1 på kortdistanssensorerna och medeldistanssensorn kopplas till port A PIN 35-38 respektive PIN 34 på processorn. Sensorerna skickar alltså sin data till processorn för A/D-omvandling och tolkning.
 
-GND på sensorerna sätts till jord, Vcc och Vin sätts till hög och PIN 3 på långdistanssensorn sätts till hög.
+GND på sensorerna sätts till jord, Vcc och Vin sätts till hög.
  
 Data från sensorerna behövs för att detektera väggar och skapa en kartabstraktion. Data sensorerna på sidan används för att reglera roboten under färd och sensorerna framtill och baktill används, som nämnts ovan, för att trimma reflexsensorn.
 
