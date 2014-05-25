@@ -1,6 +1,8 @@
 /* 
-	File with abstractions for use in AVR project. Mainly related to improving the use of Arrays since we can't use Vectors or Strings.
-	Created by: hansfilipelo
+ 
+ Purpose: File with abstractions for use in AVR project. Mainly related to improving the use of objects since new/delete isn't implemented in avr-gcc
+ File: Abstraction.cpp
+ Created by: Hans-Filip Elo (hanel742)
 */
 
 #include "Abstraction.h"

@@ -6,10 +6,17 @@ Communication::Communication(Slave* pointer){
     slavePointer=pointer;
 }
 
+// ------------------------------------
+// Purpose: Handles all incoming data and sets flags in steer modules that later results in steer module handling of task
+
 void Communication::handleData(){
     
+    // Get data from bus slave
 	memcpy(inData,slavePointer->inDataArray,27);
+    // First bit is length according to protocol
     dataLength = (int)inData[0];
+    
+    // Many commands use speed
 	int speed = (int)inData[3];
     // Protect from incorrect transmissions
 	// does this work as intended
@@ -17,11 +24,12 @@ void Communication::handleData(){
         speed = 5;
     }
     
-	//checks manual/auto
+	//Sets automatic mode
 	if (this->inData[1]=='a') {
 		manual = false;
 		robotPointer->stopRotation();
 	}
+    //Sets manual mode
 	if (this->inData[1]=='q') {
 		manual = true;
 		robotPointer->setUserSpeed(0);
@@ -37,22 +45,27 @@ void Communication::handleData(){
         asm("");
 	}
 	
+    // Rotate left
 	if (this->inData[1]=='r' && inData[2]==0) {
 		robotPointer->setRotateLeftActive();
 	}
+    // Rotate right
 	else if (this->inData[1]=='r' && inData[2]==1) {
 		robotPointer->setRotateRightActive();
 	}
+    // Drive forward
 	else if (this->inData[1]=='f'){
 		robotPointer->changeGear('f');
 		robotPointer->setUserSpeed(speed);
 		robotPointer->drive();
 	}
+    // Drive backwards
 	else if (this->inData[1]=='b'){
 		robotPointer->changeGear('b');
 		robotPointer->setUserSpeed(speed);
 		robotPointer->drive();
 	}
+    // Halt
 	else if (this->inData[1] == 'h'){
 			robotPointer->setUserSpeed(0);
 			robotPointer->stopRotation();
@@ -60,7 +73,9 @@ void Communication::handleData(){
 				
 	}
     
-    
+    // Sensor data
+    // Some references of sensors (fwdLonValueIn by example) that doesn't exist in final version.
+    // These functions are stille needed so in order tp correct this there needs to be a small rewrite
     if ( this->inData[1]=='S' ) {
         
         // Front sensor
@@ -121,7 +136,7 @@ void Communication::handleData(){
 		asm("");
 	}
 	
-	// RFID-detektion
+	// RFID-detection
     if (this->inData[1] == 'R') {
 	    asm("");
 	    asm("");
@@ -130,6 +145,7 @@ void Communication::handleData(){
 		asm("");
 	}
 	
+    // Moved one segment according to wheel counter
 	if(this->inData[1] == 'W'){
 		asm("");
 		asm("");
@@ -139,7 +155,7 @@ void Communication::handleData(){
 		asm("");
 	}
     
-
+    // Request to get map from PC
     if( this->inData[1] == 'F' ){
         sendMapNow = true;
     }
@@ -165,7 +181,7 @@ bool Communication::getManual(){
 
 
 // -------------------
-
+// Needed for construction
 
 void Communication::setRobot(Robot* inRobot){
     robotPointer = inRobot;
@@ -200,7 +216,7 @@ void Communication::sendRow(unsigned int inRow){
 }
 
 // --------------------------
-// Asks for measure of angles
+// Asks for measure of turned angle to 90 degrees with gyro
 
 void Communication::sendRotateRequest(){
     slavePointer->outDataArray[0] = 2;
@@ -215,6 +231,9 @@ void Communication::sendRotateRequest(){
 	slavePointer->SPI_Send();
 #endif
 }
+
+// -------------------------------
+// Makes a double out of one char per position
 
 double Communication::assembleDouble(char ten, char one, char tenth, char hundreth){
     double tenNumber=(double)ten*10;
@@ -233,6 +252,10 @@ double Communication::assembleDouble(char ten, char one, char tenth, char hundre
     
 }
 
+
+// ------------------------------------
+// Reactivates RFID tag on sensor
+
 void Communication::reactivateRFID(){
 	    slavePointer->outDataArray[0] = 1;
 	    slavePointer->outDataArray[1] = 'r';
@@ -246,6 +269,8 @@ void Communication::reactivateRFID(){
 #endif
 }
 
+// ------------------------------------
+// Reactivates wheel counter
 
 void Communication::reactivateWheelSensor(){
 	slavePointer->outDataArray[0] = 1;
@@ -264,6 +289,9 @@ void Communication::reactivateWheelSensor(){
 	}
 #endif
 }
+
+// -----------------------------------
+// Sends path A-star algorith suggests to PC for debugging. Not implemented, see tech doc
 
 void Communication::sendAStar(char* inArray)
 {

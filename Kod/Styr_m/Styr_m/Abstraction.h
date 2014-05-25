@@ -1,3 +1,8 @@
+/*
+ File: Abstraction.h
+ Purpose: File with abstractions for use in AVR project. Mainly related to improving the use of objects since new/delete isn't implemented in avr-gcc.
+ */
+
 #ifndef _Abstraction_h
 #define _Abstraction_h
 

@@ -1,3 +1,8 @@
+/*
+ File: MAp.h
+ Purpose: Class working as abstraction layer for map array
+ */
+
 #ifndef _Map_h
 #define _Map_h
 

@@ -1,3 +1,8 @@
+/*
+ File: Communicaiton.h
+ Purpose: Class working as abstraction layer between the logical (software) robot and the bus slave. 
+ */
+
 #ifndef _Communication_h
 #define _Communication_h
 
@@ -25,11 +30,14 @@ public:
 	void reactivateWheelSensor();
 	void sendAStar(char*);
     
-//flyttade från protected
+    // Used for buffer
 	unsigned char inData[27];
     unsigned char outData[27];
-	volatile bool sendMapNow = false;
-	int row = 0;
+	
+    volatile bool sendMapNow = false;
+	// COunter for sending map row by row
+    int row = 0;
+    // Makes a double out of one char per position
     double assembleDouble(char, char, char, char);
 	bool getManual();
     volatile bool isRFID=false;
