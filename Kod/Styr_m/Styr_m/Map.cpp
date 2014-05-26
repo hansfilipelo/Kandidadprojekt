@@ -245,32 +245,6 @@ void Map::convertSection(int xPos, int yPos, char inType){
 	this->getPos(xPos,yPos)->setType(inType);
 }
 
-// ---------------- getColAsChar ------------
-/*
- char* Map::getColAsChar(int col)
- {
- // Char sent to communications unit
- char* output = new char[25];
- // String telling type of the object we are interested in.
- 
- // Abstraction for buss communications
- // Sending 19 positions of interest
- int crap = 19;
- output[0] = 23;
- // Sending Map data command
- output[1] = 'M';
- // Sending column number
- output[2] = col;
- 
- for (int it = 0; it < 17; it++){
- // Type of the block we are looking at
- output[it+3] = this->getPos(col,it)->getType();
- }
- return output;
- }
- */
-
-
 void Map::getColAsChar(int col)
 {
 	
