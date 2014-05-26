@@ -69,7 +69,7 @@
 		\vspace{3pt} %Whitespace 3 pts
 	    \begin{tabular}{| p{3cm} | p{3cm} | p{3cm} |} %tabell, 4 horizontella |, 3 cm emellan dem.
 	    \hline %översta horizontella linjen.
-	    Granskad & NE,TG,HFE & \today \\ \hline % & -tecken för att "gå till nästa ruta" 
+	    Granskad & JE,TG,HFE & \today \\ \hline % & -tecken för att "gå till nästa ruta" 
 		Godkänd & - & - \\ \hline % avslutas med \\ och \hline.
 
 	    \end{tabular}
@@ -95,7 +95,7 @@
 		\textbf{Namn} & \textbf{Ansvar} & \textbf{Telefon} & \textbf{E-post} \\ \hline
 	    Jens Edhammer & Dokumentansvarig (DOK) & 076-030 67 80 & jened502@student.liu.se \\ \hline
 		Erik Ekelund & Designansvarig (DES) & 073-682 43 06 & eriek984@student.liu.se \\ \hline
-		David Habrman &  & 976-017 71 15 & davha227@student.liu.se \\ \hline 
+		David Habrman &  & 076-017 71 15 & davha227@student.liu.se \\ \hline 
 		Tobias Grundström & Testansvarig (TES) & 073-830 44 45 & tobgr602@student.liu.se \\ \hline 
 		Hans-Filip Elo &   & 073-385 22 32 & hanel742@student.liu.se \\ \hline 
 		Niklas Ericson & Projektledare (PL) & 073-052 27 05 & niker917@student.liu.se \\ \hline
@@ -682,39 +682,49 @@ Komponenterna är numrerade och finns att hitta i kopplingsschemat för sensormo
 ~\\
 
 \subsubsection{Systemchip}
-Modulens är byggd kring processorn Atmel ATmega1284p\footnote{Datablad för Atmega 1284p, \url{http://www.atmel.com/ja/jp/Images/doc8059.pdf}, hämtad 2014-05-23}. Processorn hämtar kontinuerligt data från alla sensorer via processorns inbyggda A/D-omvandlare med tillhörande mux. Denna är programmerbar och innehåller de program som behövs för att konvertera signalerna till avstånd, tillryggalagd sträcka, svängar och upptäckta RFID-taggar. Sensormodulen bildar ett medelvärde, beräknat från 30 mätningar, från varje avståndssensor och skickar det kontinuerligt till master,kommunikationsmodulen, via en SPI-buss.
+Modulen är byggd kring processorn Atmel ATmega1284p\footnote{Datablad för ATmega1284p, \url{http://www.atmel.com/ja/jp/Images/doc8059.pdf}, hämtad 2014-05-23}. Processorn hämtar kontinuerligt data från alla sensorer via processorns inbyggda A/D-omvandlare med tillhörande mux. Denna är programmerbar och innehåller de program som behövs för att konvertera signalerna till avstånd, tillryggalagd sträcka, svängar och upptäckta RFID-taggar. Sensormodulen bildar ett medelvärde, beräknat från 30 mätningar, från varje avståndssensor och skickar det kontinuerligt till kommunikationsmodulen, via en SPI-buss.
 
 
 \subsubsection{RFID-sensor}
-För att kunna detektera RFID-taggen så krävs en RFID-läsare. Vi använder oss av Par\-all\-ax-Read\-er\footnote{Datablad för Par\-all\-ax-Read\-er\, \url{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/rfid-reader-v21.pdf}, hämtad 2014-05-23}. 
-SOUT på RFID-sensorn, PIN 3, kopplas till port C, PIN 23, på processorn. RFID-läsaren använder sig av serieprotokollet asynkron USART för att skicka data från RFID-korten vidare till CPU:n. Pinne 23 som RFID-läsaren är inkopplad på har stöd för seriell kommunikation och konfigureras för att matcha dataöverföringshastigheten från läsaren.
+För att kunna detektera RFID-taggen så krävs en RFID-läsare, se figur~\ref{fig:rfid}. Vi använder oss av Par\-all\-ax-Read\-er\footnote{Datablad för Par\-all\-ax-Read\-er\, \url{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/rfid-reader-v21.pdf}, hämtad 2014-05-23}. 
+RFID-läsaren använder sig av serieprotokollet asynkron USART för att skicka data från RFID-korten vidare till CPU:n. Pinne 23 som RFID-läsaren är inkopplad på har stöd för seriell kommunikation och konfigureras för att matcha dataöverföringshastigheten från läsaren.
 
-Då brus kan ge upphov en falsk RFID-läsning, så kontrolleras att mottaget data matchar vissa symboler. Vi har valt att leta efter en start byte, 0x0A, som indikerar början på en RFID-taggs unika ID. För att ytterligare säkerställa en korrekt läsning görs denna kontroll två gånger innan kommandot för upptäckt brandhärd skickas till master.
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,width=0.6\linewidth]{bilder/robotbilder/Rfid.jpg}  %skala och filnamn. 
+  \end{center}
+  \caption{Par\-all\-ax-Read\-er} %figurtext.
+  \label{fig:rfid}
+\end{figure}
+
+Då brus kan ge upphov till en falsk RFID-läsning, så kontrolleras att mottaget data matchar vissa symboler. Vi har valt att leta efter en start byte, 0x0A, som indikerar början på en RFID-taggs unika ID. För att ytterligare säkerställa en korrekt läsning görs denna kontroll två gånger innan kommandot för upptäckt brandhärd skickas till master.
 
 \subsubsection{Reflexsensor}
-Reflexsensorn, SFH300\footnote{Datablad för SFH300, \url{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/sfh300.pdf}, hämtad 2014-05-23}, används för att beräkna tillryggalagd sträcka. Sensormodulen skickar ett kommando till styrmodulen då roboten åkt 40 cm, alltså då roboten kommit till ett nytt 40x40-segment. För att beräkna den tillryggalagda sträckan fästs en pappersskiva på ett av robotens hjul. Skivan består av 6 vita och 6 svarta lika stora ''tårtbitar'', vilket ses i figur~\ref{fig:reflex}. Reflexsensorn detekterar varje gång skivan byter färg och på så sätt kan den tillryggalagda sträckan räknas ut.
+Reflexsensorn, SFH300\footnote{Datablad för SFH300, \url{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/sfh300.pdf}, hämtad 2014-05-23}, används för att beräkna avlagd sträcka. Sensormodulen skickar ett kommando till styrmodulen då roboten åkt 40 cm, alltså då roboten kommit till ett nytt 40x40-segment. För att beräkna den avlagd sträckan fästs en pappersskiva på ett av robotens hjul. Skivan består av 6 vita och 6 svarta lika stora cirkelsektorer, vilket ses i figur~\ref{fig:reflex}. Reflexsensorn detekterar varje gång skivan byter färg och på så sätt kan den avlagda sträckan räknas ut.
 
 \subsubsection{Avståndssensorer}
-Roboten har fem stycken av\-stånds\-sensorer varav en är för mellandistans, GP2Y0A02YK 20-150 cm\footnote{Datablad för GP2Y0A02YK, \url{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/gp2y0a02_e.pdf}, hämtad 2014-05-23}, och resterande 4 är för \hyphenation{kortdistans},GP\-2Y\-0A\-21\-YK 10-80 cm\footnote{Datablad för GP\-2Y\-0A\-21\-YK, \url{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/gp2y0a21.pdf}, hämtad 2014-05-23}.Mellandistanssensorn är placerad på robotens vänstra sida riktad utåt, två av kortdistanssensorerna är placerade på robotens högra sida, en är placerad fram på roboten och den sista är placerad på robotens baksida.
+Roboten har fem stycken av\-stånds\-sensorer varav en är för mellandistans, GP2Y0A02YK 20-150 cm\footnote{Datablad för GP2Y0A02YK, \url{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/gp2y0a02_e.pdf}, hämtad 2014-05-23}, och resterande 4 är för \hyphenation{kortdistans},GP\-2Y\-0A\-21\-YK 10-80 cm\footnote{Datablad för GP\-2Y\-0A\-21\-YK, \url{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/gp2y0a21.pdf}, hämtad 2014-05-23}. Mellandistanssensorn är placerad på robotens vänstra sida riktad utåt, två av kortdistanssensorerna är placerade på robotens högra sida, en är placerad fram på roboten och den sista är placerad på robotens baksida.
 
 PIN 1 på kortdistanssensorerna och medeldistanssensorn kopplas till port A PIN 35 till 38 respektive PIN 34 på processorn. Sensorerna skickar alltså sin data, efter lågpassfiltrering, analogt till processorn för A/D-omvandling och omvandling till distans.
 
 GND på sensorerna sätts till jord, Vcc och Vin sätts till hög.
  
-Data från sensorerna används för att detektera väggar och skapa en kartabstraktion. Sensorerna på högersidan används  för att reglera roboten under färd så att denna håller sig rak i förhållande till banans väggar.
+Data från sensorerna används för att detektera väggar och skapa en kartabstraktion. Sensorerna på högersidan används för att reglera roboten under färd så att denna håller sig rak i förhållande till banans väggar och kan reglera avståndet från väggen.
 
-För mer information om hur sensorer används för att bedömma avstånd se appendix C i kappan.
+För mer information om hur sensorer används för att bedöma avstånd se appendix C i kappan.
 
 \subsubsection{Vinkelhastighetssensor (gyro)}
-För att underlätta beräkningar av körriktningar och hålla koll på hur mycket roboten roterat används en vinkelhastighetssensor även kallat gyro, MLX\-90\-609\footnote{Datablad för MLX\-90\-609, \url{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/MLX90609\_datasheet.pdf}. hämtad 2014-05-23}. OUTAR på gyron, PIN 24, kopplas till ett LP-filter för att minska brus och den filtrerade signalen är kopplad till en PIN på sensormodulens A/D-omvandlare. Gyrot skickar en spänning mellan 0.5 och 4.5 V där 2.5 V representerar en vinkelhastighet på noll. Sensormodulen börjar mäta på gyrot då ett specifikt kommando från styrmodulen mottagits. Sensormodulen skickar i sin tur tillbaka ett kommando då roboten roterat 90 grader. Sensormodulen låser sig till endast mätningar på gyroskopet under svängar för att öka noggrannheten.
+För att underlätta beräkningar av körriktningar och hålla koll på hur mycket roboten roterat används en vinkelhastighetssensor även kallat gyro, MLX\-90\-609\footnote{Datablad för MLX\-90\-609, \url{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/MLX90609\_datasheet.pdf}. hämtad 2014-05-23}. OUTAR på gyron, PIN 24, kopplas till ett LP-filter för att minska brus och den filtrerade signalen är kopplad till en PIN på sensormodulens A/D-omvandlare. Gyrot skickar en spänning mellan 0,5 V och 4,5 V där 2,5 V representerar en vinkelhastighet på noll grader per sekund. Sensormodulen börjar mäta på gyrot då ett specifikt kommando från styrmodulen mottagits. Sensormodulen skickar i sin tur tillbaka ett kommando då roboten roterat 90 grader. Sensormodulen låser sig till endast mätningar på gyroskopet under svängar för att öka noggrannheten.
 
 Då roboten endast kommer att använda sig av vinkelräta svängar så räcker det att gyrot snabbt kan upptäcka då roboten roterat 90 grader. Om man adderar vinkelhastigheter med ett jämt tidsintervall så blir summan alltid lika stor vid 90 grader. Av denna anledning valdes det att inte involvera tiden mellan mätningar i summeringen, utan att istället skala om 90 grader till en konstant.
 Gränserna som används för att registrera en rotation testades fram och kalibrerades genom att låta processorn summera alla värden från gyrot under en, för hand gjord, 90 graders rotation. Testet upprepades flertalet gånger, moturs och medurs, och medelvärdet av summorna som gavs användes som gräns för medurs- resp. motursrotation.
 
+Då gyrot kan fluktuera lite kring 2,5 V även då roboten står still skulle detta kunna resultera i fel ifall rotationen inte startar direkt. För att lösa det problemet har ett 0,05 V brett band konstruerats kring 2,5 V där resultaten inte adderas till summan. 
+
 För mer information om gyro se appendix C i kappan.
 
 \subsubsection{Övriga komponenter}
-Övriga komponenter så som ett batteri på 7.2 V, en reset-knapp kommer och sex lågpassfilter  kommer användas till denna modul.
+Övriga komponenter så som en reset-knapp och sex lågpassfilter kommer användas till denna modul.
 
 \newpage
 \section{PC-mjukvara}
@@ -893,7 +903,7 @@ Efter roboten har kopplats upp och programmerats med Atmel Studio kan roboten b�
 
 Roboten kan köras i två lägen, antingen i manuellt eller autonomt läge. För att börja använda Mapmaster2001, slå på huvudströmbrytaren placerad på bakre delen av robotens chassi. Placera sedan roboten i dess startposition. 
 
-Efter detta kan det vara av god sed att trycka på de båda svarta knapparna på respektive virkort. Dessa är återställningsknappar och roboten är nu redo att kopplas upp till persondatorn. 
+Efter detta kan det vara god sed att trycka på de båda svarta knapparna på respektive virkort. Dessa är återställningsknappar och roboten är nu redo att kopplas upp till persondatorn. 
 
 \subsection*{Bluetooth}
 Aktivera Bluetooth via menyn i menyraden: 
@@ -919,7 +929,7 @@ I manuellt läge kan roboten enkelt manövreras med hjälp av piltangenterna på
 	\item Höger-pil - Roboten svänger 90 grader höger.
 	\item Vänster-pil - Roboten svänger 90 grader vänster.
 \end{itemize}
-Orsaken till att roboten endast utför vinkelräta svängar är för att kartläggningen ska bli korrekt i manuellt läge. Utöver detta kan du även sätta vilken hastighet du vill att roboten ska köra i. Detta gör du i reglaget "speed" i programvaran. Se figur 2. 
+Orsaken till att roboten endast utför vinkelräta svängar är för att kartläggningen ska bli korrekt i manuellt läge. Utöver detta kan du även sätta vilken hastighet du vill att roboten ska köra i. Detta gör du i reglaget \emph{speed} i programvaran. Se figur 2. 
 	
 \subsection*{Autonom körning}
 Om du vill växla roboten till att köra autonomt, placera då först roboten med baksidan 10 cm från en yttervägg av specificerat område. Banan måste bestå av 40x40 segment för att roboten ska kunna kartlägga korrekt, se appendix A i kravspecifikationen. För att starta autonom körning tryck CMD+X i programmet eller tryck på den grå knappen som är placerad på den översta virkortet på roboten. Roboten kommer då börja att åka och kartlägga banan. Allt eftersom roboten åker kommer du se hur kartan växer fram bit för bit i det vita rutnätet som syns i figur~\ref{fig:gui_man}. 
@@ -963,13 +973,10 @@ Nedan följer en lista med tillhörande bild, figur~\ref{fig:gui_man} för att d
 \end{figure}
 
 \newpage
-\section*{Appendix D - Programkod}
-\addcontentsline{toc}{section}{Appendix D - Programkod}
+\section*{Appendix D - Utdrag ur programkod}
+\addcontentsline{toc}{section}{Appendix D - Utdrag ur programkod}
 
 \lstset{language=C++}
-
-
-
 \lstinputlisting[language=C++]{../../Kod/Styr_m/Styr_m/Map.cpp}
 
 \end{document}
