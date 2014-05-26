@@ -305,7 +305,7 @@ När data skickas till processorn så är detta avbrottshanterat. I avbrottet ut
 
 \paragraph{Sändning av kartan}
 För att undvika problem vid mottagning av kartan på PC sidan skickas en rad i taget med hjälp av en timer. Main-loopen på kommunikationsmodulen kollar en gång per huvud-loop om det är okej att skicka en rad. När timern genererar ett avbrott sätts en flagga att ytterligare en rad är redo att skickas. När samtliga rader har skickats över sätts flaggan som avgör om kartrader ska skickas över till \emph{false}.
-
+\newpage
 \subsection{Kommunikationsmodulens huvudloop}
 
 Huvudloopen på kommunikationsmodulen kollar ett antal sanningsvariabler för att avgöra om ny data finns tillgänglig för datahantering. För flödet, se figur~\ref{fig:mainmaster}
@@ -393,6 +393,7 @@ Kommandot skickas från styrmodulen via mastern som speglar ner kommandot till s
 Roboten består av tre delsystem, en kommunikationsmodul, en sensormodul och en styrmodul. Utöver dessa tre moduler finns en buss mellan dem som sköter kommunikation, ett chassi samt en tillhörande mjukvara för persondator. Sensormodulen hanterar analoga sensorsignaler och omvandlar dessa till användbara mätdata som skickas vidare till kommunikationsmodulen och styrmodulen. 
 Kommunikationsenheten agerar buss-master och sköter all kommunikation mellan de andra enheterna. Kommunikationsmodulen sköter även kommunikationen mellan PC och roboten via en Bluetooth-adapter. Styrenheten sköter robotens fyra drivande motorer, kartläggning och positionsskattning samt tar beslut om körriktning vid autonom operation. 
 De tre delsystemen kommunicerar via en SPI-buss med ett eget specificerat protokoll och är byggda runt processorerna ATMEL Atmega 1284p med 16KByte SRAM. 
+\newpage
 
 Chassit har fyra DC-motorer, placerade längst fram och längst bak på sidorna av chassit. Motorerna är stelmonterade i chassit vilket betyder att rotation utförs genom att en differens i rotationshastighet införs mellan motorparen. Rotationer görs alltid med vinkelräta svängar. De utförs med hjälp av gyrot som är placerat på sensormodulen. 
 
@@ -417,6 +418,7 @@ Specificerat bussprotokoll är enbart halv-duplex, dvs. data kan enbart skickas 
   \label{fig:bussprotocol}
 \end{figure}
 
+\newpage
 Bussens tillgängliga kommandon är:
 
 \begin{tabular}{| p{0.20\textwidth} | p{0.15\textwidth} | p{0.1\textwidth} | p{0.12\textwidth} | p{0.33\textwidth} |}
@@ -711,7 +713,7 @@ GND på sensorerna sätts till jord, Vcc och Vin sätts till hög.
  
 Data från sensorerna används för att detektera väggar och skapa en kartabstraktion. Sensorerna på högersidan används för att reglera roboten under färd så att denna håller sig rak i förhållande till banans väggar och kan reglera avståndet från väggen.
 
-För mer information om hur sensorer används för att bedöma avstånd se appendix C i kappan.
+För mer information om hur sensorer används för att bedöma avstånd se appendix C i kappan och dokumentet \textit{''Sensorers applikation för kartritande robot''}\footnote{Ekelund, E. Habrman, D (2014), \textit{''Sensorers applikation för kartritande robot''}}.
 
 \subsubsection{Vinkelhastighetssensor (gyro)}
 För att underlätta beräkningar av körriktningar och hålla koll på hur mycket roboten roterat används en vinkelhastighetssensor även kallat gyro, MLX\-90\-609\footnote{Datablad för MLX\-90\-609, \url{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/MLX90609\_datasheet.pdf}. hämtad 2014-05-23}. OUTAR på gyron, PIN 24, kopplas till ett LP-filter för att minska brus och den filtrerade signalen är kopplad till en PIN på sensormodulens A/D-omvandlare. Gyrot skickar en spänning mellan 0,5 V och 4,5 V där 2,5 V representerar en vinkelhastighet på noll grader per sekund. Sensormodulen börjar mäta på gyrot då ett specifikt kommando från styrmodulen mottagits. Sensormodulen skickar i sin tur tillbaka ett kommando då roboten roterat 90 grader. Sensormodulen låser sig till endast mätningar på gyroskopet under svängar för att öka noggrannheten.
@@ -946,6 +948,7 @@ Utöver kommandon för manuell körning finns även
 	\item $Cmd$+$s$ - Uppdatera parametrar med nya värden.
 	\item $Cmd$+$x$ - Aktivera/avaktivera autonomt läge.
 \end{itemize}
+\newpage
 
 \subsection*{Programvara}
 Nedan följer en lista med tillhörande bild, figur~\ref{fig:gui_man} för att du som användare ska kunna få en överblick på alla kommadon som finns och hur du kör dem. 
