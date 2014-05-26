@@ -390,13 +390,13 @@ Kommandot skickas från styrmodulen via mastern som speglar ner kommandot till s
   \label{fig:overview}
 \end{figure}
 
-Roboten består av tre delsystem. En kommunikationsmodul, en sensormodul och en styrmodul. Utöver dessa tre moduler finns en buss mellan den, ett chassi samt en tillhörande mjukvara för persondator. Sensormodulen hanterar analoga sensorsignaler och omvandlar dessa till användbart mätdata som skickas vidare till kommunikationsmodulen och styrmodulen. 
+Roboten består av tre delsystem, en kommunikationsmodul, en sensormodul och en styrmodul. Utöver dessa tre moduler finns en buss mellan dem som sköter kommunikation, ett chassi samt en tillhörande mjukvara för persondator. Sensormodulen hanterar analoga sensorsignaler och omvandlar dessa till användbara mätdata som skickas vidare till kommunikationsmodulen och styrmodulen. 
 Kommunikationsenheten agerar buss-master och sköter all kommunikation mellan de andra enheterna. Kommunikationsmodulen sköter även kommunikationen mellan PC och roboten via en Bluetooth-adapter. Styrenheten sköter robotens fyra drivande motorer, kartläggning och positionsskattning samt tar beslut om körriktning vid autonom operation. 
 De tre delsystemen kommunicerar via en SPI-buss med ett eget specificerat protokoll och är byggda runt processorerna ATMEL Atmega 1284p med 16KByte SRAM. 
 
-Chassit har fyra PWM-motorer, placerade längst fram och längst bak på sidorna av chassit. Motorerna är stelmonterade i chassit vilket betyder att rotation utförs genom att en differens i rotationshastighet införs mellan motorparen. Rotationer görs alltid med vinkelräta svängar. De utförs med hjälp av gyrot som är placerat på sensormodulen. 
+Chassit har fyra DC-motorer, placerade längst fram och längst bak på sidorna av chassit. Motorerna är stelmonterade i chassit vilket betyder att rotation utförs genom att en differens i rotationshastighet införs mellan motorparen. Rotationer görs alltid med vinkelräta svängar. De utförs med hjälp av gyrot som är placerat på sensormodulen. 
 
-Sensorerna som tillhör sensormodulen, förutom robotens RFID-läsare, är placerade på ett sådant sätt att sensorer interfererar minimalt med varandra. På höger sida av roboten har två stycken kortdistanssensorer placerats för att ge indata till robotens PD-reglering. På vänster sida sitter en medeldistanssensor som används för att upptäcka sidokorridorer, öppna ytor och så kallade öar, slutna konstruktioner som inte tillhör ytterväggen. Under roboten sitter en RFID-läsare som vid upptäckt RFID-tagg skickar en signal över USART innehållande taggens ID-nummer till sensormodulen som för denna upptäckt vidare till de andra modulerna.
+Sensorerna som tillhör sensormodulen, förutom robotens RFID-läsare, är placerade på ett sådant sätt att sensorer interfererar minimalt med varandra. På höger sida av roboten har två stycken kortdistanssensorer placerats för att ge indata till robotens PD-reglering. På vänster sida sitter en medeldistanssensor som används för att upptäcka sidokorridorer, öppna ytor och så kallade öar, slutna konstruktioner som inte tillhör ytterväggen. Under roboten sitter en RFID-läsare. Vid upptäckt av RFID-tagg skickar den en signal över USART innehållande taggens ID-nummer till sensormodulen. Sensormodulen skickar sedan denna upptäckt vidare till de andra modulerna.
 
 \subsection{Programmering av robot}
 Robotens mjukvara, dels bifogad till detta dokument samt dels tillgänglig på Github\footnote{Källkodsarkiv för MapMaster2001, \url{https://github.com/hansfilipelo/MapMaster2001}}, programmeras via Atmel Studio. Efter uppkoppling behöver robotens tre delsystem programmeras individuellt. 
@@ -422,7 +422,7 @@ Bussens tillgängliga kommandon är:
 \begin{tabular}{| p{0.20\textwidth} | p{0.15\textwidth} | p{0.1\textwidth} | p{0.12\textwidth} | p{0.33\textwidth} |}
 	\hline
 	\rowcolor{listinggray}
-	\textbf{Funktion} & \textbf{Datalängd} & \textbf{Kodord} & \textbf{argument} & \textbf{datastruktur} \\ \hline
+	\textbf{Funktion} & \textbf{Datalängd} & \textbf{Kodord} & \textbf{Argument} & \textbf{Datastruktur} \\ \hline
 	Rotera vänster & 3 & r & 0 & Hastighet (0-100) \\ \hline
 	Rotera höger & 3 & r & 1 & Hastighet (0-100) \\ \hline
 	halt & 1 & h & DNC & DNC \\ \hline
@@ -449,9 +449,9 @@ Där DNC står för ''Do not care''.
 
 
 \section{Kommunikationsmodul}
-Modulen hanterar kommunikation mellan robotens olika delar samt med persondatorn via Bluetooth. Kommunikationsmodulen som syns i figur~\ref{fig:robot}, kommer att agera master på robotens interna buss. Detta betyder att allt datautbyte som sker mellan moduler initieras av modulen. 
-Vid kommunikation mellan övriga moduler, dvs. mellan sensor- och styrmodul, kommer denna information först gå via kommunikationsmodulen för att sedan skickas vidare.
-Kommunikationsmodulen är även ansvarig för transmission av sensor-data och manuella styrkommandon mellan roboten och PC-mjukvaran.
+Modulen hanterar kommunikation mellan robotens olika delar samt med persondatorn via Bluetooth. Kommunikationsmodulen som syns i figur~\ref{fig:robot}, kommer att agera master på robotens interna buss. Detta betyder att allt datautbyte som sker mellan moduler initieras av kommunikationsmodulen. 
+Vid kommunikation mellan övriga moduler, d v s mellan sensor- och styrmodul, kommer denna information först gå via kommunikationsmodulen för att sedan skickas vidare.
+Kommunikationsmodulen är även ansvarig för transmission av sensordata och manuella styrkommandon mellan roboten och PC-mjukvaran.
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
@@ -473,7 +473,7 @@ Fall 2: Sensormodulen signalerar att ny sensor-data är redo, se  figur~\ref{fig
 Fall 3: Kartdata skickas från kommunikationsmodulen till PC, se figur~\ref{fig:case3flow}. 
  
 \subsection{Komponenter}
-Komponenterna är numrerade och finns att hitta i kretsschemat, se~\ref{fig:kopplingstyr}
+Komponenterna är numrerade och finns att hitta i kretsschemat, se figur~\ref{fig:kopplingstyr}
 \begin{enumerate}
   \item AVR processor av typen ATMega1284
   \item Bluetooth-dongel, Firefly, BlueSmirf Gold
@@ -505,7 +505,7 @@ Vid varje uppstart initieras LCD-displayen enligt nedanstående flödesschema. V
 
 \subsubsection{Uppstart}
 	
-Vid uppstart av systemet kommer LCD-displayen att initieras enligt flödes\-schemat~\ref{fig:flowlcdstart}
+Vid uppstart av systemet kommer LCD-displayen att initieras enligt flödes\-schemat i figur~\ref{fig:flowlcdstart}
 
 \begin{itemize}
   \item Power ON - sätter på strömförsörjningen
@@ -528,7 +528,7 @@ Vid uppstart av systemet kommer LCD-displayen att initieras enligt flödes\-sche
 
 \subsubsection{Skrivning}
 
-Skrivning till LCD-displayen kommer ske enligt flödesschemat~\ref{fig:flowlcdwrite}
+Skrivning till LCD-displayen kommer ske enligt flödesschemat i figur~\ref{fig:flowlcdwrite}
 \begin{itemize}
   \item Start write procedure - Startar skrivning till LCD-displayen
   \item Clear - Rensar hela displayen
@@ -546,11 +546,11 @@ Skrivning till LCD-displayen kommer ske enligt flödesschemat~\ref{fig:flowlcdwr
 
 
 \subsection{Switchar}
-En switch styr om roboten exekverar programkod för autonom styrning eller manuell styrning. Denna switch kan även byta läge via ett virtuellt kommando från PC. Ett avbrott signalerar till processorn att den ska byta programkod, avbrottet ligger på pin16 (INT0) se appendix A. Av/På-knappen styr strömförsörjningen till samtliga moduler. 
+En switch styr om roboten exekverar programkod för autonom styrning eller manuell styrning. Denna switch kan även byta läge via ett virtuellt kommando från PC. Ett avbrott signalerar till processorn att den ska byta programkod, avbrottet ligger på PIN16 (INT0) se appendix A. Av/På-knappen styr strömförsörjningen till samtliga moduler. 
 
 \subsection{Konstruktion}
 Kommunikationsmodulen är monterad på ett separat virkort och bussledningarna kopplas till en bandkabel för sammankoppling med det andra virkortet.  Bandkabeln förser även virkortet med spänning.
-Bluetooth-modemet kopplas in i en av de redan existerande socklarna på virkortet. Även för JTAG på kommunikationsmodulen utnyttjas en redan existerande sockel. LCD-Displayen samt switch-knappen placeras på kortet och viras fast. Resetknappen är konstruerad med ett pull-up motstånd för detaljerad information se kopplingsschema i figur~\ref{fig:kopplingkom}
+Bluetooth-modemet kopplas in i en av de redan existerande socklarna på virkortet. Även för JTAG på kommunikationsmodulen utnyttjas en redan existerande sockel. LCD-Displayen samt switch-knappen placeras på kortet och viras fast. Resetknappen är konstruerad med ett pull-up motstånd för detaljerad information se kopplingsschema i figur~\ref{fig:kopplingkom}.
 Utöver detta kopplas även en extern klocka in, i form av en kristalloscillator.
 
 % ----------------------------- Styrmodul ----------------------------------------
@@ -604,7 +604,7 @@ Styrmodulen är ansluten till bussen med hjälp av MISO- och MOSI-pinnarna.
 Utöver detta är en tryckknapp ansluten till RESET för att förenkla felsökning och uppstart. 
 
 \newpage
-\subsection{Konstruktion av styrmodul}
+\subsection{Konstruktion}
 
 Vid konstruktion av styrmodulen används chassit som grund. Till chassit kopplas batteriet med den medföljande strömkabeln. Systemchippet placeras tillsammans med resetknappen och en sockel för JTAG, som används vid programmering av modulen, på ett virkort. Utöver detta kopplas även en extern klocka in, i form av en kristalloscillator. Signalerna för bussen kopplas till en egen sockel för att underlätta användning av bandkabel mellan moduler, bandkabel syns i figur\ref{fig:band}. För fullständigt kopplingsschema till styrmodulen, se Appendix. 
 
@@ -650,7 +650,7 @@ PIN 34 kopplas till en avståndssensor för mellandistans, GP2Y0A02YK, och PIN 3
 
 PIN 31 och 11 kopplas till jord, PIN 13 kopplas till klocka från master, PIN 12 används inte i denna modul, PIN 9 kopplas till en avstudsad manuell switch, en reset-knapp, PIN 32 kopplas till en spänningskälla på 5 V som används som referensspänning, PIN 10 kopplas också den till en spänningskälla på 5 V och PIN 30 kopplas genom ett LP-filter till samma externa spänningskälla.
 
-Alla sensorsignaler utom de från RFID-läsaren passerar först genom ett lågpassfilter (LP-filter) var och ett bestående av ett motstånd på 18k$\Omega$, samt en kondensator med en kapacitans på 100nF. Se figur \ref{fig:pfilter}
+Alla sensorsignaler utom de från RFID-läsaren passerar först genom ett lågpassfilter (LP-filter) var och ett bestående av ett motstånd på 18k$\Omega$, samt en kondensator med en kapacitans på 100nF. Se figur \ref{fig:lpfilter}
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
@@ -689,7 +689,7 @@ Modulens är byggd kring processorn Atmel ATmega1284p\footnote{Datablad för Atm
 För att kunna detektera RFID-taggen så krävs en RFID-läsare. Vi använder oss av Par\-all\-ax-Read\-er\footnote{Datablad för Par\-all\-ax-Read\-er\, \url{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/rfid-reader-v21.pdf}, hämtad 2014-05-23}. 
 SOUT på RFID-sensorn, PIN 3, kopplas till port C, PIN 23, på processorn. RFID-läsaren använder sig av serieprotokollet asynkron USART för att skicka data från RFID-korten vidare till CPU:n. Pinne 23 som RFID-läsaren är inkopplad på har stöd för seriell kommunikation och konfigureras för att matcha dataöverföringshastigheten från läsaren.
 
-Då brus kan ge upphov en falsk RFID-läsning, så kontrolleras att mottaget data matchar vissa symboler. Vi har valt att leta efter en start byte, 0x0A, som indikerar början på en RFID-taggs unika id. För att ytterligare säkerställa en korrekt läsning görs denna kontroll två gånger innan kommandot för upptäckt brandhärd skickas till master.
+Då brus kan ge upphov en falsk RFID-läsning, så kontrolleras att mottaget data matchar vissa symboler. Vi har valt att leta efter en start byte, 0x0A, som indikerar början på en RFID-taggs unika ID. För att ytterligare säkerställa en korrekt läsning görs denna kontroll två gånger innan kommandot för upptäckt brandhärd skickas till master.
 
 \subsubsection{Reflexsensor}
 Reflexsensorn, SFH300\footnote{Datablad för SFH300, \url{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/sfh300.pdf}, hämtad 2014-05-23}, används för att beräkna tillryggalagd sträcka. Sensormodulen skickar ett kommando till styrmodulen då roboten åkt 40 cm, alltså då roboten kommit till ett nytt 40x40-segment. För att beräkna den tillryggalagda sträckan fästs en pappersskiva på ett av robotens hjul. Skivan består av 6 vita och 6 svarta lika stora ''tårtbitar'', vilket ses i figur~\ref{fig:reflex}. Reflexsensorn detekterar varje gång skivan byter färg och på så sätt kan den tillryggalagda sträckan räknas ut.
@@ -706,10 +706,10 @@ Data från sensorerna används för att detektera väggar och skapa en kartabstr
 För mer information om hur sensorer används för att bedömma avstånd se appendix C i kappan.
 
 \subsubsection{Vinkelhastighetssensor (gyro)}
-För att underlätta beräkningar av körriktningar och hålla koll på hur mycket roboten roterat används en vinkelhastighetssensor även kallat gyro, MLX\-90\-609\footnote{Datablad för MLX\-90\-609, \url{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/MLX90609\_datasheet.pdf}. hämtad 2014-05-23}. OUTAR på gyron, PIN 24, kopplas till ett LP-filter för att minska brus och den filtrerade signalen är kopplad till en PIN på sensormodulens A/D-omvandlare. Gyrot skickar en spänning mellan 0.5 och 4.5 V där 2.5 V representerar en vinkelhastighet på noll. Sensormodulen börjar mäta på gyrot då ett specifikt kommando från styrmodulen mottagits. Sensormodulen skickar i sin tur tillbaka ett kommando då roboten roterat 90 grader. Sensormodulen låser sig till endast mätningar på gyroskopet under svängar för att öka noggranheten.
+För att underlätta beräkningar av körriktningar och hålla koll på hur mycket roboten roterat används en vinkelhastighetssensor även kallat gyro, MLX\-90\-609\footnote{Datablad för MLX\-90\-609, \url{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/MLX90609\_datasheet.pdf}. hämtad 2014-05-23}. OUTAR på gyron, PIN 24, kopplas till ett LP-filter för att minska brus och den filtrerade signalen är kopplad till en PIN på sensormodulens A/D-omvandlare. Gyrot skickar en spänning mellan 0.5 och 4.5 V där 2.5 V representerar en vinkelhastighet på noll. Sensormodulen börjar mäta på gyrot då ett specifikt kommando från styrmodulen mottagits. Sensormodulen skickar i sin tur tillbaka ett kommando då roboten roterat 90 grader. Sensormodulen låser sig till endast mätningar på gyroskopet under svängar för att öka noggrannheten.
 
-Då roboten endast kommer att använda sig av vinkelräta svängar så räcker det att gyrot snabbt kan upptäcka då mroboten roterat 90 grader. Om man adderar vinkelhastigheter med ett jämt tidsintervall så blir summan alltid lika stor vid 90 grader. Av denna anledning valdes det at inte involvera tiden mellan mätningar i summeringen, utan att istället ''skala om'' 90 grader.
-Gränserna som används för att registrera en rotation testades fram gkalibrerades genom att låta processorn summera alla värden från gyrot under en, för hand gjord, 90 graders rotation. Testet upprepades flertalet gånger, moturs och medurs, och medelvärdet av summorna som gavs användes som gräns för medurs- resp. motursrotation.
+Då roboten endast kommer att använda sig av vinkelräta svängar så räcker det att gyrot snabbt kan upptäcka då roboten roterat 90 grader. Om man adderar vinkelhastigheter med ett jämt tidsintervall så blir summan alltid lika stor vid 90 grader. Av denna anledning valdes det att inte involvera tiden mellan mätningar i summeringen, utan att istället skala om 90 grader till en konstant.
+Gränserna som används för att registrera en rotation testades fram och kalibrerades genom att låta processorn summera alla värden från gyrot under en, för hand gjord, 90 graders rotation. Testet upprepades flertalet gånger, moturs och medurs, och medelvärdet av summorna som gavs användes som gräns för medurs- resp. motursrotation.
 
 För mer information om gyro se appendix C i kappan.
 
@@ -728,7 +728,7 @@ Det grafiska gränssnittet är skrivet i Qt 5.3.0 och är designat i QtCreator. 
 \end{itemize}
 
 \subsection{Bluetooth}
-Bluetooth mottagningen på PC fungerar genom att modulen i PC virtualiserar en seriellport som sedan data kan skickas på. För att skapa porten utnyttjas den inbyggda klassen i Qt, QSerialPort. Denna initialiserar Bluetooth kopplingen och sätter inställningar som läs-skriv läge, BaudRate, antal databitar, paritet och stopbitar. Det är alltid exakt 27 bytes per transmission enligt specificerat protokoll, se figur {fig:bussprotocol}. 
+Bluetooth-mottagningen på PC fungerar genom att modulen i PC virtualiserar en seriellport som sedan data kan skickas på. För att skapa porten utnyttjas den inbyggda klassen i Qt, QSerialPort. Denna initialiserar Bluetooth-kopplingen och sätter inställningar som läs-skriv läge, BaudRate, antal databitar, paritet och stopbitar. Det är alltid exakt 27 bytes per transmission enligt specificerat protokoll, se figur~\ref{fig:bussprotocol}. 
 
 Qt har händelsehantering. Qt kallar dessa händelser för slots och de kan liknas med avbrott.
 
@@ -739,12 +739,12 @@ När data kommer till Bluetooth-enheten skickas ett avbrott till huvudprogrammet
   \begin{center}
   \includegraphics[keepaspectratio=true,width=0.6\linewidth]{bilder/bluetoothpc.jpg}  %skala och filnamn. 
   \end{center}
-  \caption{Flödesdiagram Bluetooth mottagning} %figurtext.
+  \caption{Flödesdiagram Bluetooth-mottagning} %figurtext.
   \label{fig:BTpc}
 \end{figure}
 
 \subsection{Skrivning till Bluetooth}
-Skrivning till Bluetooth-enheten sker via den, i QSerialPort, inbyggda medlemsfunktionen write. I filen order.cpp finns en klass som sköter abstraktion mellan det grafiska användargränssnittet och QSerialPort. Denna har alla arrayer för kommandon specificerade i sig och skickar vidare data till serieport objektet som sedan skriver denna data till Bluetooth-enheten. 
+Skrivning till Bluetooth-enheten sker via den, i QSerialPort, inbyggda medlemsfunktionen write. I filen order.cpp finns en klass som sköter abstraktion mellan det grafiska användargränssnittet och QSerialPort. Denna har alla arrayer för kommandon specificerade i sig och skickar vidare data till serieportobjektet som sedan skriver denna data till Bluetooth-enheten. 
 
 \subsection{Grafer för sensordata}
 Med hjälp av klassen QCustomPlot kan vi skapa grafer för plottning av sensordata från roboten. När det grafiska användargränssnittet startar sätts en timer igång. Varje gång sensordata kommer till Bluetooth-enheten tidsstämplas denna och detta används för att rita tidsberoende sensorgrafer med historik. 
@@ -762,7 +762,7 @@ Kartan använder sig av Qts inbyggda klass QGraphicsScene. Objekt med dimension 
 \newpage
 \section{Förslag på förbättringar av MapMaster2001}
 
-I takt med projektets gång har vi märkt att vi kunnat göra vissa saker på annat sätt - och kunnat utföra dem både bättre och snabbare. Detta är naturligt i en arbetsprocess och ger oss lärdom för framtiden. Utifrån det vi har lärt oss kan vi konstatera att vi, om vi skulle göra projektet på nytt, skulle göra följande förbättringar av MapMaster2001. 
+Under projektets gång har vi upptäckt designval, både i hårdvara och mjukvara, som kunde lösts på andra sätt - och kunnat utföra dem både bättre och snabbare. Detta är naturligt i en arbetsprocess och ger oss lärdom för framtiden. I projektets slutfas har många tankar och funderingar på förbättringar diskuterats inom gruppen, nedan följer ett par av de mer utarbetade idéerna.
 
 \subsection{Arkitektur \label{head:arch}}
 
@@ -887,15 +887,15 @@ Med en systemarkitektur likt den föreslagen i avsnitt~\ref{head:arch} skulle de
 
 % ---------------------- ANVÄNDARMANUAL ---------------------------------------------------------
 % ---------------------- ---------------------- ---------------------- ----------------------
-\section{Appendix C - Användarmanual}
-
+\section*{Appendix C - Användarmanual}
+\addcontentsline{toc}{section}{Appendix C - Avändarmanual}
 Efter roboten har kopplats upp och programmerats med Atmel Studio kan roboten börja användas. 
 
-Roboten kan köras i två lägen, antingen i manuellt eller autonomt läge. För att börja använda Mapmaster 2001, slå på huvudströmbrytaren placerad på bakre delen av robotens chassi. Placera sedan roboten i dess startposition. 
+Roboten kan köras i två lägen, antingen i manuellt eller autonomt läge. För att börja använda Mapmaster2001, slå på huvudströmbrytaren placerad på bakre delen av robotens chassi. Placera sedan roboten i dess startposition. 
 
 Efter detta kan det vara av god sed att trycka på de båda svarta knapparna på respektive virkort. Dessa är återställningsknappar och roboten är nu redo att kopplas upp till persondatorn. 
 
-\subsection{Bluetooth}
+\subsection*{Bluetooth}
 Aktivera Bluetooth via menyn i menyraden: 
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
@@ -908,10 +908,10 @@ Aktivera Bluetooth via menyn i menyraden:
 
 Efter att du har startat upp din robot är det dags att ansluta roboten via Bluetooth till din persondator. Starta programmet mapGui.app för MapMaster och vänta på att du får kontakt med roboten. Att en länk har upprättats mellan dator och robot ser du lättast genom att kolla i programmet och se att programmets grafer börjar röra på sig. Får du sensordata, har du uppkoppling. 
 
-\subsubsection{Vid fel}
+\subsubsection*{Vid fel}
 Om persondator och Bluetooth inte lyckas ansluta kan du först prova att starta om roboten och programvaran. Ifall detta inte löser problemen; dra ur den röda Bluetooth-enheten som sitter längst upp på roboten och sätt i den igen. 
 
-\subsection{Manuell körning}
+\subsection*{Manuell körning}
 I manuellt läge kan roboten enkelt manövreras med hjälp av piltangenterna på din dator.
 \begin{itemize}
 	\item Uppåt-pil - Roboten kör rakt fram.
@@ -921,13 +921,13 @@ I manuellt läge kan roboten enkelt manövreras med hjälp av piltangenterna på
 \end{itemize}
 Orsaken till att roboten endast utför vinkelräta svängar är för att kartläggningen ska bli korrekt i manuellt läge. Utöver detta kan du även sätta vilken hastighet du vill att roboten ska köra i. Detta gör du i reglaget "speed" i programvaran. Se figur 2. 
 	
-\subsection{Autonom körning}
-Om du vill växla roboten till att köra autonomt, placera då först roboten med baksidan 10 cm från en yttervägg av specificerat område. Banan måste bestå av 40x40 segment för att roboten ska kunna kartlägga korrekt, se appendix A i kravspecifikationen. För att starta autonom körning tryck CMD+X i programmet eller tryck på den grå knappen som är placerad på den översta virkortet på roboten. Roboten kommer då börja att åka och kartlägga banan. Allt eftersom roboten åker kommer du se hur kartan växer fram bit för bit i det vita rutnätet som syns i figur 1. 
+\subsection*{Autonom körning}
+Om du vill växla roboten till att köra autonomt, placera då först roboten med baksidan 10 cm från en yttervägg av specificerat område. Banan måste bestå av 40x40 segment för att roboten ska kunna kartlägga korrekt, se appendix A i kravspecifikationen. För att starta autonom körning tryck CMD+X i programmet eller tryck på den grå knappen som är placerad på den översta virkortet på roboten. Roboten kommer då börja att åka och kartlägga banan. Allt eftersom roboten åker kommer du se hur kartan växer fram bit för bit i det vita rutnätet som syns i figur~\ref{fig:gui_man}. 
 
-\subsubsection{Felsökning}
+\subsubsection*{Felsökning}
 Vid start av autonom körning är det viktigt att robotens moduler är korrekt initierade. Det kan därför vara bra, att efter huvudströmbrytaren är påslagen, återställa först mastermodulen och sedan styr- och sensormodul genom att trycka på respektive reset-knapp. Resetknapparna är svarta och sitter placerade på respektive virkort. Resetknapparna återställer endast den processor som är monterad på samma virkort som den knappen i fråga.
 
-\subsection{Övriga kommandon}
+\subsection*{Övriga kommandon}
 Utöver kommandon för manuell körning finns även
 \begin{itemize}
 	\item $Alt$+uppåt-pil - Öka hastigheten.
@@ -937,7 +937,7 @@ Utöver kommandon för manuell körning finns även
 	\item $Cmd$+$x$ - Aktivera/avaktivera autonomt läge.
 \end{itemize}
 
-\subsection{Programvara}
+\subsection*{Programvara}
 Nedan följer en lista med tillhörande bild, figur~\ref{fig:gui_man} för att du som användare ska kunna få en överblick på alla kommadon som finns och hur du kör dem. 
 
 \begin{enumerate}
@@ -962,11 +962,14 @@ Nedan följer en lista med tillhörande bild, figur~\ref{fig:gui_man} för att d
   \label{fig:gui_man} %glöm inte att uppdatera era labels
 \end{figure}
 
-\section{Programvara}
+\newpage
+\section*{Appendix D - Programkod}
+\addcontentsline{toc}{section}{Appendix D - Programkod}
 
 \lstset{language=C++}
 
 
-\lstinputlisting[language=C++]{../../Kod/Styr_m/Styr_m/MapSection.cpp}
+
+\lstinputlisting[language=C++]{../../Kod/Styr_m/Styr_m/Map.cpp}
 
 \end{document}
