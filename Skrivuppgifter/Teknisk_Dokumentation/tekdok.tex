@@ -269,16 +269,16 @@ Konstanterna $K_{p}$ och $K_{d}$ kan väljas i mjukvaran för persondator, men d
 %------------------Signalbehandling
 
 \subsection{Filtrering av analoga insignaler}
-För att det ska vara möjligt för roboten att utföra sitt uppdrag krävs ett flertal sensorer. Roboten använder sig därför av flera avståndssensorer, ett gyroskop, en reflexsensor och en RFID-läsare. Alla utom RFID-läsaren ger analoga utsignaler. De analoga sensorernas utsignaler A/D-konverteras internt på processorn och kopplas till processorns ADC-pinnar, de pinnar som är kopplade till processorns  interna A/D-omvandlare. Processorn har en intern mux kopplad till ADC-pinnarna som gör det möjligt att välja den aktuella insignalen, alltså vilken pinnes analoga värde som skall avläsas och konverteras. Det digitala värde som kommer från A/D-konverteringen är inte ett avstånd angett i meter eller en vinkelhastiget given i grader per sekund utan värdet är istället en spänningsreferens. Spänningsreferensen kan sedan konverteras till ett avstånd, en vinkelhastighet eller en gråskala (reflexsensorn).
+För att det ska vara möjligt för roboten att utföra sitt uppdrag krävs ett flertal sensorer. Roboten använder sig därför av ett flertal avståndssensorer, ett gyroskop, en reflexsensor och en RFID-läsare. Alla utom RFID-läsaren ger analoga utsignaler. De analoga sensorernas utsignaler A/D-konverteras internt på processorn och kopplas till processorns ADC-pinnar, de pinnar som är kopplade till processorns  interna A/D-omvandlare. Processorn har en intern mux kopplad till ADC-pinnarna som gör det möjligt att välja den aktuella insignalen, alltså vilken pinnes analoga värde som skall avläsas och konverteras. Det digitala värde som kommer från A/D-konverteringen är inte ett avstånd angett i meter eller en vinkelhastiget given i grader per sekund utan värdet är istället en spänningsreferens. Spänningsreferensen kan sedan konverteras till ett avstånd, en vinkelhastighet eller en gråskala (reflexsensorn).
 
 \subsubsection{Avståndssensorer}
-Roboten använder sig av två olika typer av sensorer, mellandistans (20-150 cm) och kortdistans (10-80 cm). Avståndssensorerna är dock uppbyggda på samma sätt och ger en analog spänningsreferens. Spänningsreferensen A/D-omvandlas och måste sedan konverteras till ett avstånd. För att göra detta togs två olika formler, en för varje typ av avståndssensor, fram med hjälp av MATLAB:s curve fit toolbox. Formlerna togs fram genom att notera vilken spänningsreferens som representerade vilket avstånd, plotta avstånd mot spänning och slutligen användes MATLAB för att skapa en fjärdegradskurva som bäst interpolera de uppmätta talparen.
+Roboten använder sig av två olika typer av sensorer, mellandistans (20-150 cm) och kortdistans (10-80 cm). Avståndssensorerna är dock uppbyggda på samma sätt och ger en analog spänningsreferens. Spänningsreferensen A/D-omvandlas och måste sedan konverteras till ett avstånd. För att göra detta togs två olika formler, en för varje typ av avståndssensor, fram med hjälp av MATLAB:s curve fit toolbox. Formlerna togs fram genom att notera vilken spänningsreferens som representerade vilket avstånd, plotta avstånd mot spänning och slutligen användes MATLAB för att skapa en fjärdegradskurva som bäst interpolerar de uppmätta talparen.
 
 \subsubsection{Reflexsensor}
 För att beräkna den sträcka som roboten kör så används en reflexsensor. På ett av robotens hjul tejpades en papparsskiva fast. Skivan består av tolv cirkelsektorer, varannan vit och varannan svart. Vid varje avläsning ger reflexsensorn en utsignal beroende på gråskalan hos den belysta ytan, mörkare avläsningsyta ger en högre utsignal och ljusare ger en lägre. Ett tröskelvärde införs och sedan räknas varje gång den A/D-omvandlade signalen skiftar sida om tröskelvärdet. Genom att multiplicera räknaren med hjulets omkrets delat på tolv så kan den tillryggalagda sträckan per cirkelsektor beräknas.
 
 \subsubsection{Gyroskop}
-Gyroskopet ger en spänningsreferens som representerar vinkelhastighet. Dess A/D-omvandlade referens omvandlas dock inte till vinkelhastighet. Vi utnyttjar istället den digitala spänningsreferensen och adderar respektive subtraherar den från en tänkt ''vinkel'' med jämna mellanrum. Då intervallen mellan varje läsning är lika vet vi att en perfekt 90-graderssväng representeras av en ren summa utan skalning med tid. För att ta fram summan utfördes en enkel kalibrering genom att ett flertal gånger snurra roboten 90 grader och se vad summan blev. Då gyrot ej satt perfekt centrerat krävdes olika gränser för rotation moturs resp. medurs. 
+Gyroskopet ger en spänningsreferens som representerar vinkelhastighet. Dess A/D-omvandlade referens omvandlas dock inte till vinkelhastighet. Vi utnyttjar istället den digitala spänningsreferensen och adderar respektive subtraherar den från en tänkt vinkel med jämna mellanrum. Då intervallen mellan varje läsning är lika vet vi att en perfekt 90-graderssväng representeras av en ren summa utan skalning med tid. För att ta fram summan utfördes en enkel kalibrering genom att ett flertal gånger snurra roboten 90 grader och se vad summan blev. Då gyrot ej sitter perfekt centrerat krävs olika gränser för rotation moturs resp. medurs. 
 
 
 \newpage
@@ -654,7 +654,7 @@ Alla sensorsignaler utom de från RFID-läsaren passerar först genom ett lågpa
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
-  \includegraphics[keepaspectratio=true,width=0.6\linewidth]{bilder/lp-filter2}  %skala och filnamn. 
+  \includegraphics[keepaspectratio=true,width=0.3\linewidth]{bilder/lp-filter2}  %skala och filnamn. 
   \end{center}
   \caption{Lågpassfilter} %figurtext.
   \label{fig:lpfilter}
@@ -662,7 +662,7 @@ Alla sensorsignaler utom de från RFID-läsaren passerar först genom ett lågpa
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
-  \includegraphics[keepaspectratio=true,width=0.6\linewidth]{bilder/sensorflode}  %skala och filnamn. 
+  \includegraphics[keepaspectratio=true,width=0.8\linewidth]{bilder/sensorflode}  %skala och filnamn. 
   \end{center}
   \caption{Flödesdiagram för sensorhantering} %figurtext.
   \label{fig:sensorflow}
