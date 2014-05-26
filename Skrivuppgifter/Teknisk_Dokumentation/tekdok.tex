@@ -105,13 +105,13 @@
 		\textbf{E-postlista för hela gruppen:} mapmaster2001@cyd.liu.se
 		\\[0.5cm]
 		
-		\textbf{Kund}: Mattias Krysander, Linköpings Universitet, 581 83  LINKÖPING, \\
+		\textbf{Kund}: Mattias Krysander, Linköpings universitet, 581 83  LINKÖPING, \\
 		013-28 21 98, matkr@isy.liu.se \\
-		\textbf{Kontaktperson hos kund}: Mattias Krysander, 013-28 21 98,matkr@isy.liu.se 
+		\textbf{Kontaktperson hos kund}: Mattias Krysander, 013-28 21 98, matkr@isy.liu.se 
 		\\
-		\textbf{Kursansvarig}: Tomas Svensson, 3B:528,013 28 21 59,tomass@isy.liu.se
+		\textbf{Kursansvarig}: Tomas Svensson, 3B:528,013 28 21 59, tomass@isy.liu.se
 		\\[0.5cm]
-		\textbf{Handledare}: Peter Johansson, 013-28 1345 peter.a.johansson@liu.se
+		\textbf{Handledare}: Peter Johansson, 013-28 1345, peter.a.johansson@liu.se
 
 				\end{center}
 		\endgroup
@@ -141,7 +141,7 @@ MapMaster2001 kartlägger sin omgivning och skickar sedan information om denna t
 
 \subsection{Bakgrund}
 Under tredje året på Teknisk fysik och elektroteknik (Y) på Linköpings Universitet utförs ett kandidatarbete
-med inriktning fysik eller elektroteknik. Denna rapport behandlar ett kandidatprojekt i elektronik som utförts av sex studenter. Projektgruppen valde att konstruera en kartritande robot på grund av att de flesta såg det som en utmaning både programmeringsmässigt och teorimässigt. Detta projekt genomförs årligen av tredjeårsstudenter på Y men har från och med detta år utökats till ett kandidatarbete. 
+med inriktning fysik eller elektroteknik. Denna rapport behandlar ett kandidatprojekt i elektronik som utförts av sex studenter. Projektgruppen valde att konstruera en kartritande robot på grund av att de flesta såg det som en utmaning både programmeringsmässigt och teorimässigt.
 
 \subsection{Syfte och Mål}
 Syftet med detta kandidatarbetet är att konstruera och leverera en fullt autonom robot som ska kunna kartlägga ett begränsat område. Inom området ska RFID-taggar finns utplacerade för att indikera brandhärdar. Roboten i sig ska bestå av tre stycken moduler som ska kunna kommunicera med varandra. Modulerna ska ha olika ansvarsområden för att kunna utföra parallella aktiviteter. 
@@ -151,7 +151,7 @@ Syftet med detta kandidatarbetet är att konstruera och leverera en fullt autono
 
 Mapmaster 2001, en autonom kartritande robot med bred funktionalitet, vars syfte är att kunna användas för att lokalisera brandhärdar i rökfyllda rum. Roboten kan autonomt navigera och i realtid rita upp karta av rummet den opererar i. Den markerar även eventuella brandhärdar på kartan så brandmän och annan undsättningspersonal kan få information på förhand om var faran finns. 
 
-Under projeket har en prototyp tagits fram och testats på speciella banor enligt kravspecifikation. Roboten har många kvaliteter och är en bra början för att i en senare version kunna operera i ett mer verkligt senario som nämns ovan. 
+Under projeket har en prototyp tagits fram och testats på speciella banor enligt kravspecifikation. Roboten har många kvaliteter och är en bra början för att i en senare version kunna operera i ett mer verkligt scenario som nämns ovan. 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
   \includegraphics[keepaspectratio=true,,width=0.4\linewidth]{../Kappa/robot.png}  %skala och filnamn. 
@@ -160,7 +160,7 @@ Under projeket har en prototyp tagits fram och testats på speciella banor enlig
   \label{fig:robot}
 \end{figure}
 
-Navigering och positionering är två saker som roboten måste utföra med oerhörd precision. För att kunna åstadkomma detta så har Mapmaster 2001 försetts med en rad egenskaper som är listade nedan. MapMaster2001 kan bland annat: 
+Navigering och positionering är två saker som roboten måste utföra med oerhörd precision. För att kunna åstadkomma detta så har Mapmaster2001 försetts med en rad egenskaper som är listade nedan. MapMaster2001 kan bland annat: 
 
 \begin{itemize}
   \item Kartlägga slutna rum.
@@ -177,12 +177,12 @@ All mjukvara tillhörande MapMaster2001 samt dokument finns att hitta på GitHub
 \newpage
 \section{Teori}
 
-I den här delen går vi igenom hur implementeringen av de olika delsystemen fungerar, och vad som är tanken bakom dem. 
+I den här delen går vi igenom hur implementeringen av de olika delsystemen fungerar och vad som är tanken bakom dem. 
 
 % ------------------- Styrning och kartläggning -----------------------
 
 \subsection{Kartabstraktion}
-För att kartlägga behöver en karta abstraheras i mjukvara och agera ramverk åt de beräkningar och beslut som tas utefter sensordata. MapMaster abstraherar kartan som en matris där objekt sparas, detta löses i form av en C-array med dimensionerna 32x17. Tillgängliga undertyper är:
+För att kartlägga behöver en karta abstraheras i mjukvara och agera ramverk åt de beräkningar och beslut som tas utifrån sensordata. MapMaster2001 abstraherar kartan som en matris där objekt sparas, detta löses i form av en C-array med dimensionerna 32x17. Tillgängliga undertyper är:
 
 \begin{itemize}
 \item{EmptySection}
@@ -192,7 +192,7 @@ För att kartlägga behöver en karta abstraheras i mjukvara och agera ramverk �
 \item{Fire}
 \end{itemize}
 
-Robot är en egen klass med polymorfiskt arv från mapSection. 
+Robot är en egen klass med polymorfiskt arv från MapSection. 
 
 \paragraph{EmptySection} 
 ~\\
@@ -212,11 +212,11 @@ Om en sektion är stängd sätts den till closed.
 
 \paragraph{Fire} 
 ~\\
-Fire representerar en plats där det finns eldhärd, dvs. en RFID-tagg. 
+Fire representerar en plats där det finns eldhärd, det vill säga en RFID-tagg. 
 \newpage
 
 \subsubsection{Styrning och kartläggning}
-Positionering och kartläggning sker med hjälp av ett stort antal sensorer och utefter många fördefinierade villkor. När roboten kartlägger kör den vinkelräta svängar för att underlätta sin positionering. Algoritmerna som bestämmer traverserad sträcka använder robotens hjulsensor och olika vilkor så som t.ex.  om en rotation utförs och om den främre sensorn ger utslag för att hålla sig exakta. 
+Positionering och kartläggning sker med hjälp av ett stort antal sensorer och utefter många fördefinierade villkor. När roboten kartlägger utför den vinkelräta svängar för att underlätta positionsskattningen. Algoritmerna som bestämmer traverserad sträcka använder robotens hjulsensor och olika vilkor så som t.ex.  om en rotation utförs och om den främre sensorn ger utslag för att hålla sig exakta. 
 
 \paragraph{Kartläggninsalgoritm}
 
@@ -233,8 +233,8 @@ Kartläggningsalgoritmen är utformad så att roboten börjar med att placera si
 \paragraph{Stänging och slutning av bana}
 När roboten har åkt längs högerväggen och återvänder till startkoordinaterna samt har färdriktningen höger i kartabstraktionen anses kartan vara sluten. När kartan är sluten anses fortfarande objekt utanför inramningen att vara outforskade. Då dessa är omöjliga att besöka startas ett anrop till samtliga objekt längs y-axeln på koordinaterna x = 0 och x = 31. Funktionen ber objektet att bli av typen closed om den inte redan är det. Är objektet closed avslutas funktionen där, annars ber den alla sina direkta grannar att även de utföra funktionen. Denna funktion stänger alltså alla objekt i ett område avgränsat av andra closed-objekt.
 
-\paragraph{Avsökning av ''köksöar''}
-När roboten sedan slutit hela området börjar den utforska om det finns några så kallade ''köksöar''. Köksöar inom ett avstånd av 120 centimeter detekteras. När en sådan detekteras åker roboten ut till ''köksön'' och sluter detta område med hjälp av sina kortdistanssensorer på höger sida. Roboten återvänder sedan till områdets yttervägg tills den hittar en ny ''köksö''. När roboten åkt ett varv återvänder den till utgångspunkten varpå kartläggningen är slutförd. 
+\paragraph{Avsökning av köksöar}
+När roboten sedan slutit hela området börjar den utforska om det finns några så kallade köksöar. Köksöar inom ett avstånd av 120 centimeter detekteras. När en sådan detekteras åker roboten ut till köksön och sluter detta område med hjälp av sina kortdistanssensorer på höger sida. Roboten återvänder sedan till områdets yttervägg tills den hittar en ny köksö. När roboten åkt ett varv återvänder den till utgångspunkten varpå kartläggningen är slutförd. 
 
 För ytterligare fördjupning i SLAM-problemet - se Kappan och dokumentet \textit{''Simultan positionering och kartläggning''}\footnote{Grundström, T. Elo, H-F (2014), \textit{''Simultan positionering och kartläggning''}}.
 
@@ -248,20 +248,21 @@ Roboten kan köras autonomt också manuellt via PC-mjukvara. Då roboten körs a
 Styrmodulen får sensordata skickad till sig från sensormodulen. Detta data används till att reglera riktningen då man följer en vägg.
 
 Den proportionella delen av regleringen reglerar avståndet från sensorerna på robotens högersida jämfört med ett internt referensavstånd. Denna reglering ser till att roboten håller sig inom ett rimligt avstånd till den vägg som följs.
-$ e_p = K_{p}*avst\text{\it{å}}ndssensordata $
+
+$ u_p = K_{p}*(Ref-fram) $
 
 Där $K_{p}$ är en konstant.
 
-Den deriverande delen av regleringen försöker minimera differensen mellan båda sensorerna på högersidan. Detta innebär i praktiken att roboten försöker räta ut sig. Denna typ av reglering medför även en minskad risk att de främre och bakre sensorerna ska ger fel värden genom att slå i en sidovägg.
+Den andra delen av regleringen baseras på differensen mellan båda sensorerna på högersidan och försöker minimera denna. Detta innebär i praktiken att roboten försöker räta ut sig. Denna typ av reglering medför även en minskad risk att de främre och bakre sensorerna ska ge fel värden genom att slå i en sidovägg.
 
 
-$ e_d = K_{D}*(fram - bak) $
+$ u_d = K_{D}*(fram - bak) $
 
-Totala felet ges då av: 
+Den totala styrsignalen ges då av: 
 
-$e = e_d + e_p$
+$u = u_d + u_p$
 
-Konstanterna $K_{p}$ och $K_{d}$ kan dels väljas i mjukvaran för persondator, men de initieras som standard till $K_{p}=5$ och $K_{d}=7$.
+Konstanterna $K_{p}$ och $K_{d}$ kan väljas i mjukvaran för persondator, men de initieras som standard till $K_{p}=5$ och $K_{d}=7$.
 %släpp sargen. Den är inte deriverande......
 
 \newpage
@@ -274,7 +275,7 @@ För att det ska vara möjligt för roboten att utföra sitt uppdrag krävs ett 
 Roboten använder sig av två olika typer av sensorer, mellandistans (20-150 cm) och kortdistans (10-80 cm). Avståndssensorerna är dock uppbyggda på samma sätt och ger en analog spänningsreferens. Spänningsreferensen A/D-omvandlas och måste sedan konverteras till ett avstånd. För att göra detta togs två olika formler, en för varje typ av avståndssensor, fram med hjälp av MATLAB:s curve fit toolbox. Formlerna togs fram genom att notera vilken spänningsreferens som representerade vilket avstånd, plotta avstånd mot spänning och slutligen användes MATLAB för att skapa en fjärdegradskurva som bäst interpolera de uppmätta talparen.
 
 \subsubsection{Reflexsensor}
-För att beräkna den sträcka som roboten kör så används en reflexsensor. På ett av robotens hjul tejpades en papparsskiva fast. Skivan består av tolv ''tårtbitar'', varannan vit och varannan svart. Vid varje avläsning ger reflexsensorn en utsignal beroende på gråskalan hos den belysta ytan, mörkare avläsningsyta ger en högre utsignal och ljusare ger en lägre. Ett tröskelvärde införs och sedan räknas varje gång den A/D-omvandlade signalen skiftar sida om tröskelvärdet. Genom att multiplicera räknaren med hjulets omkreds delat på tolv så kan den tillryggalagda sträckan per ''tårtbit'' beräknas.
+För att beräkna den sträcka som roboten kör så används en reflexsensor. På ett av robotens hjul tejpades en papparsskiva fast. Skivan består av tolv cirkelsektorer, varannan vit och varannan svart. Vid varje avläsning ger reflexsensorn en utsignal beroende på gråskalan hos den belysta ytan, mörkare avläsningsyta ger en högre utsignal och ljusare ger en lägre. Ett tröskelvärde införs och sedan räknas varje gång den A/D-omvandlade signalen skiftar sida om tröskelvärdet. Genom att multiplicera räknaren med hjulets omkrets delat på tolv så kan den tillryggalagda sträckan per cirkelsektor beräknas.
 
 \subsubsection{Gyroskop}
 Gyroskopet ger en spänningsreferens som representerar vinkelhastighet. Dess A/D-omvandlade referens omvandlas dock inte till vinkelhastighet. Vi utnyttjar istället den digitala spänningsreferensen och adderar respektive subtraherar den från en tänkt ''vinkel'' med jämna mellanrum. Då intervallen mellan varje läsning är lika vet vi att en perfekt 90-graderssväng representeras av en ren summa utan skalning med tid. För att ta fram summan utfördes en enkel kalibrering genom att ett flertal gånger snurra roboten 90 grader och se vad summan blev. Då gyrot ej satt perfekt centrerat krävdes olika gränser för rotation moturs resp. medurs. 
@@ -284,14 +285,14 @@ Gyroskopet ger en spänningsreferens som representerar vinkelhastighet. Dess A/D
 %-----------------Kommunikation
 \subsection{Kommunikation}
 Eftersom roboten byggs och styrs med tre moduler med en processor var krävs kommunikation mellan processorerna, denna utförs med en buss. Bussen som används är en SPI-buss.
-Dessutom för att kunna få kartan ritad på en PC krävs trådlös kommunikation mellan robot och PC.
+För att kunna få kartan ritad på en PC krävs trådlös kommunikation mellan robot och PC.
 
 \subsubsection{Trådlös kommunikation}
 För den trådlösa kommunikationen med roboten används Bluetooth. En kortare undersökning angående olika typer av trådlös kommunikation finns att tillgå i fördjupningsuppgiften \emph{''Trådlös Kommunikation''}\footnote{Ericson, N. Edhammer, J. (2014), \textit{''Trådlös kommunikation''}} som kan hittas i Kappan - Appendix A
 Kommunikationen över Bluetooth utförs av Firefly-Bluesmirf Gold (FBG), figur~\ref{fig:firefly}, ett modem som parkopplas mot en persondator.
-FBG skickar information till persondator via protokollet RS232 enligt vad som är angivet på Vanheden. 
+FBG skickar information till persondator via protokollet RS232\footnote{\url{https://docs.isy.liu.se/twiki/bin/view/VanHeden/RS232}}. 
 Se appendix Scheman för schema över anslutning av TxD och RxD, vilka sköter sändning och mottagning av data.
-När vi skickar data till processorn så är detta avbrottshanterat. I avbrottet utnyttjas en databuffer vid namn inDataArray som sedan kopieras till bufferten pcHandle i datahanteringen av Bluetooth. Även Bluetooth datahanteras utanför avbrotten precis som SPI-kommunikationen.
+När data skickas till processorn så är detta avbrottshanterat. I avbrottet utnyttjas en databuffer vid namn inDataArray som sedan kopieras till bufferten pcHandle i datahanteringen av Bluetooth. Även Bluetooth datahanteras utanför avbrotten precis som SPI-kommunikationen.
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
@@ -302,8 +303,8 @@ När vi skickar data till processorn så är detta avbrottshanterat. I avbrottet
 \end{figure}
 
 
-\paragraph{Skickning av kartan}
-För att undvika problem vid mottagning av kartan på PC sidan skickas en rad i taget med hjälp av en timer. Main-loopen på kommunikationsmodulen kollar en gång per huvud-loop om det är okej att skicka en rad. När timern genererar ett avbrott sätts en flagga att ytterligare en rad är redo att skickas. När samtliga rader har skickats över, sätts flaggan som avgör om kartrader ska skickas över till false.
+\paragraph{Sändning av kartan}
+För att undvika problem vid mottagning av kartan på PC sidan skickas en rad i taget med hjälp av en timer. Main-loopen på kommunikationsmodulen kollar en gång per huvud-loop om det är okej att skicka en rad. När timern genererar ett avbrott sätts en flagga att ytterligare en rad är redo att skickas. När samtliga rader har skickats över sätts flaggan som avgör om kartrader ska skickas över till \emph{false}.
 
 \subsection{Kommunikationsmodulens huvudloop}
 
@@ -319,9 +320,9 @@ Huvudloopen på kommunikationsmodulen kollar ett antal sanningsvariabler för at
 
 
 
-\subsubsection{Master-modulens mottagning över buss}
+\subsubsection{Mastermodulens mottagning över buss}
 
-Master modulen hämtar data från en slave när den signalerar att data finns redo genom ett av avbrotten INT0 eller INT1. Där INT0 tillhör sensormodulen och INT1 tillhör styrmodulen. Datahantering sker utanför avbrotten genom att sanningsvariabler sätts i avbrotten efter färdig mottagning av data.
+Mastermodulen hämtar data från en slave när den signalerar att data finns redo genom ett av avbrotten INT0 eller INT1. Där INT0 tillhör sensormodulen och INT1 tillhör styrmodulen. Datahantering sker utanför avbrotten genom att sanningsvariabler sätts i avbrotten efter färdig mottagning av data.
 Slave skickar som första data längden på överföringen. Det är denna som gör att vi kan säga när mottagningen är klar. Hela metoden kan utläsas ur flödesschemat i figur~\ref{fig:spimaster}
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
@@ -333,8 +334,8 @@ Slave skickar som första data längden på överföringen. Det är denna som g�
 \end{figure}
 
 
-\subsubsection{Slave-modulers mottagning över buss}
-När vår master-modul initierar SPI-kommunikationen med en slave dras SlaveSelect-signalen för den givna processorn låg för att generera ett SPI-avbrott på sagda slave. När slave har tagit emot det antal bytes som specificeras av första byten i paketet genereras ett internt avbrott med hjälp av PCint16. I detta nya avbrott hanteras datan från transmissionen. En övergripande struktur angående mottagningen av SPI-trafik kan ses i flödesdiagrammet i figur~\ref{fig:spislave}
+\subsubsection{Slavemodulers mottagning över buss}
+När mastermodulen initierar SPI-kommunikationen med en slave dras SlaveSelect-signalen för den givna processorn låg för att generera ett SPI-avbrott på sagda slave. När slave har tagit emot det antal bytes som specificeras av första byten i paketet genereras ett internt avbrott med hjälp av PCint16. I detta nya avbrott hanteras datan från transmissionen. En övergripande struktur angående mottagningen av SPI-trafik kan ses i flödesdiagrammet i figur~\ref{fig:spislave}.
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
@@ -360,18 +361,18 @@ Sensor-data kommer att behandlas i sensormodulen och därefter kommer modulen at
 Kartabstraktionen och robotens position kommer att uppdateras allt eftersom ny sensordata kommer in. Efter att ny sensordata har mottagits av master skickar mastern ut sensordata till styrenheten.
 \paragraph{Kommandon för inställning av reglerparametrar.}
 ~\\
-Kommandon mottags via blåtand från PC på mastern, som skickar detta vidare till styrenheten. 
+Kommandon tas emot med hjälp av Bluetooth på mastern från PC. Mastern skickar detta vidare till styrenheten. 
 \paragraph{RFID aktivering och bekräftelse}
 ~\\
 Kommandot skickas från styrmodulen via mastern som speglar ner kommandot till sensormodulen. Sensormodulen startar då RFID-läsning och skickar bekräftelse till styrmodulen när RFID-kortet är detekterat.  
 
 \paragraph{Aktivering av gyro och bekräftelse}
 ~\\
-Kommandot skickas från styrmodulen via mastern som speglar ner kommandot till sensormodulen. Sensormodulen startar då en Gyro-omvandling och skickar bekräftelse till styrmodulen när roboten har roterat 90 grader något håll. 
+Kommandot skickas från styrmodulen via mastern som speglar ner kommandot till sensormodulen. Sensormodulen startar då en Gyro-omvandling och skickar bekräftelse till styrmodulen när roboten har roterat 90 grader. 
 
 \paragraph{Aktivering av hjulsensor och bekräftelse}
 ~\\
-Kommandot skickas från styrmodulen via mastern som speglar ner kommandot till sensormodulen. Sensormodulen startar då en mätning på hjulsensorn och skickar bekräftelse till styrmodulen när roboten har färdats 40 cm. 
+Kommandot skickas från styrmodulen via mastern som speglar ner kommandot till sensormodulen. Sensormodulen startar då en mätning på hjulsensorn och skickar en bekräftelse till styrmodulen när roboten har färdats 40 cm. 
 
 
 
