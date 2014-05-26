@@ -650,7 +650,7 @@ PIN 34 kopplas till en avståndssensor för mellandistans, GP2Y0A02YK, och PIN 3
 
 PIN 31 och 11 kopplas till jord, PIN 13 kopplas till klocka från master, PIN 12 används inte i denna modul, PIN 9 kopplas till en avstudsad manuell switch, en reset-knapp, PIN 32 kopplas till en spänningskälla på 5 V som används som referensspänning, PIN 10 kopplas också den till en spänningskälla på 5 V och PIN 30 kopplas genom ett LP-filter till samma externa spänningskälla.
 
-Alla sensorsignaler utom de från RFID-läsaren passerar först genom ett lågpassfilter (LP-filter) var och ett bestående av ett motstånd på 18k$\Omega$, samt en kondensator med en kapacitans på 100nF. Se figur \ref{fig:pfilter}
+Alla sensorsignaler utom de från RFID-läsaren passerar först genom ett lågpassfilter (LP-filter) var och ett bestående av ett motstånd på 18k$\Omega$, samt en kondensator med en kapacitans på 100nF. Se figur \ref{fig:lpfilter}
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
@@ -922,7 +922,7 @@ I manuellt läge kan roboten enkelt manövreras med hjälp av piltangenterna på
 Orsaken till att roboten endast utför vinkelräta svängar är för att kartläggningen ska bli korrekt i manuellt läge. Utöver detta kan du även sätta vilken hastighet du vill att roboten ska köra i. Detta gör du i reglaget "speed" i programvaran. Se figur 2. 
 	
 \subsection*{Autonom körning}
-Om du vill växla roboten till att köra autonomt, placera då först roboten med baksidan 10 cm från en yttervägg av specificerat område. Banan måste bestå av 40x40 segment för att roboten ska kunna kartlägga korrekt, se appendix A i kravspecifikationen. För att starta autonom körning tryck CMD+X i programmet eller tryck på den grå knappen som är placerad på den översta virkortet på roboten. Roboten kommer då börja att åka och kartlägga banan. Allt eftersom roboten åker kommer du se hur kartan växer fram bit för bit i det vita rutnätet som syns i figur~\ref{ref:gui_man}. 
+Om du vill växla roboten till att köra autonomt, placera då först roboten med baksidan 10 cm från en yttervägg av specificerat område. Banan måste bestå av 40x40 segment för att roboten ska kunna kartlägga korrekt, se appendix A i kravspecifikationen. För att starta autonom körning tryck CMD+X i programmet eller tryck på den grå knappen som är placerad på den översta virkortet på roboten. Roboten kommer då börja att åka och kartlägga banan. Allt eftersom roboten åker kommer du se hur kartan växer fram bit för bit i det vita rutnätet som syns i figur~\ref{fig:gui_man}. 
 
 \subsubsection*{Felsökning}
 Vid start av autonom körning är det viktigt att robotens moduler är korrekt initierade. Det kan därför vara bra, att efter huvudströmbrytaren är påslagen, återställa först mastermodulen och sedan styr- och sensormodul genom att trycka på respektive reset-knapp. Resetknapparna är svarta och sitter placerade på respektive virkort. Resetknapparna återställer endast den processor som är monterad på samma virkort som den knappen i fråga.
@@ -962,12 +962,14 @@ Nedan följer en lista med tillhörande bild, figur~\ref{fig:gui_man} för att d
   \label{fig:gui_man} %glöm inte att uppdatera era labels
 \end{figure}
 
+\newpage
 \section*{Appendix D - Programkod}
 \addcontentsline{toc}{section}{Appendix D - Programkod}
 
 \lstset{language=C++}
 
 
-\lstinputlisting[language=C++]{../../Kod/Styr_m/Styr_m/MapSection.cpp}
+
+\lstinputlisting[language=C++]{../../Kod/Styr_m/Styr_m/Map.cpp}
 
 \end{document}
