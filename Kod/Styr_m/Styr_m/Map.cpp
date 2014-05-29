@@ -62,6 +62,13 @@ void Map::convertToPathFinding(){
 
 // A-star algorithm.
 // The route returned is a string of direction digits.
+/**********************************************************************
+    The code was downloaded from http://code.activestate.com/recipes/577457-a-star-shortest-path-algorithm/
+    and then modified to fit our map and robot.
+    The queueAtmel class is a replica of stdlib c++ <priority_queue>, 
+    but modified to compile on atmega 1284p.
+ **********************************************************************/
+
 void Map::aStar(int xStart,int yStart,int xFinish,int yFinish)
 {
 	const int n=32; // horizontal size of the map

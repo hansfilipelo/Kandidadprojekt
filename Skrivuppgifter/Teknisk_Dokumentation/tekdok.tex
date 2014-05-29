@@ -713,7 +713,7 @@ GND på sensorerna sätts till jord, Vcc och Vin sätts till hög.
  
 Data från sensorerna används för att detektera väggar och skapa en kartabstraktion. Sensorerna på högersidan används för att reglera roboten under färd så att denna håller sig rak i förhållande till banans väggar och kan reglera avståndet från väggen.
 
-För mer information om hur sensorer används för att bedöma avstånd se appendix C i kappan och dokumentet \textit{''Sensorers applikation för kartritande robot''}\footnote{Ekelund, E. Habrman, D (2014), \textit{''Sensorers applikation för kartritande robot''}}.
+För mer information om hur sensorer används för att bedöma avstånd se appendix D i kappan samt dokumentet \textit{''Sensorers applikation för kartritande robot''}\footnote{Ekelund, E. Habrman, D (2014), \textit{''Sensorers applikation för kartritande robot''}}.
 
 \subsubsection{Vinkelhastighetssensor (gyro)}
 För att underlätta beräkningar av körriktningar och hålla koll på hur mycket roboten roterat används en vinkelhastighetssensor även kallat gyro, MLX\-90\-609\footnote{Datablad för MLX\-90\-609, \url{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/MLX90609\_datasheet.pdf}. hämtad 2014-05-23}. OUTAR på gyron, PIN 24, kopplas till ett LP-filter för att minska brus och den filtrerade signalen är kopplad till en PIN på sensormodulens A/D-omvandlare. Gyrot skickar en spänning mellan 0,5 V och 4,5 V där 2,5 V representerar en vinkelhastighet på noll grader per sekund. Sensormodulen börjar mäta på gyrot då ett specifikt kommando från styrmodulen mottagits. Sensormodulen skickar i sin tur tillbaka ett kommando då roboten roterat 90 grader. Sensormodulen låser sig till endast mätningar på gyroskopet under svängar för att öka noggrannheten.
@@ -723,10 +723,14 @@ Gränserna som används för att registrera en rotation testades fram och kalibr
 
 Då gyrot kan fluktuera lite kring 2,5 V även då roboten står still skulle detta kunna resultera i fel ifall rotationen inte startar direkt. För att lösa det problemet har ett 0,05 V brett band konstruerats kring 2,5 V där resultaten inte adderas till summan. 
 
-För mer information om gyro se appendix C i kappan.
+För mer information om gyro se appendix i kappan.
 
 \subsubsection{Övriga komponenter}
 Övriga komponenter så som en reset-knapp och sex lågpassfilter kommer användas till denna modul.
+
+
+% ----------------------------------- MJUKVARA ---------------------
+% ------------------------------------------------------------------
 
 \newpage
 \section{PC-mjukvara}
@@ -766,7 +770,7 @@ Dessa grafer kan sparas ned. Då skapas en ny mapp i användarens hemkatalog kal
 Samtliga styrkommandon är slots och funktioner utförs när knappar i det grafiska användargränssnittet trycks på eller när motsvarande knapp på tangentbordet trycks in. 
 Funktionerna för styrkommandon läser av hastighetsreglaget och skickar sedan styrkommandot till roboten. 
 \subsection{Kartan}
-Kartan använder sig av Qts inbyggda klass QGraphicsScene. Objekt med dimension 10x10 skapas och placeras ut för att tillsammans bilda kartan.
+Kartan använder sig av Qts inbyggda klass QGraphicsScene. Objekt med dimension 10x10 skapas och placeras ut för att tillsammans bilda kartan. 
 
 % -----------------------------------FÖRBÄTTRINGAR---------------------------------------------
 % ---------------------------------------------------------------------------------------------
@@ -975,8 +979,11 @@ Nedan följer en lista med tillhörande bild, figur~\ref{fig:gui_man} för att d
   \label{fig:gui_man} %glöm inte att uppdatera era labels
 \end{figure}
 
+% ------------------------- SENSORKOPPLING ------------------------ 
 
-\subsection*{Sensorkoppling}
+\newpage
+\section*{Appendix D - Sensorkoppling \label{head:sensorkoppl}}
+
 Vid uppkoppling av sensorer är det viktigt att dessa kopplas in i rätt sockel. 
 Följ följande lista och figur \ref{fig:sensorkoppling} för att försäkra dig om att alla kontakter sitter rätt roterade samt i rätt sockel.
 
@@ -998,6 +1005,7 @@ Följ följande lista och figur \ref{fig:sensorkoppling} för att försäkra dig
   \caption{Illustration av sensorernas sockelplacering och kabelrotation} %figurtext.
   \label{fig:sensorkoppling} %glöm inte att uppdatera era labels
 \end{figure}
+
 
 \newpage
 \section*{Appendix D - Utdrag ur programkod}
