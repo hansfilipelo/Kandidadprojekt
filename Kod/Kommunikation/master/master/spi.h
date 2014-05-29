@@ -1,9 +1,13 @@
- /*
- * Bluetooth.h
- *
- * Created: 4/7/2014 3:21:49 PM
- *  Author: niker917
- */ 
+/******************************************************
+*
+*Code was produced as part of the project MapMaster2001
+*
+*File: spi.h
+*Purpose: Class for functions and buffers concerning bluetooth
+*
+*
+********************************************************/
+ 
 #ifndef SPI
 #define SPI
 
@@ -21,12 +25,10 @@ class Spi
 {
     
 public:
-	unsigned char* getInDataArray();
 	Spi(Bluetooth*,Map*);
 	void init();
     char transfer(char, unsigned int);
 	void sendArray(unsigned int);
-	void requestRow(unsigned int);
     void receiveArray(unsigned int);
     
     // Data arrives in order, datalength (data.length + codeword + arg), codeword, arg, data.

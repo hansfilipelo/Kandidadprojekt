@@ -538,7 +538,7 @@ void Robot::setFwdClosed(){
 	
 	}
 	// Direction 32->x->0, "left"
-	else if (direction == 'l'){									//left right kan vara omvänt, måste testas
+	else if (direction == 'l'){
         
         // Set every section between robot and wall as empty
         for (int i = 0; i < output; i++) {
@@ -759,7 +759,7 @@ void Robot::setRightClosed(){
 		output = 80/40;//if distance is great only print max 2 empty.
 	}
 	else{
-		output = rightFrontSensor/40;	//kanske borde ha +10 innan man delar med 40 för att robotens inte är längst till höger i rutan
+		output = rightFrontSensor/40;
 	}
 	if (output != 0){
 		return;

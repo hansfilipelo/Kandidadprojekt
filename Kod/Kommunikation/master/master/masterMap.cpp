@@ -1,34 +1,25 @@
+/******************************************************
+*
+*Code was produced as part of the project MapMaster2001
+*
+*File: masterMap.cpp
+*Purpose: container for the mapbuffer on Com-module
+*  awaiting to be sent to PC.
+*
+*
+********************************************************/
+
 #include "masterMap.h"
 
-using namespace std;
-
-// ------------------------------------------
-
-// ------------------------------------------
-/*
-char* Map::getPos(int x, int y){
-    return mapArea[x][y];
-}
-
-// ---------------- getColAsChar ------------
-
-
-// --------- SET COL ------------
-void Map::setColAsChar(char* inCol)
-{
-	char* ptr = mapArea[inCol[2]][1];
-	memcpy(ptr, inCol,27);
-}
-
-// --------- SET POS ------------
-
-void Map::setSection(int xPos, int yPos, char* inSection){
-    mapArea[xPos][yPos] = inSection;
-}
-
 // --------- DEBUG --------------
-*/
+
 #if DEBUG == 1
+
+/*
+ *	Function for printing the map while debugging in 
+ * 	terminal on other platforms than avr.
+ */
+
 void Map::printMap(){    
     for (int it = 0; it < 17; it++) {
         for (int i = 0; i < 32; i++) {
@@ -39,18 +30,3 @@ void Map::printMap(){
 }
 
 #endif
-/*
-char* Map::getColAsChar(int col)
-{
-	// Char sent to computer
-	char* output = new char[27];
-	
-	for (int it = 0; it < 27; it++){
-		// Type of the block we are looking at
-		output[it] = *this->getPos(col,it);
-	}
-	
-	return output;
-	
-}
-*/

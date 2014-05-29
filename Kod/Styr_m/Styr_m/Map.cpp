@@ -62,6 +62,13 @@ void Map::convertToPathFinding(){
 
 // A-star algorithm.
 // The route returned is a string of direction digits.
+/**********************************************************************
+    The code was downloaded from http://code.activestate.com/recipes/577457-a-star-shortest-path-algorithm/
+    and then modified to fit our map and robot.
+    The queueAtmel class is a replica of stdlib c++ <priority_queue>, 
+    but modified to compile on atmega 1284p.
+ **********************************************************************/
+
 void Map::aStar(int xStart,int yStart,int xFinish,int yFinish)
 {
 	const int n=32; // horizontal size of the map
@@ -244,32 +251,6 @@ void Map::setSection(int xPos, int yPos, MapSection* inSection){
 void Map::convertSection(int xPos, int yPos, char inType){
 	this->getPos(xPos,yPos)->setType(inType);
 }
-
-// ---------------- getColAsChar ------------
-/*
- char* Map::getColAsChar(int col)
- {
- // Char sent to communications unit
- char* output = new char[25];
- // String telling type of the object we are interested in.
- 
- // Abstraction for buss communications
- // Sending 19 positions of interest
- int crap = 19;
- output[0] = 23;
- // Sending Map data command
- output[1] = 'M';
- // Sending column number
- output[2] = col;
- 
- for (int it = 0; it < 17; it++){
- // Type of the block we are looking at
- output[it+3] = this->getPos(col,it)->getType();
- }
- return output;
- }
- */
-
 
 void Map::getColAsChar(int col)
 {

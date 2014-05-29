@@ -1,10 +1,12 @@
-//
-//  commander.cpp
-//  
-//
-//  Created by Jens Edhammer on 2014-04-08.
-//
-//
+/******************************************************
+*
+*Code was produced as part of the project MapMaster2001
+*
+*File: order.cpp
+*Purpose: Class for all commands sent from PC to robot.
+*
+*
+********************************************************/
 #include "order.h"
 
 Order::Order(SerialPort *inPort){
@@ -14,13 +16,6 @@ Order::Order(SerialPort *inPort){
 Order::~Order(){
 }
 
-/*Constructs the array that are to be sent to AVR processor.
- */
-
-//void Order::setPID(int kp, int kd){
-//    char data[27] = {4,'P',0,(char)kp,(char)kd,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30};
-//    serport->sendArray(data);
-//}
 
 void Order::btReset(){
 
@@ -87,24 +82,48 @@ void Order::autonom(int speed){
     serport->sendArray(data);
 }
 
+/*
+ *	SetControlParameters. Converst the doubles and ints to char to be sent over bluetooth.
+ */
+
 void Order::setControlParameters(double Kp, double Kd, int Ref,int trimLeft,int trimRight){
     
     char data[27] = {13,'P',0,(char)getTen(Kp),(char)getOne(Kp),(char)getTenth(Kp),(char)getHundreth(Kp),(char)getTen(Kd),(char)getOne(Kd),(char)getTenth(Kd),(char)getHundreth(Kd),(char)Ref,(char)trimLeft,char(trimRight),30,30,30,30,30,30,30,30,30,30,30,30,30};
     serport->sendArray(data);
 }
 
+/*
+ *	Gives the tens of a double. for example 13.45 would return 1. 
+ */
+
+
 int Order::getTen(double number){
     return ((int)floor(number/10) %10);
 }
+
+
+/*
+ *	Gives the ones of a double. for example 13.45 would return 3. 
+ */
+
 
 int Order::getOne(double number){
     return ((int)floor(number) %10);
 }
 
+
+/*
+ *	Gives the tenths of a double. for example 13.45 would return 4. 
+ */
+
 int Order::getTenth(double number){
     return ((int)floor(number*10) %10);
 }
 
+
+/*
+ *	Gives the hundreths of a double. for example 13.45 would return 5. 
+ */
 int Order::getHundreth(double number){
     return ((int)floor(number*100) %10);
 }

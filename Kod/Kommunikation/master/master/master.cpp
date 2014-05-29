@@ -1,9 +1,12 @@
-/*
- * master.cpp
- *
- * Created: 4/7/2014 9:13:57 AM
- *  Author: jened502
- */
+/******************************************************
+*
+*Code was produced as part of the project MapMaster2001
+*
+*File: master.cpp
+*Purpose: main code for the communication-module.
+*
+*
+********************************************************/
 
 // Precompiler flags
 #ifndef __AVR_ATmega1284P__
@@ -54,6 +57,8 @@ void handleDataFromSteer(){
 	
 	ReceiveFromSteer=false;
 	memcpy(Bus.buffer, Bus.inDataArray,27);
+	
+	//Maprow from steer.
 	if(Bus.buffer[1]=='M'){
 		memcpy(buffer.mapArea[Bus.buffer[2]],Bus.buffer,27);
 		Bus.latestRow = Bus.buffer[2];
@@ -66,20 +71,23 @@ void handleDataFromSteer(){
 			Firefly.mapDone = true;
 		}
 	}
+
+	//used for time measurment. Pass on to PC.
 	if(Bus.buffer[1]=='t'){
 		memcpy(Firefly.outDataArray, Bus.buffer,27);
 		Firefly.sendArray();
 	}
+	
+	//request gyromeasurment.
 	if(Bus.buffer[1]=='g'){
-		//if ( !Bus.gyroActive )
-		//{
 			Bus.outDataArray[0] = 2;
 			Bus.outDataArray[1] = 'g';
 			Bus.outDataArray[2] = 1;
 			Bus.sendArray(0);
 			Bus.gyroActive = true;
-		//}
 	}
+	
+	//Ask sensormodule to reactivate the rfid sensor.
 	if(Bus.buffer[1]=='r'){
 		if ( !Bus.rfidActive ){
 			Bus.outDataArray[0] = 1;
@@ -88,21 +96,25 @@ void handleDataFromSteer(){
 			Bus.rfidActive = true;
 		}
 	}
+	
+	//Ask sensormodule to reactivate wheelsensor.
 	if(Bus.buffer[1]=='w'){
-		//if (!Bus.waitingForW)
-		//{
 			Bus.outDataArray[0] = 1;
 			Bus.outDataArray[1] = 'w';
 			Bus.waitingForW = true;
 			Bus.sendArray(0);
-		//}
 	}
 }
 
+/*
+ *	Handeling data from sensormodule.
+ */
+ 
 void handleDataFromSensor(){
 	ReceiveFromSensor=false;
 	memcpy(Bus.buffer, Bus.inDataArray,27);
 	
+	//Wheelsensor indicating we traveled 40 cm. Notify steer.
 	if(Bus.buffer[1] == 'W'){
 		Bus.outDataArray[0] = 1;
 		Bus.outDataArray[1] = 'W';
@@ -113,21 +125,20 @@ void handleDataFromSensor(){
         }
 		
 	}
+	
+	//RFID detected. Notify steer.
 	if(Bus.buffer[1] == 'R'){
 		Bus.outDataArray[0] = 1;
 		Bus.outDataArray[1] = 'R';
 		Bus.sendArray(1);
 	}
+	
+	//Sensordata. Send to steer, PC and Display buffer if it is ready.
 	if(Bus.buffer[1] == 'S'){
 		// copy data to Bus outDataArray
 		memcpy(Bus.outDataArray, Bus.buffer,27);
 		Bus.sendArray(1);
 		memcpy(Firefly.outDataArray, Bus.buffer,27);
-		/*
-		Firefly.outDataArray[6] = (wheelCount/100); //plats 4
-		Firefly.outDataArray[7] = ((wheelCount/10) %10); // plats 5
-		Firefly.outDataArray[8] = (wheelCount % 10); // plats 6
-		*/
 		Firefly.sendArray();
 		//inserts data from all sensors into the Display-buffer
 		if (Display.bufferWritten)
@@ -136,6 +147,8 @@ void handleDataFromSensor(){
 			Display.bufferWritten = false;
 		}
 	}
+	
+	//Gyro says 90 degree turn done. Notify steer.
 	if(Bus.buffer[1] == 'G'){
 		if (Bus.gyroActive)
 		{
@@ -175,6 +188,7 @@ ISR(INT1_vect){
 
 ISR(PCINT2_vect){
 //deal with gyro and wheel and rfid	
+//this function has been moved to SPI-bus. 
 }
 
 
@@ -182,11 +196,14 @@ ISR(PCINT2_vect){
 ISR(INT0_vect){
 	cli();
 	if(!Firefly.autonom){
+		
+		//Send auto with speed 50 to steer.
 		Bus.outDataArray[1]= 'a';
 		Bus.outDataArray[3]= 50;
 		Firefly.autonom = true;
 		Bus.sendArray(1);
 		
+		//notify steer to terminate gyromode.
 		Bus.outDataArray[0] = 2;
 		Bus.outDataArray[1] = 'g';
 		Bus.outDataArray[2] = 2;
@@ -194,11 +211,13 @@ ISR(INT0_vect){
 		
 	}
 	else{
+		//send manual with speed 0 to steer.
 		Bus.outDataArray[1]= 'q';
 		Bus.outDataArray[3] = 0;
 		Firefly.autonom = false;
 		Bus.sendArray(1);
 		
+		//notify steer to terminate gyromode.
 		Bus.outDataArray[0] = 2;
 		Bus.outDataArray[1] = 'g';
 		Bus.outDataArray[2] = 2;
@@ -211,43 +230,38 @@ ISR(INT0_vect){
 //Timer overflow interrupt
 ISR(TIMER0_OVF_vect){
     asm("");
+	//allow another maprow to be sent.
     Firefly.rdyForRow = true;
-    TIMSK0 = 0x00;		//disable time-interrups
+    TIMSK0 = 0x00;		
 }
-
-
-
-
-
-
-
 #endif
 
 
 int main(void)
 {
-	DDRA |= (1<<PORTA4);
-    Firefly.setPointer(&Bus,&buffer);
-	Timer_Init();
+
+	DDRA |= (1<<PORTA4); //set port A4 as output for LED.
+    Firefly.setPointer(&Bus,&buffer); //construct bluetooth class.
+	Timer_Init(); // enable the timer.
     sei();
     
 	for(;;){
 		asm("");
-		if(ReceiveFromSensor){
+		if(ReceiveFromSensor){ //if new data exists handle it.
 			handleDataFromSensor();
 			continue;
 		}
-		if (ReceiveFromSteer){
+		if (ReceiveFromSteer){ //if new data exists handle it.
 			handleDataFromSteer();
 			continue;
 		}
 		
-		Display.update();
-		Firefly.handle();
+		Display.update(); //try and update the display if it is ready. 
+		Firefly.handle(); //if new data exists handle it.
 		
 		
 		
-        // lampan tänds vid autonom körning
+        //LED lights when robot is exploring autonmously. 
 		if(Firefly.autonom){
 			PORTA |=(1<<PORTA4);
 		}
@@ -255,7 +269,7 @@ int main(void)
 			PORTA &= ~(1<<PORTA4);
 		}
        
-        if(Firefly.mapDone && Firefly.rdyForRow){
+        if(Firefly.mapDone && Firefly.rdyForRow){ //if new map available and timer has fired since last transmission. Send another row.
 			Firefly.sendMap();
 			if(Firefly.rowToSend > 31){
 			
