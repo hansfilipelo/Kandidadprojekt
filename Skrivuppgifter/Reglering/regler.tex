@@ -15,7 +15,7 @@
 \usepackage[T1]{fontenc}
 \usepackage{listings}
 \usepackage{xcolor,colortbl}
-\usepackage{hyperref}
+\PassOptionsToPackage{hyphens}{url}\usepackage{hyperref}
 
 \include{pagestyle}
 
@@ -142,7 +142,7 @@ För den som vill läsa på mer om SLAM går det att finna litteratur och artikl
 ''SLAM for Dummies, A Tutorial Approach to Simultaneous Localization and Mapping''. 
 Hämtad 28 mars 2014:
 \url{http://ocw.mit.edu/courses/aeronautics-and-astronautics/16-412j-cognitive-robotics-spring-2005/projects/1aslam_blas_repo.pdf}
-} en bra förklaring. Ytterligare läsning finns i David Törnqvists doktorsavhandling ''Estimation and Detection with Applications to Navigation''\footnote{Törnqvist, D. (2008). Estimation and Detection with Applications to Navigation. PhD thesis, Linköping University. \url{http://urn.kb.se/resolve?urn=urn:nbn:se:liu:diva-14956}.}. Där beskriver Törnqvist teorin bakom SLAM på ett pedagogiskt och detaljerat sätt 
+} en bra förklaring. Ytterligare läsning finns i David Törnqvists doktorsavhandling ''Estimation and Detection with Applications to Navigation''\footnote{Törnqvist, D. (2008). Estimation and Detection with Applications to Navigation. PhD thesis, Linköping University. \url{http://urn.kb.se/resolve?urn=urn:nbn:se:liu:diva-14956}.}. Där beskriver Törnqvist teorin bakom SLAM på ett pedagogiskt och detaljerat sätt. 
  
 På senare år har man även, precis som inom många andra vetenskapliga områden, sett utvecklingen ta ytterligare ett kliv tack vare internet och öppna källkodsprojekt som Github och OpenSLAM. Att göra en sökning på SLAM på Github resulterar i en mängd aktiva projekt på området. Eftersom källkoden där också finns tillgänglig är detta ett utmärkt exempel för de som vill studera implementeringar av SLAM-algoritmer. 
 
@@ -152,13 +152,13 @@ På senare år har man även, precis som inom många andra vetenskapliga område
 
 \section{Problemformulering}
 
-Vanligtvis där SLAM implementeras ska en robot försöka kartlägga sin omgivning och utföra en uppgift. Antag att en robot med fyra hjul och tillgång till ett antal avståndssensorer och ett gyro placeras i ett okänt slutet område. Den ska, med en vägg som startpunkt, helt autonomt kartlägga området genom att markera ut var väggar finns och var det finns områden som inte går att nå. Om inte hela det slutna området är kartlagt ska den upptäcka vilka segment som är oupptäckta, färdas dit och lägga till det i kartan. När området är kartlagt ska roboten ta sig tillbaka till startpunkten för att kunna återhämtas och på så sätt avsluta arbetet. Marken under roboten antas vara slät med förhållandevis stor friktion mot robotens däck. 
+Vanligtvis där SLAM implementeras ska en robot försöka kartlägga sin omgivning och utföra en uppgift. Antag att en robot med fyra hjul och tillgång till ett antal avståndssensorer och ett gyro placeras i ett okänt slutet område. Den ska, med en vägg som startpunkt, helt autonomt kartlägga området genom att markera ut var väggar finns och var det finns områden som inte går att nå. Om inte hela det slutna området är kartlagt ska den upptäcka vilka segment som är oupptäckta, färdas dit och lägga till dem i kartan. När området är kartlagt ska roboten ta sig tillbaka till startpunkten för att kunna återhämtas och på så sätt avsluta arbetet. Marken under roboten antas vara slät med förhållandevis stor friktion mot robotens däck. 
 
 SLAM är en teknik där ett system på något sätt kan uppfatta landmärken. Med landmärken menas alla typer av objekt eller liknande som kan användas som referenser. Landmärkenas position i förhållande till roboten ska noteras och uppmätas med regelbundna samplingar. Genom att positionsbestämma dessa landmärken kan roboten snabbare bestämma sin position. 
 
-SLAM-problemet definieras av robotens position och orientering i förhållande till utgångspunkten vid tidpunkten t, även kallat $x_{t}^r$, landmärkens positioner $m_t$, styrsignaler $u_{t}$ och mätningar med sensorer $y_{t}$. Målet är att skatta robotens position vid aktuell tidpunkt utifrån föregående position och de givna styrsignalerna. Detta ska göras trots eventuella systemstörningar ($v$) och mätstörninger ($e$). Landmärken antas ha statiska positioner. 
+SLAM-problemet definieras av robotens position och orientering i förhållande till utgångspunkten vid tidpunkten t, även kallat $x_{t}^r$, landmärkenas positioner $m_t$, styrsignaler $u_{t}$ och mätningar med sensorer $y_{t}$. Målet är att skatta robotens position vid aktuell tidpunkt utifrån föregående position och de givna styrsignalerna. Detta ska göras trots eventuella systemstörningar ($v$) och mätstörninger ($e$). Landmärken antas ha statiska positioner. 
 
-I många fall kan man beskriva SLAM-problemet med tillståndsmodellen:
+I många fall kan man beskriva SLAM-problemet med tillståndsmodellen
 
 \begin{gather}
 x_{t}^r = f(x_{t-1}^r, u_{t-1}, v_{t-1}) \\
@@ -219,7 +219,7 @@ Något som också provats är SLAM utan användning av någon typ av optisk utru
 
 \subsubsection{Absolut positionsskattning}Tidigare nämndes exempel på metoder som använder sig av GPS. Detta i kombination med WiFi-signaler har använts till exempel i mobiltelefoner för att ge en positionsskattning med absolut referens för var enheten befinner sig. För att WiFi-SLAM ska fungera krävs att accesspunkten har information om positionsdata för sig själv, alternativt att den anslutna enheten har information om var aktuellt WiFi är tillgängligt.
 
-I tillämpningar där positionen inte behöver skattas med så hög noggrannhet är GPS fullt tillräcklig och SLAM-algoritmer behöver därför inte implementeras. Om man däremot behöver mer nogrannhet och robusthet än vad GPS kan ge kan GPS användas som ett hjälpmedel för att snabbt uppskatta inom vilket område man befinner sig för att kraftigt förenkla SLAM-problemet. 
+I tillämpningar där positionen inte behöver skattas med så hög noggrannhet är GPS fullt tillräcklig och SLAM-algoritmer behöver därför inte implementeras. Om man däremot behöver mer noggrannhet och robusthet än vad GPS kan ge kan GPS användas som ett hjälpmedel för att snabbt uppskatta inom vilket område man befinner sig för att kraftigt förenkla SLAM-problemet. 
 
 
 %------------------------------------------------
@@ -294,10 +294,10 @@ y=Cx+Du+e
 
 Skattningsfelet ges då istället av: 
 \begin{gather}
-\dot{\tilde{x}} = (A - KC)\tilde{x} + e - Kv
+\dot{\tilde{x}} = (A - KC)\tilde{x} + v - Ke
 \end{gather}
 
-Då $e$ och $v$ antas vara vita brus kan man, genom att utgå från störningarnas kovariansmatriser $R_1$ och $R_2$, beräkna skattningsfelets kovarians. Kovariansen hos skattningsfelet minimeras sedan genom att välja 
+Då $v$ och $e$ antas vara vita brus kan man, genom att utgå från störningarnas kovariansmatriser $R_1$ och $R_2$, beräkna skattningsfelets kovarians. Kovariansen hos skattningsfelet minimeras sedan genom att välja 
 \begin{gather}
 K = PC^{T}R_{2}^{-1}
 \end{gather}
@@ -313,29 +313,27 @@ I många praktiska tillämpningar antas $R_{1}$ och $R_{2}$ vara diagonalmatrise
 
 För att beskriva det utökade kalmanfiltret behöver vi först beskriva det tidsdiskreta och tidsvarianta kalmanfiltret. Systemet beskrivs då som 
 \begin{gather}
-x_{n+1} = A_nx_n + B_nu_n+v \\
-y_n = C_nx_n + D_nu_n + e
+x_{n+1} = A_nx_n + B_nu_n+v_n \\
+y_n = C_nx_n + D_nu_n + e_n
 \end{gather}
 och skattningen ges av
 \begin{gather}
-	\hat{x}_{n|n-1} = A_{n-1}\hat{x}_{n-1} + B_{n-1}u_{n-1} \\
+	\hat{x}_{n|n-1} = A_{n-1}\hat{x}_{n-1|n-1} + B_{n-1}u_{n-1} \\
 	P_{n|n-1}=A_{n-1}P_{n-1|n-1}A^T_{n-1}+R_1 \\
-	K_n = P_{n-1}C_{n}^T(C_{n}P_{n|n-1}C_{n}^T+R_2)^{-1}	\\
-	\hat{x}_{n|n} = \hat{x}_{n|n-1} + K_{t}(y_{t}-C_{t}+R_{2})\\
+	K_n = P_{n|n-1}C_{n}^T(C_{n}P_{n|n-1}C_{n}^T+R_2)^{-1}	\\
+	\hat{x}_{n|n} = \hat{x}_{n|n-1} + K_{n}(y_{n}-C_{n|n-1}\hat{x_{n|n-1}})\\
 	P_{n|n}=(I-K_nC_n)P_{n|n-1}	
 \end{gather}
 
-där $R_1$ och $R_2$ är kovariansmatriserna för $e_n$ respektive $v_n$. $A_n$-,$B_n$-,$C_n$- och $D_n$-matriserna varierar med tiden.\footnote{Gustafsson, F; Ljung, L; Millnert, M. (2000). \textit{Signalbehandling}. Andra upplagan. Lund. Studentlitteratur.}
-
-där $R_1$ och $R_2$ är kovariansmatriserna för $e_n$ respektive $v_n$. $A_n$-,$B_n$-,$C_n$- och $D_n$-matriserna varierar med tiden.\footnote{Gustafsson, Fredrik; Ljung, Lennart; Millnert, Mille. (2000). \textit{Signalbehandling}. Andra upplagan. Lund. Studentlitteratur.}
+där $R_1$ och $R_2$ är kovariansmatriserna för $v_n$ respektive $e_n$. $A_n$-,$B_n$-,$C_n$- och $D_n$-matriserna varierar med tiden.\footnote{Gustafsson, F; Ljung, L; Millnert, M. (2000). \textit{Signalbehandling}. Andra upplagan. Lund. Studentlitteratur.}
 
 \subsubsection{EKF - Det utökade kalmanfiltret}
 
-Till skillnad från kalmanfiltret kan det utökade kalmanfiltret (EKF) användas för att approximativt lösa icke-linjära SLAM-problem. Det som möjliggör detta är att filtrets matriser beräknas om för varje ny tillståndsskattning. Matriserna för filtret beräknas med hjälp av jacobianer, och systemet linjäriseras därmed kring varje skattat tillstånd för att kunna skatta nästa tillstånd. Antag tillståndsrepresentationen av ett icke-linjärt system kan skrivas
+Till skillnad från kalmanfiltret kan det utökade kalmanfiltret (EKF) användas för att approximativt lösa icke-linjära SLAM-problem. Det som möjliggör detta är att filtrets matriser beräknas om för varje ny tillståndsskattning. Matriserna för filtret beräknas med hjälp av jacobianer, och systemet linjäriseras därmed kring varje skattat tillstånd för att kunna skatta nästa tillstånd. Antag att tillståndsrepresentationen av ett icke-linjärt system kan skrivas
 
 \begin{gather}
 	x_{t} = f(x_{t-1}, u_{t-1}) + v_{t-1} \\
-	y_{t} = h(x_{t},u_{t}) + e_{t-1}
+	y_{t} = h(x_{t},u_{t}) + e_{t}
 \end{gather}
 
 Det utökade kalmanfiltret baseras då på en linjärisering av systemet och ger en prediktion av dess tillstånd, enligt:
@@ -344,11 +342,11 @@ Det utökade kalmanfiltret baseras då på en linjärisering av systemet och ger
 	\hat{x}_{t|t-1} = f(\hat{x}_{t-1|t-1}, u_{t-1})
 \end{gather}
 
-Matriserna $K_t$ och $P_{t|t-1}$ i filtret, samt skattningen $\hat{x}$ ges sedan av
+Matriserna $K_t$ och $P_{t|t-1}$ i filtret, samt skattningen $\hat{x_{t|t}}$ ges sedan av
 
 \begin{gather}
 	P_{t|t-1} = F_{t-1}P_{t-1|t-1}F^T_{t-1}+R_{1},\;\;\;\;\;\; med \; F_{t-1} = \frac{\delta f(x,u)}{\delta x}\big|_{(x,u) = (\hat{x}_{t-1|t-1}, u_{t-1})} \\
-	K_{t} = P_{t|t-1}H_{t}^T(H_{t}P_{t|t-1}H_{t}^T+R_{2})^{-1}\;\;\;\;\;\; med \; H_{t} = \frac{\delta H(x,u)}{\delta x}\big|_{(x,u) = (\hat{x}_{t|t-1}, u_{t})} \\
+	K_{t} = P_{t|t-1}H_{t}^T(H_{t}P_{t|t-1}H_{t}^T+R_{2})^{-1}\;\;\;\;\;\; med \; H_{t} = \frac{\delta h(x,u)}{\delta x}\big|_{(x,u) = (\hat{x}_{t|t-1}, u_{t})} \\
 	\hat{x}_{t|t} = \hat{x}_{t|t-1}+K_{t}(y_{t}-h(\hat{x}_{t|t-1},u_{t}))
 \end{gather}
 
@@ -358,9 +356,9 @@ $P$ uppdateras sedan inför nästa tillstånd med
 	P_{t|t} = (I-K_{t}H_{t})P_{t|t-1}
 \end{gather}
 
-Matriserna $H_t$ och $F_t$ är alltså jacobianer för systemetfunktionerna och dessa linjäriseras därmed i varje punkt.\footnote{Törnqvist, D. Estimation and Detection with Applications to Navigation, s 31.}
+Matriserna $H_t$ och $F_t$ är alltså jacobianer för systemfunktionerna och dessa linjäriseras därmed i varje punkt.\footnote{Törnqvist, D. Estimation and Detection with Applications to Navigation, s 31.}
 
-I det fall då EKF används för SLAM består tillståndsvektorn som skattas av både robotens tillstånd $x^r_t$ och landmärkens position $m_t$ enligt (1)-(2).
+I det fall då EKF används för SLAM består tillståndsvektorn som skattas av både robotens tillstånd $x^r_t$ och landmärkens positioner $m_t$ enligt (1)-(2).
 
 \newpage
 
@@ -371,9 +369,9 @@ FastSLAM är en relativt modern teknik som använder ett så kallat partikelfilt
 x^i_n,m^i_n \sim p(x_n,m_n|y_{1:n}),\;\;\;\;\;\; i = 1, ..., N
 \end{gather}
 
-där, som tidigare nämnts, $x_n$ är robotens tillstånd, $m_n$ är landmärkens position och $y_{1:n}$ är mätningarna.  
+där, som tidigare nämnts, $x_n$ är robotens tillstånd, $m_n$ är landmärkenas positioner och $y_{1:n}$ är mätningarna.  
 
-Kortfattat bygger principen bakom FastSLAM på att sannolikhetsfördelning för landmärkens position och robotens tillstånd delas upp, där robotens position skattas med hjälp av ett partikelfilter och landmärkena skattas med EKF. Nackdelen med metoden är att man genom omsampling av mätvärdena förlorar information som skulle kunna vara korrekt. Beroende på hur filtret prioriterar är det möjligt att man får en skev bild av omgivningen. 
+Kortfattat bygger principen bakom FastSLAM på att sannolikhetsfördelningen för landmärkenas positioner och robotens tillstånd delas upp, där robotens position skattas med hjälp av ett partikelfilter och landmärkena skattas med EKF. Nackdelen med metoden är att man genom omsampling av mätvärdena förlorar information som skulle kunna vara korrekt. Beroende på hur filtret prioriterar är det möjligt att man får en skev bild av omgivningen. 
 
 För att effektivisera filtreringen av mätvärden delas olika distinkt upptäckta objekt i robotens miljö in i olika zoner. Dessa zoner filtreras sedan individuellt för att få fram den mest sannolika positionen för objektet i zonen.
 
@@ -383,13 +381,13 @@ För att effektivisera filtreringen av mätvärden delas olika distinkt upptäck
 \newpage
 \section{Slutsats}
 
-Frågan som SLAM grundas på går nu att delvis besvara. Det går att kartlägga en omgivning utan att exakt veta sin position, men det behövs någon typ av skattning av positionen för att göra en rimlig kartläggning. Ju bättre skattningen är desto bättre kommer kartan att bli i slutändan. Mer data och data av högre kvalitét kan bidra till att förbättra noggrannheten på skattningarna. FastSLAM verkar vara en metod som ger en bra skattning av tillstånden med relativt lite beräkningar. Den slutsatsen är dock bara baserad på den teori som vi tagit upp i rapporten, eftersom inga tester genomförts i praktiken. En nackdel med FastSLAM är att det är två relativt teorikrävande komponenter som måste förstås för att man ska kunna implementera det, partikelfilter och EKF.
+Frågan som SLAM grundas på går nu att delvis besvara. Det går att kartlägga en omgivning utan att exakt veta sin position, men det behövs någon typ av skattning av positionen för att göra en rimlig kartläggning. Ju bättre skattningen är desto bättre kommer kartan att bli i slutändan. Mer data och data av högre kvalitet kan bidra till att förbättra noggrannheten på skattningarna. FastSLAM verkar vara en metod som ger en bra skattning av tillstånden med relativt lite beräkningar. Den slutsatsen är dock bara baserad på den teori som vi tagit upp i rapporten, eftersom inga tester genomförts i praktiken. En nackdel med FastSLAM är att det är två relativt teorikrävande komponenter som måste förstås för att man ska kunna implementera det, partikelfilter och EKF.
 
 Ett problem som kan uppstå då fler typer av sensorer används och större mängder data måste bearbetas är att beräkningskraften inte räcker till då filtren och mjukvaran som används för att implementera SLAM kan ställa för höga krav på beräkningsenheten. 
 
 \section{Reflektion}
 
-Sett från det perspektiv vi granskar SLAM-problemet, inom ett kandidatprojekt, är avancerade SLAM-algoritmer för komplicerade för att implementera. Det kan dock vara fördelaktigt att använda någon typ av filter i en SLAM-implementering. Då beräkningar man gjort tidigare under kartläggningen till exempel ger konflikt med nuvarande mätning om huruvida en vägg faktiskt finns där eller ej. Enklare fall av filtrering kommer alltså behöva lösas vid vår framtida implementering. 
+Sett från det perspektiv vi granskar SLAM-problemet, inom ett kandidatprojekt, är avancerade SLAM-algoritmer för komplicerade för att implementera. Det kan dock vara fördelaktigt att använda någon typ av filter i en SLAM-implementering. Då beräkningar man gjort tidigare under kartläggningen till exempel ger konflikt med nuvarande mätning om huruvida en vägg faktiskt finns där eller ej. Enklare fall av filtrering kommer alltså att behöva lösas vid vår framtida implementering. 
 
 Slutligen kan man säga att denna fördjupning inom SLAM givit oss bra förutsättningar att skapa en implementerbar metod för hur vår robot ska kartlägga sitt slutna område. 
 
@@ -401,10 +399,8 @@ Slutligen kan man säga att denna fördjupning inom SLAM givit oss bra förutsä
 Choudhary, V; Iniewski K. (2013). MEMS-Fundamental Technology and Applications. CRC Press.
 eBook ISBN: 978-1-4665-1582-6.
 
-Törnqvist, D. (2008). Estimation and Detection with Applications to Navigation.  PhD thesis, Linköping University. \url{http://urn.kb.se/resolve?urn=urn:nbn:se:liu:diva-14956}. 
-
 Fox, C.; Evans, M.; Pearson, M.; Prescott, T. (2012)
-''Tactile SLAM with a biomimetic whiskered robot''. 2012 IEEE International Conference on Robotics and Automation. Hämtad 28 mars 2014.
+''Tactile SLAM with a biomimetic whiskered robot''. 2012 IEEE International Conference on Robotics and Automation, sid 4925-4930 Hämtad 28 mars 2014.\\
 \url{http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6224813}
 
 Glad, T; Ljung, L. (2006). \textit{Reglerteknik - Grundläggande teori}. Upplaga 4:10. Lund. Studentlitteratur.
@@ -412,22 +408,25 @@ Glad, T; Ljung, L. (2006). \textit{Reglerteknik - Grundläggande teori}. Upplaga
 Gustafsson, F; Ljung, L; Millnert, M. (2000). \textit{Signalbehandling}. Andra upplagan. Lund. Studentlitteratur.
 
 Karlsson, N.; Goncalves, L.; Munich, M.E.; Pirjanian, P. (2005)
-''The vSLAM Algorithm for Navigation in Natural Environments''. Evolution Robotics, Inc. Hämtad 28 mars 2014:
+''The vSLAM Algorithm for Navigation in Natural Environments''. Korean Robotics Society Review, vol 2 nr. 1, sid 51-67. Hämtad 28 mars 2014:\\
 \url{http://www.vision.caltech.edu/mariomu/research/papers/vSLAM-krs.pdf}
 
 Risgaard, S; Blas, M.R (2005).
 ''SLAM for Dummies, A Tutorial Approach to Simultaneous Localization and Mapping''. 
-Hämtad 28 mars 2014:
+Hämtad 28 mars 2014:\\
 \url{http://ocw.mit.edu/courses/aeronautics-and-astronautics/16-412j-cognitive-robotics-spring-2005/projects/1aslam_blas_repo.pdf}
 
 Smith, R.C.; Cheeseman, P. (1986). ''On the Representation and Estimation of Spatial Uncertainty''. The
 International Journal of Robotics Research, 5(4), sida 56–68. Hämtad
-28 mars 2014:
+28 mars 2014:\\
 \url{http://www.frc.ri.cmu.edu/~hpm/project.archive/reference.file/Smith&Cheeseman.pdf}
 
-Weinberg, H. (1999). ''Dual Axis, Low g, Fully Integrated Accelerometers''. Hämtad 12 maj 2014: \url{http://www.analog.com/library/analogdialogue/archives/33-01/accel/index.html}. 
+Törnqvist, D. (2008). Estimation and Detection with Applications to Navigation.  PhD thesis, Linköping University.\\ \url{http://urn.kb.se/resolve?urn=urn:nbn:se:liu:diva-14956}. 
+
+Weinberg, H. (1999). ''Dual Axis, Low g, Fully Integrated Accelerometers''. Analog Dialogue 33-1, sid 1-2. Hämtad 12 maj 2014:\\
+ \url{http://www.analog.com/library/analogdialogue/archives/33-01/accel/index.html}. 
 \subsection*{Webbsidor}
 
-Introduction to MEMS gyroscopes. Solid State Technology, Insights for Electronics  Manufacturing (\url http://electroiq.com).. Hämtad 6 maj 2014:
+Introduction to MEMS gyroscopes. Solid State Technology, Insights for Electronics  Manufacturing (\url http://electroiq.com).. Hämtad 6 maj 2014: \\
   \url{http://electroiq.com/blog/2010/11/introduction-to-mems-gyroscopes/}.
 \end{document}
