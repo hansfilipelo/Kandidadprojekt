@@ -21,42 +21,54 @@
 
 \include{pagestyle}
 
+\AtBeginDocument{\addtocontents{toc}{\protect\thispagestyle{empty}}} 
+
 %-------------------------------------------------------------------
 %Första sidan
 \begin{document}
 	\pagestyle{fancy}
 \pagenumbering{gobble}
+	\thispagestyle{empty}
 	\vspace*{\fill}
 		\begingroup
 			\begin{center}
-				\huge{\textbf{MapMaster 2001}}
+				\huge{\textbf{Kandidatarbete}} 
 				\\
-				\vspace{5pt}
+				\vspace{15pt}
+				\large{\emph{Utveckling av autonom kartritande robot med syfte att detektera simulerade brandhärder}}
 				\normalsize
-				Kandidatprojekt Y - Grupp 8 - VT2014
 				\\
-				Version 1.0
-				\end{center}
+				\vspace{55pt}
+				\begin{figure}[htp]
+					\begin{center}
+				  	  \includegraphics[keepaspectratio=true,scale=1.2]{linkoping.png}  %skala och filnamn.		
+					\end{center}
+				\end{figure}
+				\vspace{40pt}
+				MapMaster2001, VT2014
+				\\
+				Institutionen för systemteknik.
+				\\
+				Tekniska högskolan vid Linköpings universitet
+				\\
+				\vspace{20 pt}
+				David Habrman \\
+				Erik Ekelund \\
+				Hans-Filip Elo \\
+				Jens Edhammer \\
+				Niklas Ericson \\
+				Tobias Grundström \\
+			\end{center}
 		\endgroup
 	\vspace*{\fill}
-	
-	\begin{center} %Börjar centrering 
-		Status
-		\\
-		\vspace{3pt} %Whitespace 3 pts
-	    \begin{tabular}{| p{3cm} | p{3cm} | p{3cm} |} %tabell, 4 horizontella |, 3 cm emellan dem.
-	    \hline %översta horizontella linjen.
-	    Granskad & - & \today \\ \hline % & -tecken för att "gå till nästa ruta" 
-		Godkänd & - & - \\ \hline % avslutas med \\ och \hline.
 
-	    \end{tabular}
-	\end{center}
+	
 	\vspace{2cm}
 	\newpage
 	\pagenumbering{roman}
 %-----------------------------------------------------------------
 %Projektidentitet
-	
+\thispagestyle{empty}
 	\vspace*{\fill}
 		\begingroup
 			\begin{center}
@@ -98,17 +110,17 @@
 
 %-----------------------------------------------------------------
 %Innehållsföreteckning
-
+\thispagestyle{empty}
 \addto\captionsswedish{\renewcommand{\contentsname}{Innehållsförteckning}}
 
+\pagestyle{empty}
 \tableofcontents
-\thispagestyle{fancy}
+\cleardoublepage
 \newpage
-
+\pagestyle{fancy}
 \pagenumbering{arabic}
 %-----------------------------------------------------------------
 %Översikt
-
 \section{Inledning}
 %''Ge en översiktlig beskrivning av produkten och uppdraget gärna kopplat till bilder.
 %Lyft gärna fram det som ni anser är utmanande/intressant i uppdraget. 
