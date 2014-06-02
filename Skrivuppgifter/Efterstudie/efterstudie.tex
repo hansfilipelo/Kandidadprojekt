@@ -1,0 +1,175 @@
+\documentclass[a4paper,12pt,fleqn]{article}
+\usepackage{fixltx2e}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{sidecap}
+\usepackage{fancyhdr}
+\usepackage{amssymb,amsmath}
+\usepackage[swedish]{babel}
+\usepackage[margin=1.5in]{geometry}
+\usepackage{abstract}
+\usepackage[parfill]{parskip}
+\usepackage{tocloft}
+\usepackage{adjustbox}
+\usepackage{textcomp}
+\usepackage[T1]{fontenc}
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{tocloft}
+
+% %% Footnotes-Listing %%
+\newcommand{\listfootnotesname}{Referenser}% 'List of Footnotes' title 
+\newlistof[chapter]{footnotes}{fnt}{\listfootnotesname}% New 'List of...' for footnotes 
+\let\oldfootnote\footnote % Save the old \footnote{...} command 
+ \renewcommand\footnote[1]{% Redefine the new footnote to also add 'List of Footnote' entries. 
+     \refstepcounter{footnotes}% Add and step a reference to the footnote/counter. 
+     \oldfootnote{#1}% Make a regular footnote. 
+     \addcontentsline{fnt}{footnotes}{\protect 
+ \numberline{\thefootnotes}#1}% Add the 'List of...' entry. 
+}
+
+\include{pagestyle}
+
+
+%-------------------------------------------------------------------
+%Första sidan
+
+\begin{document}
+	\pagestyle{fancy}
+\pagenumbering{roman}
+	\vspace*{\fill}
+		\begingroup
+			\begin{center}
+				\huge{\textbf{Teknisk dokumentation}}
+				\\
+				\vspace{5pt}
+				\normalsize
+				Kandidatprojekt Y - Grupp 8 - VT2014
+				\\
+				Version 1.0
+				\end{center}
+		\endgroup
+	 
+	\vspace{15pt}
+	\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+	  \begin{center}
+	  \includegraphics[keepaspectratio=true,,width=0.5\linewidth]{bilder/robotbilder/Helaroboten}
+	  \end{center}
+	\end{figure}
+	\vspace*{\fill}
+	
+	\begin{center} %Börjar centrering 
+		Status
+		\\
+		\vspace{3pt} %Whitespace 3 pts
+	    \begin{tabular}{| p{3cm} | p{3cm} | p{3cm} |} %tabell, 4 horizontella |, 3 cm emellan dem.
+	    \hline %översta horizontella linjen.
+	    Granskad & JE,TG,HFE & \today \\ \hline % & -tecken för att "gå till nästa ruta" 
+		Godkänd & - & - \\ \hline % avslutas med \\ och \hline.
+
+	    \end{tabular}
+	\end{center}
+	\vspace{2cm}
+	\newpage
+%-----------------------------------------------------------------
+%Projektidentitet
+	
+	\vspace*{\fill}
+		\begingroup
+			\begin{center}
+				\LARGE{\textbf{PROJEKTIDENTITET}}
+				\\
+				\footnotesize
+				Grupp 8, 2014/VT, MapMaster2001
+				\\
+				Linköpings tekniska högskola, ISY
+				\\
+				\vspace{1cm}
+	  \begin{tabular}{| p{3cm} | p{4.3cm} | p{2.4cm} | p{3.8cm} |}
+	    \hline
+		\textbf{Namn} & \textbf{Ansvar} & \textbf{Telefon} & \textbf{E-post} \\ \hline
+	    Jens Edhammer & Dokumentansvarig (DOK) & 076-030 67 80 & jened502@student.liu.se \\ \hline
+		Erik Ekelund & Designansvarig (DES) & 073-682 43 06 & eriek984@student.liu.se \\ \hline
+		David Habrman &  & 076-017 71 15 & davha227@student.liu.se \\ \hline 
+		Tobias Grundström & Testansvarig (TES) & 073-830 44 45 & tobgr602@student.liu.se \\ \hline 
+		Hans-Filip Elo &   & 073-385 22 32 & hanel742@student.liu.se \\ \hline 
+		Niklas Ericson & Projektledare (PL) & 073-052 27 05 & niker917@student.liu.se \\ \hline
+	    \end{tabular}
+		
+		\vspace{1cm}
+		\textbf{E-postlista för hela gruppen:} mapmaster2001@cyd.liu.se
+		\\[0.5cm]
+		
+		\textbf{Kund}: Mattias Krysander, Linköpings universitet, 581 83  LINKÖPING, \\
+		013-28 21 98, matkr@isy.liu.se \\
+		\textbf{Kontaktperson hos kund}: Mattias Krysander, 013-28 21 98, matkr@isy.liu.se 
+		\\
+		\textbf{Kursansvarig}: Tomas Svensson, 3B:528,013 28 21 59, tomass@isy.liu.se
+		\\[0.5cm]
+		\textbf{Handledare}: Peter Johansson, 013-28 1345, peter.a.johansson@liu.se
+
+				\end{center}
+		\endgroup
+	\vspace*{\fill}
+\newpage
+
+%-----------------------------------------------------------------
+%Innehållsföreteckning
+
+\addto\captionsswedish{\renewcommand{\contentsname}{Innehållsförteckning}}
+
+\tableofcontents
+\newpage
+\listoffigures
+\thispagestyle{fancy}
+\newpage
+
+\pagenumbering{arabic}
+
+%-----------------------------------------------------------------
+%Översikt
+
+\section{Tidsåtgång}
+\subsection{Arbetsfördelning}
+\subsection{Tidsåtgång jämfört med planerad tid}
+\section{Analys av arbete och problem}
+\subsection{Vad hände under de olika faserna (bra/dåligt/orsak)}
+\subsection{Hur använde vi projektmodellen}
+\subsection{Hur fungerade relationen med beställaren?}
+\subsection{Hur fungerade relationen med handledaren?}
+\subsection{Tekniska framgångar/problem}
+%Beskriv de 3 besvärligaste problemen som ni har haft under projektet. 
+%Rangordna problemen där 1 är mest besvärlig i betydelsen tog längst tid att fixa.
+%Beskriv för varje problem:
+%a. felets typ - ange t.ex.  hårdvarufel, mjukvarufel, systemintegrationsfel 
+%b. kort beskrivning av felets symptom 
+%c. kort beskrivning av felets orsak t.ex. logiskt fel i programmering, timing-fel, %glappkontakt, missförstånd av spec., felaktig design. 
+%d. kort beskrivning av hur ni fixade felet. T.ex. hur ni fixade mjukvarubuggen, fick ny %hårdvara, virade om, gick runt problemet.
+%e. ungefärlig skattning av hur mycket tid som ni ägnade åt felsökningen (dvs. tid som kunde tjänats in om felet inte hade uppstått)
+
+\section{Måluppfyllelse}
+\subsection{Vad har uppnåtts?}
+\subsection{Hur fungerade leveransen?}
+\subsection{Hur har studiesituationen påverkat projektet?}
+\section{Sammanfattning}
+\subsection{De tre viktigaste erfarenheterna}
+\subsection{Goda råd till de som ska utföra ett liknande projekt}s 
+
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,width=1\textwidth]{bilder/Sensorkoppling.jpg}  %skala och filnamn. 
+  \end{center}
+  \caption{Illustration av sensorernas sockelplacering och kabelrotation} %figurtext.
+  \label{fig:sensorkoppling} %glöm inte att uppdatera era labels
+\end{figure}
+
+
+\newpage
+\section*{Appendix D - Utdrag ur programkod}
+\addcontentsline{toc}{section}{Appendix D - Utdrag ur programkod}
+
+\lstset{language=C++}
+\lstinputlisting[language=C++]{../../Kod/Styr_m/Styr_m/Map.cpp}
+
+\end{document}

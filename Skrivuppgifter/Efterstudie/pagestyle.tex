@@ -1,0 +1,82 @@
+%----------------------------------------------------------------
+%C-kod formatering
+
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+
+\definecolor{listinggray}{gray}{0.9}
+\definecolor{lbcolor}{rgb}{0.9,0.9,0.9}
+\lstset{
+backgroundcolor=\color{lbcolor},
+    tabsize=4,    
+%   rulecolor=,
+    language=[GNU]C++,
+        basicstyle=\scriptsize,
+        upquote=true,
+        aboveskip={1.5\baselineskip},
+        columns=fixed,
+        showstringspaces=false,
+        extendedchars=false,
+        breaklines=true,
+        prebreak = \raisebox{0ex}[0ex][0ex]{\ensuremath{\hookleftarrow}},
+        frame=single,
+        numbers=left,
+        showtabs=false,
+        showspaces=false,
+        showstringspaces=false,
+        identifierstyle=\ttfamily,
+        keywordstyle=\color[rgb]{0,0,1},
+        commentstyle=\color[rgb]{0.026,0.112,0.095},
+        stringstyle=\color[rgb]{0.627,0.126,0.941},
+        numberstyle=\color[rgb]{0.205, 0.142, 0.73},
+%        \lstdefinestyle{C++}{language=C++,style=numbers}’.
+}
+\lstset{
+    backgroundcolor=\color{lbcolor},
+    tabsize=4,
+  language=C++,
+  captionpos=b,
+  tabsize=3,
+  frame=lines,
+  numbers=left,
+  numberstyle=\tiny,
+  numbersep=5pt,
+  breaklines=true,
+  showstringspaces=false,
+  basicstyle=\footnotesize,
+%  identifierstyle=\color{magenta},
+  keywordstyle=\color[rgb]{0,0,1},
+  commentstyle=\color{ForestGreen},
+  stringstyle=\color{red}
+  }
+  %-----------------------------------------------------------------
+  %marginaler
+
+  \renewcommand{\abstractnamefont}{\normalfont\normalsize\bfseries}
+  \renewcommand{\abstracttextfont}{\normalfont\small}
+  \renewcommand{\headrulewidth}{0pt}
+  \renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}} 
+  \setlength{\absleftindent}{0pt}
+  \setlength{\absrightindent}{0pt}
+  \setlength{\headheight}{15pt}
+
+  \addtolength{\oddsidemargin}{-.5in}
+  	\addtolength{\evensidemargin}{-.5in}
+  	\addtolength{\textwidth}{1in}
+
+
+  %-----------------------------------------------------------------
+  %header and footer
+
+  \pagestyle{fancy}
+  \lhead{
+  	\begin{picture}(0,0)
+  		\put(5,0){\includegraphics{logotyp.png}}
+  	\end{picture}}
+	
+  \fancyhead[C]{\small{Mapmaster2001}}
+  \fancyhead[R]{\small \today}
+  \fancyfoot[L]{\small{TSEA56 \\ LIPS Designspecifikation}}
+  \fancyfoot[C]{\small{\thepage}}
+  \fancyfoot[R]{\small{Projektgrupp 8 \\ mapmaster2001@cyd.liu.se}}
+
+  %-----------------------------------------------------------------
