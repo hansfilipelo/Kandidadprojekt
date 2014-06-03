@@ -28,8 +28,8 @@
 %Första sidan
 
 \begin{document}
-	\pagestyle{fancy}
-\pagenumbering{roman}
+	\pagestyle{empty}
+\pagenumbering{gobble}
 	\vspace*{\fill}
 		\begingroup
 			\begin{center}
@@ -107,9 +107,9 @@
 \addto\captionsswedish{\renewcommand{\contentsname}{Innehållsförteckning}}
 
 \tableofcontents
-\thispagestyle{fancy}
-\newpage
 
+\newpage
+\pagestyle{fancy}
 \pagenumbering{arabic}
 %-----------------------------------------------------------------
 %Översikt
@@ -365,7 +365,6 @@ Chapter 4 Sensors for Map-Based Positioning Hämtad \today:\newline
 
 Chapter 6 Optical Triangulation Range Sensors, N.E Pears, Hämtad \today:\newline 
 \url{http://www-users.cs.york.ac.uk/nep/research/papers/agvChapterPears1994.pdf}
-\end{document}
 
 Datablad för MLX90609, Institutionen för systemteknik vid Linköpings universitet. Hämtad \today:\newline \url{https://docs.isy.liu.se/twiki/pub/VanHeden/DataSheets/MLX90609datasheet.pdf}
 
@@ -387,9 +386,10 @@ Laser Triangulation Sensors:Technology Hämtad \today:\newline
 Piezoelektricitet, wikipedia.org. Hämtad \today:\newline
 \url{http://sv.wikipedia.org/wiki/Piezoelektricitet}
 
-Quartarly Journal of Technology & Education Vol.1, 
+Quartarly Journal of Technology \& Education Vol.1, 
 Shahram Mohammad Nejad, Saeed Olyaee, 2006
 \url{http://www.srttu.edu/TeacherArticle/178.pdf}
 
 
+\end{document}
 
