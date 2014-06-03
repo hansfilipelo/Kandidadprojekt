@@ -123,20 +123,22 @@
 %Översikt
 
 \section{Tidsåtgång}
+Generellt sett har projektet tagit lite längre tid än planerat men inte mycket. I Under-fasen la vi ner 1525 timmar totalt men vi hade bara budgeterat för 1380 timmar. Det som framför allt framgick tydligt efter en bit in i projektet var att många av aktiviteterna var onödiga eller gick i varandra. Det är dock inte så konstigt att det blev på det här viset med tanke på att vi i För-fasen inte hade en aning om hur saker och ting skulle utföras eller hur lång tid det skulle ta. 
 \subsection{Arbetsfördelning}
-\subsection{Tidsåtgång jämfört med planerad tid}
+Arbetsfördelning under projektet har varit god. Vi har alltid försökt eftersträva att man ska kunna jobba parallellt med varandra med olika uppgifter. Detta har självklart inte alltid gått att genomföra då vi endast har haft en robot, men i många fall har vi kunnat jobba med saker på sidan om. I en fas i projektet hade vi till och med två stycken virkort som var identiskt virade för att kunna testa bluetooth på det ena och display på den andra. Arbetet har oftast skett i par och varje par har haft en ansvarsområde. I början av projektet delades gruppen upp i tre och varje delgrupp tog varsin modul. När roboten i ett senare stadie i projektet var monterad splittrades grupperna upp och nya par bildades. På det här sättet spred vi ut kunskapen kring modulerna i gruppen. 
 
-	\begin{center} %Börjar centrering
-		\vspace{3pt} %Whitespace 3 pts
-	    \begin{tabular}{| p{4cm} | p{4cm} | p{4cm} |} %tabell, 4 horizontella |, 3 cm emellan dem.
-	    \hline %översta horizontella linjen.
-	    Fas & Planerad tid i timmar & Använd tid i timmar \\ \hline % & -tecken för att "gå till nästa ruta" 
-		Före & - & - \\ \hline % avslutas med \\ och \hline.
-		Under & - & - \\ \hline % avslutas med \\ och \hline.
-		Efter & - & - \\ \hline % avslutas med \\ och \hline.
-		
-	    \end{tabular}
-	\end{center}
+\subsection{Tidsåtgång jämfört med planerad tid}
+I figur~\ref{fig:tid} nedan syns klart och tydligt att vi försökt följa den ursprungliga planen från början men att det på slutet arbetades en del över budget. Detta beror på att vi i slutet hade en rad olika problem med bussen som tog en massa tid från projektet. När problemet med bussen var hyfsat löst återstod bara 2 dagar innan leverans och vi var tvungna att skriva regleralgoritmen väldigt snabbt. Vi la också ner väldigt mycket tid på en Astar-algoritm som visade sig vara okörbar på Atmega 1284p. 
+
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,scale=0.25]{tid.png}  %skala och filnamn. 
+  \end{center}
+  \caption{Diagram över planerad och använd tid} %figurtext.
+  \label{fig:tid}
+\end{figure}
+
+\newpage
 
 \section{Analys av arbete och problem}
 
