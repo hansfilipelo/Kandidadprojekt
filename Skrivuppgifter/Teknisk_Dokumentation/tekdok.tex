@@ -53,7 +53,7 @@
 				\vspace{55pt}
 				\begin{figure}[htp]
 					\begin{center}
-				  	  \includegraphics[keepaspectratio=true,scale=1.2]{linkoping.png}  %skala och filnamn.		
+				  	  \includegraphics[keepaspectratio=true,scale=1.2]{bilder/linkoping.png}  %skala och filnamn.		
 					\end{center}
 				\end{figure}
 				\vspace{40pt}
@@ -151,12 +151,16 @@ med inriktning fysik eller elektroteknik. Denna rapport behandlar ett kandidatpr
 \subsection{Syfte och Mål}
 Syftet med detta kandidatarbetet är att konstruera och leverera en fullt autonom robot som ska kunna kartlägga ett begränsat område. Inom området ska RFID-taggar finns utplacerade för att indikera brandhärdar. Roboten i sig ska bestå av tre stycken moduler som ska kunna kommunicera med varandra. Modulerna ska ha olika ansvarsområden för att kunna utföra parallella aktiviteter. 
 
+\subsection{Disposition}
+I kapitlet \emph{Produkt} beskrivs robotens tänkta miljö både i prototypfas och efter. Dessutom beskrivs produktens nuvarande funktion. Följande kapitel, \emph{Funktion}, fokuserar på hur roboten löser visa uppgifter och problem internt och till viss del i hårdvara. I kapitlet \emph{System} ges en överblick över hårdvarudesignen. Efterföljande kapitel går in på mer detaljnivå hur varje delmodul och PC-mjukvaran är konstruerad. Sist kommer ett kapitel angående förbättringar som kan implementeras till roboten.
+
 \newpage
 \section{Produkt}
 
-Mapmaster 2001, en autonom kartritande robot med bred funktionalitet, vars syfte är att kunna användas för att lokalisera brandhärdar i rökfyllda rum. Roboten kan autonomt navigera och i realtid rita upp karta av rummet den opererar i. Den markerar även eventuella brandhärdar på kartan så brandmän och annan undsättningspersonal kan få information på förhand om var faran finns. 
+Mapmaster 2001 som ses i figur~\ref{fig:robot}, en autonom kartritande robot med bred funktionalitet, vars syfte är att kunna användas för att lokalisera brandhärdar i rökfyllda rum. Roboten kan autonomt navigera och i realtid rita upp karta av rummet den opererar i. Den markerar även eventuella brandhärdar på kartan så brandmän och annan undsättningspersonal kan få information på förhand om var faran finns. 
 
-Under projeket har en prototyp tagits fram och testats på speciella banor enligt kravspecifikation. Roboten har många kvaliteter och är en bra början för att i en senare version kunna operera i ett mer verkligt scenario som nämns ovan. 
+Under projeket har en prototyp tagits fram och testats på speciella banor enligt kravspecifikation. I figur\~ref{fig:map} ser vi ett exempel på en sådan bana. Roboten har många kvaliteter och är en bra början för att i en senare version kunna operera i ett mer verkligt scenario som nämns ovan. 
+
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
   \includegraphics[keepaspectratio=true,,width=0.4\linewidth]{../Kappa/robot.png}  %skala och filnamn. 
@@ -164,6 +168,17 @@ Under projeket har en prototyp tagits fram och testats på speciella banor enlig
   \caption{MapMaster2001} %figurtext.
   \label{fig:robot}
 \end{figure}
+
+
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,,width=0.4\linewidth]{../Kappa/gimpmap.png}  %skala och filnamn. 
+  \end{center}
+  \caption{Exempel på bana som roboten kan hantera} %figurtext.
+  \label{fig:map}
+\end{figure}
+
+
 
 Navigering och positionering är två saker som roboten måste utföra med oerhörd precision. För att kunna åstadkomma detta så har Mapmaster2001 försetts med en rad egenskaper som är listade nedan. MapMaster2001 kan bland annat: 
 
@@ -180,7 +195,7 @@ Navigering och positionering är två saker som roboten måste utföra med oerh�
 All mjukvara tillhörande MapMaster2001 samt dokument finns att hitta på GitHub.\footnote{Källkodsarkiv för MapMaster2001, https://github.com/hansfilipelo/MapMaster2001}
 
 \newpage
-\section{Teori}
+\section{Funktion}
 
 I den här delen går vi igenom hur implementeringen av de olika delsystemen fungerar och vad som är tanken bakom dem. 
 
@@ -221,18 +236,18 @@ Fire representerar en plats där det finns eldhärd, det vill säga en RFID-tagg
 \newpage
 
 \subsubsection{Styrning och kartläggning}
-Positionering och kartläggning sker med hjälp av ett stort antal sensorer och utefter många fördefinierade villkor. När roboten kartlägger utför den vinkelräta svängar för att underlätta positionsskattningen. Algoritmerna som bestämmer traverserad sträcka använder robotens hjulsensor och olika vilkor så som t.ex.  om en rotation utförs och om den främre sensorn ger utslag för att hålla sig exakta. 
+Positionering och kartläggning sker med hjälp av ett stort antal sensorer och utefter många fördefinierade villkor. När roboten kartlägger utför den vinkelräta svängar för att underlätta positionsskattningen. Algoritmerna som bestämmer traverserad sträcka använder robotens hjulsensor och olika vilkor så som t.ex.  om en rotation utförs och om den främre sensorn ger utslag för att hålla sig exakta. Eftersom varje 40 cm mätning med reflexsensorn skulle kunna ge ett fel som dessutom skulle växa för varje segment som färdas utnyttjas den främre avståndssensorn för att nollställa detta fel. När vi detekterar ett kort avstånd med främre sensorn nollställs reflexsensorns beräkningar och vi finjusterar robotens avstånd med hjälp av avståndssensorn. Tester på en sex meters sträcka visade att felet aldrig blev så stort att vi hamnade i en felaktig ruta i vår abstraktion. 
 
 \paragraph{Kartläggninsalgoritm}
 
-Kartläggningsalgoritmen är utformad så att roboten börjar med att placera sig så att en vägg går att finna på höger sida. Roboten kommer sedan följa väggen till dess att den kan rita upp ett slutet område att arbeta utifrån, dvs. tills roboten anländt till sin startposition i högerroterat läge. Nästa steg blir att kartlägga områden som ännu ej är kartlagda. Om en köksö upptäcks med medeldistanssensorn kommer roboten åka ut till köksön och sedan se till att rita upp hela köksön innan den går vidare. På detta sätt fortsätter algoritmen till dess att alla delar av rummet är kartlagda dvs. tills hela ytterområdet följts. 
+Kartläggningsalgoritmen, var flödesdiagram går att se i figur~\ref{fig:mapflow}, är utformad så att roboten börjar med att placera sig så att en vägg går att finna på höger sida. Roboten kommer sedan följa väggen till dess att den kan rita upp ett slutet område att arbeta utifrån, dvs. tills roboten anlänt till sin startposition i högerroterat läge. Nästa steg blir att kartlägga områden som ännu ej är kartlagda. Om en köksö upptäcks med medeldistanssensorn kommer roboten åka ut till köksön och sedan se till att rita upp hela köksön innan den går vidare. På detta sätt fortsätter algoritmen till dess att alla delar av rummet är kartlagda dvs. tills hela ytterområdet följts. Hela algoritmen utförs på styrmodulen.
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
   \includegraphics[keepaspectratio=true,width=0.8\linewidth]{bilder/Flode_kartritning.jpg}  %skala och filnamn. 
   \end{center}
   \caption{Flödesschema kartläggningsalgoritm} %figurtext.
-  \label{fig:map} %glöm inte att uppdatera era labels
+  \label{fig:mapflow} %glöm inte att uppdatera era labels
 \end{figure}
 
 \paragraph{Stänging och slutning av bana}
@@ -247,21 +262,21 @@ För ytterligare fördjupning i SLAM-problemet - se Kappan och dokumentet \texti
 
 \subsection{Reglering}
 
-Roboten kan köras autonomt också manuellt via PC-mjukvara. Då roboten körs autonomt kan den reglera längs en vägg. 
+Roboten kan köras autonomt eller manuellt via PC-mjukvara. Då roboten körs autonomt kan den reglera längs en vägg. 
 
 \subsubsection{Reglering av styrning}
 Styrmodulen får sensordata skickad till sig från sensormodulen. Detta data används till att reglera riktningen då man följer en vägg.
 
 Den proportionella delen av regleringen reglerar avståndet från sensorerna på robotens högersida jämfört med ett internt referensavstånd. Denna reglering ser till att roboten håller sig inom ett rimligt avstånd till den vägg som följs.
 
-$ u_p = K_{p}*(Ref-fram) $
+$ u_p = K_{p}*(d_{Ref}-d_{fram}) $
 
 Där $K_{p}$ är en konstant.
 
 Den andra delen av regleringen baseras på differensen mellan båda sensorerna på högersidan och försöker minimera denna. Detta innebär i praktiken att roboten försöker räta ut sig. Denna typ av reglering medför även en minskad risk att de främre och bakre sensorerna ska ge fel värden genom att slå i en sidovägg.
 
 
-$ u_d = K_{D}*(fram - bak) $
+$ u_d = K_{D}*(d_{fram} - d_{bak}) $
 
 Den totala styrsignalen ges då av: 
 
@@ -288,11 +303,9 @@ Gyroskopet ger en spänningsreferens som representerar vinkelhastighet. Dess A/D
 
 \newpage
 %-----------------Kommunikation
-\subsection{Kommunikation}
-Eftersom roboten byggs och styrs med tre moduler med en processor var krävs kommunikation mellan processorerna, denna utförs med en buss. Bussen som används är en SPI-buss.
-För att kunna få kartan ritad på en PC krävs trådlös kommunikation mellan robot och PC.
 
-\subsubsection{Trådlös kommunikation}
+\subsection{Trådlös kommunikation}
+För att kunna få kartan ritad på en PC krävs trådlös kommunikation mellan robot och PC.
 För den trådlösa kommunikationen med roboten används Bluetooth. En kortare undersökning angående olika typer av trådlös kommunikation finns att tillgå i fördjupningsuppgiften \emph{''Trådlös Kommunikation''}\footnote{Ericson, N. Edhammer, J. (2014), \textit{''Trådlös kommunikation''}} som kan hittas i Kappan - Appendix A
 Kommunikationen över Bluetooth utförs av Firefly-Bluesmirf Gold (FBG), figur~\ref{fig:firefly}, ett modem som parkopplas mot en persondator.
 FBG skickar information till persondator via protokollet RS232\footnote{\url{https://docs.isy.liu.se/twiki/bin/view/VanHeden/RS232}}. 
@@ -308,9 +321,10 @@ När data skickas till processorn så är detta avbrottshanterat. I avbrottet ut
 \end{figure}
 
 
-\paragraph{Sändning av kartan}
+\subsubsection{Sändning av kartan}
 För att undvika problem vid mottagning av kartan på PC sidan skickas en rad i taget med hjälp av en timer. Main-loopen på kommunikationsmodulen kollar en gång per huvud-loop om det är okej att skicka en rad. När timern genererar ett avbrott sätts en flagga att ytterligare en rad är redo att skickas. När samtliga rader har skickats över sätts flaggan som avgör om kartrader ska skickas över till \emph{false}.
 \newpage
+
 \subsection{Kommunikationsmodulens huvudloop}
 
 Huvudloopen på kommunikationsmodulen kollar ett antal sanningsvariabler för att avgöra om ny data finns tillgänglig för datahantering. För flödet, se figur~\ref{fig:mainmaster}
@@ -323,6 +337,66 @@ Huvudloopen på kommunikationsmodulen kollar ett antal sanningsvariabler för at
   \label{fig:mainmaster}
 \end{figure}
 
+
+\subsection{Kommunikation via buss}
+\label{chap:buss}
+En buss som kommunicerar över protokollet SPI sköter kommunikationen mellan robotens tre delsystem. SPI-protokollet är ett kommunikationsprotokoll med full-duplex som fungerar genom att byta åtta lokala bitar med 8 bitar från modulen den kommunicerar med. 
+
+I mjukvarulagret av bussen används ett egenimplementerat protokoll för både transmissioner över Bluetooth och SPI. Protokollet är konstruerat så att den första byten definierar längden på meddelandet som skickats. Nästföljande två bytes definierar kommandotyp och argument till den typen, t.ex. Sensordata från sensor 1, A1.
+Efter de tre första bytes följer godtyckligt lång datamängd se figur~\ref{fig:bussprotocol}. 
+
+Specificerat bussprotokoll är enbart halv-duplex, dvs. data kan enbart skickas i en riktning åt gången, hela kapaciteten hos SPI utnyttjas därmed inte. 
+
+\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
+  \begin{center}
+  \includegraphics[keepaspectratio=true,scale=0.6]{bilder/Bussprotokoll.png}  %skala och filnamn. 
+  \end{center}
+  \caption{Översiktsbild av kommunikationsprotokollet} %figurtext.
+  \label{fig:bussprotocol}
+\end{figure}
+
+\newpage
+Bussens tillgängliga kommandon är:
+
+\begin{tabular}{| p{0.20\textwidth} | p{0.15\textwidth} | p{0.1\textwidth} | p{0.12\textwidth} | p{0.33\textwidth} |}
+	\hline
+	\rowcolor{listinggray}
+	\textbf{Funktion} & \textbf{Datalängd} & \textbf{Kodord} & \textbf{Argument} & \textbf{Datastruktur} \\ \hline
+	Rotera vänster & 3 & r & 0 & Hastighet (0-100) \\ \hline
+	Rotera höger & 3 & r & 1 & Hastighet (0-100) \\ \hline
+	halt & 1 & h & DNC & DNC \\ \hline
+	Kör framåt & 3 & f & DNC & Hastighet (0-100) \\ \hline
+	Kör bakåt & 3 & b & DNC & Hastighet (0-100) \\ \hline
+	Aktivera autonomt läge & 1 & a & DNC & DNC \\ \hline
+	Aktivera manuellt läge & 1 & q & DNC & DNC \\ \hline
+	Säg åt styrmodul att skicka karta & 1 & F & DNC & DNC \\ \hline
+	Sätt variabler för reglering & 11 & P & 0 & Kp(10-tal, 1-tal, 10-del, 100-del), Kd(10-tal, 1-tal, 10-del, 100-del), Referensavstånd \\ \hline
+	Sensordata & 26 & S & DNC & Sensor0(100-tal, 10-tal, 1-tal), Sensor2... , Sensor6(100-tal, 10-tal, 1-tal) \\ \hline
+	Kalibrera gyro & 2 & g & 0 & DNC \\ \hline
+	Börja mäta med gyro & 2 & g & 1 & DNC \\ \hline
+	Svängt 90 grader & 1 & G & DNC & DNC \\ \hline
+	RFID detekterad & 1 & R & DNC & DNC \\ \hline
+	Tillåt RFID-avläsning & 1 & r & DNC & DNC \\ \hline
+	En rad av kartan & 19 & M & Radnr & Chars (u, c, e eller f) \\ \hline
+	Konfirmering av mottagen kartrad & 2 & m & Radnr & DNC \\ \hline
+\end{tabular}
+~\\
+Där DNC står för ''Do not care''.
+\newpage
+
+
+
+\subsubsection{Kommunikationsfall}
+Ett par exempel på kom\-mun\-ikations\-fall.
+
+Kommunikationsmodulen skickar data mellan de olika enheterna. Ett par olika kommunikationsfall demonstreras i flödesdiagram i Appendix B.
+
+Fall 1: Kommunikationsmodulen skickar manuella styrkommandon till styrmodulen, se figur~\ref{fig:case1flow}.
+
+Fall 2: Sensormodulen signalerar att ny sensor-data är redo, se  figur~\ref{fig:case2flow}.
+
+Fall 3: Kartdata skickas från kommunikationsmodulen till PC, se figur~\ref{fig:case3flow}. 
+ 
 
 
 \subsubsection{Mastermodulens mottagning över buss}
@@ -340,7 +414,7 @@ Slave skickar som första data längden på överföringen. Det är denna som g�
 
 
 \subsubsection{Slavemodulers mottagning över buss}
-När mastermodulen initierar SPI-kommunikationen med en slave dras SlaveSelect-signalen för den givna processorn låg för att generera ett SPI-avbrott på sagda slave. När slave har tagit emot det antal bytes som specificeras av första byten i paketet genereras ett internt avbrott med hjälp av PCint16. I detta nya avbrott hanteras datan från transmissionen. En övergripande struktur angående mottagningen av SPI-trafik kan ses i flödesdiagrammet i figur~\ref{fig:spislave}.
+En övergripande struktur angående mottagningen av SPI-trafik kan ses i flödesdiagrammet i figur~\ref{fig:spislave}. När mastermodulen initierar SPI-kommunikationen med en slave dras SlaveSelect-signalen för den givna processorn låg för att generera ett SPI-avbrott på sagda slave. När slave har tagit emot det antal bytes som specificeras av första byten i paketet genereras ett internt avbrott med hjälp av PCint16. I detta nya avbrott hanteras datan från transmissionen.
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
@@ -407,56 +481,13 @@ Sensorerna som tillhör sensormodulen, förutom robotens RFID-läsare, är place
 \subsection{Programmering av robot}
 Robotens mjukvara, dels bifogad till detta dokument samt dels tillgänglig på Github\footnote{Källkodsarkiv för MapMaster2001, \url{https://github.com/hansfilipelo/MapMaster2001}}, programmeras via Atmel Studio. Efter uppkoppling behöver robotens tre delsystem programmeras individuellt. 
 
-\subsection{Kommunikation via buss}
-En buss som kommunicerar över protokollet SPI sköter kommunikationen mellan robotens tre delsystem. SPI-protokollet är ett kommunikationsprotokoll med full-duplex som fungerar genom att byta åtta lokala bitar med 8 bitar från modulen den kommunicerar med. 
 
-I mjukvarulagret av bussen används ett egenimplementerat protokoll för både transmissioner över Bluetooth och SPI. Protokollet är konstruerat så att den första byten definierar längden på meddelandet som skickats. Nästföljande två bytes definierar kommandotyp och argument till den typen, t.ex. Sensordata från sensor 1, A1.
-Efter de tre första bytes följer godtyckligt lång datamängd se figur 3. 
-
-Specificerat bussprotokoll är enbart halv-duplex, dvs. data kan enbart skickas i en riktning åt gången, hela kapaciteten hos SPI utnyttjas därmed inte. 
-
-\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
-  \begin{center}
-  \includegraphics[keepaspectratio=true,scale=0.6]{bilder/Bussprotokoll.png}  %skala och filnamn. 
-  \end{center}
-  \caption{Översiktsbild av kommunikationsprotokollet} %figurtext.
-  \label{fig:bussprotocol}
-\end{figure}
-
-\newpage
-Bussens tillgängliga kommandon är:
-
-\begin{tabular}{| p{0.20\textwidth} | p{0.15\textwidth} | p{0.1\textwidth} | p{0.12\textwidth} | p{0.33\textwidth} |}
-	\hline
-	\rowcolor{listinggray}
-	\textbf{Funktion} & \textbf{Datalängd} & \textbf{Kodord} & \textbf{Argument} & \textbf{Datastruktur} \\ \hline
-	Rotera vänster & 3 & r & 0 & Hastighet (0-100) \\ \hline
-	Rotera höger & 3 & r & 1 & Hastighet (0-100) \\ \hline
-	halt & 1 & h & DNC & DNC \\ \hline
-	Kör framåt & 3 & f & DNC & Hastighet (0-100) \\ \hline
-	Kör bakåt & 3 & b & DNC & Hastighet (0-100) \\ \hline
-	Aktivera autonomt läge & 1 & a & DNC & DNC \\ \hline
-	Aktivera manuellt läge & 1 & q & DNC & DNC \\ \hline
-	Säg åt styrmodul att skicka karta & 1 & F & DNC & DNC \\ \hline
-	Sätt variabler för reglering & 11 & P & 0 & Kp(10-tal, 1-tal, 10-del, 100-del), Kd(10-tal, 1-tal, 10-del, 100-del), Referensavstånd \\ \hline
-	Sensordata & 26 & S & DNC & Sensor0(100-tal, 10-tal, 1-tal), Sensor2... , Sensor6(100-tal, 10-tal, 1-tal) \\ \hline
-	Kalibrera gyro & 2 & g & 0 & DNC \\ \hline
-	Börja mäta med gyro & 2 & g & 1 & DNC \\ \hline
-	Svängt 90 grader & 1 & G & DNC & DNC \\ \hline
-	RFID detekterad & 1 & R & DNC & DNC \\ \hline
-	Tillåt RFID-avläsning & 1 & r & DNC & DNC \\ \hline
-	En rad av kartan & 19 & M & Radnr & Chars (u, c, e eller f) \\ \hline
-	Konfirmering av mottagen kartrad & 2 & m & Radnr & DNC \\ \hline
-\end{tabular}
-~\\
-Där DNC står för ''Do not care''.
-\newpage
 % ----------------------------- Kommunikationsmodul ------------------------------
 % --------------------------------------------------------------------------------
-
+\newpage
 
 \section{Kommunikationsmodul}
-Modulen hanterar kommunikation mellan robotens olika delar samt med persondatorn via Bluetooth. Kommunikationsmodulen som syns i figur~\ref{fig:robot}, kommer att agera master på robotens interna buss. Detta betyder att allt datautbyte som sker mellan moduler initieras av kommunikationsmodulen. 
+Modulen hanterar kommunikation mellan robotens olika delar samt med persondatorn via Bluetooth. Kommunikationsmodulen som syns i figur~\ref{fig:robot}, kommer att agera master på robotens interna buss, mer information om bussen finns i~\ref{chap:buss}. Detta betyder att allt datautbyte som sker mellan moduler initieras av kommunikationsmodulen. 
 Vid kommunikation mellan övriga moduler, d v s mellan sensor- och styrmodul, kommer denna information först gå via kommunikationsmodulen för att sedan skickas vidare.
 Kommunikationsmodulen är även ansvarig för transmission av sensordata och manuella styrkommandon mellan roboten och PC-mjukvaran.
 
@@ -468,17 +499,7 @@ Kommunikationsmodulen är även ansvarig för transmission av sensordata och man
   \label{fig:overviewKom}
 \end{figure}
 \newpage
-\subsection{Kommunikationsfall}
-Ett par exempel på kom\-mun\-ikations\-fall.
 
-Kommunikationsmodulen skickar data mellan de olika enheterna. Ett par olika kommunikationsfall demonstreras i flödesdiagram i Appendix B.
-
-Fall 1: Kommunikationsmodulen skickar manuella styrkommandon till styrmodulen, se figur~\ref{fig:case1flow}.
-
-Fall 2: Sensormodulen signalerar att ny sensor-data är redo, se  figur~\ref{fig:case2flow}.
-
-Fall 3: Kartdata skickas från kommunikationsmodulen till PC, se figur~\ref{fig:case3flow}. 
- 
 \subsection{Komponenter}
 Komponenterna är numrerade och finns att hitta i kretsschemat, se figur~\ref{fig:kopplingstyr}
 \begin{enumerate}
@@ -557,7 +578,8 @@ En switch styr om roboten exekverar programkod för autonom styrning eller manue
 
 \subsection{Konstruktion}
 Kommunikationsmodulen är monterad på ett separat virkort och bussledningarna kopplas till en bandkabel för sammankoppling med det andra virkortet.  Bandkabeln förser även virkortet med spänning.
-Bluetooth-modemet kopplas in i en av de redan existerande socklarna på virkortet. Även för JTAG på kommunikationsmodulen utnyttjas en redan existerande sockel. LCD-Displayen samt switch-knappen placeras på kortet och viras fast. Resetknappen är konstruerad med ett pull-up motstånd för detaljerad information se kopplingsschema i figur~\ref{fig:kopplingkom}.
+Bluetooth-modemet kopplas in i en av de redan existerande socklarna på virkortet. Även för JTAG på kommunikationsmodulen utnyttjas en redan existerande sockel. LCD-Displayen samt switch-knappen placerades på kortet är fast
+virat. Resetknappen är konstruerad med ett pull-up motstånd för detaljerad information se kopplingsschema i figur~\ref{fig:kopplingkom}.
 Utöver detta kopplas även en extern klocka in, i form av en kristalloscillator.
 
 % ----------------------------- Styrmodul ----------------------------------------
@@ -630,7 +652,7 @@ Vid konstruktion av styrmodulen används chassit som grund. Till chassit kopplas
 % --------------------------------------------------------------------------------
 
 \section{Sensormodul}
-Sensormodulens uppgift är att A/D-omvandla signaler från robotens avståndssensorer, reflexsensor och gyro för att sedan skicka detta vidare till kommunikationsmodulen i ett hanterbart format. Den har även som uppgift att via en RFID-läsare detektera brandhärdar som i detta fall representeras av RFID-taggar. I figur~\ref{fig:sensorflow} beskrivs hanteringen av sensordata. Sensormomdulen är byggd kring AVR-processorn ATMEL 1284p. En överblick av systemet visas i figur~\ref{fig:sensoroverview}.
+Sensormodulens uppgift är att A/D-omvandla signaler från robotens avståndssensorer, reflexsensor och gyro för att sedan skicka detta vidare till kommunikationsmodulen i ett hanterbart format. Den har även som uppgift att via en RFID-läsare detektera brandhärdar som i detta fall representeras av RFID-taggar. Sensormomdulen är byggd kring AVR-processorn ATMEL 1284p. En överblick av systemet visas i figur~\ref{fig:sensoroverview}.
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
@@ -667,13 +689,13 @@ Alla sensorsignaler utom de från RFID-läsaren passerar först genom ett lågpa
   \label{fig:lpfilter}
 \end{figure}
 
-\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
-  \begin{center}
-  \includegraphics[keepaspectratio=true,width=0.8\linewidth]{bilder/sensorflode}  %skala och filnamn. 
-  \end{center}
-  \caption{Flödesdiagram för sensorhantering} %figurtext.
-  \label{fig:sensorflow}
-\end{figure}
+%\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på %toppen av en sida.
+%	\begin{center}
+%		\includegraphics[keepaspectratio=true,width=0.8\linewidth]{bilder/sensorflode}  %skala och filnamn. 
+%	\end{center}
+%	\caption{Flödesdiagram för sensorhantering} %figurtext.
+%	\label{fig:sensorflow}
+%\end{figure}
 
 \subsection{Komponenter}
 Komponenterna är numrerade och finns att hitta i kopplingsschemat för sensormodulen ~\ref{fig:kopplingsensor}.
@@ -940,13 +962,13 @@ I manuellt läge kan roboten enkelt manövreras med hjälp av piltangenterna på
 	\item Höger-pil - Roboten svänger 90 grader höger.
 	\item Vänster-pil - Roboten svänger 90 grader vänster.
 \end{itemize}
-Orsaken till att roboten endast utför vinkelräta svängar är för att kartläggningen ska bli korrekt i manuellt läge. Utöver detta kan du även sätta vilken hastighet du vill att roboten ska köra i. Detta gör du i reglaget \emph{speed} i programvaran. Se figur 2. 
+Orsaken till att roboten endast utför vinkelräta svängar är för att kartläggningen ska bli korrekt i manuellt läge. Utöver detta kan du även sätta vilken hastighet du vill att roboten ska köra i. Detta gör du i reglaget \emph{speed} i programvaran. Se figur~\ref{fig:gui_man}. 
 	
 \subsection*{Autonom körning}
 Om du vill växla roboten till att köra autonomt, placera då först roboten med baksidan 10 cm från en yttervägg av specificerat område. Banan måste bestå av 40x40 segment för att roboten ska kunna kartlägga korrekt, se appendix A i kravspecifikationen. För att starta autonom körning tryck CMD+X i programmet eller tryck på den grå knappen som är placerad på den översta virkortet på roboten. Roboten kommer då börja att åka och kartlägga banan. Allt eftersom roboten åker kommer du se hur kartan växer fram bit för bit i det vita rutnätet som syns i figur~\ref{fig:gui_man}. 
 
 \subsubsection*{Felsökning}
-Vid start av autonom körning är det viktigt att robotens moduler är korrekt initierade. Det kan därför vara bra, att efter huvudströmbrytaren är påslagen, återställa först mastermodulen och sedan styr- och sensormodul genom att trycka på respektive reset-knapp. Resetknapparna är svarta och sitter placerade på respektive virkort. Resetknapparna återställer endast den processor som är monterad på samma virkort som den knappen i fråga.
+Vid start av autonom körning är det viktigt att robotens moduler är korrekt initierade. Det kan därför vara bra, att efter huvudströmbrytaren är påslagen, återställa först mastermodulen och sedan styr- och sensormodul genom att trycka på respektive reset-knapp. Resetknapparna är svarta och sitter placerade på respektive virkort. Resetknapparna återställer endast den processor som är monterad på samma virkort som knappen i fråga.
 
 \subsection*{Övriga kommandon}
 Utöver kommandon för manuell körning finns även
