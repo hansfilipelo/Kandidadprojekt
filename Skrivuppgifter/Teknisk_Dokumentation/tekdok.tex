@@ -1,7 +1,3 @@
-%kommentera all kod.
-%subsection{Kommunikation} se över - SER BRA UT. Se kommentar nedan /H-F
-%kommunikationsmodulen blandad Teori och hårdvara. - Möjligtvis flytta LCD-displayen till teori men tycker det är gränsland mellan teori och dokumentation /H-F
-%Numrering av alla komponenter på Sensormodulen
 \documentclass[a4paper,12pt,fleqn]{article}
 \usepackage{fixltx2e}
 \usepackage[utf8]{inputenc}
@@ -22,6 +18,8 @@
 \usepackage{hyperref}
 \usepackage{tocloft}
 
+
+
 % %% Footnotes-Listing %%
 \newcommand{\listfootnotesname}{Referenser}% 'List of Footnotes' title 
 \newlistof[chapter]{footnotes}{fnt}{\listfootnotesname}% New 'List of...' for footnotes 
@@ -35,50 +33,53 @@
 
 \include{pagestyle}
 
+\AtBeginDocument{\addtocontents{toc}{\protect\thispagestyle{empty}}} 
 
 %-------------------------------------------------------------------
 %Första sidan
-
 \begin{document}
 	\pagestyle{fancy}
-\pagenumbering{roman}
+\pagenumbering{gobble}
+	\thispagestyle{empty}
 	\vspace*{\fill}
 		\begingroup
 			\begin{center}
-				\huge{\textbf{Teknisk dokumentation}}
+				\huge{\textbf{Autonom kartritande robot}} 
 				\\
-				\vspace{5pt}
+				\vspace{15pt}
+				\large{\emph{Teknisk dokumentation}}
 				\normalsize
-				Kandidatprojekt Y - Grupp 8 - VT2014
 				\\
-				Version 1.0
-				\end{center}
+				\vspace{55pt}
+				\begin{figure}[htp]
+					\begin{center}
+				  	  \includegraphics[keepaspectratio=true,scale=1.2]{linkoping.png}  %skala och filnamn.		
+					\end{center}
+				\end{figure}
+				\vspace{40pt}
+				MapMaster2001, VT2014
+				\\
+				Institutionen för systemteknik.
+				\\
+				Tekniska högskolan vid Linköpings universitet
+				\\
+				\vspace{20 pt}
+				David Habrman \\
+				Erik Ekelund \\
+				Hans-Filip Elo \\
+				Jens Edhammer \\
+				Niklas Ericson \\
+				Tobias Grundström \\
+			\end{center}
 		\endgroup
-	 
-	\vspace{15pt}
-	\begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
-	  \begin{center}
-	  \includegraphics[keepaspectratio=true,,width=0.5\linewidth]{bilder/robotbilder/Helaroboten}
-	  \end{center}
-	\end{figure}
 	\vspace*{\fill}
-	
-	\begin{center} %Börjar centrering 
-		Status
-		\\
-		\vspace{3pt} %Whitespace 3 pts
-	    \begin{tabular}{| p{3cm} | p{3cm} | p{3cm} |} %tabell, 4 horizontella |, 3 cm emellan dem.
-	    \hline %översta horizontella linjen.
-	    Granskad & JE,TG,HFE & \today \\ \hline % & -tecken för att "gå till nästa ruta" 
-		Godkänd & - & - \\ \hline % avslutas med \\ och \hline.
 
-	    \end{tabular}
-	\end{center}
+	
 	\vspace{2cm}
 	\newpage
 %-----------------------------------------------------------------
 %Projektidentitet
-	
+\thispagestyle{empty}
 	\vspace*{\fill}
 		\begingroup
 			\begin{center}
@@ -87,15 +88,15 @@
 				\footnotesize
 				Grupp 8, 2014/VT, MapMaster2001
 				\\
-				Linköpings tekniska högskola, ISY
+				Tekniska högskolan vid Linköpings universitet, ISY
 				\\
 				\vspace{1cm}
 	  \begin{tabular}{| p{3cm} | p{4.3cm} | p{2.4cm} | p{3.8cm} |}
 	    \hline
 		\textbf{Namn} & \textbf{Ansvar} & \textbf{Telefon} & \textbf{E-post} \\ \hline
-	    Jens Edhammer & Dokumentansvarig (DOK) & 076-030 67 80 & jened502@student.liu.se \\ \hline
+	    Jens Edhammer & Dokumentanvsvarig (DOK) & 076-030 67 80 & jened502@student.liu.se \\ \hline
 		Erik Ekelund & Designansvarig (DES) & 073-682 43 06 & eriek984@student.liu.se \\ \hline
-		David Habrman &  & 076-017 71 15 & davha227@student.liu.se \\ \hline 
+		David Habrman &  & 976-017 71 15 & davha227@student.liu.se \\ \hline 
 		Tobias Grundström & Testansvarig (TES) & 073-830 44 45 & tobgr602@student.liu.se \\ \hline 
 		Hans-Filip Elo &   & 073-385 22 32 & hanel742@student.liu.se \\ \hline 
 		Niklas Ericson & Projektledare (PL) & 073-052 27 05 & niker917@student.liu.se \\ \hline
@@ -105,13 +106,13 @@
 		\textbf{E-postlista för hela gruppen:} mapmaster2001@cyd.liu.se
 		\\[0.5cm]
 		
-		\textbf{Kund}: Mattias Krysander, Linköpings universitet, 581 83  LINKÖPING, \\
+		\textbf{Kund}: Mattias Krysander, Linköpings Universitet, 581 83  LINKÖPING, \\
 		013-28 21 98, matkr@isy.liu.se \\
-		\textbf{Kontaktperson hos kund}: Mattias Krysander, 013-28 21 98, matkr@isy.liu.se 
+		\textbf{Kontaktperson hos kund}: Mattias Krysander, 013-28 21 98,matkr@isy.liu.se 
 		\\
-		\textbf{Kursansvarig}: Tomas Svensson, 3B:528,013 28 21 59, tomass@isy.liu.se
+		\textbf{Kursansvarig}: Tomas Svensson, 3B:528,013 28 21 59,tomass@isy.liu.se
 		\\[0.5cm]
-		\textbf{Handledare}: Peter Johansson, 013-28 1345, peter.a.johansson@liu.se
+		\textbf{Handledare}: Peter Johansson, 013-28 1345 peter.a.johansson@liu.se
 
 				\end{center}
 		\endgroup
@@ -121,13 +122,17 @@
 %-----------------------------------------------------------------
 %Innehållsföreteckning
 
+\thispagestyle{empty}
 \addto\captionsswedish{\renewcommand{\contentsname}{Innehållsförteckning}}
 
+\pagestyle{empty}
 \tableofcontents
+\cleardoublepage
 \newpage
 \listoffigures
-\thispagestyle{fancy}
 \newpage
+
+\pagestyle{fancy}
 
 \pagenumbering{arabic}
 
