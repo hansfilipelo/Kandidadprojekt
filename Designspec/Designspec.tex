@@ -23,8 +23,8 @@
 %Första sidan
 
 \begin{document}
-	\pagestyle{fancy}
-\pagenumbering{roman}
+	\pagestyle{empty}
+\pagenumbering{gobble}
 	\vspace*{\fill}
 		\begingroup
 			\begin{center}
@@ -100,8 +100,8 @@
 \addto\captionsswedish{\renewcommand{\contentsname}{Innehållsförteckning}}
 
 \tableofcontents
-\thispagestyle{fancy}
 \newpage
+\pagestyle{fancy}
 
 \pagenumbering{arabic}
 %-----------------------------------------------------------------
@@ -146,7 +146,7 @@ De följande 4 anger hur många cykler, dvs. hela Bytes som datat som skickas i 
 
 
 \section{Kommunikationsmodul}
-Modul för att hantera kommunikation mellan robotens olika delkomponenter samt med persondatorn via Blåtand. Kommunikationsmodulen som syns i figur 3, kommer att agera master på robotens interna buss. Vid kommunikation mellan övriga moduler, dvs. sensor- och 'en, kommer denna gå via kommunikationsmodulen.
+Modul för att hantera kommunikation mellan robotens olika delkomponenter samt med persondatorn via Blåtand. Kommunikationsmodulen som syns i figur~\ref{fig:komoverview}, kommer att agera master på robotens interna buss. Vid kommunikation mellan övriga moduler, dvs. sensor- och 'en, kommer denna gå via kommunikationsmodulen.
 Kommunikationsmodulen kommer alltså att leverera sensordata mellan roboten och mjukvaran som körs på persondatorn.
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
@@ -154,7 +154,7 @@ Kommunikationsmodulen kommer alltså att leverera sensordata mellan roboten och 
   \includegraphics[keepaspectratio=true,width=\linewidth]{komoverview}  %skala och filnamn. 
   \end{center}
   \caption{Översiktsbild av kommunikationsdelen av systemet} %figurtext.
-  \label{fig:overview}
+  \label{fig:komoverview}
 \end{figure}
 
 \subsection{Kommunikationsfall}
