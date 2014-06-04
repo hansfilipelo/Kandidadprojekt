@@ -128,7 +128,7 @@ Generellt sett har projektet tagit lite längre tid än planerat men inte mycket
 Arbetsfördelning under projektet har varit god. Vi har alltid försökt eftersträva att man ska kunna jobba parallellt med varandra med olika uppgifter. Detta har självklart inte alltid gått att genomföra då vi endast har haft en robot, men i många fall har vi kunnat jobba med saker på sidan om. I en fas i projektet hade vi till och med två stycken virkort som var identiskt virade för att kunna testa bluetooth på det ena och display på den andra. Arbetet har oftast skett i par och varje par har haft en ansvarsområde. I början av projektet delades gruppen upp i tre och varje delgrupp tog varsin modul. När roboten i ett senare stadie i projektet var monterad splittrades grupperna upp och nya par bildades. På det här sättet spred vi ut kunskapen kring modulerna i gruppen. 
 
 \subsection{Tidsåtgång jämfört med planerad tid}
-I figur~\ref{fig:tid} nedan syns klart och tydligt att vi försökt följa den ursprungliga planen från början men att det på slutet arbetades en del över budget. Detta beror på att vi i slutet hade en rad olika problem med bussen som tog en massa tid från projektet. När problemet med bussen var hyfsat löst återstod bara 2 dagar innan leverans och vi var tvungna att skriva regleralgoritmen väldigt snabbt. Vi la också ner väldigt mycket tid på en Astar-algoritm som visade sig vara okörbar på Atmega 1284p. 
+I figur~\ref{fig:tid} nedan syns klart och tydligt att vi försökt följa den ursprungliga planen från början men att det på slutet arbetades en del över budget. Detta beror på att vi i slutet hade en rad olika problem med bussen som tog en massa tid från projektet. När problemet med bussen var hyfsat löst återstod bara 2 dagar innan leverans och vi var tvungna att skriva kartsökningsalgoritmen väldigt snabbt. Vi la också ner väldigt mycket tid på en Astar-algoritm som visade sig vara okörbar på Atmega 1284p. 
 
 \begin{figure}[htp] %Placera här om det finns plats, annars så snart som möjligt, på toppen av en sida.
   \begin{center}
@@ -153,21 +153,21 @@ Relation med beställaren har varit problemfri. Han svarar alltid snabbt på mai
 \subsection{Hur fungerade relationen med handledaren?}
 Ibland kunde vår handledare vara svår att nå. Det märktes tidigt att det krävdes en välformulerad och riktad fråga för att få ett bra svar, detta är självklart inga konstigheter och har istället hjälpt oss under projektet då en del fel löste sig genom att gruppen tänkte igenom frågor i detalj i förväg. I slutet av projektet var handledaren mycket lättare att nå och komma ofta förbi labbet för att kolla till sina grupper och deras status. Det märktes tydligt att handledaren var mycket kunnig.
 
-\subsection{Tekniska framgångar/problem}
+\subsection{Tekniska problem}
 
-%Beskriv de 3 besvärligaste problemen som ni har haft under projektet. 
-%Rangordna problemen där 1 är mest besvärlig i betydelsen tog längst tid att fixa.
-%Beskriv för varje problem:
-Hårdvarufel (4 parallella fel)
+Hårdvaru- och mjukvarufel som gjorde att moduler startade om. 
+Vid ett tillfälle i robotens konstruktion stötte vi på bussproblem. Kommunikation kom inte över korrekt. Vi började felsöka detta och fann till slut orsakerna. Det visade sig vara flera parallella problem som gav liknande symptom. En trasig anslutning till robotens chassi gjorde att modulen emellanåt startade om p g a spänningsfall. Modulen startade om sig p g a att en dålig implementering av en kopiering utnyttjade för mycket minne och processorns programpekare slog om i programmet. Dessutom hade vi en trasig processor som också hade beteendet att den startade om. Detta problem fanns sporadiskt över 2 veckor innan det fullständigt löstes. Vi förlorade nog inte de hela 2 veckorna på felen då annat byggdes parallellt, men vi förlorade säkerligen 1 - 1,5 vecka.
 
-Bussproblem
+Mjukvarufel i implementering av någon funktion resulterade i att bussen inte fungerade korrekt utan kunde ibland låsa sig.
+Felsökningen gav inga resultat och vi fick tillslut rulla tillbaka vår kod tills när den senast fungerade, sex dagar tidigare. Detta blev ett stort steg bakåt och uppskattningsvis förlorade vi 8 dagar.
 
-Avståndsbestämning med hjälp av sensorer. 
-%a. felets typ - ange t.ex.  hårdvarufel, mjukvarufel, systemintegrationsfel 
-%b. kort beskrivning av felets symptom 
-%c. kort beskrivning av felets orsak t.ex. logiskt fel i programmering, timing-fel, %glappkontakt, missförstånd av spec., felaktig design. 
-%d. kort beskrivning av hur ni fixade felet. T.ex. hur ni fixade mjukvarubuggen, fick ny %hårdvara, virade om, gick runt problemet.
-%e. ungefärlig skattning av hur mycket tid som ni ägnade åt felsökningen (dvs. tid som kunde tjänats in om felet inte hade uppstått)
+Otillräcklig noggrannhet i sensorer ledde till att designval var tvungna att ändras.
+Vi insåg efter ett tag att avståndsbestämning med avståndssensorerna inte skulle fungera. Sensorerna var för brusiga vid långa distanser och kunde emellanåt slå i en vägg. Vi ändrade metoden för distansmätning till reflexsensorn. Detta fungerade väldigt bra och var värd tiden vi förlorade på att implementera om avståndsmätningen. På detta fel förlorade vi ungefär 2 dagar.
+
+\subsection{Tekniska framgångar}
+Vi är otroligt nöjda med våra rotationer vilka blev väldigt precisa. Dessutom blev avståndmätningarna med hjälp av reflexsensorerna väldigt bra och på en sex meter sträcka felade den mindre än 10 cm.
+
+
 
 \section{Måluppfyllelse}
 Gruppen hade som initialt mål att leverera produkt med uppfyllda krav 1 mål samt att genomföra ett gott projekt. Detta tycker vi har uppfyllts även om kravbilden omförhandlats under projektets gång.
