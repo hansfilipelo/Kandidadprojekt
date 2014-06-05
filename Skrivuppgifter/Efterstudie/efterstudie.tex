@@ -17,6 +17,7 @@
 \usepackage{listings}
 \usepackage{hyperref}
 \usepackage{tocloft}
+\usepackage{mathpazo}
 
 % %% Footnotes-Listing %%
 \newcommand{\listfootnotesname}{Referenser}% 'List of Footnotes' title 
@@ -34,7 +35,6 @@
 
 %-------------------------------------------------------------------
 %Första sidan
-
 \begin{document}
 	\pagestyle{empty}
 \pagenumbering{gobble}
@@ -128,6 +128,7 @@ Generellt sett har projektet tagit lite längre tid än planerat men inte mycket
 \subsection{Arbetsfördelning}
 Arbetsfördelning under projektet har varit god. Vi har alltid försökt eftersträva att man ska kunna jobba parallellt med varandra med olika uppgifter. Detta har självklart inte alltid gått att genomföra då vi endast har haft en robot, men i många fall har vi kunnat jobba med saker på sidan om. I en fas i projektet hade vi till och med två stycken virkort som var identiskt virade för att kunna testa bluetooth på det ena och display på den andra. Arbetet har oftast skett i par och varje par har haft en ansvarsområde. I början av projektet delades gruppen upp i tre och varje delgrupp tog varsin modul. När roboten i ett senare stadie i projektet var monterad splittrades grupperna upp och nya par bildades. På det här sättet spred vi ut kunskapen kring modulerna i gruppen. 
 
+\newpage
 \subsection{Tidsåtgång jämfört med planerad tid}
 I figur~\ref{fig:tid} syns klart och tydligt att vi försökt följa den ursprungliga planen från början men att det på slutet arbetades en del över budget. Detta beror på att vi i slutet hade en rad olika problem med bussen som tog en massa tid från projektet. När problemet med bussen var hyfsat löst återstod bara 2 dagar innan leverans och vi var tvungna att skriva kartsökningsalgoritmen väldigt snabbt. Vi la också ner väldigt mycket tid på en Astar-algoritm som visade sig vara okörbar på Atmega 1284p. 
 
@@ -146,24 +147,24 @@ Arbetet i projektet har sånärsom på ett par veckor flytit på bra och projekt
 
 \subsection{Vad hände under de olika faserna (bra/dåligt/orsak)}
 %%Jag fattar inte vad vi ska skriva här? :S
-Under förefasen skrevs kravspecifikationen.
+Då krav- och designspecifikationer skrevs var det svårt att se hur man skulle lösa vissa problem i projektet - och även hur lång tid många delar av projektet skulle förbruka. Det brukar kännas som en naturlig del i projektstyrning - det ska helt enkelt vara svårt att planera arbetet på förhand. 
 
-I underfasen påbörjades arbetet med designspecifikationen följt av att arbetet i muxen och fördjupningsuppgift. Ett problem här är att fördjupningen borde ha tillhört förefasen för att få ut så mycket som möjligt av den. En sak i underfasen som vi själva borde jobbat mer med är tester. Gruppen fick ett väldigt resultatsinriktad inställning och i slutet av projektet när tiden blev knapp var det en del tester som det helt enkelt inte fanns tid till att utföra. Underfasen avslutades med att roboten presenterades för beställare som godkände produkten.
+I underfasen påbörjades arbetet med designspecifikationen följt av att arbetet i muxen och fördjupningsuppgift. Ett problem här är att fördjupningen borde ha tillhört förefasen för att få ut så mycket som möjligt av den. En sak i underfasen som vi själva borde jobbat mer med är tester. Gruppen fick ett väldigt resultatsinriktad inställning och i slutet av projektet när tiden blev knapp var det en del tester som det helt enkelt inte fanns tid till att utföra. Underfasen avslutades med att roboten presenterades för beställare som godkände produkten i dess befintliga skick. 
 
-I efterfasen utfördes en presentation för en av de andra grupperna och för beställaren.
+I efterfasen utfördes en presentation för en av de andra grupperna och för beställaren. Denna fas blev inte så lyckad som man kanske velat då efterfasen låg mitt i tentaperioden. Tentaperioden överlappade även till viss del med underfasen - vilket inte heller kändes optimalt. 
 
 
 \subsection{Hur arbetade vi tillsammans}
 I början av varje vecka hölls ett kortare möte där veckans arbete diskuterades och mindre delgrupper skapades på aktivitetsnivå. Dessa grupper skiftade emellanåt då nya problem eller aktiviteter uppstod. De personer som arbetade med ett givet problem fick även ansvar för att meddela resterande av gruppen om mer resurser behövdes eller om nya problem uppstod. Kommunikation sköttes löpande mellan delgrupperna då man ofta utnyttjade varandra som bollplank i felsökning eller hade löst någonting som man tyckte var häftigt och därför ville berätta. Kommunikation blev helt enkelt väldigt organisk och behövdes inte styras. 
 Inför alla större beslut kallades det till möte med samtliga projektmedlemmar.
 
-Samtliga medlemmar i gruppen har hög ambitionsnivå och är stundtals envisa, det var därför inte helt ovanligt att ibland kunna hitta oss argumentera kraftigt med varandra. Detta är något vi vet om att vi gör sedan tidigare projekt tillsammans. Det har aldrig varit ett problem och vi känner inte att det har varit ett problem nu heller.
+Samtliga medlemmar i gruppen har hög ambitionsnivå och är stundtals envisa, det var därför inte helt ovanligt att ibland kunna hitta oss argumentera kraftigt med varandra. Detta är något vi vet om att vi gör sedan tidigare projekt tillsammans. Det har aldrig varit ett problem och vi känner inte att det har varit ett problem nu heller. Vi blir helt enkelt vänner igen när dagen är slut. 
 
 \subsection{Hur använde vi projektmodellen}
-Vi har genom hela projektet utgått från projektmodellen. Det som varit svårast med modellen är att försöka följa den första tidsplanen, istället har denna uppdaterats efterhand. I början av varje vecka har vi på ett mindre möte kollat över vilka aktiviteter som vi tycker borde ha mer/mindre tid under kommande vecka.
+Vi har genom hela projektet utgått från projektmodellen. Det som varit svårast med modellen är att försöka följa den första tidsplanen, istället har denna uppdaterats efterhand. I början av varje vecka har vi på ett mindre möte kollat över vilka aktiviteter som vi tycker borde ha mer/mindre tid under kommande vecka. I och med att gruppen redan arbetat ihop i tidigare projekt, och att alla i projektgruppen har en väldigt hög ambitionsnivå, vet vi vad vi kan förvänta av varandra. Vi fann därför att projektmodellen med på förhand specificerat tid per aktivitet (istället för milstolpar att nå) blev väldigt redundant och inte till ett egentligt hjälpmedel. 
 
 \subsection{Hur fungerade relationen med beställaren?}
-Relation med beställaren har varit problemfri. Han svarar alltid snabbt på mail, verkar genuint intresserad och har alltid konstruktiv kritik att komma med.
+Relation med beställaren har varit problemfri. Han svarar alltid snabbt på mail, verkar genuint intresserad och har alltid konstruktiv kritik att komma med. Han verkar också uppskattat de lösningar vi skapat rent tekniskt. Hela gruppen har haft ett väldigt kul och bra samarbete med vår beställare. 
 
 \subsection{Hur fungerade relationen med handledaren?}
 Ibland kunde vår handledare vara svår att nå, dock endast i början av projektet. Det märktes tidigt att det krävdes en välformulerad och riktad fråga för att få ett bra svar, detta är självklart inga konstigheter och har istället hjälpt oss under projektet då en del fel löste sig genom att gruppen tänkte igenom frågor i detalj i förväg. I slutet av projektet var handledaren mycket lättare att nå och komma ofta förbi labbet för att kolla till sina grupper och deras status. Det märktes tydligt att handledaren var mycket kunnig och vi är mycket nöjda med handledaren.
@@ -177,35 +178,36 @@ Mjukvarufel i implementering av någon funktion resulterade i att bussen inte fu
 Felsökningen gav inga resultat och vi fick tillslut rulla tillbaka vår kod tills när den senast fungerade, sex dagar tidigare. Detta blev ett stort steg bakåt och uppskattningsvis förlorade vi 8 dagar.
 
 Otillräcklig noggrannhet i sensorer ledde till att designval var tvungna att ändras.
-Vi insåg efter ett tag att avståndsbestämning med avståndssensorerna inte skulle fungera. Sensorerna var för brusiga vid långa distanser och kunde emellanåt slå i en vägg. Vi ändrade metoden för distansmätning till reflexsensorn. Detta fungerade väldigt bra och var värd tiden vi förlorade på att implementera om avståndsmätningen. På detta fel förlorade vi ungefär 2 dagar.
+Vi insåg efter ett tag att avståndsbestämning med långdistanssensorerna inte skulle fungera med tillräckligt hög precision. Sensorerna var för brusiga vid långa distanser och kunde emellanåt slå i en vägg. Vi ändrade metoden för distansmätning till reflexsensorn som mäter hjulets rotation. Detta fungerade väldigt bra och var väl värd tiden vi förlorade på att implementera om avståndsmätningen. På detta fel förlorade vi ungefär 2 dagar.
 
 \subsection{Tekniska framgångar}
 Vi är otroligt nöjda med våra rotationer vilka blev väldigt precisa.
-Dessa löstes med ett analogt gyro och om möjligt så är det så vi skulle implementera det igen. Dessutom blev avståndmätningarna med hjälp av reflexsensorerna väldigt bra och på en sex meter sträcka felade den mindre än 10 cm.
-Avståndsgraferna och kartan i vårt GUI blev bra och kunde användas för felsökning vilket underlättade mycket under hela projektets gång.
+Dessa löstes med ett analogt gyro och om möjligt så är det så vi skulle implementera det igen. Dessutom blev avståndmätningarna med hjälp av reflexsensorerna väldigt bra och på en sex meter lång sträcka hade vi en felmarginal på mindre än $\pm$10 cm. Avståndsgraferna och kartan i vårt GUI blev bra och kunde användas för felsökning vilket underlättade mycket under hela projektets gång. 
 
 \section{Måluppfyllelse}
-Gruppen hade som initialt mål att leverera produkt med uppfyllda krav 1 mål samt att genomföra ett gott projekt. Detta tycker vi har uppfyllts även om kravbilden omförhandlats under projektets gång.
+Gruppen hade som initialt mål att leverera produkt med uppfyllda krav 1 mål samt att genomföra ett välarbetat och professionellt projekt. Detta tycker vi har uppfyllts, även om kravbilden omförhandlats under projektets gång. 
+
 \subsection{Vad har uppnåtts?}
-I dagsläget finns en robot som autonomt kartlägger ett slutet område med köksöar inuti. Den kan även detektera RFID-taggar, dock har vi haft problem med hårdvaran för denna och detta fungerar inte alltid. 
+I dagsläget finns en robot som autonomt kartlägger ett slutet område med köksöar inuti. Den kan även detektera RFID-taggar, dock har vi haft problem med hårdvaran för RFID-avläsning, så denna fungerar . 
 
 \subsection{Hur fungerade leveransen?}
 Leveransen skedde genom ett möte med beställare där produkten demonstrerades genom en serie av körningar i olika typer av banor. Övriga funktioner såsom manuell styrning och kartlagring visades också upp. Kravlistan gicks igenom ett krav i taget och verifierades om målet var uppnått eller ej. I slutet av mötet tog beställare beslut om produkten var färdigställd. Vi är mycket nöjda med leveransen både i utformning och resultat.
+
 \subsection{Hur har studiesituationen påverkat projektet?}
-Om möjligt skulle, inte bara för vår skull men även för andra examinatorer, projektkursen hållas enskilt utan övriga kurser parallellt. De flesta studenter prioriterat projektet över andra kurser, speciellt med tanke på hur många poäng kursen är värd.  
+Om möjligt skulle, inte bara för vår skull men även för andra examinatorer, projektkursen hållas enskilt utan övriga kurser parallellt. De flesta studenter  väljer att prioritera projektet över andra kurser då projektkursen är på 16hp och skulle vara förödande att förlora dessa. 
+
+Stor arbetsbörda med fördjupningsuppgiften som ingår i projektet har också sinkat några av gruppens medlemmar - både i sin prestation i projektet och även i andra kurser. Specificerade tiden 50 timmar har inte varit tillräckligt för dem där. 
 
 \section{Sammanfattning}
 \subsection{De tre viktigaste erfarenheterna}
 
-Att oscilloskopet är ett bra verktyg har vi alltid förstått, men under projektets gång insåg vi hur viktigt det var vid felsökning. Det underlättade analys av flera signaler parallellt vilket gjorde det möjligt att bland annat se så att den data som skickades ut på bussen även togs emot på rätt sätt.
+Att oscilloskopet är ett bra verktyg har vi alltid förstått, men under projektets gång insåg vi hur viktigt det var vid felsökning av hårdvara och hårdvarunära mjukvaruimplementeringar. Oscilloskopet underlättade analys av flera signaler parallellt vilket gjorde det möjligt att bland annat se hur data skickades ut på bussen, inte bara hur den togs emot.
 
-Det är svårt att implementera buss
-Starkare huvudprocessor för klasstruktur och beslut, med dotterprocessorer för utförande.
+Vi har lärt oss att det är svårt att implementera en buss. Hade vi fått göra om projektet hade vi valt att använda en starkare huvudprocessor gör att hantera sensordata och ta vägvalsbeslut. En starkare processor av en annan arkitektur (ex ARM) kan också använda högnivåbibliotek vilka markant förbättrar möjligheterna till att skapa avancerade kartläggnings och vägfinnaralgoritmer. 
+
 \subsection{Goda råd till de som ska utföra ett liknande projekt}
 Det första rådet vi har till de som ska utföra ett liknande projekt är att planera noga och att fördela antalet arbetstimmar jämnt över hela projektettiden. En bra och tydlig planering är viktigt och kommer underlätta allt arbete. Att fördela arbetstimmarna jämnt över veckorna gör det lättare att lägga mer tid på andra kurser som läses parallellt med kandidatprojektet.
 
-Det är också viktigt att lägga utveckling av bussprotokoll och buss i början av projektet, eftersom detta är något som kommer ta mycket tid att få till bra. Den kan med fördel testas mycket och med olika fall för att se att allt fungerar som det ska. Vi insåg i slutet av arbetet att vår buss inte var optimal, men då var det för sent för att göra något åt det.
-
-
+Det är också viktigt att lägga mycket tid på utveckling av bussprotokoll, men framförallt test av buss i början av projektet. Att testa bussen noggrant har man igen senare i projektet. Bussen kan med fördel testas mycket och med olika fall för att se att allt fungerar som det ska. Vi insåg i slutet av arbetet att vår buss inte var byggd på en tillräckligt bra implementering, men då var det för sent för att göra något åt det.
 
 \end{document}
