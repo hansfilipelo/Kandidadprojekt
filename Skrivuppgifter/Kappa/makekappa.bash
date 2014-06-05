@@ -22,8 +22,12 @@ cd ../../Designspec
 pdflatex -interaction=nonstopmode Designspec.tex >> $DIR/$OUTFILE 2>&1
 cd $DIR
 pdflatex -interaction=nonstopmode kappa.tex >> $OUTFILE 2>&1 
-grep -w ".*Warning:" $OUTFILE
-grep -w ".*Error:" $OUTFILE
+
+echo "Warnings: "
+grep -w -A 10 ".*Warning:" $OUTFILE
+echo ""
+echo "Erros: "
+grep -w -A 10 ".*Error:" $OUTFILE
 
 if [ $? != 0 ]
 then
