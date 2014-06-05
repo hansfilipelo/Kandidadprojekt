@@ -141,7 +141,7 @@ För den som vill läsa på mer om SLAM går det att finna litteratur och artikl
 ''SLAM for Dummies, A Tutorial Approach to Simultaneous Localization and Mapping''. 
 Hämtad 28 mars 2014:
 \url{http://ocw.mit.edu/courses/aeronautics-and-astronautics/16-412j-cognitive-robotics-spring-2005/projects/1aslam_blas_repo.pdf}
-} en bra förklaring. Ytterligare läsning finns i David Törnqvists doktorsavhandling ''Estimation and Detection with Applications to Navigation''\footnote{Törnqvist, D. (2008). Estimation and Detection with Applications to Navigation. PhD thesis, Linköping University. \url{http://urn.kb.se/resolve?urn=urn:nbn:se:liu:diva-14956}.}. Där beskriver Törnqvist teorin bakom SLAM på ett pedagogiskt och detaljerat sätt. 
+} en bra förklaring. Ytterligare läsning finns i David Törnqvists doktorsavhandling ''Estimation and Detection with Applications to Navigation''. Där beskriver Törnqvist teorin bakom SLAM på ett pedagogiskt och detaljerat sätt. \footnote{Törnqvist, D. (2008). Estimation and Detection with Applications to Navigation. PhD thesis, Linköping University. \url{http://urn.kb.se/resolve?urn=urn:nbn:se:liu:diva-14956}.}
  
 På senare år har man även, precis som inom många andra vetenskapliga områden, sett utvecklingen ta ytterligare ett kliv tack vare internet och öppna källkodsprojekt som Github och OpenSLAM. Att göra en sökning på SLAM på Github resulterar i en mängd aktiva projekt på området. Eftersom källkoden där också finns tillgänglig är detta ett utmärkt exempel för de som vill studera implementeringar av SLAM-algoritmer. 
 
@@ -151,7 +151,7 @@ På senare år har man även, precis som inom många andra vetenskapliga område
 
 \section{Problemformulering}
 
-Vanligtvis där SLAM implementeras ska en robot försöka kartlägga sin omgivning och utföra en uppgift. Antag att en robot med fyra hjul och tillgång till ett antal avståndssensorer och ett gyro placeras i ett okänt slutet område. Den ska, med en vägg som startpunkt, helt autonomt kartlägga området genom att markera ut var väggar finns och var det finns områden som inte går att nå. Om inte hela det slutna området är kartlagt ska den upptäcka vilka segment som är oupptäckta, färdas dit och lägga till dem i kartan. När området är kartlagt ska roboten ta sig tillbaka till startpunkten för att kunna återhämtas och på så sätt avsluta arbetet. Marken under roboten antas vara slät med förhållandevis stor friktion mot robotens däck. 
+Vanligtvis där SLAM implementeras ska en robot försöka kartlägga sin omgivning och utföra en uppgift. Antag att en robot med fyra hjul och tillgång till ett antal avståndssensorer och ett gyro placeras i ett okänt slutet område. Den ska, med en vägg som startpunkt, helt autonomt kartlägga området genom att markera ut var väggar finns och var det finns områden som inte går att nå. Om inte hela det slutna området är kartlagt ska den upptäcka vilka segment som är oupptäckta, färdas dit och lägga till det slutna området i kartan. När området är kartlagt ska roboten ta sig tillbaka till startpunkten för att kunna återhämtas och på så sätt avsluta arbetet. Marken under roboten antas vara slät med förhållandevis stor friktion mot robotens däck. 
 
 SLAM är en teknik där ett system på något sätt kan uppfatta landmärken. Med landmärken menas alla typer av objekt eller liknande som kan användas som referenser. Landmärkenas position i förhållande till roboten ska noteras och uppmätas med regelbundna samplingar. Genom att positionsbestämma dessa landmärken kan roboten snabbare bestämma sin position. 
 
