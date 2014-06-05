@@ -24,9 +24,11 @@ cd $DIR
 pdflatex -interaction=nonstopmode kappa.tex >> $OUTFILE 2>&1 
 
 echo "Warnings: "
+echo "--------"
 grep -w -A 10 ".*Warning:" $OUTFILE
 echo ""
-echo "Erros: "
+echo "Errors"
+echo "--------"
 grep -w -A 10 ".*Error:" $OUTFILE
 
 if [ $? != 0 ]
